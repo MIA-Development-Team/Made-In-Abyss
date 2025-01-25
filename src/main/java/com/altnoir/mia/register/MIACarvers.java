@@ -3,6 +3,8 @@ package com.altnoir.mia.register;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.content.worldgen.carver.CentralHoleCarver;
 import com.altnoir.mia.content.worldgen.carver.CentralHoleCarverConfiguration;
+import com.altnoir.mia.content.worldgen.carver.RingCarver;
+import com.altnoir.mia.content.worldgen.carver.RingCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -17,6 +19,8 @@ public class MIACarvers {
 
     public static final RegistryObject<WorldCarver<CentralHoleCarverConfiguration>> CENTRAL_HOLE_CARVER = register("abyss_central_hole",
             () -> new CentralHoleCarver(CentralHoleCarverConfiguration.CODEC));
+    public static final RegistryObject<WorldCarver<RingCarverConfiguration>> RING_CARVER = register("abyss_ring",
+            () -> new RingCarver(RingCarverConfiguration.CODEC));
 
     private static <C extends CarverConfiguration, F extends WorldCarver<C>> RegistryObject<F> register(String pKey, final Supplier<F> pCarver) {
         return CARVERS.register(pKey, pCarver);

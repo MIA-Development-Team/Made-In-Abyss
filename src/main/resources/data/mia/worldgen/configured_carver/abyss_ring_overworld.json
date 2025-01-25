@@ -1,0 +1,33 @@
+{
+  "type": "mia:abyss_ring",
+  "config": {
+    "probability": 1.0,
+    "y": {
+      "absolute": 0
+    },
+    "lava_level": {
+      "above_bottom": 0
+    },
+    "replaceable": "minecraft:air",
+    "placeable": "#minecraft:nether_carver_replaceables",
+    "yScale": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_exclusive": 0.9,
+        "min_inclusive": 0.1
+      }
+    },
+    "inner_critical_radius": {
+      "-63": 256,
+      "64": 256,
+      "256": 384
+    },
+    "outer_critical_radius": {
+      "-63": 512,
+      "64": 512,
+      "256": 384
+    },
+    "inner_mix_width": 8,
+    "outer_mix_width": 8
+  }
+}
