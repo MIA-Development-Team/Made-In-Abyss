@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "mixins.mia.refmap.json",
   "mixins": [
-
+    "BucketItemMixin"
   ],
   "client": [
   ],
