@@ -9,5 +9,8 @@
   "block.mia.chlorophyte_ore": "叶绿矿",
 
   "block.mia.example_block": "测试方块",
-  "block.mia.example_portal_block": "测试传送方块"
+  "block.mia.example_portal_block": "测试传送方块",
+  "item.mia.bloody_your_worth": "带血的石头",
+  "item.mia.your_worth": "生命回响之石",
+  "item.mia.blue_whistle": "蓝笛"
 }

@@ -24,6 +24,9 @@ public class CreativeTabsRegister {
                         pOutput.accept(ItemsRegister.ENDLESS_CUP.get());
                         pOutput.accept(ItemsRegister.CLOCK.get());
                         pOutput.accept(ItemsRegister.Knife.get());
+                        pOutput.accept(ItemsRegister.YOUR_WORTH.get());
+                        pOutput.accept(ItemsRegister.BLOODY_YOUR_WORTH.get());
+                        pOutput.accept(ItemsRegister.BLUE_WHISTLE.get());
                     })
                     .build());
 

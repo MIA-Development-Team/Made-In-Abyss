@@ -3,7 +3,10 @@ package com.altnoir.mia;
 import com.altnoir.mia.content.foods.Purin;
 import com.altnoir.mia.content.items.ClockItem;
 import com.altnoir.mia.content.items.KnifeItem;
+import com.altnoir.mia.content.items.relics.t2.Bloody_Your_Worth;
+import com.altnoir.mia.content.items.base.WhistleItem;
 import com.altnoir.mia.content.items.relics.t1.UnlimitedWaterBucket;
+import com.altnoir.mia.content.items.relics.t2.Your_Worth;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -25,6 +28,9 @@ public class ItemsRegister {
     public static final RegistryObject<Item> Knife = ITEMS.register("knife", () ->
             new KnifeItem(new Item.Properties().rarity(Rarity.UNCOMMON).fireResistant().stacksTo(16)));
 
+    public static final RegistryObject<Item> YOUR_WORTH = ITEMS.register("your_worth", () -> new Your_Worth(new Item.Properties().rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> BLOODY_YOUR_WORTH = ITEMS.register("bloody_your_worth", () -> new Your_Worth(new Item.Properties().rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> BLUE_WHISTLE = ITEMS.register("blue_whistle", () -> new Your_Worth(new Item.Properties().rarity(Rarity.COMMON)));
     public static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
         ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
