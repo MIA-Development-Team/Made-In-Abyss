@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "mia:block/example_block"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "mia:example_block"
+    }
+  ],
+  "result": {
+    "item": "mia:example_block"
+  }
+}

@@ -1,0 +1,30 @@
+name: "Feature Request"
+description: Suggest an idea for MIA / 为 MIA 提出有关新功能的想法
+labels: [ "enhancement" ]
+projects: [ "MIA-Development-Team/1" ]
+
+body:
+  - type: textarea
+    attributes:
+      label: Summary / 概要
+      description: |
+        Please describe the suggestion.
+        请简单阐述你的建议。
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Purpose / 目的
+      description: |
+        What problems or needs do you think this feature will solve?
+        你认为添加这个功能能解决什么问题？
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Additional context / 補足
+      description: |
+        Add any other context about the feature request here.
+        在这里添加一些补充内容，诸如示意图等。

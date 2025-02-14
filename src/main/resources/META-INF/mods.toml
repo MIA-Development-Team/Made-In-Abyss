@@ -1,0 +1,65 @@
+# 模组加载器类型名称 - 对于常规 FML @Mod 模组，应为 javafml
+modLoader="javafml" # 必填
+# 匹配的模组加载器版本范围 - 对于常规 FML @Mod，这将是 Forge 版本
+loaderVersion="${loader_version_range}" # 必填 这通常由 Forge 在每个 Minecraft 版本中更新。请参阅我们的下载页面以获取版本列表。
+# 模组的许可证。这是必填元数据，有助于更轻松地理解你的分发属性。
+# 请在 https://choosealicense.com/ 查看选项。默认版权立场是保留所有权利，因此这里也是默认值。
+license="${mod_license}"
+# 当此模组出现问题时，人们可以参考的 URL
+#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" # 可选
+# 模组列表 - 允许的数量由各个模组加载器决定
+[[mods]] # 必填
+# 模组 ID
+modId="${mod_id}" # 必填
+# 模组版本号
+version="${mod_version}" # 必填
+# 模组显示名称
+displayName="${mod_name}" # 必填
+# 查询此模组更新的 URL。请参阅 JSON 更新规范 https://docs.minecraftforge.net/en/latest/misc/updatechecker/
+#updateJSONURL="https://change.me.example.invalid/updates.json" # 可选
+# 此模组的“主页”URL，在模组 UI 中显示
+#displayURL="https://change.me.to.your.mods.homepage.example.invalid/" # 可选
+# 模组 JAR 根目录中的一个文件名，用作显示的标志
+#logoFile="examplemod.png" # 可选
+# 在模组 UI 中显示的文本字段
+#credits="" # 可选
+# 在模组 UI 中显示的文本字段
+authors="${mod_authors}" # 可选
+# Display Test 控制你的模组在服务器连接屏幕中的显示方式
+# MATCH_VERSION 表示如果客户端和服务器上的版本不同，你的模组会导致红色 X。这是默认行为，如果你的模组有服务器和客户端组件，你应该选择这个。
+# IGNORE_SERVER_VERSION 表示即使模组存在于服务器上但不在客户端上，也不会导致红色 X。如果你的模组仅限服务器使用，应该选择这个。
+# IGNORE_ALL_VERSION 表示即使模组存在于客户端或服务器上，也不会导致红色 X。这是一个特殊情况，只有当你的模组没有服务器组件时才应使用。
+# NONE 表示不设置任何显示测试。你需要自己实现，参见 IExtensionPoint.DisplayTest 获取更多信息。你可以定义任何你希望的方案。
+# 重要提示：这不是指示模组在哪些环境（CLIENT 或 DEDICATED SERVER）加载的指令。你的模组应该在它所在的任何地方加载（甚至可能什么都不做！）
+#displayTest="MATCH_VERSION" # 如果未指定，默认为 MATCH_VERSION (#optional)
+
+# 模组的描述文本（多行！）(#mandatory)
+description='''${mod_description}'''
+# 依赖项 - 使用 . 来表示特定 modid 的依赖项。依赖项是可选的。
+[[dependencies.${mod_id}]] # 可选
+# 依赖项的 modid
+modId="forge" # 必填
+# 该依赖项是否必须存在 - 如果不是，则必须指定下面的 ordering
+mandatory=true # 必填
+# 依赖项的版本范围
+versionRange="${forge_version_range}" # 必填
+# 依赖项的加载顺序关系 - 如果依赖项不是必须的，则需要指定 BEFORE 或 AFTER
+# BEFORE - 此模组在依赖项之前加载
+# AFTER - 此模组在依赖项之后加载
+ordering="NONE"
+# 依赖项应用的侧边 - BOTH, CLIENT 或 SERVER
+side="BOTH"
+# 这是另一个依赖项
+[[dependencies.${mod_id}]]
+modId="minecraft"
+mandatory=true
+# 此版本范围声明当前 Minecraft 版本的最小值，直到但不包括下一个主要版本
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
+
+
+# 特性是游戏环境中的一些特定属性，你可能需要声明它们。此示例声明你的模组需要 GL 版本 3.2 或更高。
+# 其他特性将被添加。它们是侧边感知的，所以声明这个不会阻止你的模组在服务器上加载，例如。
+#[features.${mod_id}]
+#openGLVersion="[3.2,)"

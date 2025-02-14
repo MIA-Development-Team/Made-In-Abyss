@@ -1,0 +1,31 @@
+{
+  "stop" : {
+    "sounds" : [
+      "mia:stop"
+    ]
+  },
+  "knife_throw" : {
+    "sounds" : [
+      "mia:knife_throw"
+    ]
+  },
+  "knife_hit" : {
+    "sounds": [
+      "mia:knife_hit"
+    ]
+  },
+  "your_worth": {
+    "sounds": [
+      {
+        "name": "mid:your_worth"
+      }
+    ]
+  },
+  "common_whistle": {
+    "sounds": [
+      {
+        "name": "mid:common_whistle"
+      }
+    ]
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "type": "mia:abyss_central_hole",
+  "config": {
+    "probability": 1.0,
+    "y": {
+      "absolute": 0
+    },
+    "lava_level": {
+      "above_bottom": 0
+    },
+    "replaceable": "#mia:abyss1_hole_replaceable",
+    "critical_radius": {
+      "-59": 16,
+      "-51": 96,
+      "-32": 104,
+      "-1": 104,
+      "0": 112,
+      "31": 112,
+      "32": 120,
+      "63": 120,
+      "64": 128,
+      "255": 512
+    },
+    "yScale": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_exclusive": 0.9,
+        "min_inclusive": 0.1
+      }
+    },
+    "mix_width": 4,
+    "noise_horizontal_multiplier": 1,
+    "noise_vertical_multiplier": 4
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "itemGroup.mia.mia": "来自深渊",
+  "item.mia.purin": "布丁",
+  "item.mia.endless_cup": "无尽水杯",
+  "item.mia.time_clock" : "时间禁止之钟",
+  "item.mia.knife" : "小刀",
+
+  "block.mia.alexandrite_block": "紫翠块",
+  "block.mia.chlorophyte_ore": "叶绿矿",
+
+  "block.mia.example_block": "测试方块",
+  "block.mia.example_portal_block": "测试传送方块",
+  "item.mia.bloody_your_worth": "带血的石头",
+  "item.mia.your_worth": "生命回响之石",
+  "item.mia.blue_whistle": "蓝笛"
+}

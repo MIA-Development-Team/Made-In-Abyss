@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:overworld_carver_replaceables",
+    "minecraft:snow_block",
+    "minecraft:powder_snow",
+    "minecraft:ice",
+    "minecraft:lava"
+  ]
+}
