@@ -38,6 +38,7 @@ public class MIA {
 
         ItemsRegister.register(modEventBus);
         BlocksRegister.register(modEventBus);
+        BlockEntityRegister.register(modEventBus);
         CreativeTabsRegister.register(modEventBus);
         EffectsRegister.register(modEventBus);
 
