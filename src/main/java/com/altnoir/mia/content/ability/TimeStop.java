@@ -1,6 +1,6 @@
 package com.altnoir.mia.content.ability;
 
-import com.altnoir.mia.SoundsRegister;
+import com.altnoir.mia.core.registries.SoundsRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 

@@ -4,6 +4,7 @@ import com.altnoir.mia.client.entity.KnifeRenderer;
 import com.altnoir.mia.content.ability.Curse;
 import com.altnoir.mia.content.ability.CurseConfigManager;
 import com.altnoir.mia.content.ability.TimeStop;
+import com.altnoir.mia.core.registries.*;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;

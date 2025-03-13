@@ -1,6 +1,6 @@
 package com.altnoir.mia.content.blocks.seventhcrucible;
 
-import com.altnoir.mia.BlockEntityRegister;
+import com.altnoir.mia.core.registries.BlockEntityRegister;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

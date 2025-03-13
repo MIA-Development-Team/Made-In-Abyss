@@ -1,4 +1,4 @@
-package com.altnoir.mia;
+package com.altnoir.mia.core.registries;
 
 import com.altnoir.mia.client.entity.KnifeEntity;
 import net.minecraft.world.entity.EntityType;

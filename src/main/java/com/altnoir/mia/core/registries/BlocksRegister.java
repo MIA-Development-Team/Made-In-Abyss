@@ -1,5 +1,6 @@
-package com.altnoir.mia;
+package com.altnoir.mia.core.registries;
 
+import com.altnoir.mia.MIA;
 import com.altnoir.mia.content.blocks.ChlorophyteOreBlock;
 import com.altnoir.mia.content.blocks.ExampleBlock;
 import com.altnoir.mia.content.blocks.ExamplePortalBlock;

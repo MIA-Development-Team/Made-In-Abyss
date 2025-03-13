@@ -1,5 +1,6 @@
-package com.altnoir.mia;
+package com.altnoir.mia.core.registries;
 
+import com.altnoir.mia.MIA;
 import com.altnoir.mia.content.foods.Purin;
 import com.altnoir.mia.content.items.ClockItem;
 import com.altnoir.mia.content.items.KnifeItem;

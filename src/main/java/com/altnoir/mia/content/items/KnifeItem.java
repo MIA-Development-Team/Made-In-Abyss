@@ -1,6 +1,6 @@
 package com.altnoir.mia.content.items;
 
-import com.altnoir.mia.SoundsRegister;
+import com.altnoir.mia.core.registries.SoundsRegister;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.altnoir.mia.client.entity.KnifeEntity;

@@ -1,5 +1,6 @@
-package com.altnoir.mia;
+package com.altnoir.mia.core.registries;
 
+import com.altnoir.mia.MIA;
 import com.altnoir.mia.content.effect.PerspectiveEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.eventbus.api.IEventBus;

@@ -1,5 +1,6 @@
-package com.altnoir.mia;
+package com.altnoir.mia.core.registries;
 
+import com.altnoir.mia.MIA;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;

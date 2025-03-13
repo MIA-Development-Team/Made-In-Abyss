@@ -1,9 +1,9 @@
 package com.altnoir.mia.client.entity;
 
-import com.altnoir.mia.ItemsRegister;
+import com.altnoir.mia.core.registries.ItemsRegister;
 import com.altnoir.mia.content.ability.TimeStop;
-import com.altnoir.mia.EntityRegister;
-import com.altnoir.mia.SoundsRegister;
+import com.altnoir.mia.core.registries.EntityRegister;
+import com.altnoir.mia.core.registries.SoundsRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
