@@ -1,12 +1,16 @@
 package com.altnoir.mia.content.ability;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.content.worldgen.worldfilm.WorldFilmUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -85,7 +89,9 @@ public class Curse {
         @SubscribeEvent
         public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
             if (event.phase == TickEvent.Phase.END) {
-                Player player = event.player;
+                var player = event.player;
+
+                if (player.canUseGameMasterBlocks()) return;
 
                 if (player.tickCount % 20 != 0) return;
                 if (player.level().isClientSide) return;
@@ -104,6 +110,18 @@ public class Curse {
 
                     double relativeHeight = nowY - data.getLowY();
                     LOGGER.info("Height: " + relativeHeight);
+
+                    var chunkPos = new ChunkPos(player.blockPosition());
+                    var serverLevel = (ServerLevel) player.level();
+                    var chunk = serverLevel.getChunkSource().getChunk(chunkPos.x, chunkPos.z, false);
+
+                    if (chunk == null) return;
+                    var blockPos = player.blockPosition();
+                    var localX = Math.floorMod(blockPos.getX(), 16);
+                    var localZ = Math.floorMod(blockPos.getZ(), 16);
+                    var worldFilmThickness = WorldFilmUtils.getData(chunk).getThickness(localX, localZ);
+                    WorldFilmUtils.visualizeChunk(chunk, (ServerPlayer) player);
+                    LOGGER.info("World Film Thickness: " + worldFilmThickness);
 
                     if (relativeHeight >= 10.0) {
                         ResourceLocation dimensionId = player.level().dimension().location();

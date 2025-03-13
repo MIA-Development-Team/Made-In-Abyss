@@ -10,7 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class ClockItem extends Item {
+public class ClockItem extends MIABaseItem {
     public static int stopping_time = 0;
 
     public ClockItem(Properties p_41383_) {

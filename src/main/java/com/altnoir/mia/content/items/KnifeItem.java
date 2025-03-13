@@ -15,7 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class KnifeItem extends Item {
+public class KnifeItem extends MIABaseItem {
     private final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
     public KnifeItem(Properties p_41383_) {

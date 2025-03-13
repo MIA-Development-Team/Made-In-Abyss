@@ -4,11 +4,15 @@ import com.altnoir.mia.client.entity.KnifeRenderer;
 import com.altnoir.mia.content.ability.Curse;
 import com.altnoir.mia.content.ability.CurseConfigManager;
 import com.altnoir.mia.content.ability.TimeStop;
+import com.altnoir.mia.content.worldgen.worldfilm.WorldFilmCapability;
+import com.altnoir.mia.content.worldgen.worldfilm.WorldFilmChunkHandler;
+import com.altnoir.mia.content.worldgen.worldfilm.WorldFilmData;
 import com.altnoir.mia.core.registries.*;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -51,6 +55,8 @@ public class MIA {
 
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(Curse.EventHandler.class);
+        MinecraftForge.EVENT_BUS.register(new WorldFilmChunkHandler());
+
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
@@ -59,19 +65,15 @@ public class MIA {
             if (!TimeStop.get()) TimeStop.millis++;
         }, 1, 1, TimeUnit.MILLISECONDS);
 
-        // MinecraftForge.EVENT_BUS.register(new HoleGenerator());
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        // 一些通用设置代码
-        LOGGER.info("来自通用设置的问候");
+        LOGGER.info("Starting common setup");
+    }
 
-//        if (Config.logDirtBlock)
-//            LOGGER.info("泥土方块 >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
-//
-//        LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
-//
-//        Config.items.forEach((item) -> LOGGER.info("物品 >> {}", item.toString()));
+    @SubscribeEvent
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.register(WorldFilmData.class); // 注册数据类
     }
 
     // 使用 SubscribeEvent 并让事件总线发现带有 @SubscribeEvent 注解的方法来调用

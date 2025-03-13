@@ -29,6 +29,7 @@ public class CreativeTabsRegister {
                         pOutput.accept(ItemsRegister.ENDLESS_CUP.get());
                         pOutput.accept(ItemsRegister.CLOCK.get());
                         pOutput.accept(ItemsRegister.KNIFE.get());
+                        pOutput.accept(ItemsRegister.WORLD_FILM_DEBUGGER.get());
                     })
                     .build());
 

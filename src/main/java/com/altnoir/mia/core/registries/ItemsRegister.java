@@ -5,6 +5,7 @@ import com.altnoir.mia.content.foods.Purin;
 import com.altnoir.mia.content.items.ClockItem;
 import com.altnoir.mia.content.items.KnifeItem;
 import com.altnoir.mia.content.items.UnlimitedWaterBucket;
+import com.altnoir.mia.content.items.WorldFilmDebugItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -25,6 +26,15 @@ public class ItemsRegister {
             new ClockItem(new Item.Properties().rarity(Rarity.UNCOMMON).fireResistant().stacksTo(1)));
     public static final RegistryObject<Item> KNIFE = ITEMS.register("knife", () ->
             new KnifeItem(new Item.Properties().rarity(Rarity.UNCOMMON).fireResistant().stacksTo(16)));
+
+
+    public static final RegistryObject<Item> WORLD_FILM_DEBUGGER = ITEMS.register(
+            "world_film_debugger",
+            () -> new WorldFilmDebugItem(new Item.Properties()
+                    .stacksTo(1)
+                    .rarity(Rarity.EPIC)
+            )
+    );
 
     public static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
         ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
