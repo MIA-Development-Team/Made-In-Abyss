@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "minecraft:block/calcite",
+    "side": "mia:block/covergrass_calcite",
+    "top": "mia:block/abyss_grass_block_top"
+  }
+}
