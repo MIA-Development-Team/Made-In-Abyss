@@ -8,7 +8,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class BlockEntityRegister {
-    public static final DeferredRegister<BlockEntityType<?>> REGISTER =  DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES,MIA.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> REGISTER =  DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES,MIA.MODID);
 
     public static final RegistryObject<BlockEntityType<VolcanoCrucibleEntity>> SEVENTH_CRUCIBLE_ENTITY = REGISTER.register(
             "volcano_crucible_entity",

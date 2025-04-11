@@ -1,8 +1,10 @@
+/*
 package com.altnoir.mia.content.blocks;
 
 import com.altnoir.mia.content.worldgen.portal.MIATeleporter;
-import com.altnoir.mia.content.dimension.ExampleDimension;
+import com.altnoir.mia.content.worldgen.AbyssBrinkDimension;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -11,24 +13,35 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class ExamplePortalBlock extends MIABasePortalBlock {
     public ExamplePortalBlock() {
-        super(BlockBehaviour.Properties.copy(Blocks.STONE).noLootTable().noOcclusion().noCollission());
+        super(BlockBehaviour.Properties.copy(Blocks.NETHER_PORTAL)
+                .noLootTable()
+                .noOcclusion()
+                .noCollission()
+                .lightLevel(state -> 11));
     }
 
     @Override
-    public void handleMIAPortal(Entity player, BlockPos pPos) {
-        if (player.level() instanceof ServerLevel serverlevel) {
-            var minecraftserver = serverlevel.getServer();
-            var resourcekey = player.level().dimension() == ExampleDimension.MIA_EXAMPLEDIM_LEVEL_KEY ?
-                    Level.OVERWORLD : ExampleDimension.MIA_EXAMPLEDIM_LEVEL_KEY;
+    public void handleMIAPortal(Entity entity, BlockPos pPos) {
+        if (entity.level() instanceof ServerLevel serverLevel) {
+            var server = serverLevel.getServer();
+            // 判断当前是否在深渊边缘维度
+            boolean isInAbyss = entity.level().dimension() == AbyssBrinkDimension.ABYSS_BRINK_LEVEL_KEY;
 
-            var portalDimension = minecraftserver.getLevel(resourcekey);
-            if (portalDimension != null && !player.isPassenger()) {
-                if(resourcekey == ExampleDimension.MIA_EXAMPLEDIM_LEVEL_KEY) {
-                    player.changeDimension(portalDimension, new MIATeleporter(pPos, true));
-                } else {
-                    player.changeDimension(portalDimension, new MIATeleporter(pPos, false));
-                }
+            // 确定目标维度
+            ResourceKey<Level> targetDimension = isInAbyss ?
+                    Level.OVERWORLD :
+                    AbyssBrinkDimension.ABYSS_BRINK_LEVEL_KEY;
+
+            ServerLevel targetLevel = server.getLevel(targetDimension);
+            if (targetLevel != null && !entity.isPassenger()) {
+                // 根据方向设置teleporter参数
+                MIATeleporter teleporter = new MIATeleporter(
+                        pPos,
+                        !isInAbyss // 进入深渊维度时为true
+                );
+                entity.changeDimension(targetLevel, teleporter);
             }
         }
     }
 }
+*/

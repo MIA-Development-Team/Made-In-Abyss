@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "mia:abyss_grass_block",
+    "mia:covergrass_cobblestone",
+    "mia:covergrass_stone",
+    "mia:covergrass_deepslate",
+    "mia:covergrass_granite",
+    "mia:covergrass_diorite",
+    "mia:covergrass_andesite",
+    "mia:covergrass_calcite",
+    "mia:covergrass_tuff"
+  ]
+}

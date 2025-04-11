@@ -12,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class MIAItemModelProvider extends ItemModelProvider {
     public MIAItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, MIA.MOD_ID, existingFileHelper);
+        super(output, MIA.MODID, existingFileHelper);
     }
 
     @Override
@@ -25,6 +25,6 @@ public class MIAItemModelProvider extends ItemModelProvider {
     private ItemModelBuilder simpleItem(RegistryObject<Item> item) {
         return withExistingParent(item.getId().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
-                new ResourceLocation(MIA.MOD_ID,"item/" + item.getId().getPath()));
+                new ResourceLocation(MIA.MODID,"item/" + item.getId().getPath()));
     }
 }

@@ -1,5 +1,5 @@
 {
-    "type": "mia:abyss_brink",
+    "type": "mia:abyss_brink_type",
     "generator": {
         "type": "minecraft:noise",
         "biome_source": {

@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-@Mod.EventBusSubscriber(modid = MIA.MOD_ID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = MIA.MODID, value = Dist.CLIENT)
 public class ClientEventHandler {
     private static final Map<Entity, Long> entityScaleStartTimes = new WeakHashMap<>();
 

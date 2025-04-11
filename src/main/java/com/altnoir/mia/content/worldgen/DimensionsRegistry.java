@@ -1,11 +1,18 @@
 package com.altnoir.mia.content.worldgen;
 
-import dev.architectury.registry.registries.DeferredRegister;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeSpecialEffects;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import com.altnoir.mia.MIA;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.dimension.LevelStem;
 
-public class BiomeRegistry {
-
+public class DimensionsRegistry {
+    public static final ResourceKey<Level> ABYSS_BRINK_KEY = ResourceKey.create(Registries.DIMENSION,
+            new ResourceLocation(MIA.MODID, "abyss_brink"));
+    public static final ResourceKey<LevelStem> ABYSS_BRINK_STEM_KEY = ResourceKey.create(Registries.LEVEL_STEM,
+            new ResourceLocation(MIA.MODID, "abyss_brink"));
+    public static final ResourceKey<DimensionType> ABYSS_BRINK_TYPE_KEY = ResourceKey.create(Registries.DIMENSION_TYPE,
+            new ResourceLocation(MIA.MODID, "abyss_brink_type"));
 }

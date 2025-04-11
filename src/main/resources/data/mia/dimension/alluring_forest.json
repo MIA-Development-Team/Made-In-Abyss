@@ -1,5 +1,5 @@
 {
-    "type": "mia:alluring_forest",
+    "type": "mia:alluring_forest_type",
     "generator": {
         "type": "minecraft:noise",
         "biome_source": {

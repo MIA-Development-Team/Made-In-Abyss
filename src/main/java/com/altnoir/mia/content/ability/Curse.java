@@ -61,13 +61,13 @@ public class Curse {
         }
     }
 
-    @Mod.EventBusSubscriber(modid = MIA.MOD_ID)
+    @Mod.EventBusSubscriber(modid = MIA.MODID)
     public static class EventHandler {
         @SubscribeEvent
         public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
             if (event.getObject() instanceof Player) {
                 event.addCapability(
-                        new ResourceLocation(MIA.MOD_ID, "upward_curse"),
+                        new ResourceLocation(MIA.MODID, "upward_curse"),
                         new Provider()
                 );
             }
@@ -102,7 +102,6 @@ public class Curse {
                     }
 
                     double relativeHeight = nowY - data.getLowY();
-                    LOGGER.info("Height: " + relativeHeight);
 
                     if (relativeHeight >= 10.0) {
                         ResourceLocation dimensionId = player.level().dimension().location();
@@ -126,13 +125,16 @@ public class Curse {
                             data.setLowY(nowY);
                         }
                     }
+                    if (player.tickCount % 40 == 0) {
+                        LOGGER.info("Height: " + relativeHeight);
+                    }
                 });
             }
         }
     }
 
 
-    @Mod.EventBusSubscriber(modid = MIA.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = MIA.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class CapabilityRegistrar {
         @SubscribeEvent
         public static void registerCapabilities(RegisterCapabilitiesEvent event) {

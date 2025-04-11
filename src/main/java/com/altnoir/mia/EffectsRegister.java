@@ -9,7 +9,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class EffectsRegister {
     private static final DeferredRegister<MobEffect> REGISTER =
-            DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, MIA.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, MIA.MODID);
 
     public static final RegistryObject<MobEffect> PERSPECTIVE = REGISTER.register("perspective", PerspectiveEffect::new);
 

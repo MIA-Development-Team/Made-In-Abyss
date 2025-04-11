@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "minecraft:block/suspicious_andesite_2"
+    "all": "mia:block/suspicious_andesite_3"
   }
 }

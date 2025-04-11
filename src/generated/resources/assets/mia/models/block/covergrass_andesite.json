@@ -3,6 +3,6 @@
   "textures": {
     "bottom": "minecraft:block/andesite",
     "side": "mia:block/covergrass_andesite",
-    "top": "mia:block/grass_block_top_d1"
+    "top": "mia:block/abyss_grass_block_top"
   }
 }

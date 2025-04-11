@@ -6,7 +6,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -14,35 +13,58 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class MIABlockStatesProvider extends BlockStateProvider {
     public MIABlockStatesProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, MIA.MOD_ID, exFileHelper);
+        super(output, MIA.MODID, exFileHelper);
     }
 
     @Override
     public void registerStatesAndModels() {
-        blockWithItem(BlocksRegister.EXAMPLE_BLOCK);
-        blockWithItem(BlocksRegister.EXAMPLE_PORTAL_BLOCK);
         blockWithItem(BlocksRegister.CHLOROPHTRE_ORE);
 
-        simpleGrassBlock(BlocksRegister.COVERGRASS_ANDESITE,
-                modLoc("block/grass_block_top_d1"),
-                mcLoc("block/andesite"),
-                modLoc("block/covergrass_andesite"));
-
-        simpleGrassBlock(BlocksRegister.COVERGRASS_DEEPSLATE,
-                modLoc("block/grass_block_top_d1"),
-                mcLoc("block/deepslate"),
-                modLoc("block/covergrass_deepslate"));
+        grassBlockWithUV(BlocksRegister.ABYSS_GRASS_BLOCK,
+                modLoc("block/abyss_grass_block_top"),
+                mcLoc("block/dirt"),
+                modLoc("block/abyss_grass_block_side"),
+                mcLoc("block/dirt"));
 
         simpleGrassBlock(BlocksRegister.COVERGRASS_COBBLESTONE,
-                modLoc("block/grass_block_top_d1"),
+                modLoc("block/abyss_grass_block_top"),
                 mcLoc("block/cobblestone"),
                 modLoc("block/covergrass_cobblestone"));
 
-        grassBlockWithUV(BlocksRegister.GRASS_BLOCK_D1,
-                modLoc("block/grass_block_top_d1"),
-                mcLoc("block/dirt"),
-                modLoc("block/grass_block_side_d1"),
-                mcLoc("block/dirt"));
+        simpleGrassBlock(BlocksRegister.COVERGRASS_STONE,
+                modLoc("block/abyss_grass_block_top"),
+                mcLoc("block/stone"),
+                modLoc("block/covergrass_stone"));
+
+        simpleGrassBlock(BlocksRegister.COVERGRASS_DEEPSLATE,
+                modLoc("block/abyss_grass_block_top"),
+                mcLoc("block/deepslate"),
+                modLoc("block/covergrass_deepslate"));
+
+        simpleGrassBlock(BlocksRegister.COVERGRASS_GRANITE,
+                modLoc("block/abyss_grass_block_top"),
+                mcLoc("block/granite"),
+                modLoc("block/covergrass_granite"));
+
+        simpleGrassBlock(BlocksRegister.COVERGRASS_DIORITE,
+                modLoc("block/abyss_grass_block_top"),
+                mcLoc("block/diorite"),
+                modLoc("block/covergrass_diorite"));
+
+        simpleGrassBlock(BlocksRegister.COVERGRASS_ANDESITE,
+                modLoc("block/abyss_grass_block_top"),
+                mcLoc("block/andesite"),
+                modLoc("block/covergrass_andesite"));
+
+        simpleGrassBlock(BlocksRegister.COVERGRASS_CALCITE,
+                modLoc("block/abyss_grass_block_top"),
+                mcLoc("block/calcite"),
+                modLoc("block/covergrass_calcite"));
+
+        simpleGrassBlock(BlocksRegister.COVERGRASS_TUFF,
+                modLoc("block/abyss_grass_block_top"),
+                mcLoc("block/tuff"),
+                modLoc("block/covergrass_tuff"));
     }
 
     private void blockWithItem(RegistryObject<Block> block) {

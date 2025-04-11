@@ -1,7 +1,8 @@
+/*
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.content.dimension.ExampleDimension;
+import com.altnoir.mia.content.worldgen.AbyssBrinkDimension;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -13,10 +14,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class MIAWorldGenProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(Registries.DIMENSION_TYPE, ExampleDimension::Type)
-            .add(Registries.LEVEL_STEM, ExampleDimension::Stem);
+            .add(Registries.DIMENSION_TYPE, AbyssBrinkDimension::Type)
+            .add(Registries.LEVEL_STEM, AbyssBrinkDimension::Stem);
 
     public MIAWorldGenProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of(MIA.MOD_ID));
     }
 }
+*/

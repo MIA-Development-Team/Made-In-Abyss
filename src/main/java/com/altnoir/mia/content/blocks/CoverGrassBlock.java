@@ -1,6 +1,8 @@
 package com.altnoir.mia.content.blocks;
 
+import com.altnoir.mia.BlocksRegister;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
@@ -12,17 +14,19 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.lighting.LightEngine;
 
 import java.util.List;
 import java.util.Optional;
 
-public class AbyssCobblestoneBlock extends Block implements BonemealableBlock {
-    public AbyssCobblestoneBlock(BlockBehaviour.Properties pProperties) {
+public class CoverGrassBlock extends Block implements BonemealableBlock {
+    public CoverGrassBlock(BlockBehaviour.Properties pProperties) {
         super(pProperties);
     }
 
@@ -79,6 +83,49 @@ public class AbyssCobblestoneBlock extends Block implements BonemealableBlock {
                 ((PlacedFeature)$$13.value()).place(level, level.getChunkSource().getGenerator(), source, $$8);
             }
         }
+    }
 
+    private static boolean canBeGrass(BlockState pState, LevelReader pLevelReader, BlockPos pPos) {
+        BlockPos blockpos = pPos.above();
+        BlockState blockstate = pLevelReader.getBlockState(blockpos);
+        if (blockstate.is(Blocks.SNOW) && (Integer)blockstate.getValue(SnowLayerBlock.LAYERS) == 1) {
+            return true;
+        } else if (blockstate.getFluidState().getAmount() == 8) {
+            return false;
+        } else {
+            int i = LightEngine.getLightBlockInto(pLevelReader, pState, pPos, blockstate, blockpos, Direction.UP, blockstate.getLightBlock(pLevelReader, blockpos));
+            return i < pLevelReader.getMaxLightLevel();
+        }
+    }
+
+    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
+        if (!canBeGrass(pState, pLevel, pPos)) {
+            if (!pLevel.isAreaLoaded(pPos, 1)) {
+                return;
+            }
+
+            Block targetBlock;
+            if (pState.is(BlocksRegister.COVERGRASS_COBBLESTONE.get())) {
+                targetBlock = Blocks.COBBLESTONE;
+            } else if (pState.is(BlocksRegister.COVERGRASS_STONE.get())) {
+                targetBlock = Blocks.STONE;
+            } else if (pState.is(BlocksRegister.COVERGRASS_DEEPSLATE.get())) {
+                targetBlock = Blocks.DEEPSLATE;
+            } else if (pState.is(BlocksRegister.COVERGRASS_GRANITE.get())) {
+                targetBlock = Blocks.GRANITE;
+            } else if (pState.is(BlocksRegister.COVERGRASS_DIORITE.get())) {
+                targetBlock = Blocks.DIORITE;
+            } else if (pState.is(BlocksRegister.COVERGRASS_ANDESITE.get())) {
+                targetBlock = Blocks.ANDESITE;
+            }  else if (pState.is(BlocksRegister.COVERGRASS_CALCITE.get())) {
+                targetBlock = Blocks.CALCITE;
+            }  else if (pState.is(BlocksRegister.COVERGRASS_TUFF.get())) {
+                targetBlock = Blocks.TUFF;
+            }  else {
+                targetBlock = this;
+            }
+
+            pLevel.setBlockAndUpdate(pPos, targetBlock.defaultBlockState());
+        }
     }
 }

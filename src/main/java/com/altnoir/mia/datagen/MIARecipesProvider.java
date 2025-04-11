@@ -17,9 +17,6 @@ public class MIARecipesProvider extends RecipeProvider implements IConditionBuil
 
     @Override
     public void buildRecipes(Consumer<FinishedRecipe> consumer) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, BlocksRegister.EXAMPLE_BLOCK.get(), 1)
-                .requires(BlocksRegister.EXAMPLE_BLOCK.get())
-                .unlockedBy(getHasName(BlocksRegister.EXAMPLE_BLOCK.get()), has(BlocksRegister.EXAMPLE_BLOCK.get()))
-                .save(consumer);
+
     }
 }

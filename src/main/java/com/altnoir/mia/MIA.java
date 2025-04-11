@@ -22,10 +22,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 // 此处的值应与 META-INF/mods.toml 文件中的条目匹配
-@Mod(MIA.MOD_ID)
+@Mod(MIA.MODID)
 public class MIA {
     // 在所有地方定义一个通用的 mod id
-    public static final String MOD_ID = "mia";
+    public static final String MODID = "mia";
     // 直接引用一个 slf4j 日志记录器
     private static final Logger LOGGER = LogUtils.getLogger();
 
@@ -79,7 +79,7 @@ public class MIA {
     }
 
     // 使用 EventBusSubscriber 自动注册类中所有带有 @SubscribeEvent 注解的静态方法
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
