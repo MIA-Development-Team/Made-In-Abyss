@@ -1,7 +1,7 @@
 /*
 package com.altnoir.mia.content.worldgen.portal;
 
-import com.altnoir.mia.BlocksRegister;
+import com.altnoir.mia.content.blocks.BlocksRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;

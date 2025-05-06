@@ -1,5 +1,7 @@
 package com.altnoir.mia;
 
+import com.altnoir.mia.content.block.BlocksRegister;
+import com.altnoir.mia.content.items.ItemsRegister;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -32,7 +34,6 @@ public class CreativeTabsRegister {
                         pOutput.accept(BlocksRegister.VOLCANO_CRUCIBLE.get());
                         pOutput.accept(ItemsRegister.PURIN.get());
                         pOutput.accept(ItemsRegister.ENDLESS_CUP.get());
-                        pOutput.accept(ItemsRegister.UNHEARD_BELL.get());
                     })
                     .build());
 

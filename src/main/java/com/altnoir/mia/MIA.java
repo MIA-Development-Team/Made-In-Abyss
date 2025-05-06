@@ -2,7 +2,11 @@ package com.altnoir.mia;
 
 import com.altnoir.mia.content.ability.Curse;
 import com.altnoir.mia.content.ability.CurseConfigManager;
-import com.altnoir.mia.content.ability.TimeStop;
+import com.altnoir.mia.content.block.BlocksRegister;
+import com.altnoir.mia.content.effect.EffectsRegister;
+import com.altnoir.mia.content.entity.BlockEntityRegister;
+import com.altnoir.mia.content.entity.EntityRegister;
+import com.altnoir.mia.content.items.ItemsRegister;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,14 +23,10 @@ import org.slf4j.Logger;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-// 此处的值应与 META-INF/mods.toml 文件中的条目匹配
 @Mod(MIA.MODID)
 public class MIA {
-    // 在所有地方定义一个通用的 mod id
     public static final String MODID = "mia";
-    // 直接引用一个 slf4j 日志记录器
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public MIA() {
@@ -41,7 +41,6 @@ public class MIA {
         CreativeTabsRegister.register(modEventBus);
         EffectsRegister.register(modEventBus);
 
-        SoundsRegister.SOUNDS.register(modEventBus);
         EntityRegister.ENTITIES.register(modEventBus);
 
         CurseConfigManager.loadConfig();
@@ -52,9 +51,6 @@ public class MIA {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
-        s.scheduleAtFixedRate(() -> {
-            if (!TimeStop.get()) TimeStop.millis++;
-        }, 1, 1, TimeUnit.MILLISECONDS);
 
         // MinecraftForge.EVENT_BUS.register(new HoleGenerator());
     }
@@ -62,16 +58,8 @@ public class MIA {
     private void commonSetup(final FMLCommonSetupEvent event) {
         // 一些通用设置代码
         LOGGER.info("来自通用设置的问候");
-
-//        if (Config.logDirtBlock)
-//            LOGGER.info("泥土方块 >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
-//
-//        LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
-//
-//        Config.items.forEach((item) -> LOGGER.info("物品 >> {}", item.toString()));
     }
 
-    // 使用 SubscribeEvent 并让事件总线发现带有 @SubscribeEvent 注解的方法来调用
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         // 当服务器启动时执行某些操作

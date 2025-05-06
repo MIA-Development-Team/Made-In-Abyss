@@ -1,10 +1,9 @@
-package com.altnoir.mia;
+package com.altnoir.mia.content.block;
 
-import com.altnoir.mia.content.blocks.AbyssGrassBlock;
-import com.altnoir.mia.content.blocks.ChlorophyteOreBlock;
-import com.altnoir.mia.content.blocks.CoverGrassBlock;
+import com.altnoir.mia.MIA;
 
-import com.altnoir.mia.content.blocks.volcano_crucible.VolcanoCrucibleBlock;
+import com.altnoir.mia.content.block.volcano_crucible.VolcanoCrucibleBlock;
+import com.altnoir.mia.content.items.ItemsRegister;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;

@@ -12,11 +12,9 @@ public class DataGenerators {
         var gen = event.getGenerator();
         var packOutput = gen.getPackOutput();
         var existingFileHelper = event.getExistingFileHelper();
-        var lookupProvider = event.getLookupProvider();
 
         gen.addProvider(event.includeServer(), new MIARecipesProvider(packOutput));
         gen.addProvider(event.includeServer(), new MIABlockStatesProvider(packOutput, existingFileHelper));
         gen.addProvider(event.includeServer(), new MIAItemModelProvider(packOutput, existingFileHelper));
-        //gen.addProvider(event.includeServer(), new MIAWorldGenProvider(packOutput, lookupProvider));
     }
 }

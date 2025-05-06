@@ -1,7 +1,7 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.ItemsRegister;
+import com.altnoir.mia.content.items.ItemsRegister;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -19,7 +19,6 @@ public class MIAItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         simpleItem(ItemsRegister.PURIN);
         simpleItem(ItemsRegister.ENDLESS_CUP);
-        simpleItem(ItemsRegister.UNHEARD_BELL);
     }
 
     private ItemModelBuilder simpleItem(RegistryObject<Item> item) {

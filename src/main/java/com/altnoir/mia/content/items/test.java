@@ -1,6 +1,6 @@
 package com.altnoir.mia.content.items;
 
-import com.altnoir.mia.TagsRegister;
+import com.altnoir.mia.content.tag.TagsRegister;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

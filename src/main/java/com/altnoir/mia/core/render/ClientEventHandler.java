@@ -1,6 +1,6 @@
 package com.altnoir.mia.core.render;
 
-import com.altnoir.mia.EffectsRegister;
+import com.altnoir.mia.content.effect.EffectsRegister;
 import com.altnoir.mia.MIA;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;

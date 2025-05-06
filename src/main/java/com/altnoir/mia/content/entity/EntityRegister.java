@@ -1,4 +1,4 @@
-package com.altnoir.mia;
+package com.altnoir.mia.content.entity;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.registries.DeferredRegister;

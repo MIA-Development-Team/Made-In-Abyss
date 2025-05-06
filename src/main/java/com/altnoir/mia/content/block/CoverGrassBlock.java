@@ -1,6 +1,5 @@
-package com.altnoir.mia.content.blocks;
+package com.altnoir.mia.content.block;
 
-import com.altnoir.mia.BlocksRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;

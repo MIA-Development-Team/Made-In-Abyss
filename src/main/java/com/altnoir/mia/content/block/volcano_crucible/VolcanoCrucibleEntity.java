@@ -1,6 +1,6 @@
-package com.altnoir.mia.content.blocks.volcano_crucible;
+package com.altnoir.mia.content.block.volcano_crucible;
 
-import com.altnoir.mia.BlockEntityRegister;
+import com.altnoir.mia.content.entity.BlockEntityRegister;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

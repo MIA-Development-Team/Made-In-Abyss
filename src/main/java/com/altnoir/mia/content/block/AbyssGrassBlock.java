@@ -1,4 +1,4 @@
-package com.altnoir.mia.content.blocks;
+package com.altnoir.mia.content.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
