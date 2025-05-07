@@ -6,7 +6,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
@@ -65,6 +67,8 @@ public class MIABlockStatesProvider extends BlockStateProvider {
                 modLoc("block/abyss_grass_block_top"),
                 mcLoc("block/tuff"),
                 modLoc("block/covergrass_tuff"));
+
+        suspiciousBlock(BlocksRegister.SUSPICOUS_ANDESITE);
     }
 
     private void blockWithItem(RegistryObject<Block> block) {
@@ -102,5 +106,27 @@ public class MIABlockStatesProvider extends BlockStateProvider {
                 });
 
         simpleBlockWithItem(block.get(), model);
+    }
+
+    private void suspiciousBlock(RegistryObject<Block> block) {
+        var basePath = block.getId().getPath();
+
+        var models = new ModelFile[4];
+        for (int i = 0; i < 4; i++) {
+            models[i] = models().cubeAll(
+                    basePath + "_" + i,
+                    modLoc("block/" + basePath + "_" + i)
+            );
+        }
+
+        getVariantBuilder(block.get())
+                .forAllStates(state -> {
+                    int dusted = state.getValue(BlockStateProperties.DUSTED);
+                    return ConfiguredModel.builder()
+                            .modelFile(models[dusted])
+                            .build();
+                });
+
+        simpleBlockItem(block.get(), models[0]);
     }
 }
