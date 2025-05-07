@@ -12,6 +12,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.List;
+
 public class ItemsRegister {
     private static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, MIA.MODID);
@@ -26,5 +28,9 @@ public class ItemsRegister {
     }
     public static void register(IEventBus modEventBus) {
         ITEMS.register(modEventBus);
+    }
+
+    public static List<RegistryObject<Item>> getAll() {
+        return ITEMS.getEntries().stream().toList();
     }
 }

@@ -15,6 +15,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class BlocksRegister {
@@ -45,7 +46,7 @@ public class BlocksRegister {
                     .lightLevel(state -> 3)
                     .requiresCorrectToolForDrops()
             ));
-    public static final RegistryObject<Block> SUSPICOUS_ANDESITE =registerBlock("suspicious_andesite",
+    public static final RegistryObject<Block> SUSPICIOUS_ANDESITE =registerBlock("suspicious_andesite",
             () -> new BrushableBlock(Blocks.ANDESITE, BlockBehaviour.Properties.copy(Blocks.ANDESITE).sound(SoundType.DECORATED_POT),
                     SoundEvents.BRUSH_GRAVEL,SoundEvents.BRUSH_GRAVEL_COMPLETED));
     public static final RegistryObject<Block> VOLCANO_CRUCIBLE = registerBlock("volcano_crucible",
@@ -63,5 +64,9 @@ public class BlocksRegister {
 
     public static void register(IEventBus modEventBus) {
         REGISTER.register(modEventBus);
+    }
+
+    public static List<RegistryObject<Block>> getAll() {
+        return REGISTER.getEntries().stream().toList();
     }
 }

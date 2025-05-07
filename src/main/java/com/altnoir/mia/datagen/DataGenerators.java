@@ -16,5 +16,6 @@ public class DataGenerators {
         gen.addProvider(event.includeServer(), new MIARecipesProvider(packOutput));
         gen.addProvider(event.includeServer(), new MIABlockStatesProvider(packOutput, existingFileHelper));
         gen.addProvider(event.includeServer(), new MIAItemModelProvider(packOutput, existingFileHelper));
+        gen.addProvider(event.includeClient(), new MIALangProvider(packOutput, MIA.MODID, "en_us", gen));
     }
 }
