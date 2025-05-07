@@ -65,29 +65,35 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    maven { name = "TerraformersMC"; url = "https://maven.terraformersmc.com/" }
-    maven { url = "https://maven.ryanliptak.com/" }
     maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+    } //EMI
+    maven {
+        name = "Ryanliptak"
+        url = "https://maven.ryanliptak.com/"
+    } //Apple skin
+    maven {
+        name = "Curse Maven"
         url "https://www.cursemaven.com"
         content {
             includeGroup "curse.maven"
         }
     }
     maven {
-        // Shedaniel's maven (Architectury API)
+        name = "Shedaniel"
         url = "https://maven.architectury.dev"
         content {
             includeGroup "dev.architectury"
         }
-    }
-
+    }//Architectury API
     maven {
-        // saps.dev Maven (KubeJS and Rhino)
-        url = "https://maven.saps.dev/minecraft"
+        name = "Latvian Dev"
+        url = "https://maven.latvian.dev/releases"
         content {
             includeGroup "dev.latvian.mods"
         }
-    }
+    }//KubeJS and Rhino
 }
 
 dependencies {
