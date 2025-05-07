@@ -30,7 +30,7 @@ public class CreativeTabsRegister {
                         pOutput.accept(BlocksRegister.COVERGRASS_CALCITE.get());
                         pOutput.accept(BlocksRegister.COVERGRASS_TUFF.get());
                         pOutput.accept(BlocksRegister.CHLOROPHTRE_ORE.get());
-                        pOutput.accept(BlocksRegister.SUSPICOUS_ANDESITE.get());
+                        pOutput.accept(BlocksRegister.SUSPICIOUS_ANDESITE.get());
                         pOutput.accept(BlocksRegister.VOLCANO_CRUCIBLE.get());
                         pOutput.accept(ItemsRegister.PURIN.get());
                         pOutput.accept(ItemsRegister.ENDLESS_CUP.get());

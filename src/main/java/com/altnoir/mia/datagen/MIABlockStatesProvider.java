@@ -68,7 +68,7 @@ public class MIABlockStatesProvider extends BlockStateProvider {
                 mcLoc("block/tuff"),
                 modLoc("block/covergrass_tuff"));
 
-        suspiciousBlock(BlocksRegister.SUSPICOUS_ANDESITE);
+        suspiciousBlock(BlocksRegister.SUSPICIOUS_ANDESITE);
     }
 
     private void blockWithItem(RegistryObject<Block> block) {
