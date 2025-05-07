@@ -24,7 +24,7 @@ public class MIABlockTagsProvider extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         var chlorophyteOreTag = TagKey.create(
                 Registries.BLOCK,
-                new ResourceLocation("forge", "ores/chlorophyte") // 关键修复点
+                new ResourceLocation("forge", "ores/chlorophyte")
         );
 
         tag(chlorophyteOreTag)

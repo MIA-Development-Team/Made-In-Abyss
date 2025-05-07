@@ -44,7 +44,7 @@ public class MIALangProvider extends LanguageProvider {
 
     private String formatName(String name) {
         return Arrays.stream(name.split("_"))
-                .filter(word -> !word.isEmpty()) // 过滤空单词
+                .filter(word -> !word.isEmpty())
                 .map(word ->
                         Character.toUpperCase(word.charAt(0)) +
                                 word.substring(1).toLowerCase()
