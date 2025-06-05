@@ -73,7 +73,6 @@ public class MIA {
     {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-
         }
     }
 }

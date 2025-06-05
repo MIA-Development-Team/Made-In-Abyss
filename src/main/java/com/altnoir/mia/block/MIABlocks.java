@@ -8,6 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -24,6 +25,20 @@ public class MIABlocks {
                     .randomTicks()
                     .strength(0.6F)
                     .sound(SoundType.GRASS)
+            )
+    );
+    public static final DeferredBlock<Block> ABYSS_ANDESITE = registerBlock("abyss_andesite",  () ->
+            new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .requiresCorrectToolForDrops()
+                    .strength(3.0F, 6.0F)
+                    .sound(SoundType.DEEPSLATE)
+            )
+    );
+    public static final  DeferredBlock<Block> ABYSS_COBBLED_ANDESITE = registerBlock("abyss_cobbled_deepslate", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
+                    .strength(3.5F, 6.0F)
             )
     );
 

@@ -16,5 +16,7 @@ public class MIABlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropOther(MIABlocks.ABYSS_GRASS_BLOCK.get(), Blocks.DIRT);
+        dropOther(MIABlocks.ABYSS_ANDESITE.get(),  MIABlocks.ABYSS_COBBLED_ANDESITE.get());
+        dropSelf(MIABlocks.ABYSS_ANDESITE.get());
     }
 }

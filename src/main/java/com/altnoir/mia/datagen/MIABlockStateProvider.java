@@ -7,6 +7,7 @@ import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
 public class MIABlockStateProvider extends BlockStateProvider {
     public static final String PARTICLE = "particle";
@@ -35,6 +36,7 @@ public class MIABlockStateProvider extends BlockStateProvider {
                         faceBuilder
                                 .texture(face == Direction.UP ? TOP_3 :
                                         face == Direction.DOWN ? BOTTOM_3 : SIDE_3)
+                                .cullface(face)
                                 .uvs(0, 0, 16, 16)
                 );
 
@@ -48,5 +50,12 @@ public class MIABlockStateProvider extends BlockStateProvider {
                 );
 
         simpleBlockItem(MIABlocks.ABYSS_GRASS_BLOCK.get(), models().getExistingFile(modLoc("block/abyss_grass_block")));
+
+        blockWithItem(MIABlocks.ABYSS_ANDESITE);
+        blockWithItem(MIABlocks.ABYSS_COBBLED_ANDESITE);
+    }
+
+    protected void blockWithItem(DeferredBlock<?> block) {
+        simpleBlockWithItem(block.get(), cubeAll(block.get()));
     }
 }
