@@ -2,6 +2,7 @@ package com.altnoir.mia;
 
 import com.altnoir.mia.block.MIABlocks;
 import com.altnoir.mia.item.MIAItems;
+import com.altnoir.mia.worldgen.noisesetting.MIADensityFunctions;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -48,6 +49,8 @@ public class MIA {
         MIAItems.register(modEventBus);
         MIABlocks.register(modEventBus);
         MIAItemGroups.register(modEventBus);
+
+        //MIADensityFunctions.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
 

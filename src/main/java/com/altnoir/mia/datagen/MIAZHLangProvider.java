@@ -17,6 +17,7 @@ public class MIAZHLangProvider extends LanguageProvider {
         add("item.mia.endless_cup", "无尽水杯");
 
         add("block.mia.abyss_grass_block", "深界草方块");
+        add("block.mia.fortitude_flower", "不屈之花");
         add("block.mia.covergrass_cobblestone", "覆草圆石");
         add("block.mia.covergrass_stone", "覆草石头");
         add("block.mia.covergrass_deepslate", "覆草深板岩");

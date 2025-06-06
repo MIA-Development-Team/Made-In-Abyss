@@ -1,18 +1,11 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.block.MIABlocks;
-import com.altnoir.mia.item.MIAItems;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.BlockItem;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
-public class MIAENLangProvider extends LanguageProvider {
-    public MIAENLangProvider(PackOutput output, String locale) {
+public class MIALangProvider extends LanguageProvider {
+    public MIALangProvider(PackOutput output, String locale) {
         super(output, MIA.MOD_ID, locale);
     }
 
@@ -24,6 +17,7 @@ public class MIAENLangProvider extends LanguageProvider {
         add("item.mia.endless_cup", "Endless Cup");
 
         add("block.mia.abyss_grass_block", "Abyss Grass_block");
+        add("block.mia.fortitude_flower", "ToKoShieKo");
         add("block.mia.covergrass_cobblestone", "Covergrass Cobblestone");
         add("block.mia.covergrass_stone", "Covergrass Stone");
         add("block.mia.covergrass_deepslate", "Covergrass Deepslate");

@@ -34,6 +34,9 @@ public class MIABlockTagProvider extends BlockTagsProvider {
                 .add(MIABlocks.ABYSS_GRASS_BLOCK.get())
                 .add(MIABlocks.ABYSS_ANDESITE.get());
 
+        tag(BlockTags.FLOWERS)
+                .add(MIABlocks.FORTITUDE_FLOWER.get());
+
         //工具标签
         tag(BlockTags.MINEABLE_WITH_SHOVEL)
                 .add(MIABlocks.ABYSS_GRASS_BLOCK.get());

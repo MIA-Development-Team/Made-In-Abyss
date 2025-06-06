@@ -2,7 +2,7 @@ package com.altnoir.mia.worldgen.dimension;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.worldgen.biome.MIABiomes;
-import com.altnoir.mia.worldgen.noisesetting.MIANoiseSettings;
+import com.altnoir.mia.worldgen.noisesetting.MIANoiseGeneratorSettings;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -37,7 +37,7 @@ public class MIADimensions {
                                 Climate.parameters(0.8f, 0.0f, 0.0f, 0.0f, 0.0f, 0.4f, 0.0f), biomeRegistry.getOrThrow(MIABiomes.ABYSS_BRINK))
                         ))
                 ),
-                noiseGenSettings.getOrThrow(MIANoiseSettings.ABYSS_BRINK)
+                noiseGenSettings.getOrThrow(MIANoiseGeneratorSettings.ABYSS_BRINK)
         );
 
         LevelStem stem = new LevelStem(dimensionTypes.getOrThrow(MIADimensionTypes.ABYSS_TYPE), generator);

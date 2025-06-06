@@ -20,6 +20,7 @@ public class MIAItemGroups {
             .displayItems((parameters, output) -> {
                 output.accept(MIAItems.ENDLESS_CUP);
                 output.accept(MIABlocks.ABYSS_GRASS_BLOCK);
+                output.accept(MIABlocks.FORTITUDE_FLOWER);
                 output.accept(MIABlocks.ABYSS_ANDESITE);
                 output.accept(MIABlocks.ABYSS_COBBLED_ANDESITE);
             })
