@@ -1,0 +1,3 @@
+Documentation:
+  - changed-files:
+      - any-glob-to-any-file: src/main/resources/assets/mia/lang/*.json
