@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "@actions/github": "^6.0.0",
+    "@octokit/rest": "^20.1.0",
+    "@types/node": "^20.12.7"
+  },
+  "dependencies": {
+  }
+}
