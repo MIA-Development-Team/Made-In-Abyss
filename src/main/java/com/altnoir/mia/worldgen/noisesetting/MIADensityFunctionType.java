@@ -13,10 +13,10 @@ import net.minecraft.world.level.levelgen.synth.SimplexNoise;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-public class MIADensityFunctions {
+public class MIADensityFunctionType {
     public static final DeferredRegister<MapCodec<? extends DensityFunction>> DENSITY_FUNCTION_TYPE = DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, MIA.MOD_ID);
     public static MapCodec<? extends DensityFunction> bootstrap(Registry<MapCodec<? extends DensityFunction>> registry) {
-        return register(registry, "abyss", MIADensityFunctions.EndIslandDensityFunction.CODEC);
+        return register(registry, "abyss_hole", AbyssHoleDensityFunction.CODEC);
     }
     private static MapCodec<? extends DensityFunction> register(
             Registry<MapCodec<? extends DensityFunction>> registry, String name, KeyDispatchDataCodec<? extends DensityFunction> codec
@@ -27,17 +27,17 @@ public class MIADensityFunctions {
 //            MIADensityFunctions.EndIslandDensityFunction.CODEC);
 
     public static DensityFunction abyssHole(long seed) {
-        return new EndIslandDensityFunction(seed);
+        return new AbyssHoleDensityFunction(seed);
     }
 
-    protected static final class EndIslandDensityFunction implements DensityFunction.SimpleFunction {
-        public static final KeyDispatchDataCodec<MIADensityFunctions.EndIslandDensityFunction> CODEC = KeyDispatchDataCodec.of(
-                MapCodec.unit(new MIADensityFunctions.EndIslandDensityFunction(0L))
+    protected static final class AbyssHoleDensityFunction implements DensityFunction.SimpleFunction {
+        public static final KeyDispatchDataCodec<AbyssHoleDensityFunction> CODEC = KeyDispatchDataCodec.of(
+                MapCodec.unit(new AbyssHoleDensityFunction(0L))
         );
         private static final float ISLAND_THRESHOLD = -0.9F;
         private final SimplexNoise islandNoise;
 
-        public EndIslandDensityFunction(long seed) {
+        public AbyssHoleDensityFunction(long seed) {
             RandomSource randomsource = new LegacyRandomSource(seed);
             randomsource.consumeCount(17292);
             this.islandNoise = new SimplexNoise(randomsource);
