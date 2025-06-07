@@ -1,8 +1,16 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.block.MIABlocks;
+import com.altnoir.mia.item.MIAItems;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.item.BlockItem;
 import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.registries.DeferredHolder;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class MIALangProvider extends LanguageProvider {
     public MIALangProvider(PackOutput output, String locale) {
@@ -13,23 +21,27 @@ public class MIALangProvider extends LanguageProvider {
     protected void addTranslations() {
         add("itemgroup.mia", "Made In Abyss");
 
-        add("item.mia.purin", "Purin");
-        add("item.mia.endless_cup", "Endless Cup");
+        MIAItems.ITEMS.getEntries().stream()
+                        .map(DeferredHolder::get)
+                        .filter(item -> !(item instanceof BlockItem))
+                        .forEach(item -> {
+                            add(item, formatName(BuiltInRegistries.ITEM.getKey(item).getPath()));
+                        });
 
-        add("block.mia.abyss_grass_block", "Abyss Grass_block");
-        add("block.mia.fortitude_flower", "ToKoShieKo");
-        add("block.mia.covergrass_cobblestone", "Covergrass Cobblestone");
-        add("block.mia.covergrass_stone", "Covergrass Stone");
-        add("block.mia.covergrass_deepslate", "Covergrass Deepslate");
-        add("block.mia.covergrass_granite", "Covergrass Granite");
-        add("block.mia.covergrass_diorite", "Covergrass Diorite");
-        add("block.mia.covergrass_andesite", "Covergrass Andesite");
-        add("block.mia.covergrass_calcite", "Covergrass Calcite");
-        add("block.mia.covergrass_tuff", "Covergrass Tuff");
-        add("block.mia.abyss_andesite", "Abyss Andesite");
-        add("block.mia.abyss_cobbled_deepslate", "Abyss Cobbled Deepslate");
-        add("block.mia.chlorophyte_ore", "Chlorophyte Ore");
-        add("block.mia.suspicious_andesite", "Suspicious Andesite");
-        add("block.mia.volcano_crucible", "Volcano Crucible");
+        MIABlocks.BLOCKS.getEntries().stream()
+                        .map(DeferredHolder::get)
+                        .forEach(item -> {
+                            add(item, formatName(BuiltInRegistries.BLOCK.getKey(item).getPath()));
+                        });
+    }
+
+    private String formatName(String name) {
+        return Arrays.stream(name.split("_"))
+                .filter(word -> !word.isEmpty())
+                .map(word ->
+                        Character.toUpperCase(word.charAt(0)) +
+                                word.substring(1).toLowerCase()
+                )
+                .collect(Collectors.joining(" "));
     }
 }

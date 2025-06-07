@@ -41,6 +41,5 @@ public class DataGenerators {
         generators.addProvider(event.includeClient(), new MIABlockStateProvider(packOutput, existingFileHelper));
         generators.addProvider(event.includeClient(), new MIAItemModelProvider(packOutput, existingFileHelper));
         generators.addProvider(event.includeClient(), new MIALangProvider(packOutput, "en_us"));
-        generators.addProvider(event.includeClient(), new MIAZHLangProvider(packOutput, "zh_cn"));
     }
 }
