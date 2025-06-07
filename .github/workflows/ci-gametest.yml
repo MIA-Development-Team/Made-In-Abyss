@@ -35,9 +35,9 @@ jobs:
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
 
-      - name: Prepare run gametest server
+      - name: Prepare run GameTest server
         if: steps.cache.outputs.cache-hit != 'true'
-        run: ./gradlew  prepareRunGameTestServer --no-daemon
+        run: ./gradlew prepareGameTestServerRun --no-daemon
 
       - name: Save caches
         if: steps.cache.outputs.cache-hit != 'true'
