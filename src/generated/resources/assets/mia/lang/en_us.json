@@ -1,20 +1,8 @@
 {
   "block.mia.abyss_andesite": "Abyss Andesite",
   "block.mia.abyss_cobbled_deepslate": "Abyss Cobbled Deepslate",
-  "block.mia.abyss_grass_block": "Abyss Grass_block",
-  "block.mia.chlorophyte_ore": "Chlorophyte Ore",
-  "block.mia.covergrass_andesite": "Covergrass Andesite",
-  "block.mia.covergrass_calcite": "Covergrass Calcite",
-  "block.mia.covergrass_cobblestone": "Covergrass Cobblestone",
-  "block.mia.covergrass_deepslate": "Covergrass Deepslate",
-  "block.mia.covergrass_diorite": "Covergrass Diorite",
-  "block.mia.covergrass_granite": "Covergrass Granite",
-  "block.mia.covergrass_stone": "Covergrass Stone",
-  "block.mia.covergrass_tuff": "Covergrass Tuff",
-  "block.mia.fortitude_flower": "ToKoShieKo",
-  "block.mia.suspicious_andesite": "Suspicious Andesite",
-  "block.mia.volcano_crucible": "Volcano Crucible",
+  "block.mia.abyss_grass_block": "Abyss Grass Block",
+  "block.mia.fortitude_flower": "Fortitude Flower",
   "item.mia.endless_cup": "Endless Cup",
-  "item.mia.purin": "Purin",
   "itemgroup.mia": "Made In Abyss"
 }

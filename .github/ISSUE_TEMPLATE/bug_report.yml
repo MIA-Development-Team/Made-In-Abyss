@@ -1,0 +1,38 @@
+name: "Bug Report"
+description: Create a bug report of MIA / 反馈 MIA 的 BUG
+labels: [ "bug" ]
+projects: [ "MIA-Development-Team/1" ]
+
+body:
+  - type: textarea
+    attributes:
+      label: Description of the bug / BUG 内容介绍
+      description: |
+        Please describe the bug.
+        请简单阐述 BUG 导致了什么。
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Steps to Reproduce / 重现步骤
+      placeholder: |
+        1. Go to '...' / 前往 “...”
+        2. Click on '....' / 点击 “...”
+        3. See error / BUG 出现
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Screenshots / 截图
+      description: |
+        If possible, add screenshots to help explain your problem.
+        如果可以，请上传截图，这有助于我们解决问题。
+
+  - type: textarea
+    attributes:
+      label: Additional context / 补充
+      description: |
+        Add any other context about the problem here.
+        在这里添加任何补充内容，如日志等。
