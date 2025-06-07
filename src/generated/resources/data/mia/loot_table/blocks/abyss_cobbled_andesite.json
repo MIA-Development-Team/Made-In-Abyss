@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "mia:abyss_cobbled_deepslate"
+          "name": "mia:abyss_cobbled_andesite"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "mia:blocks/abyss_cobbled_deepslate"
+  "random_sequence": "mia:blocks/abyss_cobbled_andesite"
 }

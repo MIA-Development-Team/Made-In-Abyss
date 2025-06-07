@@ -52,7 +52,7 @@ public class MIABlocks {
                     .sound(SoundType.DEEPSLATE)
             )
     );
-    public static final  DeferredBlock<Block> ABYSS_COBBLED_ANDESITE = registerBlock("abyss_cobbled_deepslate", () ->
+    public static final  DeferredBlock<Block> ABYSS_COBBLED_ANDESITE = registerBlock("abyss_cobbled_andesite", () ->
             new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
                     .strength(3.5F, 6.0F)
             )
