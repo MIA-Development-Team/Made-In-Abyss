@@ -16,3 +16,8 @@ jobs:
           not-before: 2025-06-01T00:00:00Z
           include-title: 1
           sync-labels: 1
+      - uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler-localization.yml
+          sync-labels: true
