@@ -1,4 +1,4 @@
-name: localization.yml
+name: Localization
 on:
   push:
     branches: [ "main" ]
