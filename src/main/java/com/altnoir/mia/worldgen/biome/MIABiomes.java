@@ -31,7 +31,7 @@ public class MIABiomes {
 
         BiomeDefaultFeatures.addDefaultSprings(builder);
         BiomeDefaultFeatures.addSurfaceFreezing(builder);
-        BiomeDefaultFeatures.addDefaultOres(builder); // 保留全局矿石生成
+        BiomeDefaultFeatures.addDefaultOres(builder);
         BiomeDefaultFeatures.addDefaultSoftDisks(builder);
     }
 
@@ -51,7 +51,9 @@ public class MIABiomes {
         BiomeDefaultFeatures.addMossyStoneBlock(generationBuilder);
         BiomeDefaultFeatures.addExtraGold(generationBuilder);
 
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.TREES_CHERRY);
+        BiomeDefaultFeatures.addPlainGrass(generationBuilder);
+        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.FLOWER_CHERRY);
+        //generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.TREES_CHERRY);
         BiomeDefaultFeatures.addFerns(generationBuilder);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);

@@ -28,10 +28,12 @@ public class MIABlockTagProvider extends BlockTagsProvider {
 
         //基础标签
         tag(BlockTags.DIRT)
-                .add(MIABlocks.ABYSS_GRASS_BLOCK.get());
+                .add(MIABlocks.ABYSS_GRASS_BLOCK.get())
+                .add(MIABlocks.COVERGRASS_ABYSS_ANDESITE.get());
 
         tag(BlockTags.MOSS_REPLACEABLE)
                 .add(MIABlocks.ABYSS_GRASS_BLOCK.get())
+                .add(MIABlocks.COVERGRASS_ABYSS_ANDESITE.get())
                 .add(MIABlocks.ABYSS_ANDESITE.get());
 
         tag(BlockTags.FLOWERS)
@@ -41,6 +43,7 @@ public class MIABlockTagProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_SHOVEL)
                 .add(MIABlocks.ABYSS_GRASS_BLOCK.get());
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .add(MIABlocks.COVERGRASS_ABYSS_ANDESITE.get())
                 .add(MIABlocks.ABYSS_ANDESITE.get())
                 .add(MIABlocks.ABYSS_COBBLED_ANDESITE.get());
 

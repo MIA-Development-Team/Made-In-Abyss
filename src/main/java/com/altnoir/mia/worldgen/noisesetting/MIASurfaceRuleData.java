@@ -25,7 +25,7 @@ public class MIASurfaceRuleData extends SurfaceRuleData {
                         SurfaceRules.sequence(
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
-                                        makeStateRule(MIABlocks.ABYSS_GRASS_BLOCK.get())
+                                        makeStateRule(MIABlocks.COVERGRASS_ABYSS_ANDESITE.get())
                                 )
                         )
                 )

@@ -30,6 +30,16 @@ public class MIABlocks {
                     .sound(SoundType.GRASS)
             )
     );
+    public static final DeferredBlock<Block> COVERGRASS_ABYSS_ANDESITE = registerBlock("covergrass_abyss_andesite", () ->
+            new AbyssGrassBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.GRASS)
+                    .randomTicks()
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .requiresCorrectToolForDrops()
+                    .strength(3.0F, 6.0F)
+                    .sound(SoundType.DEEPSLATE)
+            )
+    );
     public static final DeferredBlock<Block> FORTITUDE_FLOWER = registerBlock("fortitude_flower", () ->
             new FlowerBlock(
                     MobEffects.WEAKNESS,
