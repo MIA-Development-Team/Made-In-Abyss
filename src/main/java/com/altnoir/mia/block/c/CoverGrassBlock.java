@@ -1,35 +1,42 @@
 package com.altnoir.mia.block.c;
 
+import com.altnoir.mia.block.abs.AbstractCoverGrassBlock;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.lighting.LightEngine;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
 
-public class AbyssGrassBlock extends Block implements BonemealableBlock {
-
-
-    public AbyssGrassBlock(Properties properties) {
-        super(properties);
+public class CoverGrassBlock extends AbstractCoverGrassBlock implements BonemealableBlock{
+    public static final MapCodec<CoverGrassBlock> CODEC = RecordCodecBuilder.mapCodec(instance ->
+            instance.group(
+                    Block.CODEC.fieldOf("defaultBlock").forGetter(block -> block.defaultBlock),
+                    BlockBehaviour.Properties.CODEC.fieldOf("properties").forGetter(block -> block.properties)
+            ).apply(instance, CoverGrassBlock::new)
+    );
+    @Override
+    public MapCodec<CoverGrassBlock> codec() {
+        return CODEC;
     }
-
+    public CoverGrassBlock(Block defaultBlock, Properties properties) {
+        super(defaultBlock, properties);
+    }
     @Override
     public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
         return level.getBlockState(pos.above()).isAir();
@@ -39,7 +46,6 @@ public class AbyssGrassBlock extends Block implements BonemealableBlock {
     public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
-
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         BlockPos blockpos = pos.above();
@@ -85,42 +91,6 @@ public class AbyssGrassBlock extends Block implements BonemealableBlock {
             }
         }
     }
-    private static boolean canBeGrass(BlockState state, LevelReader levelReader, BlockPos pos) {
-        BlockPos blockpos = pos.above();
-        BlockState blockstate = levelReader.getBlockState(blockpos);
-        if (blockstate.getFluidState().getAmount() == 8) {
-            return false;
-        } else {
-            int i = LightEngine.getLightBlockInto(
-                    levelReader, state, pos, blockstate, blockpos, Direction.UP, blockstate.getLightBlock(levelReader, blockpos)
-            );
-            return i < levelReader.getMaxLightLevel();
-        }
-    }
-    private static boolean canPropagate(BlockState state, LevelReader level, BlockPos pos) {
-        BlockPos blockpos = pos.above();
-        return canBeGrass(state, level, pos) && !level.getFluidState(blockpos).is(FluidTags.WATER);
-    }
-    @Override
-    protected void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
-        if (!canBeGrass(state, level, pos)) {
-            if (!level.isAreaLoaded(pos, 1)) return;
-            level.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
-        } else {
-            if (!level.isAreaLoaded(pos, 3)) return;
-            if (level.getMaxLocalRawBrightness(pos.above()) >= 9) {
-                BlockState blockstate = this.defaultBlockState();
-
-                for (int i = 0; i < 4; i++) {
-                    BlockPos blockpos = pos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
-                    if (level.getBlockState(blockpos).is(Blocks.DIRT) && canPropagate(blockstate, level, blockpos)) {
-                        level.setBlockAndUpdate(blockpos, blockstate);
-                    }
-                }
-            }
-        }
-    }
-
     @Override
     public Type getType() {
         return Type.NEIGHBOR_SPREADER;

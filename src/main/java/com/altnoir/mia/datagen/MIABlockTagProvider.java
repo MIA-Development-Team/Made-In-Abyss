@@ -26,6 +26,9 @@ public class MIABlockTagProvider extends BlockTagsProvider {
         tag(MIABlockTags.BASE_STONE_ABYSS)
                 .add(MIABlocks.ABYSS_ANDESITE.get());
 
+        tag(MIABlockTags.COVERGRASS)
+                .add(MIABlocks.COVERGRASS_ABYSS_ANDESITE.get());
+
         //基础标签
         tag(BlockTags.DIRT)
                 .add(MIABlocks.ABYSS_GRASS_BLOCK.get())

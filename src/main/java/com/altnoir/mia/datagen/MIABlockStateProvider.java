@@ -36,10 +36,9 @@ public class MIABlockStateProvider extends BlockStateProvider {
         abyssBlockItem(MIABlocks.ABYSS_GRASS_BLOCK);
         abyssBlockItem(MIABlocks.COVERGRASS_ABYSS_ANDESITE);
         abyssBlockItem(MIABlocks.ABYSS_ANDESITE);
+        blockWithItem(MIABlocks.ABYSS_COBBLED_ANDESITE);
 
         crossBlock(MIABlocks.FORTITUDE_FLOWER);
-
-        blockWithItem(MIABlocks.ABYSS_COBBLED_ANDESITE);
     }
 
     protected void crossBlock(DeferredBlock<?> block) {

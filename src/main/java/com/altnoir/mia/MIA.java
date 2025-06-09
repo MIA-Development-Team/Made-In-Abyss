@@ -1,6 +1,8 @@
 package com.altnoir.mia;
 
 import com.altnoir.mia.block.MIABlocks;
+import com.altnoir.mia.effect.MIAEffects;
+import com.altnoir.mia.event.CurseConfig;
 import com.altnoir.mia.item.MIAItems;
 import org.slf4j.Logger;
 
@@ -22,18 +24,19 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 @Mod(MIA.MOD_ID)
 public class MIA {
     public static final String MOD_ID = "mia";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
-    public MIA(IEventBus modEventBus, ModContainer modContainer)
-    {
+    public MIA(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
 
         MIAItems.register(modEventBus);
         MIABlocks.register(modEventBus);
         MIAItemGroups.register(modEventBus);
 
+        MIAEffects.register(modEventBus);
         //MIADensityFunctionType.register(modEventBus);
 
+        CurseConfig.loadConfig();
         NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative);

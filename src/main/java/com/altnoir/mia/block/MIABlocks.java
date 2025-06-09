@@ -1,7 +1,9 @@
 package com.altnoir.mia.block;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.block.c.AbyssAndesiteBlock;
 import com.altnoir.mia.block.c.AbyssGrassBlock;
+import com.altnoir.mia.block.c.CoverGrassBlock;
 import com.altnoir.mia.item.MIAItems;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
@@ -22,6 +24,20 @@ import java.util.function.Supplier;
 public class MIABlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MIA.MOD_ID);
 
+    public static final DeferredBlock<Block> ABYSS_ANDESITE = registerBlock("abyss_andesite",  () ->
+            new AbyssAndesiteBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .requiresCorrectToolForDrops()
+                    .strength(3.0F, 6.0F)
+                    .sound(SoundType.DEEPSLATE)
+            )
+    );
+    public static final  DeferredBlock<Block> ABYSS_COBBLED_ANDESITE = registerBlock("abyss_cobbled_andesite", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
+                    .strength(3.5F, 6.0F)
+            )
+    );
     public static final DeferredBlock<Block> ABYSS_GRASS_BLOCK = registerBlock("abyss_grass_block", () ->
             new AbyssGrassBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.GRASS)
@@ -31,7 +47,7 @@ public class MIABlocks {
             )
     );
     public static final DeferredBlock<Block> COVERGRASS_ABYSS_ANDESITE = registerBlock("covergrass_abyss_andesite", () ->
-            new AbyssGrassBlock(BlockBehaviour.Properties.of()
+            new CoverGrassBlock(ABYSS_ANDESITE.get(), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.GRASS)
                     .randomTicks()
                     .instrument(NoteBlockInstrument.BASEDRUM)
@@ -51,20 +67,6 @@ public class MIABlocks {
                             .sound(SoundType.GRASS)
                             .offsetType(BlockBehaviour.OffsetType.XZ)
                             .pushReaction(PushReaction.DESTROY)
-            )
-    );
-    public static final DeferredBlock<Block> ABYSS_ANDESITE = registerBlock("abyss_andesite",  () ->
-            new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.STONE)
-                    .instrument(NoteBlockInstrument.BASEDRUM)
-                    .requiresCorrectToolForDrops()
-                    .strength(3.0F, 6.0F)
-                    .sound(SoundType.DEEPSLATE)
-            )
-    );
-    public static final  DeferredBlock<Block> ABYSS_COBBLED_ANDESITE = registerBlock("abyss_cobbled_andesite", () ->
-            new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
-                    .strength(3.5F, 6.0F)
             )
     );
 

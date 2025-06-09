@@ -209,10 +209,7 @@
                   "then_run": {
                     "type": "minecraft:block",
                     "result_state": {
-                      "Name": "mia:covergrass_abyss_andesite",
-                      "Properties": {
-                        "snowy": "false"
-                      }
+                      "Name": "mia:covergrass_abyss_andesite"
                     }
                   }
                 }
