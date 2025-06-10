@@ -37,16 +37,11 @@ public class Curse {
         Player player = event.getEntity();
         ResourceLocation dim = player.level().dimension().location();
         List<CurseConfig.EffectConfig> configs = CurseConfig.getEffects(dim);
-        if (!configs.isEmpty()) {
+        if (!player.level().isClientSide() && !configs.isEmpty()) {
             UUID uuid = player.getUUID();
             double playerY = player.getY();
-            double minY = playerMinY.get(uuid);
+            double minY = playerMinY.computeIfAbsent(uuid, k -> playerY);
             double deltaY = playerY - minY;
-
-            if (!playerMinY.containsKey(uuid)) {
-                playerMinY.put(uuid, playerY);
-                return;
-            }
 
             if (playerY < minY) {
                 playerMinY.put(uuid, playerY);

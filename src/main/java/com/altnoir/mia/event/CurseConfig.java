@@ -48,7 +48,7 @@ public class CurseConfig {
         try {
             if (!Files.exists(CONFIG_PATH)) {
                 Files.createDirectories(CONFIG_PATH.getParent());
-                // 创建默认配置的JSON内容
+                // 创建默认JSON配置
                 List<DimensionEntry> defaultEntries = new ArrayList<>();
 
                 // 示例配置
@@ -62,6 +62,12 @@ public class CurseConfig {
 
                 String defaultJson = GSON.toJson(defaultEntries);
                 Files.writeString(CONFIG_PATH, defaultJson, StandardCharsets.UTF_8);
+
+                // 将默认配置加载到内存
+                for (DimensionEntry entry : defaultEntries) {
+                    ResourceLocation dimId = ResourceLocation.parse(entry.dimension);
+                    DIMENSION_CURSE.put(dimId, entry.effects);
+                }
                 return;
             }
 
