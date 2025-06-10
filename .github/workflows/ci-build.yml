@@ -29,7 +29,8 @@ jobs:
       - name: Append short Git commit hash to version
         run: |
           SHORT_HASH=$(git rev-parse --short HEAD)
-          sed -i "s/^mod_version=.*/mod_version=0.1.0+$SHORT_HASH/" gradle.properties
+          CURRENT_VERSION=$(grep '^mod_version=' gradle.properties | cut -d= -f2)
+          sed -i "s/^mod_version=.*/mod_version=${CURRENT_VERSION}+$SHORT_HASH/" gradle.properties
 
       - name: Build with Gradle
         run: ./gradlew build
