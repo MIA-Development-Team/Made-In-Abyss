@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "mia:abyss_hole"
+  },
+  "argument2": "mia:abyss_brink/base_3d_noise"
+}

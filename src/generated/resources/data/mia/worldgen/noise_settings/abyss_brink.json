@@ -23,45 +23,48 @@
     "depth": "minecraft:overworld/depth",
     "erosion": "minecraft:overworld/erosion",
     "final_density": {
-      "type": "minecraft:squeeze",
-      "argument": {
-        "type": "minecraft:mul",
-        "argument1": 0.64,
-        "argument2": {
-          "type": "minecraft:interpolated",
-          "argument": {
-            "type": "minecraft:blend_density",
+      "type": "minecraft:min",
+      "argument1": {
+        "type": "minecraft:squeeze",
+        "argument": {
+          "type": "minecraft:mul",
+          "argument1": 0.64,
+          "argument2": {
+            "type": "minecraft:interpolated",
             "argument": {
-              "type": "minecraft:add",
-              "argument1": -0.234375,
-              "argument2": {
-                "type": "minecraft:mul",
-                "argument1": {
-                  "type": "minecraft:y_clamped_gradient",
-                  "from_value": 0.0,
-                  "from_y": 4,
-                  "to_value": 1.0,
-                  "to_y": 32
-                },
+              "type": "minecraft:blend_density",
+              "argument": {
+                "type": "minecraft:add",
+                "argument1": 0.4,
                 "argument2": {
-                  "type": "minecraft:add",
-                  "argument1": 0.234375,
+                  "type": "minecraft:mul",
+                  "argument1": {
+                    "type": "minecraft:y_clamped_gradient",
+                    "from_value": 0.0,
+                    "from_y": 0,
+                    "to_value": 1.0,
+                    "to_y": 32
+                  },
                   "argument2": {
                     "type": "minecraft:add",
-                    "argument1": -23.4375,
+                    "argument1": -0.4,
                     "argument2": {
-                      "type": "minecraft:mul",
-                      "argument1": {
-                        "type": "minecraft:y_clamped_gradient",
-                        "from_value": 1.0,
-                        "from_y": 178,
-                        "to_value": 0.0,
-                        "to_y": 434
-                      },
+                      "type": "minecraft:add",
+                      "argument1": -36.8975,
                       "argument2": {
-                        "type": "minecraft:add",
-                        "argument1": 23.4375,
-                        "argument2": "minecraft:end/sloped_cheese"
+                        "type": "minecraft:mul",
+                        "argument1": {
+                          "type": "minecraft:y_clamped_gradient",
+                          "from_value": 1.0,
+                          "from_y": 250,
+                          "to_value": 0.0,
+                          "to_y": 320
+                        },
+                        "argument2": {
+                          "type": "minecraft:add",
+                          "argument1": 37.0,
+                          "argument2": "mia:abyss_hole"
+                        }
                       }
                     }
                   }
@@ -70,7 +73,8 @@
             }
           }
         }
-      }
+      },
+      "argument2": "mia:abyss_brink/caves/noodle"
     },
     "fluid_level_floodedness": 0.0,
     "fluid_level_spread": 0.0,

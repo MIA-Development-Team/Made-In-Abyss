@@ -4,10 +4,8 @@ import com.altnoir.mia.block.MIABlocks;
 import com.altnoir.mia.effect.MIAEffects;
 import com.altnoir.mia.event.CurseConfig;
 import com.altnoir.mia.item.MIAItems;
-import org.slf4j.Logger;
-
+import com.altnoir.mia.worldgen.noisesetting.MIADensityFunctionTypes;
 import com.mojang.logging.LogUtils;
-
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -20,6 +18,7 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import org.slf4j.Logger;
 
 @Mod(MIA.MOD_ID)
 public class MIA {
@@ -34,7 +33,7 @@ public class MIA {
         MIAItemGroups.register(modEventBus);
 
         MIAEffects.register(modEventBus);
-        //MIADensityFunctionType.register(modEventBus);
+        MIADensityFunctionTypes.register(modEventBus);
 
         CurseConfig.loadConfig();
         NeoForge.EVENT_BUS.register(this);

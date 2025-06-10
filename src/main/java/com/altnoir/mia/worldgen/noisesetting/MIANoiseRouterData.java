@@ -61,7 +61,7 @@ public class MIANoiseRouterData extends NoiseRouterData {
                 DensityFunctions.yClampedGradient(250, 320, 1, 0),
                 DensityFunctions.add(
                     DensityFunctions.constant(37),
-                    getFunction(densityFunctions, MIADensityFunction.BASE_3D_NOISE_ABYSS_BRINK)
+                    getFunction(densityFunctions, MIADensityFunction.ABYSS_HOLE)
                 )
             )
         );
@@ -116,7 +116,7 @@ public class MIANoiseRouterData extends NoiseRouterData {
         DensityFunction densityfunction7 = noiseGradientDensity(DensityFunctions.cache2d(densityfunction5), densityfunction6);
 
         DensityFunction densityfunction8 = DensityFunctions.cache2d(DensityFunctions.endIslands(0L));
-        DensityFunction densityfunction9 = postProcess(slideEnd(getFunction(densityFunctions, SLOPED_CHEESE_END)));
+        DensityFunction densityfunction9 = postProcess(slideEnd(getFunction(densityFunctions, MIADensityFunction.ABYSS_HOLE)));
 
         DensityFunction densityfunction11 = getFunction(densityFunctions, SLOPED_CHEESE);
         DensityFunction densityfunction12 = DensityFunctions.min(
@@ -140,8 +140,8 @@ public class MIANoiseRouterData extends NoiseRouterData {
                 getFunction(densityFunctions, RIDGES), // ridges
                 slideAbyssBrink(false, DensityFunctions.add(densityfunction7, DensityFunctions.constant(-0.703125)).clamp(-64.0, 64.0)), // initial_density_without_jaggedness
                 //slideEnd(DensityFunctions.add(densityfunction8, DensityFunctions.constant(-0.703125))), // initial_density_without_jaggedness
-                //densityfunction4, // final_density
-                densityfunction9, // final_density
+                densityfunction4, // final_density
+                //densityfunction9, // final_density
                 DensityFunctions.zero(),
                 DensityFunctions.zero(),
                 DensityFunctions.zero()

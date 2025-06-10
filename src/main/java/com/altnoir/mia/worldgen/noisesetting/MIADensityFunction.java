@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 public class MIADensityFunction {
     public static final ResourceKey<DensityFunction> BASE_3D_NOISE_ABYSS_BRINK = createKey("abyss_brink/base_3d_noise");
+    public static final ResourceKey<DensityFunction> ABYSS_HOLE = createKey("abyss_hole");
     public static final ResourceKey<DensityFunction> ABYSS_BRINK_NOODLE = createKey("abyss_brink/caves/noodle");
 
     private static ResourceKey<DensityFunction> createKey(String location) {
@@ -25,6 +26,7 @@ public class MIADensityFunction {
         HolderGetter<NormalNoise.NoiseParameters> holdergetter = context.lookup(Registries.NOISE);
         HolderGetter<DensityFunction> holdergetter1 = context.lookup(Registries.DENSITY_FUNCTION);
 
+        context.register(ABYSS_HOLE, DensityFunctions.add(MIADensityFunctionTypes.abyssHole(0L), getFunction(holdergetter1, BASE_3D_NOISE_ABYSS_BRINK)));
         context.register(BASE_3D_NOISE_ABYSS_BRINK, BlendedNoise.createUnseeded(0.25, 0.25, 80.0, 160.0, 8.0));
         return context.register(ABYSS_BRINK_NOODLE, noodle(holdergetter1, holdergetter));
     }
