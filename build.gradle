@@ -28,8 +28,6 @@ repositories {
 dependencies {
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
-
-    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 base {
