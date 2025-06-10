@@ -69,7 +69,7 @@ public class MIANoiseRouterData extends NoiseRouterData {
         DensityFunction blended = DensityFunctions.add(
             DensityFunctions.constant(0.4),
             DensityFunctions.mul(
-                DensityFunctions.yClampedGradient(0, 32, 0, 1),
+                DensityFunctions.yClampedGradient(0, 16, 0, 1),
                 DensityFunctions.add(
                     DensityFunctions.constant(-0.4),
                     baseNoise

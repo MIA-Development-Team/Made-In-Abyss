@@ -12,13 +12,13 @@ public class AbyssHoleDensityFunction implements DensityFunction.SimpleFunction 
     public static final KeyDispatchDataCodec<AbyssHoleDensityFunction> CODEC = KeyDispatchDataCodec.of(
             MapCodec.unit(new AbyssHoleDensityFunction(0L))
     );
-    private static final float ISLAND_THRESHOLD = -0.9F;
-    private final SimplexNoise islandNoise;
+    private static final float ABYSS_THRESHOLD = 9.0F;
+    private final SimplexNoise abyssNoise;
 
     public AbyssHoleDensityFunction(long seed) {
         RandomSource randomsource = new LegacyRandomSource(seed);
         randomsource.consumeCount(17292);
-        this.islandNoise = new SimplexNoise(randomsource);
+        this.abyssNoise = new SimplexNoise(randomsource);
     }
     private static float getHeightValue(SimplexNoise noise, int x, int z) {
         int i = x / 2;
@@ -30,10 +30,10 @@ public class AbyssHoleDensityFunction implements DensityFunction.SimpleFunction 
 
         for (int i1 = -12; i1 <= 12; i1++) {
             for (int j1 = -12; j1 <= 12; j1++) {
-                long k1 = (long)(i + i1);
-                long l1 = (long)(j + j1);
-                if (k1 * k1 + l1 * l1 > 4096L && noise.getValue((double)k1, (double)l1) < ISLAND_THRESHOLD) {
-                    float f1 = (Mth.abs((float)k1) * 3439.0F + Mth.abs((float)l1) * 147.0F) % 13.0F + 9.0F;
+                long k1 = i + i1;
+                long l1 = j + j1;
+                if (k1 * k1 + l1 * l1 > 4096L && noise.getValue((double)k1, (double)l1) < ABYSS_THRESHOLD) {
+                    float f1 = (Mth.abs((float)k1) * 3439.0F + Mth.abs((float)l1) * 247.0F) % 13.0F + 9.0F;
                     float f2 = (float)(k - i1 * 2);
                     float f3 = (float)(l - j1 * 2);
                     float f4 = 100.0F - Mth.sqrt(f2 * f2 + f3 * f3) * f1;
@@ -49,7 +49,7 @@ public class AbyssHoleDensityFunction implements DensityFunction.SimpleFunction 
     @Override
     public double compute(DensityFunction.FunctionContext context) {
         // 反转计算结果：原公式 (height -8)/128 改为 (8 - height)/128
-        return (8.0 - (double)getHeightValue(this.islandNoise, context.blockX() / 8, context.blockZ() / 8)) / 128.0;
+        return (8.0 - (double)getHeightValue(this.abyssNoise, context.blockX() / 8, context.blockZ() / 8)) / 128.0;
     }
 
     @Override
