@@ -34,11 +34,11 @@ public class LampTubeRecipeBuilder implements RecipeBuilder {
         this.result = result;
     }
 
-    public static LampTubeRecipeBuilder lampTube(ItemLike ingredient, ItemLike result) {
-        return new LampTubeRecipeBuilder(Ingredient.of(ingredient), new ItemStack(result));
+    public static LampTubeRecipeBuilder lampTube(ItemLike ingredient, ItemLike result, int count) {
+        return new LampTubeRecipeBuilder(Ingredient.of(ingredient), new ItemStack(result, count));
     }
-    public static LampTubeRecipeBuilder lampTube(TagKey<Item> tag, ItemLike result) {
-        return new LampTubeRecipeBuilder(Ingredient.of(tag), new ItemStack(result));
+    public static LampTubeRecipeBuilder lampTube(TagKey<Item> tag, ItemLike result, int count) {
+        return new LampTubeRecipeBuilder(Ingredient.of(tag), new ItemStack(result, count));
     }
 
     public @NotNull LampTubeRecipeBuilder unlockedBy(@NotNull String name, @NotNull Criterion<?> criterion) {

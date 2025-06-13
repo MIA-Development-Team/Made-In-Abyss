@@ -26,21 +26,35 @@ public class MIARecipeProvider extends RecipeProvider implements IConditionBuild
         lampTube(recipeOutput, Items.DIAMOND, Blocks.DIAMOND_BLOCK);
         lampTube(recipeOutput, Items.IRON_INGOT, Blocks.IRON_BLOCK, "ingot");
         lampTube(recipeOutput, ItemTags.LOGS, Blocks.COAL_BLOCK, "logs");
+
+        lampTube(recipeOutput, Items.GOLD_INGOT, Blocks.GOLD_BLOCK, 2);
+        lampTube(recipeOutput, ItemTags.PLANKS, Items.COAL, 4, "planks");
     }
 
+    private static void lampTube(RecipeOutput recipeOutput, ItemLike input, ItemLike output) {
+        lampTube(recipeOutput, input, output, 1);
+    }
     private static void lampTube(RecipeOutput recipeOutput, ItemLike input, ItemLike output, String id) {
-        LampTubeRecipeBuilder.lampTube(input, output)
+        lampTube(recipeOutput, input, output, 1, id);
+    }
+    private static void lampTube(RecipeOutput recipeOutput, TagKey<Item> tag, ItemLike output, String hasName) {
+        lampTube(recipeOutput, tag, output, 1, hasName);
+    }
+
+    private static void lampTube(RecipeOutput recipeOutput, ItemLike input, ItemLike output, Integer count) {
+        LampTubeRecipeBuilder.lampTube(input, output, count)
+                .unlockedBy(getHasName(input), has(output))
+                .save(recipeOutput);
+    }
+    private static void lampTube(RecipeOutput recipeOutput, ItemLike input, ItemLike output, Integer count, String id) {
+        LampTubeRecipeBuilder.lampTube(input, output, count)
                 .unlockedBy(getHasName(input), has(output))
                 .save(recipeOutput, getItemName(output) + "_from_" + id);
     }
-    private static void lampTube(RecipeOutput recipeOutput, ItemLike input, ItemLike output) {
-        LampTubeRecipeBuilder.lampTube(input, output)
-                .unlockedBy(getHasName(input), has(output))
+    private static void lampTube(RecipeOutput recipeOutput, TagKey<Item> tag, ItemLike output, Integer count, String hasName) {
+        LampTubeRecipeBuilder.lampTube(tag, output, count)
+                .unlockedBy("has_" + hasName, has(output))
                 .save(recipeOutput);
     }
-    private static void lampTube(RecipeOutput recipeOutput, TagKey<Item> tag, ItemLike output, String name) {
-        LampTubeRecipeBuilder.lampTube(tag, output)
-                .unlockedBy("has_" + name, has(output))
-                .save(recipeOutput);
-    }
+
 }

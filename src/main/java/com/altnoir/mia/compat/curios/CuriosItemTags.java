@@ -1,4 +1,4 @@
-package com.altnoir.mia.curios;
+package com.altnoir.mia.compat.curios;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;

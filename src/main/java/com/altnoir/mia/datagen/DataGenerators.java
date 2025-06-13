@@ -1,7 +1,7 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.curios.MIACuriosProvider;
+import com.altnoir.mia.compat.curios.MIACuriosProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;

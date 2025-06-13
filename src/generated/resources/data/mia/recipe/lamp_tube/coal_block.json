@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "minecraft:logs"
   },
-  "output": {
+  "result": {
     "count": 1,
     "id": "minecraft:coal_block"
   }

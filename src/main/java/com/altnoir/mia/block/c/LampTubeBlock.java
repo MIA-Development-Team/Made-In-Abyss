@@ -1,6 +1,5 @@
 package com.altnoir.mia.block.c;
 
-import com.altnoir.mia.MIA;
 import com.altnoir.mia.recipe.LampTubeRecipe;
 import com.altnoir.mia.recipe.LampTubeRecipeInput;
 import com.altnoir.mia.recipe.MIARecipes;
@@ -29,15 +28,12 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import java.util.Optional;
 
 public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
-    private static final Logger LOGGER = LogManager.getLogger();
     public static final MapCodec<LampTubeBlock> CODEC = simpleCodec(LampTubeBlock::new);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
@@ -123,15 +119,15 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
             // 遍历容器格子
             for (int i = 0; i < container.getContainerSize(); i++) {
                 ItemStack stack = container.getItem(i);
-                if (stack.isEmpty()) continue;
-
                 Optional<RecipeHolder<LampTubeRecipe>> recipe = getCurrentRecipe(level, stack);
-                if (recipe.isEmpty()) continue;
 
-                ItemStack output = recipe.get().value().output();
-                MIA.LOGGER.info("Output: {}", output);
+                if (stack.isEmpty() | recipe.isEmpty()) continue;
+
+                ItemStack output = recipe.get().value().result();
+                //MIA.LOGGER.info("Output: {}", output);
                 //if (!stack.isEmpty() && stack.is(ItemTags.LOGS))
-                int count = stack.getCount();
+                int count = stack.getCount() / output.getCount();
+                if (count < 1 | (float) stack.getCount() % output.getCount() != 0) continue;
 
                 // 替换物品（数量与原物品相同）
                 container.setItem(i, output.copyWithCount(count));

@@ -13,7 +13,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-public record LampTubeRecipe(Ingredient ingredient, ItemStack output) implements Recipe<LampTubeRecipeInput> {
+public record LampTubeRecipe(Ingredient ingredient, ItemStack result) implements Recipe<LampTubeRecipeInput> {
     @Override
     public NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> ingredients = NonNullList.create();
@@ -30,7 +30,7 @@ public record LampTubeRecipe(Ingredient ingredient, ItemStack output) implements
 
     @Override
     public ItemStack assemble(LampTubeRecipeInput input, HolderLookup.Provider registries) {
-        return output.copy();
+        return result.copy();
     }
 
     @Override
@@ -40,7 +40,7 @@ public record LampTubeRecipe(Ingredient ingredient, ItemStack output) implements
 
     @Override
     public ItemStack getResultItem(HolderLookup.Provider registries) {
-        return output;
+        return result;
     }
 
     @Override
@@ -57,13 +57,13 @@ public record LampTubeRecipe(Ingredient ingredient, ItemStack output) implements
         public static final MapCodec<LampTubeRecipe> CODEC = RecordCodecBuilder.mapCodec(builder ->
                 builder.group(
                         Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(LampTubeRecipe::ingredient),
-                        ItemStack.CODEC.fieldOf("output").forGetter(LampTubeRecipe::output)
+                        ItemStack.CODEC.fieldOf("result").forGetter(LampTubeRecipe::result)
                 ).apply(builder, LampTubeRecipe::new)
         );
 
         public static final StreamCodec<RegistryFriendlyByteBuf, LampTubeRecipe> STREAM_CODEC = StreamCodec.composite(
                 Ingredient.CONTENTS_STREAM_CODEC, LampTubeRecipe::ingredient,
-                ItemStack.STREAM_CODEC, LampTubeRecipe::output,
+                ItemStack.STREAM_CODEC, LampTubeRecipe::result,
                 LampTubeRecipe::new
         );
 

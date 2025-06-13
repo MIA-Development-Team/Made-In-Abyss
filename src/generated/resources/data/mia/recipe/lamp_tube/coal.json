@@ -1,0 +1,10 @@
+{
+  "type": "mia:lamp_tube",
+  "ingredient": {
+    "tag": "minecraft:planks"
+  },
+  "result": {
+    "count": 4,
+    "id": "minecraft:coal"
+  }
+}

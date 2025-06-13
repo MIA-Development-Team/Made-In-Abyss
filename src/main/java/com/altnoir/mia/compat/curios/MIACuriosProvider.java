@@ -1,4 +1,4 @@
-package com.altnoir.mia.curios;
+package com.altnoir.mia.compat.curios;
 
 // 新增导入Curios API相关类
 

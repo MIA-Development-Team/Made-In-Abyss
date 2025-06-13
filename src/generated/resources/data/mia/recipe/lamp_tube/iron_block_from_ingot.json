@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:iron_ingot"
   },
-  "output": {
+  "result": {
     "count": 1,
     "id": "minecraft:iron_block"
   }
