@@ -33,6 +33,7 @@ public class MIABlockLootTableProvider extends BlockLootSubProvider {
         add(MIABlocks.ABYSS_ANDESITE.get(), createSingleItemTableWithSilkTouch(MIABlocks.ABYSS_ANDESITE.get(), MIABlocks.ABYSS_COBBLED_ANDESITE.get()));
         dropSelf(MIABlocks.ABYSS_COBBLED_ANDESITE.get());
         dropSelf(MIABlocks.FORTITUDE_FLOWER.get());
+        dropSelf(MIABlocks.LAMP_TUBE.get());
     }
 
 //    protected LootTable.Builder createSilkTouchDrops(Block block, Block other) {

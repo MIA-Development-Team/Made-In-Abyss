@@ -37,6 +37,7 @@ public class MIAModelProvider {
                                 .uvs(0, 0, 16, 16)
                 );
     }
+
     public void mirroredBlockModel(BlockStateProvider provider, Block block) {
         provider.models().withExistingParent(BuiltInRegistries.BLOCK.getKey(block).getPath(), provider.mcLoc("block/cube_all"))
                 .texture("all", provider.modLoc("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath()));

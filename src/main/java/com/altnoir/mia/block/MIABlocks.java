@@ -4,14 +4,18 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.block.c.AbyssAndesiteBlock;
 import com.altnoir.mia.block.c.AbyssGrassBlock;
 import com.altnoir.mia.block.c.CoverGrassBlock;
+import com.altnoir.mia.block.c.LampTubeBlock;
 import com.altnoir.mia.item.MIAItems;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EndRodBlock;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -20,6 +24,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
 
 public class MIABlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MIA.MOD_ID);
@@ -69,6 +74,20 @@ public class MIABlocks {
                             .pushReaction(PushReaction.DESTROY)
             )
     );
+    public static final DeferredBlock<Block> LAMP_TUBE = registerBlock("lamp_tube", () ->
+            new LampTubeBlock(
+                    BlockBehaviour.Properties.of()
+                            .forceSolidOff()
+                            .instabreak()
+                            .lightLevel(litBlockEmission(10))
+                            .sound(SoundType.LANTERN)
+                            .noOcclusion()
+            )
+    );
+
+    private static ToIntFunction<BlockState> litBlockEmission(int lightValue) {
+        return state -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
+    }
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
         DeferredBlock<T> toReturn = BLOCKS.register(name, block);

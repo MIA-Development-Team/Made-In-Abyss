@@ -1,9 +1,13 @@
 {
+  "itemgroup.mia": "来自深渊",
+  "item.mia.endless_cup": "无尽水杯",
+
   "block.mia.abyss_andesite": "深界安山岩",
   "block.mia.abyss_cobbled_andesite": "深界安山岩圆石",
   "block.mia.abyss_grass_block": "深界草方块",
   "block.mia.covergrass_abyss_andesite": "覆草深界安山岩",
   "block.mia.fortitude_flower": "不屈之花",
-  "item.mia.endless_cup": "无尽水杯",
-  "itemgroup.mia": "来自深渊"
+  "block.mia.lamp_tube": "灯管",
+
+  "curios.identifier.whistle": "笛"
 }

@@ -30,6 +30,7 @@ public class MIABlockStateProvider extends BlockStateProvider {
         stateProvider.rotationYBlockState(this, MIABlocks.ABYSS_GRASS_BLOCK.get());
         stateProvider.rotationYBlockState(this, MIABlocks.COVERGRASS_ABYSS_ANDESITE.get());
         stateProvider.mirroredBlockState(this, MIABlocks.ABYSS_ANDESITE.get());
+        stateProvider.rodBlockState(this, MIABlocks.LAMP_TUBE.get());
 
 
 
@@ -39,6 +40,7 @@ public class MIABlockStateProvider extends BlockStateProvider {
         blockWithItem(MIABlocks.ABYSS_COBBLED_ANDESITE);
 
         crossBlock(MIABlocks.FORTITUDE_FLOWER);
+        abyssBlockItem(MIABlocks.LAMP_TUBE);
     }
 
     protected void crossBlock(DeferredBlock<?> block) {

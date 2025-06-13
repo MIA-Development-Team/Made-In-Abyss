@@ -1,0 +1,10 @@
+{
+  "type": "mia:lamp_tube",
+  "ingredient": {
+    "item": "minecraft:iron_ingot"
+  },
+  "output": {
+    "count": 1,
+    "id": "minecraft:iron_block"
+  }
+}

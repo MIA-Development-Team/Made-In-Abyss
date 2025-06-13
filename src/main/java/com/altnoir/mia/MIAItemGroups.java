@@ -24,6 +24,7 @@ public class MIAItemGroups {
                 output.accept(MIABlocks.ABYSS_ANDESITE);
                 output.accept(MIABlocks.ABYSS_COBBLED_ANDESITE);
                 output.accept(MIABlocks.FORTITUDE_FLOWER);
+                output.accept(MIABlocks.LAMP_TUBE);
             })
             .build());
     public static void register(IEventBus eventBus) {

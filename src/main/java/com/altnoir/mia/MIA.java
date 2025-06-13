@@ -4,6 +4,7 @@ import com.altnoir.mia.block.MIABlocks;
 import com.altnoir.mia.effect.MIAEffects;
 import com.altnoir.mia.event.CurseConfig;
 import com.altnoir.mia.item.MIAItems;
+import com.altnoir.mia.recipe.MIARecipes;
 import com.altnoir.mia.worldgen.noisesetting.MIADensityFunctionTypes;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
@@ -34,6 +35,8 @@ public class MIA {
 
         MIAEffects.register(modEventBus);
         MIADensityFunctionTypes.register(modEventBus);
+
+        MIARecipes.register(modEventBus);
 
         CurseConfig.loadConfig();
         NeoForge.EVENT_BUS.register(this);

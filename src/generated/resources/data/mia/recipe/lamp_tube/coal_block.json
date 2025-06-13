@@ -1,0 +1,10 @@
+{
+  "type": "mia:lamp_tube",
+  "ingredient": {
+    "tag": "minecraft:logs"
+  },
+  "output": {
+    "count": 1,
+    "id": "minecraft:coal_block"
+  }
+}

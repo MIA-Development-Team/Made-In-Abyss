@@ -1,0 +1,9 @@
+{
+  "type": "mia:lamp_tube",
+  "ingredient": {
+    "item": "minecraft:diamond"
+  },
+  "result": {
+    "item" : "minecraft:diamond_block"
+  }
+}

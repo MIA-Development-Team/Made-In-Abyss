@@ -20,6 +20,7 @@ public class MIALangProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         add("itemgroup.mia", "Made In Abyss");
+        add("curios.identifier.whistle", "Whistle");
 
         MIAItems.ITEMS.getEntries().stream()
                         .map(DeferredHolder::get)
