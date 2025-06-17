@@ -17,7 +17,7 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-public class MIAWorldGenProvider extends DatapackBuiltinEntriesProvider {
+public class MiaWorldGenProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.DIMENSION_TYPE, MIADimensionTypes::bootstrapType)
             .add(Registries.CONFIGURED_FEATURE, MIAConfigureFeatures::bootstrap)
@@ -27,7 +27,7 @@ public class MIAWorldGenProvider extends DatapackBuiltinEntriesProvider {
             .add(Registries.DENSITY_FUNCTION, MIADensityFunction::bootstrap)
             .add(Registries.NOISE_SETTINGS, MIANoiseGeneratorSettings::bootstrap);
 
-    public MIAWorldGenProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+    public MiaWorldGenProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of(MIA.MOD_ID));
     }
 }

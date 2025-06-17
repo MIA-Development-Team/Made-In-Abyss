@@ -28,20 +28,20 @@ public class DataGenerators {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
         generators.addProvider(event.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(),
-                List.of(new LootTableProvider.SubProviderEntry(MIABlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
-        generators.addProvider(event.includeServer(), new MIARecipeProvider(packOutput, lookupProvider));
+                List.of(new LootTableProvider.SubProviderEntry(MiaBlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
+        generators.addProvider(event.includeServer(), new MiaRecipeProvider(packOutput, lookupProvider));
 
-        BlockTagsProvider blockTagsProvider = new MIABlockTagProvider(packOutput, lookupProvider, existingFileHelper);
-        ItemTagsProvider itemTagsProvider = new MIAItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper);
+        BlockTagsProvider blockTagsProvider = new MiaBlockTagProvider(packOutput, lookupProvider, existingFileHelper);
+        ItemTagsProvider itemTagsProvider = new MiaItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper);
         generators.addProvider(event.includeServer(), blockTagsProvider);
         generators.addProvider(event.includeServer(), itemTagsProvider);
-        generators.addProvider(event.includeServer(), new MIADataMapProvider(packOutput, lookupProvider));
+        generators.addProvider(event.includeServer(), new MiaDataMapProvider(packOutput, lookupProvider));
 
-        generators.addProvider(event.includeServer(), new MIAWorldGenProvider(packOutput, lookupProvider));
+        generators.addProvider(event.includeServer(), new MiaWorldGenProvider(packOutput, lookupProvider));
         generators.addProvider(event.includeServer(), new MIACuriosProvider(packOutput, existingFileHelper, lookupProvider));
 
-        generators.addProvider(event.includeClient(), new MIABlockStateProvider(packOutput, existingFileHelper));
-        generators.addProvider(event.includeClient(), new MIAItemModelProvider(packOutput, existingFileHelper));
-        generators.addProvider(event.includeClient(), new MIALangProvider(packOutput, "en_us"));
+        generators.addProvider(event.includeClient(), new MiaBlockStateProvider(packOutput, existingFileHelper));
+        generators.addProvider(event.includeClient(), new MiaItemModelProvider(packOutput, existingFileHelper));
+        generators.addProvider(event.includeClient(), new MiaLangProvider(packOutput, "en_us"));
     }
 }

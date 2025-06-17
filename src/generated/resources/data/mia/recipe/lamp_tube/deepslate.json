@@ -1,10 +1,10 @@
 {
   "type": "mia:lamp_tube",
   "ingredient": {
-    "item": "minecraft:diamond"
+    "item": "minecraft:stone"
   },
   "result": {
     "count": 1,
-    "id": "minecraft:diamond_block"
+    "id": "minecraft:deepslate"
   }
 }

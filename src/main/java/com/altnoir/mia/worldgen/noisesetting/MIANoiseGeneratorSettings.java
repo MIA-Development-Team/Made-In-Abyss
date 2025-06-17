@@ -1,7 +1,7 @@
 package com.altnoir.mia.worldgen.noisesetting;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.block.MIABlocks;
+import com.altnoir.mia.block.MiaBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -23,7 +23,7 @@ public class MIANoiseGeneratorSettings {
     public static NoiseGeneratorSettings abyssBrink(BootstrapContext<?> context, boolean large, boolean amplified) {
         return new NoiseGeneratorSettings(
                 MIANoiseSettings.ABYSS_BRINK_NOISE_SETTINGS,
-                MIABlocks.ABYSS_ANDESITE.get().defaultBlockState(),
+                MiaBlocks.ABYSS_ANDESITE.get().defaultBlockState(),
                 Blocks.WATER.defaultBlockState(),
                 MIANoiseRouterData.abyssBrink(context.lookup(Registries.DENSITY_FUNCTION), context.lookup(Registries.NOISE)),
                 MIASurfaceRuleData.abyssBrink(false),

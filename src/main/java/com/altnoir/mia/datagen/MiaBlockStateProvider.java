@@ -1,9 +1,9 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.block.MIABlocks;
-import com.altnoir.mia.datagen.blockstate.MIAStateProvider;
-import com.altnoir.mia.datagen.blockstate.MIAModelProvider;
+import com.altnoir.mia.block.MiaBlocks;
+import com.altnoir.mia.datagen.blockstate.MiaStateProvider;
+import com.altnoir.mia.datagen.blockstate.MiaModelProvider;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;
@@ -11,36 +11,36 @@ import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
-public class MIABlockStateProvider extends BlockStateProvider {
-    public MIABlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
+public class MiaBlockStateProvider extends BlockStateProvider {
+    public MiaBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, MIA.MOD_ID, exFileHelper);
     }
 
     @Override
     protected void registerStatesAndModels() {
-        MIAModelProvider modelProvider = new MIAModelProvider();
-        MIAStateProvider stateProvider = new MIAStateProvider();
+        MiaModelProvider modelProvider = new MiaModelProvider();
+        MiaStateProvider stateProvider = new MiaStateProvider();
 
         // block models
-        modelProvider.abyssGrassBlockModel(this, MIABlocks.ABYSS_GRASS_BLOCK.get());
-        modelProvider.coverGrassBlockModel(this, MIABlocks.COVERGRASS_ABYSS_ANDESITE.get(), Blocks.ANDESITE);
-        modelProvider.mirroredBlockModel(this, MIABlocks.ABYSS_ANDESITE.get());
+        modelProvider.abyssGrassBlockModel(this, MiaBlocks.ABYSS_GRASS_BLOCK.get());
+        modelProvider.coverGrassBlockModel(this, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(), Blocks.ANDESITE);
+        modelProvider.mirroredBlockModel(this, MiaBlocks.ABYSS_ANDESITE.get());
 
         // block states
-        stateProvider.rotationYBlockState(this, MIABlocks.ABYSS_GRASS_BLOCK.get());
-        stateProvider.rotationYBlockState(this, MIABlocks.COVERGRASS_ABYSS_ANDESITE.get());
-        stateProvider.mirroredBlockState(this, MIABlocks.ABYSS_ANDESITE.get());
-        stateProvider.rodBlockState(this, MIABlocks.LAMP_TUBE.get());
+        stateProvider.rotationYBlockState(this, MiaBlocks.ABYSS_GRASS_BLOCK.get());
+        stateProvider.rotationYBlockState(this, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
+        stateProvider.mirroredBlockState(this, MiaBlocks.ABYSS_ANDESITE.get());
+        stateProvider.rodBlockState(this, MiaBlocks.LAMP_TUBE.get());
 
 
 
-        abyssBlockItem(MIABlocks.ABYSS_GRASS_BLOCK);
-        abyssBlockItem(MIABlocks.COVERGRASS_ABYSS_ANDESITE);
-        abyssBlockItem(MIABlocks.ABYSS_ANDESITE);
-        blockWithItem(MIABlocks.ABYSS_COBBLED_ANDESITE);
+        abyssBlockItem(MiaBlocks.ABYSS_GRASS_BLOCK);
+        abyssBlockItem(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
+        abyssBlockItem(MiaBlocks.ABYSS_ANDESITE);
+        blockWithItem(MiaBlocks.ABYSS_COBBLED_ANDESITE);
 
-        crossBlock(MIABlocks.FORTITUDE_FLOWER);
-        abyssBlockItem(MIABlocks.LAMP_TUBE);
+        crossBlock(MiaBlocks.FORTITUDE_FLOWER);
+        abyssBlockItem(MiaBlocks.LAMP_TUBE);
     }
 
     protected void crossBlock(DeferredBlock<?> block) {

@@ -1,8 +1,9 @@
 package com.altnoir.mia.block.c;
 
+import com.altnoir.mia.MIA;
 import com.altnoir.mia.recipe.LampTubeRecipe;
 import com.altnoir.mia.recipe.LampTubeRecipeInput;
-import com.altnoir.mia.recipe.MIARecipes;
+import com.altnoir.mia.recipe.MiaRecipes;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -106,6 +107,7 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
                 } else {
                     level.setBlock(pos, state.cycle(LIT), 2);
                     checkAndConvert(level, pos, state);
+                    MIA.LOGGER.info("Lamp tube is {}", MiaRecipes.LAMP_TUBE_TYPE.get().toString());
                 }
             }
         }
@@ -145,7 +147,7 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
 
     private Optional<RecipeHolder<LampTubeRecipe>> getCurrentRecipe(Level level, ItemStack stack) {
         return level.getRecipeManager()
-                .getRecipeFor(MIARecipes.LAMP_TUBE_TYPE.get(), new LampTubeRecipeInput(stack), level);
+                .getRecipeFor(MiaRecipes.LAMP_TUBE_TYPE.get(), new LampTubeRecipeInput(stack), level);
     }
 
     private void spawnParticles(Level level, BlockPos pos, BlockPos targetPos, BlockState state) {

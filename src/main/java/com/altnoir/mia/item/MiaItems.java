@@ -6,7 +6,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-public class MIAItems {
+public class MiaItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MIA.MOD_ID);
 
     public static final DeferredItem<Item> ENDLESS_CUP = ITEMS.register("endless_cup", () ->

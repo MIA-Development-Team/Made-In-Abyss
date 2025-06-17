@@ -2,7 +2,7 @@ package com.altnoir.mia.datagen.recipebuilder;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.recipe.LampTubeRecipe;
-import com.altnoir.mia.recipe.MIARecipes;
+import com.altnoir.mia.recipe.MiaRecipes;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
@@ -27,7 +27,7 @@ public class LampTubeRecipeBuilder implements RecipeBuilder {
     private final ItemStack result;
     private final Ingredient ingredient;
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
-    private static final String RECIPE_TYPE = MIARecipes.LAMP_TUBE_TYPE.getId().getPath();
+    private static final String RECIPE_TYPE = MiaRecipes.LAMP_TUBE_TYPE.getId().getPath();
 
     public LampTubeRecipeBuilder(Ingredient ingredient, ItemStack result) {
         this.ingredient = ingredient;

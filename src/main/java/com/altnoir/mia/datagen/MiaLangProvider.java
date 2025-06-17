@@ -1,8 +1,8 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.block.MIABlocks;
-import com.altnoir.mia.item.MIAItems;
+import com.altnoir.mia.block.MiaBlocks;
+import com.altnoir.mia.item.MiaItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.BlockItem;
@@ -12,8 +12,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class MIALangProvider extends LanguageProvider {
-    public MIALangProvider(PackOutput output, String locale) {
+public class MiaLangProvider extends LanguageProvider {
+    public MiaLangProvider(PackOutput output, String locale) {
         super(output, MIA.MOD_ID, locale);
     }
 
@@ -21,15 +21,17 @@ public class MIALangProvider extends LanguageProvider {
     protected void addTranslations() {
         add("itemgroup.mia", "Made In Abyss");
         add("curios.identifier.whistle", "Whistle");
+        add("tag.item.curios.whistle", "Whistle");
+        add("emi.category.mia.lamp_tube", "Laser Catalysis");
 
-        MIAItems.ITEMS.getEntries().stream()
+        MiaItems.ITEMS.getEntries().stream()
                         .map(DeferredHolder::get)
                         .filter(item -> !(item instanceof BlockItem))
                         .forEach(item -> {
                             add(item, formatName(BuiltInRegistries.ITEM.getKey(item).getPath()));
                         });
 
-        MIABlocks.BLOCKS.getEntries().stream()
+        MiaBlocks.BLOCKS.getEntries().stream()
                         .map(DeferredHolder::get)
                         .forEach(item -> {
                             add(item, formatName(BuiltInRegistries.BLOCK.getKey(item).getPath()));

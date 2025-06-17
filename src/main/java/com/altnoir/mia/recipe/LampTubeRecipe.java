@@ -7,10 +7,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
 public record LampTubeRecipe(Ingredient ingredient, ItemStack result) implements Recipe<LampTubeRecipeInput> {
@@ -45,12 +42,12 @@ public record LampTubeRecipe(Ingredient ingredient, ItemStack result) implements
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return MIARecipes.LAMP_TUBE_SERIALIZER.get();
+        return MiaRecipes.LAMP_TUBE_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return MIARecipes.LAMP_TUBE_TYPE.get();
+        return MiaRecipes.LAMP_TUBE_TYPE.get();
     }
 
     public static class Serializer implements RecipeSerializer<LampTubeRecipe> {

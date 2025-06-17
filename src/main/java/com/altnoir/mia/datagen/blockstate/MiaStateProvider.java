@@ -9,7 +9,7 @@ import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 
-public class MIAStateProvider {
+public class MiaStateProvider {
     public void rotationYBlockState(BlockStateProvider provider, Block block) {
         provider.getVariantBuilder(block)
                 .partialState().addModels(

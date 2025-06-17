@@ -5,12 +5,11 @@ import com.altnoir.mia.block.c.AbyssAndesiteBlock;
 import com.altnoir.mia.block.c.AbyssGrassBlock;
 import com.altnoir.mia.block.c.CoverGrassBlock;
 import com.altnoir.mia.block.c.LampTubeBlock;
-import com.altnoir.mia.item.MIAItems;
+import com.altnoir.mia.item.MiaItems;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EndRodBlock;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -26,7 +25,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
-public class MIABlocks {
+public class MiaBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MIA.MOD_ID);
 
     public static final DeferredBlock<Block> ABYSS_ANDESITE = registerBlock("abyss_andesite",  () ->
@@ -95,7 +94,7 @@ public class MIABlocks {
         return toReturn;
     }
     private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {
-        MIAItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        MiaItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);

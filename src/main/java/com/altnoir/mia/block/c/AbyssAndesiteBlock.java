@@ -1,7 +1,7 @@
 package com.altnoir.mia.block.c;
 
-import com.altnoir.mia.block.MIABlocks;
-import com.altnoir.mia.tag.MIABlockTags;
+import com.altnoir.mia.block.MiaBlocks;
+import com.altnoir.mia.tag.MiaBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -23,7 +23,7 @@ public class AbyssAndesiteBlock extends Block implements BonemealableBlock {
             return false;
         } else {
             for (BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
-                if (level.getBlockState(blockpos).is(MIABlockTags.COVERGRASS)) {
+                if (level.getBlockState(blockpos).is(MiaBlockTags.COVERGRASS)) {
                     return true;
                 }
             }
@@ -43,7 +43,7 @@ public class AbyssAndesiteBlock extends Block implements BonemealableBlock {
         for (BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
             BlockState blockstate = level.getBlockState(blockpos);
 
-            if (blockstate.is(MIABlocks.COVERGRASS_ABYSS_ANDESITE.get())) {
+            if (blockstate.is(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())) {
                 flag = true;
             }
 
@@ -53,7 +53,7 @@ public class AbyssAndesiteBlock extends Block implements BonemealableBlock {
         }
 
         if (flag) {
-            level.setBlock(pos, MIABlocks.COVERGRASS_ABYSS_ANDESITE.get().defaultBlockState(), 3);
+            level.setBlock(pos, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get().defaultBlockState(), 3);
         }
     }
 

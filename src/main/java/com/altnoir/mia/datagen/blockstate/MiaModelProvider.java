@@ -1,12 +1,12 @@
 package com.altnoir.mia.datagen.blockstate;
 
-import com.altnoir.mia.block.MIABlocks;
+import com.altnoir.mia.block.MiaBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 
-public class MIAModelProvider {
+public class MiaModelProvider {
     public void abyssGrassBlockModel(BlockStateProvider provider, Block block) {
         provider.models().withExistingParent(BuiltInRegistries.BLOCK.getKey(block).getPath(), provider.mcLoc("block/block"))
                 .texture("side", provider.modLoc("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath() + "_side"))
@@ -25,7 +25,7 @@ public class MIAModelProvider {
     public void coverGrassBlockModel(BlockStateProvider provider, Block block, Block bottom) {
         provider.models().withExistingParent(BuiltInRegistries.BLOCK.getKey(block).getPath(), provider.mcLoc("block/block"))
                 .texture("side", provider.modLoc("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath() + "_side"))
-                .texture("top", provider.modLoc("block/" + BuiltInRegistries.BLOCK.getKey(MIABlocks.ABYSS_GRASS_BLOCK.get()).getPath() + "_top"))
+                .texture("top", provider.modLoc("block/" + BuiltInRegistries.BLOCK.getKey(MiaBlocks.ABYSS_GRASS_BLOCK.get()).getPath() + "_top"))
                 .texture("bottom", provider.mcLoc("block/" + BuiltInRegistries.BLOCK.getKey(bottom).getPath()))
                 .texture("particle", provider.mcLoc("block/" + BuiltInRegistries.BLOCK.getKey(bottom).getPath()))
                 .element().from(0, 0, 0).to(16, 16, 16)

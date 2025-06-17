@@ -1,6 +1,6 @@
 package com.altnoir.mia.worldgen.noisesetting;
 
-import com.altnoir.mia.block.MIABlocks;
+import com.altnoir.mia.block.MiaBlocks;
 import com.altnoir.mia.worldgen.biome.MIABiomes;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.data.worldgen.SurfaceRuleData;
@@ -24,7 +24,7 @@ public class MIASurfaceRuleData extends SurfaceRuleData {
                         SurfaceRules.sequence(
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
-                                        makeStateRule(MIABlocks.COVERGRASS_ABYSS_ANDESITE.get())
+                                        makeStateRule(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
                                 )
                         )
                 )

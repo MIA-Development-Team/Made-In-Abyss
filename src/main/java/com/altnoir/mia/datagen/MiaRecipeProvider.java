@@ -16,20 +16,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-public class MIARecipeProvider extends RecipeProvider implements IConditionBuilder {
-    public MIARecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+public class MiaRecipeProvider extends RecipeProvider implements IConditionBuilder {
+    public MiaRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
     }
 
     @Override
     protected void buildRecipes(@NotNull RecipeOutput recipeOutput) {
-        lampTube(recipeOutput, Items.DIAMOND, Blocks.DIAMOND_BLOCK);
-        lampTube(recipeOutput, Items.IRON_INGOT, Blocks.IRON_BLOCK, "ingot");
-        lampTube(recipeOutput, ItemTags.LOGS, Blocks.COAL_BLOCK, "logs");
-
-        lampTube(recipeOutput, Items.GOLD_INGOT, Blocks.GOLD_BLOCK, 2);
-        lampTube(recipeOutput, ItemTags.PLANKS, Items.COAL, 4, "planks");
+        lampTube(recipeOutput, Items.STONE, Items.DEEPSLATE);
     }
+
 
     private static void lampTube(RecipeOutput recipeOutput, ItemLike input, ItemLike output) {
         lampTube(recipeOutput, input, output, 1);

@@ -9,5 +9,7 @@
   "block.mia.fortitude_flower": "不屈之花",
   "block.mia.lamp_tube": "灯管",
 
-  "curios.identifier.whistle": "笛"
+  "curios.identifier.whistle": "笛",
+  "tag.item.curios.whistle": "笛",
+  "emi.category.mia.lamp_tube": "镭射催化"
 }

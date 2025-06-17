@@ -6,13 +6,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 
-public class MIABlockTags {
+public class MiaBlockTags {
     // 新增多个自定义方块标签定义
     public static final TagKey<Block> BASE_STONE_ABYSS = create("base_stone_abyss");
     public static final TagKey<Block> ANDESITE_ORE_REPLACEABLES = create("andesite_ore_replaceables");
     public static final TagKey<Block> COVERGRASS = create("covergrass");
 
-    private MIABlockTags() {
+    private MiaBlockTags() {
         // 私有构造函数防止实例化
     }
 
