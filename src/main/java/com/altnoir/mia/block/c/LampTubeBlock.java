@@ -113,34 +113,52 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
         }
     }
 
+    private void lampTubeChanged(BlockState state, Level level, BlockPos pos) {
+        level.updateNeighborsAt(pos.above(), state.getBlock());
+        boolean flag = state.getValue(LIT);
+        if (flag) {
+            level.scheduleTick(pos, this, 4);
+        } else {
+            level.setBlock(pos, state.cycle(LIT), 2);
+            checkAndConvert(level, pos, state);
+        }
+    }
+
     private void checkAndConvert(Level level, BlockPos pos, BlockState state) {
         Direction direction = state.getValue(FACING);
-        BlockPos targetPos = pos.relative(direction, 2);
-        // 获取目标方块实体并检查是否为容器
-        if (level.getBlockEntity(targetPos) instanceof Container container) {
-            // 遍历容器格子
-            for (int i = 0; i < container.getContainerSize(); i++) {
-                ItemStack stack = container.getItem(i);
-                Optional<RecipeHolder<LampTubeRecipe>> recipe = getCurrentRecipe(level, stack);
+        for (int i = 1; i <= 12; i++) {
+            BlockPos targetPos = pos.relative(direction, i);
+            BlockState stateInDir = level.getBlockState(targetPos);
+            // 检查是否为容器
+            if (level.getBlockEntity(targetPos) instanceof Container container) {
+                // 遍历容器格子
+                for (int c = 0; c < container.getContainerSize(); c++) {
+                    ItemStack stack = container.getItem(c);
+                    Optional<RecipeHolder<LampTubeRecipe>> recipe = getCurrentRecipe(level, stack);
 
-                if (stack.isEmpty() | recipe.isEmpty()) continue;
+                    if (stack.isEmpty() | recipe.isEmpty()) continue;
 
-                ItemStack output = recipe.get().value().result();
-                //MIA.LOGGER.info("Output: {}", output);
-                //if (!stack.isEmpty() && stack.is(ItemTags.LOGS))
-                int count = stack.getCount() / output.getCount();
-                if (count < 1 | (float) stack.getCount() % output.getCount() != 0) continue;
+                    ItemStack output = recipe.get().value().result();
+                    //MIA.LOGGER.info("Output: {}", output);
+                    //if (!stack.isEmpty() && stack.is(ItemTags.LOGS))
+                    int count = stack.getCount() / output.getCount();
+                    if (count < 1 | (float) stack.getCount() % output.getCount() != 0) continue;
 
-                // 替换物品（数量与原物品相同）
-                container.setItem(i, output.copyWithCount(count));
-                container.setChanged();
+                    // 替换物品（还需要添加数量检测）
+                    container.setItem(c, output.copyWithCount(count));
+                    container.setChanged();
 
-                // 播放效果
-                playBlast(level, targetPos);
-                spawnParticles(level, pos, targetPos, state);
-
-                return; // 处理完一个格子后立即返回
-
+                    // 效果
+                    playBlast(level, targetPos);
+                    spawnParticles1(level, pos, targetPos, state);
+                    spawnParticles2(level, targetPos);
+                    return;
+                }
+                return;
+            }else if (stateInDir.getBlock() instanceof LampTubeBlock lampTube) {
+                spawnParticles1(level, pos, targetPos, state);
+                lampTube.lampTubeChanged(stateInDir, level, targetPos);
+                return;
             }
         }
     }
@@ -150,27 +168,21 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
                 .getRecipeFor(MiaRecipes.LAMP_TUBE_TYPE.get(), new LampTubeRecipeInput(stack), level);
     }
 
-    private void spawnParticles(Level level, BlockPos pos, BlockPos targetPos, BlockState state) {
-        double startX = pos.getX() + 0.5;
-        double startY = pos.getY() + 0.5;
-        double startZ = pos.getZ() + 0.5;
-        double endX = targetPos.getX() + 0.5;
-        double endY = targetPos.getY() + 0.5;
-        double endZ = targetPos.getZ() + 0.5;
+    private void spawnParticles1(Level level, BlockPos pos, BlockPos targetPos, BlockState state) {
+        double startX = pos.getX() + 0.5, startY = pos.getY() + 0.5, startZ = pos.getZ() + 0.5;
+        double endX = targetPos.getX() + 0.5, endY = targetPos.getY() + 0.5, endZ = targetPos.getZ() + 0.5;
 
-        double midX = (startX + endX) / 2;
-        double midY = (startY + endY) / 2;
-        double midZ = (startZ + endZ) / 2;
+        double midX = (startX + endX) / 2, midY = (startY + endY) / 2, midZ = (startZ + endZ) / 2;
 
-        double dx = endX - startX;
-        double dy = endY - startY;
-        double dz = endZ - startZ;
+        double dx = endX - startX, dy = endY - startY, dz = endZ - startZ;
+
+        int particleCount = (int) Math.abs(dx + dy + dz) / 2 * 50;
 
         Direction facing = state.getValue(FACING);
 
-        double dxFactor = (facing == Direction.WEST || facing == Direction.EAST) ? 0.15 : 0.01;
-        double dyFactor = (facing == Direction.UP || facing == Direction.DOWN) ? 0.15 : 0.01;
-        double dzFactor = (facing == Direction.NORTH || facing == Direction.SOUTH) ? 0.15 : 0.01;
+        double dxFactor = (facing == Direction.WEST || facing == Direction.EAST) ? 0.16 : 0.01;
+        double dyFactor = (facing == Direction.UP || facing == Direction.DOWN) ? 0.16 : 0.01;
+        double dzFactor = (facing == Direction.NORTH || facing == Direction.SOUTH) ? 0.16 : 0.01;
 
         if (level instanceof ServerLevel serverLevel) {
             float r = 0.0F, g = 1.0F, b = 1.0F;
@@ -178,15 +190,23 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
             serverLevel.sendParticles(
                     new DustParticleOptions(new Vector3f(r, g, b), 0.5f),
                     midX, midY, midZ,
-                    50,
+                    particleCount,
                     dx * dxFactor,
                     dy * dyFactor,
                     dz * dzFactor,
                     0
             );
+        }
+    }
+    private void spawnParticles2(Level level, BlockPos targetPos) {
+        double endX = targetPos.getX() + 0.5;
+        double endY = targetPos.getY() + 0.5;
+        double endZ = targetPos.getZ() + 0.5;
+        if (level instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(ParticleTypes.END_ROD, endX, endY, endZ, 10, 0.2, 0.2, 0.2, 0.03);
         }
     }
+
     private void playBlast(Level level, BlockPos pos) {
         level.playSound(null, pos, SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS);
     }
