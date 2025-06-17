@@ -5,8 +5,9 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
   ],
-  "client": [],
-  "server": [],
+  "client": [
+    "IPauseScreen"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
