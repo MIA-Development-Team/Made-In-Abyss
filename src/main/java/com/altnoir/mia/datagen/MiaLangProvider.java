@@ -23,6 +23,7 @@ public class MiaLangProvider extends LanguageProvider {
         add("curios.identifier.whistle", "Whistle");
         add("tag.item.curios.whistle", "Whistle");
         add("emi.category.mia.lamp_tube", "Laser Catalysis");
+        add("mia.pause.disconnect", "No escape");
 
         MiaItems.ITEMS.getEntries().stream()
                         .map(DeferredHolder::get)
