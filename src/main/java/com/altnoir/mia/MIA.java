@@ -1,8 +1,8 @@
 package com.altnoir.mia;
 
+import com.altnoir.mia.core.curse.CurseManager;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaEffects;
-import com.altnoir.mia.init.event.CurseConfig;
 import com.altnoir.mia.init.MiaItemGroups;
 import com.altnoir.mia.init.MiaItems;
 import com.altnoir.mia.init.MiaRecipes;
@@ -18,6 +18,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
@@ -26,6 +27,8 @@ import org.slf4j.Logger;
 public class MIA {
     public static final String MOD_ID = "mia";
     public static final Logger LOGGER = LogUtils.getLogger();
+
+    public static final CurseManager CURSE_MANAGER = new CurseManager();
 
     public MIA(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
@@ -38,8 +41,6 @@ public class MIA {
         MIADensityFunctionTypes.register(modEventBus);
 
         MiaRecipes.register(modEventBus);
-
-        CurseConfig.loadConfig();
         NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative);
@@ -56,6 +57,11 @@ public class MIA {
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
+    }
+
+    @SubscribeEvent
+    private void reload(final AddReloadListenerEvent event){
+        event.addListener(CURSE_MANAGER);
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent

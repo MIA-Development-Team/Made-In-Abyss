@@ -1,0 +1,19 @@
+{
+  "effects": [
+    {
+      "amplifier": 0,
+      "duration": 600,
+      "effect": "minecraft:hunger"
+    },
+    {
+      "amplifier": 0,
+      "duration": 60,
+      "effect": "minecraft:darkness"
+    },
+    {
+      "amplifier": 0,
+      "duration": 20,
+      "effect": "minecraft:blindness"
+    }
+  ]
+}
