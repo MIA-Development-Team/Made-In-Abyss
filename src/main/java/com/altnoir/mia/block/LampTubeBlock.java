@@ -150,6 +150,7 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
                             break;
                         }
                     }
+                    return;
                 }
                 return;
             }else if (targetState.getBlock() instanceof LampTubeBlock) {
