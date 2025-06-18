@@ -138,15 +138,14 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
                     if (stack.getCount() - output.getCount() < 0) return;
                     for (int slot2 = 0; slot2 < container.getContainerSize(); slot2++) {
                         ItemStack stack2 = container.getItem(slot2);
-                        ItemStack outputItem = output.copy();
-                        if (ItemStack.isSameItem(stack2, outputItem) && stack2.getMaxStackSize() != stack2.getCount()) {
+                        if (ItemStack.isSameItem(stack2, output.copy()) && stack2.getMaxStackSize() != stack2.getCount()) {
                             int space = stack2.getMaxStackSize() - stack2.getCount();
                             int add = Math.min(space, 1);
                             stack2.grow(add);
                             shrinkItem(container, level, output, stack, targetPos, pos, state);
                             break;
                         } else if (stack2.isEmpty()) {
-                            container.setItem(slot2, outputItem);
+                            container.setItem(slot2, output.copyWithCount(1));
                             shrinkItem(container, level, output, stack, targetPos, pos, state);
                             break;
                         }
