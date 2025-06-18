@@ -1,6 +1,7 @@
-package com.altnoir.mia.recipe;
+package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.recipe.LampTubeRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;

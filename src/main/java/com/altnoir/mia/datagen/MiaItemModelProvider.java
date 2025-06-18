@@ -1,8 +1,8 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.block.MiaBlocks;
-import com.altnoir.mia.item.MiaItems;
+import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.init.MiaItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;

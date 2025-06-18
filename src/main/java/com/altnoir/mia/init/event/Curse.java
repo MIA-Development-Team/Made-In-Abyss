@@ -1,6 +1,6 @@
-package com.altnoir.mia.event;
+package com.altnoir.mia.init.event;
 
-import com.altnoir.mia.Config;
+import com.altnoir.mia.MiaConfig;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -33,7 +33,7 @@ public class Curse {
     }
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (!Config.curse) return;
+        if (!MiaConfig.curse) return;
         Player player = event.getEntity();
         ResourceLocation dim = player.level().dimension().location();
         List<CurseConfig.EffectConfig> configs = CurseConfig.getEffects(dim);

@@ -1,10 +1,11 @@
 package com.altnoir.mia;
 
-import com.altnoir.mia.block.MiaBlocks;
-import com.altnoir.mia.effect.MiaEffects;
-import com.altnoir.mia.event.CurseConfig;
-import com.altnoir.mia.item.MiaItems;
-import com.altnoir.mia.recipe.MiaRecipes;
+import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.init.MiaEffects;
+import com.altnoir.mia.init.event.CurseConfig;
+import com.altnoir.mia.init.MiaItemGroups;
+import com.altnoir.mia.init.MiaItems;
+import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.worldgen.noisesetting.MIADensityFunctionTypes;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
@@ -42,7 +43,7 @@ public class MIA {
         NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative);
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, MiaConfig.SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

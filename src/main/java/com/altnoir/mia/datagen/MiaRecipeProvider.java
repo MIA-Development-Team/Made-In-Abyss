@@ -23,7 +23,7 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
 
     @Override
     protected void buildRecipes(@NotNull RecipeOutput recipeOutput) {
-        lampTube(recipeOutput, Items.STONE, Items.DEEPSLATE);
+        lampTube(recipeOutput, Items.STONE, Items.DEEPSLATE, 2);
     }
 
 

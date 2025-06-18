@@ -1,11 +1,10 @@
-package com.altnoir.mia.block;
+package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.block.c.AbyssAndesiteBlock;
-import com.altnoir.mia.block.c.AbyssGrassBlock;
-import com.altnoir.mia.block.c.CoverGrassBlock;
-import com.altnoir.mia.block.c.LampTubeBlock;
-import com.altnoir.mia.item.MiaItems;
+import com.altnoir.mia.block.AbyssAndesiteBlock;
+import com.altnoir.mia.block.AbyssGrassBlock;
+import com.altnoir.mia.block.CoverGrassBlock;
+import com.altnoir.mia.block.LampTubeBlock;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -15,6 +14,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -78,14 +78,14 @@ public class MiaBlocks {
                     BlockBehaviour.Properties.of()
                             .forceSolidOff()
                             .instabreak()
-                            .lightLevel(litBlockEmission(10))
+                            .lightLevel(litBlockEmission(BlockStateProperties.POWERED, 10))
                             .sound(SoundType.LANTERN)
                             .noOcclusion()
             )
     );
 
-    private static ToIntFunction<BlockState> litBlockEmission(int lightValue) {
-        return state -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
+    private static ToIntFunction<BlockState> litBlockEmission(BooleanProperty property, int lightValue) {
+        return state -> state.getValue(property) ? lightValue : 0;
     }
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {

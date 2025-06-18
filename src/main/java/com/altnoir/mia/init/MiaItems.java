@@ -1,4 +1,4 @@
-package com.altnoir.mia.item;
+package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import net.minecraft.world.item.Item;

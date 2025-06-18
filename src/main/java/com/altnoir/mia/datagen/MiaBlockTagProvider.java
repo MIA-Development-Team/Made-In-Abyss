@@ -1,8 +1,8 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.block.MiaBlocks;
-import com.altnoir.mia.tag.MiaBlockTags;
+import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.init.MiaBlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;

@@ -1,4 +1,4 @@
-package com.altnoir.mia.tag;
+package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import net.minecraft.core.registries.Registries;

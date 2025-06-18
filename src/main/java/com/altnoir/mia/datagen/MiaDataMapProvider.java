@@ -1,6 +1,6 @@
 package com.altnoir.mia.datagen;
 
-import com.altnoir.mia.block.MiaBlocks;
+import com.altnoir.mia.init.MiaBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.DataMapProvider;

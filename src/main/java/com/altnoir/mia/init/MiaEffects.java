@@ -1,6 +1,7 @@
-package com.altnoir.mia.effect;
+package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.effect.AbyssCurseEffect;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;

@@ -1,8 +1,8 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.block.MiaBlocks;
-import com.altnoir.mia.item.MiaItems;
+import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.init.MiaItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.BlockItem;
@@ -20,10 +20,12 @@ public class MiaLangProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         add("itemgroup.mia", "Made In Abyss");
+
+        add("gui.mia.disconnect", "Quit?");
+        //模组翻译
         add("curios.identifier.whistle", "Whistle");
         add("tag.item.curios.whistle", "Whistle");
         add("emi.category.mia.lamp_tube", "Laser Catalysis");
-        add("mia.pause.disconnect", "No escape");
 
         MiaItems.ITEMS.getEntries().stream()
                         .map(DeferredHolder::get)

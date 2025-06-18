@@ -1,4 +1,4 @@
-package com.altnoir.mia.block.c;
+package com.altnoir.mia.block;
 
 import com.altnoir.mia.block.abs.AbstractCoverGrassBlock;
 import com.mojang.serialization.MapCodec;

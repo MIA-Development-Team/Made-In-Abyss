@@ -1,6 +1,6 @@
 package com.altnoir.mia.datagen.blockstate;
 
-import com.altnoir.mia.block.MiaBlocks;
+import com.altnoir.mia.init.MiaBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;

@@ -1,9 +1,8 @@
-package com.altnoir.mia.block.c;
+package com.altnoir.mia.block;
 
-import com.altnoir.mia.MIA;
+import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.recipe.LampTubeRecipe;
 import com.altnoir.mia.recipe.LampTubeRecipeInput;
-import com.altnoir.mia.recipe.MiaRecipes;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,7 +19,6 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RedstoneTorchBlock;
 import net.minecraft.world.level.block.RodBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,22 +35,27 @@ import java.util.Optional;
 public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
     public static final MapCodec<LampTubeBlock> CODEC = simpleCodec(LampTubeBlock::new);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
+    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     @Override
     public MapCodec<LampTubeBlock> codec() {
         return CODEC;
     }
     public LampTubeBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.UP).setValue(WATERLOGGED, Boolean.FALSE).setValue(LIT, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.UP).setValue(WATERLOGGED, Boolean.valueOf(false)).setValue(POWERED, Boolean.valueOf(false)));
     }
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING, POWERED, WATERLOGGED);
+    }
+
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Direction direction = context.getClickedFace();
         BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos().relative(direction.getOpposite()));
         FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
         boolean flag = fluidstate.getType() == Fluids.WATER;
-        BlockState defaultState = this.defaultBlockState().setValue(LIT, Boolean.valueOf(context.getLevel().hasNeighborSignal(context.getClickedPos()))).setValue(WATERLOGGED, Boolean.valueOf(flag));
+        BlockState defaultState = this.defaultBlockState().setValue(POWERED, Boolean.valueOf(context.getLevel().hasNeighborSignal(context.getClickedPos()))).setValue(WATERLOGGED, Boolean.valueOf(flag));
 
         return blockstate.is(this) && blockstate.getValue(FACING) == direction
                 ? defaultState.setValue(FACING, direction.getOpposite())
@@ -78,7 +81,7 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
      */
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if (!state.getValue(LIT)) return;
+        if (!state.getValue(POWERED)) return;
         Direction direction = state.getValue(FACING);
         double d0 = (double)pos.getX() + 0.55 - (double)(random.nextFloat() * 0.1F);
         double d1 = (double)pos.getY() + 0.55 - (double)(random.nextFloat() * 0.1F);
@@ -96,71 +99,75 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
             );
         }
     }
-
+    @Override
+    protected void tick(BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        boolean flag = state.getValue(POWERED);
+        if (flag && !level.hasNeighborSignal(pos)) {
+            checkAndConvert(level, pos, state);
+            level.setBlock(pos, state.cycle(POWERED), 2);
+            //MIA.LOGGER.info("Lamp tube is {}", MiaRecipes.LAMP_TUBE_TYPE.get().toString());
+        }
+    }
     @Override
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         if (!level.isClientSide) {
-            boolean flag = state.getValue(LIT);
+            boolean flag = state.getValue(POWERED);
             if (flag != level.hasNeighborSignal(pos)) {
                 if (flag) {
                     level.scheduleTick(pos, this, 4);
                 } else {
-                    level.setBlock(pos, state.cycle(LIT), 2);
-                    checkAndConvert(level, pos, state);
-                    MIA.LOGGER.info("Lamp tube is {}", MiaRecipes.LAMP_TUBE_TYPE.get().toString());
+                    level.setBlock(pos, state.cycle(POWERED), 2);
                 }
             }
         }
     }
-
-    private void lampTubeChanged(BlockState state, Level level, BlockPos pos) {
-        level.updateNeighborsAt(pos.above(), state.getBlock());
-        boolean flag = state.getValue(LIT);
-        if (flag) {
-            level.scheduleTick(pos, this, 4);
-        } else {
-            level.setBlock(pos, state.cycle(LIT), 2);
-            checkAndConvert(level, pos, state);
-        }
-    }
-
     private void checkAndConvert(Level level, BlockPos pos, BlockState state) {
         Direction direction = state.getValue(FACING);
         for (int i = 1; i <= 12; i++) {
             BlockPos targetPos = pos.relative(direction, i);
-            BlockState stateInDir = level.getBlockState(targetPos);
-            // 检查是否为容器
+            BlockState targetState = level.getBlockState(targetPos);
+
             if (level.getBlockEntity(targetPos) instanceof Container container) {
-                // 遍历容器格子
-                for (int c = 0; c < container.getContainerSize(); c++) {
-                    ItemStack stack = container.getItem(c);
+
+                for (int slot = 0; slot < container.getContainerSize(); slot++) {
+                    ItemStack stack = container.getItem(slot);
                     Optional<RecipeHolder<LampTubeRecipe>> recipe = getCurrentRecipe(level, stack);
 
-                    if (stack.isEmpty() | recipe.isEmpty()) continue;
-
+                    if (recipe.isEmpty()) continue;
                     ItemStack output = recipe.get().value().result();
-                    //MIA.LOGGER.info("Output: {}", output);
-                    //if (!stack.isEmpty() && stack.is(ItemTags.LOGS))
-                    int count = stack.getCount() / output.getCount();
-                    if (count < 1 | (float) stack.getCount() % output.getCount() != 0) continue;
-
-                    // 替换物品（还需要添加数量检测）
-                    container.setItem(c, output.copyWithCount(count));
-                    container.setChanged();
-
-                    // 效果
-                    playBlast(level, targetPos);
-                    spawnParticles1(level, pos, targetPos, state);
-                    spawnParticles2(level, targetPos);
-                    return;
+                    if (stack.getCount() - output.getCount() < 0) return;
+                    for (int slot2 = 0; slot2 < container.getContainerSize(); slot2++) {
+                        ItemStack stack2 = container.getItem(slot2);
+                        ItemStack outputItem = output.copy();
+                        if (ItemStack.isSameItem(stack2, outputItem) && stack2.getMaxStackSize() != stack2.getCount()) {
+                            int space = stack2.getMaxStackSize() - stack2.getCount();
+                            int add = Math.min(space, 1);
+                            stack2.grow(add);
+                            shrinkItem(container, level, output, stack, targetPos, pos, state);
+                            break;
+                        } else if (stack2.isEmpty()) {
+                            container.setItem(slot2, outputItem);
+                            shrinkItem(container, level, output, stack, targetPos, pos, state);
+                            break;
+                        }
+                    }
                 }
                 return;
-            }else if (stateInDir.getBlock() instanceof LampTubeBlock lampTube) {
+            }else if (targetState.getBlock() instanceof LampTubeBlock) {
                 spawnParticles1(level, pos, targetPos, state);
-                lampTube.lampTubeChanged(stateInDir, level, targetPos);
+                level.setBlock(targetPos, targetState.cycle(POWERED), 2);
+                level.updateNeighborsAt(pos.relative(direction, i - 1), state.getBlock());
                 return;
             }
         }
+    }
+    private void shrinkItem(Container container, Level level, ItemStack output, ItemStack stack, BlockPos targetPos, BlockPos pos, BlockState state) {
+        stack.shrink(output.getCount());
+        container.setChanged();
+        // 效果
+        playBlast(level, targetPos);
+        spawnParticles1(level, pos, targetPos, state);
+        spawnParticles2(level, targetPos);
     }
 
     private Optional<RecipeHolder<LampTubeRecipe>> getCurrentRecipe(Level level, ItemStack stack) {
@@ -209,17 +216,5 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
 
     private void playBlast(Level level, BlockPos pos) {
         level.playSound(null, pos, SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS);
-    }
-
-    @Override
-    protected void tick(BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
-        if (state.getValue(LIT) && !level.hasNeighborSignal(pos)) {
-            level.setBlock(pos, state.cycle(LIT), 2);
-        }
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, LIT, WATERLOGGED);
     }
 }

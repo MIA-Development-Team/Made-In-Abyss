@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class AbyssCurseEffect extends MobEffect {
-    protected AbyssCurseEffect(MobEffectCategory category, int color) {
+    public AbyssCurseEffect(MobEffectCategory category, int color) {
         super(category, color);
     }
 

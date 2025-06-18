@@ -1,7 +1,6 @@
-package com.altnoir.mia;
+package com.altnoir.mia.init;
 
-import com.altnoir.mia.block.MiaBlocks;
-import com.altnoir.mia.item.MiaItems;
+import com.altnoir.mia.MIA;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;

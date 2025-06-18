@@ -1,7 +1,7 @@
 package com.altnoir.mia.worldgen.noisesetting;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.block.MiaBlocks;
+import com.altnoir.mia.init.MiaBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;

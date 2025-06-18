@@ -1,7 +1,7 @@
-package com.altnoir.mia.block.c;
+package com.altnoir.mia.block;
 
-import com.altnoir.mia.block.MiaBlocks;
-import com.altnoir.mia.tag.MiaBlockTags;
+import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.init.MiaBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;

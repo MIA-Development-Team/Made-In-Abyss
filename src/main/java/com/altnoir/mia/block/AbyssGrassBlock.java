@@ -1,4 +1,4 @@
-package com.altnoir.mia.block.c;
+package com.altnoir.mia.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

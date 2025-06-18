@@ -1,4 +1,4 @@
-package com.altnoir.mia.event;
+package com.altnoir.mia.init.event;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.worldgen.dimension.MIADimensions;

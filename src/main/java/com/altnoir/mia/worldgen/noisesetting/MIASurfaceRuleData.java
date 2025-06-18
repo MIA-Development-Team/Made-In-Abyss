@@ -1,6 +1,6 @@
 package com.altnoir.mia.worldgen.noisesetting;
 
-import com.altnoir.mia.block.MiaBlocks;
+import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.worldgen.biome.MIABiomes;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.data.worldgen.SurfaceRuleData;
