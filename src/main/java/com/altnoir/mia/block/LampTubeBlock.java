@@ -128,7 +128,6 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
             BlockState targetState = level.getBlockState(targetPos);
 
             if (level.getBlockEntity(targetPos) instanceof Container container) {
-
                 for (int slot = 0; slot < container.getContainerSize(); slot++) {
                     ItemStack stack = container.getItem(slot);
                     Optional<RecipeHolder<LampTubeRecipe>> recipe = getCurrentRecipe(level, stack);
@@ -139,9 +138,7 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
                     for (int slot2 = 0; slot2 < container.getContainerSize(); slot2++) {
                         ItemStack stack2 = container.getItem(slot2);
                         if (ItemStack.isSameItem(stack2, output.copy()) && stack2.getMaxStackSize() != stack2.getCount()) {
-                            int space = stack2.getMaxStackSize() - stack2.getCount();
-                            int add = Math.min(space, 1);
-                            stack2.grow(add);
+                            stack2.grow(1);
                             shrinkItem(container, level, output, stack, targetPos, pos, state);
                             break;
                         } else if (stack2.isEmpty()) {
