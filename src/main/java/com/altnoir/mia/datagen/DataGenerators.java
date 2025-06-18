@@ -39,6 +39,7 @@ public class DataGenerators {
 
         generators.addProvider(event.includeServer(), new MiaWorldGenProvider(packOutput, lookupProvider));
         generators.addProvider(event.includeServer(), new MIACuriosProvider(packOutput, existingFileHelper, lookupProvider));
+        generators.addProvider(event.includeServer(), new MiaCurseDataProvider(packOutput, lookupProvider));
 
         generators.addProvider(event.includeClient(), new MiaBlockStateProvider(packOutput, existingFileHelper));
         generators.addProvider(event.includeClient(), new MiaItemModelProvider(packOutput, existingFileHelper));

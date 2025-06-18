@@ -1,10 +1,8 @@
 package com.altnoir.mia.init.event;
 
+import com.altnoir.mia.MIA;
 import com.altnoir.mia.MiaConfig;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -13,8 +11,6 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME)
@@ -34,13 +30,13 @@ public class Curse {
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!MiaConfig.curse) return;
-        Player player = event.getEntity();
-        ResourceLocation dim = player.level().dimension().location();
-        List<CurseConfig.EffectConfig> configs = CurseConfig.getEffects(dim);
+        var player = event.getEntity();
+        var dim = player.level().dimension().location();
+        var configs = MIA.CURSE_MANAGER.getEffects(dim);
         if (!player.level().isClientSide() && !configs.isEmpty()) {
-            UUID uuid = player.getUUID();
-            double playerY = player.getY();
-            double minY = playerMinY.computeIfAbsent(uuid, k -> playerY);
+            var uuid = player.getUUID();
+            var playerY = player.getY();
+            var minY = playerMinY.computeIfAbsent(uuid, k -> playerY);
             double deltaY = playerY - minY;
 
             if (playerY < minY) {
@@ -49,14 +45,13 @@ public class Curse {
             }
 
             if (deltaY >= CURSE_TRIGGER_HEIGHT) {
-                for (CurseConfig.EffectConfig config : configs) {
-                    ResourceLocation effectId = ResourceLocation.tryParse(config.id);
-                    if (effectId == null) continue;
-                    Optional<Holder.Reference<MobEffect>> effectHolder = BuiltInRegistries.MOB_EFFECT.getHolder(effectId);
+                for (var config : configs) {
+                    var effectId = config.effect().location();
+                    var effectHolder = BuiltInRegistries.MOB_EFFECT.getHolder(effectId);
                     effectHolder.ifPresent(effects -> player.addEffect(new MobEffectInstance(
                             effects,
-                            config.duration,
-                            config.amplifier,
+                            config.duration(),
+                            config.amplifier(),
                             false,
                             true
                     )));
@@ -64,8 +59,5 @@ public class Curse {
                 playerMinY.put(uuid, playerY);
             }
         }
-            /*if (player.tickCount % 40 == 0) {
-                MIA.LOGGER.info("MinY: {} | DeltaY: {} | Dim: {}", minY, deltaY, dim);
-            }*/
     }
 }
