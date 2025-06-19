@@ -17,8 +17,8 @@ public class MiaConfig {
             .comment("Whether to enable the Curse (Default: true) | 是否启用上升诅咒 (默认值: true)")
             .define("curse", true);
     private static final ModConfigSpec.BooleanValue BAN_DISCONNECT = BUILDER
-            .comment("Whether to ban the Disconnect Button (Default: true) | 是否禁用退出游戏按钮 (默认值: true)")
-            .define("banDisconnect", true);
+            .comment("Whether to ban the Disconnect Button (Default: false) | 是否禁用退出游戏按钮 (默认值: false)")
+            .define("banDisconnect", false);
     private static final ModConfigSpec.BooleanValue DISCONNECT_VISIBLE = BUILDER
             .comment("Whether to Hide the Disconnect Button (Default: false, The banDisconnect needs to be enabled) | 是否隐藏退出游戏按钮 (默认值: false，需要启用禁用退出按钮)")
             .define("disconnectVisible", false);

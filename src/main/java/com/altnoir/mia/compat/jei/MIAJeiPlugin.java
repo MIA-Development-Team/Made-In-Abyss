@@ -4,21 +4,27 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.recipe.LampTubeRecipe;
+import com.altnoir.mia.util.MiaPort;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 @JeiPlugin
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class MIAJeiPlugin implements IModPlugin {
-    public static final RecipeType<RecipeHolder<LampTubeRecipe>> LAMP_TUBE_RECIPE_TYPE = RecipeType.createRecipeHolderType(ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "lamp_tube_recipe"));
+    public static final RecipeType<RecipeHolder<LampTubeRecipe>> LAMP_TUBE_RECIPE_TYPE = RecipeType.createRecipeHolderType(MiaPort.id(MIA.MOD_ID, "lamp_tube_recipe"));
 
     @Override
     public ResourceLocation getPluginUid() {
