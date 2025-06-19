@@ -1,5 +1,6 @@
 package com.altnoir.mia.util;
 
+import com.altnoir.mia.MIA;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
@@ -42,10 +43,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -186,6 +184,9 @@ public class MiaPort {
         FeatureFlagSet fs = client.level.enabledFeatures();
         return getItemRegistry().stream().filter(i -> !i.isEnabled(fs));
     }
+    public static String getBlockPath(Block block) {
+        return Objects.requireNonNull(getBlockRegistry().getKey(block)).getPath();
+    }
 
     public static @Nullable RecipeHolder<?> getRecipe(ResourceLocation id) {
         Minecraft client = Minecraft.getInstance();
@@ -215,9 +216,9 @@ public class MiaPort {
         return ResourceLocation.parse(id);
     }
 
-    public static ResourceLocation id(String namespace, String path) {
-        return ResourceLocation.fromNamespaceAndPath(namespace, path);
-    }
+    public static ResourceLocation id(String namespace, String path) {return ResourceLocation.fromNamespaceAndPath(namespace, path);}
+
+    public static ResourceLocation miaId(String path) {return ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, path);}
 
     public static void applyModelViewMatrix() {
         RenderSystem.applyModelViewMatrix();

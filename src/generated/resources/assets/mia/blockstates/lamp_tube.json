@@ -1,28 +1,28 @@
 {
   "variants": {
     "facing=down": {
-      "model": "minecraft:block/end_rod",
+      "model": "mia:block/lamp_tube",
       "x": 180
     },
     "facing=east": {
-      "model": "minecraft:block/end_rod",
+      "model": "mia:block/lamp_tube",
       "x": 90,
       "y": 90
     },
     "facing=north": {
-      "model": "minecraft:block/end_rod",
+      "model": "mia:block/lamp_tube",
       "x": 90
     },
     "facing=south": {
-      "model": "minecraft:block/end_rod",
+      "model": "mia:block/lamp_tube",
       "x": 90,
       "y": 180
     },
     "facing=up": {
-      "model": "minecraft:block/end_rod"
+      "model": "mia:block/lamp_tube"
     },
     "facing=west": {
-      "model": "minecraft:block/end_rod",
+      "model": "mia:block/lamp_tube",
       "x": 90,
       "y": 270
     }

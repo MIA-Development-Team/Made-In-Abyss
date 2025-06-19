@@ -1,7 +1,7 @@
 package com.altnoir.mia.datagen.blockstate;
 
+import com.altnoir.mia.util.MiaPort;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -13,53 +13,53 @@ public class MiaStateProvider {
     public void rotationYBlockState(BlockStateProvider provider, Block block) {
         provider.getVariantBuilder(block)
                 .partialState().addModels(
-                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath())), 0, 0, false),
-                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath())), 0, 90, false),
-                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath())), 0, 180, false),
-                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath())), 0, 270, false)
+                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block))), 0, 0, false),
+                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block))), 0, 90, false),
+                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block))), 0, 180, false),
+                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block))), 0, 270, false)
                 );
     }
     public void mirroredBlockState(BlockStateProvider provider, Block block) {
         provider.getVariantBuilder(block)
                 .partialState().addModels(
-                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath())), 0, 0, false),
-                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath() + "_mirrored")), 0, 0, false),
-                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath())), 0, 180, false),
-                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath() + "_mirrored")), 0, 180, false)
+                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block))), 0, 0, false),
+                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block) + "_mirrored")), 0, 0, false),
+                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block))), 0, 180, false),
+                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block) + "_mirrored")), 0, 180, false)
                 );
     }
-    public void rodBlockState(BlockStateProvider provider, Block block) {
+    public void lampTubeBlockState(BlockStateProvider provider, Block block) {
         VariantBlockStateBuilder builder = provider.getVariantBuilder(block);
         DirectionProperty facing = BlockStateProperties.FACING;
 
         builder.partialState().with(facing, Direction.DOWN)
                 .addModels(new ConfiguredModel(
-                        provider.models().getExistingFile(provider.mcLoc("block/end_rod")),
+                        provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block))),
                         180, 0, false
                 ));
         builder.partialState().with(facing, Direction.UP)
                 .addModels(new ConfiguredModel(
-                        provider.models().getExistingFile(provider.mcLoc("block/end_rod")),
+                        provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block))),
                         0, 0, false
                 ));
         builder.partialState().with(facing, Direction.NORTH)
                 .addModels(new ConfiguredModel(
-                        provider.models().getExistingFile(provider.mcLoc("block/end_rod")),
+                        provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block))),
                         90, 0, false
                 ));
         builder.partialState().with(facing, Direction.SOUTH)
                 .addModels(new ConfiguredModel(
-                        provider.models().getExistingFile(provider.mcLoc("block/end_rod")),
+                        provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block))),
                         90, 180, false
                 ));
         builder.partialState().with(facing, Direction.WEST)
                 .addModels(new ConfiguredModel(
-                        provider.models().getExistingFile(provider.mcLoc("block/end_rod")),
+                        provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block))),
                         90, 270, false
                 ));
         builder.partialState().with(facing, Direction.EAST)
                 .addModels(new ConfiguredModel(
-                        provider.models().getExistingFile(provider.mcLoc("block/end_rod")),
+                        provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block))),
                         90, 90, false
                 ));
     }

@@ -1,5 +1,6 @@
 package com.altnoir.mia.block;
 
+import com.altnoir.mia.block.abs.AbstractTubeBlock;
 import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.recipe.LampTubeRecipe;
 import com.altnoir.mia.recipe.LampTubeRecipeInput;
@@ -19,7 +20,6 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RodBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -32,7 +32,7 @@ import org.joml.Vector3f;
 
 import java.util.Optional;
 
-public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
+public class LampTubeBlock extends AbstractTubeBlock implements SimpleWaterloggedBlock {
     public static final MapCodec<LampTubeBlock> CODEC = simpleCodec(LampTubeBlock::new);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -76,29 +76,7 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
     protected @NotNull FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
-    /**
-     * Called periodically clientside on blocks near the player to show effects (like furnace fire particles).
-     */
-    @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if (!state.getValue(POWERED)) return;
-        Direction direction = state.getValue(FACING);
-        double d0 = (double)pos.getX() + 0.55 - (double)(random.nextFloat() * 0.1F);
-        double d1 = (double)pos.getY() + 0.55 - (double)(random.nextFloat() * 0.1F);
-        double d2 = (double)pos.getZ() + 0.55 - (double)(random.nextFloat() * 0.1F);
-        double d3 = (double)(0.4F - (random.nextFloat() + random.nextFloat()) * 0.4F);
-        if (random.nextInt(5) == 0) {
-            level.addParticle(
-                    ParticleTypes.END_ROD,
-                    d0 + (double)direction.getStepX() * d3,
-                    d1 + (double)direction.getStepY() * d3,
-                    d2 + (double)direction.getStepZ() * d3,
-                    random.nextGaussian() * 0.005,
-                    random.nextGaussian() * 0.005,
-                    random.nextGaussian() * 0.005
-            );
-        }
-    }
+
     @Override
     protected void tick(BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         boolean flag = state.getValue(POWERED);
@@ -114,8 +92,9 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
             boolean flag = state.getValue(POWERED);
             if (flag != level.hasNeighborSignal(pos)) {
                 if (flag) {
-                    level.scheduleTick(pos, this, 4);
+                    level.scheduleTick(pos, this, 2);
                 } else {
+                    playAmethyst(level, pos);
                     level.setBlock(pos, state.cycle(POWERED), 2);
                 }
             }
@@ -151,6 +130,7 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
                 }
                 return;
             }else if (targetState.getBlock() instanceof LampTubeBlock) {
+                playAmethyst(level, targetPos);
                 spawnParticles1(level, pos, targetPos, state);
                 level.setBlock(targetPos, targetState.cycle(POWERED), 2);
                 level.updateNeighborsAt(pos.relative(direction, i - 1), state.getBlock());
@@ -184,12 +164,12 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
 
         Direction facing = state.getValue(FACING);
 
-        double dxFactor = (facing == Direction.WEST || facing == Direction.EAST) ? 0.16 : 0.01;
+        double dxFactor = (facing == Direction.WEST || facing == Direction.EAST) ? 0.21 : 0.01;
         double dyFactor = (facing == Direction.UP || facing == Direction.DOWN) ? 0.16 : 0.01;
-        double dzFactor = (facing == Direction.NORTH || facing == Direction.SOUTH) ? 0.16 : 0.01;
+        double dzFactor = (facing == Direction.NORTH || facing == Direction.SOUTH) ? 0.21 : 0.01;
 
         if (level instanceof ServerLevel serverLevel) {
-            float r = 0.0F, g = 1.0F, b = 1.0F;
+            float r = 1.0F, g = 0.5F, b = 1.F;
 
             serverLevel.sendParticles(
                     new DustParticleOptions(new Vector3f(r, g, b), 0.5f),
@@ -213,5 +193,9 @@ public class LampTubeBlock extends RodBlock implements SimpleWaterloggedBlock {
 
     private void playBlast(Level level, BlockPos pos) {
         level.playSound(null, pos, SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS);
+    }
+
+    private void playAmethyst(Level level, BlockPos pos) {
+        level.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS);
     }
 }

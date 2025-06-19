@@ -25,12 +25,13 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         modelProvider.abyssGrassBlockModel(this, MiaBlocks.ABYSS_GRASS_BLOCK.get());
         modelProvider.coverGrassBlockModel(this, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(), Blocks.ANDESITE);
         modelProvider.mirroredBlockModel(this, MiaBlocks.ABYSS_ANDESITE.get());
+        modelProvider.lampTubeBlockModel(this, MiaBlocks.LAMP_TUBE.get());
 
         // block states
         stateProvider.rotationYBlockState(this, MiaBlocks.ABYSS_GRASS_BLOCK.get());
         stateProvider.rotationYBlockState(this, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
         stateProvider.mirroredBlockState(this, MiaBlocks.ABYSS_ANDESITE.get());
-        stateProvider.rodBlockState(this, MiaBlocks.LAMP_TUBE.get());
+        stateProvider.lampTubeBlockState(this, MiaBlocks.LAMP_TUBE.get());
 
 
 

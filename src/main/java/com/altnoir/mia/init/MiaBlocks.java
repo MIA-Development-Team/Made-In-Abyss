@@ -79,7 +79,7 @@ public class MiaBlocks {
                             .forceSolidOff()
                             .instabreak()
                             .lightLevel(litBlockEmission(BlockStateProperties.POWERED, 10))
-                            .sound(SoundType.LANTERN)
+                            .sound(SoundType.AMETHYST)
                             .noOcclusion()
             )
     );

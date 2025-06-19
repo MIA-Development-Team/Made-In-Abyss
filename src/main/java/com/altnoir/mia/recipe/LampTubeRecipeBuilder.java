@@ -1,8 +1,7 @@
-package com.altnoir.mia.datagen.recipebuilder;
+package com.altnoir.mia.recipe;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaRecipes;
-import com.altnoir.mia.recipe.LampTubeRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;

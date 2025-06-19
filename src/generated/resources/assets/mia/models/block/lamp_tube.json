@@ -1,0 +1,7 @@
+{
+  "parent": "mia:block/template_lamp_tube",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "lamp_tube": "mia:block/lamp_tube"
+  }
+}
