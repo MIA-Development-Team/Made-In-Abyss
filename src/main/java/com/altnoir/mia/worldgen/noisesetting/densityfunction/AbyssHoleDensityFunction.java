@@ -12,7 +12,6 @@ public class AbyssHoleDensityFunction implements DensityFunction.SimpleFunction 
     public static final KeyDispatchDataCodec<AbyssHoleDensityFunction> CODEC = KeyDispatchDataCodec.of(
             MapCodec.unit(new AbyssHoleDensityFunction(0L))
     );
-    private static final float ABYSS_THRESHOLD = 45.0F;
     private final SimplexNoise abyssNoise;
 
     public AbyssHoleDensityFunction(long seed) {
