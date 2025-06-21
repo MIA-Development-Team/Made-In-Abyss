@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
@@ -94,7 +95,7 @@ public class LampTubeBlock extends AbstractTubeBlock implements SimpleWaterlogge
                 if (flag) {
                     level.scheduleTick(pos, this, 2);
                 } else {
-                    playAmethyst(level, pos);
+                    playAmethyst(level, pos, state);
                     level.setBlock(pos, state.cycle(POWERED), 2);
                 }
             }
@@ -129,8 +130,8 @@ public class LampTubeBlock extends AbstractTubeBlock implements SimpleWaterlogge
                     return;
                 }
                 return;
-            }else if (targetState.getBlock() instanceof LampTubeBlock) {
-                playAmethyst(level, targetPos);
+            } else if (targetState.hasProperty(POWERED)) {
+                playAmethyst(level, targetPos, state);
                 spawnParticles1(level, pos, targetPos, state);
                 level.setBlock(targetPos, targetState.cycle(POWERED), 2);
                 level.updateNeighborsAt(pos.relative(direction, i - 1), state.getBlock());
@@ -142,7 +143,7 @@ public class LampTubeBlock extends AbstractTubeBlock implements SimpleWaterlogge
         stack.shrink(output.getCount());
         container.setChanged();
         // 效果
-        playBlast(level, targetPos);
+        playBlast(level, targetPos, state);
         spawnParticles1(level, pos, targetPos, state);
         spawnParticles2(level, targetPos);
     }
@@ -191,11 +192,13 @@ public class LampTubeBlock extends AbstractTubeBlock implements SimpleWaterlogge
         }
     }
 
-    private void playBlast(Level level, BlockPos pos) {
+    private void playBlast(Level level, BlockPos pos, BlockState state) {
         level.playSound(null, pos, SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS);
+        level.gameEvent(GameEvent.EXPLODE, pos, GameEvent.Context.of(state));
     }
 
-    private void playAmethyst(Level level, BlockPos pos) {
-        level.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS);
+    private void playAmethyst(Level level, BlockPos pos, BlockState state) {
+        level.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 0.5F, 1.0F);
+        level.gameEvent(GameEvent.BLOCK_ATTACH, pos, GameEvent.Context.of(state));
     }
 }
