@@ -3,8 +3,7 @@
 	"parent": "block/block",
 	"texture_size": [32, 32],
 	"textures": {
-		"particle": "block/amethyst_block",
-		"lamp_tube": "mia:block/lamp_tube"
+		"particle": "block/amethyst_block"
 	},
 	"elements": [
 		{
@@ -46,7 +45,7 @@
 			"faces": {
 				"north": {"uv": [14.5, 0, 15.5, 3.5], "texture": "#lamp_tube"},
 				"east": {"uv": [14, 0, 15, 3.5], "texture": "#lamp_tube"},
-				"south": {"uv": [14, 0, 15, 3.5], "texture": "#lamp_tube"},
+				"south": {"uv": [15, 0, 16, 3.5], "texture": "#lamp_tube"},
 				"west": {"uv": [15.5, 0, 14.5, 3.5], "texture": "#lamp_tube"},
 				"up": {"uv": [15, 1, 14, 0], "texture": "#lamp_tube"}
 			}
@@ -54,12 +53,13 @@
 		{
 			"from": [3, 2, 11],
 			"to": [5, 9, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 0, 8]},
 			"faces": {
 				"north": {"uv": [14, 0, 15, 3.5], "texture": "#lamp_tube"},
-				"east": {"uv": [15.5, 0, 14.5, 3.5], "texture": "#lamp_tube"},
-				"south": {"uv": [14.5, 0, 15.5, 3.5], "texture": "#lamp_tube"},
-				"west": {"uv": [14, 0, 15, 3.5], "texture": "#lamp_tube"},
-				"up": {"uv": [15, 1, 14, 0], "rotation": 180, "texture": "#lamp_tube"}
+				"east": {"uv": [15, 0, 16, 3.5], "texture": "#lamp_tube"},
+				"south": {"uv": [15.5, 0, 14.5, 3.5], "texture": "#lamp_tube"},
+				"west": {"uv": [14.5, 0, 15.5, 3.5], "texture": "#lamp_tube"},
+				"up": {"uv": [16, 1, 15, 0], "rotation": 180, "texture": "#lamp_tube"}
 			}
 		},
 		{
@@ -69,19 +69,19 @@
 				"north": {"uv": [15.5, 0, 14.5, 3.5], "texture": "#lamp_tube"},
 				"east": {"uv": [14.5, 0, 15.5, 3.5], "texture": "#lamp_tube"},
 				"south": {"uv": [14, 0, 15, 3.5], "texture": "#lamp_tube"},
-				"west": {"uv": [14, 0, 15, 3.5], "texture": "#lamp_tube"},
-				"up": {"uv": [15, 1, 14, 0], "rotation": 90, "texture": "#lamp_tube"}
+				"west": {"uv": [15, 0, 16, 3.5], "texture": "#lamp_tube"},
+				"up": {"uv": [16, 1, 15, 0], "texture": "#lamp_tube"}
 			}
 		},
 		{
 			"from": [11, 2, 11],
 			"to": [13, 9, 13],
 			"faces": {
-				"north": {"uv": [14, 0, 15, 3.5], "texture": "#lamp_tube"},
+				"north": {"uv": [15, 0, 16, 3.5], "texture": "#lamp_tube"},
 				"east": {"uv": [15.5, 0, 14.5, 3.5], "texture": "#lamp_tube"},
 				"south": {"uv": [14.5, 0, 15.5, 3.5], "texture": "#lamp_tube"},
 				"west": {"uv": [14, 0, 15, 3.5], "texture": "#lamp_tube"},
-				"up": {"uv": [15, 1, 14, 0], "rotation": 180, "texture": "#lamp_tube"}
+				"up": {"uv": [16, 1, 15, 0], "rotation": 90, "texture": "#lamp_tube"}
 			}
 		},
 		{

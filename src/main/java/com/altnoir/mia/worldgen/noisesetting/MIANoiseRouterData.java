@@ -58,10 +58,10 @@ public class MIANoiseRouterData extends NoiseRouterData {
         DensityFunction baseNoise = DensityFunctions.add(
             DensityFunctions.constant(-36.8975),
             DensityFunctions.mul(
-                DensityFunctions.yClampedGradient(250, 320, 1, 0),
+                DensityFunctions.yClampedGradient(250, 320, 1, 1),
                 DensityFunctions.add(
                     DensityFunctions.constant(37),
-                    getFunction(densityFunctions, MIADensityFunction.ABYSS_HOLE)
+                    getFunction(densityFunctions, MIADensityFunction.ABYSS_BRINK_HOLE)
                 )
             )
         );
@@ -69,7 +69,7 @@ public class MIANoiseRouterData extends NoiseRouterData {
         DensityFunction blended = DensityFunctions.add(
             DensityFunctions.constant(0.4),
             DensityFunctions.mul(
-                DensityFunctions.yClampedGradient(0, 16, 0, 1),
+                DensityFunctions.yClampedGradient(0, 24, 0, 1),
                 DensityFunctions.add(
                     DensityFunctions.constant(-0.4),
                     baseNoise
@@ -109,14 +109,15 @@ public class MIANoiseRouterData extends NoiseRouterData {
         DensityFunction densityfunction1 = getFunction(densityFunctions, SHIFT_Z);
         DensityFunction densityfunction2 = DensityFunctions.shiftedNoise2d(densityfunction, densityfunction1, 0.25, noiseParameters.getOrThrow(Noises.TEMPERATURE));
         DensityFunction densityfunction3 = DensityFunctions.shiftedNoise2d(densityfunction, densityfunction1, 0.25, noiseParameters.getOrThrow(Noises.VEGETATION));
-        DensityFunction densityfunction4 = DensityFunctions.min(abyssBrinkDensity(densityFunctions), getFunction(densityFunctions, MIADensityFunction.ABYSS_BRINK_NOODLE));
+        DensityFunction densityfunction4 = DensityFunctions.min(abyssBrinkDensity(densityFunctions), getFunction(densityFunctions, MIADensityFunction.ABYSS_BRINK_CAVE));
+        DensityFunction densityfunction5 = DensityFunctions.min(densityfunction4, getFunction(densityFunctions, MIADensityFunction.ABYSS_BRINK_NOODLE));
 
-        DensityFunction densityfunction5 = getFunction(densityFunctions, FACTOR);
-        DensityFunction densityfunction6 = getFunction(densityFunctions, DEPTH);
-        DensityFunction densityfunction7 = noiseGradientDensity(DensityFunctions.cache2d(densityfunction5), densityfunction6);
+        DensityFunction densityfunction6 = getFunction(densityFunctions, FACTOR);
+        DensityFunction densityfunction7 = getFunction(densityFunctions, DEPTH);
+        DensityFunction densityfunction8 = noiseGradientDensity(DensityFunctions.cache2d(densityfunction6), densityfunction7);
 
-        DensityFunction densityfunction8 = DensityFunctions.cache2d(DensityFunctions.endIslands(0L));
-        DensityFunction densityfunction9 = postProcess(slideEnd(getFunction(densityFunctions, MIADensityFunction.ABYSS_HOLE)));
+        DensityFunction densityfunction9 = DensityFunctions.cache2d(DensityFunctions.endIslands(0L));
+        DensityFunction densityfunction10 = postProcess(slideEnd(getFunction(densityFunctions, MIADensityFunction.ABYSS_BRINK_HOLE)));
 
         DensityFunction densityfunction11 = getFunction(densityFunctions, SLOPED_CHEESE);
         DensityFunction densityfunction12 = DensityFunctions.min(
@@ -136,12 +137,12 @@ public class MIANoiseRouterData extends NoiseRouterData {
                 densityfunction3, // vegetation
                 getFunction(densityFunctions, CONTINENTS), // continents
                 getFunction(densityFunctions, EROSION), // erosion
-                densityfunction6, // depth
+                densityfunction7, // depth
                 getFunction(densityFunctions, RIDGES), // ridges
-                slideAbyssBrink(false, DensityFunctions.add(densityfunction7, DensityFunctions.constant(-0.703125)).clamp(-64.0, 64.0)), // initial_density_without_jaggedness
-                //slideEnd(DensityFunctions.add(densityfunction8, DensityFunctions.constant(-0.703125))), // initial_density_without_jaggedness
-                densityfunction4, // final_density
-                //densityfunction9, // final_density
+                slideAbyssBrink(false, DensityFunctions.add(densityfunction8, DensityFunctions.constant(-0.703125)).clamp(-64.0, 64.0)), // initial_density_without_jaggedness
+                //slideEnd(DensityFunctions.add(densityfunction9, DensityFunctions.constant(-0.703125))), // initial_density_without_jaggedness
+                densityfunction5, // final_density
+                //densityfunction10, // final_density
                 DensityFunctions.zero(),
                 DensityFunctions.zero(),
                 DensityFunctions.zero()

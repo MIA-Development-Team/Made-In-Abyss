@@ -31,6 +31,7 @@ public class MIASurfaceRuleData extends SurfaceRuleData {
         );
         ImmutableList.Builder<SurfaceRules.RuleSource> builder = ImmutableList.builder();
 
+        builder.add(SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.verticalGradient("bedrock_roof", VerticalAnchor.belowTop(5), VerticalAnchor.top())), BEDROCK));
         builder.add(SurfaceRules.ifTrue(SurfaceRules.verticalGradient("bedrock_floor", VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(5)), BEDROCK));
 
         SurfaceRules.RuleSource ruleSource = SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(), sequence);
