@@ -19,6 +19,12 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
+
+    maven {
+        name = "Jade"
+        url = "https://api.modrinth.com/maven"
+    }
+
     maven {
         name = "Jared's maven"
         url = "https://maven.blamejared.com/"
@@ -28,6 +34,7 @@ repositories {
         name = "Curios"
         url = uri("https://maven.theillusivec4.top/")
     }
+
     maven {
         name = "TerraformersMC"
         url = "https://maven.terraformersmc.com/"
@@ -43,6 +50,8 @@ dependencies {
 
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+
+    implementation "maven.modrinth:jade:${project.jade_version}"
 }
 
 base {
