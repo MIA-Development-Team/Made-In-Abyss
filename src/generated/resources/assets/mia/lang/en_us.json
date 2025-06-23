@@ -1,4 +1,5 @@
 {
+  "biome.mia.abyss_brink/abyss_brink": "Abyss Brink",
   "block.mia.abyss_andesite": "Abyss Andesite",
   "block.mia.abyss_cobbled_andesite": "Abyss Cobbled Andesite",
   "block.mia.abyss_grass_block": "Abyss Grass Block",
@@ -6,9 +7,12 @@
   "block.mia.fortitude_flower": "Fortitude Flower",
   "block.mia.lamp_tube": "Lamp Tube",
   "curios.identifier.whistle": "Whistle",
+  "curios.modifiers.whistle": "Red Whistle Attributes",
   "emi.category.mia.lamp_tube": "Laser Catalysis",
   "gui.mia.disconnect": "Quit?",
   "item.mia.endless_cup": "Endless Cup",
+  "item.mia.red_whistle": "Red Whistle",
   "itemgroup.mia": "Made In Abyss",
-  "tag.item.curios.whistle": "Whistle"
+  "tag.item.curios.whistle": "Whistle",
+  "tooltip.mia.whistle.level": "Whistle Level: §7%1$s"
 }

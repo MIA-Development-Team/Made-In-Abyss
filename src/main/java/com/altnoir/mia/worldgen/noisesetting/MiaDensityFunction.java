@@ -1,6 +1,7 @@
 package com.altnoir.mia.worldgen.noisesetting;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.init.MiaDensityFunctionTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -13,7 +14,7 @@ import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
-public class MIADensityFunction {
+public class MiaDensityFunction {
     public static final ResourceKey<DensityFunction> BASE_3D_NOISE_ABYSS_BRINK = createKey("abyss_brink/base_3d_noise");
     public static final ResourceKey<DensityFunction> ABYSS_BRINK_CAVE = createKey("abyss_brink/caves/big_caves");
     public static final ResourceKey<DensityFunction> ABYSS_BRINK_HOLE = createKey("abyss_brink/abyss_hole");
@@ -27,15 +28,15 @@ public class MIADensityFunction {
         HolderGetter<NormalNoise.NoiseParameters> holdergetter = context.lookup(Registries.NOISE);
         HolderGetter<DensityFunction> holdergetter1 = context.lookup(Registries.DENSITY_FUNCTION);
 
-        context.register(ABYSS_BRINK_HOLE, DensityFunctions.add(MIADensityFunctionTypes.abyssHole(0L), getFunction(holdergetter1, BASE_3D_NOISE_ABYSS_BRINK)));
+        context.register(ABYSS_BRINK_HOLE, DensityFunctions.add(MiaDensityFunctionTypes.abyssHole(0L), getFunction(holdergetter1, BASE_3D_NOISE_ABYSS_BRINK)));
         context.register(BASE_3D_NOISE_ABYSS_BRINK, BlendedNoise.createUnseeded(0.25, 0.25, 160.0, 160.0, 8.0));
         context.register(ABYSS_BRINK_CAVE, abyssBrinkCave(holdergetter1, holdergetter));
         return context.register(ABYSS_BRINK_NOODLE, noodle(holdergetter1, holdergetter));
     }
 
     private static DensityFunction noodle(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        DensityFunction densityfunction = getFunction(densityFunctions, MIANoiseRouterData.Y);
-        int minY = 5;
+        DensityFunction densityfunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
+        int minY = 16;
         int maxY = 314;
         double d0 = 2.6666666666666665;
         DensityFunction densityFunction1 = yLimitedInterpolatable(
@@ -58,8 +59,8 @@ public class MIADensityFunction {
         );
     }
     private static DensityFunction abyssBrinkCave(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        DensityFunction densityfunction = getFunction(densityFunctions, MIANoiseRouterData.Y);
-        int minY = 5;
+        DensityFunction densityfunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
+        int minY = 16;
         int maxY = 300;
 
         DensityFunction densityFunction1 = yLimitedInterpolatable(

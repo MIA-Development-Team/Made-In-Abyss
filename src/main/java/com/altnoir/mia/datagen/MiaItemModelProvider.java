@@ -19,6 +19,7 @@ public class MiaItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         basicItem(MiaItems.ENDLESS_CUP.get());
+        basicItem(MiaItems.RED_WHISTLE.get());
         crossItem(MiaBlocks.FORTITUDE_FLOWER);
     }
 

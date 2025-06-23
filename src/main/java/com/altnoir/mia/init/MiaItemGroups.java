@@ -18,6 +18,7 @@ public class MiaItemGroups {
             .icon(() -> new ItemStack(MiaItems.ENDLESS_CUP.get()))
             .displayItems((parameters, output) -> {
                 output.accept(MiaItems.ENDLESS_CUP);
+                output.accept(MiaItems.RED_WHISTLE);
                 output.accept(MiaBlocks.ABYSS_GRASS_BLOCK);
                 output.accept(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
                 output.accept(MiaBlocks.ABYSS_ANDESITE);

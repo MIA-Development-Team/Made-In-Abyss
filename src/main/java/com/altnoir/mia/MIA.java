@@ -1,12 +1,9 @@
 package com.altnoir.mia;
 
+import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.core.curse.CurseManager;
-import com.altnoir.mia.init.MiaBlocks;
-import com.altnoir.mia.init.MiaEffects;
-import com.altnoir.mia.init.MiaItemGroups;
-import com.altnoir.mia.init.MiaItems;
-import com.altnoir.mia.init.MiaRecipes;
-import com.altnoir.mia.worldgen.noisesetting.MIADensityFunctionTypes;
+import com.altnoir.mia.init.*;
+import com.altnoir.mia.init.MiaDensityFunctionTypes;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -38,7 +35,8 @@ public class MIA {
         MiaItemGroups.register(modEventBus);
 
         MiaEffects.register(modEventBus);
-        MIADensityFunctionTypes.register(modEventBus);
+        MiaComponents.register(modEventBus);
+        MiaDensityFunctionTypes.register(modEventBus);
 
         MiaRecipes.register(modEventBus);
         NeoForge.EVENT_BUS.register(this);

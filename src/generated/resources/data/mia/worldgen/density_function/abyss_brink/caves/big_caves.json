@@ -6,7 +6,7 @@
       "type": "minecraft:range_choice",
       "input": "minecraft:y",
       "max_exclusive": 301.0,
-      "min_inclusive": 5.0,
+      "min_inclusive": 16.0,
       "when_in_range": {
         "type": "minecraft:noise",
         "noise": "minecraft:noodle",
@@ -25,7 +25,7 @@
       "type": "minecraft:range_choice",
       "input": "minecraft:y",
       "max_exclusive": 301.0,
-      "min_inclusive": 5.0,
+      "min_inclusive": 16.0,
       "when_in_range": {
         "type": "minecraft:noise",
         "noise": "minecraft:noodle",

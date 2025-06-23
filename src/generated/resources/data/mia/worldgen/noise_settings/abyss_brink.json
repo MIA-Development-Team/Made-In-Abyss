@@ -18,7 +18,12 @@
     "size_vertical": 4
   },
   "noise_router": {
-    "barrier": 0.0,
+    "barrier": {
+      "type": "minecraft:noise",
+      "noise": "minecraft:aquifer_barrier",
+      "xz_scale": 0.5,
+      "y_scale": 1.0
+    },
     "continents": "minecraft:overworld/continents",
     "depth": "minecraft:overworld/depth",
     "erosion": "minecraft:overworld/erosion",
@@ -80,8 +85,18 @@
       },
       "argument2": "mia:abyss_brink/caves/noodle"
     },
-    "fluid_level_floodedness": 0.0,
-    "fluid_level_spread": 0.0,
+    "fluid_level_floodedness": {
+      "type": "minecraft:noise",
+      "noise": "minecraft:aquifer_fluid_level_floodedness",
+      "xz_scale": 0.67,
+      "y_scale": 1.0
+    },
+    "fluid_level_spread": {
+      "type": "minecraft:noise",
+      "noise": "minecraft:aquifer_fluid_level_spread",
+      "xz_scale": 0.7142857142857143,
+      "y_scale": 1.0
+    },
     "initial_density_without_jaggedness": {
       "type": "minecraft:add",
       "argument1": 0.1171875,
@@ -90,9 +105,9 @@
         "argument1": {
           "type": "minecraft:y_clamped_gradient",
           "from_value": 0.0,
-          "from_y": 0,
+          "from_y": 16,
           "to_value": 1.0,
-          "to_y": 24
+          "to_y": 40
         },
         "argument2": {
           "type": "minecraft:add",
@@ -105,36 +120,33 @@
               "argument1": {
                 "type": "minecraft:y_clamped_gradient",
                 "from_value": 1.0,
-                "from_y": 240,
+                "from_y": 246,
                 "to_value": 0.0,
-                "to_y": 256
+                "to_y": 316
               },
               "argument2": {
                 "type": "minecraft:add",
                 "argument1": 0.078125,
                 "argument2": {
-                  "type": "minecraft:clamp",
-                  "input": {
-                    "type": "minecraft:add",
-                    "argument1": -0.703125,
+                  "type": "minecraft:add",
+                  "argument1": -0.703125,
+                  "argument2": {
+                    "type": "minecraft:mul",
+                    "argument1": 4.0,
                     "argument2": {
-                      "type": "minecraft:mul",
-                      "argument1": 4.0,
-                      "argument2": {
-                        "type": "minecraft:quarter_negative",
-                        "argument": {
-                          "type": "minecraft:mul",
-                          "argument1": "minecraft:overworld/depth",
-                          "argument2": {
-                            "type": "minecraft:cache_2d",
-                            "argument": "minecraft:overworld/factor"
-                          }
+                      "type": "minecraft:quarter_negative",
+                      "argument": {
+                        "type": "minecraft:mul",
+                        "argument1": {
+                          "type": "mia:abyss_hole"
+                        },
+                        "argument2": {
+                          "type": "minecraft:cache_2d",
+                          "argument": "minecraft:overworld/factor"
                         }
                       }
                     }
-                  },
-                  "max": 64.0,
-                  "min": -64.0
+                  }
                 }
               }
             }
@@ -167,7 +179,7 @@
     "vein_toggle": 0.0
   },
   "ore_veins_enabled": true,
-  "sea_level": -64,
+  "sea_level": 0,
   "spawn_target": [],
   "surface_rule": {
     "type": "minecraft:sequence",

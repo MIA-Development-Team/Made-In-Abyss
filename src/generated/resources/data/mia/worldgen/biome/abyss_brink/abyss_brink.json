@@ -1,11 +1,5 @@
 {
-  "carvers": {
-    "air": [
-      "minecraft:cave",
-      "minecraft:cave_extra_underground",
-      "minecraft:canyon"
-    ]
-  },
+  "carvers": {},
   "downfall": 0.8,
   "effects": {
     "fog_color": 3165784,
@@ -27,10 +21,7 @@
   },
   "features": [
     [],
-    [
-      "minecraft:lake_lava_underground",
-      "minecraft:lake_lava_surface"
-    ],
+    [],
     [
       "minecraft:amethyst_geode",
       "minecraft:forest_rock"
@@ -76,7 +67,7 @@
     [],
     [
       "minecraft:spring_water",
-      "minecraft:spring_lava"
+      "mia:spring_water"
     ],
     [
       "minecraft:glow_lichen",

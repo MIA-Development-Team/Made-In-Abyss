@@ -23,13 +23,13 @@ public class MIABiomes {
     }
 
     public static void globalAbyssGeneration(BiomeGenerationSettings.Builder builder) {
-        BiomeDefaultFeatures.addDefaultCarversAndLakes(builder);
+        //MiaBiomeDefaultFeatures.addAbyssCarvers(builder);
         BiomeDefaultFeatures.addDefaultUndergroundVariety(builder);
 
         BiomeDefaultFeatures.addDefaultCrystalFormations(builder);
         BiomeDefaultFeatures.addDefaultMonsterRoom(builder);
 
-        BiomeDefaultFeatures.addDefaultSprings(builder);
+        MiaBiomeDefaultFeatures.addDefaultSprings(builder);
         BiomeDefaultFeatures.addSurfaceFreezing(builder);
         BiomeDefaultFeatures.addDefaultOres(builder);
         BiomeDefaultFeatures.addDefaultSoftDisks(builder);

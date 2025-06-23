@@ -21,9 +21,14 @@ public class MiaLangProvider extends LanguageProvider {
     protected void addTranslations() {
         add("itemgroup.mia", "Made In Abyss");
 
+        add("tooltip.mia.whistle.level", "Whistle Level: §7%1$s");
+
         add("gui.mia.disconnect", "Quit?");
+
+        add("biome.mia.abyss_brink/abyss_brink", "Abyss Brink");
         //模组翻译
         add("curios.identifier.whistle", "Whistle");
+        add("curios.modifiers.whistle", "Red Whistle Attributes");
         add("tag.item.curios.whistle", "Whistle");
         add("emi.category.mia.lamp_tube", "Laser Catalysis");
 
