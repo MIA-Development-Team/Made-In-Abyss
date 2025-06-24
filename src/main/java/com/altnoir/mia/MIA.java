@@ -29,6 +29,7 @@ public class MIA {
 
     public MIA(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(MiaNetworking::register);
 
         MiaItems.register(modEventBus);
         MiaBlocks.register(modEventBus);
@@ -37,6 +38,7 @@ public class MIA {
         MiaEffects.register(modEventBus);
         MiaComponents.register(modEventBus);
         MiaDensityFunctionTypes.register(modEventBus);
+        MiaAttachments.register(modEventBus);
 
         MiaRecipes.register(modEventBus);
         NeoForge.EVENT_BUS.register(this);
