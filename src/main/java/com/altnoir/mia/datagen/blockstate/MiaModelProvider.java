@@ -37,6 +37,15 @@ public class MiaModelProvider {
                                 .uvs(0, 0, 16, 16)
                 );
     }
+    public void abyssPortalBlockModel(BlockStateProvider provider, Block block) {
+        provider.models().getBuilder(MiaPort.getBlockPath(block))
+                .texture("particle", provider.modLoc("block/" + MiaPort.getBlockPath(block)))
+                .texture("portal1", provider.modLoc("block/" + MiaPort.getBlockPath(block))+ "_dark")
+                .texture("portal2", provider.modLoc("block/" + MiaPort.getBlockPath(block)))
+                .element().from(0, 1, 0).to(16, 15, 16)
+                .face(Direction.UP).uvs(0, 0, 16, 16).texture("#portal1").end()
+                .face(Direction.DOWN).uvs(0, 0, 16, 16).texture("#portal2").end();
+    }
     public void lampTubeBlockModel(BlockStateProvider provider, Block block) {
         provider.models().withExistingParent(MiaPort.getBlockPath(block), provider.modLoc("block/template_lamp_tube")).renderType("cutout")
                 .texture("lamp_tube", provider.modLoc("block/" + MiaPort.getBlockPath(block)));

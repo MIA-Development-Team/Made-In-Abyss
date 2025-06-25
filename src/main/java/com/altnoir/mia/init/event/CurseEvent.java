@@ -51,29 +51,27 @@ public class CurseEvent {
         var dim = player.level().dimension().location();
         var dimensionIds = MIA.CURSE_MANAGER.getDimensionIds();
 
-        for (var dims : dimensionIds) {
-            if (dim.equals(dims)) {
-                cap.setCurse((int) Math.floor(delta));
+        if (dimensionIds.contains(dim)) {
+            cap.setCurse((int) Math.floor(delta));
 
-                if (delta > cap.getMaxCurse()) {
-                    var curseEffects = MIA.CURSE_MANAGER.getEffects(dim);
+            if (delta > cap.getMaxCurse()) {
+                var curseEffects = MIA.CURSE_MANAGER.getEffects(dim);
 
-                    for (var curseEffect : curseEffects) {
-                        var effectId = curseEffect.effect().location();
-                        var effectHolder = BuiltInRegistries.MOB_EFFECT.getHolder(effectId);
-                        effectHolder.ifPresent(effects -> player.addEffect(new MobEffectInstance(
-                                effects,
-                                curseEffect.duration(),
-                                curseEffect.amplifier(),
-                                false,
-                                true
-                        )));
-                    }
-                    playerMinY.put(uuid, currentY);
+                for (var curseEffect : curseEffects) {
+                    var effectId = curseEffect.effect().location();
+                    var effectHolder = BuiltInRegistries.MOB_EFFECT.getHolder(effectId);
+                    effectHolder.ifPresent(effects -> player.addEffect(new MobEffectInstance(
+                            effects,
+                            curseEffect.duration(),
+                            curseEffect.amplifier(),
+                            false,
+                            true
+                    )));
                 }
-
-                PacketDistributor.sendToPlayer((ServerPlayer) player, new CurseCapabilityPayload(cap.getCurse(), cap.getMaxCurse()));
+                playerMinY.put(uuid, currentY);
             }
+
+            PacketDistributor.sendToPlayer((ServerPlayer) player, new CurseCapabilityPayload(cap.getCurse(), cap.getMaxCurse()));
         }
     }
 }

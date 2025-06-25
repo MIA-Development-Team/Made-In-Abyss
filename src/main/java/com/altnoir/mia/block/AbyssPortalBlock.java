@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class AbyssPortalBlock extends Block implements Portal {
     public static final MapCodec<AbyssPortalBlock> CODEC = simpleCodec(AbyssPortalBlock::new);
-    protected static final VoxelShape SHAPE = Block.box(0.0, 6.0, 0.0, 16.0, 12.0, 16.0);
+    protected static final VoxelShape SHAPE = Block.box(0.0, 1.0, 0.0, 16.0, 15.0, 16.0);
     public AbyssPortalBlock(Properties properties) {
         super(properties);
     }

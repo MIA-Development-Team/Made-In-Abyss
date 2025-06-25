@@ -10,6 +10,12 @@ import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 
 public class MiaStateProvider {
+    public void baseBlockState(BlockStateProvider provider, Block block) {
+        provider.getVariantBuilder(block)
+                .partialState().addModels(
+                        new ConfiguredModel(provider.models().getExistingFile(provider.modLoc("block/" + MiaPort.getBlockPath(block))), 0, 0, false)
+                );
+    }
     public void rotationYBlockState(BlockStateProvider provider, Block block) {
         provider.getVariantBuilder(block)
                 .partialState().addModels(

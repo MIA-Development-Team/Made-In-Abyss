@@ -27,20 +27,18 @@ public class CurseClientEvent {
 
         if (player == null || mc.options.hideGui) return;
 
-        for (var dims : dimensionIds) {
-            if (dim.equals(dims)) {
-                if (!MiaConfig.curseGod && MiaPort.isCreativeOrSpectator(player)) return;
+        if (dimensionIds.contains(dim)) {
+            if (!MiaConfig.curseGod && MiaPort.isCreativeOrSpectator(player)) return;
 
-                var curse = player.getCapability(MiaCapabilities.CURSE, null);
-                if (curse == null) return;
+            var curse = player.getCapability(MiaCapabilities.CURSE, null);
+            if (curse == null) return;
 
-                int value = curse.getCurse();
-                int max = curse.getMaxCurse();
+            int value = curse.getCurse();
+            int max = curse.getMaxCurse();
 
-                if (max <= 0) return;
+            if (max <= 0) return;
 
-                drawCurseOrb(event.getGuiGraphics(), player, value, max);
-            }
+            drawCurseOrb(event.getGuiGraphics(), player, value, max);
         }
     }
 

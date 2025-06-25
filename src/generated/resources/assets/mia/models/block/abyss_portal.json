@@ -1,0 +1,29 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#portal2"
+        },
+        "up": {
+          "texture": "#portal1"
+        }
+      },
+      "from": [
+        0,
+        1,
+        0
+      ],
+      "to": [
+        16,
+        15,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "mia:block/abyss_portal",
+    "portal1": "mia:block/abyss_portal_dark",
+    "portal2": "mia:block/abyss_portal"
+  }
+}

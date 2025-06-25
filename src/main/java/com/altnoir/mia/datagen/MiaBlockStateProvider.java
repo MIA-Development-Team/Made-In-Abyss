@@ -1,9 +1,9 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.init.MiaBlocks;
-import com.altnoir.mia.datagen.blockstate.MiaStateProvider;
 import com.altnoir.mia.datagen.blockstate.MiaModelProvider;
+import com.altnoir.mia.datagen.blockstate.MiaStateProvider;
+import com.altnoir.mia.init.MiaBlocks;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;
@@ -18,26 +18,28 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        MiaModelProvider modelProvider = new MiaModelProvider();
-        MiaStateProvider stateProvider = new MiaStateProvider();
+        var modelProvider = new MiaModelProvider();
+        var stateProvider = new MiaStateProvider();
 
         // block models
         modelProvider.abyssGrassBlockModel(this, MiaBlocks.ABYSS_GRASS_BLOCK.get());
         modelProvider.coverGrassBlockModel(this, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(), Blocks.ANDESITE);
         modelProvider.mirroredBlockModel(this, MiaBlocks.ABYSS_ANDESITE.get());
         modelProvider.lampTubeBlockModel(this, MiaBlocks.LAMP_TUBE.get());
+        modelProvider.abyssPortalBlockModel(this, MiaBlocks.ABYSS_PORTAL.get());
 
         // block states
         stateProvider.rotationYBlockState(this, MiaBlocks.ABYSS_GRASS_BLOCK.get());
         stateProvider.rotationYBlockState(this, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
         stateProvider.mirroredBlockState(this, MiaBlocks.ABYSS_ANDESITE.get());
         stateProvider.lampTubeBlockState(this, MiaBlocks.LAMP_TUBE.get());
-
+        stateProvider.baseBlockState(this, MiaBlocks.ABYSS_PORTAL.get());
 
 
         abyssBlockItem(MiaBlocks.ABYSS_GRASS_BLOCK);
         abyssBlockItem(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
         abyssBlockItem(MiaBlocks.ABYSS_ANDESITE);
+        abyssBlockItem(MiaBlocks.ABYSS_PORTAL);
         blockWithItem(MiaBlocks.ABYSS_COBBLED_ANDESITE);
 
         crossBlock(MiaBlocks.FORTITUDE_FLOWER);
