@@ -62,7 +62,7 @@ public class CurseClientEvent {
         int v = frame * FRAME_SIZE;
 
         graphics.blit(
-                CURSE_ORB, cx - 9, cy - 9,
+                CURSE_ORB, cx - FRAME_SIZE / 2, cy - FRAME_SIZE / 2,
                 u, v,
                 FRAME_SIZE, FRAME_SIZE,
                 FRAME_SIZE, FRAME_SIZE * FRAME_COUNT
