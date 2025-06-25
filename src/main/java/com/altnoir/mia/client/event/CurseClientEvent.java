@@ -15,11 +15,12 @@ import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 
 @EventBusSubscriber(modid = MIA.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public class CurseClientEvent {
-    private static final ResourceLocation CURSE_ORB = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "textures/gui/icon.png");
+    private static final ResourceLocation CURSE_ORB = MiaPort.id(MIA.MOD_ID, "textures/gui/icon.png");
     private static final int FRAME_SIZE = 18;
     private static final int FRAME_COUNT = 22;
-    private static final int FRAME_DURATION = 400;
+    private static final int FRAME_DURATION = 1000;
 
+    private static boolean firstFrame = false;
     private static int animationTick = 0;
 
     @SubscribeEvent
@@ -57,7 +58,16 @@ public class CurseClientEvent {
         var cx = MiaConfig.curseIcon ? screenWidth / 2 + 100 : screenWidth / 2;
         var cy = MiaConfig.curseIcon ? screenHeight - 11 : ch;
 
-        int frame = (animationTick / FRAME_DURATION) % FRAME_COUNT;
+        int frame;
+
+        if (value == 0) {
+            frame = 0;
+            animationTick = 0;
+        } else {
+            int dynamicFrameDelay = Math.max(1, FRAME_DURATION - (value * 100));
+            frame = (animationTick / dynamicFrameDelay) % FRAME_COUNT;
+        }
+
         int u = 0;
         int v = frame * FRAME_SIZE;
 
@@ -68,11 +78,14 @@ public class CurseClientEvent {
                 FRAME_SIZE, FRAME_SIZE * FRAME_COUNT
         );
 
-        animationTick = (animationTick + 1) % (FRAME_DURATION * FRAME_COUNT);
+        if (value > 0) {
+            animationTick = (animationTick + 1) % (FRAME_DURATION * FRAME_COUNT);
+        }
+
 
         var text = String.valueOf(value);
         var tx = cx - font.width(text) / 2;
         var ty = cy - font.lineHeight / 2;
-        graphics.drawString(font, text, tx, ty, 0xFFFFFF, true);
+        graphics.drawString(font, text, tx, ty, 0xEEEEEE, true);
     }
 }
