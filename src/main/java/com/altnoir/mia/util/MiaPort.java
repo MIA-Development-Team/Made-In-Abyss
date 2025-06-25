@@ -25,6 +25,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -43,7 +44,10 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 import java.io.InputStream;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -222,5 +226,9 @@ public class MiaPort {
 
     public static void applyModelViewMatrix() {
         RenderSystem.applyModelViewMatrix();
+    }
+
+    public static boolean isCreativeOrSpectator(Player player) {
+        return player.isSpectator() || player.isCreative();
     }
 }

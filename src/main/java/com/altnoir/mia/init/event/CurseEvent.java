@@ -4,6 +4,7 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.init.MiaCapabilities;
 import com.altnoir.mia.network.CurseCapabilityPayload;
+import com.altnoir.mia.util.MiaPort;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -33,8 +34,6 @@ public class CurseEvent {
         var player = event.getEntity();
         if (player.level().isClientSide()) return;
 
-        if (player.isSpectator() || player.isCreative()) return;
-
         var cap = player.getCapability(MiaCapabilities.CURSE, null);
         if (cap == null) return;
 
@@ -44,30 +43,37 @@ public class CurseEvent {
 
         var delta = currentY - lastY;
 
-        if (currentY < lastY) {
+        if (currentY < lastY || player.isSpectator() || player.isCreative()) {
             playerMinY.put(uuid, currentY);
         }
+        if (!MiaConfig.curseGod && MiaPort.isCreativeOrSpectator(player)) return;
 
-        cap.setCurse((int) Math.floor(delta));
+        var dim = player.level().dimension().location();
+        var dimensionIds = MIA.CURSE_MANAGER.getDimensionIds();
 
-        if (delta > cap.getMaxCurse()) {
-            var dim = player.level().dimension().location();
-            var curseEffects = MIA.CURSE_MANAGER.getEffects(dim);
+        for (var dims : dimensionIds) {
+            if (dim.equals(dims)) {
+                cap.setCurse((int) Math.floor(delta));
 
-            for (var curseEffect : curseEffects) {
-                var effectId = curseEffect.effect().location();
-                var effectHolder = BuiltInRegistries.MOB_EFFECT.getHolder(effectId);
-                effectHolder.ifPresent(effects -> player.addEffect(new MobEffectInstance(
-                        effects,
-                        curseEffect.duration(),
-                        curseEffect.amplifier(),
-                        false,
-                        true
-                )));
+                if (delta > cap.getMaxCurse()) {
+                    var curseEffects = MIA.CURSE_MANAGER.getEffects(dim);
+
+                    for (var curseEffect : curseEffects) {
+                        var effectId = curseEffect.effect().location();
+                        var effectHolder = BuiltInRegistries.MOB_EFFECT.getHolder(effectId);
+                        effectHolder.ifPresent(effects -> player.addEffect(new MobEffectInstance(
+                                effects,
+                                curseEffect.duration(),
+                                curseEffect.amplifier(),
+                                false,
+                                true
+                        )));
+                    }
+                    playerMinY.put(uuid, currentY);
+                }
+
+                PacketDistributor.sendToPlayer((ServerPlayer) player, new CurseCapabilityPayload(cap.getCurse(), cap.getMaxCurse()));
             }
-            playerMinY.put(uuid, currentY);
         }
-
-        PacketDistributor.sendToPlayer((ServerPlayer) player, new CurseCapabilityPayload(cap.getCurse(), cap.getMaxCurse()));
     }
 }

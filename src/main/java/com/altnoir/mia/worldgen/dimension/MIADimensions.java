@@ -1,6 +1,7 @@
 package com.altnoir.mia.worldgen.dimension;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.util.MiaPort;
 import com.altnoir.mia.worldgen.biome.MIABiomes;
 import com.altnoir.mia.worldgen.noisesetting.MiaNoiseGeneratorSettings;
 import com.mojang.datafixers.util.Pair;
@@ -22,9 +23,9 @@ import java.util.List;
 
 public class MIADimensions {
     public static final ResourceKey<LevelStem> ABYSS_BRINK = ResourceKey.create(Registries.LEVEL_STEM,
-            ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "abyss_brink"));
+            MiaPort.id(MIA.MOD_ID, "abyss_brink"));
     public static final ResourceKey<Level> ABYSS_BRINK_LEVEL = ResourceKey.create(Registries.DIMENSION,
-            ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "abyss_brink"));
+            MiaPort.id(MIA.MOD_ID, "abyss_brink"));
 
     public static void bootstrapStem(BootstrapContext<LevelStem> context) {
         HolderGetter<Biome> biomeRegistry = context.lookup(Registries.BIOME);

@@ -1,10 +1,7 @@
 package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.block.AbyssAndesiteBlock;
-import com.altnoir.mia.block.AbyssGrassBlock;
-import com.altnoir.mia.block.CoverGrassBlock;
-import com.altnoir.mia.block.LampTubeBlock;
+import com.altnoir.mia.block.*;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -81,6 +78,18 @@ public class MiaBlocks {
                             .lightLevel(litBlockEmission(BlockStateProperties.POWERED, 10))
                             .sound(SoundType.AMETHYST)
                             .noOcclusion()
+            )
+    );
+
+    public static final DeferredBlock<Block> ABYSS_PORTAL = registerBlock("abyss_portal", () ->
+            new AbyssPortalBlock(
+                    BlockBehaviour.Properties.of()
+                            .noCollission()
+                            .strength(-1.0F)
+                            .lightLevel(state -> 15)
+                            .sound(SoundType.GLASS)
+                            .noLootTable()
+                            .pushReaction(PushReaction.BLOCK)
             )
     );
 

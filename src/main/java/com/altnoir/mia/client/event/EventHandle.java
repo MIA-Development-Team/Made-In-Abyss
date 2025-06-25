@@ -3,7 +3,6 @@ package com.altnoir.mia.client.event;
 import com.altnoir.mia.MiaConfig;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.PauseScreen;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -18,7 +17,6 @@ public class EventHandle {
     }
 
     public static void addModEventBus(IEventBus modEventBus) {
-
     }
 
     public static void addGameEventBus(IEventBus gameEventBus) {

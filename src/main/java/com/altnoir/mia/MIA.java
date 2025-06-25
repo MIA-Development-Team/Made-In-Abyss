@@ -33,6 +33,7 @@ public class MIA {
 
         MiaItems.register(modEventBus);
         MiaBlocks.register(modEventBus);
+        MiaBlockEntities.register(modEventBus);
         MiaItemGroups.register(modEventBus);
 
         MiaEffects.register(modEventBus);
