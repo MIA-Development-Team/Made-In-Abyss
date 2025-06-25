@@ -15,7 +15,12 @@ import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 
 @EventBusSubscriber(modid = MIA.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public class CurseClientEvent {
-    private static final ResourceLocation CURSE_FILL = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "textures/gui/icon.png");
+    private static final ResourceLocation CURSE_ORB = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "textures/gui/icon.png");
+    private static final int FRAME_SIZE = 18;
+    private static final int FRAME_COUNT = 22;
+    private static final int FRAME_DURATION = 400;
+
+    private static int animationTick = 0;
 
     @SubscribeEvent
     public static void onRenderOverlay(RenderGuiLayerEvent.Post event) {
@@ -25,7 +30,7 @@ public class CurseClientEvent {
         var dim = player.level().dimension().location();
         var dimensionIds = MIA.CURSE_MANAGER.getDimensionIds();
 
-        if (player == null || mc.options.hideGui) return;
+        if (mc.options.hideGui) return;
 
         if (dimensionIds.contains(dim)) {
             if (!MiaConfig.curseGod && MiaPort.isCreativeOrSpectator(player)) return;
@@ -33,8 +38,8 @@ public class CurseClientEvent {
             var curse = player.getCapability(MiaCapabilities.CURSE, null);
             if (curse == null) return;
 
-            int value = curse.getCurse();
-            int max = curse.getMaxCurse();
+            var value = curse.getCurse();
+            var max = curse.getMaxCurse();
 
             if (max <= 0) return;
 
@@ -48,15 +53,26 @@ public class CurseClientEvent {
         var screenHeight = graphics.guiHeight();
         var font = mc.font;
 
-        int ch = MiaPort.isCreativeOrSpectator(player) ? screenHeight - 30 : screenHeight - 43;
-        int cx = MiaConfig.curseIcon ? screenWidth / 2 + 100 : screenWidth / 2;
-        int cy = MiaConfig.curseIcon ? screenHeight - 11 : ch;
+        var ch = MiaPort.isCreativeOrSpectator(player) ? screenHeight - 30 : screenHeight - 43;
+        var cx = MiaConfig.curseIcon ? screenWidth / 2 + 100 : screenWidth / 2;
+        var cy = MiaConfig.curseIcon ? screenHeight - 11 : ch;
 
-        graphics.blit(CURSE_FILL, cx - 9, cy - 9, 0, 0, 18, 18, 18, 18);
+        int frame = (animationTick / FRAME_DURATION) % FRAME_COUNT;
+        int u = 0;
+        int v = frame * FRAME_SIZE;
+
+        graphics.blit(
+                CURSE_ORB, cx - FRAME_SIZE / 2, cy - FRAME_SIZE / 2,
+                u, v,
+                FRAME_SIZE, FRAME_SIZE,
+                FRAME_SIZE, FRAME_SIZE * FRAME_COUNT
+        );
+
+        animationTick = (animationTick + 1) % (FRAME_DURATION * FRAME_COUNT);
 
         var text = String.valueOf(value);
-        int tx = cx - font.width(text) / 2;
-        int ty = cy - font.lineHeight / 2;
+        var tx = cx - font.width(text) / 2;
+        var ty = cy - font.lineHeight / 2;
         graphics.drawString(font, text, tx, ty, 0xFFFFFF, true);
     }
 }
