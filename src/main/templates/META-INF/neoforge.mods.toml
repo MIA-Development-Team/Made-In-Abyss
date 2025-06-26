@@ -32,7 +32,7 @@ displayName="${mod_name}" #mandatory
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 
 # A URL for the "homepage" for this mod, displayed in the mod UI
-#displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
+displayURL="https://github.com/MIA-Development-Team/Made-In-Abyss" #optional
 
 # A file name (in the root of the mod JAR) containing a logo for display
 #logoFile="examplemod.png" #optional
@@ -84,6 +84,21 @@ description='''${mod_description}'''
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="curios"
+    type="required"
+    versionRange="${curios_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="geckolib"
+    type="required"
+    versionRange="${geckolib_version_range}"
+    ordering="NONE"
+    side="CLIENT"
+
 
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares
 # that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't
