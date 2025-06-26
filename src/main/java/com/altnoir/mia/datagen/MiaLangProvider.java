@@ -21,16 +21,39 @@ public class MiaLangProvider extends LanguageProvider {
     protected void addTranslations() {
         add("itemgroup.mia", "Made In Abyss");
 
+        //Tooltip start
         add("tooltip.mia.whistle.level", "Whistle Level: §7%1$s");
+        //Tooltip end
 
+        //GUI start
         add("gui.mia.disconnect", "Quit?");
+        //GUI end
 
+        //Config start
+        add("mia.configuration.title", "Made In Abyss Configuration");
+        add("mia.configuration.curse", "Enable Curse");
+        add("mia.configuration.curse.tooltip", "Whether to enable the Curse");
+        add("mia.configuration.curse_icon", "Switch Curse Icon Position");
+        add("mia.configuration.curse_icon.tooltip", "Whether to switch the Curse icon position");
+        add("mia.configuration.curse_god", "Curse the Creative and Spectator");
+        add("mia.configuration.curse_god.tooltip", "Whether to Curse the Creative and Spectator");
+        add("mia.configuration.disconnect_visible", "Disconnect Button Visible");
+        add("mia.configuration.disconnect_visible.tooltip", "Whether to show the Disconnect Button");
+        add("mia.configuration.ban_disconnect", "Disable Disconnect Button");
+        add("mia.configuration.ban_disconnect.tooltip", "Whether to disable the Disconnect Button");
+        //Config end
+
+        //Biome start
         add("biome.mia.abyss_brink/abyss_brink", "Abyss Brink");
-        //模组翻译
+        //Biome end
+
+        //Compat start
         add("curios.identifier.whistle", "Whistle");
         add("curios.modifiers.whistle", "Red Whistle Attributes");
         add("tag.item.curios.whistle", "Whistle");
         add("emi.category.mia.lamp_tube", "Laser Catalysis");
+        //Compat end
+
 
         MiaItems.ITEMS.getEntries().stream()
                         .map(DeferredHolder::get)
