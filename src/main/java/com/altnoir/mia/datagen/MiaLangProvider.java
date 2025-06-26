@@ -38,7 +38,7 @@ public class MiaLangProvider extends LanguageProvider {
         add("mia.configuration.curse_god", "Curse the Creative and Spectator");
         add("mia.configuration.curse_god.tooltip", "Whether to Curse the Creative and Spectator");
         add("mia.configuration.disconnect_visible", "Disconnect Button Visible");
-        add("mia.configuration.disconnect_visible.tooltip", "Whether to let the Disconnect Button visible");
+        add("mia.configuration.disconnect_visible.tooltip", "Whether to show the Disconnect Button");
         add("mia.configuration.ban_disconnect", "Disable Disconnect Button");
         add("mia.configuration.ban_disconnect.tooltip", "Whether to disable the Disconnect Button");
         //Config end
