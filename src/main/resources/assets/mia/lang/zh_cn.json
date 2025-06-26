@@ -16,6 +16,18 @@
   "tooltip.mia.whistle.level": "笛子等级：§7%1$s",
   "gui.mia.disconnect": "退出游戏？",
 
+  "mia.configuration.title": "来自深渊配置",
+  "mia.configuration.ban_disconnect": "禁用退出游戏按钮",
+  "mia.configuration.ban_disconnect.tooltip": "是否禁用退出游戏按钮\n§7(默认值: false)",
+  "mia.configuration.curse": "启用诅咒",
+  "mia.configuration.curse.tooltip": "是否启用上升诅咒\n§7(默认值: true)",
+  "mia.configuration.curse_god": "诅咒创造模式和观察者模式",
+  "mia.configuration.curse_god.tooltip": "是否诅咒创造模式和观察者模式\n§7(默认值: false, 需要启用诅咒)",
+  "mia.configuration.curse_icon": "切换诅咒图标位置",
+  "mia.configuration.curse_icon.tooltip": "是否切换诅咒图标位置\n§7(默认值: false, 需要启用诅咒)",
+  "mia.configuration.disconnect_visible": "隐藏退出游戏按钮",
+  "mia.configuration.disconnect_visible.tooltip": "是否隐藏退出游戏按钮\n§7(默认值: false，需要启用禁用退出按钮)",
+
   "curios.identifier.whistle": "笛",
   "curios.modifiers.whistle": "穿戴时：",
   "tag.item.curios.whistle": "笛",

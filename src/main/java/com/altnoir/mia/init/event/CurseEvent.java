@@ -42,11 +42,12 @@ public class CurseEvent {
         double lastY = playerMinY.computeIfAbsent(uuid, k -> currentY);
 
         var delta = currentY - lastY;
+        var isCurseGod = !MiaConfig.curseGod && MiaPort.isCreativeOrSpectator(player);
 
-        if (currentY < lastY || player.isSpectator() || player.isCreative()) {
+        if (currentY < lastY || isCurseGod) {
             playerMinY.put(uuid, currentY);
         }
-        if (!MiaConfig.curseGod && MiaPort.isCreativeOrSpectator(player)) return;
+        if (isCurseGod) return;
 
         var dim = player.level().dimension().location();
         var dimensionIds = MIA.CURSE_MANAGER.getDimensionIds();
