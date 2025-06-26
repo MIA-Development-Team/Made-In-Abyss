@@ -14,6 +14,17 @@
   "item.mia.endless_cup": "Endless Cup",
   "item.mia.red_whistle": "Red Whistle",
   "itemgroup.mia": "Made In Abyss",
+  "mia.configuration.ban_disconnect": "Disable Disconnect Button",
+  "mia.configuration.ban_disconnect.tooltip": "Whether to disable the Disconnect Button",
+  "mia.configuration.curse": "Enable Curse",
+  "mia.configuration.curse.tooltip": "Whether to enable the Curse",
+  "mia.configuration.curse_god": "Curse the Creative and Spectator",
+  "mia.configuration.curse_god.tooltip": "Whether to Curse the Creative and Spectator",
+  "mia.configuration.curse_icon": "Switch Curse Icon Position",
+  "mia.configuration.curse_icon.tooltip": "Whether to switch the Curse icon position",
+  "mia.configuration.disconnect_visible": "Disconnect Button Visible",
+  "mia.configuration.disconnect_visible.tooltip": "Whether to let the Disconnect Button visible",
+  "mia.configuration.title": "Made In Abyss Configuration",
   "tag.item.curios.whistle": "Whistle",
   "tooltip.mia.whistle.level": "Whistle Level: §7%1$s"
 }
