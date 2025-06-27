@@ -14,7 +14,7 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
-public class MIABiomes {
+public class MiaBiomes {
     public static final ResourceKey<Biome> ABYSS_BRINK = ResourceKey.create(Registries.BIOME,
             ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "abyss_brink/abyss_brink"));
 

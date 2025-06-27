@@ -6,15 +6,18 @@ import com.altnoir.mia.init.MiaCapabilities;
 import com.altnoir.mia.util.MiaPort;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.PauseScreen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
 
-@EventBusSubscriber(modid = MIA.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
-public class CurseClientEvent {
+@OnlyIn(Dist.CLIENT)
+public class ClientCurseEvent {
     private static final ResourceLocation CURSE_ORB = MiaPort.id(MIA.MOD_ID, "textures/gui/icon.png");
     private static final int FRAME_SIZE = 18;
     private static final int FRAME_COUNT = 22;
@@ -23,7 +26,21 @@ public class CurseClientEvent {
     private static boolean firstFrame = false;
     private static int animationTick = 0;
 
-    @SubscribeEvent
+    public static void ScreenEventInitPost(ScreenEvent.Init.Post event) {
+        if (!MiaConfig.banDisconnect) return;
+        if (event.getScreen() instanceof PauseScreen pauseScreen) {
+            Button disconnectButton = pauseScreen.disconnectButton;
+            if (disconnectButton != null) {
+                if (MiaConfig.disconnectVisible) {
+                    disconnectButton.visible = false;
+                } else {
+                    disconnectButton.active = false;
+                    disconnectButton.setMessage(Component.translatable("gui.mia.disconnect"));
+                }
+            }
+        }
+    }
+
     public static void onRenderOverlay(RenderGuiLayerEvent.Post event) {
         if (!MiaConfig.curse) return;
         var mc = Minecraft.getInstance();

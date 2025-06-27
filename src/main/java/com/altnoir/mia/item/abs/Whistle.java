@@ -17,6 +17,7 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.List;
+import java.util.Objects;
 
 public abstract class Whistle extends Item implements ICurioItem {
     private static Multimap<Holder<Attribute>, AttributeModifier> attributeModifiers;
@@ -45,7 +46,12 @@ public abstract class Whistle extends Item implements ICurioItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         if (stack.get(MiaComponents.WHISTLE_LEVEL) == null) return;
-        tooltipComponents.add(Component.translatable("tooltip.mia.whistle.level", stack.get(MiaComponents.WHISTLE_LEVEL.get())).withStyle(style -> style.withColor(ChatFormatting.GOLD)));
+        tooltipComponents.add(
+                Component.translatable("tooltip.mia.whistle.level",
+                        Component.literal(
+                                Objects.requireNonNull(stack.get(MiaComponents.WHISTLE_LEVEL.get())).toString())
+                                .withStyle(ChatFormatting.GRAY))
+                        .withStyle(style -> style.withColor(ChatFormatting.GOLD)));
 
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }

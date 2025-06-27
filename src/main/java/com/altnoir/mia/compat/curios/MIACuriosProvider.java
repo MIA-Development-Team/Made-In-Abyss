@@ -14,9 +14,9 @@ import top.theillusivec4.curios.api.type.data.ISlotData;
 
 import java.util.concurrent.CompletableFuture;
 
-public class MIACuriosProvider extends CuriosDataProvider {
+public class MiaCuriosProvider extends CuriosDataProvider {
 
-    public MIACuriosProvider(PackOutput output, ExistingFileHelper fileHelper, CompletableFuture<HolderLookup.Provider> registries) {
+    public MiaCuriosProvider(PackOutput output, ExistingFileHelper fileHelper, CompletableFuture<HolderLookup.Provider> registries) {
         super(MIA.MOD_ID, output, fileHelper, registries);
     }
 

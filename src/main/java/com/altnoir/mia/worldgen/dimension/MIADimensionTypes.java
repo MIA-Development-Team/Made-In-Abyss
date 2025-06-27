@@ -12,7 +12,7 @@ import net.minecraft.world.level.dimension.DimensionType;
 
 import java.util.OptionalLong;
 
-public class MIADimensionTypes {
+public class MiaDimensionTypes {
     public static final ResourceKey<DimensionType> ABYSS_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE,
             ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "abyss_brink_type"));
 

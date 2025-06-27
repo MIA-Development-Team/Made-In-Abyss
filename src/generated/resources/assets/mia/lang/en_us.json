@@ -23,8 +23,10 @@
   "mia.configuration.curse_icon": "Switch Curse Icon Position",
   "mia.configuration.curse_icon.tooltip": "Whether to switch the Curse icon position",
   "mia.configuration.disconnect_visible": "Disconnect Button Visible",
-  "mia.configuration.disconnect_visible.tooltip": "Whether to let the Disconnect Button visible",
+  "mia.configuration.disconnect_visible.tooltip": "Whether to show the Disconnect Button",
   "mia.configuration.title": "Made In Abyss Configuration",
   "tag.item.curios.whistle": "Whistle",
+  "tooltip.mia.hold_shift": "Hold [%s] to show details",
+  "tooltip.mia.item.red_whistle": "Red Whistles are novice cave raiders allowed only in the Abyss’s first layer.",
   "tooltip.mia.whistle.level": "Whistle Level: §7%1$s"
 }

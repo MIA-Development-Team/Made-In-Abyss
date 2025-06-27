@@ -1,7 +1,7 @@
 package com.altnoir.mia.worldgen.noisesetting;
 
 import com.altnoir.mia.init.MiaBlocks;
-import com.altnoir.mia.worldgen.biome.MIABiomes;
+import com.altnoir.mia.worldgen.biome.MiaBiomes;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.data.worldgen.SurfaceRuleData;
 import net.minecraft.world.level.block.Block;
@@ -20,7 +20,7 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
     public static SurfaceRules.RuleSource abyssBrink(boolean aboveGround) {
         SurfaceRules.RuleSource sequence = SurfaceRules.sequence(
                 SurfaceRules.ifTrue(
-                        SurfaceRules.isBiome(MIABiomes.ABYSS_BRINK),
+                        SurfaceRules.isBiome(MiaBiomes.ABYSS_BRINK),
                         SurfaceRules.sequence(
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),

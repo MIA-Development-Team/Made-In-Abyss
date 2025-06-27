@@ -23,7 +23,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @JeiPlugin
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class MIAJeiPlugin implements IModPlugin {
+public class MiaJeiPlugin implements IModPlugin {
     public static final RecipeType<RecipeHolder<LampTubeRecipe>> LAMP_TUBE_RECIPE_TYPE = RecipeType.createRecipeHolderType(MiaPort.id(MIA.MOD_ID, "lamp_tube_recipe"));
 
     @Override
@@ -38,7 +38,7 @@ public class MIAJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(MiaBlocks.LAMP_TUBE, MIAJeiPlugin.LAMP_TUBE_RECIPE_TYPE);
+        registration.addRecipeCatalyst(MiaBlocks.LAMP_TUBE, MiaJeiPlugin.LAMP_TUBE_RECIPE_TYPE);
     }
 
     public RecipeManager getRecipeManager() {
@@ -54,6 +54,6 @@ public class MIAJeiPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager recipeManager = this.getRecipeManager();
-        registration.addRecipes(MIAJeiPlugin.LAMP_TUBE_RECIPE_TYPE, recipeManager.getAllRecipesFor(MiaRecipes.LAMP_TUBE_TYPE.get()));
+        registration.addRecipes(MiaJeiPlugin.LAMP_TUBE_RECIPE_TYPE, recipeManager.getAllRecipesFor(MiaRecipes.LAMP_TUBE_TYPE.get()));
     }
 }
