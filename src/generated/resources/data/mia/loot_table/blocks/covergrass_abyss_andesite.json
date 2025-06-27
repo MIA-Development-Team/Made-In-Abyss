@@ -35,7 +35,7 @@
                   "condition": "minecraft:survives_explosion"
                 }
               ],
-              "name": "minecraft:andesite"
+              "name": "mia:abyss_cobbled_andesite"
             }
           ]
         }

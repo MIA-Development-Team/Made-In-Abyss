@@ -1,8 +1,8 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaBlockTags;
+import com.altnoir.mia.init.MiaBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
@@ -38,6 +38,12 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.ABYSS_GRASS_BLOCK.get())
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
                 .add(MiaBlocks.ABYSS_ANDESITE.get());
+
+        tag(BlockTags.LOGS_THAT_BURN)
+                .add(MiaBlocks.SKYFOGWOOD_LOG.get())
+                .add(MiaBlocks.SKYFOGWOOD.get())
+                .add(MiaBlocks.STRIPPED_SKYFOGWOOD_LOG.get())
+                .add(MiaBlocks.STRIPPED_SKYFOGWOOD.get());
 
         tag(BlockTags.FLOWERS)
                 .add(MiaBlocks.FORTITUDE_FLOWER.get());

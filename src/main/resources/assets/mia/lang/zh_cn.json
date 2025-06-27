@@ -7,13 +7,22 @@
   "block.mia.abyss_cobbled_andesite": "深界安山岩圆石",
   "block.mia.abyss_grass_block": "深界草方块",
   "block.mia.covergrass_abyss_andesite": "覆草深界安山岩",
+
+  "block.mia.skyfogwood": "天雾木",
+  "block.mia.skyfogwood_log": "天雾原木",
+  "block.mia.stripped_skyfogwood": "去皮天雾木",
+  "block.mia.stripped_skyfogwood_log": "去皮天雾原木",
+  "block.mia.skyfogwood_planks": "天雾木板",
+
   "block.mia.fortitude_flower": "不屈之花",
   "block.mia.lamp_tube": "灯管",
   "block.mia.abyss_portal": "深渊传送门",
 
   "biome.mia.abyss_brink/abyss_brink": "阿比斯深渊",
 
-  "tooltip.mia.whistle.level": "笛子等级：§7%1$s",
+  "tooltip.mia.whistle.level": "笛子等级：%s",
+  "tooltip.mia.hold_shift": "按住 [%s] 显示详细信息",
+  "tooltip.mia.item.red_whistle": "红笛—新手探窟者，只允许在深渊一层。",
   "gui.mia.disconnect": "退出游戏？",
 
   "mia.configuration.title": "来自深渊配置",

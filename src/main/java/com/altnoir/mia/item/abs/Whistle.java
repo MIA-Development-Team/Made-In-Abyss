@@ -21,6 +21,7 @@ import java.util.Objects;
 
 public abstract class Whistle extends Item implements ICurioItem {
     private static Multimap<Holder<Attribute>, AttributeModifier> attributeModifiers;
+
     public Whistle(Properties properties) {
         super(properties);
     }
@@ -39,18 +40,16 @@ public abstract class Whistle extends Item implements ICurioItem {
     }
 
     @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return true;
-    }
+    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {return true;}
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         if (stack.get(MiaComponents.WHISTLE_LEVEL) == null) return;
         tooltipComponents.add(
                 Component.translatable("tooltip.mia.whistle.level",
-                        Component.literal(
-                                Objects.requireNonNull(stack.get(MiaComponents.WHISTLE_LEVEL.get())).toString())
-                                .withStyle(ChatFormatting.GRAY))
+                                Component.literal(
+                                                Objects.requireNonNull(stack.get(MiaComponents.WHISTLE_LEVEL.get())).toString())
+                                        .withStyle(ChatFormatting.YELLOW))
                         .withStyle(style -> style.withColor(ChatFormatting.GOLD)));
 
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);

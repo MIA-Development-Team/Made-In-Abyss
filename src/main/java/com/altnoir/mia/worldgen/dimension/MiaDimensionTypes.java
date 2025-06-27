@@ -31,7 +31,7 @@ public class MiaDimensionTypes {
                         320,
                         BlockTags.INFINIBURN_OVERWORLD,
                         BuiltinDimensionTypes.OVERWORLD_EFFECTS,
-                        0.1F,
+                        0.12F,
                         new DimensionType.MonsterSettings(false, true, UniformInt.of(0, 7), 0)
                 )
         );

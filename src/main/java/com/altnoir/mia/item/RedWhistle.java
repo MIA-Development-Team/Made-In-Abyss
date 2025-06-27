@@ -1,6 +1,7 @@
 package com.altnoir.mia.item;
 
 import com.altnoir.mia.item.abs.Whistle;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -13,6 +14,6 @@ public class RedWhistle extends Whistle implements IMiaTooltip {
 
     @Override
     public void appendTooltip(ItemStack stack, List<Component> tooltip) {
-        tooltip.add(Component.translatable("tooltip.mia.item.red_whistle"));
+        tooltip.add(3, Component.translatable("tooltip.mia.item.red_whistle").withStyle(style -> style.withColor(ChatFormatting.GRAY)));
     }
 }

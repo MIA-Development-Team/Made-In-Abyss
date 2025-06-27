@@ -19,9 +19,16 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         add(MiaBlocks.ABYSS_GRASS_BLOCK.get(), createSingleItemTableWithSilkTouch(MiaBlocks.ABYSS_GRASS_BLOCK.get(), Blocks.DIRT));
-        add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(), createSingleItemTableWithSilkTouch(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(), Blocks.ANDESITE));
+        add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(), createSingleItemTableWithSilkTouch(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(), MiaBlocks.ABYSS_COBBLED_ANDESITE.get()));
         add(MiaBlocks.ABYSS_ANDESITE.get(), createSingleItemTableWithSilkTouch(MiaBlocks.ABYSS_ANDESITE.get(), MiaBlocks.ABYSS_COBBLED_ANDESITE.get()));
         dropSelf(MiaBlocks.ABYSS_COBBLED_ANDESITE.get());
+
+        dropSelf(MiaBlocks.SKYFOGWOOD_LOG.get());
+        dropSelf(MiaBlocks.SKYFOGWOOD.get());
+        dropSelf(MiaBlocks.STRIPPED_SKYFOGWOOD_LOG.get());
+        dropSelf(MiaBlocks.STRIPPED_SKYFOGWOOD.get());
+        dropSelf(MiaBlocks.SKYFOGWOO_PLANKS.get());
+
         dropSelf(MiaBlocks.FORTITUDE_FLOWER.get());
         dropSelf(MiaBlocks.LAMP_TUBE.get());
     }

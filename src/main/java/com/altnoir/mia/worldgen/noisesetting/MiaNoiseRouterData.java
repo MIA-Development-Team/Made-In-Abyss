@@ -47,50 +47,71 @@ public class MiaNoiseRouterData extends NoiseRouterData {
     private static ResourceKey<DensityFunction> createKey(String location) {
         return ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.withDefaultNamespace(location));
     }
+
     private static DensityFunction getFunction(HolderGetter<DensityFunction> densityFunctions, ResourceKey<DensityFunction> key) {
         return new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(key));
     }
+
     private static DensityFunction postProcess(DensityFunction densityFunction) {
         DensityFunction densityfunction = DensityFunctions.blendDensity(densityFunction);
         return DensityFunctions.mul(DensityFunctions.interpolated(densityfunction), DensityFunctions.constant(0.64)).squeeze();
     }
 
     private static DensityFunction abyssBrinkDensity(HolderGetter<DensityFunction> densityFunctions) {
-        DensityFunction densityFunction = getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_HOLE);
+        DensityFunction abyssHole = getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_HOLE);
+        DensityFunction abyssBigHole = getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_BIG_HOLE);
+        DensityFunction insideAbyssHole = getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_INSIDE_HOLE);
+        DensityFunction middleAbyssNoise = getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_MIDDLE_BASE_3D);
+        DensityFunction outsideAbyssNoise = getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_OUTSIDE_BASE_3D);
+        DensityFunction abyssPillars = getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_ABYSS_PILLARS);
 
-        DensityFunction densityFunction1 = DensityFunctions.yClampedGradient(250, 320, 1, 1);
-        DensityFunction densityFunction2 = DensityFunctions.add(DensityFunctions.constant(37), densityFunction);
-
-        DensityFunction densityFunction3 = DensityFunctions.mul(densityFunction1, densityFunction2);
-        DensityFunction densityFunction4 = DensityFunctions.add(DensityFunctions.constant(-36.8975), densityFunction3);
-
-        DensityFunction densityFunction5 = DensityFunctions.yClampedGradient(0, 24, 0, 1);
-        DensityFunction densityFunction6 = DensityFunctions.add(DensityFunctions.constant(-0.4), densityFunction4);
-        DensityFunction densityFunction7 = DensityFunctions.mul(densityFunction5, densityFunction6);
-        DensityFunction densityFunction8 = DensityFunctions.add(DensityFunctions.constant(0.4), densityFunction7);
-
-        return DensityFunctions.min(postProcess(densityFunction8), getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_CAVE));
-    }
-
-    private static DensityFunction underground(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters, DensityFunction p_256658_) {
-        DensityFunction densityfunction = getFunction(densityFunctions, SPAGHETTI_2D);
-        DensityFunction densityfunction1 = getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION);
-        DensityFunction densityfunction2 = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.CAVE_LAYER), 8.0);
-        DensityFunction densityfunction3 = DensityFunctions.mul(DensityFunctions.constant(4.0), densityfunction2.square());
-        DensityFunction densityfunction4 = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.CAVE_CHEESE), 0.6666666666666666);
-        DensityFunction densityfunction5 = DensityFunctions.add(
-                DensityFunctions.add(DensityFunctions.constant(0.27), densityfunction4).clamp(-1.0, 1.0),
-                DensityFunctions.add(DensityFunctions.constant(1.5), DensityFunctions.mul(DensityFunctions.constant(-0.64), p_256658_)).clamp(0.0, 0.5)
+        DensityFunction inside = DensityFunctions.min(insideAbyssHole,
+                DensityFunctions.add(
+                        getFunction(densityFunctions, SPAGHETTI_2D),
+                        getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION)
+                )
         );
-        DensityFunction densityfunction6 = DensityFunctions.add(densityfunction3, densityfunction5);
-        DensityFunction densityfunction7 = DensityFunctions.min(
-                DensityFunctions.min(densityfunction6, getFunction(densityFunctions, ENTRANCES)), DensityFunctions.add(densityfunction, densityfunction1)
+
+        DensityFunction middle = DensityFunctions.max(
+                DensityFunctions.min(middleAbyssNoise,
+                        DensityFunctions.add(
+                                getFunction(densityFunctions, SPAGHETTI_2D),
+                                getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION)
+                        )
+                ),
+                abyssPillars
         );
-        DensityFunction densityfunction8 = getFunction(densityFunctions, PILLARS);
-        DensityFunction densityfunction9 = DensityFunctions.rangeChoice(
-                densityfunction8, -1000000.0, 0.03, DensityFunctions.constant(-1000000.0), densityfunction8
+
+        DensityFunction outside = DensityFunctions.max(
+                DensityFunctions.min(outsideAbyssNoise,
+                        DensityFunctions.add(
+                                getFunction(densityFunctions, SPAGHETTI_2D),
+                                getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION)
+                        )
+                ),
+                abyssPillars
         );
-        return DensityFunctions.max(densityfunction7, densityfunction9);
+
+        DensityFunction rangeChoice2 = DensityFunctions.rangeChoice(
+                abyssBigHole, -1000000.0, 0.025, middle, outside
+        );
+        DensityFunction rangeChoice1 = DensityFunctions.rangeChoice(
+                abyssHole, -1000000.0, 0.025, inside, rangeChoice2
+        );
+
+        DensityFunction ycg1 = DensityFunctions.yClampedGradient(250, 320, 1, 1);
+        DensityFunction add1 = DensityFunctions.add(DensityFunctions.constant(1.025), rangeChoice1);
+
+        DensityFunction mul1 = DensityFunctions.mul(ycg1, add1);
+        DensityFunction add2 = DensityFunctions.add(DensityFunctions.constant(-0.8975), mul1);
+
+        DensityFunction ycg2 = DensityFunctions.yClampedGradient(0, 24, 0, 1);
+        DensityFunction add3 = DensityFunctions.add(DensityFunctions.constant(-0.4), add2);
+
+        DensityFunction mul2 = DensityFunctions.mul(ycg2, add3);
+        DensityFunction add4 = DensityFunctions.add(DensityFunctions.constant(0.4), mul2);
+
+        return postProcess(add4);
     }
 
     private static NoiseRouter abyssBrinkRouter(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
@@ -128,12 +149,34 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         );
     }
 
+    private static DensityFunction underground(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters, DensityFunction p_256658_) {
+        DensityFunction densityfunction = getFunction(densityFunctions, SPAGHETTI_2D);
+        DensityFunction densityfunction1 = getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION);
+        DensityFunction densityfunction2 = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.CAVE_LAYER), 8.0);
+        DensityFunction densityfunction3 = DensityFunctions.mul(DensityFunctions.constant(4.0), densityfunction2.square());
+        DensityFunction densityfunction4 = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.CAVE_CHEESE), 0.6666666666666666);
+        DensityFunction densityfunction5 = DensityFunctions.add(
+                DensityFunctions.add(DensityFunctions.constant(0.27), densityfunction4).clamp(-1.0, 1.0),
+                DensityFunctions.add(DensityFunctions.constant(1.5), DensityFunctions.mul(DensityFunctions.constant(-0.64), p_256658_)).clamp(0.0, 0.5)
+        );
+        DensityFunction densityfunction6 = DensityFunctions.add(densityfunction3, densityfunction5);
+        DensityFunction densityfunction7 = DensityFunctions.min(
+                DensityFunctions.min(densityfunction6, getFunction(densityFunctions, ENTRANCES)), DensityFunctions.add(densityfunction, densityfunction1)
+        );
+        DensityFunction densityfunction8 = getFunction(densityFunctions, PILLARS);
+        DensityFunction densityfunction9 = DensityFunctions.rangeChoice(
+                densityfunction8, -1000000.0, 0.03, DensityFunctions.constant(-1000000.0), densityfunction8
+        );
+        return DensityFunctions.max(densityfunction7, densityfunction9);
+    }
+
     private static DensityFunction noiseGradientDensity(DensityFunction minFunction, DensityFunction maxFunction) {
         DensityFunction densityfunction = DensityFunctions.mul(maxFunction, minFunction);
         return DensityFunctions.mul(DensityFunctions.constant(4.0), densityfunction.quarterNegative());
     }
+
     private static DensityFunction slideAbyssBrink(DensityFunction densityFunction) {
-        return slide(densityFunction, 16, 300,70, 0, -0.078125, 0, 24, 0.1171875);
+        return slide(densityFunction, 16, 300, 70, 0, -0.078125, 0, 24, 0.1171875);
     }
 
     private static DensityFunction slide(DensityFunction input, int minY, int maxY, int i1, int i2, double v1, int i3, int i4, double v2) {

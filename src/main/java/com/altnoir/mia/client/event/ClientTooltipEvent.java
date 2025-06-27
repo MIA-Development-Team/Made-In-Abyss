@@ -15,14 +15,16 @@ public class ClientTooltipEvent {
         var item = stack.getItem();
 
         if (item instanceof IMiaTooltip tooltipProvider) {
-            event.getToolTip().add(
-                    Component.translatable(
-                    "tooltip.mia.hold_shift",
-                    Component.literal("Shift").withStyle(ChatFormatting.WHITE))
-                            .withStyle(ChatFormatting.GRAY));
             if (Screen.hasShiftDown()) {
                 tooltipProvider.appendTooltip(stack, event.getToolTip());
+            } else {
+                event.getToolTip().add(3,
+                        Component.translatable(
+                                        "tooltip.mia.hold_shift",
+                                        Component.literal("Shift").withStyle(ChatFormatting.WHITE))
+                                .withStyle(ChatFormatting.GRAY));
             }
+            event.getToolTip().add(4, Component.literal(""));
         }
     }
 }

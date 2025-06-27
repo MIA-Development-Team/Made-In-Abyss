@@ -2,11 +2,13 @@ package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.block.*;
+import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,7 +27,7 @@ import java.util.function.ToIntFunction;
 public class MiaBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MIA.MOD_ID);
 
-    public static final DeferredBlock<Block> ABYSS_ANDESITE = registerBlock("abyss_andesite",  () ->
+    public static final DeferredBlock<Block> ABYSS_ANDESITE = registerBlock("abyss_andesite", () ->
             new AbyssAndesiteBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE)
                     .instrument(NoteBlockInstrument.BASEDRUM)
@@ -34,7 +36,7 @@ public class MiaBlocks {
                     .sound(SoundType.DEEPSLATE)
             )
     );
-    public static final  DeferredBlock<Block> ABYSS_COBBLED_ANDESITE = registerBlock("abyss_cobbled_andesite", () ->
+    public static final DeferredBlock<Block> ABYSS_COBBLED_ANDESITE = registerBlock("abyss_cobbled_andesite", () ->
             new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
                     .strength(3.5F, 6.0F)
             )
@@ -57,6 +59,24 @@ public class MiaBlocks {
                     .sound(SoundType.DEEPSLATE)
             )
     );
+
+    public static final DeferredBlock<Block> SKYFOGWOOD_LOG = registerBlock("skyfogwood_log", () ->
+            log(MapColor.WOOD, MapColor.PODZOL)
+    );
+    public static final DeferredBlock<Block> SKYFOGWOOD = registerBlock("skyfogwood", () ->
+            wood(MapColor.WOOD)
+    );
+    public static final DeferredBlock<Block> STRIPPED_SKYFOGWOOD_LOG = registerBlock("stripped_skyfogwood_log", () ->
+            log(MapColor.WOOD, MapColor.WOOD)
+    );
+    public static final DeferredBlock<Block> STRIPPED_SKYFOGWOOD = registerBlock("stripped_skyfogwood", () ->
+            wood(MapColor.WOOD)
+    );
+
+    public static final DeferredBlock<Block> SKYFOGWOO_PLANKS = registerBlock("skyfogwood_planks", () ->
+            planks(MapColor.COLOR_GREEN)
+    );
+
     public static final DeferredBlock<Block> FORTITUDE_FLOWER = registerBlock("fortitude_flower", () ->
             new FlowerBlock(
                     MobEffects.WEAKNESS,
@@ -93,6 +113,39 @@ public class MiaBlocks {
             )
     );
 
+    private static Block log(MapColor topMapColor, MapColor sideMapColor) {
+        return new MiaWoodBlock(
+                BlockBehaviour.Properties.of()
+                        .mapColor(state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topMapColor : sideMapColor)
+                        .instrument(NoteBlockInstrument.BASS)
+                        .strength(2.0F)
+                        .sound(SoundType.WOOD)
+                        .ignitedByLava()
+        );
+    }
+
+    private static Block wood(MapColor mapColor) {
+        return new MiaWoodBlock(
+                BlockBehaviour.Properties.of()
+                        .mapColor(mapColor)
+                        .instrument(NoteBlockInstrument.BASS)
+                        .strength(2.0F)
+                        .sound(SoundType.WOOD)
+                        .ignitedByLava()
+        );
+    }
+
+    private static Block planks(MapColor mapColor) {
+        return new MiaPlankBlock(
+                BlockBehaviour.Properties.of()
+                        .mapColor(mapColor)
+                        .instrument(NoteBlockInstrument.BASS)
+                        .strength(2.0F, 3.0F)
+                        .sound(SoundType.WOOD)
+                        .ignitedByLava()
+        );
+    }
+
     private static ToIntFunction<BlockState> litBlockEmission(BooleanProperty property, int lightValue) {
         return state -> state.getValue(property) ? lightValue : 0;
     }
@@ -102,9 +155,11 @@ public class MiaBlocks {
         registerBlockItem(name, toReturn);
         return toReturn;
     }
+
     private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {
         MiaItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
+
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
     }

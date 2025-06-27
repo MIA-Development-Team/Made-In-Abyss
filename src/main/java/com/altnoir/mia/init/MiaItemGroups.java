@@ -23,6 +23,11 @@ public class MiaItemGroups {
                 output.accept(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
                 output.accept(MiaBlocks.ABYSS_ANDESITE);
                 output.accept(MiaBlocks.ABYSS_COBBLED_ANDESITE);
+                output.accept(MiaBlocks.SKYFOGWOOD_LOG);
+                output.accept(MiaBlocks.SKYFOGWOOD);
+                output.accept(MiaBlocks.STRIPPED_SKYFOGWOOD_LOG);
+                output.accept(MiaBlocks.STRIPPED_SKYFOGWOOD);
+                output.accept(MiaBlocks.SKYFOGWOO_PLANKS);
                 output.accept(MiaBlocks.FORTITUDE_FLOWER);
                 output.accept(MiaBlocks.LAMP_TUBE);
                 output.accept(MiaBlocks.ABYSS_PORTAL);

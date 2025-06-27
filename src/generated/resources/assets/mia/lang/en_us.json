@@ -7,6 +7,11 @@
   "block.mia.covergrass_abyss_andesite": "Covergrass Abyss Andesite",
   "block.mia.fortitude_flower": "Fortitude Flower",
   "block.mia.lamp_tube": "Lamp Tube",
+  "block.mia.skyfogwood": "Skyfogwood",
+  "block.mia.skyfogwood_log": "Skyfogwood Log",
+  "block.mia.skyfogwood_planks": "Skyfogwood Planks",
+  "block.mia.stripped_skyfogwood": "Stripped Skyfogwood",
+  "block.mia.stripped_skyfogwood_log": "Stripped Skyfogwood Log",
   "curios.identifier.whistle": "Whistle",
   "curios.modifiers.whistle": "Red Whistle Attributes",
   "emi.category.mia.lamp_tube": "Laser Catalysis",
@@ -28,5 +33,5 @@
   "tag.item.curios.whistle": "Whistle",
   "tooltip.mia.hold_shift": "Hold [%s] to show details",
   "tooltip.mia.item.red_whistle": "Red Whistles are novice cave raiders allowed only in the Abyss’s first layer.",
-  "tooltip.mia.whistle.level": "Whistle Level: §7%1$s"
+  "tooltip.mia.whistle.level": "Whistle Level: %s"
 }

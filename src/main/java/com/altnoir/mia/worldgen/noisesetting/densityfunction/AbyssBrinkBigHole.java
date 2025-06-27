@@ -7,17 +7,17 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 
-public class AbyssHoleDensityFunction implements DensityFunction.SimpleFunction {
-    public static final KeyDispatchDataCodec<AbyssHoleDensityFunction> CODEC = KeyDispatchDataCodec.of(
-            MapCodec.unit(new AbyssHoleDensityFunction(0L))
+public class AbyssBrinkBigHole implements DensityFunction.SimpleFunction {
+    public static final KeyDispatchDataCodec<AbyssBrinkBigHole> CODEC = KeyDispatchDataCodec.of(
+            MapCodec.unit(new AbyssBrinkBigHole(0L))
     );
 
-    public AbyssHoleDensityFunction(long seed) {
+    public AbyssBrinkBigHole(long seed) {
         RandomSource randomsource = new LegacyRandomSource(seed);
         randomsource.consumeCount(17292);
     }
     private static float getHeightValue(int x, int z) {
-        float f = 256.0F - Mth.sqrt((float)(x * x + z * z)) * 8.0F; // 深渊半径
+        float f = 400.0F - Mth.sqrt((float)(x * x + z * z)) * 8.0F; // 深渊半径
         f = Mth.clamp(f, -100.0F, 80.0F);
 
         return f;
@@ -25,19 +25,16 @@ public class AbyssHoleDensityFunction implements DensityFunction.SimpleFunction 
 
     @Override
     public double compute(DensityFunction.FunctionContext context) {
-        // 反转计算结果：原公式 (height -8)/128 改为 (8 - height) / 128
-        return (8.0 - (double)getHeightValue(context.blockX() / 8, context.blockZ() / 8)) / 64; // 最终除的数越小，洞越平滑
+        return (8.0 - (double)getHeightValue(context.blockX() / 8, context.blockZ() / 8)) / 16;
     }
 
     @Override
     public double minValue() {
-        // 原最小值-0.84375反转后变为-0.5625（原最大值0.5625取反）
         return -0.5625;
     }
 
     @Override
     public double maxValue() {
-        // 原最大值0.5625反转后变为0.84375（原最小值-0.84375取反）
         return 0.84375;
     }
 

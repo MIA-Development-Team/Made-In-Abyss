@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:range_choice",
+  "input": "mia:abyss_brink/caves/pillars",
+  "max_exclusive": 0.03,
+  "min_inclusive": -1000000.0,
+  "when_in_range": -1000000.0,
+  "when_out_of_range": "mia:abyss_brink/caves/pillars"
+}

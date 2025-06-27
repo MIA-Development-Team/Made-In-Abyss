@@ -7,6 +7,7 @@ import com.altnoir.mia.init.MiaBlocks;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -42,6 +43,16 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         abyssBlockItem(MiaBlocks.ABYSS_PORTAL);
         blockWithItem(MiaBlocks.ABYSS_COBBLED_ANDESITE);
 
+        logBlock((RotatedPillarBlock) MiaBlocks.SKYFOGWOOD_LOG.get());
+        axisBlock((RotatedPillarBlock) MiaBlocks.SKYFOGWOOD.get(), blockTexture(MiaBlocks.SKYFOGWOOD_LOG.get()), blockTexture(MiaBlocks.SKYFOGWOOD_LOG.get()));
+        logBlock((RotatedPillarBlock) MiaBlocks.STRIPPED_SKYFOGWOOD_LOG.get());
+        axisBlock((RotatedPillarBlock) MiaBlocks.STRIPPED_SKYFOGWOOD.get(), blockTexture(MiaBlocks.STRIPPED_SKYFOGWOOD_LOG.get()), blockTexture(MiaBlocks.STRIPPED_SKYFOGWOOD_LOG.get()));
+        blockItem(MiaBlocks.SKYFOGWOOD_LOG);
+        blockItem(MiaBlocks.SKYFOGWOOD);
+        blockItem(MiaBlocks.STRIPPED_SKYFOGWOOD_LOG);
+        blockItem(MiaBlocks.STRIPPED_SKYFOGWOOD);
+        blockWithItem(MiaBlocks.SKYFOGWOO_PLANKS);
+
         crossBlock(MiaBlocks.FORTITUDE_FLOWER);
         abyssBlockItem(MiaBlocks.LAMP_TUBE);
     }
@@ -50,12 +61,15 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         simpleBlock(block.get(), models()
                 .cross(BuiltInRegistries.BLOCK.getKey(block.get()).getPath(), blockTexture(block.get())).renderType("cutout"));
     }
+
     protected void abyssBlockItem(DeferredBlock<?> block) {
         simpleBlockItem(block.get(), models().getExistingFile(modLoc("block/" + BuiltInRegistries.BLOCK.getKey(block.get()).getPath())));
     }
+
     protected void blockItem(DeferredBlock<?> block) {
         itemModels().withExistingParent(BuiltInRegistries.BLOCK.getKey(block.get()).getPath(), modLoc("block/" + BuiltInRegistries.BLOCK.getKey(block.get()).getPath()));
     }
+
     protected void blockWithItem(DeferredBlock<?> block) {
         simpleBlockWithItem(block.get(), cubeAll(block.get()));
     }
