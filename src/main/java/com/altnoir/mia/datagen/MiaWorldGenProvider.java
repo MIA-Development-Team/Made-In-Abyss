@@ -3,9 +3,9 @@ package com.altnoir.mia.datagen;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;
 import com.altnoir.mia.worldgen.MiaPlacementUtils;
-import com.altnoir.mia.worldgen.biome.MIABiomes;
-import com.altnoir.mia.worldgen.dimension.MIADimensionTypes;
-import com.altnoir.mia.worldgen.dimension.MIADimensions;
+import com.altnoir.mia.worldgen.biome.MiaBiomes;
+import com.altnoir.mia.worldgen.dimension.MiaDimensionTypes;
+import com.altnoir.mia.worldgen.dimension.MiaDimensions;
 import com.altnoir.mia.worldgen.noisesetting.MiaDensityFunction;
 import com.altnoir.mia.worldgen.noisesetting.MiaNoiseGeneratorSettings;
 import net.minecraft.core.HolderLookup;
@@ -19,11 +19,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class MiaWorldGenProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(Registries.DIMENSION_TYPE, MIADimensionTypes::bootstrapType)
+            .add(Registries.DIMENSION_TYPE, MiaDimensionTypes::bootstrapType)
             .add(Registries.CONFIGURED_FEATURE, MiaFeatureUtils::bootstrap)
             .add(Registries.PLACED_FEATURE, MiaPlacementUtils::bootstrap)
-            .add(Registries.BIOME, MIABiomes::boostrap)
-            .add(Registries.LEVEL_STEM, MIADimensions::bootstrapStem)
+            .add(Registries.BIOME, MiaBiomes::boostrap)
+            .add(Registries.LEVEL_STEM, MiaDimensions::bootstrapStem)
             .add(Registries.DENSITY_FUNCTION, MiaDensityFunction::bootstrap)
             .add(Registries.NOISE_SETTINGS, MiaNoiseGeneratorSettings::bootstrap);
 

@@ -1,6 +1,6 @@
 package com.altnoir.mia.block;
 
-import com.altnoir.mia.worldgen.dimension.MIADimensions;
+import com.altnoir.mia.worldgen.dimension.MiaDimensions;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -57,12 +57,12 @@ public class AbyssPortalBlock extends Block implements Portal {
 
     @Override
     public @Nullable DimensionTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
-        ResourceKey<Level> resourcekey = level.dimension() == MIADimensions.ABYSS_BRINK_LEVEL ? Level.OVERWORLD : MIADimensions.ABYSS_BRINK_LEVEL;
+        ResourceKey<Level> resourcekey = level.dimension() == MiaDimensions.ABYSS_BRINK_LEVEL ? Level.OVERWORLD : MiaDimensions.ABYSS_BRINK_LEVEL;
         ServerLevel serverlevel = level.getServer().getLevel(resourcekey);
         if (serverlevel == null) {
             return null;
         } else {
-            boolean flag = resourcekey == MIADimensions.ABYSS_BRINK_LEVEL;
+            boolean flag = resourcekey == MiaDimensions.ABYSS_BRINK_LEVEL;
             BlockPos blockpos = flag ? new BlockPos(0, 300, 0) : serverlevel.getSharedSpawnPos();
             Vec3 vec3 = blockpos.getBottomCenter();
             float f = entity.getYRot();

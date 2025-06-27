@@ -23,7 +23,7 @@ public class LampTubeRecipeCategory implements IRecipeCategory<RecipeHolder<Lamp
 
     @Override
     public RecipeType<RecipeHolder<LampTubeRecipe>> getRecipeType() {
-        return MIAJeiPlugin.LAMP_TUBE_RECIPE_TYPE;
+        return MiaJeiPlugin.LAMP_TUBE_RECIPE_TYPE;
     }
 
     @Override

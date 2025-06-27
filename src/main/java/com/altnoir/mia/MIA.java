@@ -4,6 +4,7 @@ import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.core.curse.CurseManager;
 import com.altnoir.mia.init.*;
 import com.altnoir.mia.init.MiaDensityFunctionTypes;
+import com.altnoir.mia.init.event.EventHandle;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -31,7 +32,6 @@ public class MIA {
 
     public MIA(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
-        modEventBus.addListener(MiaNetworking::register);
 
         MiaItems.register(modEventBus);
         MiaBlocks.register(modEventBus);
@@ -44,11 +44,14 @@ public class MIA {
         MiaAttachments.register(modEventBus);
 
         MiaRecipes.register(modEventBus);
-        NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, MiaConfig.SPEC);
         modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+
+        var gameEventBus = NeoForge.EVENT_BUS;
+        gameEventBus.register(this);
+        EventHandle.addListener(modEventBus, gameEventBus);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

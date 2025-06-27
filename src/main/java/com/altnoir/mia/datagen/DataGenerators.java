@@ -1,15 +1,12 @@
 package com.altnoir.mia.datagen;
 
-import com.altnoir.mia.MIA;
-import com.altnoir.mia.compat.curios.MIACuriosProvider;
+import com.altnoir.mia.compat.curios.MiaCuriosProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -18,9 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = MIA.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
-    @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
         DataGenerator generators = event.getGenerator();
         PackOutput packOutput = generators.getPackOutput();
@@ -38,7 +33,7 @@ public class DataGenerators {
         generators.addProvider(event.includeServer(), new MiaDataMapProvider(packOutput, lookupProvider));
 
         generators.addProvider(event.includeServer(), new MiaWorldGenProvider(packOutput, lookupProvider));
-        generators.addProvider(event.includeServer(), new MIACuriosProvider(packOutput, existingFileHelper, lookupProvider));
+        generators.addProvider(event.includeServer(), new MiaCuriosProvider(packOutput, existingFileHelper, lookupProvider));
         generators.addProvider(event.includeServer(), new MiaCurseDataProvider(packOutput, lookupProvider));
 
         generators.addProvider(event.includeClient(), new MiaBlockStateProvider(packOutput, existingFileHelper));
