@@ -51,7 +51,7 @@ import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class MiaPort {
+public class MiaUtil {
     private static final net.minecraft.util.RandomSource RANDOM = net.minecraft.util.RandomSource.create();
 
     public static MutableComponent literal(String s) {

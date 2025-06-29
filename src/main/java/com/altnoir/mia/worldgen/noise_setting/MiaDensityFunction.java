@@ -1,4 +1,4 @@
-package com.altnoir.mia.worldgen.noisesetting;
+package com.altnoir.mia.worldgen.noise_setting;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaDensityFunctionTypes;

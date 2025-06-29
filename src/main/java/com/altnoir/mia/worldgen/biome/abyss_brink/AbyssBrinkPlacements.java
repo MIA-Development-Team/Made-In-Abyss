@@ -1,4 +1,4 @@
-package com.altnoir.mia.worldgen.biome;
+package com.altnoir.mia.worldgen.biome.abyss_brink;
 
 import com.altnoir.mia.worldgen.MiaPlacementUtils;
 import net.minecraft.core.Holder;

@@ -4,7 +4,7 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.recipe.LampTubeRecipe;
 import com.altnoir.mia.init.MiaRecipes;
-import com.altnoir.mia.util.MiaPort;
+import com.altnoir.mia.util.MiaUtil;
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
@@ -24,9 +24,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class MiaEmiPlugin implements EmiPlugin {
-    public static final ResourceLocation WIDGETS = MiaPort.id("emi", "textures/gui/widgets.png");
+    public static final ResourceLocation WIDGETS = MiaUtil.id("emi", "textures/gui/widgets.png");
     public static final EmiStack WORKSTATION = EmiStack.of(MiaBlocks.LAMP_TUBE.asItem());
-    public static EmiRecipeCategory LAMP_TUBE = new EmiRecipeCategory(MiaPort.id(MIA.MOD_ID, "lamp_tube"),
+    public static EmiRecipeCategory LAMP_TUBE = new EmiRecipeCategory(MiaUtil.id(MIA.MOD_ID, "lamp_tube"),
             WORKSTATION, new EmiTexture(WIDGETS, 160, 240, 16, 16));
 
     @Override

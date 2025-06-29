@@ -5,6 +5,7 @@ import com.altnoir.mia.core.curse.CurseManager;
 import com.altnoir.mia.init.*;
 import com.altnoir.mia.init.MiaDensityFunctionTypes;
 import com.altnoir.mia.init.event.EventHandle;
+import com.altnoir.mia.init.MiaBiomeSources;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -40,6 +41,7 @@ public class MIA {
 
         MiaEffects.register(modEventBus);
         MiaComponents.register(modEventBus);
+        MiaBiomeSources.register(modEventBus);
         MiaDensityFunctionTypes.register(modEventBus);
         MiaAttachments.register(modEventBus);
 

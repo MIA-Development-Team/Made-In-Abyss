@@ -3,7 +3,7 @@ package com.altnoir.mia.client.event;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.init.MiaCapabilities;
-import com.altnoir.mia.util.MiaPort;
+import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -18,7 +18,7 @@ import net.neoforged.neoforge.client.event.ScreenEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientCurseEvent {
-    private static final ResourceLocation CURSE_ORB = MiaPort.id(MIA.MOD_ID, "textures/gui/icon.png");
+    private static final ResourceLocation CURSE_ORB = MiaUtil.id(MIA.MOD_ID, "textures/gui/icon.png");
     private static final int FRAME_SIZE = 18;
     private static final int FRAME_COUNT = 22;
     private static final int FRAME_DURATION = 1000;
@@ -51,7 +51,7 @@ public class ClientCurseEvent {
         if (mc.options.hideGui) return;
 
         if (dimensionIds.contains(dim)) {
-            if (!MiaConfig.curseGod && MiaPort.isCreativeOrSpectator(player)) return;
+            if (!MiaConfig.curseGod && MiaUtil.isCreativeOrSpectator(player)) return;
 
             var curse = player.getCapability(MiaCapabilities.CURSE, null);
             if (curse == null) return;
@@ -71,7 +71,7 @@ public class ClientCurseEvent {
         var screenHeight = graphics.guiHeight();
         var font = mc.font;
 
-        var ch = MiaPort.isCreativeOrSpectator(player) ? screenHeight - 30 : screenHeight - 43;
+        var ch = MiaUtil.isCreativeOrSpectator(player) ? screenHeight - 30 : screenHeight - 43;
         var cx = MiaConfig.curseIcon ? screenWidth / 2 + 100 : screenWidth / 2;
         var cy = MiaConfig.curseIcon ? screenHeight - 11 : ch;
 

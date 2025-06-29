@@ -1,12 +1,12 @@
 package com.altnoir.mia.worldgen.biome;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.Musics;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 
 public class MiaBiomes {
     public static final ResourceKey<Biome> ABYSS_BRINK = ResourceKey.create(Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "abyss_brink/abyss_brink"));
+            MiaUtil.id(MIA.MOD_ID, "abyss_brink/abyss_brink"));
 
     public static void boostrap(BootstrapContext<Biome> context) {
         context.register(ABYSS_BRINK, abyssBrink(context));
@@ -52,8 +52,8 @@ public class MiaBiomes {
         BiomeDefaultFeatures.addExtraGold(generationBuilder);
 
         BiomeDefaultFeatures.addPlainGrass(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.FLOWER_CHERRY);
-        //generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.TREES_CHERRY);
+        BiomeDefaultFeatures.addMeadowVegetation(generationBuilder);
+        //generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.FLOWER_CHERRY);
         BiomeDefaultFeatures.addFerns(generationBuilder);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);

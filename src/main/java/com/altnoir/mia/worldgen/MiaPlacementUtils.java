@@ -1,8 +1,8 @@
 package com.altnoir.mia.worldgen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.util.MiaPort;
-import com.altnoir.mia.worldgen.biome.AbyssBrinkPlacements;
+import com.altnoir.mia.util.MiaUtil;
+import com.altnoir.mia.worldgen.biome.abyss_brink.AbyssBrinkPlacements;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -19,7 +19,7 @@ public class MiaPlacementUtils {
     }
 
     public static ResourceKey<PlacedFeature> resourceKey(String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, MiaPort.id(MIA.MOD_ID, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, MiaUtil.id(MIA.MOD_ID, name));
     }
     public static void register(
             BootstrapContext<PlacedFeature> context,

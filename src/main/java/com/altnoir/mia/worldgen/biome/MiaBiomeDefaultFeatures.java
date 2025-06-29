@@ -1,5 +1,6 @@
 package com.altnoir.mia.worldgen.biome;
 
+import com.altnoir.mia.worldgen.biome.abyss_brink.AbyssBrinkPlacements;
 import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;

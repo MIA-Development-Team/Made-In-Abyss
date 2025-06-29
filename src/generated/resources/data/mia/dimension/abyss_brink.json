@@ -3,10 +3,11 @@
   "generator": {
     "type": "minecraft:noise",
     "biome_source": {
-      "type": "minecraft:multi_noise",
+      "type": "mia:the_abyss",
+      "abyss_biome": "mia:abyss_brink/abyss_brink",
       "biomes": [
         {
-          "biome": "mia:abyss_brink/abyss_brink",
+          "biome": "minecraft:cherry_grove",
           "parameters": {
             "continentalness": 0.0,
             "depth": 0.0,
@@ -14,7 +15,31 @@
             "humidity": 0.0,
             "offset": 0.0,
             "temperature": 0.8,
-            "weirdness": 0.4
+            "weirdness": 0.2
+          }
+        },
+        {
+          "biome": "minecraft:birch_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 0.0,
+            "erosion": 0.0,
+            "humidity": 0.0,
+            "offset": 0.1,
+            "temperature": 0.8,
+            "weirdness": 0.1
+          }
+        },
+        {
+          "biome": "minecraft:forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 0.0,
+            "erosion": 0.0,
+            "humidity": 0.0,
+            "offset": 0.1,
+            "temperature": 0.8,
+            "weirdness": 0.0
           }
         }
       ]

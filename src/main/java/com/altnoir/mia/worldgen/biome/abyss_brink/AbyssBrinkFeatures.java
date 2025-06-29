@@ -1,4 +1,4 @@
-package com.altnoir.mia.worldgen.biome;
+package com.altnoir.mia.worldgen.biome.abyss_brink;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;

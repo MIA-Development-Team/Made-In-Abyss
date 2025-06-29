@@ -1,4 +1,4 @@
-package com.altnoir.mia.worldgen.noisesetting;
+package com.altnoir.mia.worldgen.noise_setting;
 
 import com.altnoir.mia.init.MiaDensityFunctionTypes;
 import net.minecraft.core.HolderGetter;
@@ -146,6 +146,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 DensityFunctions.zero(),
                 DensityFunctions.zero(),
                 DensityFunctions.zero()
+                // 最后三个参数是矿脉生成相关的，因为是硬编码就不用它的
         );
     }
 

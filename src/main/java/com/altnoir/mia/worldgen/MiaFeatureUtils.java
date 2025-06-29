@@ -1,8 +1,8 @@
 package com.altnoir.mia.worldgen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.util.MiaPort;
-import com.altnoir.mia.worldgen.biome.AbyssBrinkFeatures;
+import com.altnoir.mia.util.MiaUtil;
+import com.altnoir.mia.worldgen.biome.abyss_brink.AbyssBrinkFeatures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -16,7 +16,7 @@ public class MiaFeatureUtils {
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> resourceKey(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, MiaPort.id(MIA.MOD_ID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, MiaUtil.id(MIA.MOD_ID, name));
     }
     public static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(
             BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC configuration

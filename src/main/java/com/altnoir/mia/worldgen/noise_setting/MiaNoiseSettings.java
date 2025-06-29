@@ -1,4 +1,4 @@
-package com.altnoir.mia.worldgen.noisesetting;
+package com.altnoir.mia.worldgen.noise_setting;
 
 import net.minecraft.world.level.levelgen.NoiseSettings;
 

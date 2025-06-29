@@ -1,8 +1,8 @@
 package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.worldgen.noisesetting.densityfunction.AbyssBrinkBigHole;
-import com.altnoir.mia.worldgen.noisesetting.densityfunction.AbyssBrinkHole;
+import com.altnoir.mia.worldgen.noise_setting.densityfunction.AbyssBrinkBigHole;
+import com.altnoir.mia.worldgen.noise_setting.densityfunction.AbyssBrinkHole;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.DensityFunction;

@@ -1,4 +1,4 @@
-package com.altnoir.mia.worldgen.noisesetting.densityfunction;
+package com.altnoir.mia.worldgen.noise_setting.densityfunction;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.util.KeyDispatchDataCodec;
@@ -17,6 +17,7 @@ public class AbyssBrinkHole implements DensityFunction.SimpleFunction {
         randomsource.consumeCount(17292);
     }
     private static float getHeightValue(int x, int z) {
+        // 256 = √256 = 16区块.
         float f = 256.0F - Mth.sqrt((float)(x * x + z * z)) * 8.0F; // 深渊半径
         f = Mth.clamp(f, -100.0F, 80.0F);
 

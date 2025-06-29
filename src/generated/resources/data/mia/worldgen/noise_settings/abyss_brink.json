@@ -278,7 +278,9 @@
             "if_true": {
               "type": "minecraft:biome",
               "biome_is": [
-                "mia:abyss_brink/abyss_brink"
+                "mia:abyss_brink/abyss_brink",
+                "minecraft:cherry_grove",
+                "minecraft:forest"
               ]
             },
             "then_run": {

@@ -4,7 +4,7 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.recipe.LampTubeRecipe;
-import com.altnoir.mia.util.MiaPort;
+import com.altnoir.mia.util.MiaUtil;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.RecipeType;
@@ -24,7 +24,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class MiaJeiPlugin implements IModPlugin {
-    public static final RecipeType<RecipeHolder<LampTubeRecipe>> LAMP_TUBE_RECIPE_TYPE = RecipeType.createRecipeHolderType(MiaPort.id(MIA.MOD_ID, "lamp_tube_recipe"));
+    public static final RecipeType<RecipeHolder<LampTubeRecipe>> LAMP_TUBE_RECIPE_TYPE = RecipeType.createRecipeHolderType(MiaUtil.id(MIA.MOD_ID, "lamp_tube_recipe"));
 
     @Override
     public ResourceLocation getPluginUid() {
