@@ -10,8 +10,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -44,7 +42,7 @@ public class CurseEvent {
         var delta = currentY - lastY;
         var isCurseGod = !MiaConfig.curseGod && MiaPort.isCreativeOrSpectator(player);
 
-        if (currentY < lastY || isCurseGod) {
+        if (currentY < lastY || isCurseGod || (player instanceof ServerPlayer serverPlayer && serverPlayer.isSleepingLongEnough())) {
             playerMinY.put(uuid, currentY);
         }
         if (isCurseGod) return;

@@ -21,8 +21,8 @@
     "barrier": {
       "type": "minecraft:noise",
       "noise": "minecraft:aquifer_barrier",
-      "xz_scale": 0.5,
-      "y_scale": 1.0
+      "xz_scale": 1.0,
+      "y_scale": 0.5
     },
     "continents": "minecraft:overworld/continents",
     "depth": "minecraft:overworld/depth",
@@ -130,14 +130,14 @@
     "fluid_level_floodedness": {
       "type": "minecraft:noise",
       "noise": "minecraft:aquifer_fluid_level_floodedness",
-      "xz_scale": 0.67,
-      "y_scale": 1.0
+      "xz_scale": 0.335,
+      "y_scale": 0.5
     },
     "fluid_level_spread": {
       "type": "minecraft:noise",
       "noise": "minecraft:aquifer_fluid_level_spread",
-      "xz_scale": 0.7142857142857143,
-      "y_scale": 1.0
+      "xz_scale": 0.357142857,
+      "y_scale": 0.5
     },
     "initial_density_without_jaggedness": {
       "type": "minecraft:add",
@@ -147,9 +147,9 @@
         "argument1": {
           "type": "minecraft:y_clamped_gradient",
           "from_value": 0.0,
-          "from_y": 16,
+          "from_y": 0,
           "to_value": 1.0,
-          "to_y": 40
+          "to_y": 24
         },
         "argument2": {
           "type": "minecraft:add",
@@ -162,9 +162,9 @@
               "argument1": {
                 "type": "minecraft:y_clamped_gradient",
                 "from_value": 1.0,
-                "from_y": 246,
+                "from_y": 230,
                 "to_value": 0.0,
-                "to_y": 316
+                "to_y": 300
               },
               "argument2": {
                 "type": "minecraft:add",
@@ -294,10 +294,30 @@
                     "surface_type": "floor"
                   },
                   "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": {
-                      "Name": "mia:covergrass_abyss_andesite"
-                    }
+                    "type": "minecraft:sequence",
+                    "sequence": [
+                      {
+                        "type": "minecraft:condition",
+                        "if_true": {
+                          "type": "minecraft:water",
+                          "add_stone_depth": false,
+                          "offset": 0,
+                          "surface_depth_multiplier": 0
+                        },
+                        "then_run": {
+                          "type": "minecraft:block",
+                          "result_state": {
+                            "Name": "mia:covergrass_abyss_andesite"
+                          }
+                        }
+                      },
+                      {
+                        "type": "minecraft:block",
+                        "result_state": {
+                          "Name": "mia:abyss_andesite"
+                        }
+                      }
+                    ]
                   }
                 }
               ]

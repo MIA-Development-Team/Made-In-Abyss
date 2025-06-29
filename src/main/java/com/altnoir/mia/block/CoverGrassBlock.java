@@ -23,20 +23,23 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import java.util.List;
 import java.util.Optional;
 
-public class CoverGrassBlock extends AbstractCoverGrassBlock implements BonemealableBlock{
+public class CoverGrassBlock extends AbstractCoverGrassBlock implements BonemealableBlock {
     public static final MapCodec<CoverGrassBlock> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     Block.CODEC.fieldOf("defaultBlock").forGetter(block -> block.defaultBlock),
                     BlockBehaviour.Properties.CODEC.fieldOf("properties").forGetter(block -> block.properties)
             ).apply(instance, CoverGrassBlock::new)
     );
+
     @Override
     public MapCodec<CoverGrassBlock> codec() {
         return CODEC;
     }
+
     public CoverGrassBlock(Block defaultBlock, Properties properties) {
         super(defaultBlock, properties);
     }
+
     @Override
     public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
         return level.getBlockState(pos.above()).isAir();
@@ -46,6 +49,7 @@ public class CoverGrassBlock extends AbstractCoverGrassBlock implements Bonemeal
     public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
+
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         BlockPos blockpos = pos.above();
@@ -67,7 +71,7 @@ public class CoverGrassBlock extends AbstractCoverGrassBlock implements Bonemeal
 
             BlockState blockstate1 = level.getBlockState(blockpos1);
             if (blockstate1.is(blockstate.getBlock()) && random.nextInt(10) == 0) {
-                ((BonemealableBlock)blockstate.getBlock()).performBonemeal(level, random, blockpos1, blockstate1);
+                ((BonemealableBlock) blockstate.getBlock()).performBonemeal(level, random, blockpos1, blockstate1);
             }
 
             if (blockstate1.isAir()) {
@@ -78,7 +82,7 @@ public class CoverGrassBlock extends AbstractCoverGrassBlock implements Bonemeal
                         continue;
                     }
 
-                    holder = ((RandomPatchConfiguration)list.get(0).config()).feature();
+                    holder = ((RandomPatchConfiguration) list.get(0).config()).feature();
                 } else {
                     if (!optional.isPresent()) {
                         continue;
@@ -91,6 +95,7 @@ public class CoverGrassBlock extends AbstractCoverGrassBlock implements Bonemeal
             }
         }
     }
+
     @Override
     public Type getType() {
         return Type.NEIGHBOR_SPREADER;

@@ -12,27 +12,34 @@ import net.minecraft.world.level.levelgen.placement.CaveSurface;
 
 public class MiaSurfaceRuleData extends SurfaceRuleData {
     private static final SurfaceRules.RuleSource AIR = makeStateRule(Blocks.AIR);
+    private static final SurfaceRules.RuleSource DEEPSLATE = makeStateRule(Blocks.DEEPSLATE);
     private static final SurfaceRules.RuleSource BEDROCK = makeStateRule(Blocks.BEDROCK);
+
+    private static final SurfaceRules.RuleSource ABYSS_ANDESITE = makeStateRule(MiaBlocks.ABYSS_ANDESITE.get());
+    private static final SurfaceRules.RuleSource COVERGRASS_ABYSS_ANDESITE = makeStateRule(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
 
     private static SurfaceRules.RuleSource makeStateRule(Block block) {
         return SurfaceRules.state(block.defaultBlockState());
     }
 
     public static SurfaceRules.RuleSource abyssBrink(boolean aboveGround) {
+        SurfaceRules.ConditionSource surfacerules$waterBlockCheck = SurfaceRules.waterBlockCheck(0, 0);
+        SurfaceRules.RuleSource surfacerules$rulesource = SurfaceRules.sequence(SurfaceRules.ifTrue(surfacerules$waterBlockCheck, COVERGRASS_ABYSS_ANDESITE), ABYSS_ANDESITE);
+
         SurfaceRules.RuleSource sequence = SurfaceRules.sequence(
                 SurfaceRules.ifTrue(
                         SurfaceRules.isBiome(MiaBiomes.ABYSS_BRINK),
                         SurfaceRules.sequence(
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
-                                        makeStateRule(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
+                                        surfacerules$rulesource
                                 )
                         )
                 )
         );
         ImmutableList.Builder<SurfaceRules.RuleSource> builder = ImmutableList.builder();
 
-        builder.add(SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.verticalGradient("deepslate_roof", VerticalAnchor.belowTop(5), VerticalAnchor.top())), makeStateRule(Blocks.DEEPSLATE)));
+        builder.add(SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.verticalGradient("deepslate_roof", VerticalAnchor.belowTop(5), VerticalAnchor.top())), DEEPSLATE));
         builder.add(SurfaceRules.ifTrue(SurfaceRules.verticalGradient("bedrock_floor", VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(5)), BEDROCK));
 
         SurfaceRules.RuleSource ruleSource = SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(), sequence);

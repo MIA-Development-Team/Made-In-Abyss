@@ -115,9 +115,9 @@ public class MiaNoiseRouterData extends NoiseRouterData {
     }
 
     private static NoiseRouter abyssBrinkRouter(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        DensityFunction barrier = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_BARRIER), 0.5, 1);
-        DensityFunction fluidLevelFloodedness = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS), 0.67, 1);
-        DensityFunction fluidLevelSpread = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_SPREAD), 0.7142857142857143, 1);
+        DensityFunction barrier = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_BARRIER), 0.5);
+        DensityFunction fluidLevelFloodedness = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS), 0.335, 0.5);
+        DensityFunction fluidLevelSpread = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_SPREAD), 0.357142857, 0.5);
 
         DensityFunction densityfunction = getFunction(densityFunctions, SHIFT_X);
         DensityFunction densityfunction1 = getFunction(densityFunctions, SHIFT_Z);
@@ -176,7 +176,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
     }
 
     private static DensityFunction slideAbyssBrink(DensityFunction densityFunction) {
-        return slide(densityFunction, 16, 300, 70, 0, -0.078125, 0, 24, 0.1171875);
+        return slide(densityFunction, 0, 300, 70, 0, -0.078125, 0, 24, 0.1171875);
     }
 
     private static DensityFunction slide(DensityFunction input, int minY, int maxY, int i1, int i2, double v1, int i3, int i4, double v2) {

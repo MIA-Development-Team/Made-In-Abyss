@@ -15,9 +15,8 @@ public class MiaItemGroups {
 
     public static final Supplier<CreativeModeTab> MIA_TAB = CREATIVE_MODE_TAB.register("mia_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemgroup.mia"))
-            .icon(() -> new ItemStack(MiaItems.ENDLESS_CUP.get()))
+            .icon(() -> new ItemStack(MiaItems.RED_WHISTLE.get()))
             .displayItems((parameters, output) -> {
-                output.accept(MiaItems.ENDLESS_CUP);
                 output.accept(MiaItems.RED_WHISTLE);
                 output.accept(MiaBlocks.ABYSS_GRASS_BLOCK);
                 output.accept(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
@@ -31,6 +30,7 @@ public class MiaItemGroups {
                 output.accept(MiaBlocks.FORTITUDE_FLOWER);
                 output.accept(MiaBlocks.LAMP_TUBE);
                 output.accept(MiaBlocks.ABYSS_PORTAL);
+                output.accept(MiaItems.ENDLESS_CUP);
             })
             .build());
     public static void register(IEventBus eventBus) {
