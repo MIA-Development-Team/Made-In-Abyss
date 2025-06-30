@@ -114,7 +114,7 @@ public class MiaDensityFunction {
     private static DensityFunction outsideAbyssBrinkBASE3D(HolderGetter<DensityFunction> densityFunctions) {
         DensityFunction densityFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
         int minY = 24;
-        int maxY = 300;
+        int maxY = 315;
         DensityFunction densityFunction1 = DensityFunctions.rangeChoice(
                 densityFunction, minY, maxY, getFunction(densityFunctions, BASE_3D_NOISE_ABYSS_BRINK), DensityFunctions.constant(1.0)
         );

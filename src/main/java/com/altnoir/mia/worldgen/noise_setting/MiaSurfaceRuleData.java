@@ -25,11 +25,11 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
 
     public static SurfaceRules.RuleSource abyssBrink(boolean aboveGround) {
         SurfaceRules.ConditionSource surfacerules$waterBlockCheck = SurfaceRules.waterBlockCheck(0, 0);
-        SurfaceRules.RuleSource surfacerules$rulesource = SurfaceRules.sequence(SurfaceRules.ifTrue(surfacerules$waterBlockCheck, COVERGRASS_ABYSS_ANDESITE), ABYSS_ANDESITE);
+        SurfaceRules.RuleSource surfacerules$rulesource = SurfaceRules.ifTrue(surfacerules$waterBlockCheck, COVERGRASS_ABYSS_ANDESITE);
 
         SurfaceRules.RuleSource sequence = SurfaceRules.sequence(
                 SurfaceRules.ifTrue(
-                        SurfaceRules.isBiome(MiaBiomes.ABYSS_BRINK, Biomes.CHERRY_GROVE,Biomes.FOREST),
+                        SurfaceRules.isBiome(MiaBiomes.ABYSS_BRINK, Biomes.CHERRY_GROVE, Biomes.BIRCH_FOREST, Biomes.FOREST),
                         SurfaceRules.sequence(
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),

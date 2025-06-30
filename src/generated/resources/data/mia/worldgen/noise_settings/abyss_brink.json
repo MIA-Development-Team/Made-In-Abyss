@@ -280,6 +280,7 @@
               "biome_is": [
                 "mia:abyss_brink/abyss_brink",
                 "minecraft:cherry_grove",
+                "minecraft:birch_forest",
                 "minecraft:forest"
               ]
             },
@@ -296,30 +297,19 @@
                     "surface_type": "floor"
                   },
                   "then_run": {
-                    "type": "minecraft:sequence",
-                    "sequence": [
-                      {
-                        "type": "minecraft:condition",
-                        "if_true": {
-                          "type": "minecraft:water",
-                          "add_stone_depth": false,
-                          "offset": 0,
-                          "surface_depth_multiplier": 0
-                        },
-                        "then_run": {
-                          "type": "minecraft:block",
-                          "result_state": {
-                            "Name": "mia:covergrass_abyss_andesite"
-                          }
-                        }
-                      },
-                      {
-                        "type": "minecraft:block",
-                        "result_state": {
-                          "Name": "mia:abyss_andesite"
-                        }
+                    "type": "minecraft:condition",
+                    "if_true": {
+                      "type": "minecraft:water",
+                      "add_stone_depth": false,
+                      "offset": 0,
+                      "surface_depth_multiplier": 0
+                    },
+                    "then_run": {
+                      "type": "minecraft:block",
+                      "result_state": {
+                        "Name": "mia:covergrass_abyss_andesite"
                       }
-                    ]
+                    }
                   }
                 }
               ]

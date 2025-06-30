@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top_inner_faces",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "mia:block/abyss_spawner_bottom",
+    "side": "mia:block/abyss_spawner_side_inactive_ominous",
+    "top": "mia:block/abyss_spawner_top_inactive_ominous"
+  }
+}

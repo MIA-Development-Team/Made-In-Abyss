@@ -12,6 +12,7 @@ public class ClientEventHandler {
     }
 
     public static void addModEventBus(IEventBus modEventBus) {
+        modEventBus.addListener(ClientDimEffects::registerDimensionEffects);
     }
 
     public static void addGameEventBus(IEventBus gameEventBus) {

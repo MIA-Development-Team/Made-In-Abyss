@@ -28,6 +28,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         modelProvider.mirroredBlockModel(this, MiaBlocks.ABYSS_ANDESITE.get());
         modelProvider.lampTubeBlockModel(this, MiaBlocks.LAMP_TUBE.get());
         modelProvider.abyssPortalBlockModel(this, MiaBlocks.ABYSS_PORTAL.get());
+        modelProvider.abyssSpawnerBlockModel(this, MiaBlocks.ABYSS_SPAWNER.get());
 
         // block states
         stateProvider.rotationYBlockState(this, MiaBlocks.ABYSS_GRASS_BLOCK.get());
@@ -35,12 +36,17 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         stateProvider.mirroredBlockState(this, MiaBlocks.ABYSS_ANDESITE.get());
         stateProvider.lampTubeBlockState(this, MiaBlocks.LAMP_TUBE.get());
         stateProvider.baseBlockState(this, MiaBlocks.ABYSS_PORTAL.get());
+        stateProvider.abyssSpawnerBlockState(this, MiaBlocks.ABYSS_SPAWNER.get());
 
-
+        // items
         abyssBlockItem(MiaBlocks.ABYSS_GRASS_BLOCK);
         abyssBlockItem(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
         abyssBlockItem(MiaBlocks.ABYSS_ANDESITE);
         abyssBlockItem(MiaBlocks.ABYSS_PORTAL);
+        abyssBlockItem(MiaBlocks.LAMP_TUBE);
+        abyssBlockItem(MiaBlocks.ABYSS_SPAWNER);
+
+
         blockWithItem(MiaBlocks.ABYSS_COBBLED_ANDESITE);
 
         logBlock((RotatedPillarBlock) MiaBlocks.SKYFOGWOOD_LOG.get());
@@ -54,7 +60,6 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         blockWithItem(MiaBlocks.SKYFOGWOO_PLANKS);
 
         crossBlock(MiaBlocks.FORTITUDE_FLOWER);
-        abyssBlockItem(MiaBlocks.LAMP_TUBE);
     }
 
     protected void crossBlock(DeferredBlock<?> block) {

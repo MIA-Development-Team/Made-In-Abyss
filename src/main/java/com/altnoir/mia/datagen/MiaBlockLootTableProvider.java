@@ -31,6 +31,7 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
 
         dropSelf(MiaBlocks.FORTITUDE_FLOWER.get());
         dropSelf(MiaBlocks.LAMP_TUBE.get());
+        dropWhenSilkTouch(MiaBlocks.ABYSS_SPAWNER.get());
     }
 
 //    protected LootTable.Builder createSilkTouchDrops(Block block, Block other) {

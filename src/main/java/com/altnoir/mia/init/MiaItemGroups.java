@@ -31,8 +31,10 @@ public class MiaItemGroups {
                 output.accept(MiaBlocks.LAMP_TUBE);
                 output.accept(MiaBlocks.ABYSS_PORTAL);
                 output.accept(MiaItems.ENDLESS_CUP);
+                output.accept(MiaBlocks.ABYSS_SPAWNER);
             })
             .build());
+
     public static void register(IEventBus eventBus) {
         CREATIVE_MODE_TAB.register(eventBus);
     }

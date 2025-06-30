@@ -2,10 +2,12 @@ package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.block.*;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -112,6 +114,23 @@ public class MiaBlocks {
                             .pushReaction(PushReaction.BLOCK)
             )
     );
+
+    public static final DeferredBlock<Block> ABYSS_SPAWNER = registerBlock("abyss_spawner", () ->
+            new AbyssSpawnerBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.STONE)
+                            .instrument(NoteBlockInstrument.BASEDRUM)
+                            .lightLevel(state -> state.getValue(AbyssSpawnerBlock.STATE).lightLevel())
+                            .strength(50.0F)
+                            .sound(SoundType.TRIAL_SPAWNER)
+                            .isViewBlocking(MiaBlocks::never)
+                            .noOcclusion()
+            )
+    );
+
+    private static boolean never(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+        return false;
+    }
 
     private static Block log(MapColor topMapColor, MapColor sideMapColor) {
         return new MiaWoodBlock(
