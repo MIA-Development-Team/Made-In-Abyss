@@ -7,13 +7,18 @@
     },
     {
       "amplifier": 0,
-      "duration": 60,
-      "effect": "minecraft:darkness"
+      "duration": 200,
+      "effect": "minecraft:slowness"
     },
     {
       "amplifier": 0,
-      "duration": 20,
+      "duration": 200,
       "effect": "minecraft:blindness"
+    },
+    {
+      "amplifier": 0,
+      "duration": 60,
+      "effect": "minecraft:darkness"
     }
   ]
 }

@@ -99,7 +99,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 abyssHole, -1000000.0, 0.025, inside, rangeChoice2
         );
 
-        DensityFunction ycg1 = DensityFunctions.yClampedGradient(250, 320, 1, 1);
+        DensityFunction ycg1 = DensityFunctions.yClampedGradient(320, 368, 1, 1);
         DensityFunction add1 = DensityFunctions.add(DensityFunctions.constant(1.025), rangeChoice1);
 
         DensityFunction mul1 = DensityFunctions.mul(ycg1, add1);

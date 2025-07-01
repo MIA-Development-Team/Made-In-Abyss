@@ -20,8 +20,9 @@ public class MiaCurseDataProvider extends CurseDataProvider {
         add(MiaDimensions.ABYSS_BRINK.location(),
                 new CurseEffect[] {
                         new CurseEffect(MobEffects.HUNGER.getKey(), 0, 600),
-                        new CurseEffect(MobEffects.DARKNESS.getKey(), 0, 60),
-                        new CurseEffect(MobEffects.BLINDNESS.getKey(), 0, 20),
+                        new CurseEffect(MobEffects.MOVEMENT_SLOWDOWN.getKey(), 0, 200),
+                        new CurseEffect(MobEffects.BLINDNESS.getKey(), 0, 200),
+                        new CurseEffect(MobEffects.DARKNESS.getKey(), 0, 60)
                 }
         );
     }

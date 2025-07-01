@@ -25,8 +25,8 @@ public class MiaDimensionTypes {
                         true, // 床是否可用
                         false, // 重生锚是否可用
                         0, // 最小Y
-                        320, // 高度 (必须为16的倍数)
-                        320, // 逻辑高度 (紫颂果的传送和游戏创建的传送门不会超过此高度)
+                        368, // 高度 (必须为16的倍数)
+                        368, // 逻辑高度 (紫颂果的传送和游戏创建的传送门不会超过此高度)
                         BlockTags.INFINIBURN_OVERWORLD, // 火能在哪些方块上永久燃烧
                         ClientDimEffects.ABYSS_BRINK_EFFECTS, // 天空效果
                         0.12F, // 环境光

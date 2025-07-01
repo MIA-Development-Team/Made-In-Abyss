@@ -3,7 +3,7 @@
   "argument1": {
     "type": "minecraft:range_choice",
     "input": "minecraft:y",
-    "max_exclusive": 315.0,
+    "max_exclusive": 320.0,
     "min_inclusive": 24.0,
     "when_in_range": "mia:abyss_brink/base_3d_noise",
     "when_out_of_range": 1.0

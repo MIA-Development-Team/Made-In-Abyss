@@ -47,7 +47,7 @@ public class MiaDensityFunction {
     private static DensityFunction noodle(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
         DensityFunction densityfunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
         int minY = 5;
-        int maxY = 315;
+        int maxY = 360;
         double d0 = 2.6666666666666665;
         DensityFunction densityFunction1 = yLimitedInterpolatable(
                 densityfunction, DensityFunctions.constant(0.0), minY, maxY, -1
@@ -114,7 +114,7 @@ public class MiaDensityFunction {
     private static DensityFunction outsideAbyssBrinkBASE3D(HolderGetter<DensityFunction> densityFunctions) {
         DensityFunction densityFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
         int minY = 24;
-        int maxY = 315;
+        int maxY = 320;
         DensityFunction densityFunction1 = DensityFunctions.rangeChoice(
                 densityFunction, minY, maxY, getFunction(densityFunctions, BASE_3D_NOISE_ABYSS_BRINK), DensityFunctions.constant(1.0)
         );
