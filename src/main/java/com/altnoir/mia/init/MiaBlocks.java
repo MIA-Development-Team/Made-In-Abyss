@@ -8,10 +8,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FlowerBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -125,6 +122,12 @@ public class MiaBlocks {
                             .sound(SoundType.TRIAL_SPAWNER)
                             .isViewBlocking(MiaBlocks::never)
                             .noOcclusion()
+            )
+    );
+
+    public static final DeferredBlock<Block> LAVA_GENERATOR_BLOCK = registerBlock("lava_generator_block", () ->
+            new LavaGeneratorBlock(
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
             )
     );
 

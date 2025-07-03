@@ -16,6 +16,8 @@ public class EventHandle {
         modEventBus.addListener(MiaNetworking::register);
         modEventBus.addListener(CurseEvent::attachEntityCapabilities);
         modEventBus.addListener(MiaConfig::onLoad);
+
+        modEventBus.addListener(CapabilityRegister::RegisterCapabilitiesEvent);
     }
 
     public static void addGameEventBus(IEventBus gameEventBus) {
