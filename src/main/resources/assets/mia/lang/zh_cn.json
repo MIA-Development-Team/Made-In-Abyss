@@ -1,6 +1,6 @@
 {
   "itemgroup.mia": "来自深渊",
-  "item.mia.endless_cup": "无尽水杯",
+
   "item.mia.red_whistle": "红笛",
 
   "block.mia.abyss_andesite": "深界安山岩",
@@ -8,15 +8,19 @@
   "block.mia.abyss_grass_block": "深界草方块",
   "block.mia.covergrass_abyss_andesite": "覆草深界安山岩",
 
-  "block.mia.skyfogwood": "天雾木",
-  "block.mia.skyfogwood_log": "天雾原木",
-  "block.mia.stripped_skyfogwood": "去皮天雾木",
-  "block.mia.stripped_skyfogwood_log": "去皮天雾原木",
-  "block.mia.skyfogwood_planks": "天雾木板",
+  "block.mia.skyfog_wood": "天雾木",
+  "block.mia.skyfog_log": "天雾原木",
+  "block.mia.stripped_skyfog_wood": "去皮天雾木",
+  "block.mia.stripped_skyfog_log": "去皮天雾原木",
+  "block.mia.skyfog_planks": "天雾木板",
+  "block.mia.skyfog_leaves": "天雾树叶",
+  "block.mia.skyfog_sapling": "天雾树苗",
 
   "block.mia.fortitude_flower": "不屈之花",
   "block.mia.lamp_tube": "灯管",
   "block.mia.abyss_portal": "深渊传送门",
+  "block.mia.abyss_spawner": "深渊刷怪笼",
+  "block.mia.endless_cup": "无尽水杯",
 
   "biome.mia.abyss_brink/abyss_brink": "阿比斯深渊",
 

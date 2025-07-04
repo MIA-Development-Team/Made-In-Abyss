@@ -29,6 +29,6 @@ public class MiaCuriosProvider extends CuriosDataProvider {
 
         IEntitiesData entitiesData = createEntities("entities");
         entitiesData.addEntities(EntityType.PLAYER, EntityType.ARMOR_STAND);
-        entitiesData.addSlots("whistle", "head");
+        entitiesData.addSlots("whistle");
     }
 }

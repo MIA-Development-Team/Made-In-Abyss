@@ -16,8 +16,9 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 public class MiaDensityFunction {
     public static final ResourceKey<DensityFunction> BASE_3D_NOISE_ABYSS_BRINK = createKey("abyss_brink/base_3d_noise");
+    public static final ResourceKey<DensityFunction> ABYSS_BRINK_DEPTH = createKey("abyss_brink/depth");
     public static final ResourceKey<DensityFunction> ABYSS_BRINK_HOLE = createKey("abyss_brink/abyss_hole");
-    public static final ResourceKey<DensityFunction> ABYSS_BRINK_BIG_HOLE = createKey("abyss_brink/abyss_big_hole");
+    public static final ResourceKey<DensityFunction> ABYSS_BRINK_BIG_HOLE = createKey("abyss_brink/big_abyss_hole");
     public static final ResourceKey<DensityFunction> ABYSS_BRINK_INSIDE_HOLE = createKey("abyss_brink/inside_abyss_hole");
     public static final ResourceKey<DensityFunction> ABYSS_BRINK_MIDDLE_BASE_3D = createKey("abyss_brink/middle_abyss_3d_noise");
     public static final ResourceKey<DensityFunction> ABYSS_BRINK_OUTSIDE_BASE_3D = createKey("abyss_brink/outside_abyss_3d_noise");
@@ -33,6 +34,7 @@ public class MiaDensityFunction {
         HolderGetter<NormalNoise.NoiseParameters> holdergetter = context.lookup(Registries.NOISE);
         HolderGetter<DensityFunction> holdergetter1 = context.lookup(Registries.DENSITY_FUNCTION);
 
+        context.register(ABYSS_BRINK_DEPTH, DensityFunctions.add(DensityFunctions.yClampedGradient(0, 580, 2.5, -2.5), getFunction(holdergetter1, MiaNoiseRouterData.OFFSET)));
         context.register(ABYSS_BRINK_HOLE, DensityFunctions.add(MiaDensityFunctionTypes.abyssHole(0L), getFunction(holdergetter1, BASE_3D_NOISE_ABYSS_BRINK)));
         context.register(ABYSS_BRINK_BIG_HOLE, DensityFunctions.add(MiaDensityFunctionTypes.abyssBigHole(0L), getFunction(holdergetter1, BASE_3D_NOISE_ABYSS_BRINK)));
         context.register(BASE_3D_NOISE_ABYSS_BRINK, BlendedNoise.createUnseeded(0.25, 0.25, 160.0, 160.0, 8.0));

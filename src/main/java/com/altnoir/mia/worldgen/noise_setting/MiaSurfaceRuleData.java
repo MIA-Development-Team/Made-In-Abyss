@@ -18,6 +18,7 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
 
     private static final SurfaceRules.RuleSource ABYSS_ANDESITE = makeStateRule(MiaBlocks.ABYSS_ANDESITE.get());
     private static final SurfaceRules.RuleSource COVERGRASS_ABYSS_ANDESITE = makeStateRule(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
+    private static final SurfaceRules.RuleSource SAND = makeStateRule(Blocks.SAND);
 
     private static SurfaceRules.RuleSource makeStateRule(Block block) {
         return SurfaceRules.state(block.defaultBlockState());
@@ -29,7 +30,7 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
 
         SurfaceRules.RuleSource sequence = SurfaceRules.sequence(
                 SurfaceRules.ifTrue(
-                        SurfaceRules.isBiome(MiaBiomes.ABYSS_BRINK, Biomes.CHERRY_GROVE, Biomes.BIRCH_FOREST, Biomes.FOREST),
+                        SurfaceRules.isBiome(MiaBiomes.ABYSS_BRINK, MiaBiomes.SKYFOG_FOREST, MiaBiomes.ABYSS_PLAINS, Biomes.CHERRY_GROVE, Biomes.BIRCH_FOREST, Biomes.FOREST),
                         SurfaceRules.sequence(
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),

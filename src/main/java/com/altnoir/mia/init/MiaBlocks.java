@@ -2,6 +2,7 @@ package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.block.*;
+import com.altnoir.mia.worldgen.tree.MiaTreeGrowers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffects;
@@ -59,21 +60,35 @@ public class MiaBlocks {
             )
     );
 
-    public static final DeferredBlock<Block> SKYFOGWOOD_LOG = registerBlock("skyfogwood_log", () ->
+    public static final DeferredBlock<Block> SKYFOG_LOG = registerBlock("skyfog_log", () ->
             log(MapColor.WOOD, MapColor.PODZOL)
     );
-    public static final DeferredBlock<Block> SKYFOGWOOD = registerBlock("skyfogwood", () ->
+    public static final DeferredBlock<Block> SKYFOG_WOOD = registerBlock("skyfog_wood", () ->
             wood(MapColor.WOOD)
     );
-    public static final DeferredBlock<Block> STRIPPED_SKYFOGWOOD_LOG = registerBlock("stripped_skyfogwood_log", () ->
+    public static final DeferredBlock<Block> STRIPPED_SKYFOG_LOG = registerBlock("stripped_skyfog_log", () ->
             log(MapColor.WOOD, MapColor.WOOD)
     );
-    public static final DeferredBlock<Block> STRIPPED_SKYFOGWOOD = registerBlock("stripped_skyfogwood", () ->
+    public static final DeferredBlock<Block> STRIPPED_SKYFOG_WOOD = registerBlock("stripped_skyfog_wood", () ->
             wood(MapColor.WOOD)
     );
-
-    public static final DeferredBlock<Block> SKYFOGWOO_PLANKS = registerBlock("skyfogwood_planks", () ->
+    public static final DeferredBlock<Block> SKYFOG_PLANKS = registerBlock("skyfog_planks", () ->
             planks(MapColor.COLOR_GREEN)
+    );
+    public static final DeferredBlock<Block> SKYFOG_LEAVES = registerBlock("skyfog_leaves", () ->
+            leaves(SoundType.CHERRY_LEAVES)
+    );
+    public static final DeferredBlock<Block> SKYFOG_SAPLING = registerBlock("skyfog_sapling", () ->
+            new SaplingBlock(
+                    MiaTreeGrowers.SKYFOG_TREE,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.PLANT)
+                            .noCollission()
+                            .randomTicks()
+                            .instabreak()
+                            .sound(SoundType.CHERRY_SAPLING)
+                            .pushReaction(PushReaction.DESTROY)
+            )
     );
 
     public static final DeferredBlock<Block> FORTITUDE_FLOWER = registerBlock("fortitude_flower", () ->
@@ -124,10 +139,9 @@ public class MiaBlocks {
                             .noOcclusion()
             )
     );
-
-    public static final DeferredBlock<Block> LAVA_GENERATOR_BLOCK = registerBlock("lava_generator_block", () ->
-            new LavaGeneratorBlock(
-                    BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+    public static final DeferredBlock<Block> ENDLESS_CUP = registerBlock("endless_cup", () ->
+            new EndlessCupBlock(
+                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
             )
     );
 
@@ -165,6 +179,23 @@ public class MiaBlocks {
                         .strength(2.0F, 3.0F)
                         .sound(SoundType.WOOD)
                         .ignitedByLava()
+        );
+    }
+
+    private static Block leaves(SoundType soundType) {
+        return new MiaLeavesBlock(
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.PLANT)
+                        .strength(0.2F)
+                        .randomTicks()
+                        .sound(soundType)
+                        .noOcclusion()
+                        .isValidSpawn(Blocks::ocelotOrParrot)
+                        .isSuffocating(MiaBlocks::never)
+                        .isViewBlocking(MiaBlocks::never)
+                        .ignitedByLava()
+                        .pushReaction(PushReaction.DESTROY)
+                        .isRedstoneConductor(MiaBlocks::never)
         );
     }
 

@@ -1,0 +1,8 @@
+{
+  "parent": "mia:block/template_endless_cup",
+  "textures": {
+    "bottom": "mia:block/endless_cup_bottom",
+    "side": "mia:block/endless_cup_side",
+    "top": "mia:block/endless_cup_top"
+  }
+}

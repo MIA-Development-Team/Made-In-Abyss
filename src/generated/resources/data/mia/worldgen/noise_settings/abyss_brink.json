@@ -24,9 +24,9 @@
       "xz_scale": 1.0,
       "y_scale": 0.5
     },
-    "continents": "minecraft:overworld/continents",
-    "depth": "minecraft:overworld/depth",
-    "erosion": "minecraft:overworld/erosion",
+    "continents": 0.0,
+    "depth": "mia:abyss_brink/depth",
+    "erosion": 0.0,
     "final_density": {
       "type": "minecraft:min",
       "argument1": {
@@ -84,7 +84,7 @@
                             },
                             "when_out_of_range": {
                               "type": "minecraft:range_choice",
-                              "input": "mia:abyss_brink/abyss_big_hole",
+                              "input": "mia:abyss_brink/big_abyss_hole",
                               "max_exclusive": 0.025,
                               "min_inclusive": -1000000.0,
                               "when_in_range": {
@@ -279,6 +279,8 @@
               "type": "minecraft:biome",
               "biome_is": [
                 "mia:abyss_brink/abyss_brink",
+                "mia:abyss_brink/skyfog_forest",
+                "mia:abyss_brink/abyss_plains",
                 "minecraft:cherry_grove",
                 "minecraft:birch_forest",
                 "minecraft:forest"

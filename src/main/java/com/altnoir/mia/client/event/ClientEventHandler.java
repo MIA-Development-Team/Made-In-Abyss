@@ -13,6 +13,7 @@ public class ClientEventHandler {
 
     public static void addModEventBus(IEventBus modEventBus) {
         modEventBus.addListener(ClientDimEffects::registerDimensionEffects);
+        modEventBus.addListener(RegisterParticlesEvent::registerParticles);
     }
 
     public static void addGameEventBus(IEventBus gameEventBus) {

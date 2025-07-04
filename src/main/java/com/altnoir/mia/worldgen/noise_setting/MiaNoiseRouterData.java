@@ -137,9 +137,9 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 DensityFunctions.zero(), // lava 当绝对值大于0.3时含水层在Y=-58与海平面之间放置熔岩而不是默认流体。
                 temperature, // temperature 生物群系温度函数。此参数同下方共六个参数也负责了多噪声型生物群系计算时使用的噪声参数。
                 vegetation, // vegetation 生物群系湿度函数。
-                getFunction(densityFunctions, CONTINENTS), // continents 生物群系大陆性函数。
-                getFunction(densityFunctions, EROSION), // erosion 生物群系侵蚀度函数。
-                getFunction(densityFunctions, DEPTH), // depth 生物群系深度函数。
+                DensityFunctions.zero(), // continents 生物群系大陆性函数。
+                DensityFunctions.zero(), // erosion 生物群系侵蚀度函数。
+                getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_DEPTH), // depth 生物群系深度函数。
                 getFunction(densityFunctions, RIDGES), // ridges 生物群系奇异度函数。
                 slideAbyssBrink(densityfunction8), // initial_density_without_jaggedness// 预处理地表高度，影响表面规则的含水层的放置。游戏会从世界顶部以4*整型noise.size_vertical的精度向下查找，将首个大于25/64的值的高度作为预处理地表高度。
                 finalDensity, // final_density 最终密度。大于0的区域将放置默认方块并被表面规则替换，小于0的区域将放置空气并被含水层替换。

@@ -50,6 +50,13 @@ public class MiaModelProvider {
         provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.modLoc("block/template_lamp_tube")).renderType("cutout")
                 .texture("lamp_tube", provider.modLoc("block/" + MiaUtil.getBlockPath(block)));
     }
+    public void endlessCupBlockModel(BlockStateProvider provider, Block block) {
+        provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.modLoc("template_endless_cup"))
+                .texture("top", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top"))
+                .texture("side", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side"))
+                .texture("bottom", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"));
+    }
+
     public void abyssSpawnerBlockModel(BlockStateProvider provider, Block block) {
         provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.mcLoc("block/cube_bottom_top_inner_faces")).renderType("cutout")
                 .texture("bottom", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))

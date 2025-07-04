@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "mia:block/skyfog_log",
+    "side": "mia:block/skyfog_log"
+  }
+}

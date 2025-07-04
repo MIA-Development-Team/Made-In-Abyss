@@ -40,10 +40,14 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.ABYSS_ANDESITE.get());
 
         tag(BlockTags.LOGS_THAT_BURN)
-                .add(MiaBlocks.SKYFOGWOOD_LOG.get())
-                .add(MiaBlocks.SKYFOGWOOD.get())
-                .add(MiaBlocks.STRIPPED_SKYFOGWOOD_LOG.get())
-                .add(MiaBlocks.STRIPPED_SKYFOGWOOD.get());
+                .add(MiaBlocks.SKYFOG_LOG.get())
+                .add(MiaBlocks.SKYFOG_WOOD.get())
+                .add(MiaBlocks.STRIPPED_SKYFOG_LOG.get())
+                .add(MiaBlocks.STRIPPED_SKYFOG_WOOD.get());
+        tag(BlockTags.LEAVES)
+                .add(MiaBlocks.SKYFOG_LEAVES.get());
+        tag(BlockTags.SAPLINGS)
+                .add(MiaBlocks.SKYFOG_SAPLING.get());
 
         tag(BlockTags.FLOWERS)
                 .add(MiaBlocks.FORTITUDE_FLOWER.get());
@@ -54,7 +58,8 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
                 .add(MiaBlocks.ABYSS_ANDESITE.get())
-                .add(MiaBlocks.ABYSS_COBBLED_ANDESITE.get());
+                .add(MiaBlocks.ABYSS_COBBLED_ANDESITE.get())
+                .add(MiaBlocks.ENDLESS_CUP.get());
 
         //标签嵌套
         tag(BlockTags.SCULK_REPLACEABLE)

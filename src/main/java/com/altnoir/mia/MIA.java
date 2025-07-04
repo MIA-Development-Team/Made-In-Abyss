@@ -1,11 +1,9 @@
 package com.altnoir.mia;
 
-import com.altnoir.mia.init.MiaComponents;
+import com.altnoir.mia.client.particle.LeavesParticles;
 import com.altnoir.mia.core.curse.CurseManager;
 import com.altnoir.mia.init.*;
-import com.altnoir.mia.init.MiaDensityFunctionTypes;
 import com.altnoir.mia.init.event.EventHandle;
-import com.altnoir.mia.init.MiaBiomeSources;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -16,6 +14,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
@@ -47,6 +46,8 @@ public class MIA {
 
         MiaRecipes.register(modEventBus);
 
+        MiaParticles.register(modEventBus);
+
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, MiaConfig.SPEC);
         modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
@@ -69,14 +70,13 @@ public class MIA {
     }
 
     @SubscribeEvent
-    private void reload(final AddReloadListenerEvent event){
+    private void reload(final AddReloadListenerEvent event) {
         event.addListener(CURSE_MANAGER);
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents
-    {
+    public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
         }

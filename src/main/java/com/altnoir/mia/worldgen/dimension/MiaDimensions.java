@@ -36,16 +36,28 @@ public class MiaDimensions {
                 AbyssNoiseBiomeSource.createFromList(
                         new Climate.ParameterList<>(List.of(
                                 Pair.of(
-                                        Climate.parameters(0.8f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.0f),
+                                        Climate.parameters(0.8F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
+                                        biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
+                                ),
+                                Pair.of(
+                                        Climate.parameters(0.8F, 0.0F, 0.0F, 0.0F, 0.2F, 0.0F, 0.0F),
+                                        biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
+                                ),
+                                Pair.of(
+                                        Climate.parameters(0.8F, 0.0F, 0.0F, 0.0F, 0.0F, 0.5F, 0.0F),
+                                        biomeRegistry.getOrThrow(MiaBiomes.ABYSS_PLAINS)
+                                ),
+                                Pair.of(
+                                        Climate.parameters(0.8F, -0.5F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
+                                        biomeRegistry.getOrThrow(MiaBiomes.ABYSS_PLAINS)
+                                ),
+                                Pair.of(
+                                        Climate.parameters(0.8F, 0.5F, 0.0F, 0.0F, 0.0F, 0.0F, 0.175F),
                                         biomeRegistry.getOrThrow(Biomes.CHERRY_GROVE)
                                 ),
                                 Pair.of(
-                                        Climate.parameters(0.8f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.1f),
-                                        biomeRegistry.getOrThrow(Biomes.BIRCH_FOREST)
-                                ),
-                                Pair.of(
-                                        Climate.parameters(0.8f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f),
-                                        biomeRegistry.getOrThrow(Biomes.FOREST)
+                                        Climate.parameters(0.8F, -0.3F, 0.0F, 0.0F, 0.2F, 0.0F, 0.0F),
+                                        biomeRegistry.getOrThrow(Biomes.DRIPSTONE_CAVES)
                                 )
                         )),
                         biomeRegistry.getOrThrow(MiaBiomes.ABYSS_BRINK)

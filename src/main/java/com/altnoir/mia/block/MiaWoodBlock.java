@@ -34,11 +34,11 @@ public class MiaWoodBlock extends RotatedPillarBlock {
     @Override
     public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
         if (context.getItemInHand().getItem() instanceof AxeItem) {
-            if (state.is(MiaBlocks.SKYFOGWOOD_LOG)) {
-                return MiaBlocks.STRIPPED_SKYFOGWOOD_LOG.get().defaultBlockState().setValue(AXIS, state.getValue(AXIS));
+            if (state.is(MiaBlocks.SKYFOG_LOG)) {
+                return MiaBlocks.STRIPPED_SKYFOG_LOG.get().defaultBlockState().setValue(AXIS, state.getValue(AXIS));
             }
-            if (state.is(MiaBlocks.SKYFOGWOOD)) {
-                return MiaBlocks.STRIPPED_SKYFOGWOOD.get().defaultBlockState().setValue(AXIS, state.getValue(AXIS));
+            if (state.is(MiaBlocks.SKYFOG_WOOD)) {
+                return MiaBlocks.STRIPPED_SKYFOG_WOOD.get().defaultBlockState().setValue(AXIS, state.getValue(AXIS));
             }
 
         }

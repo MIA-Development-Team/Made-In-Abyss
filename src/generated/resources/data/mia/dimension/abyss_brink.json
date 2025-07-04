@@ -7,7 +7,7 @@
       "abyss_biome": "mia:abyss_brink/abyss_brink",
       "biomes": [
         {
-          "biome": "minecraft:cherry_grove",
+          "biome": "mia:abyss_brink/skyfog_forest",
           "parameters": {
             "continentalness": 0.0,
             "depth": 0.0,
@@ -15,29 +15,65 @@
             "humidity": 0.0,
             "offset": 0.0,
             "temperature": 0.8,
-            "weirdness": 0.2
+            "weirdness": 0.0
           }
         },
         {
-          "biome": "minecraft:birch_forest",
+          "biome": "mia:abyss_brink/skyfog_forest",
           "parameters": {
             "continentalness": 0.0,
-            "depth": 0.0,
+            "depth": 0.2,
             "erosion": 0.0,
             "humidity": 0.0,
-            "offset": 0.1,
+            "offset": 0.0,
             "temperature": 0.8,
-            "weirdness": 0.1
+            "weirdness": 0.0
           }
         },
         {
-          "biome": "minecraft:forest",
+          "biome": "mia:abyss_brink/abyss_plains",
           "parameters": {
             "continentalness": 0.0,
             "depth": 0.0,
             "erosion": 0.0,
             "humidity": 0.0,
-            "offset": 0.1,
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": 0.5
+          }
+        },
+        {
+          "biome": "mia:abyss_brink/abyss_plains",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 0.0,
+            "erosion": 0.0,
+            "humidity": -0.5,
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": 0.0
+          }
+        },
+        {
+          "biome": "minecraft:cherry_grove",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 0.0,
+            "erosion": 0.0,
+            "humidity": 0.5,
+            "offset": 0.175,
+            "temperature": 0.8,
+            "weirdness": 0.0
+          }
+        },
+        {
+          "biome": "minecraft:dripstone_caves",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 0.2,
+            "erosion": 0.0,
+            "humidity": -0.3,
+            "offset": 0.0,
             "temperature": 0.8,
             "weirdness": 0.0
           }

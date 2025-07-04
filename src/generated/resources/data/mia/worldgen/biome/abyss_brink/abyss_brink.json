@@ -2,7 +2,7 @@
   "carvers": {},
   "downfall": 0.8,
   "effects": {
-    "fog_color": 3165784,
+    "fog_color": 8888490,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
@@ -15,15 +15,14 @@
       "replace_current_music": false,
       "sound": "minecraft:music.overworld.lush_caves"
     },
-    "sky_color": 5205851,
-    "water_color": 4159204,
-    "water_fog_color": 329011
+    "sky_color": 8888490,
+    "water_color": 6141935,
+    "water_fog_color": 6141935
   },
   "features": [
     [],
     [],
     [
-      "minecraft:amethyst_geode",
       "minecraft:forest_rock"
     ],
     [
@@ -39,11 +38,7 @@
       "minecraft:ore_granite_lower",
       "minecraft:ore_diorite_upper",
       "minecraft:ore_diorite_lower",
-      "minecraft:ore_andesite_upper",
-      "minecraft:ore_andesite_lower",
       "minecraft:ore_tuff",
-      "minecraft:ore_coal_upper",
-      "minecraft:ore_coal_lower",
       "minecraft:ore_iron_upper",
       "minecraft:ore_iron_middle",
       "minecraft:ore_iron_small",
@@ -57,16 +52,14 @@
       "minecraft:ore_diamond_buried",
       "minecraft:ore_lapis",
       "minecraft:ore_lapis_buried",
-      "minecraft:ore_copper",
+      "minecraft:ore_copper_large",
       "minecraft:underwater_magma",
       "minecraft:disk_sand",
       "minecraft:disk_clay",
-      "minecraft:disk_gravel",
-      "minecraft:ore_gold_extra"
+      "minecraft:disk_gravel"
     ],
     [],
     [
-      "minecraft:spring_water",
       "mia:spring_water"
     ],
     [
@@ -75,6 +68,7 @@
       "minecraft:patch_grass_plain",
       "minecraft:flower_meadow",
       "minecraft:trees_meadow",
+      "mia:trees_skyfog_and_azalea",
       "minecraft:patch_large_fern",
       "minecraft:brown_mushroom_normal",
       "minecraft:red_mushroom_normal",
@@ -88,14 +82,7 @@
   "has_precipitation": true,
   "spawn_costs": {},
   "spawners": {
-    "ambient": [
-      {
-        "type": "minecraft:bat",
-        "maxCount": 8,
-        "minCount": 8,
-        "weight": 10
-      }
-    ],
+    "ambient": [],
     "axolotls": [],
     "creature": [
       {
@@ -138,16 +125,16 @@
         "weight": 100
       },
       {
-        "type": "minecraft:zombie",
+        "type": "minecraft:drowned",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 95
+        "weight": 50
       },
       {
         "type": "minecraft:zombie_villager",
         "maxCount": 1,
         "minCount": 1,
-        "weight": 5
+        "weight": 50
       },
       {
         "type": "minecraft:skeleton",
@@ -157,12 +144,6 @@
       },
       {
         "type": "minecraft:creeper",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 100
-      },
-      {
-        "type": "minecraft:slime",
         "maxCount": 4,
         "minCount": 4,
         "weight": 100
@@ -188,7 +169,20 @@
         "weight": 10
       }
     ],
-    "water_ambient": [],
+    "water_ambient": [
+      {
+        "type": "minecraft:tropical_fish",
+        "maxCount": 8,
+        "minCount": 8,
+        "weight": 25
+      },
+      {
+        "type": "minecraft:cod",
+        "maxCount": 6,
+        "minCount": 3,
+        "weight": 25
+      }
+    ],
     "water_creature": []
   },
   "temperature": 0.8

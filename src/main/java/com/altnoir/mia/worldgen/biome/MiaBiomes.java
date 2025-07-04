@@ -2,75 +2,30 @@ package com.altnoir.mia.worldgen.biome;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.util.MiaUtil;
+import com.altnoir.mia.worldgen.biome.abyss_brink.AbyssBrinkBiomes;
+import com.altnoir.mia.worldgen.biome.abyss_brink.AbyssBrinkPlacements;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.data.worldgen.placement.VegetationPlacements;
+import net.minecraft.data.worldgen.placement.CavePlacements;
+import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
+import net.minecraft.data.worldgen.placement.OrePlacements;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.sounds.Musics;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.biome.*;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
 public class MiaBiomes {
     public static final ResourceKey<Biome> ABYSS_BRINK = ResourceKey.create(Registries.BIOME,
             MiaUtil.id(MIA.MOD_ID, "abyss_brink/abyss_brink"));
+    public static final ResourceKey<Biome> SKYFOG_FOREST = ResourceKey.create(Registries.BIOME,
+            MiaUtil.id(MIA.MOD_ID, "abyss_brink/skyfog_forest"));
+    public static final ResourceKey<Biome> ABYSS_PLAINS = ResourceKey.create(Registries.BIOME,
+            MiaUtil.id(MIA.MOD_ID, "abyss_brink/abyss_plains"));
 
     public static void boostrap(BootstrapContext<Biome> context) {
-        context.register(ABYSS_BRINK, abyssBrink(context));
-    }
-
-    public static void globalAbyssGeneration(BiomeGenerationSettings.Builder builder) {
-        //MiaBiomeDefaultFeatures.addAbyssCarvers(builder);
-        BiomeDefaultFeatures.addDefaultUndergroundVariety(builder);
-
-        BiomeDefaultFeatures.addDefaultCrystalFormations(builder);
-        BiomeDefaultFeatures.addDefaultMonsterRoom(builder);
-
-        MiaBiomeDefaultFeatures.addDefaultSprings(builder);
-        BiomeDefaultFeatures.addSurfaceFreezing(builder);
-        BiomeDefaultFeatures.addDefaultOres(builder);
-        BiomeDefaultFeatures.addDefaultSoftDisks(builder);
-    }
-
-    private static Biome abyssBrink(BootstrapContext<Biome> context) {
-        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CAT, 10, 4, 4));
-
-        BiomeDefaultFeatures.farmAnimals(spawnBuilder);
-        BiomeDefaultFeatures.commonSpawns(spawnBuilder);
-
-        BiomeGenerationSettings.Builder generationBuilder = new BiomeGenerationSettings.Builder(
-                context.lookup(Registries.PLACED_FEATURE),
-                context.lookup(Registries.CONFIGURED_CARVER)
-        );
-
-        globalAbyssGeneration(generationBuilder);
-        BiomeDefaultFeatures.addMossyStoneBlock(generationBuilder);
-        BiomeDefaultFeatures.addExtraGold(generationBuilder);
-
-        BiomeDefaultFeatures.addPlainGrass(generationBuilder);
-        BiomeDefaultFeatures.addMeadowVegetation(generationBuilder);
-        //generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.FLOWER_CHERRY);
-        BiomeDefaultFeatures.addFerns(generationBuilder);
-        BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
-        BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
-
-        return new Biome.BiomeBuilder()
-                .hasPrecipitation(true)
-                .downfall(0.8F)
-                .temperature(0.8F)
-                .generationSettings(generationBuilder.build())
-                .mobSpawnSettings(spawnBuilder.build())
-                .specialEffects((new BiomeSpecialEffects.Builder())
-                        .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .skyColor(5205851)
-                        .fogColor(3165784)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_LUSH_CAVES)).build())
-                .build();
+        context.register(ABYSS_BRINK, AbyssBrinkBiomes.abyssBrink(context));
+        context.register(SKYFOG_FOREST, AbyssBrinkBiomes.skyfogForest(context));
+        context.register(ABYSS_PLAINS, AbyssBrinkBiomes.abyssPlains(context));
     }
 }

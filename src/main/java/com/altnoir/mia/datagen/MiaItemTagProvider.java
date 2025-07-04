@@ -24,12 +24,12 @@ public class MiaItemTagProvider extends ItemTagsProvider {
         tag(CuriosItemTags.WHISTLE).replace(false).add(MiaItems.RED_WHISTLE.get());
 
         tag(ItemTags.LOGS_THAT_BURN)
-                .add(MiaBlocks.SKYFOGWOOD_LOG.get().asItem())
-                .add(MiaBlocks.SKYFOGWOOD.get().asItem())
-                .add(MiaBlocks.STRIPPED_SKYFOGWOOD_LOG.get().asItem())
-                .add(MiaBlocks.STRIPPED_SKYFOGWOOD.get().asItem());
+                .add(MiaBlocks.SKYFOG_LOG.get().asItem())
+                .add(MiaBlocks.SKYFOG_WOOD.get().asItem())
+                .add(MiaBlocks.STRIPPED_SKYFOG_LOG.get().asItem())
+                .add(MiaBlocks.STRIPPED_SKYFOG_WOOD.get().asItem());
 
         tag(ItemTags.PLANKS)
-                .add(MiaBlocks.SKYFOGWOO_PLANKS.get().asItem());
+                .add(MiaBlocks.SKYFOG_PLANKS.get().asItem());
     }
 }

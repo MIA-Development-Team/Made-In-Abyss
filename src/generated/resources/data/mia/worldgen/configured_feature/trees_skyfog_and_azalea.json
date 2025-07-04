@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "mia:fancy_skyfog_bee_005",
+    "features": [
+      {
+        "chance": 0.4,
+        "feature": "mia:skyfog_bee_002"
+      },
+      {
+        "chance": 0.1,
+        "feature": "mia:azalea_checked"
+      }
+    ]
+  }
+}

@@ -18,9 +18,10 @@ public class MiaItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        basicItem(MiaItems.ENDLESS_CUP.get());
         basicItem(MiaItems.RED_WHISTLE.get());
+        crossItem(MiaBlocks.SKYFOG_SAPLING);
         crossItem(MiaBlocks.FORTITUDE_FLOWER);
+        basicItem(MiaBlocks.ENDLESS_CUP.asItem());
     }
 
     private ItemModelBuilder crossItem(DeferredBlock<Block> item) {
