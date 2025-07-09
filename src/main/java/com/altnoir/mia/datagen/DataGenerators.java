@@ -31,8 +31,11 @@ public class DataGenerators {
         generators.addProvider(event.includeServer(), blockTagsProvider);
         generators.addProvider(event.includeServer(), itemTagsProvider);
         generators.addProvider(event.includeServer(), new MiaDataMapProvider(packOutput, lookupProvider));
-
         generators.addProvider(event.includeServer(), new MiaWorldGenProvider(packOutput, lookupProvider));
+
+        var worldGenLookup = new MiaWorldGenProvider(packOutput, lookupProvider).getRegistryProvider();
+        generators.addProvider(event.includeServer(), new MiaPaintingVariantTagsProvider(packOutput, worldGenLookup, existingFileHelper));
+
         generators.addProvider(event.includeServer(), new MiaCuriosProvider(packOutput, existingFileHelper, lookupProvider));
         generators.addProvider(event.includeServer(), new MiaCurseDataProvider(packOutput, lookupProvider));
 

@@ -2,6 +2,7 @@ package com.altnoir.mia.worldgen.tree;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.worldgen.MiaPlacementUtils;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -9,8 +10,14 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
+import net.minecraft.world.level.levelgen.placement.EnvironmentScanPlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.placement.PlacementModifier;
+
+import java.util.List;
 
 public class MiaTreePlacements {
     public static final ResourceKey<PlacedFeature> AZALEA_CHECKED = MiaPlacementUtils.resourceKey("azalea_checked");

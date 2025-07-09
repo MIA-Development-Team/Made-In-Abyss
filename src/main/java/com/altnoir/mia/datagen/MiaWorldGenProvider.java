@@ -1,6 +1,7 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.init.MiaPaintingVariants;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;
 import com.altnoir.mia.worldgen.MiaPlacementUtils;
 import com.altnoir.mia.worldgen.biome.MiaBiomes;
@@ -25,7 +26,8 @@ public class MiaWorldGenProvider extends DatapackBuiltinEntriesProvider {
             .add(Registries.BIOME, MiaBiomes::boostrap)
             .add(Registries.LEVEL_STEM, MiaDimensions::bootstrapStem)
             .add(Registries.DENSITY_FUNCTION, MiaDensityFunction::bootstrap)
-            .add(Registries.NOISE_SETTINGS, MiaNoiseGeneratorSettings::bootstrap);
+            .add(Registries.NOISE_SETTINGS, MiaNoiseGeneratorSettings::bootstrap)
+            .add(Registries.PAINTING_VARIANT, MiaPaintingVariants::bootstrap);
 
     public MiaWorldGenProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of(MIA.MOD_ID));

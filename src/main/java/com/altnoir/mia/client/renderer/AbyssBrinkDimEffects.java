@@ -34,7 +34,7 @@ public class AbyssBrinkDimEffects extends DimensionSpecialEffects {
 
     @Override
     public boolean renderSky(ClientLevel level, int ticks, float partialTick, Matrix4f modelViewMatrix, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
-        /*ResourceLocation sunTexture = MiaUtil.miaId("textures/skybox/abyss_brink.png");
+        ResourceLocation sunTexture = MiaUtil.miaId("textures/skybox/abyss_brink.png");
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -43,18 +43,19 @@ public class AbyssBrinkDimEffects extends DimensionSpecialEffects {
         PoseStack poseStack = new PoseStack();
         poseStack.mulPose(modelViewMatrix);
 
+        float sunSize = 500.0F;
+        float sunHeight = 350.0F;
+
         Matrix4f pose = poseStack.last().pose();
         Tesselator tesselator = Tesselator.getInstance();
-
-        float sunSize = 200.0F;
-        float sunHeight = 300.0F;
         BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+
         bufferbuilder.addVertex(pose, -sunSize, sunHeight, -sunSize).setUv(0.0F, 0.0F);
         bufferbuilder.addVertex(pose, sunSize, sunHeight, -sunSize).setUv(1.0F, 0.0F);
         bufferbuilder.addVertex(pose, sunSize, sunHeight, sunSize).setUv(1.0F, 1.0F);
         bufferbuilder.addVertex(pose, -sunSize, sunHeight, sunSize).setUv(0.0F, 1.0F);
-        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());*/
 
+        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
         return true;
     }
 }
