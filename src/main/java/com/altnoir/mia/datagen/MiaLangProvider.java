@@ -27,6 +27,17 @@ public class MiaLangProvider extends LanguageProvider {
         add("tooltip.mia.item.red_whistle", "Red Whistles are novice cave raiders allowed only in the Abyss’s first layer.");
         //Tooltip end
 
+        // Painting Variant
+        add("painting.mia.abyss_map.title", "Abyss Map");
+        add("painting.mia.abyss.title", "Abyss");
+        add("painting.mia.fossil_tree.title", "Fossil Tree");
+        add("painting.mia.fortitude_flower.title", "Fortitude Flower");
+
+        add("painting.mia.abyss_map.author", "Made In Abyss");
+        add("painting.mia.abyss.author", "Made In Abyss");
+        add("painting.mia.fossil_tree.author", "Made In Abyss");
+        add("painting.mia.fortitude_flower.author", "Made In Abyss");
+
         //GUI start
         add("gui.mia.disconnect", "Quit?");
         //GUI end

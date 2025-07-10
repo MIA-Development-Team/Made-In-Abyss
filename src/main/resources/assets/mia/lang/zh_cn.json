@@ -24,6 +24,15 @@
 
   "biome.mia.abyss_brink/abyss_brink": "阿比斯深渊",
 
+  "painting.mia.abyss.author": "Made In Abyss",
+  "painting.mia.abyss.title": "Abyss",
+  "painting.mia.abyss_map.author": "Made In Abyss",
+  "painting.mia.abyss_map.title": "Abyss地图",
+  "painting.mia.fortitude_flower.author": "Made In Abyss",
+  "painting.mia.fortitude_flower.title": "不屈之花",
+  "painting.mia.fossil_tree.author": "Made In Abyss",
+  "painting.mia.fossil_tree.title": "化石树",
+
   "tooltip.mia.whistle.level": "笛子等级：%s",
   "tooltip.mia.hold_shift": "按住 [%s] 显示详细信息",
   "tooltip.mia.item.red_whistle": "红笛—新手探窟者，只允许在深渊一层。",

@@ -43,17 +43,20 @@ public class AbyssBrinkDimEffects extends DimensionSpecialEffects {
         PoseStack poseStack = new PoseStack();
         poseStack.mulPose(modelViewMatrix);
 
-        float sunSize = 500.0F;
-        float sunHeight = 350.0F;
+        float playerX = (float) camera.getPosition().x;
+        float playerY = (float) camera.getPosition().y;
+        float playerZ = (float) camera.getPosition().z;
+        float size = 500.0F;
+        float height = 368.0F - playerY;
 
         Matrix4f pose = poseStack.last().pose();
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
-        bufferbuilder.addVertex(pose, -sunSize, sunHeight, -sunSize).setUv(0.0F, 0.0F);
-        bufferbuilder.addVertex(pose, sunSize, sunHeight, -sunSize).setUv(1.0F, 0.0F);
-        bufferbuilder.addVertex(pose, sunSize, sunHeight, sunSize).setUv(1.0F, 1.0F);
-        bufferbuilder.addVertex(pose, -sunSize, sunHeight, sunSize).setUv(0.0F, 1.0F);
+        bufferbuilder.addVertex(pose, -size - playerX, height, -size - playerZ).setUv(0.0F, 0.0F);
+        bufferbuilder.addVertex(pose, size - playerX, height, -size - playerZ).setUv(1.0F, 0.0F);
+        bufferbuilder.addVertex(pose, size - playerX, height, size - playerZ).setUv(1.0F, 1.0F);
+        bufferbuilder.addVertex(pose, -size - playerX, height, size - playerZ).setUv(0.0F, 1.0F);
 
         BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
         return true;

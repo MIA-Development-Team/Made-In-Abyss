@@ -1,5 +1,8 @@
 {
   "values": [
-    "mia:abyss_map"
+    "mia:abyss_map",
+    "mia:abyss",
+    "mia:fossil_tree",
+    "mia:fortitude_flower"
   ]
 }

@@ -19,6 +19,11 @@ public class MiaPaintingVariantTagsProvider extends PaintingVariantTagsProvider 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         this.tag(PaintingVariantTags.PLACEABLE)
-                .add(MiaPaintingVariants.ABYSS_MAP);
+                .add(
+                        MiaPaintingVariants.ABYSS_MAP,
+                        MiaPaintingVariants.ABYSS,
+                        MiaPaintingVariants.FOSSIL_TREE,
+                        MiaPaintingVariants.FORTITUDE_FLOWER
+                );
     }
 }
