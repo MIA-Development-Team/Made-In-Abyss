@@ -19,6 +19,7 @@ public class MiaItemGroups {
             .icon(() -> new ItemStack(MiaItems.RED_WHISTLE.get()))
             .displayItems((parameters, output) -> {
                 output.accept(MiaItems.RED_WHISTLE);
+                output.accept(MiaItems.HEALTH_ABILITY_CARD);
                 output.accept(MiaBlocks.ABYSS_GRASS_BLOCK);
                 output.accept(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
                 output.accept(MiaBlocks.ABYSS_ANDESITE);
