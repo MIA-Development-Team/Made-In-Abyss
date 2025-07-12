@@ -15,16 +15,16 @@ public class ClientTooltipEvent {
         var item = stack.getItem();
 
         if (item instanceof IMiaTooltip tooltipProvider) {
+            var tooltip = event.getToolTip();
+
             if (Screen.hasShiftDown()) {
-                tooltipProvider.appendTooltip(stack, event.getToolTip());
+                tooltipProvider.appendTooltip(stack, tooltip);
             } else {
-                event.getToolTip().add(3,
-                        Component.translatable(
-                                        "tooltip.mia.hold_shift",
-                                        Component.literal("Shift").withStyle(ChatFormatting.WHITE))
-                                .withStyle(ChatFormatting.GRAY));
+                tooltip.add(1, Component.translatable(
+                        "tooltip.mia.hold_shift",
+                        Component.literal("Shift").withStyle(ChatFormatting.WHITE)
+                ).withStyle(ChatFormatting.GRAY));
             }
-            event.getToolTip().add(4, Component.literal(""));
         }
     }
 }
