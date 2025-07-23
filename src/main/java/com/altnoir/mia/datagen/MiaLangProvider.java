@@ -23,6 +23,7 @@ public class MiaLangProvider extends LanguageProvider {
 
         //Tooltip start
         add("tooltip.mia.whistle.level", "Whistle Level: %s");
+        add("tooltip.mia.whistle.capacity", "Capacity: %s");
         add("tooltip.mia.hold_shift", "Hold [%s] to show details");
         add("tooltip.mia.item.red_whistle", "Red Whistles are novice cave raiders allowed only in the Abyss’s first layer.");
         //Tooltip end
