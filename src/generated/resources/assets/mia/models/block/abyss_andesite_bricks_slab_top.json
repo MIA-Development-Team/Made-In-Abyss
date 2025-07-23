@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "mia:block/abyss_andesite_bricks",
+    "side": "mia:block/abyss_andesite_bricks",
+    "top": "mia:block/abyss_andesite_bricks"
+  }
+}

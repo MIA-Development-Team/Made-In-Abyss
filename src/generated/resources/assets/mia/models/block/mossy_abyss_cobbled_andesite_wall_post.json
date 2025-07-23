@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_wall_post",
+  "textures": {
+    "wall": "mia:block/mossy_abyss_cobbled_andesite"
+  }
+}

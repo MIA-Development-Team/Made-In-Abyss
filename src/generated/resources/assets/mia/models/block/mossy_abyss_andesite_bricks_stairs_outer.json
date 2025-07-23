@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "mia:block/mossy_abyss_andesite_bricks",
+    "side": "mia:block/mossy_abyss_andesite_bricks",
+    "top": "mia:block/mossy_abyss_andesite_bricks"
+  }
+}

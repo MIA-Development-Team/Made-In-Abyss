@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "mia:block/mossy_abyss_cobbled_andesite"
+  }
+}

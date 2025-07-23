@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "mia:block/mossy_abyss_andesite_bricks_slab"
+    },
+    "type=double": {
+      "model": "mia:block/mossy_abyss_andesite_bricks"
+    },
+    "type=top": {
+      "model": "mia:block/mossy_abyss_andesite_bricks_slab_top"
+    }
+  }
+}
