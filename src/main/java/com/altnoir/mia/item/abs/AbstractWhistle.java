@@ -88,7 +88,9 @@ public abstract class AbstractWhistle extends Item implements ICurioItem, IMiaTo
         tooltip.add(1,
                 Component.translatable("tooltip.mia.whistle.level",
                                 Component.literal(
-                                                Objects.requireNonNull(stack.get(MiaComponents.WHISTLE_LEVEL.get())).toString())
+                                                Optional.ofNullable(stack.get(MiaComponents.WHISTLE_LEVEL.get()))
+                                                        .map(Object::toString)
+                                                        .orElse("0"))
                                         .withStyle(ChatFormatting.YELLOW))
                         .withStyle(style -> style.withColor(ChatFormatting.GOLD)));
         tooltip.add(2,
