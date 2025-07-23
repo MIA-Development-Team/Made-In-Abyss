@@ -92,12 +92,12 @@ description='''${mod_description}'''
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.${mod_id}]]
-    modId="geckolib"
-    type="required"
-    versionRange="${geckolib_version_range}"
-    ordering="NONE"
-    side="CLIENT"
+#[[dependencies.${mod_id}]]
+#    modId="geckolib"
+#    type="required"
+#    versionRange="${geckolib_version_range}"
+#    ordering="NONE"
+#    side="CLIENT"
 
 
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares

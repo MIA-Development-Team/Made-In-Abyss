@@ -42,26 +42,37 @@ repositories {
     maven { url 'https://maven.blamejared.com' }
 
     maven {
-        name = 'GeckoLib'
-        url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        url = "https://api.modrinth.com/maven"
+        content {includeGroup "maven.modrinth"}
     }
 }
 
 dependencies {
+    // JEI
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
     runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 
+    // EMI
     compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
     runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
 
+    // Curios
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
+    // Patchouli
     compileOnly "vazkii.patchouli:Patchouli:${patchouli_version}:api"
     runtimeOnly "vazkii.patchouli:Patchouli:${patchouli_version}"
 
+    // Jade
     implementation "maven.modrinth:jade:${project.jade_version}"
-    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    // Simple Bedrock Model
+    implementation jarJar("maven.modrinth:simplebedrockmodel:1.4.0-neoforge+mc1.21.1") {
+        version {
+            strictly '[1.4.0-neoforge+mc1.21.1,)'
+            prefer '1.4.0-neoforge+mc1.21.1'
+        }
+    }
 }
 
 base {
