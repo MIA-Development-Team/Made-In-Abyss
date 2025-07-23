@@ -14,7 +14,6 @@ import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientWhistleTooltip implements ClientTooltipComponent {
-    private static final ResourceLocation BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("container/bundle/background");
     private static final int SLOT_SIZE_X = 18;
     private static final int SLOT_SIZE_Y = 20;
     private static final int BORDER_WIDTH = 1;
@@ -49,15 +48,11 @@ public class ClientWhistleTooltip implements ClientTooltipComponent {
         int rows = getGridHeight();
         int total = stacks.size();
 
-        guiGraphics.blitSprite(BACKGROUND_SPRITE, x, y, getWidth(font), getHeight());
-
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 int index = row * cols + col;
                 int slotX = x + col * SLOT_SIZE_X + BORDER_WIDTH;
                 int slotY = y + row * SLOT_SIZE_Y + BORDER_WIDTH;
-
-                blit(guiGraphics, slotX, slotY, ClientWhistleTooltip.Texture.SLOT);
 
                 if (index < total) {
                     ItemStack stack = stacks.get(index);
@@ -68,31 +63,11 @@ public class ClientWhistleTooltip implements ClientTooltipComponent {
         }
     }
 
-    private void blit(GuiGraphics guiGraphics, int x, int y, ClientWhistleTooltip.Texture texture) {
-        guiGraphics.blitSprite(texture.sprite, x, y, 0, texture.w, texture.h);
-    }
-
     private int getGridWidth() {
-        return Math.max(2, (int)Math.ceil(Math.sqrt(stacks.size())));
+        return Math.max(1, (int)Math.ceil(Math.sqrt(stacks.size())));
     }
 
     private int getGridHeight() {
         return (int)Math.ceil((double) stacks.size() / getGridWidth());
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    static enum Texture {
-        BLOCKED_SLOT(ResourceLocation.withDefaultNamespace("container/bundle/blocked_slot"), 18, 20),
-        SLOT(ResourceLocation.withDefaultNamespace("container/bundle/slot"), 18, 20);
-
-        public final ResourceLocation sprite;
-        public final int w;
-        public final int h;
-
-        private Texture(ResourceLocation sprite, int w, int h) {
-            this.sprite = sprite;
-            this.w = w;
-            this.h = h;
-        }
     }
 }
