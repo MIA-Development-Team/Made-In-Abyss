@@ -38,8 +38,14 @@ public class WhistleInventoryComponent implements TooltipComponent {
         return stacks;
     }
 
-    private int getUsage() {
-        return stacks.size();
+    public int getUsage() {
+        var total = 0;
+        for (ItemStack stack : stacks) {
+            if (stack.getItem() instanceof AbstractAbilityCard card) {
+                total += card.getWeight();
+            }
+        }
+        return total;
     }
 
     public List<ItemStack> allItems() {

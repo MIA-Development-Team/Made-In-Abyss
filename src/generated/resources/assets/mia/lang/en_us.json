@@ -20,6 +20,7 @@
   "curios.modifiers.whistle": "Red Whistle Attributes",
   "emi.category.mia.lamp_tube": "Laser Catalysis",
   "gui.mia.disconnect": "Quit?",
+  "item.mia.health_ability_card": "Health Ability Card",
   "item.mia.red_whistle": "Red Whistle",
   "itemgroup.mia": "Made In Abyss",
   "mia.configuration.ban_disconnect": "Disable Disconnect Button",
@@ -44,5 +45,6 @@
   "tag.item.curios.whistle": "Whistle",
   "tooltip.mia.hold_shift": "Hold [%s] to show details",
   "tooltip.mia.item.red_whistle": "Red Whistles are novice cave raiders allowed only in the Abyss’s first layer.",
+  "tooltip.mia.whistle.capacity": "Capacity: %s",
   "tooltip.mia.whistle.level": "Whistle Level: %s"
 }
