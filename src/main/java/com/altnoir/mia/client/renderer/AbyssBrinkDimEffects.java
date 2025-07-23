@@ -46,8 +46,8 @@ public class AbyssBrinkDimEffects extends DimensionSpecialEffects {
         float playerX = (float) camera.getPosition().x;
         float playerY = (float) camera.getPosition().y;
         float playerZ = (float) camera.getPosition().z;
-        float size = 500.0F;
-        float height = 368.0F - playerY;
+        float size = 1024.0F;
+        float height = 768.0F - playerY;
 
         Matrix4f pose = poseStack.last().pose();
         Tesselator tesselator = Tesselator.getInstance();

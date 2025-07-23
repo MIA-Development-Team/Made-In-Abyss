@@ -46,7 +46,7 @@ public abstract class AbstractWhistle extends Item implements ICurioItem, IMiaTo
 
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
-        int amount = 2 * stack.getComponents().getOrDefault(MiaComponents.WHISTLE_LEVEL.get(), 1);
+        int amount = stack.getComponents().getOrDefault(MiaComponents.WHISTLE_LEVEL.get(), 1);
         var contents = stack.getOrDefault(MiaComponents.WHISTLE_INVENTORY, WhistleInventoryComponent.EMPTY);
         var abilityCards = contents.allItems();
         attributeModifiers = HashMultimap.create();

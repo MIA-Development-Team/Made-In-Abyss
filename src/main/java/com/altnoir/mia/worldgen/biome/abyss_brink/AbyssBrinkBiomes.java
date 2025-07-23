@@ -32,20 +32,7 @@ public class AbyssBrinkBiomes {
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
-        return new Biome.BiomeBuilder()
-                .hasPrecipitation(true)
-                .downfall(0.8F)
-                .temperature(0.8F)
-                .generationSettings(generationBuilder.build())
-                .mobSpawnSettings(spawnBuilder.build())
-                .specialEffects((new BiomeSpecialEffects.Builder())
-                        .waterColor(6141935)
-                        .waterFogColor(6141935)
-                        .skyColor(8888490)
-                        .fogColor(8888490)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_LUSH_CAVES)).build())
-                .build();
+        return baseAbyssBrink(generationBuilder, spawnBuilder).build();
     }
 
     public static Biome skyfogForest(BootstrapContext<Biome> context) {
@@ -71,21 +58,9 @@ public class AbyssBrinkBiomes {
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
-        return new Biome.BiomeBuilder()
-                .hasPrecipitation(true)
-                .downfall(0.8F)
-                .temperature(0.8F)
-                .generationSettings(generationBuilder.build())
-                .mobSpawnSettings(spawnBuilder.build())
-                .specialEffects((new BiomeSpecialEffects.Builder())
-                        .waterColor(6141935)
-                        .waterFogColor(6141935)
-                        .skyColor(8888490)
-                        .fogColor(8888490)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_LUSH_CAVES)).build())
-                .build();
+        return baseAbyssBrink(generationBuilder, spawnBuilder).build();
     }
+
     public static Biome abyssPlains(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
 
@@ -106,10 +81,11 @@ public class AbyssBrinkBiomes {
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
-        return new Biome.BiomeBuilder()
-                .hasPrecipitation(true)
-                .downfall(0.8F)
-                .temperature(0.8F)
+        return baseAbyssBrink(generationBuilder, spawnBuilder).build();
+    }
+
+    public static Biome.BiomeBuilder baseAbyssBrink(BiomeGenerationSettings.Builder generationBuilder, MobSpawnSettings.Builder spawnBuilder) {
+        return new Biome.BiomeBuilder().hasPrecipitation(true).downfall(0.8F).temperature(0.8F)
                 .generationSettings(generationBuilder.build())
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects((new BiomeSpecialEffects.Builder())
@@ -117,8 +93,17 @@ public class AbyssBrinkBiomes {
                         .waterFogColor(6141935)
                         .skyColor(8888490)
                         .fogColor(8888490)
+                        .grassColorOverride(11335504)
                         .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_LUSH_CAVES)).build())
-                .build();
+                        .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_LUSH_CAVES)).build());
+    }
+
+    // 16进制转10进制
+    public static int hexToRgb(String hex) {
+        hex = hex.replace("#", "");
+        int r = Integer.parseInt(hex.substring(0, 2), 16);
+        int g = Integer.parseInt(hex.substring(2, 4), 16);
+        int b = Integer.parseInt(hex.substring(4, 6), 16);
+        return (r << 16) | (g << 8) | b;
     }
 }

@@ -1,10 +1,13 @@
 package com.altnoir.mia.datagen;
 
+import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.recipe.LampTubeRecipeBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -21,6 +24,13 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
 
     @Override
     protected void buildRecipes(@NotNull RecipeOutput recipeOutput) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, Items.STONE_PICKAXE, 1)
+                .define('#', MiaBlocks.SKYFOG_PLANKS.get())
+                .pattern("##")
+                .pattern("##")
+                .unlockedBy(getHasName(MiaBlocks.SKYFOG_PLANKS.get()), has(MiaBlocks.SKYFOG_PLANKS.get()))
+                .save(recipeOutput);
+
         lampTube(recipeOutput, Items.STONE, Items.DEEPSLATE, 2);
     }
 

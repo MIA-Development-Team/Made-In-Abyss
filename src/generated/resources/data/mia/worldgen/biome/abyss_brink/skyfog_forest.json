@@ -3,6 +3,7 @@
   "downfall": 0.8,
   "effects": {
     "fog_color": 8888490,
+    "grass_color": 11335504,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
@@ -119,50 +120,7 @@
       }
     ],
     "misc": [],
-    "monster": [
-      {
-        "type": "minecraft:spider",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 100
-      },
-      {
-        "type": "minecraft:drowned",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 50
-      },
-      {
-        "type": "minecraft:zombie_villager",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 50
-      },
-      {
-        "type": "minecraft:skeleton",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 100
-      },
-      {
-        "type": "minecraft:creeper",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 100
-      },
-      {
-        "type": "minecraft:enderman",
-        "maxCount": 4,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:witch",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 5
-      }
-    ],
+    "monster": [],
     "underground_water_creature": [
       {
         "type": "minecraft:glow_squid",

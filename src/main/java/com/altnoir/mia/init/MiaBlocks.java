@@ -12,9 +12,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.bus.api.IEventBus;
@@ -36,19 +34,6 @@ public class MiaBlocks {
                     .sound(SoundType.DEEPSLATE)
             )
     );
-    public static final DeferredBlock<Block> ABYSS_COBBLED_ANDESITE = registerBlock("abyss_cobbled_andesite", () ->
-            new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
-                    .strength(3.5F, 6.0F)
-            )
-    );
-    public static final DeferredBlock<Block> ABYSS_GRASS_BLOCK = registerBlock("abyss_grass_block", () ->
-            new AbyssGrassBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.GRASS)
-                    .randomTicks()
-                    .strength(0.6F)
-                    .sound(SoundType.GRASS)
-            )
-    );
     public static final DeferredBlock<Block> COVERGRASS_ABYSS_ANDESITE = registerBlock("covergrass_abyss_andesite", () ->
             new CoverGrassBlock(ABYSS_ANDESITE.get(), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.GRASS)
@@ -60,24 +45,70 @@ public class MiaBlocks {
             )
     );
 
-    public static final DeferredBlock<Block> SKYFOG_LOG = registerBlock("skyfog_log", () ->
-            log(MapColor.WOOD, MapColor.PODZOL)
+    public static final DeferredBlock<Block> ABYSS_ANDESITE_STAIRS = registerBlock("abyss_andesite_stairs", () -> stair(ABYSS_ANDESITE.get()));
+    public static final DeferredBlock<Block> ABYSS_ANDESITE_SLAB = registerBlock("abyss_andesite_slab", () -> slab(ABYSS_ANDESITE.get()));
+    public static final DeferredBlock<Block> ABYSS_ANDESITE_WALL = registerBlock("abyss_andesite_wall", () -> wall(ABYSS_ANDESITE.get()));
+    public static final DeferredBlock<Block> ABYSS_COBBLED_ANDESITE = registerBlock("abyss_cobbled_andesite", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
+                    .strength(3.5F, 6.0F)
+            )
     );
-    public static final DeferredBlock<Block> SKYFOG_WOOD = registerBlock("skyfog_wood", () ->
-            wood(MapColor.WOOD)
+    public static final DeferredBlock<Block> ABYSS_COBBLED_ANDESITE_STAIRS = registerBlock("abyss_cobbled_andesite_stairs", () -> stair(ABYSS_COBBLED_ANDESITE.get()));
+    public static final DeferredBlock<Block> ABYSS_COBBLED_ANDESITE_SLAB = registerBlock("abyss_cobbled_andesite_slab", () -> slab(ABYSS_COBBLED_ANDESITE.get()));
+    public static final DeferredBlock<Block> ABYSS_COBBLED_ANDESITE_WALL = registerBlock("abyss_cobbled_andesite_wall", () -> wall(ABYSS_COBBLED_ANDESITE.get()));
+    public static final DeferredBlock<Block> MOSSY_ABYSS_COBBLED_ANDESITE = registerBlock("mossy_abyss_cobbled_andesite", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_COBBLED_ANDESITE.get())
+            )
     );
-    public static final DeferredBlock<Block> STRIPPED_SKYFOG_LOG = registerBlock("stripped_skyfog_log", () ->
-            log(MapColor.WOOD, MapColor.WOOD)
+    public static final DeferredBlock<Block> MOSSY_ABYSS_COBBLED_ANDESITE_STAIRS = registerBlock("mossy_abyss_cobbled_andesite_stairs", () -> stair(MOSSY_ABYSS_COBBLED_ANDESITE.get()));
+    public static final DeferredBlock<Block> MOSSY_ABYSS_COBBLED_ANDESITE_SLAB = registerBlock("mossy_abyss_cobbled_andesite_slab", () -> slab(MOSSY_ABYSS_COBBLED_ANDESITE.get()));
+    public static final DeferredBlock<Block> MOSSY_ABYSS_COBBLED_ANDESITE_WALL = registerBlock("mossy_abyss_cobbled_andesite_wall", () -> wall(MOSSY_ABYSS_COBBLED_ANDESITE.get()));
+    public static final DeferredBlock<Block> POLISHED_ABYSS_ANDESITE = registerBlock("polished_abyss_andesite", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_COBBLED_ANDESITE.get())
+                    .sound(SoundType.POLISHED_DEEPSLATE)
+            )
     );
-    public static final DeferredBlock<Block> STRIPPED_SKYFOG_WOOD = registerBlock("stripped_skyfog_wood", () ->
-            wood(MapColor.WOOD)
+    public static final DeferredBlock<Block> POLISHED_ABYSS_ANDESITE_STAIRS = registerBlock("polished_abyss_andesite_stairs", () -> stair(POLISHED_ABYSS_ANDESITE.get()));
+    public static final DeferredBlock<Block> POLISHED_ABYSS_ANDESITE_SLAB = registerBlock("polished_abyss_andesite_slab", () -> slab(POLISHED_ABYSS_ANDESITE.get()));
+    public static final DeferredBlock<Block> POLISHED_ABYSS_ANDESITE_WALL = registerBlock("polished_abyss_andesite_wall", () -> wall(POLISHED_ABYSS_ANDESITE.get()));
+    public static final DeferredBlock<Block> ABYSS_ANDESITE_PILLAR = registerBlock("abyss_andesite_pillar", () ->
+            new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_ABYSS_ANDESITE.get()))
     );
-    public static final DeferredBlock<Block> SKYFOG_PLANKS = registerBlock("skyfog_planks", () ->
-            planks(MapColor.COLOR_GREEN)
+    public static final DeferredBlock<Block> CHISLED_ABYSS_ANDESITE = registerBlock("chiseled_abyss_andesite", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(POLISHED_ABYSS_ANDESITE.get()))
     );
-    public static final DeferredBlock<Block> SKYFOG_LEAVES = registerBlock("skyfog_leaves", () ->
-            leaves(SoundType.CHERRY_LEAVES)
+    public static final DeferredBlock<Block> ABYSS_ANDESITE_BRICKS = registerBlock("abyss_andesite_bricks", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_COBBLED_ANDESITE.get())
+                    .sound(SoundType.DEEPSLATE_TILES)
+            )
     );
+    public static final DeferredBlock<Block> CRACKED_ABYSS_ANDESITE_BRICKS = registerBlock("cracked_abyss_andesite_bricks", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE_BRICKS.get()))
+    );
+    public static final DeferredBlock<Block> ABYSS_ANDESITE_BRICKS_STAIRS = registerBlock("abyss_andesite_bricks_stairs", () -> stair(ABYSS_ANDESITE_BRICKS.get()));
+    public static final DeferredBlock<Block> ABYSS_ANDESITE_BRICKS_SLAB = registerBlock("abyss_andesite_bricks_slab", () -> slab(ABYSS_ANDESITE_BRICKS.get()));
+    public static final DeferredBlock<Block> ABYSS_ANDESITE_BRICKS_WALL = registerBlock("abyss_andesite_bricks_wall", () -> wall(ABYSS_ANDESITE_BRICKS.get()));
+    public static final DeferredBlock<Block> MOSSY_ABYSS_ANDESITE_BRICKS = registerBlock("mossy_abyss_andesite_bricks", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE_BRICKS.get()))
+    );
+    public static final DeferredBlock<Block> MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS = registerBlock("mossy_abyss_andesite_bricks_stairs", () -> stair(MOSSY_ABYSS_ANDESITE_BRICKS.get()));
+    public static final DeferredBlock<Block> MOSSY_ABYSS_ANDESITE_BRICKS_SLAB = registerBlock("mossy_abyss_andesite_bricks_slab", () -> slab(MOSSY_ABYSS_ANDESITE_BRICKS.get()));
+    public static final DeferredBlock<Block> MOSSY_ABYSS_ANDESITE_BRICKS_WALL = registerBlock("mossy_abyss_andesite_bricks_wall", () -> wall(MOSSY_ABYSS_ANDESITE_BRICKS.get()));
+
+
+    public static final DeferredBlock<Block> SKYFOG_LOG = registerBlock("skyfog_log", () -> log(MapColor.WOOD, MapColor.PODZOL));
+    public static final DeferredBlock<Block> SKYFOG_WOOD = registerBlock("skyfog_wood", () -> wood(MapColor.WOOD));
+    public static final DeferredBlock<Block> STRIPPED_SKYFOG_LOG = registerBlock("stripped_skyfog_log", () -> log(MapColor.WOOD, MapColor.WOOD));
+    public static final DeferredBlock<Block> STRIPPED_SKYFOG_WOOD = registerBlock("stripped_skyfog_wood", () -> wood(MapColor.WOOD));
+    public static final DeferredBlock<Block> SKYFOG_PLANKS = registerBlock("skyfog_planks", () -> planks(MapColor.COLOR_GREEN));
+    public static final DeferredBlock<Block> SKYFOG_STARIS = registerBlock("skyfog_staris", () -> stair(SKYFOG_PLANKS.get()));
+    public static final DeferredBlock<Block> SKYFOG_SLAB = registerBlock("skyfog_slab", () -> slab(SKYFOG_PLANKS.get()));
+    public static final DeferredBlock<Block> SKYFOG_FENCE = registerBlock("skyfog_fence", () -> fence(SKYFOG_PLANKS.get()));
+    public static final DeferredBlock<Block> SKYFOG_FENCE_GATE = registerBlock("skyfog_fence_gate", () -> fenceGate(WoodType.OAK, SKYFOG_PLANKS.get()));
+    public static final DeferredBlock<Block> SKYFOG_DOOR = registerBlock("skyfog_door", () -> woodenDoor(BlockSetType.OAK, SKYFOG_PLANKS.get().defaultMapColor()));
+    public static final DeferredBlock<Block> SKYFOG_TRAPDOOR = registerBlock("skyfog_trapdoor", () -> woodenTrapdoor(BlockSetType.OAK, MapColor.WOOD));
+    public static final DeferredBlock<Block> SKYFOG_LEAVES = registerBlock("skyfog_leaves", () -> leaves(SoundType.CHERRY_LEAVES));
+    public static final DeferredBlock<Block> SKYFOG_LEAVES_WITH_FRUITS = registerBlock("skyfog_leaves_with_fruits", () -> leaves(SoundType.CHERRY_LEAVES));
     public static final DeferredBlock<Block> SKYFOG_SAPLING = registerBlock("skyfog_sapling", () ->
             new SaplingBlock(
                     MiaTreeGrowers.SKYFOG_TREE,
@@ -104,6 +135,11 @@ public class MiaBlocks {
                             .pushReaction(PushReaction.DESTROY)
             )
     );
+
+    public static final DeferredBlock<Block> SKYFOG_PRESSURE_PLATE = registerBlock("skyfog_pressure_plate", () ->
+            woodenPressurePlate(BlockSetType.OAK, SKYFOG_PLANKS.get().defaultMapColor()));
+    public static final DeferredBlock<Block> SKYFOG_BUTTON = registerBlock("skyfog_button", () -> woodenButton(BlockSetType.OAK));
+
     public static final DeferredBlock<Block> LAMP_TUBE = registerBlock("lamp_tube", () ->
             new LampTubeBlock(
                     BlockBehaviour.Properties.of()
@@ -119,10 +155,9 @@ public class MiaBlocks {
             new AbyssPortalBlock(
                     BlockBehaviour.Properties.of()
                             .noCollission()
-                            .strength(-1.0F)
+                            .strength(3.0F, 6.0F)
                             .lightLevel(state -> 15)
                             .sound(SoundType.GLASS)
-                            .noLootTable()
                             .pushReaction(PushReaction.BLOCK)
             )
     );
@@ -142,6 +177,13 @@ public class MiaBlocks {
     public static final DeferredBlock<Block> ENDLESS_CUP = registerBlock("endless_cup", () ->
             new EndlessCupBlock(
                     BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
+            )
+    );
+    public static final DeferredBlock<Block> ROPE = BLOCKS.register("rope", () ->
+            new RopeBlock(BlockBehaviour.Properties.of()
+                    .forceSolidOff().strength(0.4F)
+                    .sound(SoundType.WOOL).noOcclusion()
+                    .pushReaction(PushReaction.DESTROY)
             )
     );
 
@@ -182,6 +224,26 @@ public class MiaBlocks {
         );
     }
 
+    private static Block stair(Block block) {
+        return new StairBlock(block.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(block));
+    }
+
+    private static Block slab(Block block) {
+        return new SlabBlock(BlockBehaviour.Properties.ofFullCopy(block));
+    }
+
+    private static Block fence(Block block) {
+        return new FenceBlock(BlockBehaviour.Properties.ofFullCopy(block).forceSolidOn());
+    }
+
+    private static Block fenceGate(WoodType type, Block block) {
+        return new FenceGateBlock(type, BlockBehaviour.Properties.ofFullCopy(block).forceSolidOn());
+    }
+
+    private static Block wall(Block block) {
+        return new WallBlock(BlockBehaviour.Properties.ofFullCopy(block).forceSolidOn());
+    }
+
     private static Block leaves(SoundType soundType) {
         return new MiaLeavesBlock(
                 BlockBehaviour.Properties.of()
@@ -196,6 +258,45 @@ public class MiaBlocks {
                         .ignitedByLava()
                         .pushReaction(PushReaction.DESTROY)
                         .isRedstoneConductor(MiaBlocks::never)
+        );
+    }
+
+    private static Block woodenPressurePlate(BlockSetType type, MapColor mapColor) {
+        return new PressurePlateBlock(type, BlockBehaviour.Properties.of()
+                .mapColor(mapColor)
+                .forceSolidOn()
+                .instrument(NoteBlockInstrument.BASS)
+                .noCollission()
+                .strength(0.5F)
+                .ignitedByLava()
+                .pushReaction(PushReaction.DESTROY));
+    }
+
+    private static Block woodenButton(BlockSetType type) {
+        return new ButtonBlock(type, 30, BlockBehaviour.Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY));
+    }
+
+    private static Block woodenDoor(BlockSetType type, MapColor mapColor) {
+        return new DoorBlock(type,
+                BlockBehaviour.Properties.of()
+                        .mapColor(mapColor)
+                        .instrument(NoteBlockInstrument.BASS)
+                        .strength(3.0F)
+                        .noOcclusion()
+                        .ignitedByLava()
+                        .pushReaction(PushReaction.DESTROY)
+        );
+    }
+
+    private static Block woodenTrapdoor(BlockSetType type, MapColor mapColor) {
+        return new TrapDoorBlock(type,
+                BlockBehaviour.Properties.of()
+                        .mapColor(mapColor)
+                        .instrument(NoteBlockInstrument.BASS)
+                        .strength(3.0F)
+                        .noOcclusion()
+                        .isValidSpawn(Blocks::never)
+                        .ignitedByLava()
         );
     }
 

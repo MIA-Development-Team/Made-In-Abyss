@@ -1,10 +1,19 @@
 {
   "itemgroup.mia": "来自深渊",
 
-  "item.mia.red_whistle": "红笛",
+  "item.mia.red_whistle": "赤笛",
+  "item.mia.health_ability_card": "Health Ability Card",
+  "item.mia.mistfuzz_peach": "雾绒果",
 
   "block.mia.abyss_andesite": "深界安山岩",
   "block.mia.abyss_cobbled_andesite": "深界安山岩圆石",
+  "block.mia.mossy_abyss_cobbled_andesite": "深界安山岩苔石",
+  "block.mia.polished_abyss_andesite": "磨制深界安山岩",
+  "block.mia.chiseled_abyss_andesite": "雕纹深界安山岩",
+  "block.mia.abyss_andesite_pillar": "深界安山岩柱",
+  "block.mia.abyss_andesite_bricks": "深界安山岩砖",
+  "block.mia.mossy_abyss_andesite_bricks": "深界安山岩苔石砖",
+  "block.mia.cracked_abyss_andesite_bricks": "裂纹深界安山岩砖",
   "block.mia.abyss_grass_block": "深界草方块",
   "block.mia.covergrass_abyss_andesite": "覆草深界安山岩",
 
@@ -14,6 +23,7 @@
   "block.mia.stripped_skyfog_log": "去皮天雾原木",
   "block.mia.skyfog_planks": "天雾木板",
   "block.mia.skyfog_leaves": "天雾树叶",
+  "block.mia.skyfog_leaves_with_fruits": "结果的天雾树叶",
   "block.mia.skyfog_sapling": "天雾树苗",
 
   "block.mia.fortitude_flower": "不屈之花",

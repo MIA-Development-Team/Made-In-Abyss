@@ -3,13 +3,18 @@ package com.altnoir.mia.datagen;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaItems;
+import com.altnoir.mia.util.MiaUtil;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
+
+import java.util.Objects;
 
 public class MiaItemModelProvider extends ItemModelProvider {
     public MiaItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -19,14 +24,6 @@ public class MiaItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         basicItem(MiaItems.RED_WHISTLE.get());
-        crossItem(MiaBlocks.SKYFOG_SAPLING);
-        crossItem(MiaBlocks.FORTITUDE_FLOWER);
-        basicItem(MiaBlocks.ENDLESS_CUP.asItem());
-    }
-
-    private ItemModelBuilder crossItem(DeferredBlock<Block> item) {
-        return withExistingParent(item.getId().getPath(),
-                ResourceLocation.parse("item/generated")).texture("layer0",
-                ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "block/" + item.getId().getPath()));
+        basicItem(MiaItems.MISTFUZZ_PEACH.get());
     }
 }

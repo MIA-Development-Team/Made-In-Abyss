@@ -14,7 +14,6 @@ public class AbyssBrinkUtils {
     public static void commonSpawns(MobSpawnSettings.Builder builder) {
         waterAmbient(builder);
         undergroundWaterCreatures(builder);
-        monsters(builder);
     }
 
     public static void farmAnimals(MobSpawnSettings.Builder builder) {
