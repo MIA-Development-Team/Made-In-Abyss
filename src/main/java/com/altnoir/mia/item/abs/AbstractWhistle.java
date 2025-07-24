@@ -162,20 +162,13 @@ public abstract class AbstractWhistle extends Item implements ICurioItem, IMiaTo
     }
 
     @Override
-    public boolean overrideOtherStackedOnMe(
-            ItemStack itemStack,
-            ItemStack other,
-            Slot slot,
-            ClickAction clickAction,
-            Player player,
-            SlotAccess slotAccess
-    ) {
+    public boolean overrideOtherStackedOnMe(ItemStack itemStack, ItemStack other, Slot slot, ClickAction clickAction, Player player, SlotAccess slotAccess) {
         if (clickAction != ClickAction.SECONDARY || !slot.allowModification(player)) return false;
         var contents = itemStack.getOrDefault(MiaComponents.WHISTLE_INVENTORY, WhistleInventoryComponent.EMPTY).mutable();
         if (other.isEmpty()) {
             var stack = contents.pop();
             if (stack.isEmpty()) return false;
-            slotAccess.set(itemStack);
+            slotAccess.set(stack);
             playRemoveOneSound(player);
             broadcastChangesOnContainerMenu(player);
         } else {
