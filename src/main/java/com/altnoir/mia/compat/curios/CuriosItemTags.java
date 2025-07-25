@@ -7,6 +7,8 @@ import net.minecraft.world.item.Item;
 
 public class CuriosItemTags {
     public static final TagKey<Item> WHISTLE = createItemTag("whistle");
+    public static final TagKey<Item> ARTIFACT = createItemTag("artifact");
+
     public static TagKey<Item> createItemTag(String id) {
         return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios", id));
     }

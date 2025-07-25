@@ -25,3 +25,5 @@ run-data
 
 repo
 /src/generated/resources/.cache
+.vscode/*
+*.DS_Store

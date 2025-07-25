@@ -15,6 +15,8 @@ public class ClientEventHandler {
         modEventBus.addListener(ClientDimEffects::registerDimensionEffects);
         modEventBus.addListener(RegisterParticlesEvent::registerParticles);
         modEventBus.addListener(ClientTooltipComponentEvent::onRegisterFactories);
+        modEventBus.addListener(RegisterEntityRendererEvent::registerEntityRenderers);
+
     }
 
     public static void addGameEventBus(IEventBus gameEventBus) {

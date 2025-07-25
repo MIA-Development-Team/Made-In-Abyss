@@ -1,6 +1,6 @@
 package com.altnoir.mia.client.gui.screens.inventory.tooltip;
 
-import com.altnoir.mia.component.WhistleInventoryComponent;
+import com.altnoir.mia.component.ArtifactBundleInventoryComponent;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -13,22 +13,24 @@ import net.neoforged.api.distmarker.OnlyIn;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class ClientWhistleTooltip implements ClientTooltipComponent {
+public class ClientArtifactBundleTooltip implements ClientTooltipComponent {
     private static final int SLOT_SIZE_X = 18;
     private static final int SLOT_SIZE_Y = 20;
     private static final int BORDER_WIDTH = 1;
     private final List<ItemStack> stacks;
 
-    public ClientWhistleTooltip(WhistleInventoryComponent data) {
+    public ClientArtifactBundleTooltip(ArtifactBundleInventoryComponent data) {
         this.stacks = data.getStacks();
     }
 
     public static ClientTooltipComponent create(TooltipComponent component) {
-        if (component instanceof WhistleInventoryComponent whistle) {
-            return new ClientWhistleTooltip(whistle);
+        if (component instanceof ArtifactBundleInventoryComponent whistle) {
+            return new ClientArtifactBundleTooltip(whistle);
         }
-        var result = net.neoforged.neoforge.client.gui.ClientTooltipComponentManager.createClientTooltipComponent(component);
-        if (result != null) return result;
+        var result = net.neoforged.neoforge.client.gui.ClientTooltipComponentManager
+                .createClientTooltipComponent(component);
+        if (result != null)
+            return result;
         throw new IllegalArgumentException("Unknown TooltipComponent");
     }
 
@@ -64,10 +66,10 @@ public class ClientWhistleTooltip implements ClientTooltipComponent {
     }
 
     private int getGridWidth() {
-        return Math.max(1, (int)Math.ceil(Math.sqrt(stacks.size())));
+        return Math.max(1, (int) Math.ceil(Math.sqrt(stacks.size())));
     }
 
     private int getGridHeight() {
-        return (int)Math.ceil((double) stacks.size() / getGridWidth());
+        return (int) Math.ceil((double) stacks.size() / getGridWidth());
     }
 }

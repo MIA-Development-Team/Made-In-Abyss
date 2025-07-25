@@ -25,5 +25,7 @@ public class MiaItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         basicItem(MiaItems.RED_WHISTLE.get());
         basicItem(MiaItems.MISTFUZZ_PEACH.get());
+        basicItem(MiaItems.GRAY_ARTIFACT_BUNDLE.get());
+        basicItem(MiaItems.TEST_ARTIFACT.get());
     }
 }
