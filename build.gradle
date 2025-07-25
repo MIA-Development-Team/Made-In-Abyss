@@ -67,12 +67,12 @@ dependencies {
     // Jade
     implementation "maven.modrinth:jade:${project.jade_version}"
     // Simple Bedrock Model
-    implementation jarJar("maven.modrinth:simplebedrockmodel:1.4.0-neoforge+mc1.21.1") {
-        version {
-            strictly '[1.4.0-neoforge+mc1.21.1,)'
-            prefer '1.4.0-neoforge+mc1.21.1'
-        }
-    }
+    // implementation jarJar("maven.modrinth:simplebedrockmodel:1.4.0-neoforge+mc1.21.1") {
+    //     version {
+    //         strictly '[1.4.0-neoforge+mc1.21.1,)'
+    //         prefer '1.4.0-neoforge+mc1.21.1'
+    //     }
+    // }
 }
 
 base {
