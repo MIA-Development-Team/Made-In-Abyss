@@ -47,6 +47,7 @@ public class MIA {
         MiaRecipes.register(modEventBus);
 
         MiaParticles.register(modEventBus);
+        MiaEntities.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, MiaConfig.SPEC);
@@ -57,28 +58,25 @@ public class MIA {
         EventHandle.addListener(modEventBus, gameEventBus);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {
-    }
+    private void commonSetup(final FMLCommonSetupEvent event) {}
 
     // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-    }
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {}
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-    }
+    public void onServerStarting(ServerStartingEvent event) {}
 
     @SubscribeEvent
     private void reload(final AddReloadListenerEvent event) {
         event.addListener(CURSE_MANAGER);
     }
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
+    // You can use EventBusSubscriber to automatically register all static methods in the class
+    // annotated with @SubscribeEvent
     @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-        }
+        public static void onClientSetup(FMLClientSetupEvent event) {}
     }
 }

@@ -11,66 +11,70 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public class MiaItemGroups {
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MIA.MOD_ID);
-    public static final Supplier<CreativeModeTab> MIA_TAB = CREATIVE_MODE_TAB.register("mia_tab", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemgroup.mia"))
-            .icon(() -> new ItemStack(MiaItems.RED_WHISTLE.get()))
-            .displayItems((parameters, output) -> {
-                output.accept(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
-                output.accept(MiaBlocks.ABYSS_ANDESITE);
-                output.accept(MiaBlocks.ABYSS_ANDESITE_STAIRS);
-                output.accept(MiaBlocks.ABYSS_ANDESITE_SLAB);
-                output.accept(MiaBlocks.ABYSS_ANDESITE_WALL);
-                output.accept(MiaBlocks.ABYSS_COBBLED_ANDESITE);
-                output.accept(MiaBlocks.ABYSS_COBBLED_ANDESITE_STAIRS);
-                output.accept(MiaBlocks.ABYSS_COBBLED_ANDESITE_SLAB);
-                output.accept(MiaBlocks.ABYSS_COBBLED_ANDESITE_WALL);
-                output.accept(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE);
-                output.accept(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_STAIRS);
-                output.accept(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_SLAB);
-                output.accept(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_WALL);
-                output.accept(MiaBlocks.POLISHED_ABYSS_ANDESITE);
-                output.accept(MiaBlocks.POLISHED_ABYSS_ANDESITE_STAIRS);
-                output.accept(MiaBlocks.POLISHED_ABYSS_ANDESITE_SLAB);
-                output.accept(MiaBlocks.POLISHED_ABYSS_ANDESITE_WALL);
-                output.accept(MiaBlocks.ABYSS_ANDESITE_PILLAR);
-                output.accept(MiaBlocks.ABYSS_ANDESITE_BRICKS);
-                output.accept(MiaBlocks.CRACKED_ABYSS_ANDESITE_BRICKS);
-                output.accept(MiaBlocks.ABYSS_ANDESITE_BRICKS_STAIRS);
-                output.accept(MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB);
-                output.accept(MiaBlocks.ABYSS_ANDESITE_BRICKS_WALL);
-                output.accept(MiaBlocks.CHISLED_ABYSS_ANDESITE);
-                output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS);
-                output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS);
-                output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB);
-                output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL);
-                output.accept(MiaBlocks.SKYFOG_LOG);
-                output.accept(MiaBlocks.SKYFOG_WOOD);
-                output.accept(MiaBlocks.STRIPPED_SKYFOG_LOG);
-                output.accept(MiaBlocks.STRIPPED_SKYFOG_WOOD);
-                output.accept(MiaBlocks.SKYFOG_PLANKS);
-                output.accept(MiaBlocks.SKYFOG_STARIS);
-                output.accept(MiaBlocks.SKYFOG_SLAB);
-                output.accept(MiaBlocks.SKYFOG_FENCE);
-                output.accept(MiaBlocks.SKYFOG_FENCE_GATE);
-                output.accept(MiaBlocks.SKYFOG_DOOR);
-                output.accept(MiaBlocks.SKYFOG_TRAPDOOR);
-                output.accept(MiaBlocks.SKYFOG_LEAVES);
-                output.accept(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS);
-                output.accept(MiaBlocks.SKYFOG_SAPLING);
-                output.accept(MiaBlocks.FORTITUDE_FLOWER);
-                output.accept(MiaItems.MISTFUZZ_PEACH);
-                output.accept(MiaBlocks.SKYFOG_PRESSURE_PLATE);
-                output.accept(MiaBlocks.SKYFOG_BUTTON);
-                output.accept(MiaItems.RED_WHISTLE);
-                output.accept(MiaItems.HEALTH_ABILITY_CARD);
-                output.accept(MiaBlocks.ENDLESS_CUP);
-                output.accept(MiaBlocks.LAMP_TUBE);
-                output.accept(MiaBlocks.ABYSS_PORTAL);
-                output.accept(MiaBlocks.ABYSS_SPAWNER);
-                output.accept(MiaItems.ROPE);
-            })
-            .build());
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB = DeferredRegister
+            .create(Registries.CREATIVE_MODE_TAB, MIA.MOD_ID);
+    public static final Supplier<CreativeModeTab> MIA_TAB = CREATIVE_MODE_TAB.register("mia_tab",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemgroup.mia"))
+                    .icon(() -> new ItemStack(MiaItems.RED_WHISTLE.get()))
+                    .displayItems((parameters, output) -> {
+                        output.accept(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
+                        output.accept(MiaBlocks.ABYSS_ANDESITE);
+                        output.accept(MiaBlocks.ABYSS_ANDESITE_STAIRS);
+                        output.accept(MiaBlocks.ABYSS_ANDESITE_SLAB);
+                        output.accept(MiaBlocks.ABYSS_ANDESITE_WALL);
+                        output.accept(MiaBlocks.ABYSS_COBBLED_ANDESITE);
+                        output.accept(MiaBlocks.ABYSS_COBBLED_ANDESITE_STAIRS);
+                        output.accept(MiaBlocks.ABYSS_COBBLED_ANDESITE_SLAB);
+                        output.accept(MiaBlocks.ABYSS_COBBLED_ANDESITE_WALL);
+                        output.accept(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE);
+                        output.accept(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_STAIRS);
+                        output.accept(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_SLAB);
+                        output.accept(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_WALL);
+                        output.accept(MiaBlocks.POLISHED_ABYSS_ANDESITE);
+                        output.accept(MiaBlocks.POLISHED_ABYSS_ANDESITE_STAIRS);
+                        output.accept(MiaBlocks.POLISHED_ABYSS_ANDESITE_SLAB);
+                        output.accept(MiaBlocks.POLISHED_ABYSS_ANDESITE_WALL);
+                        output.accept(MiaBlocks.ABYSS_ANDESITE_PILLAR);
+                        output.accept(MiaBlocks.ABYSS_ANDESITE_BRICKS);
+                        output.accept(MiaBlocks.CRACKED_ABYSS_ANDESITE_BRICKS);
+                        output.accept(MiaBlocks.ABYSS_ANDESITE_BRICKS_STAIRS);
+                        output.accept(MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB);
+                        output.accept(MiaBlocks.ABYSS_ANDESITE_BRICKS_WALL);
+                        output.accept(MiaBlocks.CHISLED_ABYSS_ANDESITE);
+                        output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS);
+                        output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS);
+                        output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB);
+                        output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL);
+                        output.accept(MiaBlocks.SKYFOG_LOG);
+                        output.accept(MiaBlocks.SKYFOG_WOOD);
+                        output.accept(MiaBlocks.STRIPPED_SKYFOG_LOG);
+                        output.accept(MiaBlocks.STRIPPED_SKYFOG_WOOD);
+                        output.accept(MiaBlocks.SKYFOG_PLANKS);
+                        output.accept(MiaBlocks.SKYFOG_STARIS);
+                        output.accept(MiaBlocks.SKYFOG_SLAB);
+                        output.accept(MiaBlocks.SKYFOG_FENCE);
+                        output.accept(MiaBlocks.SKYFOG_FENCE_GATE);
+                        output.accept(MiaBlocks.SKYFOG_DOOR);
+                        output.accept(MiaBlocks.SKYFOG_TRAPDOOR);
+                        output.accept(MiaBlocks.SKYFOG_LEAVES);
+                        output.accept(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS);
+                        output.accept(MiaBlocks.SKYFOG_SAPLING);
+                        output.accept(MiaBlocks.FORTITUDE_FLOWER);
+                        output.accept(MiaItems.MISTFUZZ_PEACH);
+                        output.accept(MiaBlocks.SKYFOG_PRESSURE_PLATE);
+                        output.accept(MiaBlocks.SKYFOG_BUTTON);
+                        output.accept(MiaItems.RED_WHISTLE);
+                        output.accept(MiaItems.GRAY_ARTIFACT_BUNDLE);
+                        output.accept(MiaItems.TEST_ARTIFACT);
+                        output.accept(MiaItems.HEALTH_ABILITY_CARD);
+                        output.accept(MiaBlocks.ENDLESS_CUP);
+                        output.accept(MiaBlocks.LAMP_TUBE);
+                        output.accept(MiaBlocks.ABYSS_PORTAL);
+                        output.accept(MiaBlocks.ABYSS_SPAWNER);
+                        output.accept(MiaItems.ROPE);
+                    })
+                    .build());
 
     public static void register(IEventBus eventBus) {
         CREATIVE_MODE_TAB.register(eventBus);

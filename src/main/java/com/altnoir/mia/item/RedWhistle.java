@@ -1,14 +1,24 @@
 package com.altnoir.mia.item;
 
 import com.altnoir.mia.item.abs.AbstractWhistle;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
-
-import java.util.List;
 
 public class RedWhistle extends AbstractWhistle {
-    public RedWhistle(Properties properties) {
-        super(properties);
+    private final int artifactSlotCount;
+    private final int maxLevel;
+
+    public RedWhistle(Properties properties, int artifactSlotCount, int maxLevel) {
+        super(properties.stacksTo(1));
+        this.artifactSlotCount = artifactSlotCount;
+        this.maxLevel = maxLevel;
+    }
+
+    @Override
+    public int GetArtifactSlotCount() {
+        return artifactSlotCount;
+    }
+
+    @Override
+    public int GetMaxLevel() {
+        return maxLevel;
     }
 }

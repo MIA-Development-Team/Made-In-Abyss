@@ -16,7 +16,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class MiaCuriosProvider extends CuriosDataProvider {
 
-    public MiaCuriosProvider(PackOutput output, ExistingFileHelper fileHelper, CompletableFuture<HolderLookup.Provider> registries) {
+    public MiaCuriosProvider(PackOutput output, ExistingFileHelper fileHelper,
+            CompletableFuture<HolderLookup.Provider> registries) {
         super(MIA.MOD_ID, output, fileHelper, registries);
     }
 
@@ -24,11 +25,18 @@ public class MiaCuriosProvider extends CuriosDataProvider {
     public void generate(HolderLookup.Provider registries, ExistingFileHelper fileHelper) {
         ISlotData whistleSlot = createSlot("whistle");
         whistleSlot.size(1);
+        whistleSlot.order(-999);
         whistleSlot.icon(ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "slot/empty_whistle_slot"));
         whistleSlot.addCosmetic(true);
 
+        ISlotData ArtifactSlot = createSlot("artifact");
+        ArtifactSlot.size(0);
+        ArtifactSlot.order(-998);
+        ArtifactSlot.icon(ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "slot/empty_artifact_slot"));
+        ArtifactSlot.addCosmetic(false);
+
         IEntitiesData entitiesData = createEntities("entities");
         entitiesData.addEntities(EntityType.PLAYER, EntityType.ARMOR_STAND);
-        entitiesData.addSlots("whistle");
+        entitiesData.addSlots("whistle", "artifact");
     }
 }
