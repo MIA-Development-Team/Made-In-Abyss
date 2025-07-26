@@ -3,14 +3,11 @@ package com.altnoir.mia.item.abs;
 import com.altnoir.mia.component.ArtifactBundleInventoryComponent;
 import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.item.IMiaTooltip;
-import com.altnoir.mia.item.SimpleStatsArtifact.ArtifactStat;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -20,7 +17,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
@@ -36,7 +32,6 @@ import java.util.Map.Entry;
 import java.util.Optional;
 
 public abstract class AbstractArtifactBundle extends Item implements ICurioItem, IMiaTooltip {
-    private static Multimap<Holder<Attribute>, AttributeModifier> attributeModifiers;
 
     private static final int FULL_BAR_COLOR = 0xFF5454FF;
     private static final int BAR_COLOR = 0x7087FFFF;

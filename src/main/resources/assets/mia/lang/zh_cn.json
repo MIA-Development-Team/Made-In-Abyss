@@ -2,7 +2,10 @@
     "itemgroup.mia": "来自深渊",
 
     "item.mia.red_whistle": "赤笛",
-    "item.mia.health_ability_card": "Health Ability Card",
+    "item.mia.blue_whistle": "苍笛",
+    "item.mia.moon_whistle": "月笛",
+    "item.mia.black_whistle": "黑笛",
+    "item.mia.white_whistle": "白笛",
     "item.mia.mistfuzz_peach": "雾绒果",
     "item.mia.test_artifact": "测试遗物",
     "item.mia.gray_artifact_bundle": "灰色遗物袋",
@@ -47,7 +50,7 @@
 
     "tooltip.mia.hold_shift": "按住 [%s] 显示详细信息",
     "tooltip.mia.whistle.red_whistle": "红笛—新手探窟者，只允许在深渊一层。",
-    "tooltip.mia.whistle.level": "笛子等级：%s",
+    "tooltip.mia.whistle.level": "强化等级：%s/%s",
     "tooltip.mia.artifact_bundle": "这是一个放遗物的包。",
     "tooltip.mia.artifact_bundle.capacity": "遗物容量：%s",
     "tooltip.mia.artifact.weight": "占用容量：%s",

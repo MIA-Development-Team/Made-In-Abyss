@@ -8,34 +8,39 @@ import com.altnoir.mia.MIA;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
-import net.minecraft.advancements.AdvancementRequirements.Strategy;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.core.Holder;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.SmithingTransformRecipe;
-import net.minecraft.world.level.ItemLike;
 
 public class WhistleSmithingRecipeBuilder {
 
-    private final ItemStack base;
+    private final Ingredient base;
     private final Ingredient addition;
+    private final Holder<Attribute> attribute;
+    private final double amount;
+    private final AttributeModifier.Operation operation;
+
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap();
 
-    private WhistleSmithingRecipeBuilder(ItemStack base, Ingredient addition) {
+    private WhistleSmithingRecipeBuilder(Ingredient base, Ingredient addition, Holder<Attribute> attribute,
+            double amount, AttributeModifier.Operation operation) {
         this.base = base;
         this.addition = addition;
+        this.attribute = attribute;
+        this.amount = amount;
+        this.operation = operation;
     }
 
-    public static WhistleSmithingRecipeBuilder smithing(ItemStack base, Ingredient addition) {
-        return new WhistleSmithingRecipeBuilder(base, addition);
+    public static WhistleSmithingRecipeBuilder smithing(Ingredient base, Ingredient addition,
+            Holder<Attribute> attribute,
+            double amount, AttributeModifier.Operation operation) {
+        return new WhistleSmithingRecipeBuilder(base, addition, attribute, amount, operation);
     }
 
     public WhistleSmithingRecipeBuilder unlockedBy(String key, Criterion<?> criterion) {
@@ -57,7 +62,8 @@ public class WhistleSmithingRecipeBuilder {
         Objects.requireNonNull(advancementBuilder);
         criteria.forEach(advancementBuilder::addCriterion);
 
-        WhistleSmithingRecipe recipe = new WhistleSmithingRecipe(this.base, this.addition);
+        WhistleSmithingRecipe recipe = new WhistleSmithingRecipe(this.base, this.addition, this.attribute,
+                this.amount, this.operation);
         ResourceLocation advancementId = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, id.getPath());
         recipeOutput.accept(id, recipe,
                 advancementBuilder.build(advancementId.withPrefix("recipes/")));

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_blue_whistle": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mia:blue_whistle"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mia:whistle/moon_whistle"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_blue_whistle"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mia:whistle/moon_whistle"
+    ]
+  }
+}
