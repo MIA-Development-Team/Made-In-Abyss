@@ -23,7 +23,11 @@ public class MiaItemTagProvider extends ItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(CuriosItemTags.WHISTLE).replace(false)
-                .add(MiaItems.RED_WHISTLE.get());
+                .add(MiaItems.RED_WHISTLE.get())
+                .add(MiaItems.BLUE_WHISTLE.get())
+                .add(MiaItems.MOON_WHISTLE.get())
+                .add(MiaItems.BLACK_WHISTLE.get())
+                .add(MiaItems.WHITE_WHISTLE.get());
 
         tag(CuriosItemTags.ARTIFACT).replace(false)
                 .add(MiaItems.GRAY_ARTIFACT_BUNDLE.get())

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mia:whistle/smithing_red_whistle_iron_gold"
+        "recipe": "mia:whistle/smithing_diamond_attack_damage"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "mia:whistle/smithing_red_whistle_iron_gold"
+      "mia:whistle/smithing_diamond_attack_damage"
     ]
   }
 }

@@ -19,6 +19,14 @@ public class MiaItems {
 
     public static final DeferredItem<Item> RED_WHISTLE = ITEMS.register("red_whistle", () -> new SimpleWhistle(
             new Item.Properties(), 1, 10));
+    public static final DeferredItem<Item> BLUE_WHISTLE = ITEMS.register("blue_whistle", () -> new SimpleWhistle(
+            new Item.Properties(), 2, 20));
+    public static final DeferredItem<Item> MOON_WHISTLE = ITEMS.register("moon_whistle", () -> new SimpleWhistle(
+            new Item.Properties(), 3, 30));
+    public static final DeferredItem<Item> BLACK_WHISTLE = ITEMS.register("black_whistle", () -> new SimpleWhistle(
+            new Item.Properties(), 4, 40));
+    public static final DeferredItem<Item> WHITE_WHISTLE = ITEMS.register("white_whistle", () -> new SimpleWhistle(
+            new Item.Properties(), 5, 50));
 
     public static final DeferredItem<Item> GRAY_ARTIFACT_BUNDLE = ITEMS.register("gray_artifact_bundle",
             () -> new ArtifactBundle(new Item.Properties(), 4));

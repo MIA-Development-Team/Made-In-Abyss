@@ -32,7 +32,6 @@ import java.util.Map.Entry;
 import java.util.Optional;
 
 public abstract class AbstractArtifactBundle extends Item implements ICurioItem, IMiaTooltip {
-    private static Multimap<Holder<Attribute>, AttributeModifier> attributeModifiers;
 
     private static final int FULL_BAR_COLOR = 0xFF5454FF;
     private static final int BAR_COLOR = 0x7087FFFF;

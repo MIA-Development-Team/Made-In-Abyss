@@ -3,12 +3,17 @@ package com.altnoir.mia.recipe;
 import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.item.abs.AbstractWhistle;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -18,21 +23,29 @@ import net.minecraft.world.level.Level;
 
 public class WhistleSmithingRecipe implements SmithingRecipe {
 
-    final ItemStack base;
+    final Ingredient base;
     final Ingredient addition;
+    final Holder<Attribute> attribute;
+    final double amount;
+    final AttributeModifier.Operation operation;
 
-    public WhistleSmithingRecipe(ItemStack base, Ingredient addition) {
+    public WhistleSmithingRecipe(Ingredient base, Ingredient addition, Holder<Attribute> attribute,
+            double amount, AttributeModifier.Operation operation) {
         this.base = base;
         this.addition = addition;
+        this.attribute = attribute;
+        this.amount = amount;
+        this.operation = operation;
     }
 
     @Override
     public ItemStack assemble(SmithingRecipeInput input, Provider registries) {
         if (input.base().has(MiaComponents.WHISTLE_STATS)) {
             int whistleLevel = input.base().get(MiaComponents.WHISTLE_STATS).getLevel();
-            ItemStack newWhistle = input.base().transmuteCopy(this.base.getItem(), this.base.getCount());
-            newWhistle.set(MiaComponents.WHISTLE_STATS,
-                    input.base().get(MiaComponents.WHISTLE_STATS).setLevel(whistleLevel + 1));
+            ItemStack newWhistle = input.base().transmuteCopy(input.base().getItem(), input.base().getCount());
+            newWhistle.set(MiaComponents.WHISTLE_STATS, input.base().get(MiaComponents.WHISTLE_STATS)
+                    .setLevel(whistleLevel + 1)
+                    .addAttributeModifier(this.attribute, this.amount, this.operation));
             return newWhistle;
         }
         return input.base().copy();
@@ -40,7 +53,7 @@ public class WhistleSmithingRecipe implements SmithingRecipe {
 
     @Override
     public ItemStack getResultItem(Provider registries) {
-        return this.base;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -56,7 +69,7 @@ public class WhistleSmithingRecipe implements SmithingRecipe {
         if ((input.base().getItem() instanceof AbstractWhistle whistle)
                 && input.base().has(MiaComponents.WHISTLE_STATS)) {
             int whistleLevel = input.base().get(MiaComponents.WHISTLE_STATS).getLevel();
-            return whistleLevel < whistle.GetMaxLevel();
+            return whistleLevel < whistle.getMaxLevel();
         }
         return false;
     }
@@ -68,7 +81,7 @@ public class WhistleSmithingRecipe implements SmithingRecipe {
 
     @Override
     public boolean isBaseIngredient(ItemStack stack) {
-        return stack.getItem().equals(this.base.getItem());
+        return this.base.test(stack);
     }
 
     @Override
@@ -79,11 +92,22 @@ public class WhistleSmithingRecipe implements SmithingRecipe {
     public static class Serializer implements RecipeSerializer<WhistleSmithingRecipe> {
 
         private static final MapCodec<WhistleSmithingRecipe> CODEC = RecordCodecBuilder.mapCodec((codec) -> {
-            return codec.group(ItemStack.CODEC.fieldOf("base").forGetter((recipe) -> {
-                return recipe.base;
-            }), Ingredient.CODEC.fieldOf("addition").forGetter((recipe) -> {
-                return recipe.addition;
-            })).apply(codec, WhistleSmithingRecipe::new);
+            return codec.group(
+                    Ingredient.CODEC.fieldOf("base").forGetter((recipe) -> {
+                        return recipe.base;
+                    }),
+                    Ingredient.CODEC.fieldOf("addition").forGetter((recipe) -> {
+                        return recipe.addition;
+                    }),
+                    Attribute.CODEC.fieldOf("attribute").forGetter((recipe) -> {
+                        return recipe.attribute;
+                    }),
+                    Codec.DOUBLE.fieldOf("amount").forGetter((recipe) -> {
+                        return recipe.amount;
+                    }),
+                    AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter((recipe) -> {
+                        return recipe.operation;
+                    })).apply(codec, WhistleSmithingRecipe::new);
         });
         public static final StreamCodec<RegistryFriendlyByteBuf, WhistleSmithingRecipe> STREAM_CODEC = StreamCodec
                 .of(Serializer::toNetwork, Serializer::fromNetwork);
@@ -99,14 +123,21 @@ public class WhistleSmithingRecipe implements SmithingRecipe {
         }
 
         private static WhistleSmithingRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-            ItemStack base = (ItemStack) ItemStack.STREAM_CODEC.decode(buffer);
+            Ingredient base = (Ingredient) Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             Ingredient ingredient = (Ingredient) Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            return new WhistleSmithingRecipe(base, ingredient);
+            Holder<Attribute> attribute = (Holder<Attribute>) Attribute.STREAM_CODEC.decode(buffer);
+            double amount = (double) ByteBufCodecs.DOUBLE.decode(buffer);
+            AttributeModifier.Operation operation = (AttributeModifier.Operation) AttributeModifier.Operation.STREAM_CODEC
+                    .decode(buffer);
+            return new WhistleSmithingRecipe(base, ingredient, attribute, amount, operation);
         }
 
         private static void toNetwork(RegistryFriendlyByteBuf buffer, WhistleSmithingRecipe recipe) {
-            ItemStack.STREAM_CODEC.encode(buffer, recipe.base);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.base);
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.addition);
+            Attribute.STREAM_CODEC.encode(buffer, recipe.attribute);
+            ByteBufCodecs.DOUBLE.encode(buffer, recipe.amount);
+            AttributeModifier.Operation.STREAM_CODEC.encode(buffer, recipe.operation);
         }
     }
 }

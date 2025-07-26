@@ -18,6 +18,7 @@ public class MiaItemGroups {
                     .title(Component.translatable("itemgroup.mia"))
                     .icon(() -> new ItemStack(MiaItems.RED_WHISTLE.get()))
                     .displayItems((parameters, output) -> {
+                        // decoration blocks
                         output.accept(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
                         output.accept(MiaBlocks.ABYSS_ANDESITE);
                         output.accept(MiaBlocks.ABYSS_ANDESITE_STAIRS);
@@ -61,17 +62,27 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS);
                         output.accept(MiaBlocks.SKYFOG_SAPLING);
                         output.accept(MiaBlocks.FORTITUDE_FLOWER);
-                        output.accept(MiaItems.MISTFUZZ_PEACH);
                         output.accept(MiaBlocks.SKYFOG_PRESSURE_PLATE);
                         output.accept(MiaBlocks.SKYFOG_BUTTON);
+                        output.accept(MiaBlocks.ABYSS_PORTAL);
+                        output.accept(MiaBlocks.ABYSS_SPAWNER);
+
+                        // consumable
+                        output.accept(MiaItems.MISTFUZZ_PEACH);
+
+                        // tools
                         output.accept(MiaItems.RED_WHISTLE);
+                        output.accept(MiaItems.BLUE_WHISTLE);
+                        output.accept(MiaItems.MOON_WHISTLE);
+                        output.accept(MiaItems.BLACK_WHISTLE);
+                        output.accept(MiaItems.WHITE_WHISTLE);
+                        output.accept(MiaItems.ROPE);
+                        output.accept(MiaBlocks.LAMP_TUBE);
+
+                        // artifacts
                         output.accept(MiaItems.GRAY_ARTIFACT_BUNDLE);
                         output.accept(MiaItems.TEST_ARTIFACT);
                         output.accept(MiaBlocks.ENDLESS_CUP);
-                        output.accept(MiaBlocks.LAMP_TUBE);
-                        output.accept(MiaBlocks.ABYSS_PORTAL);
-                        output.accept(MiaBlocks.ABYSS_SPAWNER);
-                        output.accept(MiaItems.ROPE);
                     })
                     .build());
 

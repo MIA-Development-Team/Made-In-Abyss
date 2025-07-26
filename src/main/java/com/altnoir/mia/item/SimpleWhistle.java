@@ -13,12 +13,12 @@ public class SimpleWhistle extends AbstractWhistle {
     }
 
     @Override
-    public int GetArtifactSlotCount() {
+    public int getArtifactSlotCount() {
         return artifactSlotCount;
     }
 
     @Override
-    public int GetMaxLevel() {
+    public int getMaxLevel() {
         return maxLevel;
     }
 }
