@@ -67,7 +67,6 @@ public class MiaItemGroups {
                         output.accept(MiaItems.RED_WHISTLE);
                         output.accept(MiaItems.GRAY_ARTIFACT_BUNDLE);
                         output.accept(MiaItems.TEST_ARTIFACT);
-                        output.accept(MiaItems.HEALTH_ABILITY_CARD);
                         output.accept(MiaBlocks.ENDLESS_CUP);
                         output.accept(MiaBlocks.LAMP_TUBE);
                         output.accept(MiaBlocks.ABYSS_PORTAL);

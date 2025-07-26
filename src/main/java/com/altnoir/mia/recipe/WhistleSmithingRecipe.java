@@ -31,10 +31,11 @@ public class WhistleSmithingRecipe implements SmithingRecipe {
 
     @Override
     public ItemStack assemble(SmithingRecipeInput input, Provider registries) {
-        if (input.base().has(MiaComponents.WHISTLE_LEVEL)) {
-            int whistleLevel = input.base().get(MiaComponents.WHISTLE_LEVEL).intValue();
+        if (input.base().has(MiaComponents.WHISTLE_STATS)) {
+            int whistleLevel = input.base().get(MiaComponents.WHISTLE_STATS).getLevel();
             ItemStack newWhistle = input.base().transmuteCopy(this.base.getItem(), this.base.getCount());
-            newWhistle.set(MiaComponents.WHISTLE_LEVEL, whistleLevel + 1);
+            newWhistle.set(MiaComponents.WHISTLE_STATS,
+                    input.base().get(MiaComponents.WHISTLE_STATS).setLevel(whistleLevel + 1));
             return newWhistle;
         }
         return input.base().copy();
@@ -56,8 +57,8 @@ public class WhistleSmithingRecipe implements SmithingRecipe {
             return false;
         }
         if ((input.base().getItem() instanceof AbstractWhistle whistle)
-                && input.base().has(MiaComponents.WHISTLE_LEVEL)) {
-            int whistleLevel = input.base().get(MiaComponents.WHISTLE_LEVEL).intValue();
+                && input.base().has(MiaComponents.WHISTLE_STATS)) {
+            int whistleLevel = input.base().get(MiaComponents.WHISTLE_STATS).getLevel();
             return whistleLevel < whistle.GetMaxLevel();
         }
         return false;

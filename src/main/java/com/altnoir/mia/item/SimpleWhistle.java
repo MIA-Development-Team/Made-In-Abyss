@@ -2,11 +2,11 @@ package com.altnoir.mia.item;
 
 import com.altnoir.mia.item.abs.AbstractWhistle;
 
-public class RedWhistle extends AbstractWhistle {
+public class SimpleWhistle extends AbstractWhistle {
     private final int artifactSlotCount;
     private final int maxLevel;
 
-    public RedWhistle(Properties properties, int artifactSlotCount, int maxLevel) {
+    public SimpleWhistle(Properties properties, int artifactSlotCount, int maxLevel) {
         super(properties.stacksTo(1));
         this.artifactSlotCount = artifactSlotCount;
         this.maxLevel = maxLevel;

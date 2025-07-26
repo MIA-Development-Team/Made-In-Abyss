@@ -1,6 +1,7 @@
 package com.altnoir.mia.item.abs;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.component.WhistleStatsComponent;
 import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.item.IMiaTooltip;
 import com.google.common.collect.LinkedHashMultimap;
@@ -28,13 +29,13 @@ import java.util.Optional;
 public abstract class AbstractWhistle extends Item implements ICurioItem, IMiaTooltip {
 
     public AbstractWhistle(Properties properties) {
-        super(properties.component(MiaComponents.WHISTLE_LEVEL, 1));
+        super(properties.component(MiaComponents.WHISTLE_STATS, WhistleStatsComponent.EMPTY));
     }
 
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(
             SlotContext slotContext, ResourceLocation id, ItemStack stack) {
-        int level = stack.getComponents().getOrDefault(MiaComponents.WHISTLE_LEVEL.get(), 1);
+        int level = stack.getOrDefault(MiaComponents.WHISTLE_STATS, WhistleStatsComponent.EMPTY).getLevel();
         Multimap<Holder<Attribute>, AttributeModifier> attributeModifiers = LinkedHashMultimap.create();
         attributeModifiers.put(Attributes.MAX_HEALTH,
                 new AttributeModifier(id, level * 2, AttributeModifier.Operation.ADD_VALUE));
@@ -77,7 +78,7 @@ public abstract class AbstractWhistle extends Item implements ICurioItem, IMiaTo
     public void appendTooltip(ItemStack stack, List<Component> tooltip) {
         tooltip.add(1, Component.translatable("tooltip.mia.whistle.level", Component
                 .literal(Optional
-                        .ofNullable(stack.get(MiaComponents.WHISTLE_LEVEL.get()))
+                        .ofNullable(stack.get(MiaComponents.WHISTLE_STATS).getLevel())
                         .map(Object::toString)
                         .orElse("0"))
                 .withStyle(ChatFormatting.YELLOW))

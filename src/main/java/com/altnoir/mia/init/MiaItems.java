@@ -3,10 +3,9 @@ package com.altnoir.mia.init;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.component.MiaFoods;
 import com.altnoir.mia.item.ArtifactBundle;
-import com.altnoir.mia.item.HealthAbilityCard;
-import com.altnoir.mia.item.RedWhistle;
 import com.altnoir.mia.item.RopeItem;
 import com.altnoir.mia.item.SimpleStatsArtifact;
+import com.altnoir.mia.item.SimpleWhistle;
 
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -18,11 +17,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class MiaItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MIA.MOD_ID);
 
-    public static final DeferredItem<Item> RED_WHISTLE = ITEMS.register("red_whistle", () -> new RedWhistle(
+    public static final DeferredItem<Item> RED_WHISTLE = ITEMS.register("red_whistle", () -> new SimpleWhistle(
             new Item.Properties(), 1, 10));
-
-    public static final DeferredItem<Item> HEALTH_ABILITY_CARD = ITEMS.register("health_ability_card",
-            () -> new HealthAbilityCard(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<Item> GRAY_ARTIFACT_BUNDLE = ITEMS.register("gray_artifact_bundle",
             () -> new ArtifactBundle(new Item.Properties(), 4));

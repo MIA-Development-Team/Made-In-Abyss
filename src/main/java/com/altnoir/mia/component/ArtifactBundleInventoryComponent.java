@@ -19,7 +19,7 @@ public class ArtifactBundleInventoryComponent implements TooltipComponent {
     public static final ArtifactBundleInventoryComponent EMPTY = new ArtifactBundleInventoryComponent(List.of());
     public static final Codec<ArtifactBundleInventoryComponent> CODEC = RecordCodecBuilder.create(instance -> instance
             .group(
-                    ItemStack.CODEC.listOf().fieldOf("abilitycards")
+                    ItemStack.CODEC.listOf().fieldOf("artifacts")
                             .forGetter(ArtifactBundleInventoryComponent::getStacks))
             .apply(instance, ArtifactBundleInventoryComponent::new));
     public static final StreamCodec<RegistryFriendlyByteBuf, ArtifactBundleInventoryComponent> STREAM_CODEC = StreamCodec
@@ -42,8 +42,8 @@ public class ArtifactBundleInventoryComponent implements TooltipComponent {
     public int getUsage() {
         var total = 0;
         for (ItemStack stack : stacks) {
-            if (stack.getItem() instanceof AbstractArtifact card) {
-                total += card.getWeight();
+            if (stack.getItem() instanceof AbstractArtifact artifact) {
+                total += artifact.getWeight();
             }
         }
         return total;

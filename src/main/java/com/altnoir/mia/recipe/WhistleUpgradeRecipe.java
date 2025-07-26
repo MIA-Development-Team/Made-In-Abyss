@@ -36,8 +36,8 @@ public class WhistleUpgradeRecipe extends ShapedRecipe {
         }
         // extend old whistle level
         ItemStack newWhistle = this.getResultItem(registries).copy();
-        if (oldWhistle.has(MiaComponents.WHISTLE_LEVEL) && newWhistle.has(MiaComponents.WHISTLE_LEVEL)) {
-            newWhistle.set(MiaComponents.WHISTLE_LEVEL, oldWhistle.get(MiaComponents.WHISTLE_LEVEL).intValue());
+        if (oldWhistle.has(MiaComponents.WHISTLE_STATS) && newWhistle.has(MiaComponents.WHISTLE_STATS)) {
+            newWhistle.set(MiaComponents.WHISTLE_STATS, oldWhistle.get(MiaComponents.WHISTLE_STATS));
         }
         return newWhistle;
     }
