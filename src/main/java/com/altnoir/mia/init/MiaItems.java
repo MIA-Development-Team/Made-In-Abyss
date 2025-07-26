@@ -19,7 +19,7 @@ public class MiaItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MIA.MOD_ID);
 
     public static final DeferredItem<Item> RED_WHISTLE = ITEMS.register("red_whistle", () -> new RedWhistle(
-            new Item.Properties(), 1));
+            new Item.Properties(), 1, 10));
 
     public static final DeferredItem<Item> HEALTH_ABILITY_CARD = ITEMS.register("health_ability_card",
             () -> new HealthAbilityCard(new Item.Properties().stacksTo(1)));

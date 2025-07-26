@@ -1,0 +1,15 @@
+{
+  "type": "mia:whistle_smithing",
+  "addition": [
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    }
+  ],
+  "base": {
+    "count": 1,
+    "id": "mia:red_whistle"
+  }
+}

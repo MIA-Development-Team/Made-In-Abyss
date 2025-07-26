@@ -2,9 +2,13 @@ package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.recipe.LampTubeRecipe;
+import com.altnoir.mia.recipe.WhistleSmithingRecipe;
+import com.altnoir.mia.recipe.WhistleUpgradeRecipe;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -25,6 +29,12 @@ public class MiaRecipes {
                     return "lamp_tube";
                 }
             });
+
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<WhistleUpgradeRecipe>> WHISTLE_UPGRADE_SERIALIZER = SERIALIZERS
+            .register("whistle_upgrade", WhistleUpgradeRecipe.Serializer::new);
+
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<WhistleSmithingRecipe>> WHISTLE_SMITHING_SERIALIZER = SERIALIZERS
+            .register("whistle_smithing", WhistleSmithingRecipe.Serializer::new);
 
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);

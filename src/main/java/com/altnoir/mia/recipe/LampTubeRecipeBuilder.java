@@ -36,6 +36,7 @@ public class LampTubeRecipeBuilder implements RecipeBuilder {
     public static LampTubeRecipeBuilder lampTube(ItemLike ingredient, ItemLike result, int count) {
         return new LampTubeRecipeBuilder(Ingredient.of(ingredient), new ItemStack(result, count));
     }
+
     public static LampTubeRecipeBuilder lampTube(TagKey<Item> tag, ItemLike result, int count) {
         return new LampTubeRecipeBuilder(Ingredient.of(tag), new ItemStack(result, count));
     }
@@ -54,37 +55,43 @@ public class LampTubeRecipeBuilder implements RecipeBuilder {
     public @NotNull Item getResult() {
         return result.getItem();
     }
+
     public void save(@NotNull RecipeOutput recipeOutput) {
         this.save(recipeOutput, getDefaultRecipeId(this.getResult()));
     }
+
     public void save(@NotNull RecipeOutput recipeOutput, @NotNull String id) {
         ResourceLocation resourceLocation = getDefaultRecipeId(this.getResult());
         ResourceLocation resourceLocation1 = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, RECIPE_TYPE + "/" + id);
         if (resourceLocation1.equals(resourceLocation)) {
-            throw new IllegalStateException("Recipe " + id + " should remove its 'save' argument as it is equal to default one");
+            throw new IllegalStateException(
+                    "Recipe " + id + " should remove its 'save' argument as it is equal to default one");
         } else {
             this.save(recipeOutput, resourceLocation1);
         }
     }
+
     @Override
     public void save(RecipeOutput recipeOutput, @NotNull ResourceLocation id) {
         ensureValid(id);
         ResourceLocation advancementId = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, id.getPath());
-        
+
         Advancement.Builder advancementBuilder = recipeOutput.advancement()
                 .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
                 .rewards(AdvancementRewards.Builder.recipe(id))
                 .requirements(AdvancementRequirements.Strategy.OR);
 
         criteria.forEach(advancementBuilder::addCriterion);
-        
+
         LampTubeRecipe recipe = new LampTubeRecipe(ingredient, result);
-        recipeOutput.accept(id, recipe, advancementBuilder.build(advancementId));
+        recipeOutput.accept(id, recipe, advancementBuilder.build(advancementId.withPrefix("recipes/")));
     }
+
     public static ResourceLocation getDefaultRecipeId(ItemLike itemLike) {
         ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(itemLike.asItem());
         return ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, RECIPE_TYPE + "/" + itemId.getPath());
     }
+
     private void ensureValid(ResourceLocation id) {
         if (this.criteria.isEmpty()) {
             throw new IllegalStateException("No way of obtaining recipe " + id);

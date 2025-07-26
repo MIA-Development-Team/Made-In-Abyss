@@ -4,7 +4,7 @@ import com.altnoir.mia.item.abs.AbstractArtifactBundle;
 
 public class ArtifactBundle extends AbstractArtifactBundle {
 
-    private int capacity;
+    private final int capacity;
 
     public ArtifactBundle(Properties properties, int capacity) {
         super(properties.stacksTo(1));

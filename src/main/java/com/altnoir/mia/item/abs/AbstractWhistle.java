@@ -66,6 +66,8 @@ public abstract class AbstractWhistle extends Item implements ICurioItem, IMiaTo
 
     public abstract int GetArtifactSlotCount();
 
+    public abstract int GetMaxLevel();
+
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
         return true;
