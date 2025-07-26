@@ -20,20 +20,17 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.ItemLike;
 
 public class WhistleUpgradeRecipeBuilder {
     private final RecipeCategory category;
     private final Item result;
-    private final int count;
     private final ItemStack resultStack;
     private final List<String> rows;
     private final Map<Character, Ingredient> key;
@@ -53,7 +50,6 @@ public class WhistleUpgradeRecipeBuilder {
         this.showNotification = true;
         this.category = category;
         this.result = result.getItem();
-        this.count = result.getCount();
         this.resultStack = result;
     }
 

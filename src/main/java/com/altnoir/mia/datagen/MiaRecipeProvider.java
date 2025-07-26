@@ -2,9 +2,7 @@ package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaItems;
-import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.recipe.LampTubeRecipeBuilder;
-import com.altnoir.mia.recipe.WhistleSmithingRecipe;
 import com.altnoir.mia.recipe.WhistleSmithingRecipeBuilder;
 import com.altnoir.mia.recipe.WhistleUpgradeRecipeBuilder;
 
@@ -14,8 +12,6 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
