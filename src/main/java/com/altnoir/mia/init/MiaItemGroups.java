@@ -78,6 +78,7 @@ public class MiaItemGroups {
                         output.accept(MiaItems.WHITE_WHISTLE);
                         output.accept(MiaItems.ROPE);
                         output.accept(MiaBlocks.LAMP_TUBE);
+                        output.accept(MiaBlocks.WHISTLE_ENHANCEMENT_TABLE);
 
                         // artifacts
                         output.accept(MiaItems.GRAY_ARTIFACT_BUNDLE);

@@ -36,6 +36,7 @@
     "block.mia.abyss_portal": "深渊传送门",
     "block.mia.abyss_spawner": "深渊刷怪笼",
     "block.mia.endless_cup": "无尽水杯",
+    "block.mia.whistle_enhancement_table": "笛强化桌",
 
     "biome.mia.abyss_brink/abyss_brink": "阿比斯深渊",
 
@@ -78,5 +79,7 @@
     "curios.modifiers.artifact": "穿戴时：",
     "tag.item.curios.whistle": "笛",
     "tag.item.curios.artifact": "遗物",
-    "emi.category.mia.lamp_tube": "镭射催化"
+    "emi.category.mia.lamp_tube": "镭射催化",
+
+    "containier.mia.whistle.enhancement.title": "笛强化桌"
 }

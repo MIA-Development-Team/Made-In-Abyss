@@ -1,0 +1,242 @@
+package com.altnoir.mia.client.gui.screens;
+
+import java.util.ArrayList;
+import java.util.List;
+import com.altnoir.mia.MIA;
+import com.altnoir.mia.inventory.WhistleEnhancementTableMenu;
+import com.altnoir.mia.recipe.WhistleSmithingRecipe;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
+
+public class WhistleEnhancementTableScreen extends AbstractContainerScreen<WhistleEnhancementTableMenu> {
+    private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID,
+            "textures/gui/container/whistle_enhancement_table.png");
+    private static final ResourceLocation RECIPE_SELECTED_SPRITE = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID,
+            "whistle_enhancement_table/recipe_selected");
+    private static final ResourceLocation RECIPE_HIGHLIGHTED_SPRITE = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID,
+            "whistle_enhancement_table/recipe_highlighted");
+    private static final ResourceLocation RECIPE_AVAILABLE_SPRITE = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID,
+            "whistle_enhancement_table/recipe_available");
+    private static final ResourceLocation RECIPE_UNAVAILABLE_SPRITE = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID,
+            "whistle_enhancement_table/recipe_unavailable");
+
+    private static final ResourceLocation SCROLLER_SPRITE = ResourceLocation
+            .withDefaultNamespace("container/stonecutter/scroller");
+    private static final ResourceLocation SCROLLER_DISABLED_SPRITE = ResourceLocation
+            .withDefaultNamespace("container/stonecutter/scroller_disabled");
+
+    private static final int SCROLLER_WIDTH = 12;
+    private static final int SCROLLER_HEIGHT = 15;
+    private static final int RECIPES_COLUMNS = 4;
+    private static final int RECIPES_ROWS = 3;
+    private static final int RECIPES_IMAGE_SIZE_WIDTH = 16;
+    private static final int RECIPES_IMAGE_SIZE_HEIGHT = 18;
+    private static final int SCROLLER_FULL_HEIGHT = 54;
+    private static final int RECIPES_X = 52;
+    private static final int RECIPES_Y = 14;
+
+    private float scrollOffs;
+    private boolean scrolling;
+    private int startIndex;
+    private boolean displayRecipes;
+
+    public WhistleEnhancementTableScreen(WhistleEnhancementTableMenu menu, Inventory playerInventory, Component title) {
+        super(menu, playerInventory, title);
+        this.titleLabelX = 10;
+        this.titleLabelY = 8;
+        this.imageWidth = 176;
+        this.imageHeight = 166;
+        menu.registerUpdateListener(this::containerChanged);
+
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
+        this.renderTooltip(guiGraphics, mouseX, mouseY);
+    }
+
+    @Override
+    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+        int i = this.leftPos;
+        int j = this.topPos;
+        // render background
+        guiGraphics.blit(BACKGROUND, i, j, 0, 0, this.imageWidth, this.imageHeight);
+        // render scrollbar
+        int k = (int) (41.0F * this.scrollOffs);
+        ResourceLocation resourcelocation = this.isScrollBarActive() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
+        guiGraphics.blitSprite(resourcelocation, i + 119, j + 15 + k, SCROLLER_WIDTH, SCROLLER_HEIGHT);
+        // render buttons
+        int l = this.leftPos + RECIPES_X;
+        int i1 = this.topPos + RECIPES_Y;
+        int j1 = this.startIndex + RECIPES_COLUMNS * RECIPES_ROWS;
+        this.renderButtons(guiGraphics, mouseX, mouseY, l, i1, j1);
+        // render recipes
+        this.renderRecipes(guiGraphics, l, i1, j1);
+    }
+
+    private void renderButtons(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y,
+            int lastVisibleElementIndex) {
+        int availableRecipeCount = ((WhistleEnhancementTableMenu) this.menu).getAvailableRecipes().size();
+        int unavailableRecipeCount = ((WhistleEnhancementTableMenu) this.menu).getUnavailableRecipes().size();
+        for (int i = this.startIndex; i < lastVisibleElementIndex
+                && i < availableRecipeCount + unavailableRecipeCount; ++i) {
+            int j = i - this.startIndex;
+            int k = x + j % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
+            int l = j / RECIPES_COLUMNS;
+            int i1 = y + l * RECIPES_IMAGE_SIZE_HEIGHT + 2;
+            ResourceLocation resourcelocation;
+
+            if (i == ((WhistleEnhancementTableMenu) this.menu).getSelectedRecipeIndex()) {
+                resourcelocation = RECIPE_SELECTED_SPRITE;
+            } else if (mouseX >= k && mouseY >= i1 && mouseX < k + RECIPES_IMAGE_SIZE_WIDTH
+                    && mouseY < i1 + RECIPES_IMAGE_SIZE_HEIGHT) {
+                resourcelocation = RECIPE_HIGHLIGHTED_SPRITE;
+            } else if (i < availableRecipeCount) {
+                resourcelocation = RECIPE_AVAILABLE_SPRITE;
+            } else {
+                resourcelocation = RECIPE_UNAVAILABLE_SPRITE;
+            }
+
+            guiGraphics.blitSprite(resourcelocation, k, i1 - 1, RECIPES_IMAGE_SIZE_WIDTH, RECIPES_IMAGE_SIZE_HEIGHT);
+        }
+
+    }
+
+    private void renderRecipes(GuiGraphics guiGraphics, int x, int y, int startIndex) {
+        List<RecipeHolder<WhistleSmithingRecipe>> availableRecipes = ((WhistleEnhancementTableMenu) this.menu)
+                .getAvailableRecipes();
+        List<RecipeHolder<WhistleSmithingRecipe>> unavailableRecipes = ((WhistleEnhancementTableMenu) this.menu)
+                .getUnavailableRecipes();
+
+        for (int i = this.startIndex; i < startIndex
+                && i < (availableRecipes.size() + unavailableRecipes.size()); ++i) {
+            int j = i - this.startIndex;
+            int k = x + j % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
+            int l = j / RECIPES_COLUMNS;
+            int i1 = y + l * RECIPES_IMAGE_SIZE_HEIGHT + 2;
+            if (i < availableRecipes.size()) {
+                ItemStack material = availableRecipes.get(i).value().getMaterial();
+                guiGraphics.renderItem(material, k, i1);
+                guiGraphics.renderItemDecorations(this.font, material, k, i1,
+                        material.getCount() > 1 ? Integer.toString(material.getCount()) : null);
+            } else if ((i - availableRecipes.size()) < unavailableRecipes.size()) {
+                ItemStack material = unavailableRecipes.get(i - availableRecipes.size()).value().getMaterial();
+                guiGraphics.renderItem(material, k, i1);
+                guiGraphics.renderItemDecorations(this.font, material, k, i1,
+                        material.getCount() > 1 ? Integer.toString(material.getCount()) : null);
+            }
+        }
+
+    }
+
+    @Override
+    protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
+        super.renderTooltip(guiGraphics, x, y);
+        if (this.displayRecipes) {
+            int i = this.leftPos + RECIPES_X;
+            int j = this.topPos + RECIPES_Y;
+            int k = this.startIndex + RECIPES_COLUMNS * RECIPES_ROWS;
+            List<RecipeHolder<WhistleSmithingRecipe>> list = new ArrayList<>();
+            list.addAll(((WhistleEnhancementTableMenu) this.menu).getAvailableRecipes());
+            list.addAll(((WhistleEnhancementTableMenu) this.menu).getUnavailableRecipes());
+
+            for (int l = this.startIndex; l < k && l < ((WhistleEnhancementTableMenu) this.menu).getNumRecipes(); ++l) {
+                int i1 = l - this.startIndex;
+                int j1 = i + i1 % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
+                int k1 = j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT + 2;
+                if (x >= j1 && x < j1 + RECIPES_IMAGE_SIZE_WIDTH && y >= k1 && y < k1 + RECIPES_IMAGE_SIZE_HEIGHT) {
+                    guiGraphics.renderTooltip(this.font, list.get(l).value().getMaterial(), x, y);
+                }
+            }
+        }
+
+    }
+
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        this.scrolling = false;
+        if (this.displayRecipes) {
+            int i = this.leftPos + RECIPES_X;
+            int j = this.topPos + RECIPES_Y;
+            int k = this.startIndex + RECIPES_COLUMNS * RECIPES_ROWS;
+            for (int l = this.startIndex; l < k; ++l) {
+                int i1 = l - this.startIndex;
+                double d0 = mouseX - (double) (i + i1 % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH);
+                double d1 = mouseY - (double) (j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT);
+                if (d0 >= 0.0 && d1 >= 0.0 && d0 < (double) RECIPES_IMAGE_SIZE_WIDTH
+                        && d1 < (double) RECIPES_IMAGE_SIZE_HEIGHT
+                        && ((WhistleEnhancementTableMenu) this.menu).clickMenuButton(this.minecraft.player, l)) {
+                    // play sound
+                    Minecraft.getInstance().getSoundManager()
+                            .play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+                    this.minecraft.gameMode
+                            .handleInventoryButtonClick(((WhistleEnhancementTableMenu) this.menu).containerId, l);
+                    return true;
+                }
+            }
+
+            i = this.leftPos + 119;
+            j = this.topPos + 9;
+            if (mouseX >= (double) i && mouseX < (double) (i + SCROLLER_WIDTH) && mouseY >= (double) j
+                    && mouseY < (double) (j + SCROLLER_FULL_HEIGHT)) {
+                this.scrolling = true;
+            }
+        }
+
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        if (this.scrolling && this.isScrollBarActive()) {
+            int i = this.topPos + RECIPES_Y;
+            int j = i + SCROLLER_FULL_HEIGHT;
+            this.scrollOffs = ((float) mouseY - (float) i - 7.5F) / ((float) (j - i) - 15.0F);
+            this.scrollOffs = Mth.clamp(this.scrollOffs, 0.0F, 1.0F);
+            this.startIndex = (int) ((double) (this.scrollOffs * (float) this.getOffscreenRows()) + 0.5)
+                    * RECIPES_COLUMNS;
+            return true;
+        } else {
+            return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        }
+    }
+
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        if (this.isScrollBarActive()) {
+            int i = this.getOffscreenRows();
+            float f = (float) scrollY / (float) i;
+            this.scrollOffs = Mth.clamp(this.scrollOffs - f, 0.0F, 1.0F);
+            this.startIndex = (int) ((double) (this.scrollOffs * (float) i) + 0.5) * RECIPES_COLUMNS;
+        }
+
+        return true;
+    }
+
+    private boolean isScrollBarActive() {
+        return this.displayRecipes
+                && ((WhistleEnhancementTableMenu) this.menu).getNumRecipes() > RECIPES_COLUMNS * RECIPES_ROWS;
+    }
+
+    protected int getOffscreenRows() {
+        return (((WhistleEnhancementTableMenu) this.menu).getNumRecipes() + RECIPES_COLUMNS - 1) / RECIPES_COLUMNS
+                - RECIPES_ROWS;
+    }
+
+    private void containerChanged() {
+        this.displayRecipes = ((WhistleEnhancementTableMenu) this.menu).inputHasEnhancementRecipe();
+        if (!this.displayRecipes) {
+            this.scrollOffs = 0.0F;
+            this.startIndex = 0;
+        }
+    }
+
+}

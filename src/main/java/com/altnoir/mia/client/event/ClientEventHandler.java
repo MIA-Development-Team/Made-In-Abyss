@@ -16,7 +16,7 @@ public class ClientEventHandler {
         modEventBus.addListener(RegisterParticlesEvent::registerParticles);
         modEventBus.addListener(ClientTooltipComponentEvent::onRegisterFactories);
         modEventBus.addListener(RegisterEntityRendererEvent::registerEntityRenderers);
-
+        modEventBus.addListener(RegisterScreenEvent::registerScreens);
     }
 
     public static void addGameEventBus(IEventBus gameEventBus) {

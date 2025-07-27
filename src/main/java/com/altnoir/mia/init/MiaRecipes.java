@@ -35,6 +35,14 @@ public class MiaRecipes {
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<WhistleSmithingRecipe>> WHISTLE_SMITHING_SERIALIZER = SERIALIZERS
             .register("whistle_smithing", WhistleSmithingRecipe.Serializer::new);
 
+    public static final DeferredHolder<RecipeType<?>, RecipeType<WhistleSmithingRecipe>> WHISTLE_SMITHING_TYPE = TYPES
+            .register("whistle_smithing", () -> new RecipeType<WhistleSmithingRecipe>() {
+                @Override
+                public String toString() {
+                    return "whistle_smithing";
+                }
+            });
+
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);
         TYPES.register(eventBus);

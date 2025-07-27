@@ -71,7 +71,7 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
         WhistleSmithingRecipeBuilder.smithing(
                 Ingredient.of(MiaItems.RED_WHISTLE, MiaItems.BLUE_WHISTLE, MiaItems.MOON_WHISTLE,
                         MiaItems.BLACK_WHISTLE, MiaItems.WHITE_WHISTLE),
-                Ingredient.of(MiaItems.MISTFUZZ_PEACH),
+                new ItemStack(MiaItems.MISTFUZZ_PEACH.get(), 4),
                 Attributes.MAX_HEALTH,
                 2,
                 Operation.ADD_VALUE)
@@ -80,7 +80,7 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
         WhistleSmithingRecipeBuilder.smithing(
                 Ingredient.of(MiaItems.RED_WHISTLE, MiaItems.BLUE_WHISTLE, MiaItems.MOON_WHISTLE,
                         MiaItems.BLACK_WHISTLE, MiaItems.WHITE_WHISTLE),
-                Ingredient.of(Items.IRON_INGOT),
+                new ItemStack(Items.IRON_INGOT, 1),
                 Attributes.ARMOR,
                 1,
                 Operation.ADD_VALUE)
@@ -89,7 +89,7 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
         WhistleSmithingRecipeBuilder.smithing(
                 Ingredient.of(MiaItems.RED_WHISTLE, MiaItems.BLUE_WHISTLE, MiaItems.MOON_WHISTLE,
                         MiaItems.BLACK_WHISTLE, MiaItems.WHITE_WHISTLE),
-                Ingredient.of(Items.DIAMOND),
+                new ItemStack(Items.DIAMOND, 1),
                 Attributes.ATTACK_DAMAGE,
                 1,
                 Operation.ADD_VALUE)
