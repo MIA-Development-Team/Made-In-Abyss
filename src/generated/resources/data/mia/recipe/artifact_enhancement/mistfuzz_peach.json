@@ -1,0 +1,13 @@
+{
+  "type": "mia:artifact_enhancement",
+  "amount": 2.0,
+  "artifact": {
+    "tag": "mia:enhanceable_artifact"
+  },
+  "attribute": "minecraft:generic.max_health",
+  "material": {
+    "count": 4,
+    "id": "mia:mistfuzz_peach"
+  },
+  "operation": "add_value"
+}

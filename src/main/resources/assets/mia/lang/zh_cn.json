@@ -7,8 +7,12 @@
     "item.mia.black_whistle": "黑笛",
     "item.mia.white_whistle": "白笛",
     "item.mia.mistfuzz_peach": "雾绒果",
-    "item.mia.test_artifact": "测试遗物",
+    "item.mia.test_artifact_1": "测试遗物1",
+    "item.mia.test_artifact_2": "测试遗物2",
+    "item.mia.test_artifact_3": "测试遗物3",
+
     "item.mia.gray_artifact_bundle": "灰色遗物袋",
+    "item.mia.fancy_artifact_bundle": "高级遗物袋",
 
     "block.mia.abyss_andesite": "深界安山岩",
     "block.mia.abyss_cobbled_andesite": "深界安山岩圆石",
@@ -36,7 +40,7 @@
     "block.mia.abyss_portal": "深渊传送门",
     "block.mia.abyss_spawner": "深渊刷怪笼",
     "block.mia.endless_cup": "无尽水杯",
-    "block.mia.whistle_enhancement_table": "笛强化桌",
+    "block.mia.artifact_enhancement_table": "遗物强化桌",
 
     "biome.mia.abyss_brink/abyss_brink": "阿比斯深渊",
 
@@ -50,12 +54,24 @@
     "painting.mia.fossil_tree.title": "化石树",
 
     "tooltip.mia.hold_shift": "按住 [%s] 显示详细信息",
-    "tooltip.mia.whistle.red_whistle": "红笛—新手探窟者，只允许在深渊一层。",
-    "tooltip.mia.whistle.level": "强化等级：%s/%s",
-    "tooltip.mia.artifact_bundle": "这是一个放遗物的包。",
+    "tooltip.attribute_modifier": "%s %s",
+    "tooltip.mia.artifact.grade.unknown": "未知遗物",
+    "tooltip.mia.artifact.grade.special": "特级遗物",
+    "tooltip.mia.artifact.grade.first": "一级遗物",
+    "tooltip.mia.artifact.grade.second": "二级遗物",
+    "tooltip.mia.artifact.grade.third": "三级遗物",
+    "tooltip.mia.artifact.grade.fourth": "四级遗物",
+    "tooltip.mia.artifact.weight": "重量：%s",
+    "tooltip.mia.artifact.enhancement.level": "强化：%s/%s",
+    "tooltip.mia.artifact.enhancement.material": "强化遗物时：",
+    "tooltip.mia.artifact.enhancement.no_more_enhancement": "强化：已达上限",
     "tooltip.mia.artifact_bundle.capacity": "遗物容量：%s",
-    "tooltip.mia.artifact.weight": "占用容量：%s",
-    "tooltip.mia.artifact.test_artifact": "这是一个测试遗物。",
+
+    "tooltip.mia.description.red_whistle": "红笛—新手探窟者，只允许在深渊一层。",
+    "tooltip.mia.description.test_artifact_1": "这是一个测试遗物1。",
+    "tooltip.mia.description.test_artifact_2": "这是一个测试遗物2。",
+    "tooltip.mia.description.test_artifact_3": "这是一个测试遗物3。",
+    "tooltip.mia.description.gray_artifact_bundle": "这是一个放遗物的包。",
 
 
 
@@ -81,5 +97,6 @@
     "tag.item.curios.artifact": "遗物",
     "emi.category.mia.lamp_tube": "镭射催化",
 
-    "containier.mia.whistle.enhancement.title": "笛强化桌"
+
+    "containier.mia.artifact.enhancement.title": "遗物强化桌"
 }

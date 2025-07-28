@@ -25,8 +25,8 @@ import java.util.function.ToIntFunction;
 public class MiaBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MIA.MOD_ID);
 
-    public static final DeferredBlock<Block> WHISTLE_ENHANCEMENT_TABLE = registerBlock("whistle_enhancement_table",
-            () -> new WhistleEnhancementTableBlock(BlockBehaviour.Properties.of()
+    public static final DeferredBlock<Block> ARTIFACT_ENHANCEMENT_TABLE = registerBlock("artifact_enhancement_table",
+            () -> new ArtifactEnhancementTableBlock(BlockBehaviour.Properties.of()
                     .requiresCorrectToolForDrops()
                     .strength(2.0F, 6.0F)
                     .sound(SoundType.WOOD)));
@@ -156,6 +156,7 @@ public class MiaBlocks {
     public static final DeferredBlock<Block> SKYFOG_BUTTON = registerBlock("skyfog_button",
             () -> woodenButton(BlockSetType.OAK));
 
+    @SuppressWarnings("deprecation")
     public static final DeferredBlock<Block> LAMP_TUBE = registerBlock("lamp_tube", () -> new LampTubeBlock(
             BlockBehaviour.Properties.of()
                     .forceSolidOff()
@@ -183,6 +184,8 @@ public class MiaBlocks {
                     .noOcclusion()));
     public static final DeferredBlock<Block> ENDLESS_CUP = registerBlock("endless_cup", () -> new EndlessCupBlock(
             BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())));
+
+    @SuppressWarnings("deprecation")
     public static final DeferredBlock<Block> ROPE = BLOCKS.register("rope",
             () -> new RopeBlock(BlockBehaviour.Properties.of()
                     .forceSolidOff().strength(0.4F)

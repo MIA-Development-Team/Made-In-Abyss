@@ -1,0 +1,21 @@
+{
+  "type": "mia:artifact_bundle_upgrade",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "$": {
+      "item": "mia:gray_artifact_bundle"
+    }
+  },
+  "pattern": [
+    "###",
+    "#$#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "mia:fancy_artifact_bundle"
+  }
+}

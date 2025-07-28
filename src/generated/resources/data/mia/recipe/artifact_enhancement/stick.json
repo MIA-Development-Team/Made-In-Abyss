@@ -1,0 +1,13 @@
+{
+  "type": "mia:artifact_enhancement",
+  "amount": 0.5,
+  "artifact": {
+    "tag": "mia:enhanceable_artifact"
+  },
+  "attribute": "minecraft:generic.attack_damage",
+  "material": {
+    "count": 1,
+    "id": "minecraft:stick"
+  },
+  "operation": "add_multiplied_base"
+}

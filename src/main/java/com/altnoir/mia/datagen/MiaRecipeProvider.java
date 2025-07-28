@@ -1,11 +1,11 @@
 package com.altnoir.mia.datagen;
 
-import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.init.MiaItemTags;
 import com.altnoir.mia.init.MiaItems;
 import com.altnoir.mia.recipe.LampTubeRecipeBuilder;
-import com.altnoir.mia.recipe.WhistleSmithingRecipeBuilder;
-import com.altnoir.mia.recipe.WhistleUpgradeRecipeBuilder;
+import com.altnoir.mia.recipe.ArtifactEnhancementRecipeBuilder;
+import com.altnoir.mia.recipe.ArtifactBundleUpgradeRecipeBuilder;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -13,10 +13,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.item.Item;
@@ -44,67 +41,91 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(recipeOutput);
 
         lampTube(recipeOutput, Items.STONE, Items.DEEPSLATE, 2);
-        whistleUpgrade(recipeOutput);
-        whistleSmithing(recipeOutput);
+        ArtifactBundleUpgrade(recipeOutput);
+        ArtifactEnhancement(recipeOutput);
     }
 
-    private static void whistleUpgrade(RecipeOutput recipeOutput) {
-        WhistleUpgradeRecipeBuilder.shaped(RecipeCategory.TOOLS, MiaItems.BLUE_WHISTLE, 1)
+    private static void ArtifactBundleUpgrade(RecipeOutput recipeOutput) {
+        ArtifactBundleUpgradeRecipeBuilder.shaped(RecipeCategory.TOOLS, MiaItems.FANCY_ARTIFACT_BUNDLE, 1)
                 .define('#', Items.IRON_INGOT)
-                .define('$', MiaItems.RED_WHISTLE.get())
+                .define('$', MiaItems.GRAY_ARTIFACT_BUNDLE.get())
                 .pattern("###")
                 .pattern("#$#")
                 .pattern("###")
-                .unlockedBy(getHasName(MiaItems.RED_WHISTLE.get()), has(MiaItems.RED_WHISTLE.get()))
-                .save(recipeOutput);
-        WhistleUpgradeRecipeBuilder.shaped(RecipeCategory.TOOLS, MiaItems.MOON_WHISTLE, 1)
-                .define('#', Items.DIAMOND)
-                .define('$', MiaItems.BLUE_WHISTLE.get())
-                .pattern("###")
-                .pattern("#$#")
-                .pattern("###")
-                .unlockedBy(getHasName(MiaItems.BLUE_WHISTLE.get()), has(MiaItems.BLUE_WHISTLE.get()))
+                .unlockedBy(getHasName(MiaItems.GRAY_ARTIFACT_BUNDLE.get()), has(MiaItems.GRAY_ARTIFACT_BUNDLE.get()))
                 .save(recipeOutput);
     }
 
-    private static void whistleSmithing(RecipeOutput recipeOutput) {
-        WhistleSmithingRecipeBuilder.smithing(
-                Ingredient.of(MiaItems.RED_WHISTLE, MiaItems.BLUE_WHISTLE, MiaItems.MOON_WHISTLE,
-                        MiaItems.BLACK_WHISTLE, MiaItems.WHITE_WHISTLE),
+    private static void ArtifactEnhancement(RecipeOutput recipeOutput) {
+        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
                 new ItemStack(MiaItems.MISTFUZZ_PEACH.get(), 4),
-                Attributes.MAX_HEALTH,
-                2,
-                Operation.ADD_VALUE)
-                .unlockedBy(getHasName(MiaItems.RED_WHISTLE.get()), has(MiaItems.RED_WHISTLE.get()))
-                .save(recipeOutput, "peach_health");
-        WhistleSmithingRecipeBuilder.smithing(
-                Ingredient.of(MiaItems.RED_WHISTLE, MiaItems.BLUE_WHISTLE, MiaItems.MOON_WHISTLE,
-                        MiaItems.BLACK_WHISTLE, MiaItems.WHITE_WHISTLE),
+                Attributes.MAX_HEALTH, 2, Operation.ADD_VALUE)
+                .unlockedByMaterial().save(recipeOutput);
+        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
                 new ItemStack(Items.IRON_INGOT, 1),
-                Attributes.ARMOR,
-                1,
-                Operation.ADD_VALUE)
-                .unlockedBy(getHasName(MiaItems.RED_WHISTLE.get()), has(MiaItems.RED_WHISTLE.get()))
-                .save(recipeOutput, "iron_armor");
-        WhistleSmithingRecipeBuilder.smithing(
-                Ingredient.of(MiaItems.RED_WHISTLE, MiaItems.BLUE_WHISTLE, MiaItems.MOON_WHISTLE,
-                        MiaItems.BLACK_WHISTLE, MiaItems.WHITE_WHISTLE),
+                Attributes.ARMOR, 0.3, Operation.ADD_MULTIPLIED_BASE)
+                .unlockedByMaterial().save(recipeOutput);
+        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
+                new ItemStack(Items.EMERALD, 1),
+                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_TOTAL)
+                .unlockedByMaterial().save(recipeOutput);
+        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
+                new ItemStack(Items.STONE, 1),
+                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+                .unlockedByMaterial().save(recipeOutput);
+        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
+                new ItemStack(Items.FIRE_CHARGE, 2),
+                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+                .unlockedByMaterial().save(recipeOutput);
+        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
+                new ItemStack(Items.WATER_BUCKET, 3),
+                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+                .unlockedByMaterial().save(recipeOutput);
+        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
+                new ItemStack(Items.BAMBOO, 1),
+                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+                .unlockedByMaterial().save(recipeOutput);
+        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
+                new ItemStack(Items.COBBLED_DEEPSLATE, 1),
+                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+                .unlockedByMaterial().save(recipeOutput);
+        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
+                new ItemStack(Items.OAK_LEAVES, 1),
+                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+                .unlockedByMaterial().save(recipeOutput);
+        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
+                new ItemStack(Items.OAK_PLANKS, 1),
+                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+                .unlockedByMaterial().save(recipeOutput);
+        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
+                new ItemStack(Items.OAK_SAPLING, 1),
+                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+                .unlockedByMaterial().save(recipeOutput);
+        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
+                new ItemStack(Items.STONE_PICKAXE, 1),
+                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_BASE)
+                .unlockedByMaterial().save(recipeOutput);
+        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
+                new ItemStack(Items.STICK, 1),
+                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_BASE)
+                .unlockedByMaterial().save(recipeOutput);
+        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
                 new ItemStack(Items.DIAMOND, 1),
-                Attributes.ATTACK_DAMAGE,
-                1,
-                Operation.ADD_VALUE)
-                .unlockedBy(getHasName(MiaItems.RED_WHISTLE.get()), has(MiaItems.RED_WHISTLE.get()))
-                .save(recipeOutput, "diamond_attack_damage");
+                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_BASE)
+                .unlockedByMaterial().save(recipeOutput);
     }
 
+    @SuppressWarnings("unused")
     private static void lampTube(RecipeOutput recipeOutput, ItemLike input, ItemLike output) {
         lampTube(recipeOutput, input, output, 1);
     }
 
+    @SuppressWarnings("unused")
     private static void lampTube(RecipeOutput recipeOutput, ItemLike input, ItemLike output, String id) {
         lampTube(recipeOutput, input, output, 1, id);
     }
 
+    @SuppressWarnings("unused")
     private static void lampTube(RecipeOutput recipeOutput, TagKey<Item> tag, ItemLike output, String hasName) {
         lampTube(recipeOutput, tag, output, 1, hasName);
     }

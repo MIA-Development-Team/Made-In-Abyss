@@ -82,7 +82,7 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
 
         dropSelf(MiaBlocks.FORTITUDE_FLOWER.get());
 
-        dropSelf(MiaBlocks.WHISTLE_ENHANCEMENT_TABLE.get());
+        dropSelf(MiaBlocks.ARTIFACT_ENHANCEMENT_TABLE.get());
 
         dropSelf(MiaBlocks.LAMP_TUBE.get());
         dropSelf(MiaBlocks.ABYSS_PORTAL.get());
@@ -98,7 +98,8 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
     // );
     // }
     protected LootTable.Builder createSkyfogLeavesDrops(Block oakLeavesBlock, Block saplingBlock, float... chances) {
-        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+        // HolderLookup.RegistryLookup<Enchantment> registrylookup =
+        // this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return this.createLeavesDrops(oakLeavesBlock, saplingBlock, chances)
                 .withPool(
                         LootPool.lootPool()

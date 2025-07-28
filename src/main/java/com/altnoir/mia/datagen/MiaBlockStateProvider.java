@@ -5,17 +5,13 @@ import com.altnoir.mia.datagen.blockstate.MiaModelProvider;
 import com.altnoir.mia.datagen.blockstate.MiaStateProvider;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.util.MiaUtil;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
-
-import java.util.Objects;
 
 public class MiaBlockStateProvider extends BlockStateProvider {
     public MiaBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -55,7 +51,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         basicItem(MiaBlocks.ROPE);
 
         // crafting tables
-        blockWithItem(MiaBlocks.WHISTLE_ENHANCEMENT_TABLE);
+        blockWithItem(MiaBlocks.ARTIFACT_ENHANCEMENT_TABLE);
 
         // decoration blocks
         stairsBlockWithItem(MiaBlocks.ABYSS_ANDESITE_STAIRS, MiaBlocks.ABYSS_ANDESITE);

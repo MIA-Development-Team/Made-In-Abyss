@@ -87,7 +87,7 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
 
         // 工具标签
         tag(BlockTags.MINEABLE_WITH_AXE)
-                .add(MiaBlocks.WHISTLE_ENHANCEMENT_TABLE.get());
+                .add(MiaBlocks.ARTIFACT_ENHANCEMENT_TABLE.get());
 
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())

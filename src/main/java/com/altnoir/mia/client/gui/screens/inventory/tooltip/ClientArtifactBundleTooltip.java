@@ -23,8 +23,8 @@ public class ClientArtifactBundleTooltip implements ClientTooltipComponent {
     }
 
     public static ClientTooltipComponent create(TooltipComponent component) {
-        if (component instanceof ArtifactBundleInventoryComponent whistle) {
-            return new ClientArtifactBundleTooltip(whistle);
+        if (component instanceof ArtifactBundleInventoryComponent bundleComponent) {
+            return new ClientArtifactBundleTooltip(bundleComponent);
         }
         var result = net.neoforged.neoforge.client.gui.ClientTooltipComponentManager
                 .createClientTooltipComponent(component);

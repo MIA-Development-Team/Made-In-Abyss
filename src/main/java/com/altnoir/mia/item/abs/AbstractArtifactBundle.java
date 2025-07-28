@@ -2,7 +2,6 @@ package com.altnoir.mia.item.abs;
 
 import com.altnoir.mia.component.ArtifactBundleInventoryComponent;
 import com.altnoir.mia.init.MiaComponents;
-import com.altnoir.mia.item.IMiaTooltip;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
@@ -25,13 +24,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-public abstract class AbstractArtifactBundle extends Item implements ICurioItem, IMiaTooltip {
+public abstract class AbstractArtifactBundle extends Item implements IArtifactItem {
 
     private static final int FULL_BAR_COLOR = 0xFF5454FF;
     private static final int BAR_COLOR = 0x7087FFFF;
@@ -50,7 +48,7 @@ public abstract class AbstractArtifactBundle extends Item implements ICurioItem,
                 ArtifactBundleInventoryComponent.EMPTY).allItems();
         int rlId = 0;
         for (ItemStack artifactStack : artifacts) {
-            if (artifactStack.getItem() instanceof AbstractArtifact artifact) {
+            if (artifactStack.getItem() instanceof IArtifactItem artifact) {
                 for (Entry<Holder<Attribute>, AttributeModifier> entry : artifact
                         .getAttributeModifiers(slotContext, id, artifactStack).entries()) {
                     ResourceLocation uniqueId = ResourceLocation.fromNamespaceAndPath(id.getNamespace(),
@@ -63,11 +61,6 @@ public abstract class AbstractArtifactBundle extends Item implements ICurioItem,
         }
 
         return attributeModifiers;
-    }
-
-    @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return true;
     }
 
     @NotNull
@@ -97,8 +90,7 @@ public abstract class AbstractArtifactBundle extends Item implements ICurioItem,
                         Component.literal(component.getUsage() + "/" + getCapacity())
                                 .withStyle(ChatFormatting.YELLOW))
                 .withStyle(style -> style.withColor(ChatFormatting.GOLD)));
-        tooltip.add(2, Component.translatable("tooltip.mia.artifact_bundle")
-                .withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+        IArtifactItem.super.appendTooltip(stack, tooltip);
     }
 
     public abstract int getCapacity();

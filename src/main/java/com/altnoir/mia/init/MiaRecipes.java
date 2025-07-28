@@ -2,8 +2,8 @@ package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.recipe.LampTubeRecipe;
-import com.altnoir.mia.recipe.WhistleSmithingRecipe;
-import com.altnoir.mia.recipe.WhistleUpgradeRecipe;
+import com.altnoir.mia.recipe.ArtifactEnhancementRecipe;
+import com.altnoir.mia.recipe.ArtifactBundleUpgradeRecipe;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -29,17 +29,17 @@ public class MiaRecipes {
                 }
             });
 
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<WhistleUpgradeRecipe>> WHISTLE_UPGRADE_SERIALIZER = SERIALIZERS
-            .register("whistle_upgrade", WhistleUpgradeRecipe.Serializer::new);
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ArtifactBundleUpgradeRecipe>> ARTIFACT_BUNDLE_UPGRADE_SERIALIZER = SERIALIZERS
+            .register("artifact_bundle_upgrade", ArtifactBundleUpgradeRecipe.Serializer::new);
 
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<WhistleSmithingRecipe>> WHISTLE_SMITHING_SERIALIZER = SERIALIZERS
-            .register("whistle_smithing", WhistleSmithingRecipe.Serializer::new);
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ArtifactEnhancementRecipe>> ARTIFACT_ENHANCEMENT_SERIALIZER = SERIALIZERS
+            .register("artifact_enhancement", ArtifactEnhancementRecipe.Serializer::new);
 
-    public static final DeferredHolder<RecipeType<?>, RecipeType<WhistleSmithingRecipe>> WHISTLE_SMITHING_TYPE = TYPES
-            .register("whistle_smithing", () -> new RecipeType<WhistleSmithingRecipe>() {
+    public static final DeferredHolder<RecipeType<?>, RecipeType<ArtifactEnhancementRecipe>> ARTIFACT_ENHANCEMENT_TYPE = TYPES
+            .register("artifact_enhancement", () -> new RecipeType<ArtifactEnhancementRecipe>() {
                 @Override
                 public String toString() {
-                    return "whistle_smithing";
+                    return "artifact_enhancement";
                 }
             });
 

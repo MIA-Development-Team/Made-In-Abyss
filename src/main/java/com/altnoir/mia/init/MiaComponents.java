@@ -2,7 +2,7 @@ package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.component.ArtifactBundleInventoryComponent;
-import com.altnoir.mia.component.WhistleStatsComponent;
+import com.altnoir.mia.component.ArtifactEnhancementComponent;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.bus.api.IEventBus;
@@ -21,11 +21,11 @@ public class MiaComponents {
                     .persistent(ArtifactBundleInventoryComponent.CODEC)
                     .networkSynchronized(ArtifactBundleInventoryComponent.STREAM_CODEC));
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<WhistleStatsComponent>> WHISTLE_STATS = register(
-            "whistle_stats",
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ArtifactEnhancementComponent>> ARTIFACT_ENHANCEMENT = register(
+            "artifact_enhancement",
             builder -> builder
-                    .persistent(WhistleStatsComponent.CODEC)
-                    .networkSynchronized(WhistleStatsComponent.STREAM_CODEC));
+                    .persistent(ArtifactEnhancementComponent.CODEC)
+                    .networkSynchronized(ArtifactEnhancementComponent.STREAM_CODEC));
 
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(
             String name, UnaryOperator<DataComponentType.Builder<T>> builderOperator) {
