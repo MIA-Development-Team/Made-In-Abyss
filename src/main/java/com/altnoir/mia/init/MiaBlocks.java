@@ -25,12 +25,6 @@ import java.util.function.ToIntFunction;
 public class MiaBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MIA.MOD_ID);
 
-    public static final DeferredBlock<Block> ARTIFACT_ENHANCEMENT_TABLE = registerBlock("artifact_enhancement_table",
-            () -> new ArtifactEnhancementTableBlock(BlockBehaviour.Properties.of()
-                    .requiresCorrectToolForDrops()
-                    .strength(2.0F, 6.0F)
-                    .sound(SoundType.WOOD)));
-
     public static final DeferredBlock<Block> ABYSS_ANDESITE = registerBlock("abyss_andesite",
             () -> new AbyssAndesiteBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE)
@@ -182,6 +176,13 @@ public class MiaBlocks {
                     .sound(SoundType.TRIAL_SPAWNER)
                     .isViewBlocking(MiaBlocks::never)
                     .noOcclusion()));
+
+    public static final DeferredBlock<Block> ARTIFACT_SMITHING_TABLE = registerBlock("artifact_smithing_table",
+            () -> new ArtifactEnhancementTableBlock(BlockBehaviour.Properties.of()
+                    .requiresCorrectToolForDrops()
+                    .strength(3.0F, 6.0F)
+                    .sound(SoundType.NETHERITE_BLOCK)));
+
     public static final DeferredBlock<Block> ENDLESS_CUP = registerBlock("endless_cup", () -> new EndlessCupBlock(
             BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())));
 

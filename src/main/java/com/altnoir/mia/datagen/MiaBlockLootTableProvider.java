@@ -82,7 +82,7 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
 
         dropSelf(MiaBlocks.FORTITUDE_FLOWER.get());
 
-        dropSelf(MiaBlocks.ARTIFACT_ENHANCEMENT_TABLE.get());
+        dropSelf(MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
 
         dropSelf(MiaBlocks.LAMP_TUBE.get());
         dropSelf(MiaBlocks.ABYSS_PORTAL.get());

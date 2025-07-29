@@ -1,0 +1,50 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#bottom"
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#ew"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#ns"
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#ns"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#top"
+        },
+        "west": {
+          "cullface": "west",
+          "texture": "#ew"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "bottom": "mia:block/chiseled_abyss_andesite",
+    "ew": "mia:block/artifact_smithing_table_2",
+    "ns": "mia:block/artifact_smithing_table_1",
+    "particle": "mia:block/chiseled_abyss_andesite",
+    "top": "mia:block/artifact_smithing_table_top"
+  }
+}

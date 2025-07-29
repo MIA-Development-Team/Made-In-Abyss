@@ -51,6 +51,25 @@ public class MiaModelProvider {
                 .face(Direction.DOWN).uvs(0, 0, 16, 16).texture("#portal2").end();
     }
 
+    public void  artifactSmithingTableBlockModel(BlockStateProvider provider, Block block, Block bottom) {
+        provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.mcLoc("block/block"))
+                .texture("ns", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_1"))
+                .texture("ew", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_2"))
+                .texture("top", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top"))
+                .texture("bottom", provider.modLoc("block/" + MiaUtil.getBlockPath(bottom)))
+                .texture("particle", provider.modLoc("block/" + MiaUtil.getBlockPath(bottom)))
+                .element().from(0, 0, 0).to(16, 16, 16)
+                .allFaces((face, faceBuilder) -> faceBuilder
+                        .texture(switch (face) {
+                            case UP -> "#top";
+                            case DOWN -> "#bottom";
+                            case NORTH, SOUTH -> "#ns";
+                            case EAST, WEST -> "#ew";
+                        })
+                        .cullface(face)
+                        .uvs(0, 0, 16, 16));
+    }
+
     public void lampTubeBlockModel(BlockStateProvider provider, Block block) {
         provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.modLoc("block/template_lamp_tube"))
                 .renderType("cutout")

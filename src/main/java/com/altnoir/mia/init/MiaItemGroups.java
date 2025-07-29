@@ -13,8 +13,8 @@ import java.util.function.Supplier;
 public class MiaItemGroups {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB = DeferredRegister
             .create(Registries.CREATIVE_MODE_TAB, MIA.MOD_ID);
-    public static final Supplier<CreativeModeTab> MIA_TAB = CREATIVE_MODE_TAB.register("mia_tab",
-            () -> CreativeModeTab.builder()
+    public static final Supplier<CreativeModeTab> MIA_TAB = CREATIVE_MODE_TAB.register("mia_tab", () ->
+            CreativeModeTab.builder()
                     .title(Component.translatable("itemgroup.mia"))
                     .icon(() -> new ItemStack(MiaItems.RED_WHISTLE.get()))
                     .displayItems((parameters, output) -> {
@@ -78,8 +78,15 @@ public class MiaItemGroups {
                         output.accept(MiaItems.WHITE_WHISTLE);
                         output.accept(MiaItems.ROPE);
                         output.accept(MiaBlocks.LAMP_TUBE);
-                        output.accept(MiaBlocks.ARTIFACT_ENHANCEMENT_TABLE);
+                        output.accept(MiaBlocks.ARTIFACT_SMITHING_TABLE);
+                    })
+                    .build());
 
+    public static final Supplier<CreativeModeTab> MIA_TAB_ARIFACT = CREATIVE_MODE_TAB.register("mia_tab_artifact", () ->
+            CreativeModeTab.builder()
+                    .title(Component.translatable("itemgroup.mia_artifact"))
+                    .icon(() -> new ItemStack(MiaItems.FANCY_ARTIFACT_BUNDLE.get()))
+                    .displayItems((parameters, output) -> {
                         // artifacts
                         output.accept(MiaItems.GRAY_ARTIFACT_BUNDLE);
                         output.accept(MiaItems.FANCY_ARTIFACT_BUNDLE);
@@ -89,8 +96,8 @@ public class MiaItemGroups {
                         output.accept(MiaItems.TEST_ARTIFACT_3);
 
                         output.accept(MiaBlocks.ENDLESS_CUP);
-                    })
-                    .build());
+                    }).build()
+    );
 
     public static void register(IEventBus eventBus) {
         CREATIVE_MODE_TAB.register(eventBus);

@@ -86,9 +86,6 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.ROPE.get());
 
         // 工具标签
-        tag(BlockTags.MINEABLE_WITH_AXE)
-                .add(MiaBlocks.ARTIFACT_ENHANCEMENT_TABLE.get());
-
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
                 .add(MiaBlocks.ABYSS_ANDESITE.get())
@@ -115,6 +112,7 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS.get())
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get())
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL.get())
+                .add(MiaBlocks.ARTIFACT_SMITHING_TABLE.get())
                 .add(MiaBlocks.ENDLESS_CUP.get());
 
         // 标签嵌套

@@ -304,7 +304,7 @@ public class ArtifactEnhancementTableMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         return (Boolean) this.access.evaluate((level, pos) -> {
-            return !level.getBlockState(pos).is(MiaBlocks.ARTIFACT_ENHANCEMENT_TABLE) ? false
+            return !level.getBlockState(pos).is(MiaBlocks.ARTIFACT_SMITHING_TABLE) ? false
                     : player.canInteractWithBlock(pos, 4.0);
         }, true);
     }

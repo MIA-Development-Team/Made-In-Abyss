@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "mia:block/artifact_smithing_table"
+    }
+  }
+}

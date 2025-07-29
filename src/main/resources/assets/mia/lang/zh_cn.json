@@ -15,15 +15,32 @@
     "item.mia.fancy_artifact_bundle": "高级遗物袋",
 
     "block.mia.abyss_andesite": "深界安山岩",
+    "block.mia.abyss_andesite_slab": "深界安山岩台阶",
+    "block.mia.abyss_andesite_stairs": "深界安山岩楼梯",
+    "block.mia.abyss_andesite_wall": "深界安山岩墙",
     "block.mia.abyss_cobbled_andesite": "深界安山岩圆石",
+    "block.mia.abyss_cobbled_andesite_slab": "深界安山岩圆石台阶",
+    "block.mia.abyss_cobbled_andesite_stairs": "深界安山岩圆石楼梯",
+    "block.mia.abyss_cobbled_andesite_wall": "深界安山岩圆石墙",
     "block.mia.mossy_abyss_cobbled_andesite": "深界安山岩苔石",
+    "block.mia.mossy_abyss_cobbled_andesite_slab": "深界安山岩苔石台阶",
+    "block.mia.mossy_abyss_cobbled_andesite_stairs": "深界安山岩苔石楼梯",
+    "block.mia.mossy_abyss_cobbled_andesite_wall": "深界安山岩苔石墙",
     "block.mia.polished_abyss_andesite": "磨制深界安山岩",
+    "block.mia.polished_abyss_andesite_slab": "磨制深界安山岩台阶",
+    "block.mia.polished_abyss_andesite_stairs": "磨制深界安山岩楼梯",
+    "block.mia.polished_abyss_andesite_wall": "磨制深界安山岩墙",
     "block.mia.chiseled_abyss_andesite": "雕纹深界安山岩",
     "block.mia.abyss_andesite_pillar": "深界安山岩柱",
     "block.mia.abyss_andesite_bricks": "深界安山岩砖",
+    "block.mia.abyss_andesite_bricks_slab": "深界安山岩砖台阶",
+    "block.mia.abyss_andesite_bricks_stairs": "深界安山岩砖楼梯",
+    "block.mia.abyss_andesite_bricks_wall": "深界安山岩砖墙",
     "block.mia.mossy_abyss_andesite_bricks": "深界安山岩苔石砖",
+    "block.mia.mossy_abyss_andesite_bricks_slab": "深界安山岩苔石砖台阶",
+    "block.mia.mossy_abyss_andesite_bricks_stairs": "深界安山岩苔石砖楼梯",
+    "block.mia.mossy_abyss_andesite_bricks_wall": "深界安山岩苔石砖墙",
     "block.mia.cracked_abyss_andesite_bricks": "裂纹深界安山岩砖",
-    "block.mia.abyss_grass_block": "深界草方块",
     "block.mia.covergrass_abyss_andesite": "覆草深界安山岩",
 
     "block.mia.skyfog_wood": "天雾木",
@@ -31,6 +48,14 @@
     "block.mia.stripped_skyfog_wood": "去皮天雾木",
     "block.mia.stripped_skyfog_log": "去皮天雾原木",
     "block.mia.skyfog_planks": "天雾木板",
+    "block.mia.skyfog_staris": "天雾木楼梯",
+    "block.mia.skyfog_slab": "天雾木台阶",
+    "block.mia.skyfog_fence": "天雾木栅栏",
+    "block.mia.skyfog_fence_gate": "天雾木栅栏门",
+    "block.mia.skyfog_pressure_plate": "天雾木压力板",
+    "block.mia.skyfog_button": "天雾木按钮",
+    "block.mia.skyfog_door": "天雾木门",
+    "block.mia.skyfog_trapdoor": "天雾木活板门",
     "block.mia.skyfog_leaves": "天雾树叶",
     "block.mia.skyfog_leaves_with_fruits": "结果的天雾树叶",
     "block.mia.skyfog_sapling": "天雾树苗",
@@ -40,7 +65,7 @@
     "block.mia.abyss_portal": "深渊传送门",
     "block.mia.abyss_spawner": "深渊刷怪笼",
     "block.mia.endless_cup": "无尽水杯",
-    "block.mia.artifact_enhancement_table": "遗物强化桌",
+    "block.mia.artifact_smithing_table": "遗物强化桌",
 
     "biome.mia.abyss_brink/abyss_brink": "阿比斯深渊",
 
@@ -98,5 +123,10 @@
     "emi.category.mia.lamp_tube": "镭射催化",
 
 
-    "containier.mia.artifact.enhancement.title": "遗物强化桌"
+    "containier.mia.artifact.enhancement.title": "遗物强化台",
+
+
+
+    "block.mia.rope": "绳索"
+
 }

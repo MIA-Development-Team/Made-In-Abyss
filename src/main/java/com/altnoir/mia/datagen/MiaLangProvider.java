@@ -20,6 +20,7 @@ public class MiaLangProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         add("itemgroup.mia", "Made In Abyss");
+        add("itemgroup.mia_artifact", "Made In Abyss: Artifact");
 
         //Tooltip start
         add("tooltip.mia.whistle.level", "Whistle Level: %s");

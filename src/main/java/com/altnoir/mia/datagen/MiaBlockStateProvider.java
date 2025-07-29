@@ -51,7 +51,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         basicItem(MiaBlocks.ROPE);
 
         // crafting tables
-        blockWithItem(MiaBlocks.ARTIFACT_ENHANCEMENT_TABLE);
+        artifactSmithingTableBlock(modelProvider, stateProvider);
 
         // decoration blocks
         stairsBlockWithItem(MiaBlocks.ABYSS_ANDESITE_STAIRS, MiaBlocks.ABYSS_ANDESITE);
@@ -106,6 +106,14 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         // 压力板和按钮单独分列
         pressurePlateBlockWithItem(MiaBlocks.SKYFOG_PRESSURE_PLATE, MiaBlocks.SKYFOG_PLANKS);
         buttonBlockWithItem(MiaBlocks.SKYFOG_BUTTON, MiaBlocks.SKYFOG_PLANKS);
+
+
+    }
+
+    private void artifactSmithingTableBlock(MiaModelProvider modelProvider, MiaStateProvider stateProvider) {
+        modelProvider.artifactSmithingTableBlockModel(this, MiaBlocks.ARTIFACT_SMITHING_TABLE.get(), MiaBlocks.CHISLED_ABYSS_ANDESITE.get());
+        stateProvider.baseBlockState(this, MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
+        blockItem(MiaBlocks.ARTIFACT_SMITHING_TABLE);
     }
 
     protected void sapingAndCrossBlock(DeferredBlock<?> block) {
@@ -238,13 +246,13 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     protected ItemModelBuilder basicItem(DeferredBlock<?> block) {
         return itemModels().withExistingParent(block.getId().getPath(),
                 MiaUtil.id("item/generated")).texture("layer0",
-                        MiaUtil.miaId("item/" + block.getId().getPath()));
+                MiaUtil.miaId("item/" + block.getId().getPath()));
     }
 
     protected ItemModelBuilder crossItem(DeferredBlock<?> block) {
         return itemModels().withExistingParent(block.getId().getPath(),
                 MiaUtil.id("item/generated")).texture("layer0",
-                        MiaUtil.miaId("block/" + block.getId().getPath()));
+                MiaUtil.miaId("block/" + block.getId().getPath()));
     }
 
     protected void blockWithItem(DeferredBlock<?> block) {
