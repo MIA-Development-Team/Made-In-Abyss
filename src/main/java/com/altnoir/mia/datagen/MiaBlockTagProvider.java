@@ -13,13 +13,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class MiaBlockTagProvider extends BlockTagsProvider {
-    public MiaBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+    public MiaBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
+            @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, MIA.MOD_ID, existingFileHelper);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        //深渊标签
+        // 深渊标签
         tag(MiaBlockTags.ANDESITE_ORE_REPLACEABLES)
                 .add(MiaBlocks.ABYSS_ANDESITE.get());
 
@@ -29,7 +30,7 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
         tag(MiaBlockTags.COVERGRASS)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
 
-        //基础标签
+        // 基础标签
         tag(BlockTags.DIRT)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
 
@@ -84,7 +85,10 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
         tag(BlockTags.CLIMBABLE)
                 .add(MiaBlocks.ROPE.get());
 
-        //工具标签
+        // 工具标签
+        tag(BlockTags.MINEABLE_WITH_AXE)
+                .add(MiaBlocks.ARTIFACT_ENHANCEMENT_TABLE.get());
+
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
                 .add(MiaBlocks.ABYSS_ANDESITE.get())
@@ -113,7 +117,7 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL.get())
                 .add(MiaBlocks.ENDLESS_CUP.get());
 
-        //标签嵌套
+        // 标签嵌套
         tag(BlockTags.SCULK_REPLACEABLE)
                 .addTag(MiaBlockTags.ANDESITE_ORE_REPLACEABLES);
     }

@@ -1,7 +1,7 @@
 package com.altnoir.mia.component;
 
-import com.altnoir.mia.item.abs.AbstractArtifact;
 import com.altnoir.mia.item.abs.AbstractArtifactBundle;
+import com.altnoir.mia.item.abs.IBundleable;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -42,7 +42,7 @@ public class ArtifactBundleInventoryComponent implements TooltipComponent {
     public int getUsage() {
         var total = 0;
         for (ItemStack stack : stacks) {
-            if (stack.getItem() instanceof AbstractArtifact artifact) {
+            if (stack.getItem() instanceof IBundleable artifact) {
                 total += artifact.getWeight();
             }
         }
@@ -87,7 +87,8 @@ public class ArtifactBundleInventoryComponent implements TooltipComponent {
 
         public boolean tryInsert(ItemStack artifactBundle, ItemStack itemStack) {
             if (artifactBundle.getItem() instanceof AbstractArtifactBundle artifactBundleItem) {
-                if (itemStack.getItem() instanceof AbstractArtifact artifact) {
+                if (itemStack.getItem() instanceof IBundleable artifact
+                        && !(itemStack.getItem() instanceof AbstractArtifactBundle)) {
                     if (usage + artifact.getWeight() > artifactBundleItem.getCapacity())
                         return false;
                     usage += artifact.getWeight();
@@ -103,7 +104,7 @@ public class ArtifactBundleInventoryComponent implements TooltipComponent {
                 return ItemStack.EMPTY;
 
             var stack = stacks.removeFirst().copy();
-            if (stack.getItem() instanceof AbstractArtifact item) {
+            if (stack.getItem() instanceof IBundleable item) {
                 usage -= item.getWeight();
             }
 

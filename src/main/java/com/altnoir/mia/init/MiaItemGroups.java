@@ -78,10 +78,16 @@ public class MiaItemGroups {
                         output.accept(MiaItems.WHITE_WHISTLE);
                         output.accept(MiaItems.ROPE);
                         output.accept(MiaBlocks.LAMP_TUBE);
+                        output.accept(MiaBlocks.ARTIFACT_ENHANCEMENT_TABLE);
 
                         // artifacts
                         output.accept(MiaItems.GRAY_ARTIFACT_BUNDLE);
-                        output.accept(MiaItems.TEST_ARTIFACT);
+                        output.accept(MiaItems.FANCY_ARTIFACT_BUNDLE);
+
+                        output.accept(MiaItems.TEST_ARTIFACT_1);
+                        output.accept(MiaItems.TEST_ARTIFACT_2);
+                        output.accept(MiaItems.TEST_ARTIFACT_3);
+
                         output.accept(MiaBlocks.ENDLESS_CUP);
                     })
                     .build());

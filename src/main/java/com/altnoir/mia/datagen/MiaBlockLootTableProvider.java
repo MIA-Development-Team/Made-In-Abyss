@@ -10,7 +10,6 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -31,8 +30,10 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(), block -> createSingleItemTableWithSilkTouch(block, MiaBlocks.ABYSS_COBBLED_ANDESITE.get()));
-        add(MiaBlocks.ABYSS_ANDESITE.get(), block -> createSingleItemTableWithSilkTouch(block, MiaBlocks.ABYSS_COBBLED_ANDESITE.get()));
+        add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(),
+                block -> createSingleItemTableWithSilkTouch(block, MiaBlocks.ABYSS_COBBLED_ANDESITE.get()));
+        add(MiaBlocks.ABYSS_ANDESITE.get(),
+                block -> createSingleItemTableWithSilkTouch(block, MiaBlocks.ABYSS_COBBLED_ANDESITE.get()));
         dropSelf(MiaBlocks.ABYSS_ANDESITE_STAIRS.get());
         dropSelf(MiaBlocks.ABYSS_ANDESITE_SLAB.get());
         dropSelf(MiaBlocks.ABYSS_ANDESITE_WALL.get());
@@ -72,12 +73,16 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
         add(MiaBlocks.SKYFOG_DOOR.get(), this::createDoorTable);
         dropSelf(MiaBlocks.SKYFOG_TRAPDOOR.get());
         dropSelf(MiaBlocks.SKYFOG_SAPLING.get());
-        add(MiaBlocks.SKYFOG_LEAVES.get(), block -> createSkyfogLeavesDrops(block, MiaBlocks.SKYFOG_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
-        add(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get(), block -> createSkyfogLeavesDrops2(block, MiaBlocks.SKYFOG_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
+        add(MiaBlocks.SKYFOG_LEAVES.get(),
+                block -> createSkyfogLeavesDrops(block, MiaBlocks.SKYFOG_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
+        add(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get(), block -> createSkyfogLeavesDrops2(block,
+                MiaBlocks.SKYFOG_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
         dropSelf(MiaBlocks.SKYFOG_PRESSURE_PLATE.get());
         dropSelf(MiaBlocks.SKYFOG_BUTTON.get());
 
         dropSelf(MiaBlocks.FORTITUDE_FLOWER.get());
+
+        dropSelf(MiaBlocks.ARTIFACT_ENHANCEMENT_TABLE.get());
 
         dropSelf(MiaBlocks.LAMP_TUBE.get());
         dropSelf(MiaBlocks.ABYSS_PORTAL.get());
@@ -86,20 +91,20 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(MiaBlocks.ROPE.get());
     }
 
-    //    protected LootTable.Builder createSilkTouchDrops(Block block, Block other) {
-//        return this.createSilkTouchDispatchTable(
-//                block, this.applyExplosionDecay(block, LootItem.lootTableItem(other)
-//                )
-//        );
-//    }
+    // protected LootTable.Builder createSilkTouchDrops(Block block, Block other) {
+    // return this.createSilkTouchDispatchTable(
+    // block, this.applyExplosionDecay(block, LootItem.lootTableItem(other)
+    // )
+    // );
+    // }
     protected LootTable.Builder createSkyfogLeavesDrops(Block oakLeavesBlock, Block saplingBlock, float... chances) {
-        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+        // HolderLookup.RegistryLookup<Enchantment> registrylookup =
+        // this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return this.createLeavesDrops(oakLeavesBlock, saplingBlock, chances)
                 .withPool(
                         LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1.0F))
-                                .when(this.doesNotHaveShearsOrSilkTouch())
-                );
+                                .when(this.doesNotHaveShearsOrSilkTouch()));
     }
 
     protected LootTable.Builder createSkyfogLeavesDrops2(Block oakLeavesBlock, Block saplingBlock, float... chances) {
@@ -113,11 +118,10 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
                                         ((LootPoolSingletonContainer.Builder) this.applyExplosionCondition(
                                                 oakLeavesBlock,
                                                 LootItem.lootTableItem(MiaItems.MISTFUZZ_PEACH.get())
-                                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
-                                                        .apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))
-                                        ))
-                                )
-                );
+                                                        .apply(SetItemCountFunction
+                                                                .setCount(UniformGenerator.between(1.0F, 2.0F)))
+                                                        .apply(ApplyBonusCount.addOreBonusCount(
+                                                                registrylookup.getOrThrow(Enchantments.FORTUNE)))))));
     }
 
     private LootItemCondition.Builder doesNotHaveShearsOrSilkTouch() {

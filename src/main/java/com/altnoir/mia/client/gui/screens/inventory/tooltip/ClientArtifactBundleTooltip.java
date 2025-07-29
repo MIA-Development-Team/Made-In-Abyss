@@ -4,7 +4,6 @@ import com.altnoir.mia.component.ArtifactBundleInventoryComponent;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
@@ -24,8 +23,8 @@ public class ClientArtifactBundleTooltip implements ClientTooltipComponent {
     }
 
     public static ClientTooltipComponent create(TooltipComponent component) {
-        if (component instanceof ArtifactBundleInventoryComponent whistle) {
-            return new ClientArtifactBundleTooltip(whistle);
+        if (component instanceof ArtifactBundleInventoryComponent bundleComponent) {
+            return new ClientArtifactBundleTooltip(bundleComponent);
         }
         var result = net.neoforged.neoforge.client.gui.ClientTooltipComponentManager
                 .createClientTooltipComponent(component);

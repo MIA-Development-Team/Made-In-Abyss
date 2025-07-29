@@ -1,20 +1,12 @@
 package com.altnoir.mia.item.abs;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.component.WhistleStatsComponent;
-import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.item.IMiaTooltip;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
-
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -29,13 +21,7 @@ import java.util.Optional;
 public abstract class AbstractWhistle extends Item implements ICurioItem, IMiaTooltip {
 
     public AbstractWhistle(Properties properties) {
-        super(properties.component(MiaComponents.WHISTLE_STATS, WhistleStatsComponent.EMPTY));
-    }
-
-    @Override
-    public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(
-            SlotContext slotContext, ResourceLocation id, ItemStack stack) {
-        return stack.getOrDefault(MiaComponents.WHISTLE_STATS, WhistleStatsComponent.EMPTY).getAttributeModifiers();
+        super(properties);
     }
 
     @Override
@@ -60,8 +46,6 @@ public abstract class AbstractWhistle extends Item implements ICurioItem, IMiaTo
 
     public abstract int getArtifactSlotCount();
 
-    public abstract int getMaxLevel();
-
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
         return true;
@@ -69,20 +53,6 @@ public abstract class AbstractWhistle extends Item implements ICurioItem, IMiaTo
 
     @Override
     public void appendTooltip(ItemStack stack, List<Component> tooltip) {
-        tooltip.add(1, Component.translatable("tooltip.mia.whistle.level",
-                Component.literal(Optional
-                        .ofNullable(stack.get(MiaComponents.WHISTLE_STATS).getLevel())
-                        .map(Object::toString)
-                        .orElse("0"))
-                        .withStyle(ChatFormatting.YELLOW),
-                Component.literal(Optional
-                        .ofNullable(getMaxLevel())
-                        .map(Object::toString)
-                        .orElse("0"))
-                        .withStyle(ChatFormatting.YELLOW))
-                .withStyle(style -> style.withColor(ChatFormatting.GOLD)));
-        ResourceLocation rl = BuiltInRegistries.ITEM.getKey(stack.getItem());
-        tooltip.add(2, Component.translatable(String.format("tooltip.mia.whistle.%s", rl.getPath()))
-                .withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+        IMiaTooltip.super.appendTooltip(stack, tooltip);
     }
 }

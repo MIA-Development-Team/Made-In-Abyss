@@ -46,6 +46,7 @@ public class MIA {
 
         MiaParticles.register(modEventBus);
         MiaEntities.register(modEventBus);
+        MiaMenus.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, MiaConfig.SPEC);

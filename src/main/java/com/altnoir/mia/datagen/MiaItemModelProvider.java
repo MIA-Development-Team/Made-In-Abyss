@@ -21,6 +21,10 @@ public class MiaItemModelProvider extends ItemModelProvider {
 
         basicItem(MiaItems.MISTFUZZ_PEACH.get());
         basicItem(MiaItems.GRAY_ARTIFACT_BUNDLE.get());
-        basicItem(MiaItems.TEST_ARTIFACT.get());
+        basicItem(MiaItems.FANCY_ARTIFACT_BUNDLE.get());
+        basicItem(MiaItems.TEST_ARTIFACT_1.get());
+        basicItem(MiaItems.TEST_ARTIFACT_2.get());
+        basicItem(MiaItems.TEST_ARTIFACT_3.get());
+
     }
 }

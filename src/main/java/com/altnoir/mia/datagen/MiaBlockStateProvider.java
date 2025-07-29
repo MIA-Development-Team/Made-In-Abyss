@@ -5,17 +5,13 @@ import com.altnoir.mia.datagen.blockstate.MiaModelProvider;
 import com.altnoir.mia.datagen.blockstate.MiaStateProvider;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.util.MiaUtil;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
-
-import java.util.Objects;
 
 public class MiaBlockStateProvider extends BlockStateProvider {
     public MiaBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -54,8 +50,10 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         basicItem(MiaBlocks.ENDLESS_CUP);
         basicItem(MiaBlocks.ROPE);
 
+        // crafting tables
+        blockWithItem(MiaBlocks.ARTIFACT_ENHANCEMENT_TABLE);
 
-        // base
+        // decoration blocks
         stairsBlockWithItem(MiaBlocks.ABYSS_ANDESITE_STAIRS, MiaBlocks.ABYSS_ANDESITE);
         slabBlockWithItem(MiaBlocks.ABYSS_ANDESITE_SLAB, MiaBlocks.ABYSS_ANDESITE);
         wallBlockWithItem(MiaBlocks.ABYSS_ANDESITE_WALL, MiaBlocks.ABYSS_ANDESITE);
@@ -122,7 +120,6 @@ public class MiaBlockStateProvider extends BlockStateProvider {
                         "all", blockTexture(block.get())).renderType("cutout"));
     }
 
-
     protected void logBlockWithItem(DeferredBlock<?> block) {
         logBlock((RotatedPillarBlock) block.get());
         blockItem(block);
@@ -134,7 +131,8 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     protected void stairsBlockWithItem(DeferredBlock<?> block, DeferredBlock<?> texture) {
-        stairsBlock((StairBlock) block.get(), blockTexture(texture.get()), blockTexture(texture.get()), blockTexture(texture.get()));
+        stairsBlock((StairBlock) block.get(), blockTexture(texture.get()), blockTexture(texture.get()),
+                blockTexture(texture.get()));
         blockItem(block);
     }
 
@@ -143,7 +141,8 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     protected void slabBlockWithItem(DeferredBlock<?> block, ResourceLocation doubleslab, DeferredBlock<?> texture) {
-        slabBlock((SlabBlock) block.get(), doubleslab, blockTexture(texture.get()), blockTexture(texture.get()), blockTexture(texture.get()));
+        slabBlock((SlabBlock) block.get(), doubleslab, blockTexture(texture.get()), blockTexture(texture.get()),
+                blockTexture(texture.get()));
         blockItem(block);
     }
 
@@ -167,7 +166,8 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     protected void doorBlockWithItem(DeferredBlock<?> block, String renderType) {
-        doorBlockWithRenderType((DoorBlock) block.get(), extend(blockTexture(block.get()), "_bottom"), extend(blockTexture(block.get()), "_top"), renderType);
+        doorBlockWithRenderType((DoorBlock) block.get(), extend(blockTexture(block.get()), "_bottom"),
+                extend(blockTexture(block.get()), "_top"), renderType);
         basicItem(block);
     }
 
@@ -195,13 +195,13 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         blockItem(block);
     }
 
-
     private ResourceLocation extend(ResourceLocation rl, String suffix) {
         return MiaUtil.id(rl.getNamespace(), rl.getPath() + suffix);
     }
 
     protected void pillarBlock(DeferredBlock<?> block) {
-        axisBlock((RotatedPillarBlock) block.get(), blockTexture(block.get()), extend(blockTexture(block.get()), "_top"));
+        axisBlock((RotatedPillarBlock) block.get(), blockTexture(block.get()),
+                extend(blockTexture(block.get()), "_top"));
     }
 
     protected void fenceItem(DeferredBlock<?> block, DeferredBlock<?> texture) {
@@ -230,6 +230,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     protected ItemModelBuilder baseBlockItem(DeferredBlock<?> block, String suffix) {
         return itemModels().withExistingParent(MiaUtil.getBlockPath(block.get()), modLoc("block/" + suffix));
     }
+
     protected ItemModelBuilder vanillaBlockItem(DeferredBlock<?> block, String suffix) {
         return itemModels().withExistingParent(MiaUtil.getBlockPath(block.get()), mcLoc("block/" + suffix));
     }
@@ -237,12 +238,13 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     protected ItemModelBuilder basicItem(DeferredBlock<?> block) {
         return itemModels().withExistingParent(block.getId().getPath(),
                 MiaUtil.id("item/generated")).texture("layer0",
-                MiaUtil.miaId("item/" + block.getId().getPath()));
+                        MiaUtil.miaId("item/" + block.getId().getPath()));
     }
+
     protected ItemModelBuilder crossItem(DeferredBlock<?> block) {
         return itemModels().withExistingParent(block.getId().getPath(),
                 MiaUtil.id("item/generated")).texture("layer0",
-                MiaUtil.miaId("block/" + block.getId().getPath()));
+                        MiaUtil.miaId("block/" + block.getId().getPath()));
     }
 
     protected void blockWithItem(DeferredBlock<?> block) {

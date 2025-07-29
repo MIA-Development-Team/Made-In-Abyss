@@ -1,6 +1,9 @@
 {
   "values": [
     "mia:gray_artifact_bundle",
-    "mia:test_artifact"
+    "mia:fancy_artifact_bundle",
+    "mia:test_artifact_1",
+    "mia:test_artifact_2",
+    "mia:test_artifact_3"
   ]
 }
