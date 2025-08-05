@@ -2,6 +2,7 @@ package com.altnoir.mia.item;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.item.abs.AbstractWhistle;
+import com.altnoir.mia.util.MiaUtil;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
@@ -17,8 +18,7 @@ public class SimpleWhistle extends AbstractWhistle {
     private final Holder<Attribute> attribute;
     private final AttributeModifier attributeModifier;
 
-    public static final ResourceLocation WHISTLE_ATTRIBUTE = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID,
-            "whistle_attribute");
+    public static final ResourceLocation WHISTLE_ATTRIBUTE = MiaUtil.miaId("whistle_attribute");
 
     public SimpleWhistle(Properties properties, int artifactSlotCount, Holder<Attribute> attribute, double amount,
             AttributeModifier.Operation operation) {

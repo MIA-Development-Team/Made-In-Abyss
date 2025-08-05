@@ -1,9 +1,10 @@
 package com.altnoir.mia.item;
 
-import net.minecraft.ChatFormatting;
+import com.altnoir.mia.init.MiaColors;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -15,8 +16,8 @@ public interface IMiaTooltip {
         ResourceLocation rl = BuiltInRegistries.ITEM.getKey(stack.getItem());
         String description = String.format("tooltip.mia.description.%s", rl.getPath());
         if (I18n.exists(description)) {
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable(description).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+            tooltip.add(1, Component.literal(""));
+            tooltip.add(2, Component.translatable(description).withStyle(style -> style.withColor(MiaColors.ABYSS_GREEN)));
         }
     }
 }

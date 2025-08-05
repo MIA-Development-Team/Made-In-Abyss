@@ -1,8 +1,6 @@
 package com.altnoir.mia.client.event;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.List;
+import com.altnoir.mia.init.MiaColors;
 import com.altnoir.mia.init.MiaItemTags;
 import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.item.IMiaTooltip;
@@ -20,6 +18,10 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
+
 @OnlyIn(Dist.CLIENT)
 public class ClientTooltipEvent {
     public static void onTooltip(ItemTooltipEvent event) {
@@ -32,9 +34,12 @@ public class ClientTooltipEvent {
             if (Screen.hasShiftDown()) {
                 tooltipProvider.appendTooltip(stack, tooltip);
             } else {
-                tooltip.add(1, Component.translatable(
+                tooltip.add(1, Component.literal(""));
+                tooltip.add(2, Component.translatable(
                         "tooltip.mia.hold_shift",
-                        Component.literal("Shift").withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
+                        Component.literal("Shift").withStyle(ChatFormatting.DARK_GRAY)
+                ).withStyle(
+                        style -> style.withColor(MiaColors.ABYSS_GREEN)));
             }
         }
         if (stack.is(MiaItemTags.ARTIFACT_ENHANCE_MATERIAL)) {
@@ -48,7 +53,8 @@ public class ClientTooltipEvent {
                             recipeManager.getAllRecipesFor(MiaRecipes.ARTIFACT_ENHANCEMENT_TYPE.get())));
                 }
             } else {
-                tooltip.add(1, Component.translatable(
+                tooltip.add(1, Component.literal(""));
+                tooltip.add(2, Component.translatable(
                         "tooltip.mia.hold_shift",
                         Component.literal("Shift").withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
             }
@@ -56,7 +62,7 @@ public class ClientTooltipEvent {
     }
 
     private static List<Component> materialModifiers(ItemStack material,
-            List<RecipeHolder<ArtifactEnhancementRecipe>> recipes) {
+                                                     List<RecipeHolder<ArtifactEnhancementRecipe>> recipes) {
         return recipes.stream().map(RecipeHolder::value)
                 .filter(recipe -> recipe.getMaterial().getItem() == material.getItem())
                 .map(recipe -> {
@@ -69,7 +75,7 @@ public class ClientTooltipEvent {
     }
 
     public static Component formatAttributeModifier(Attribute attribute, double amount,
-            AttributeModifier.Operation op) {
+                                                    AttributeModifier.Operation op) {
         boolean isPercent = op == AttributeModifier.Operation.ADD_MULTIPLIED_BASE
                 || op == AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
 
