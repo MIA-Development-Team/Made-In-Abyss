@@ -1,6 +1,7 @@
 package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -18,7 +19,7 @@ public class MiaBlockTags {
 
     // 新增标签创建方法
     private static TagKey<Block> create(String name) {
-        return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, name));
+        return TagKey.create(Registries.BLOCK, MiaUtil.miaId(name));
     }
 
     public static TagKey<Block> create(ResourceLocation name) {

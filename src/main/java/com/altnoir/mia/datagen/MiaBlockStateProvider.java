@@ -27,6 +27,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         modelProvider.coverGrassBlockModel(this, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(), Blocks.ANDESITE);
         modelProvider.mirroredBlockModel(this, MiaBlocks.ABYSS_ANDESITE.get());
         modelProvider.lampTubeBlockModel(this, MiaBlocks.LAMP_TUBE.get());
+        modelProvider.pedestalBlockModel(this, MiaBlocks.PEDESTAL.get());
         modelProvider.abyssPortalBlockModel(this, MiaBlocks.ABYSS_PORTAL.get());
         modelProvider.abyssSpawnerBlockModel(this, MiaBlocks.ABYSS_SPAWNER.get());
         modelProvider.endlessCupBlockModel(this, MiaBlocks.ENDLESS_CUP.get());
@@ -36,6 +37,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         stateProvider.rotationYBlockState(this, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
         stateProvider.mirroredBlockState(this, MiaBlocks.ABYSS_ANDESITE.get());
         stateProvider.lampTubeBlockState(this, MiaBlocks.LAMP_TUBE.get());
+        stateProvider.baseBlockState(this, MiaBlocks.PEDESTAL.get());
         stateProvider.baseBlockState(this, MiaBlocks.ABYSS_PORTAL.get());
         stateProvider.abyssSpawnerBlockState(this, MiaBlocks.ABYSS_SPAWNER.get());
         stateProvider.baseBlockState(this, MiaBlocks.ENDLESS_CUP.get());
@@ -46,6 +48,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         blockItem(MiaBlocks.ABYSS_ANDESITE);
         blockItem(MiaBlocks.ABYSS_PORTAL);
         blockItem(MiaBlocks.LAMP_TUBE);
+        blockItem(MiaBlocks.PEDESTAL);
         blockItem(MiaBlocks.ABYSS_SPAWNER);
         basicItem(MiaBlocks.ENDLESS_CUP);
         basicItem(MiaBlocks.ROPE);

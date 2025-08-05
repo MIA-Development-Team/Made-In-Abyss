@@ -1,8 +1,10 @@
 package com.altnoir.mia.datagen.blockstate;
 
+import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 
 public class MiaModelProvider {
@@ -71,13 +73,20 @@ public class MiaModelProvider {
     }
 
     public void lampTubeBlockModel(BlockStateProvider provider, Block block) {
-        provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.modLoc("block/template_lamp_tube"))
+        provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.modLoc("block/template/lamp_tube"))
                 .renderType("cutout")
-                .texture("lamp_tube", provider.modLoc("block/" + MiaUtil.getBlockPath(block)));
+                .texture("lamp_tube", provider.modLoc("block/" + MiaUtil.getBlockPath(block)))
+                .texture("particle", provider.mcLoc("block/" + MiaUtil.getBlockPath(Blocks.AMETHYST_BLOCK)));
+    }
+    public void pedestalBlockModel(BlockStateProvider provider, Block block) {
+        provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.modLoc("block/template/pedestal"))
+                .renderType("cutout")
+                .texture("pedestal", provider.modLoc("block/" + MiaUtil.getBlockPath(block)))
+                .texture("particle", provider.modLoc("block/" + MiaUtil.getBlockPath(MiaBlocks.ABYSS_ANDESITE.get())));
     }
 
     public void endlessCupBlockModel(BlockStateProvider provider, Block block) {
-        provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.modLoc("template_endless_cup"))
+        provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.modLoc("block/template/endless_cup"))
                 .texture("top", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top"))
                 .texture("side", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side"))
                 .texture("bottom", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"));

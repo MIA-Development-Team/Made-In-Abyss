@@ -154,9 +154,16 @@ public class MiaBlocks {
     public static final DeferredBlock<Block> LAMP_TUBE = registerBlock("lamp_tube", () -> new LampTubeBlock(
             BlockBehaviour.Properties.of()
                     .forceSolidOff()
-                    .instabreak()
+                    .strength(1.5F)
                     .lightLevel(litBlockEmission(BlockStateProperties.POWERED, 10))
                     .sound(SoundType.AMETHYST)
+                    .noOcclusion()));
+
+    public static final DeferredBlock<Block> PEDESTAL = registerBlock("pedestal", () -> new PedestalBlock(
+            BlockBehaviour.Properties.of()
+                    .forceSolidOff()
+                    .strength(1.5F)
+                    .sound(SoundType.NETHERITE_BLOCK)
                     .noOcclusion()));
 
     public static final DeferredBlock<Block> ABYSS_PORTAL = registerBlock("abyss_portal", () -> new AbyssPortalBlock(

@@ -78,6 +78,7 @@ public class MiaItemGroups {
                         output.accept(MiaItems.WHITE_WHISTLE);
                         output.accept(MiaItems.ROPE);
                         output.accept(MiaBlocks.LAMP_TUBE);
+                        output.accept(MiaBlocks.PEDESTAL);
                         output.accept(MiaBlocks.ARTIFACT_SMITHING_TABLE);
                     })
                     .build());

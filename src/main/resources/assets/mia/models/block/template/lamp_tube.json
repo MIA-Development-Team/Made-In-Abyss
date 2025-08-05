@@ -2,9 +2,6 @@
 	"credit": "Made with EEK",
 	"parent": "block/block",
 	"texture_size": [32, 32],
-	"textures": {
-		"particle": "block/amethyst_block"
-	},
 	"elements": [
 		{
 			"from": [2, 0, 2],

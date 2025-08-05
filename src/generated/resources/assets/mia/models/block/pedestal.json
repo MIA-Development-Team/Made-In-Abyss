@@ -1,0 +1,8 @@
+{
+  "parent": "mia:block/template/pedestal",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "mia:block/abyss_andesite",
+    "pedestal": "mia:block/pedestal"
+  }
+}

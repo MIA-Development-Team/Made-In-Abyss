@@ -112,6 +112,8 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS.get())
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get())
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL.get())
+                .add(MiaBlocks.LAMP_TUBE.get())
+                .add(MiaBlocks.PEDESTAL.get())
                 .add(MiaBlocks.ARTIFACT_SMITHING_TABLE.get())
                 .add(MiaBlocks.ENDLESS_CUP.get());
 

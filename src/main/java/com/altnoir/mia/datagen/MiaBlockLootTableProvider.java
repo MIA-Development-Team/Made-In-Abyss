@@ -85,6 +85,7 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
 
         dropSelf(MiaBlocks.LAMP_TUBE.get());
+        dropSelf(MiaBlocks.PEDESTAL.get());
         dropSelf(MiaBlocks.ABYSS_PORTAL.get());
         dropWhenSilkTouch(MiaBlocks.ABYSS_SPAWNER.get());
         dropSelf(MiaBlocks.ENDLESS_CUP.get());
