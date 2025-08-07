@@ -47,6 +47,8 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS);
                         output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB);
                         output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL);
+
+                        // woods
                         output.accept(MiaBlocks.SKYFOG_LOG);
                         output.accept(MiaBlocks.SKYFOG_WOOD);
                         output.accept(MiaBlocks.STRIPPED_SKYFOG_LOG);
@@ -64,10 +66,13 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.FORTITUDE_FLOWER);
                         output.accept(MiaBlocks.SKYFOG_PRESSURE_PLATE);
                         output.accept(MiaBlocks.SKYFOG_BUTTON);
+
+                        // props
+                        output.accept(MiaBlocks.HOPPER_FARMLAND);
                         output.accept(MiaBlocks.ABYSS_PORTAL);
                         output.accept(MiaBlocks.ABYSS_SPAWNER);
 
-                        // consumable
+                        // foods
                         output.accept(MiaItems.MISTFUZZ_PEACH);
 
                         // tools
@@ -89,6 +94,7 @@ public class MiaItemGroups {
                     .icon(() -> new ItemStack(MiaItems.FANCY_ARTIFACT_BUNDLE.get()))
                     .displayItems((parameters, output) -> {
                         // artifacts
+                        output.accept(MiaBlocks.ARTIFACT_SMITHING_TABLE);
                         output.accept(MiaItems.GRAY_ARTIFACT_BUNDLE);
                         output.accept(MiaItems.FANCY_ARTIFACT_BUNDLE);
 

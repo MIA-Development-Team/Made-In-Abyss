@@ -1,0 +1,8 @@
+{
+  "parent": "mia:block/template/hopper_farmland",
+  "textures": {
+    "bottom": "mia:block/hopper_farmland_bottom",
+    "side": "minecraft:block/dirt",
+    "top": "mia:block/hopper_farmland_moist"
+  }
+}

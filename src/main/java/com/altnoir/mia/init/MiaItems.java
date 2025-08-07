@@ -7,10 +7,11 @@ import com.altnoir.mia.item.EnhanceableArtifact;
 import com.altnoir.mia.item.RopeItem;
 import com.altnoir.mia.item.SimpleWhistle;
 import com.altnoir.mia.item.abs.IArtifactItem.Grade;
-
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -19,15 +20,15 @@ public class MiaItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MIA.MOD_ID);
 
     public static final DeferredItem<Item> RED_WHISTLE = ITEMS.register("red_whistle", () -> new SimpleWhistle(
-            new Item.Properties(), 1, Attributes.MAX_HEALTH, 4, AttributeModifier.Operation.ADD_VALUE));
+            new Item.Properties(), 1, 4));
     public static final DeferredItem<Item> BLUE_WHISTLE = ITEMS.register("blue_whistle", () -> new SimpleWhistle(
-            new Item.Properties(), 2, Attributes.MAX_HEALTH, 8, AttributeModifier.Operation.ADD_VALUE));
+            new Item.Properties(), 2, 8));
     public static final DeferredItem<Item> MOON_WHISTLE = ITEMS.register("moon_whistle", () -> new SimpleWhistle(
-            new Item.Properties(), 3, Attributes.MAX_HEALTH, 12, AttributeModifier.Operation.ADD_VALUE));
+            new Item.Properties(), 3, 12));
     public static final DeferredItem<Item> BLACK_WHISTLE = ITEMS.register("black_whistle", () -> new SimpleWhistle(
-            new Item.Properties(), 4, Attributes.MAX_HEALTH, 16, AttributeModifier.Operation.ADD_VALUE));
+            new Item.Properties(), 4, 16));
     public static final DeferredItem<Item> WHITE_WHISTLE = ITEMS.register("white_whistle", () -> new SimpleWhistle(
-            new Item.Properties(), 5, Attributes.MAX_HEALTH, 20, AttributeModifier.Operation.ADD_VALUE));
+            new Item.Properties(), 5, 20));
 
     public static final DeferredItem<Item> GRAY_ARTIFACT_BUNDLE = ITEMS.register("gray_artifact_bundle",
             () -> new ArtifactBundle(new Item.Properties(), Grade.THIRD, 3));

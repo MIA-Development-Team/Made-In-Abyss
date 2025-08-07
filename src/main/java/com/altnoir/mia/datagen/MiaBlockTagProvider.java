@@ -6,6 +6,7 @@ import com.altnoir.mia.init.MiaBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
@@ -85,6 +86,10 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
         tag(BlockTags.CLIMBABLE)
                 .add(MiaBlocks.ROPE.get());
 
+        //NeoForge标签
+        tag(Tags.Blocks.VILLAGER_FARMLANDS)
+                .add(MiaBlocks.HOPPER_FARMLAND.get());
+
         // 工具标签
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
@@ -116,6 +121,9 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.PEDESTAL.get())
                 .add(MiaBlocks.ARTIFACT_SMITHING_TABLE.get())
                 .add(MiaBlocks.ENDLESS_CUP.get());
+
+        tag(BlockTags.MINEABLE_WITH_SHOVEL)
+                .add(MiaBlocks.HOPPER_FARMLAND.get());
 
         // 标签嵌套
         tag(BlockTags.SCULK_REPLACEABLE)

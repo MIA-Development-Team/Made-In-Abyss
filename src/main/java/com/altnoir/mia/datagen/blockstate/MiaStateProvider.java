@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.trialspawner.TrialSpawnerState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
@@ -36,6 +37,21 @@ public class MiaStateProvider {
                         getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block)), 180),
                         getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_mirrored"), 180)
                 );
+    }
+
+    public void moistureBlockState(BlockStateProvider provider, Block block) {
+        VariantBlockStateBuilder builder = provider.getVariantBuilder(block);
+        IntegerProperty moisture = BlockStateProperties.MOISTURE;
+
+        for (int i = 0; i < 7; i++) {
+            builder.partialState()
+                    .with(moisture, i)
+                    .addModels(getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block))));
+        }
+
+        builder.partialState()
+                .with(moisture, 7)
+                .addModels(getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_moist")));
     }
 
     public void lampTubeBlockState(BlockStateProvider provider, Block block) {

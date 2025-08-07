@@ -18,45 +18,28 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         super(output, MIA.MOD_ID, exFileHelper);
     }
 
+    private static final MiaModelProvider modelProvider = new MiaModelProvider();
+    private static final MiaStateProvider stateProvider = new MiaStateProvider();
+
     @Override
     protected void registerStatesAndModels() {
-        var modelProvider = new MiaModelProvider();
-        var stateProvider = new MiaStateProvider();
 
-        // block models
-        modelProvider.coverGrassBlockModel(this, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(), Blocks.ANDESITE);
-        modelProvider.mirroredBlockModel(this, MiaBlocks.ABYSS_ANDESITE.get());
-        modelProvider.lampTubeBlockModel(this, MiaBlocks.LAMP_TUBE.get());
-        modelProvider.pedestalBlockModel(this, MiaBlocks.PEDESTAL.get());
-        modelProvider.abyssPortalBlockModel(this, MiaBlocks.ABYSS_PORTAL.get());
-        modelProvider.abyssSpawnerBlockModel(this, MiaBlocks.ABYSS_SPAWNER.get());
-        modelProvider.endlessCupBlockModel(this, MiaBlocks.ENDLESS_CUP.get());
-        modelProvider.ropeBlockModel(this, MiaBlocks.ROPE.get());
+        // props
+        ropeBlock();
+        lampTubeBlock();
+        pedestalBlock();
+        abyssSpawnerBlock();
+        abyssPortalBlock();
 
-        // block states
-        stateProvider.rotationYBlockState(this, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
-        stateProvider.mirroredBlockState(this, MiaBlocks.ABYSS_ANDESITE.get());
-        stateProvider.lampTubeBlockState(this, MiaBlocks.LAMP_TUBE.get());
-        stateProvider.baseBlockState(this, MiaBlocks.PEDESTAL.get());
-        stateProvider.baseBlockState(this, MiaBlocks.ABYSS_PORTAL.get());
-        stateProvider.abyssSpawnerBlockState(this, MiaBlocks.ABYSS_SPAWNER.get());
-        stateProvider.baseBlockState(this, MiaBlocks.ENDLESS_CUP.get());
-        stateProvider.baseBlockState(this, MiaBlocks.ROPE.get());
-
-        // items
-        blockItem(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
-        blockItem(MiaBlocks.ABYSS_ANDESITE);
-        blockItem(MiaBlocks.ABYSS_PORTAL);
-        blockItem(MiaBlocks.LAMP_TUBE);
-        blockItem(MiaBlocks.PEDESTAL);
-        blockItem(MiaBlocks.ABYSS_SPAWNER);
-        basicItem(MiaBlocks.ENDLESS_CUP);
-        basicItem(MiaBlocks.ROPE);
-
-        // crafting tables
-        artifactSmithingTableBlock(modelProvider, stateProvider);
+        // artifact
+        artifactSmithingTableBlock();
+        hopperFarmBlock();
+        endlessCupBlock();
 
         // decoration blocks
+        coverGrassBlock();
+        mirroredBlock(MiaBlocks.ABYSS_ANDESITE);
+
         stairsBlockWithItem(MiaBlocks.ABYSS_ANDESITE_STAIRS, MiaBlocks.ABYSS_ANDESITE);
         slabBlockWithItem(MiaBlocks.ABYSS_ANDESITE_SLAB, MiaBlocks.ABYSS_ANDESITE);
         wallBlockWithItem(MiaBlocks.ABYSS_ANDESITE_WALL, MiaBlocks.ABYSS_ANDESITE);
@@ -113,10 +96,65 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
     }
 
-    private void artifactSmithingTableBlock(MiaModelProvider modelProvider, MiaStateProvider stateProvider) {
+    private void coverGrassBlock() {
+        modelProvider.coverGrassBlockModel(this, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(), MiaBlocks.ABYSS_ANDESITE.get());
+        stateProvider.rotationYBlockState(this, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
+        blockItem(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
+    }
+
+    private void mirroredBlock(DeferredBlock<?> block) {
+        modelProvider.mirroredBlockModel(this, block.get());
+        stateProvider.mirroredBlockState(this, block.get());
+        blockItem(block);
+    }
+
+    private void hopperFarmBlock() {
+        modelProvider.hopperFarmBlockModel(this, MiaBlocks.HOPPER_FARMLAND.get());
+        stateProvider.moistureBlockState(this, MiaBlocks.HOPPER_FARMLAND.get());
+        blockItem(MiaBlocks.HOPPER_FARMLAND);
+    }
+
+    private void ropeBlock() {
+        modelProvider.ropeBlockModel(this, MiaBlocks.ROPE.get());
+        stateProvider.baseBlockState(this, MiaBlocks.ROPE.get());
+        basicItem(MiaBlocks.ROPE);
+    }
+
+    private void lampTubeBlock() {
+        modelProvider.lampTubeBlockModel(this, MiaBlocks.LAMP_TUBE.get());
+        stateProvider.lampTubeBlockState(this, MiaBlocks.LAMP_TUBE.get());
+        blockItem(MiaBlocks.LAMP_TUBE);
+    }
+
+    private void pedestalBlock() {
+        modelProvider.pedestalBlockModel(this, MiaBlocks.PEDESTAL.get());
+        stateProvider.baseBlockState(this, MiaBlocks.PEDESTAL.get());
+        blockItem(MiaBlocks.PEDESTAL);
+    }
+
+
+    private void abyssSpawnerBlock() {
+        modelProvider.abyssSpawnerBlockModel(this, MiaBlocks.ABYSS_SPAWNER.get());
+        stateProvider.abyssSpawnerBlockState(this, MiaBlocks.ABYSS_SPAWNER.get());
+        blockItem(MiaBlocks.ABYSS_SPAWNER);
+    }
+
+    private void abyssPortalBlock() {
+        modelProvider.abyssPortalBlockModel(this, MiaBlocks.ABYSS_PORTAL.get());
+        stateProvider.baseBlockState(this, MiaBlocks.ABYSS_PORTAL.get());
+        blockItem(MiaBlocks.ABYSS_PORTAL);
+    }
+
+    private void artifactSmithingTableBlock() {
         modelProvider.artifactSmithingTableBlockModel(this, MiaBlocks.ARTIFACT_SMITHING_TABLE.get(), MiaBlocks.CHISLED_ABYSS_ANDESITE.get());
         stateProvider.baseBlockState(this, MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
         blockItem(MiaBlocks.ARTIFACT_SMITHING_TABLE);
+    }
+
+    private void endlessCupBlock() {
+        modelProvider.endlessCupBlockModel(this, MiaBlocks.ENDLESS_CUP.get());
+        stateProvider.baseBlockState(this, MiaBlocks.ENDLESS_CUP.get());
+        basicItem(MiaBlocks.ENDLESS_CUP);
     }
 
     protected void sapingAndCrossBlock(DeferredBlock<?> block) {

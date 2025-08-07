@@ -2,10 +2,10 @@
     "itemgroup.mia": "来自深渊",
 
     "item.mia.red_whistle": "赤笛",
-    "item.mia.blue_whistle": "苍笛",
-    "item.mia.moon_whistle": "月笛",
-    "item.mia.black_whistle": "黑笛",
-    "item.mia.white_whistle": "白笛",
+    "item.mia.blue_whistle": "§b苍笛",
+    "item.mia.moon_whistle": "§d月笛",
+    "item.mia.black_whistle": "§e黑笛",
+    "item.mia.white_whistle": "§c白笛",
     "item.mia.mistfuzz_peach": "雾绒果",
     "item.mia.test_artifact_1": "测试遗物1",
     "item.mia.test_artifact_2": "测试遗物2",
@@ -128,5 +128,4 @@
 
 
     "block.mia.rope": "绳索"
-
 }

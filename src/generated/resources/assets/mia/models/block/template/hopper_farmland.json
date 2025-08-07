@@ -20,7 +20,6 @@
           "texture": "#side"
         },
         "up": {
-          "cullface": "up",
           "texture": "#top"
         },
         "west": {
@@ -35,15 +34,12 @@
       ],
       "to": [
         16,
-        16,
+        15,
         16
       ]
     }
   ],
   "textures": {
-    "bottom": "mia:block/abyss_andesite",
-    "particle": "mia:block/abyss_andesite",
-    "side": "mia:block/covergrass_abyss_andesite_side",
-    "top": "mia:block/abyss_grass_block_top"
+    "particle": "minecraft:block/dirt"
   }
 }

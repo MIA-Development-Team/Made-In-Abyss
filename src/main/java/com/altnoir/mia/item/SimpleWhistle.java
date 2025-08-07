@@ -10,6 +10,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
 
@@ -20,12 +21,11 @@ public class SimpleWhistle extends AbstractWhistle {
 
     public static final ResourceLocation WHISTLE_ATTRIBUTE = MiaUtil.miaId("whistle_attribute");
 
-    public SimpleWhistle(Properties properties, int artifactSlotCount, Holder<Attribute> attribute, double amount,
-            AttributeModifier.Operation operation) {
+    public SimpleWhistle(Properties properties, int artifactSlotCount, double amount) {
         super(properties.stacksTo(1));
         this.artifactSlotCount = artifactSlotCount;
-        this.attributeModifier = new AttributeModifier(WHISTLE_ATTRIBUTE, amount, operation);
-        this.attribute = attribute;
+        this.attributeModifier = new AttributeModifier(WHISTLE_ATTRIBUTE, amount, AttributeModifier.Operation.ADD_VALUE);
+        this.attribute = Attributes.MAX_HEALTH;
     }
 
     @Override
