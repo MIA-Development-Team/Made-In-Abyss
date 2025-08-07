@@ -48,6 +48,14 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB);
                         output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL);
 
+                        output.accept(MiaBlocks.PRASIOLITE_BLOCK);
+                        output.accept(MiaBlocks.BUDDING_PRASIOLITE);
+                        output.accept(MiaBlocks.SMALL_PRASIOLITE_BUD);
+                        output.accept(MiaBlocks.MEDIUM_PRASIOLITE_BUD);
+                        output.accept(MiaBlocks.LARGE_PRASIOLITE_BUD);
+                        output.accept(MiaBlocks.PRASIOLITE_CLUSTER);
+                        output.accept(MiaItems.PRASIOLITE);
+
                         // woods
                         output.accept(MiaBlocks.SKYFOG_LOG);
                         output.accept(MiaBlocks.SKYFOG_WOOD);

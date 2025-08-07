@@ -42,6 +42,9 @@ public class MiaItems {
     public static final DeferredItem<Item> TEST_ARTIFACT_3 = ITEMS.register("test_artifact_3",
             () -> new EnhanceableArtifact(new Item.Properties(), Grade.SPECIAL, 4));
 
+    public static final DeferredItem<Item> PRASIOLITE = ITEMS.register("prasiolite",
+            () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> MISTFUZZ_PEACH = ITEMS.register("mistfuzz_peach",
             () -> new Item(new Item.Properties().food(MiaFoods.MISTFUZZ_PEACH)));
 

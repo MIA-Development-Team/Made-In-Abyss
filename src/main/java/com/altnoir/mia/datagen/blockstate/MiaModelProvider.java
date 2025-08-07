@@ -9,17 +9,17 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 
 public class MiaModelProvider {
-    public void coverGrassBlockModel(BlockStateProvider provider, Block block, Block bottom) {
-        baseTSBModel(provider, MiaUtil.getBlockPath(block),
-                provider.modLoc("block/abyss_grass_block_top"),
-                provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side"),
-                provider.modLoc("block/" + MiaUtil.getBlockPath(bottom)),
-                provider.modLoc("block/" + MiaUtil.getBlockPath(bottom))
+    public void coverGrassBlockModel(BlockStateProvider p, Block block, Block bottom) {
+        baseTSBModel(p, MiaUtil.getBlockPath(block),
+                p.modLoc("block/abyss_grass_block_top"),
+                p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side"),
+                p.modLoc("block/" + MiaUtil.getBlockPath(bottom)),
+                p.modLoc("block/" + MiaUtil.getBlockPath(bottom))
         );
     }
 
-    public void baseTSBModel(BlockStateProvider provider, String block, ResourceLocation top, ResourceLocation side, ResourceLocation bottom, ResourceLocation particle) {
-        provider.models().withExistingParent(block, provider.mcLoc("block/block"))
+    public void baseTSBModel(BlockStateProvider p, String block, ResourceLocation top, ResourceLocation side, ResourceLocation bottom, ResourceLocation particle) {
+        p.models().withExistingParent(block, p.mcLoc("block/block"))
                 .texture("top", top).texture("side", side).texture("bottom", bottom).texture("particle", particle)
                 .element().from(0, 0, 0).to(16, 16, 16)
                 .allFaces((face, faceBuilder) -> faceBuilder
@@ -28,22 +28,22 @@ public class MiaModelProvider {
                         .uvs(0, 0, 16, 16));
     }
 
-    public void hopperFarmBlockModel(BlockStateProvider provider, Block block) {
-        templateHopperFarmland(provider);
-        provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.modLoc("block/template/hopper_farmland"))
-                .texture("top", provider.modLoc("block/" + MiaUtil.getBlockPath(block)))
-                .texture("side", provider.mcLoc("block/dirt"))
-                .texture("bottom", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"));
+    public void hopperFarmBlockModel(BlockStateProvider p, Block block) {
+        templateHopperFarmland(p);
+        p.models().withExistingParent(MiaUtil.getBlockPath(block), p.modLoc("block/template/hopper_farmland"))
+                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
+                .texture("side", p.mcLoc("block/dirt"))
+                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"));
 
-        provider.models().withExistingParent(MiaUtil.getBlockPath(block) + "_moist", provider.modLoc("block/template/hopper_farmland"))
-                .texture("top", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_moist"))
-                .texture("side", provider.mcLoc("block/dirt"))
-                .texture("bottom", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"));
+        p.models().withExistingParent(MiaUtil.getBlockPath(block) + "_moist", p.modLoc("block/template/hopper_farmland"))
+                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_moist"))
+                .texture("side", p.mcLoc("block/dirt"))
+                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"));
     }
 
-    private void templateHopperFarmland(BlockStateProvider provider) {
-        provider.models().withExistingParent("block/template/hopper_farmland", provider.mcLoc("block/block"))
-                .texture("particle", provider.mcLoc("block/dirt"))
+    private void templateHopperFarmland(BlockStateProvider p) {
+        p.models().withExistingParent("block/template/hopper_farmland", p.mcLoc("block/block"))
+                .texture("particle", p.mcLoc("block/dirt"))
                 .element().from(0, 0, 0).to(16, 15, 16)
                 .face(Direction.DOWN).uvs(0, 0, 16, 16).texture("#bottom").cullface(Direction.DOWN).end()
                 .face(Direction.UP).uvs(0, 0, 16, 16).texture("#top").end()
@@ -53,11 +53,11 @@ public class MiaModelProvider {
                 .face(Direction.EAST).uvs(0, 1, 16, 16).texture("#side").cullface(Direction.EAST).end();
     }
 
-    public void ropeBlockModel(BlockStateProvider provider, Block block) {
-        provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.mcLoc("block/block"))
+    public void ropeBlockModel(BlockStateProvider p, Block block) {
+        p.models().withExistingParent(MiaUtil.getBlockPath(block), p.mcLoc("block/block"))
                 .renderType("cutout")
-                .texture("rope", provider.modLoc("block/rope"))
-                .texture("particle", provider.modLoc("block/rope"))
+                .texture("rope", p.modLoc("block/rope"))
+                .texture("particle", p.modLoc("block/rope"))
                 .element().from(6, 0, 6).to(10, 16, 10)
                 .allFaces((face, faceBuilder) -> {
                     faceBuilder.texture("#rope");
@@ -75,23 +75,23 @@ public class MiaModelProvider {
                 .face(Direction.EAST).uvs(4, 0, 8, 16).texture("#rope").end();
     }
 
-    public void abyssPortalBlockModel(BlockStateProvider provider, Block block) {
-        provider.models().getBuilder(MiaUtil.getBlockPath(block))
-                .texture("particle", provider.modLoc("block/" + MiaUtil.getBlockPath(block)))
-                .texture("portal1", provider.modLoc("block/" + MiaUtil.getBlockPath(block)) + "_dark")
-                .texture("portal2", provider.modLoc("block/" + MiaUtil.getBlockPath(block)))
+    public void abyssPortalBlockModel(BlockStateProvider p, Block block) {
+        p.models().getBuilder(MiaUtil.getBlockPath(block))
+                .texture("particle", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
+                .texture("portal1", p.modLoc("block/" + MiaUtil.getBlockPath(block)) + "_dark")
+                .texture("portal2", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
                 .element().from(0, 1, 0).to(16, 15, 16)
                 .face(Direction.UP).uvs(0, 0, 16, 16).texture("#portal1").end()
                 .face(Direction.DOWN).uvs(0, 0, 16, 16).texture("#portal2").end();
     }
 
-    public void artifactSmithingTableBlockModel(BlockStateProvider provider, Block block, Block bottom) {
-        provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.mcLoc("block/block"))
-                .texture("ns", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_1"))
-                .texture("ew", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_2"))
-                .texture("top", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top"))
-                .texture("bottom", provider.modLoc("block/" + MiaUtil.getBlockPath(bottom)))
-                .texture("particle", provider.modLoc("block/" + MiaUtil.getBlockPath(bottom)))
+    public void artifactSmithingTableBlockModel(BlockStateProvider p, Block block, Block bottom) {
+        p.models().withExistingParent(MiaUtil.getBlockPath(block), p.mcLoc("block/block"))
+                .texture("ns", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_1"))
+                .texture("ew", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_2"))
+                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top"))
+                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(bottom)))
+                .texture("particle", p.modLoc("block/" + MiaUtil.getBlockPath(bottom)))
                 .element().from(0, 0, 0).to(16, 16, 16)
                 .allFaces((face, faceBuilder) -> faceBuilder
                         .texture(switch (face) {
@@ -104,78 +104,81 @@ public class MiaModelProvider {
                         .uvs(0, 0, 16, 16));
     }
 
-    public void lampTubeBlockModel(BlockStateProvider provider, Block block) {
-        provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.modLoc("block/template/lamp_tube"))
+    public void lampTubeBlockModel(BlockStateProvider p, Block block) {
+        p.models().withExistingParent(MiaUtil.getBlockPath(block), p.modLoc("block/template/lamp_tube"))
                 .renderType("cutout")
-                .texture("lamp_tube", provider.modLoc("block/" + MiaUtil.getBlockPath(block)))
-                .texture("particle", provider.mcLoc("block/" + MiaUtil.getBlockPath(Blocks.AMETHYST_BLOCK)));
+                .texture("lamp_tube", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
+                .texture("particle", p.mcLoc("block/" + MiaUtil.getBlockPath(Blocks.AMETHYST_BLOCK)));
     }
 
-    public void pedestalBlockModel(BlockStateProvider provider, Block block) {
-        provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.modLoc("block/template/pedestal"))
+    public void pedestalBlockModel(BlockStateProvider p, Block block) {
+        p.models().withExistingParent(MiaUtil.getBlockPath(block), p.modLoc("block/template/pedestal"))
                 .renderType("cutout")
-                .texture("pedestal", provider.modLoc("block/" + MiaUtil.getBlockPath(block)))
-                .texture("particle", provider.modLoc("block/" + MiaUtil.getBlockPath(MiaBlocks.ABYSS_ANDESITE.get())));
+                .texture("pedestal", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
+                .texture("particle", p.modLoc("block/" + MiaUtil.getBlockPath(MiaBlocks.ABYSS_ANDESITE.get())));
     }
 
-    public void endlessCupBlockModel(BlockStateProvider provider, Block block) {
-        provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.modLoc("block/template/endless_cup"))
-                .texture("top", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top"))
-                .texture("side", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side"))
-                .texture("bottom", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"));
+    public void endlessCupBlockModel(BlockStateProvider p, Block block) {
+        p.models().withExistingParent(MiaUtil.getBlockPath(block), p.modLoc("block/template/endless_cup"))
+                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top"))
+                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side"))
+                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"));
     }
 
-    public void abyssSpawnerBlockModel(BlockStateProvider provider, Block block) {
-        provider.models()
-                .withExistingParent(MiaUtil.getBlockPath(block), provider.mcLoc("block/cube_bottom_top_inner_faces"))
+    public void abyssSpawnerBlockModel(BlockStateProvider p, Block block) {
+        p.models()
+                .withExistingParent(MiaUtil.getBlockPath(block), p.mcLoc("block/cube_bottom_top_inner_faces"))
                 .renderType("cutout")
-                .texture("bottom", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
-                .texture("side", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_inactive"))
-                .texture("top", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_inactive"));
-        provider.models()
+                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
+                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_inactive"))
+                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_inactive"));
+        p.models()
                 .withExistingParent(MiaUtil.getBlockPath(block) + "_active",
-                        provider.mcLoc("block/cube_bottom_top_inner_faces"))
+                        p.mcLoc("block/cube_bottom_top_inner_faces"))
                 .renderType("cutout")
-                .texture("bottom", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
-                .texture("side", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_active"))
-                .texture("top", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_active"));
-        provider.models()
+                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
+                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_active"))
+                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_active"));
+        p.models()
                 .withExistingParent(MiaUtil.getBlockPath(block) + "_active_ominous",
-                        provider.mcLoc("block/cube_bottom_top_inner_faces"))
+                        p.mcLoc("block/cube_bottom_top_inner_faces"))
                 .renderType("cutout")
-                .texture("bottom", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
-                .texture("side", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_active_ominous"))
-                .texture("top", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_active_ominous"));
-        provider.models()
+                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
+                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_active_ominous"))
+                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_active_ominous"));
+        p.models()
                 .withExistingParent(MiaUtil.getBlockPath(block) + "_ejecting_reward",
-                        provider.mcLoc("block/cube_bottom_top_inner_faces"))
+                        p.mcLoc("block/cube_bottom_top_inner_faces"))
                 .renderType("cutout")
-                .texture("bottom", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
-                .texture("side", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_active"))
-                .texture("top", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_ejecting_reward"));
-        provider.models()
+                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
+                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_active"))
+                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_ejecting_reward"));
+        p.models()
                 .withExistingParent(MiaUtil.getBlockPath(block) + "_ejecting_reward_ominous",
-                        provider.mcLoc("block/cube_bottom_top_inner_faces"))
+                        p.mcLoc("block/cube_bottom_top_inner_faces"))
                 .renderType("cutout")
-                .texture("bottom", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
-                .texture("side", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_active_ominous"))
+                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
+                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_active_ominous"))
                 .texture("top",
-                        provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_ejecting_reward_ominous"));
-        provider.models()
+                        p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_ejecting_reward_ominous"));
+        p.models()
                 .withExistingParent(MiaUtil.getBlockPath(block) + "_ominous",
-                        provider.mcLoc("block/cube_bottom_top_inner_faces"))
+                        p.mcLoc("block/cube_bottom_top_inner_faces"))
                 .renderType("cutout")
-                .texture("bottom", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
-                .texture("side", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_inactive_ominous"))
-                .texture("top", provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_inactive_ominous"));
+                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
+                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_inactive_ominous"))
+                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_inactive_ominous"));
     }
 
-    public void mirroredBlockModel(BlockStateProvider provider, Block block) {
-        provider.models().withExistingParent(MiaUtil.getBlockPath(block), provider.mcLoc("block/cube_all"))
-                .texture("all", provider.modLoc("block/" + MiaUtil.getBlockPath(block)));
-        provider.models()
-                .withExistingParent(MiaUtil.getBlockPath(block) + "_mirrored",
-                        provider.mcLoc("block/cube_mirrored_all"))
-                .texture("all", provider.modLoc("block/" + MiaUtil.getBlockPath(block)));
+    public void crossModel(BlockStateProvider p, Block block) {
+        p.models().withExistingParent(MiaUtil.getBlockPath(block), p.mcLoc("block/cross")).renderType("cutout")
+                .texture("cross", p.modLoc("block/" + MiaUtil.getBlockPath(block)));
+    }
+
+    public void mirroredBlockModel(BlockStateProvider p, Block block) {
+        p.models().withExistingParent(MiaUtil.getBlockPath(block), p.mcLoc("block/cube_all"))
+                .texture("all", p.modLoc("block/" + MiaUtil.getBlockPath(block)));
+        p.models().withExistingParent(MiaUtil.getBlockPath(block) + "_mirrored", p.mcLoc("block/cube_mirrored_all"))
+                .texture("all", p.modLoc("block/" + MiaUtil.getBlockPath(block)));
     }
 }

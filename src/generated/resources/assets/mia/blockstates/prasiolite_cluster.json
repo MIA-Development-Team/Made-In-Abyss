@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "mia:block/prasiolite_cluster",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "mia:block/prasiolite_cluster",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "mia:block/prasiolite_cluster",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "mia:block/prasiolite_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "mia:block/prasiolite_cluster"
+    },
+    "facing=west": {
+      "model": "mia:block/prasiolite_cluster",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

@@ -129,67 +129,104 @@ public class MiaBlocks {
                     .offsetType(BlockBehaviour.OffsetType.XZ)
                     .pushReaction(PushReaction.DESTROY)));
 
-    public static final DeferredBlock<Block> SKYFOG_PRESSURE_PLATE = registerBlock("skyfog_pressure_plate",
-            () -> woodenPressurePlate(BlockSetType.OAK, SKYFOG_PLANKS.get().defaultMapColor()));
-    public static final DeferredBlock<Block> SKYFOG_BUTTON = registerBlock("skyfog_button",
-            () -> woodenButton(BlockSetType.OAK));
+    public static final DeferredBlock<Block> SKYFOG_PRESSURE_PLATE = registerBlock("skyfog_pressure_plate", () ->
+            woodenPressurePlate(BlockSetType.OAK, SKYFOG_PLANKS.get().defaultMapColor()));
+    public static final DeferredBlock<Block> SKYFOG_BUTTON = registerBlock("skyfog_button", () ->
+            woodenButton(BlockSetType.OAK));
 
-    public static final DeferredBlock<Block> HOPPER_FARMLAND = registerBlock("hopper_farmland", () -> new HopperFarmBlock(
-            BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.DIRT)
-                    .randomTicks()
-                    .strength(0.6F)
-                    .sound(SoundType.GRAVEL)
-                    .isViewBlocking(MiaBlocks::always)
-                    .isSuffocating(MiaBlocks::always)
-    ));
+    public static final DeferredBlock<Block> PRASIOLITE_BLOCK = registerBlock("prasiolite_block", () ->
+            new PrasioliteBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_GREEN)
+                            .strength(1.5F)
+                            .sound(SoundType.AMETHYST)
+                            .requiresCorrectToolForDrops()
+            ));
+    public static final DeferredBlock<Block> BUDDING_PRASIOLITE = registerBlock("budding_prasiolite", () ->
+            new BuddingPrasioliteBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_GREEN)
+                            .randomTicks()
+                            .strength(1.5F)
+                            .sound(SoundType.AMETHYST)
+                            .requiresCorrectToolForDrops()
+                            .pushReaction(PushReaction.DESTROY)
+            ));
+    public static final DeferredBlock<Block> PRASIOLITE_CLUSTER = registerBlock("prasiolite_cluster", () ->
+            cluster(7, 3, SoundType.AMETHYST_CLUSTER, 5)
+    );
+    public static final DeferredBlock<Block> LARGE_PRASIOLITE_BUD = registerBlock("large_cluster_bud", () ->
+            cluster(5, 3, SoundType.AMETHYST_CLUSTER, 4)
+    );
+    public static final DeferredBlock<Block> MEDIUM_PRASIOLITE_BUD = registerBlock("medium_cluster_bud", () ->
+            cluster(4, 3, SoundType.AMETHYST_CLUSTER, 2)
+    );
+    public static final DeferredBlock<Block> SMALL_PRASIOLITE_BUD = registerBlock("small_cluster_bud", () ->
+            cluster(3, 3, SoundType.AMETHYST_CLUSTER, 1)
+    );
+
+    public static final DeferredBlock<Block> HOPPER_FARMLAND = registerBlock("hopper_farmland", () ->
+            new HopperFarmBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.DIRT)
+                            .randomTicks()
+                            .strength(0.6F)
+                            .sound(SoundType.GRAVEL)
+                            .isViewBlocking(MiaBlocks::always)
+                            .isSuffocating(MiaBlocks::always)
+            ));
 
     @SuppressWarnings("deprecation")
-    public static final DeferredBlock<Block> LAMP_TUBE = registerBlock("lamp_tube", () -> new LampTubeBlock(
-            BlockBehaviour.Properties.of()
-                    .forceSolidOff()
-                    .strength(1.5F)
-                    .lightLevel(litBlockEmission(BlockStateProperties.POWERED, 10))
-                    .sound(SoundType.AMETHYST)
-                    .noOcclusion()));
+    public static final DeferredBlock<Block> LAMP_TUBE = registerBlock("lamp_tube", () ->
+            new LampTubeBlock(
+                    BlockBehaviour.Properties.of()
+                            .forceSolidOff()
+                            .strength(1.5F)
+                            .lightLevel(litBlockEmission(BlockStateProperties.POWERED, 10))
+                            .sound(SoundType.AMETHYST)
+                            .noOcclusion()));
 
-    public static final DeferredBlock<Block> PEDESTAL = registerBlock("pedestal", () -> new PedestalBlock(
-            BlockBehaviour.Properties.of()
-                    .forceSolidOff()
-                    .strength(1.5F)
-                    .sound(SoundType.NETHERITE_BLOCK)
-                    .noOcclusion()));
+    public static final DeferredBlock<Block> PEDESTAL = registerBlock("pedestal", () ->
+            new PedestalBlock(
+                    BlockBehaviour.Properties.of()
+                            .forceSolidOff()
+                            .strength(1.5F)
+                            .sound(SoundType.NETHERITE_BLOCK)
+                            .noOcclusion()));
 
-    public static final DeferredBlock<Block> ABYSS_PORTAL = registerBlock("abyss_portal", () -> new AbyssPortalBlock(
-            BlockBehaviour.Properties.of()
-                    .noCollission()
-                    .strength(3.0F, 6.0F)
-                    .lightLevel(state -> 15)
-                    .sound(SoundType.GLASS)
-                    .pushReaction(PushReaction.BLOCK)));
+    public static final DeferredBlock<Block> ABYSS_PORTAL = registerBlock("abyss_portal", () ->
+            new AbyssPortalBlock(
+                    BlockBehaviour.Properties.of()
+                            .noCollission()
+                            .strength(3.0F, 6.0F)
+                            .lightLevel(state -> 15)
+                            .sound(SoundType.GLASS)
+                            .pushReaction(PushReaction.BLOCK)));
 
-    public static final DeferredBlock<Block> ABYSS_SPAWNER = registerBlock("abyss_spawner", () -> new AbyssSpawnerBlock(
-            BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.STONE)
-                    .instrument(NoteBlockInstrument.BASEDRUM)
-                    .lightLevel(state -> state.getValue(AbyssSpawnerBlock.STATE).lightLevel())
-                    .strength(50.0F)
-                    .sound(SoundType.TRIAL_SPAWNER)
-                    .isViewBlocking(MiaBlocks::never)
-                    .noOcclusion()));
+    public static final DeferredBlock<Block> ABYSS_SPAWNER = registerBlock("abyss_spawner", () ->
+            new AbyssSpawnerBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.STONE)
+                            .instrument(NoteBlockInstrument.BASEDRUM)
+                            .lightLevel(state -> state.getValue(AbyssSpawnerBlock.STATE).lightLevel())
+                            .strength(50.0F)
+                            .sound(SoundType.TRIAL_SPAWNER)
+                            .isViewBlocking(MiaBlocks::never)
+                            .noOcclusion()));
 
-    public static final DeferredBlock<Block> ARTIFACT_SMITHING_TABLE = registerBlock("artifact_smithing_table",
-            () -> new ArtifactEnhancementTableBlock(BlockBehaviour.Properties.of()
+    public static final DeferredBlock<Block> ARTIFACT_SMITHING_TABLE = registerBlock("artifact_smithing_table", () ->
+            new ArtifactEnhancementTableBlock(BlockBehaviour.Properties.of()
                     .requiresCorrectToolForDrops()
                     .strength(3.0F, 6.0F)
                     .sound(SoundType.NETHERITE_BLOCK)));
 
-    public static final DeferredBlock<Block> ENDLESS_CUP = registerBlock("endless_cup", () -> new EndlessCupBlock(
-            BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())));
+    public static final DeferredBlock<Block> ENDLESS_CUP = registerBlock("endless_cup", () ->
+            new EndlessCupBlock(
+                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())));
 
     @SuppressWarnings("deprecation")
-    public static final DeferredBlock<Block> ROPE = BLOCKS.register("rope",
-            () -> new RopeBlock(BlockBehaviour.Properties.of()
+    public static final DeferredBlock<Block> ROPE = BLOCKS.register("rope", () ->
+            new RopeBlock(BlockBehaviour.Properties.of()
                     .forceSolidOff().strength(0.4F)
                     .sound(SoundType.WOOL).noOcclusion()
                     .pushReaction(PushReaction.DESTROY)));
@@ -305,6 +342,18 @@ public class MiaBlocks {
                         .noOcclusion()
                         .isValidSpawn(Blocks::never)
                         .ignitedByLava());
+    }
+
+    private static Block cluster(float height, float aabbOffset, SoundType soundType, int lightValue) {
+        return new PrasioliteClusterBlock(height, aabbOffset,
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.COLOR_GREEN)
+                        .forceSolidOn()
+                        .noOcclusion()
+                        .sound(soundType)
+                        .strength(1.5F)
+                        .lightLevel(state -> lightValue)
+                        .pushReaction(PushReaction.DESTROY));
     }
 
     private static ToIntFunction<BlockState> litBlockEmission(BooleanProperty property, int lightValue) {

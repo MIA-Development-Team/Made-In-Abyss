@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "mia:block/small_cluster_bud",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "mia:block/small_cluster_bud",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "mia:block/small_cluster_bud",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "mia:block/small_cluster_bud",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "mia:block/small_cluster_bud"
+    },
+    "facing=west": {
+      "model": "mia:block/small_cluster_bud",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

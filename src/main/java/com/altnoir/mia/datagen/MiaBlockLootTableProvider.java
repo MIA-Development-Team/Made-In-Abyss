@@ -2,11 +2,14 @@ package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaItems;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
@@ -17,6 +20,7 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +31,8 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
     protected MiaBlockLootTableProvider(HolderLookup.Provider registries) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
     }
+
+    private final HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 
     @Override
     protected void generate() {
@@ -80,6 +86,13 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(MiaBlocks.SKYFOG_PRESSURE_PLATE.get());
         dropSelf(MiaBlocks.SKYFOG_BUTTON.get());
 
+        dropSelf(MiaBlocks.PRASIOLITE_BLOCK.get());
+        add(MiaBlocks.BUDDING_PRASIOLITE.get(), noDrop());
+        add(MiaBlocks.PRASIOLITE_CLUSTER.get(), block -> createClusterDrops(block, MiaItems.PRASIOLITE.get(), 4.0f));
+        dropWhenSilkTouch(MiaBlocks.LARGE_PRASIOLITE_BUD.get());
+        dropWhenSilkTouch(MiaBlocks.MEDIUM_PRASIOLITE_BUD.get());
+        dropWhenSilkTouch(MiaBlocks.SMALL_PRASIOLITE_BUD.get());
+
         dropSelf(MiaBlocks.FORTITUDE_FLOWER.get());
 
         dropSelf(MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
@@ -93,15 +106,22 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(MiaBlocks.ROPE.get());
     }
 
-    // protected LootTable.Builder createSilkTouchDrops(Block block, Block other) {
-    // return this.createSilkTouchDispatchTable(
-    // block, this.applyExplosionDecay(block, LootItem.lootTableItem(other)
-    // )
-    // );
-    // }
-    protected LootTable.Builder createSkyfogLeavesDrops(Block oakLeavesBlock, Block saplingBlock, float... chances) {
-        // HolderLookup.RegistryLookup<Enchantment> registrylookup =
-        // this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+    private LootTable.Builder createClusterDrops(Block block, Item other, float count) {
+        return this.createSilkTouchDispatchTable(
+                block,
+                this.applyExplosionDecay(block, LootItem.lootTableItem(other))
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(count)))
+                        .apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))
+                        .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ItemTags.CLUSTER_MAX_HARVESTABLES)))
+                        .otherwise(
+                                this.applyExplosionDecay(
+                                        block, LootItem.lootTableItem(other).apply(SetItemCountFunction.setCount(ConstantValue.exactly(count / 2)))
+                                )
+                        )
+        );
+    }
+
+    private LootTable.Builder createSkyfogLeavesDrops(Block oakLeavesBlock, Block saplingBlock, float... chances) {
         return this.createLeavesDrops(oakLeavesBlock, saplingBlock, chances)
                 .withPool(
                         LootPool.lootPool()
@@ -109,8 +129,7 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
                                 .when(this.doesNotHaveShearsOrSilkTouch()));
     }
 
-    protected LootTable.Builder createSkyfogLeavesDrops2(Block oakLeavesBlock, Block saplingBlock, float... chances) {
-        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+    private LootTable.Builder createSkyfogLeavesDrops2(Block oakLeavesBlock, Block saplingBlock, float... chances) {
         return this.createLeavesDrops(oakLeavesBlock, saplingBlock, chances)
                 .withPool(
                         LootPool.lootPool()

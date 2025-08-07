@@ -15,65 +15,65 @@ import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import java.util.Map;
 
 public class MiaStateProvider {
-    public void baseBlockState(BlockStateProvider provider, Block block) {
-        provider.getVariantBuilder(block).partialState().addModels(getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block))));
+    public void baseBlockState(BlockStateProvider p, Block block) {
+        p.getVariantBuilder(block).partialState().addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block))));
     }
 
-    public void rotationYBlockState(BlockStateProvider provider, Block block) {
-        provider.getVariantBuilder(block)
+    public void rotationYBlockState(BlockStateProvider p, Block block) {
+        p.getVariantBuilder(block)
                 .partialState().addModels(
-                        getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block))),
-                        getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block)), 90),
-                        getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block)), 180),
-                        getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block)), 270)
+                        getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block))),
+                        getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block)), 90),
+                        getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block)), 180),
+                        getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block)), 270)
                 );
     }
 
-    public void mirroredBlockState(BlockStateProvider provider, Block block) {
-        provider.getVariantBuilder(block)
+    public void mirroredBlockState(BlockStateProvider p, Block block) {
+        p.getVariantBuilder(block)
                 .partialState().addModels(
-                        getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block))),
-                        getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_mirrored")),
-                        getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block)), 180),
-                        getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_mirrored"), 180)
+                        getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block))),
+                        getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_mirrored")),
+                        getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block)), 180),
+                        getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_mirrored"), 180)
                 );
     }
 
-    public void moistureBlockState(BlockStateProvider provider, Block block) {
-        VariantBlockStateBuilder builder = provider.getVariantBuilder(block);
+    public void moistureBlockState(BlockStateProvider p, Block block) {
+        VariantBlockStateBuilder builder = p.getVariantBuilder(block);
         IntegerProperty moisture = BlockStateProperties.MOISTURE;
 
         for (int i = 0; i < 7; i++) {
             builder.partialState()
                     .with(moisture, i)
-                    .addModels(getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block))));
+                    .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block))));
         }
 
         builder.partialState()
                 .with(moisture, 7)
-                .addModels(getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block) + "_moist")));
+                .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_moist")));
     }
 
-    public void lampTubeBlockState(BlockStateProvider provider, Block block) {
-        VariantBlockStateBuilder builder = provider.getVariantBuilder(block);
+    public void ColumnWithFacingState(BlockStateProvider p, Block block) {
+        VariantBlockStateBuilder builder = p.getVariantBuilder(block);
         DirectionProperty facing = BlockStateProperties.FACING;
 
         builder.partialState().with(facing, Direction.DOWN)
-                .addModels(getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block)), 180, 0));
+                .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block)), 180, 0));
         builder.partialState().with(facing, Direction.UP)
-                .addModels(getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block))));
+                .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block))));
         builder.partialState().with(facing, Direction.NORTH)
-                .addModels(getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block)), 90, 0));
+                .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block)), 90, 0));
         builder.partialState().with(facing, Direction.SOUTH)
-                .addModels(getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block)), 90, 180));
+                .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block)), 90, 180));
         builder.partialState().with(facing, Direction.WEST)
-                .addModels(getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block)), 90, 270));
+                .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block)), 90, 270));
         builder.partialState().with(facing, Direction.EAST)
-                .addModels(getVariantBuilder(provider, provider.modLoc("block/" + MiaUtil.getBlockPath(block)), 90, 90));
+                .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block)), 90, 90));
     }
 
-    public void abyssSpawnerBlockState(BlockStateProvider provider, Block block) {
-        VariantBlockStateBuilder builder = provider.getVariantBuilder(block);
+    public void abyssSpawnerBlockState(BlockStateProvider p, Block block) {
+        VariantBlockStateBuilder builder = p.getVariantBuilder(block);
         String blockPath = MiaUtil.getBlockPath(block);
 
         Map<TrialSpawnerState, String> stateSuffixMap = Map.of(
@@ -94,26 +94,26 @@ public class MiaStateProvider {
                         .with(BlockStateProperties.TRIAL_SPAWNER_STATE, state)
                         .with(BlockStateProperties.OMINOUS, ominous)
                         .modelForState()
-                        .modelFile(provider.models().getExistingFile(provider.modLoc("block/" + modelName)))
+                        .modelFile(p.models().getExistingFile(p.modLoc("block/" + modelName)))
                         .addModel();
             }
         }
     }
 
-    private ConfiguredModel getVariantBuilder(BlockStateProvider provider, ResourceLocation state) {
-        return getVariantBuilder(provider, state, 0);
+    private ConfiguredModel getVariantBuilder(BlockStateProvider P, ResourceLocation state) {
+        return getVariantBuilder(P, state, 0);
     }
 
-    private ConfiguredModel getVariantBuilder(BlockStateProvider provider, ResourceLocation state, int rotationY) {
-        return getVariantBuilder(provider, state, 0, rotationY);
+    private ConfiguredModel getVariantBuilder(BlockStateProvider p, ResourceLocation state, int rotationY) {
+        return getVariantBuilder(p, state, 0, rotationY);
     }
 
-    private ConfiguredModel getVariantBuilder(BlockStateProvider provider, ResourceLocation state, int rotationX, int rotationY) {
-        return getVariantBuilder(provider, state, rotationX, rotationY, false);
+    private ConfiguredModel getVariantBuilder(BlockStateProvider p, ResourceLocation state, int rotationX, int rotationY) {
+        return getVariantBuilder(p, state, rotationX, rotationY, false);
     }
 
-    private ConfiguredModel getVariantBuilder(BlockStateProvider provider, ResourceLocation state, int rotationX, int rotationY, boolean uvLock) {
-        return new ConfiguredModel(provider.models().getExistingFile(state), rotationX, rotationY, uvLock);
+    private ConfiguredModel getVariantBuilder(BlockStateProvider p, ResourceLocation state, int rotationX, int rotationY, boolean uvLock) {
+        return new ConfiguredModel(p.models().getExistingFile(state), rotationX, rotationY, uvLock);
     }
 
 }
