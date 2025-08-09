@@ -34,12 +34,10 @@ public class ClientTooltipEvent {
             if (Screen.hasShiftDown()) {
                 tooltipProvider.appendTooltip(stack, tooltip);
             } else {
-                tooltip.add(1, Component.literal(""));
-                tooltip.add(2, Component.translatable(
+                tooltip.add(1, Component.translatable(
                         "tooltip.mia.hold_shift",
-                        Component.literal("Shift").withStyle(ChatFormatting.DARK_GRAY)
-                ).withStyle(
-                        style -> style.withColor(MiaColors.ABYSS_GREEN)));
+                        Component.literal("Shift").withStyle(ChatFormatting.WHITE)
+                ).withColor(MiaColors.ABYSS_GREEN));
             }
         }
         if (stack.is(MiaItemTags.ARTIFACT_ENHANCE_MATERIAL)) {
@@ -53,10 +51,10 @@ public class ClientTooltipEvent {
                             recipeManager.getAllRecipesFor(MiaRecipes.ARTIFACT_ENHANCEMENT_TYPE.get())));
                 }
             } else {
-                tooltip.add(1, Component.literal(""));
-                tooltip.add(2, Component.translatable(
+                tooltip.add(1, Component.translatable(
                         "tooltip.mia.hold_shift",
-                        Component.literal("Shift").withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
+                        Component.literal("Shift").withStyle(ChatFormatting.WHITE)
+                ).withColor(MiaColors.ABYSS_GREEN));
             }
         }
     }

@@ -12,7 +12,10 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.bus.api.IEventBus;
@@ -155,13 +158,13 @@ public class MiaBlocks {
     public static final DeferredBlock<Block> PRASIOLITE_CLUSTER = registerBlock("prasiolite_cluster", () ->
             cluster(7, 3, SoundType.AMETHYST_CLUSTER, 5)
     );
-    public static final DeferredBlock<Block> LARGE_PRASIOLITE_BUD = registerBlock("large_cluster_bud", () ->
+    public static final DeferredBlock<Block> LARGE_PRASIOLITE_BUD = registerBlock("large_prasiolite_bud", () ->
             cluster(5, 3, SoundType.AMETHYST_CLUSTER, 4)
     );
-    public static final DeferredBlock<Block> MEDIUM_PRASIOLITE_BUD = registerBlock("medium_cluster_bud", () ->
+    public static final DeferredBlock<Block> MEDIUM_PRASIOLITE_BUD = registerBlock("medium_prasiolite_bud", () ->
             cluster(4, 3, SoundType.AMETHYST_CLUSTER, 2)
     );
-    public static final DeferredBlock<Block> SMALL_PRASIOLITE_BUD = registerBlock("small_cluster_bud", () ->
+    public static final DeferredBlock<Block> SMALL_PRASIOLITE_BUD = registerBlock("small_prasiolite_bud", () ->
             cluster(3, 3, SoundType.AMETHYST_CLUSTER, 1)
     );
 
@@ -171,18 +174,26 @@ public class MiaBlocks {
                             .mapColor(MapColor.DIRT)
                             .randomTicks()
                             .strength(0.6F)
-                            .sound(SoundType.GRAVEL)
+                            .sound(SoundType.DEEPSLATE)
                             .isViewBlocking(MiaBlocks::always)
                             .isSuffocating(MiaBlocks::always)
             ));
-
-    @SuppressWarnings("deprecation")
-    public static final DeferredBlock<Block> LAMP_TUBE = registerBlock("lamp_tube", () ->
-            new LampTubeBlock(
+    public static final DeferredBlock<Block> PRASIOLITE_LAMPTUBE = registerBlock("prasiolite_lamptube", () ->
+            new PrasioliteTubeBlock(
                     BlockBehaviour.Properties.of()
                             .forceSolidOff()
                             .strength(1.5F)
-                            .lightLevel(litBlockEmission(BlockStateProperties.POWERED, 10))
+                            .lightLevel(state -> 5)
+                            .sound(SoundType.AMETHYST)
+                            .noOcclusion()));
+
+    @SuppressWarnings("deprecation")
+    public static final DeferredBlock<Block> AMETHYST_LAMPTUBE = registerBlock("amethyst_lamptube", () ->
+            new AmethystTubeBlock(
+                    BlockBehaviour.Properties.of()
+                            .forceSolidOff()
+                            .strength(1.5F)
+                            .lightLevel(state -> 5)
                             .sound(SoundType.AMETHYST)
                             .noOcclusion()));
 

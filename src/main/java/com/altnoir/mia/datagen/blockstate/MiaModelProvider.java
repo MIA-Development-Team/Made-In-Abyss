@@ -5,7 +5,6 @@ import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 
 public class MiaModelProvider {
@@ -32,12 +31,12 @@ public class MiaModelProvider {
         templateHopperFarmland(p);
         p.models().withExistingParent(MiaUtil.getBlockPath(block), p.modLoc("block/template/hopper_farmland"))
                 .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
-                .texture("side", p.mcLoc("block/dirt"))
+                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(MiaBlocks.ABYSS_ANDESITE.get())))
                 .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"));
 
         p.models().withExistingParent(MiaUtil.getBlockPath(block) + "_moist", p.modLoc("block/template/hopper_farmland"))
                 .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_moist"))
-                .texture("side", p.mcLoc("block/dirt"))
+                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(MiaBlocks.ABYSS_ANDESITE.get())))
                 .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"));
     }
 
@@ -104,17 +103,17 @@ public class MiaModelProvider {
                         .uvs(0, 0, 16, 16));
     }
 
-    public void lampTubeBlockModel(BlockStateProvider p, Block block) {
+    public void lampTubeBlockModel(BlockStateProvider p, Block block, Block particle) {
         p.models().withExistingParent(MiaUtil.getBlockPath(block), p.modLoc("block/template/lamp_tube"))
                 .renderType("cutout")
-                .texture("lamp_tube", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
-                .texture("particle", p.mcLoc("block/" + MiaUtil.getBlockPath(Blocks.AMETHYST_BLOCK)));
+                .texture("lamp_tube", p.modLoc("block/tube/" + MiaUtil.getBlockPath(block)))
+                .texture("particle", MiaUtil.getBlockLoc("block/", particle));
     }
 
     public void pedestalBlockModel(BlockStateProvider p, Block block) {
         p.models().withExistingParent(MiaUtil.getBlockPath(block), p.modLoc("block/template/pedestal"))
                 .renderType("cutout")
-                .texture("pedestal", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
+                .texture("pedestal", p.modLoc("block/tube/" + MiaUtil.getBlockPath(block)))
                 .texture("particle", p.modLoc("block/" + MiaUtil.getBlockPath(MiaBlocks.ABYSS_ANDESITE.get())));
     }
 

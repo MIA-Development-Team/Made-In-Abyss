@@ -2,8 +2,7 @@ package com.altnoir.mia.recipe;
 
 import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.init.MiaRecipes;
-import com.altnoir.mia.item.abs.AbstractArtifactBundle;
-import com.altnoir.mia.item.abs.AbstractWhistle;
+import com.altnoir.mia.item.abs.AArtifactBundle;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -30,7 +29,7 @@ public class ArtifactBundleUpgradeRecipe extends ShapedRecipe {
         // try get old bundle
         ItemStack oldBundle = ItemStack.EMPTY;
         for (ItemStack stack : inv.items()) {
-            if (stack.getItem() instanceof AbstractArtifactBundle) {
+            if (stack.getItem() instanceof AArtifactBundle) {
                 oldBundle = stack;
                 break;
             }

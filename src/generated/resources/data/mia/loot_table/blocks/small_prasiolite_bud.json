@@ -23,11 +23,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "mia:medium_cluster_bud"
+          "name": "mia:small_prasiolite_bud"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "mia:blocks/medium_cluster_bud"
+  "random_sequence": "mia:blocks/small_prasiolite_bud"
 }

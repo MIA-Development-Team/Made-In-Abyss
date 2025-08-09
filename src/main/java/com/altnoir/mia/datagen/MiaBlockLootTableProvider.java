@@ -88,7 +88,7 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
 
         dropSelf(MiaBlocks.PRASIOLITE_BLOCK.get());
         add(MiaBlocks.BUDDING_PRASIOLITE.get(), noDrop());
-        add(MiaBlocks.PRASIOLITE_CLUSTER.get(), block -> createClusterDrops(block, MiaItems.PRASIOLITE.get(), 4.0f));
+        add(MiaBlocks.PRASIOLITE_CLUSTER.get(), block -> createClusterDrops(block, MiaItems.PRASIOLITE_SHARD.get(), 4.0f));
         dropWhenSilkTouch(MiaBlocks.LARGE_PRASIOLITE_BUD.get());
         dropWhenSilkTouch(MiaBlocks.MEDIUM_PRASIOLITE_BUD.get());
         dropWhenSilkTouch(MiaBlocks.SMALL_PRASIOLITE_BUD.get());
@@ -98,7 +98,8 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
 
         dropSelf(MiaBlocks.HOPPER_FARMLAND.get());
-        dropSelf(MiaBlocks.LAMP_TUBE.get());
+        dropSelf(MiaBlocks.AMETHYST_LAMPTUBE.get());
+        dropSelf(MiaBlocks.PRASIOLITE_LAMPTUBE.get());
         dropSelf(MiaBlocks.PEDESTAL.get());
         dropSelf(MiaBlocks.ABYSS_PORTAL.get());
         dropWhenSilkTouch(MiaBlocks.ABYSS_SPAWNER.get());

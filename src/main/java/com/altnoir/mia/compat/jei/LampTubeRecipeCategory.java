@@ -33,7 +33,7 @@ public class LampTubeRecipeCategory implements IRecipeCategory<RecipeHolder<Lamp
 
     @Override
     public @Nullable IDrawable getIcon() {
-        return jeiHelpers.getGuiHelper().createDrawableItemLike(MiaBlocks.LAMP_TUBE);
+        return jeiHelpers.getGuiHelper().createDrawableItemLike(MiaBlocks.AMETHYST_LAMPTUBE);
     }
 
     @Override

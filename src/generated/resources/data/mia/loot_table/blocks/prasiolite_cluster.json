@@ -56,7 +56,7 @@
                       "function": "minecraft:apply_bonus"
                     }
                   ],
-                  "name": "mia:prasiolite"
+                  "name": "mia:prasiolite_shard"
                 },
                 {
                   "type": "minecraft:item",
@@ -70,7 +70,7 @@
                       "function": "minecraft:explosion_decay"
                     }
                   ],
-                  "name": "mia:prasiolite"
+                  "name": "mia:prasiolite_shard"
                 }
               ]
             }

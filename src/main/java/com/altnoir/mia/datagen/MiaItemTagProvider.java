@@ -63,6 +63,10 @@ public class MiaItemTagProvider extends ItemTagsProvider {
 
         tag(ItemTags.PLANKS)
                 .add(MiaBlocks.SKYFOG_PLANKS.get().asItem());
+
+        // 工具TAG
+        tag(ItemTags.HOES)
+                .add(MiaItems.PRASIOLITE_HOE.get());
     }
 
     private void tagArtifacts(HolderLookup.Provider provider) {

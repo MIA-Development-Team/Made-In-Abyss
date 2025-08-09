@@ -1,28 +1,28 @@
 {
   "variants": {
     "facing=down": {
-      "model": "mia:block/lamp_tube",
+      "model": "mia:block/small_prasiolite_bud",
       "x": 180
     },
     "facing=east": {
-      "model": "mia:block/lamp_tube",
+      "model": "mia:block/small_prasiolite_bud",
       "x": 90,
       "y": 90
     },
     "facing=north": {
-      "model": "mia:block/lamp_tube",
+      "model": "mia:block/small_prasiolite_bud",
       "x": 90
     },
     "facing=south": {
-      "model": "mia:block/lamp_tube",
+      "model": "mia:block/small_prasiolite_bud",
       "x": 90,
       "y": 180
     },
     "facing=up": {
-      "model": "mia:block/lamp_tube"
+      "model": "mia:block/small_prasiolite_bud"
     },
     "facing=west": {
-      "model": "mia:block/lamp_tube",
+      "model": "mia:block/small_prasiolite_bud",
       "x": 90,
       "y": 270
     }

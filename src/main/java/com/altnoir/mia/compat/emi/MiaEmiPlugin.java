@@ -25,7 +25,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class MiaEmiPlugin implements EmiPlugin {
     public static final ResourceLocation WIDGETS = MiaUtil.id("emi", "textures/gui/widgets.png");
-    public static final EmiStack WORKSTATION = EmiStack.of(MiaBlocks.LAMP_TUBE.asItem());
+    public static final EmiStack WORKSTATION = EmiStack.of(MiaBlocks.AMETHYST_LAMPTUBE.asItem());
     public static EmiRecipeCategory LAMP_TUBE = new EmiRecipeCategory(MiaUtil.id(MIA.MOD_ID, "lamp_tube"),
             WORKSTATION, new EmiTexture(WIDGETS, 160, 240, 16, 16));
 

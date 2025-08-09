@@ -9,10 +9,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.lighting.LightEngine;
 
-public abstract class AbstractCoverGrassBlock extends Block {
+public abstract class ACoverGrassBlock extends ACanFarmBlock {
     public final Block defaultBlock;
 
-    public AbstractCoverGrassBlock(Block defaultBlock, Properties properties) {
+    public ACoverGrassBlock(Block defaultBlock, Properties properties) {
         super(properties);
         this.defaultBlock = defaultBlock;
     }

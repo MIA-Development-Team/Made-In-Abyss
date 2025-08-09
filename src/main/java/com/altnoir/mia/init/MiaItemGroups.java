@@ -48,13 +48,16 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB);
                         output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL);
 
+                        output.accept(MiaBlocks.HOPPER_FARMLAND);
+
                         output.accept(MiaBlocks.PRASIOLITE_BLOCK);
                         output.accept(MiaBlocks.BUDDING_PRASIOLITE);
                         output.accept(MiaBlocks.SMALL_PRASIOLITE_BUD);
                         output.accept(MiaBlocks.MEDIUM_PRASIOLITE_BUD);
                         output.accept(MiaBlocks.LARGE_PRASIOLITE_BUD);
                         output.accept(MiaBlocks.PRASIOLITE_CLUSTER);
-                        output.accept(MiaItems.PRASIOLITE);
+                        output.accept(MiaItems.PRASIOLITE_SHARD);
+                        output.accept(MiaItems.PRASIOLITE_HOE);
 
                         // woods
                         output.accept(MiaBlocks.SKYFOG_LOG);
@@ -75,8 +78,6 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.SKYFOG_PRESSURE_PLATE);
                         output.accept(MiaBlocks.SKYFOG_BUTTON);
 
-                        // props
-                        output.accept(MiaBlocks.HOPPER_FARMLAND);
                         output.accept(MiaBlocks.ABYSS_PORTAL);
                         output.accept(MiaBlocks.ABYSS_SPAWNER);
 
@@ -90,7 +91,8 @@ public class MiaItemGroups {
                         output.accept(MiaItems.BLACK_WHISTLE);
                         output.accept(MiaItems.WHITE_WHISTLE);
                         output.accept(MiaItems.ROPE);
-                        output.accept(MiaBlocks.LAMP_TUBE);
+                        output.accept(MiaBlocks.PRASIOLITE_LAMPTUBE);
+                        output.accept(MiaBlocks.AMETHYST_LAMPTUBE);
                         output.accept(MiaBlocks.PEDESTAL);
                         output.accept(MiaBlocks.ARTIFACT_SMITHING_TABLE);
                     })

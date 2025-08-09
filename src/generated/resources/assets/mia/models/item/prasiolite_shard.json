@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "mia:item/prasiolite"
+    "layer0": "mia:item/prasiolite_shard"
   }
 }

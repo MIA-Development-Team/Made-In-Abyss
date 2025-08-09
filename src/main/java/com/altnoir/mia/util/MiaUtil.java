@@ -111,7 +111,7 @@ public class MiaUtil {
     public static boolean canTallFlowerDuplicate(TallFlowerBlock tallFlowerBlock) {
         try {
             return tallFlowerBlock.isValidBonemealTarget(null, null, null) && tallFlowerBlock.isBonemealSuccess(null, null, null, null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -162,10 +162,6 @@ public class MiaUtil {
         return client.level.registryAccess().registryOrThrow(Registries.ENCHANTMENT);
     }
 
-    public static Button newButton(int x, int y, int w, int h, Component name, Button.OnPress action) {
-        return Button.builder(name, action).pos(x, y).size(w, h).build();
-    }
-
     public static ItemStack getOutput(Recipe<?> recipe) {
         Minecraft client = Minecraft.getInstance();
         return recipe.getResultItem(client.level.registryAccess());
@@ -188,8 +184,17 @@ public class MiaUtil {
         FeatureFlagSet fs = client.level.enabledFeatures();
         return getItemRegistry().stream().filter(i -> !i.isEnabled(fs));
     }
+
     public static String getBlockPath(Block block) {
         return Objects.requireNonNull(getBlockRegistry().getKey(block)).getPath();
+    }
+
+    public static String getBlockNamespace(Block block) {
+        return Objects.requireNonNull(getBlockRegistry().getKey(block)).getNamespace();
+    }
+
+    public static ResourceLocation getBlockLoc(String name, Block block) {
+        return id(getBlockNamespace(block), name + getBlockPath(block));
     }
 
     public static @Nullable RecipeHolder<?> getRecipe(ResourceLocation id) {
@@ -220,9 +225,13 @@ public class MiaUtil {
         return ResourceLocation.parse(id);
     }
 
-    public static ResourceLocation id(String namespace, String path) {return ResourceLocation.fromNamespaceAndPath(namespace, path);}
+    public static ResourceLocation id(String namespace, String path) {
+        return ResourceLocation.fromNamespaceAndPath(namespace, path);
+    }
 
-    public static ResourceLocation miaId(String path) {return ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, path);}
+    public static ResourceLocation miaId(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, path);
+    }
 
     public static void applyModelViewMatrix() {
         RenderSystem.applyModelViewMatrix();

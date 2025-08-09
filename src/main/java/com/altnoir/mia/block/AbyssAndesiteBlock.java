@@ -1,18 +1,23 @@
 package com.altnoir.mia.block;
 
-import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.block.abs.ACanFarmBlock;
 import com.altnoir.mia.init.MiaBlockTags;
+import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.item.PrasioliteHoeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class AbyssAndesiteBlock extends Block implements BonemealableBlock {
+public class AbyssAndesiteBlock extends ACanFarmBlock implements BonemealableBlock {
     public AbyssAndesiteBlock(Properties properties) {
         super(properties);
     }
@@ -29,6 +34,16 @@ public class AbyssAndesiteBlock extends Block implements BonemealableBlock {
             }
             return false;
         }
+    }
+
+    @Override
+    public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
+        if (context.getItemInHand().getItem() instanceof PrasioliteHoeItem) {
+            if (state.is(this)) {
+                return MiaBlocks.HOPPER_FARMLAND.get().defaultBlockState().setValue(BlockStateProperties.MOISTURE, 0);
+            }
+        }
+        return super.getToolModifiedState(state, context, itemAbility, simulate);
     }
 
     @Override

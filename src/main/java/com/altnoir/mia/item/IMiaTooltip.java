@@ -15,8 +15,7 @@ public interface IMiaTooltip {
         ResourceLocation rl = BuiltInRegistries.ITEM.getKey(stack.getItem());
         String description = String.format("tooltip.mia.description.%s", rl.getPath());
         if (I18n.exists(description)) {
-            tooltip.add(1, Component.literal(""));
-            tooltip.add(2, Component.translatable(description).withStyle(style -> style.withColor(MiaColors.ABYSS_GREEN)));
+            tooltip.add(1, Component.translatable(description).withColor(MiaColors.ABYSS_GREEN));
         }
     }
 }

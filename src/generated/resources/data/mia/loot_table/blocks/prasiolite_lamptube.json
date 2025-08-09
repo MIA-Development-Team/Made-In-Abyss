@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "mia:lamp_tube"
+          "name": "mia:prasiolite_lamptube"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "mia:blocks/lamp_tube"
+  "random_sequence": "mia:blocks/prasiolite_lamptube"
 }

@@ -2,7 +2,7 @@
   "parent": "mia:block/template/hopper_farmland",
   "textures": {
     "bottom": "mia:block/hopper_farmland_bottom",
-    "side": "minecraft:block/dirt",
+    "side": "mia:block/abyss_andesite",
     "top": "mia:block/hopper_farmland"
   }
 }

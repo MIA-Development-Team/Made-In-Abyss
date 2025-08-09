@@ -3,6 +3,6 @@
   "render_type": "minecraft:cutout",
   "textures": {
     "particle": "mia:block/abyss_andesite",
-    "pedestal": "mia:block/pedestal"
+    "pedestal": "mia:block/tube/pedestal"
   }
 }

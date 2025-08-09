@@ -2,8 +2,6 @@ package com.altnoir.mia.item.abs;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.item.IMiaTooltip;
-import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -18,9 +16,9 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractWhistle extends Item implements ICurioItem, IMiaTooltip {
+public abstract class AWhistle extends Item implements ICurioItem, IMiaTooltip {
 
-    public AbstractWhistle(Properties properties) {
+    public AWhistle(Properties properties) {
         super(properties);
     }
 

@@ -2,6 +2,6 @@
   "parent": "minecraft:block/cross",
   "render_type": "minecraft:cutout",
   "textures": {
-    "cross": "mia:block/large_cluster_bud"
+    "cross": "mia:block/medium_prasiolite_bud"
   }
 }

@@ -26,7 +26,8 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
         // props
         ropeBlock();
-        lampTubeBlock();
+        lampTubeBlock(MiaBlocks.AMETHYST_LAMPTUBE, Blocks.AMETHYST_BLOCK);
+        lampTubeBlock(MiaBlocks.PRASIOLITE_LAMPTUBE, MiaBlocks.PRASIOLITE_BLOCK.get());
         pedestalBlock();
         abyssSpawnerBlock();
         abyssPortalBlock();
@@ -127,10 +128,10 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         basicItem(MiaBlocks.ROPE);
     }
 
-    private void lampTubeBlock() {
-        modelP.lampTubeBlockModel(this, MiaBlocks.LAMP_TUBE.get());
-        stateP.ColumnWithFacingState(this, MiaBlocks.LAMP_TUBE.get());
-        blockItem(MiaBlocks.LAMP_TUBE);
+    private void lampTubeBlock(DeferredBlock<?> block, Block particle) {
+        modelP.lampTubeBlockModel(this, block.get(), particle);
+        stateP.ColumnWithFacingState(this, block.get());
+        blockItem(block);
     }
 
     private void pedestalBlock() {

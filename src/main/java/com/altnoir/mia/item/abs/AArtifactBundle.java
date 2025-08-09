@@ -29,12 +29,12 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-public abstract class AbstractArtifactBundle extends Item implements IArtifactItem {
+public abstract class AArtifactBundle extends Item implements IArtifactItem {
 
     private static final int FULL_BAR_COLOR = 0xFF5454FF;
     private static final int BAR_COLOR = 0x7087FFFF;
 
-    public AbstractArtifactBundle(Properties properties) {
+    public AArtifactBundle(Properties properties) {
         super(properties.component(MiaComponents.ARTIFACT_BUNDLE_INVENTORY, ArtifactBundleInventoryComponent.EMPTY));
     }
 

@@ -2,16 +2,10 @@ package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.component.MiaFoods;
-import com.altnoir.mia.item.ArtifactBundle;
-import com.altnoir.mia.item.EnhanceableArtifact;
-import com.altnoir.mia.item.RopeItem;
-import com.altnoir.mia.item.SimpleWhistle;
+import com.altnoir.mia.item.*;
 import com.altnoir.mia.item.abs.IArtifactItem.Grade;
-import net.minecraft.network.chat.TextColor;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -42,8 +36,12 @@ public class MiaItems {
     public static final DeferredItem<Item> TEST_ARTIFACT_3 = ITEMS.register("test_artifact_3",
             () -> new EnhanceableArtifact(new Item.Properties(), Grade.SPECIAL, 4));
 
-    public static final DeferredItem<Item> PRASIOLITE = ITEMS.register("prasiolite",
+    public static final DeferredItem<Item> PRASIOLITE_SHARD = ITEMS.register("prasiolite_shard",
             () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> PRASIOLITE_HOE = ITEMS.register("prasiolite_hoe",
+            () -> new PrasioliteHoeItem(
+                    MiaTiers.PRASIOLITE, new Item.Properties()
+                    .attributes(HoeItem.createAttributes(MiaTiers.PRASIOLITE, 0.0F, 0.0F))));
 
     public static final DeferredItem<Item> MISTFUZZ_PEACH = ITEMS.register("mistfuzz_peach",
             () -> new Item(new Item.Properties().food(MiaFoods.MISTFUZZ_PEACH)));

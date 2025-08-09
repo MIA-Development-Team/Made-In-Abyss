@@ -38,7 +38,7 @@ public class MiaJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(MiaBlocks.LAMP_TUBE, MiaJeiPlugin.LAMP_TUBE_RECIPE_TYPE);
+        registration.addRecipeCatalyst(MiaBlocks.AMETHYST_LAMPTUBE, MiaJeiPlugin.LAMP_TUBE_RECIPE_TYPE);
     }
 
     public RecipeManager getRecipeManager() {

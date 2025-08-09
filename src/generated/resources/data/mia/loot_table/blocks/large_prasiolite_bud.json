@@ -23,11 +23,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "mia:large_cluster_bud"
+          "name": "mia:large_prasiolite_bud"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "mia:blocks/large_cluster_bud"
+  "random_sequence": "mia:blocks/large_prasiolite_bud"
 }
