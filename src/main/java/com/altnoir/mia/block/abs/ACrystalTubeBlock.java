@@ -6,6 +6,7 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.joml.Vector3f;
 
@@ -39,6 +41,38 @@ public abstract class ACrystalTubeBlock extends ATubeBlock {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         var hasNeighbor = context.getLevel().hasNeighborSignal(context.getClickedPos());
         return Objects.requireNonNull(super.getStateForPlacement(context)).setValue(POWERED, Boolean.valueOf(hasNeighbor));
+    }
+
+    protected abstract IntegerProperty getLevelProperty();
+
+    protected void update(Level level, BlockPos pos, BlockState state) {
+        var newState = state.cycle(POWERED).setValue(getLevelProperty(), 1);
+        level.setBlock(pos, newState, 2);
+    }
+
+    @Override
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (state.getValue(POWERED) && !level.hasNeighborSignal(pos)) {
+            finalProcessing(level, pos, state);
+            update(level, pos, state);
+        }
+        super.tick(state, level, pos, random);
+    }
+
+    @Override
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+        if (!level.isClientSide) {
+            boolean flag = state.getValue(POWERED);
+            if (flag != level.hasNeighborSignal(pos)) {
+                if (flag) {
+                    level.scheduleTick(pos, this, 2);
+                } else {
+                    playAmethyst(level, pos, state);
+                    update(level, pos, state);
+                }
+            }
+        }
+        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
     }
 
     protected void finalProcessing(Level level, BlockPos pos, BlockState state) {

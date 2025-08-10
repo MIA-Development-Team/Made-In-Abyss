@@ -118,14 +118,20 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get())
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL.get())
                 .add(MiaBlocks.PRASIOLITE_BLOCK.get())
+                .add(MiaBlocks.BUDDING_PRASIOLITE.get())
+                .add(MiaBlocks.PRASIOLITE_CLUSTER.get())
+                .add(MiaBlocks.LARGE_PRASIOLITE_BUD.get())
+                .add(MiaBlocks.MEDIUM_PRASIOLITE_BUD.get())
+                .add(MiaBlocks.SMALL_PRASIOLITE_BUD.get())
+                .add(MiaBlocks.HOPPER_FARMLAND.get())
                 .add(MiaBlocks.AMETHYST_LAMPTUBE.get())
                 .add(MiaBlocks.PRASIOLITE_LAMPTUBE.get())
                 .add(MiaBlocks.PEDESTAL.get())
                 .add(MiaBlocks.ARTIFACT_SMITHING_TABLE.get())
                 .add(MiaBlocks.ENDLESS_CUP.get());
 
-        tag(BlockTags.MINEABLE_WITH_SHOVEL)
-                .add(MiaBlocks.HOPPER_FARMLAND.get());
+//        tag(BlockTags.MINEABLE_WITH_SHOVEL)
+//                .add(MiaBlocks.HOPPER_FARMLAND.get());
 
         // 标签嵌套
         tag(BlockTags.SCULK_REPLACEABLE)

@@ -13,8 +13,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -73,9 +72,9 @@ public class HopperFarmBlock extends FarmBlock {
         int minAge = possibleValues.iterator().next();
         int maxAge = minAge == 0 ? possibleValues.size() - 1 : possibleValues.size();
 
-        if (age == maxAge && !belowState.isCollisionShapeFullBlock(level, belowPos)) {
+        if (!notFarmland(aboveState) && !belowState.isCollisionShapeFullBlock(level, belowPos) && age == maxAge) {
             BlockState newState;
-            if (maxAge == 3) {
+            if (aboveState.getBlock() instanceof SweetBerryBushBlock) {
                 newState = aboveState.setValue(ageProp, minAge + 1);
             } else {
                 newState = aboveState.setValue(ageProp, minAge);
@@ -87,7 +86,10 @@ public class HopperFarmBlock extends FarmBlock {
 
             level.playSound(null, abovePos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS);
         }
+    }
 
+    private boolean notFarmland(BlockState aboveState) {
+        return aboveState.getBlock() instanceof TorchflowerCropBlock || aboveState.getBlock() instanceof PitcherCropBlock;
     }
 
     private static boolean shouldMaintainFarmland(BlockGetter level, BlockPos pos) {
@@ -108,7 +110,7 @@ public class HopperFarmBlock extends FarmBlock {
     @Override
     public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
         if (!level.isClientSide) {
-        entity.causeFallDamage(fallDistance, 1.0F, entity.damageSources().fall());
+            entity.causeFallDamage(fallDistance, 1.0F, entity.damageSources().fall());
         }
     }
 

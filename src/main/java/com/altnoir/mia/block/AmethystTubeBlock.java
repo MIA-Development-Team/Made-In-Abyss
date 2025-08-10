@@ -52,32 +52,8 @@ public class AmethystTubeBlock extends ACrystalTubeBlock {
     }
 
     @Override
-    protected void tick(BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
-        boolean flag = state.getValue(POWERED);
-        if (flag && !level.hasNeighborSignal(pos)) {
-            finalProcessing(level, pos, state);
-            level.setBlock(pos, state.cycle(POWERED), 2);
-            //MIA.LOGGER.info("Lamp tube is {}", MiaRecipes.LAMP_TUBE_TYPE.get().toString());
-        }
-    }
-
-    @Override
-    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
-        if (!level.isClientSide) {
-            boolean flag = state.getValue(POWERED);
-            if (flag != level.hasNeighborSignal(pos)) {
-                if (flag) {
-                    level.scheduleTick(pos, this, 2);
-                } else {
-                    playAmethyst(level, pos, state);
-                    var newState = state;
-                    newState = newState.cycle(POWERED);
-                    newState = newState.setValue(LEVEL, 1);
-                    level.setBlock(pos, newState, 2);
-                }
-            }
-        }
-        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
+    protected IntegerProperty getLevelProperty() {
+        return LEVEL;
     }
 
     @Override
