@@ -80,8 +80,6 @@ public abstract class ACrystalTubeBlock extends ATubeBlock {
         for (int i = 1; i <= 12; i++) {
             var targetPos = pos.relative(direction, i);
             var targetState = level.getBlockState(targetPos);
-
-            if (targetState.isSolidRender(level, targetPos)) return;
             if (crystalProcessing(level, pos, state, targetPos, targetState, i)) {
                 return;
             }
@@ -103,7 +101,7 @@ public abstract class ACrystalTubeBlock extends ATubeBlock {
         Direction facing = state.getValue(FACING);
 
         double dxFactor = (facing == Direction.WEST || facing == Direction.EAST) ? 0.21 : 0.01;
-        double dyFactor = (facing == Direction.UP || facing == Direction.DOWN) ? 0.16 : 0.01;
+        double dyFactor = (facing == Direction.UP || facing == Direction.DOWN) ? 0.21 : 0.01;
         double dzFactor = (facing == Direction.NORTH || facing == Direction.SOUTH) ? 0.21 : 0.01;
         if (level instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(

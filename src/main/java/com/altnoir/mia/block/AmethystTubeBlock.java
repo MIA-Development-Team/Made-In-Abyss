@@ -11,7 +11,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -22,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -60,7 +58,10 @@ public class AmethystTubeBlock extends ACrystalTubeBlock {
     protected boolean crystalProcessing(Level level, BlockPos pos, BlockState state, BlockPos targetPos, BlockState targetState, int i) {
         if (level.getBlockEntity(targetPos) instanceof Container container) {
             return processRecipe(level, pos, state, targetPos, container);
-        } else return propagateSignal(level, pos, state, targetPos, targetState, i);
+        } else if (!targetState.isSolidRender(level, targetPos)) {
+            return propagateSignal(level, pos, state, targetPos, targetState, i);
+        }
+        return false;
     }
 
     private boolean processRecipe(Level level, BlockPos pos, BlockState state, BlockPos targetPos, Container container) {

@@ -52,7 +52,10 @@ public class PrasioliteTubeBlock extends ACrystalTubeBlock {
     protected boolean crystalProcessing(Level level, BlockPos pos, BlockState state, BlockPos targetPos, BlockState targetState, int i) {
         if (targetState.getBlock() instanceof ACrystalTubeBlock) {
             return propagateSignal(level, pos, state, targetPos, targetState, i);
-        } else return growOn(level, pos, state, targetPos);
+        } else if (!targetState.isAir()) {
+            return growOn(level, pos, state, targetPos);
+        }
+        return false;
     }
 
     private boolean growOn(Level level, BlockPos pos, BlockState state, BlockPos targetPos) {
@@ -72,6 +75,7 @@ public class PrasioliteTubeBlock extends ACrystalTubeBlock {
         });
         if (hasGrown.get()) {
             signalParticles(0.5F, 1.0F, 0.5F, level, pos, targetPos, state);
+            return true;
         }
         return false;
     }

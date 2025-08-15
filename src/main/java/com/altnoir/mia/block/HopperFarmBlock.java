@@ -2,6 +2,7 @@ package com.altnoir.mia.block;
 
 import com.altnoir.mia.init.MiaBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -12,10 +13,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 
@@ -23,8 +27,17 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 
 public class HopperFarmBlock extends FarmBlock {
+    public static final BooleanProperty FASTER = BooleanProperty.create("faster");
+
     public HopperFarmBlock(BlockBehaviour.Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(FASTER, false));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FASTER);
+        super.createBlockStateDefinition(builder);
     }
 
     @Override
@@ -39,7 +52,17 @@ public class HopperFarmBlock extends FarmBlock {
         if (!state.canSurvive(level, pos)) {
             turnToBlock(null, state, level, pos);
         }
+        cropDrop(level, pos);
     }
+
+    @Override
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+        if (!level.isClientSide() && state.getValue(FASTER) && !level.getBlockTicks().hasScheduledTick(currentPos, this)) {
+            level.scheduleTick(currentPos, this, 2);
+        }
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+    }
+
 
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
@@ -53,7 +76,9 @@ public class HopperFarmBlock extends FarmBlock {
         } else if (i < 7) {
             level.setBlock(pos, state.setValue(MOISTURE, Integer.valueOf(7)), 2);
         }
-        cropDrop(level, pos);
+        if (!state.getValue(FASTER)) {
+            level.scheduleTick(pos, this, 1);
+        }
     }
 
     private void cropDrop(ServerLevel level, BlockPos pos) {
