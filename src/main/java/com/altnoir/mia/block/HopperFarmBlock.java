@@ -18,26 +18,16 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
 
 public class HopperFarmBlock extends FarmBlock {
-    public static final BooleanProperty FASTER = BooleanProperty.create("faster");
-
     public HopperFarmBlock(BlockBehaviour.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FASTER, false));
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FASTER);
-        super.createBlockStateDefinition(builder);
     }
 
     @Override
@@ -56,29 +46,11 @@ public class HopperFarmBlock extends FarmBlock {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        if (!level.isClientSide() && state.getValue(FASTER) && !level.getBlockTicks().hasScheduledTick(currentPos, this)) {
-            level.scheduleTick(currentPos, this, 2);
+    protected @NotNull BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+        if (!level.isClientSide() && !level.getBlockTicks().hasScheduledTick(currentPos, this)) {
+            level.scheduleTick(currentPos, this, 1);
         }
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
-    }
-
-
-    @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        int i = state.getValue(MOISTURE);
-        if (!isNearWater(level, pos) && !level.isRainingAt(pos.above())) {
-            if (i > 0) {
-                level.setBlock(pos, state.setValue(MOISTURE, Integer.valueOf(i - 1)), 2);
-            } else if (!shouldMaintainFarmland(level, pos)) {
-                turnToBlock(null, state, level, pos);
-            }
-        } else if (i < 7) {
-            level.setBlock(pos, state.setValue(MOISTURE, Integer.valueOf(7)), 2);
-        }
-        if (!state.getValue(FASTER)) {
-            level.scheduleTick(pos, this, 1);
-        }
     }
 
     private void cropDrop(ServerLevel level, BlockPos pos) {
@@ -115,6 +87,20 @@ public class HopperFarmBlock extends FarmBlock {
 
     private boolean notFarmland(BlockState aboveState) {
         return aboveState.getBlock() instanceof TorchflowerCropBlock || aboveState.getBlock() instanceof PitcherCropBlock;
+    }
+
+    @Override
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        int i = state.getValue(MOISTURE);
+        if (!isNearWater(level, pos) && !level.isRainingAt(pos.above())) {
+            if (i > 0) {
+                level.setBlock(pos, state.setValue(MOISTURE, Integer.valueOf(i - 1)), 2);
+            } else if (!shouldMaintainFarmland(level, pos)) {
+                turnToBlock(null, state, level, pos);
+            }
+        } else if (i < 7) {
+            level.setBlock(pos, state.setValue(MOISTURE, Integer.valueOf(7)), 2);
+        }
     }
 
     private static boolean shouldMaintainFarmland(BlockGetter level, BlockPos pos) {
