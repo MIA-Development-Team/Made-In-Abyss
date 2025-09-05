@@ -2,7 +2,7 @@ package com.altnoir.mia.worldgen.biome.abyss_brink;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;
-import com.altnoir.mia.worldgen.tree.MiaTreePlacements;
+import com.altnoir.mia.worldgen.feature.tree.MiaTreePlacements;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;

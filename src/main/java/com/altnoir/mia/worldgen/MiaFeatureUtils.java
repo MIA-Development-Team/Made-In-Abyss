@@ -3,7 +3,7 @@ package com.altnoir.mia.worldgen;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.worldgen.biome.abyss_brink.AbyssBrinkFeatures;
-import com.altnoir.mia.worldgen.tree.MiaTreeFeatures;
+import com.altnoir.mia.worldgen.feature.tree.MiaTreeFeatures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;

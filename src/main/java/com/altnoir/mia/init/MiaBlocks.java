@@ -2,7 +2,7 @@ package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.block.*;
-import com.altnoir.mia.worldgen.tree.MiaTreeGrowers;
+import com.altnoir.mia.worldgen.feature.tree.MiaTreeGrowers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffects;
@@ -242,6 +242,7 @@ public class MiaBlocks {
                     .sound(SoundType.WOOL).noOcclusion()
                     .pushReaction(PushReaction.DESTROY)));
 
+
     private static boolean never(BlockState state, BlockGetter blockGetter, BlockPos pos) {
         return false;
     }
@@ -249,6 +250,7 @@ public class MiaBlocks {
     private static boolean always(BlockState state, BlockGetter blockGetter, BlockPos pos) {
         return true;
     }
+
 
     private static Block log(MapColor topMapColor, MapColor sideMapColor) {
         return new MiaWoodBlock(

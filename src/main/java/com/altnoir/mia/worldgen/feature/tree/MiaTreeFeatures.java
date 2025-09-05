@@ -1,4 +1,4 @@
-package com.altnoir.mia.worldgen.tree;
+package com.altnoir.mia.worldgen.feature.tree;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;
@@ -9,7 +9,6 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.util.valueproviders.WeightedListInt;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;

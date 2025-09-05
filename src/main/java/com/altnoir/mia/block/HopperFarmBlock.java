@@ -9,13 +9,17 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.PitcherCropBlock;
+import net.minecraft.world.level.block.SweetBerryBushBlock;
+import net.minecraft.world.level.block.TorchflowerCropBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -79,7 +83,11 @@ public class HopperFarmBlock extends FarmBlock {
             level.setBlock(abovePos, newState, 2);
 
             getDrops(aboveState, level, abovePos, null, null, ItemStack.EMPTY)
-                    .forEach(stack -> Block.popResource(level, belowPos, stack));
+                    .forEach(stack -> {
+                        ItemEntity itemEntity = new ItemEntity(level, belowPos.getX() + 0.5, belowPos.getY() + 0.5, belowPos.getZ() + 0.5, stack);
+                        itemEntity.setDeltaMovement(0, 0, 0);
+                        level.addFreshEntity(itemEntity);
+                    });
 
             level.playSound(null, abovePos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS);
         }
