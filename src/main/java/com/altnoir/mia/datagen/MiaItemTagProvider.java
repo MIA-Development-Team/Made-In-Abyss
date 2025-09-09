@@ -8,7 +8,6 @@ import com.altnoir.mia.init.MiaItems;
 import com.altnoir.mia.item.EnhanceableArtifact;
 import com.altnoir.mia.item.abs.IArtifactItem;
 import com.altnoir.mia.item.abs.IArtifactItem.Grade;
-
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -24,7 +23,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class MiaItemTagProvider extends ItemTagsProvider {
     public MiaItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
-            CompletableFuture<TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
+                              CompletableFuture<TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, blockTags, MIA.MOD_ID, existingFileHelper);
     }
 
@@ -65,6 +64,12 @@ public class MiaItemTagProvider extends ItemTagsProvider {
                 .add(MiaBlocks.SKYFOG_PLANKS.get().asItem());
 
         // 工具TAG
+        tag(ItemTags.PICKAXES)
+                .add(MiaItems.PRASIOLITE_COMPOSITE.get());
+        tag(ItemTags.AXES)
+                .add(MiaItems.PRASIOLITE_COMPOSITE.get());
+        tag(ItemTags.SHOVELS)
+                .add(MiaItems.PRASIOLITE_COMPOSITE.get());
         tag(ItemTags.HOES)
                 .add(MiaItems.PRASIOLITE_HOE.get());
     }

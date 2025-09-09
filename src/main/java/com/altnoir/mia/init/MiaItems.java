@@ -24,31 +24,36 @@ public class MiaItems {
     public static final DeferredItem<Item> WHITE_WHISTLE = ITEMS.register("white_whistle", () -> new SimpleWhistle(
             new Item.Properties(), 5, 20));
 
-    public static final DeferredItem<Item> GRAY_ARTIFACT_BUNDLE = ITEMS.register("gray_artifact_bundle",
-            () -> new ArtifactBundle(new Item.Properties(), Grade.THIRD, 3));
-    public static final DeferredItem<Item> FANCY_ARTIFACT_BUNDLE = ITEMS.register("fancy_artifact_bundle",
-            () -> new ArtifactBundle(new Item.Properties(), Grade.SECOND, 6));
+    public static final DeferredItem<Item> GRAY_ARTIFACT_BUNDLE = ITEMS.register("gray_artifact_bundle", () ->
+            new ArtifactBundle(new Item.Properties(), Grade.THIRD, 3));
+    public static final DeferredItem<Item> FANCY_ARTIFACT_BUNDLE = ITEMS.register("fancy_artifact_bundle", () ->
+            new ArtifactBundle(new Item.Properties(), Grade.SECOND, 6));
 
-    public static final DeferredItem<Item> TEST_ARTIFACT_1 = ITEMS.register("test_artifact_1",
-            () -> new EnhanceableArtifact(new Item.Properties(), Grade.FOURTH, 1));
-    public static final DeferredItem<Item> TEST_ARTIFACT_2 = ITEMS.register("test_artifact_2",
-            () -> new EnhanceableArtifact(new Item.Properties(), Grade.THIRD, 2));
-    public static final DeferredItem<Item> TEST_ARTIFACT_3 = ITEMS.register("test_artifact_3",
-            () -> new EnhanceableArtifact(new Item.Properties(), Grade.SPECIAL, 4));
+    public static final DeferredItem<Item> TEST_ARTIFACT_1 = ITEMS.register("test_artifact_1", () ->
+            new EnhanceableArtifact(new Item.Properties(), Grade.FOURTH, 1));
+    public static final DeferredItem<Item> TEST_ARTIFACT_2 = ITEMS.register("test_artifact_2", () ->
+            new EnhanceableArtifact(new Item.Properties(), Grade.THIRD, 2));
+    public static final DeferredItem<Item> TEST_ARTIFACT_3 = ITEMS.register("test_artifact_3", () ->
+            new EnhanceableArtifact(new Item.Properties(), Grade.SPECIAL, 4));
 
-    public static final DeferredItem<Item> PRASIOLITE_SHARD = ITEMS.register("prasiolite_shard",
-            () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> PRASIOLITE_HOE = ITEMS.register("prasiolite_hoe",
-            () -> new PrasioliteHoeItem(
+    public static final DeferredItem<Item> PRASIOLITE_SHARD = ITEMS.register("prasiolite_shard", () ->
+            new Item(new Item.Properties()));
+    public static final DeferredItem<Item> PRASIOLITE_COMPOSITE = ITEMS.register("prasiolite_composite", () ->
+            new CompositeItem(
+                    MiaTiers.PRASIOLITE, new Item.Properties()
+                    .attributes(CompositeItem.createAttributes(MiaTiers.PRASIOLITE, 8.0F, -2.8F))
+            ));
+    public static final DeferredItem<Item> PRASIOLITE_HOE = ITEMS.register("prasiolite_hoe", () ->
+            new PrasioliteHoeItem(
                     MiaTiers.PRASIOLITE, new Item.Properties()
                     .attributes(HoeItem.createAttributes(MiaTiers.PRASIOLITE, 0.0F, 0.0F))));
 
-    public static final DeferredItem<Item> MISTFUZZ_PEACH = ITEMS.register("mistfuzz_peach",
-            () -> new Item(new Item.Properties().food(MiaFoods.MISTFUZZ_PEACH)));
+    public static final DeferredItem<Item> MISTFUZZ_PEACH = ITEMS.register("mistfuzz_peach", () ->
+            new Item(new Item.Properties().food(MiaFoods.MISTFUZZ_PEACH)));
 
     // Block Item
-    public static final DeferredItem<Item> ROPE = ITEMS.register("rope",
-            () -> new RopeItem(MiaBlocks.ROPE.get(), new Item.Properties()));
+    public static final DeferredItem<Item> ROPE = ITEMS.register("rope", () ->
+            new RopeItem(MiaBlocks.ROPE.get(), new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

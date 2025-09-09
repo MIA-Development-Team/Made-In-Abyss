@@ -16,6 +16,7 @@ public class MiaBlockTags {
     // 用于tooltip
     public static final TagKey<Block> NEED_PRASIOLITE_TOOL = create("need_prasiolite_tool");
     public static final TagKey<Block> INCORRECT_FOR_PRASIOLITE_TOOL = create("incorrect_for_prasiolite_tool");
+    public static final TagKey<Block> MINEABLE_WITH_COMPOSITE = create("mineable/composite");
 
     private MiaBlockTags() {
         // 私有构造函数防止实例化

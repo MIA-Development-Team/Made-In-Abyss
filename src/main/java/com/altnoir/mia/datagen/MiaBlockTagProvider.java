@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class MiaBlockTagProvider extends BlockTagsProvider {
     public MiaBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
-            @Nullable ExistingFileHelper existingFileHelper) {
+                               @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, MIA.MOD_ID, existingFileHelper);
     }
 
@@ -30,6 +30,19 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
 
         tag(MiaBlockTags.COVERGRASS)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
+
+        // 深渊工具标签
+        tag(MiaBlockTags.NEED_PRASIOLITE_TOOL)
+                .addTag(BlockTags.NEEDS_IRON_TOOL);
+
+        tag(MiaBlockTags.INCORRECT_FOR_PRASIOLITE_TOOL)
+                .addTag(BlockTags.INCORRECT_FOR_IRON_TOOL)
+                .remove(MiaBlockTags.NEED_PRASIOLITE_TOOL);
+
+        tag(MiaBlockTags.MINEABLE_WITH_COMPOSITE)
+                .addTag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .addTag(BlockTags.MINEABLE_WITH_AXE)
+                .addTag(BlockTags.MINEABLE_WITH_SHOVEL);
 
         // 基础标签
         tag(BlockTags.DIRT)

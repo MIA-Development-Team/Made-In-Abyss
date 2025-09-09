@@ -57,6 +57,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.LARGE_PRASIOLITE_BUD);
                         output.accept(MiaBlocks.PRASIOLITE_CLUSTER);
                         output.accept(MiaItems.PRASIOLITE_SHARD);
+                        output.accept(MiaItems.PRASIOLITE_COMPOSITE);
                         output.accept(MiaItems.PRASIOLITE_HOE);
 
                         // woods
