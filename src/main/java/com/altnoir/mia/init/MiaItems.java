@@ -38,7 +38,7 @@ public class MiaItems {
 
     public static final DeferredItem<Item> PRASIOLITE_SHARD = ITEMS.register("prasiolite_shard", () ->
             new Item(new Item.Properties()));
-    public static final DeferredItem<Item> PRASIOLITE_COMPOSITE = ITEMS.register("prasiolite_composite", () ->
+    public static final DeferredItem<Item> PRASIOLITE_PICKAXE = ITEMS.register("prasiolite_pickaxe", () ->
             new CompositeItem(
                     MiaTiers.PRASIOLITE, new Item.Properties()
                     .attributes(CompositeItem.createAttributes(MiaTiers.PRASIOLITE, 8.0F, -2.8F))
