@@ -8,14 +8,11 @@ import com.mojang.blaze3d.vertex.VertexBuffer;
 import dev.emi.emi.api.stack.Comparison;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Registry;
-import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -31,7 +28,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -212,14 +208,6 @@ public class MiaUtil {
         return Comparison.compareComponents();
     }
 
-    public static ItemStack setPotion(ItemStack stack, Potion potion) {
-        stack.update(DataComponents.POTION_CONTENTS, PotionContents.EMPTY, getPotionRegistry().wrapAsHolder(potion), PotionContents::withPotion);
-        return stack;
-    }
-
-    public static DataComponentPatch emptyExtraData() {
-        return DataComponentPatch.EMPTY;
-    }
 
     public static ResourceLocation id(String id) {
         return ResourceLocation.parse(id);
@@ -233,8 +221,10 @@ public class MiaUtil {
         return ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, path);
     }
 
-    public static void applyModelViewMatrix() {
-        RenderSystem.applyModelViewMatrix();
+    public static float format2(double value) {
+        long l = (long) (value * 100);
+        double d = l / 100D;
+        return (float) d;
     }
 
     public static boolean isCreativeOrSpectator(Player player) {

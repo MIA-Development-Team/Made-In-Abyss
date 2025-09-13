@@ -48,45 +48,33 @@ public interface IArtifactItem extends ICurioItem, IMiaTooltip {
     public Grade getGrade();
 
     public default UnaryOperator<Style> getGradeStyle() {
-        switch (getGrade()) {
-            case Grade.FOURTH:
-                return style -> style.withColor(ChatFormatting.GRAY);
-            case Grade.THIRD:
-                return style -> style.withColor(ChatFormatting.AQUA);
-            case Grade.SECOND:
-                return style -> style.withColor(ChatFormatting.GREEN);
-            case Grade.FIRST:
-                return style -> style.withColor(ChatFormatting.YELLOW);
-            case Grade.SPECIAL:
-                return style -> style.withColor(ChatFormatting.RED);
-            default:
-                return style -> style.withColor(ChatFormatting.GRAY);
-        }
+        return switch (getGrade()) {
+            case Grade.D -> style -> style.withColor(ChatFormatting.DARK_GRAY);
+            case Grade.C -> style -> style.withColor(ChatFormatting.DARK_AQUA);
+            case Grade.B -> style -> style.withColor(ChatFormatting.DARK_GREEN);
+            case Grade.A -> style -> style.withColor(ChatFormatting.GOLD);
+            case Grade.S -> style -> style.withColor(ChatFormatting.DARK_RED);
+            default -> style -> style.withColor(ChatFormatting.BLACK);
+        };
     }
 
     public default String getGradeTranslatable() {
-        switch (getGrade()) {
-            case Grade.FOURTH:
-                return "tooltip.mia.artifact.grade.fourth";
-            case Grade.THIRD:
-                return "tooltip.mia.artifact.grade.third";
-            case Grade.SECOND:
-                return "tooltip.mia.artifact.grade.second";
-            case Grade.FIRST:
-                return "tooltip.mia.artifact.grade.first";
-            case Grade.SPECIAL:
-                return "tooltip.mia.artifact.grade.special";
-            default:
-                return "tooltip.mia.artifact.grade.unknown";
-        }
+        return switch (getGrade()) {
+            case Grade.D -> "tooltip.mia.artifact.grade.fourth";
+            case Grade.C -> "tooltip.mia.artifact.grade.third";
+            case Grade.B -> "tooltip.mia.artifact.grade.second";
+            case Grade.A -> "tooltip.mia.artifact.grade.first";
+            case Grade.S -> "tooltip.mia.artifact.grade.special";
+            default -> "tooltip.mia.artifact.grade.unknown";
+        };
     }
 
     public enum Grade {
-        FOURTH,
-        THIRD,
-        SECOND,
-        FIRST,
-        SPECIAL,
+        D,
+        C,
+        B,
+        A,
+        S,
         UNKNOWN
     }
 }

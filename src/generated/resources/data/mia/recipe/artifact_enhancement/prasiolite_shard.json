@@ -1,0 +1,13 @@
+{
+  "type": "mia:artifact_enhancement",
+  "amount": 0.2,
+  "artifact": {
+    "tag": "mia:enhanceable_artifact"
+  },
+  "attribute": "minecraft:player.block_break_speed",
+  "material": {
+    "count": 8,
+    "id": "mia:prasiolite_shard"
+  },
+  "operation": "add_multiplied_total"
+}

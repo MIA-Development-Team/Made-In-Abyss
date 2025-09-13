@@ -59,6 +59,7 @@
     "block.mia.skyfog_leaves": "天雾树叶",
     "block.mia.skyfog_leaves_with_fruits": "结果的天雾树叶",
     "block.mia.skyfog_sapling": "天雾树苗",
+    "block.mia.rope": "绳索",
 
     "block.mia.fortitude_flower": "不屈之花",
     "block.mia.lamp_tube": "灯管",
@@ -68,6 +69,8 @@
     "block.mia.artifact_smithing_table": "遗物强化桌",
 
     "biome.mia.abyss_brink/abyss_brink": "阿比斯深渊",
+    "biome.mia.abyss_brink/abyss_plains": "深渊平原",
+    "biome.mia.abyss_brink/skyfog_forest": "天雾森林",
 
     "painting.mia.abyss.author": "Made In Abyss",
     "painting.mia.abyss.title": "Abyss",
@@ -81,11 +84,11 @@
     "tooltip.mia.hold_shift": "按住 [%s] 显示详细信息",
     "tooltip.attribute_modifier": "%s %s",
     "tooltip.mia.artifact.grade.unknown": "未知遗物",
-    "tooltip.mia.artifact.grade.special": "特级遗物",
-    "tooltip.mia.artifact.grade.first": "一级遗物",
-    "tooltip.mia.artifact.grade.second": "二级遗物",
-    "tooltip.mia.artifact.grade.third": "三级遗物",
-    "tooltip.mia.artifact.grade.fourth": "四级遗物",
+    "tooltip.mia.artifact.grade.special": "深渊遗物",
+    "tooltip.mia.artifact.grade.first": "奈落遗物",
+    "tooltip.mia.artifact.grade.second": "咒骸遗物",
+    "tooltip.mia.artifact.grade.third": "蚀纹遗物",
+    "tooltip.mia.artifact.grade.fourth": "浮尘遗物",
     "tooltip.mia.artifact.weight": "重量：%s",
     "tooltip.mia.artifact.enhancement.level": "强化：%s/%s",
     "tooltip.mia.artifact.enhancement.material": "强化遗物时：",
@@ -97,8 +100,6 @@
     "tooltip.mia.description.test_artifact_2": "这是一个测试遗物2。",
     "tooltip.mia.description.test_artifact_3": "这是一个测试遗物3。",
     "tooltip.mia.description.gray_artifact_bundle": "这是一个放遗物的包。",
-
-
 
     "gui.mia.disconnect": "退出游戏？",
 
@@ -123,9 +124,5 @@
     "emi.category.mia.lamp_tube": "镭射催化",
 
 
-    "containier.mia.artifact.enhancement.title": "遗物强化台",
-
-
-
-    "block.mia.rope": "绳索"
+    "containier.mia.artifact.enhancement.title": "遗物强化台"
 }

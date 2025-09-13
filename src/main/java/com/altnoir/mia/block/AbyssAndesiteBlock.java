@@ -1,8 +1,8 @@
 package com.altnoir.mia.block;
 
 import com.altnoir.mia.block.abs.ACanFarmBlock;
-import com.altnoir.mia.init.MiaBlockTags;
 import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.item.PrasioliteHoeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -28,7 +28,7 @@ public class AbyssAndesiteBlock extends ACanFarmBlock implements BonemealableBlo
             return false;
         } else {
             for (BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
-                if (level.getBlockState(blockpos).is(MiaBlockTags.COVERGRASS)) {
+                if (level.getBlockState(blockpos).is(MiaTags.Blocks.COVERGRASS)) {
                     return true;
                 }
             }

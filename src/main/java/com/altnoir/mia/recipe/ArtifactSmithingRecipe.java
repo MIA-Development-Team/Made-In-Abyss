@@ -2,11 +2,10 @@ package com.altnoir.mia.recipe;
 
 import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.init.MiaRecipes;
-import com.altnoir.mia.item.EnhanceableArtifact;
+import com.altnoir.mia.item.abs.IEArtifact;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -21,7 +20,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-public class ArtifactEnhancementRecipe implements Recipe<ArtifactEnhancementRecipeInput> {
+public class ArtifactSmithingRecipe implements Recipe<ArtifactSmithingRecipeInput> {
 
     final Ingredient artifact;
     final ItemStack material;
@@ -29,8 +28,8 @@ public class ArtifactEnhancementRecipe implements Recipe<ArtifactEnhancementReci
     final double amount;
     final AttributeModifier.Operation operation;
 
-    public ArtifactEnhancementRecipe(Ingredient artifact, ItemStack material, Holder<Attribute> attribute,
-            double amount, AttributeModifier.Operation operation) {
+    public ArtifactSmithingRecipe(Ingredient artifact, ItemStack material, Holder<Attribute> attribute,
+                                  double amount, AttributeModifier.Operation operation) {
         this.artifact = artifact;
         this.material = material;
         this.attribute = attribute;
@@ -39,7 +38,7 @@ public class ArtifactEnhancementRecipe implements Recipe<ArtifactEnhancementReci
     }
 
     @Override
-    public ItemStack assemble(ArtifactEnhancementRecipeInput input, Provider registries) {
+    public ItemStack assemble(ArtifactSmithingRecipeInput input, Provider registries) {
         if (input.base().has(MiaComponents.ARTIFACT_ENHANCEMENT)) {
             int artifactLevel = input.base().get(MiaComponents.ARTIFACT_ENHANCEMENT).getLevel();
             ItemStack newArtifact = input.base().transmuteCopy(input.base().getItem(), input.base().getCount());
@@ -62,11 +61,11 @@ public class ArtifactEnhancementRecipe implements Recipe<ArtifactEnhancementReci
     }
 
     @Override
-    public boolean matches(ArtifactEnhancementRecipeInput input, Level level) {
+    public boolean matches(ArtifactSmithingRecipeInput input, Level level) {
         if (!this.material.equals(input.material())) {
             return false;
         }
-        if ((input.base().getItem() instanceof EnhanceableArtifact artifact)
+        if ((input.base().getItem() instanceof IEArtifact artifact)
                 && input.base().has(MiaComponents.ARTIFACT_ENHANCEMENT)) {
             int artifactLevel = input.base().get(MiaComponents.ARTIFACT_ENHANCEMENT).getLevel();
             return artifactLevel < artifact.getMaxLevel();
@@ -113,9 +112,9 @@ public class ArtifactEnhancementRecipe implements Recipe<ArtifactEnhancementReci
     // return false;
     // }
 
-    public static class Serializer implements RecipeSerializer<ArtifactEnhancementRecipe> {
+    public static class Serializer implements RecipeSerializer<ArtifactSmithingRecipe> {
 
-        private static final MapCodec<ArtifactEnhancementRecipe> CODEC = RecordCodecBuilder.mapCodec((codec) -> {
+        private static final MapCodec<ArtifactSmithingRecipe> CODEC = RecordCodecBuilder.mapCodec((codec) -> {
             return codec.group(
                     Ingredient.CODEC.fieldOf("artifact").forGetter((recipe) -> {
                         return recipe.artifact;
@@ -131,32 +130,32 @@ public class ArtifactEnhancementRecipe implements Recipe<ArtifactEnhancementReci
                     }),
                     AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter((recipe) -> {
                         return recipe.operation;
-                    })).apply(codec, ArtifactEnhancementRecipe::new);
+                    })).apply(codec, ArtifactSmithingRecipe::new);
         });
-        public static final StreamCodec<RegistryFriendlyByteBuf, ArtifactEnhancementRecipe> STREAM_CODEC = StreamCodec
+        public static final StreamCodec<RegistryFriendlyByteBuf, ArtifactSmithingRecipe> STREAM_CODEC = StreamCodec
                 .of(Serializer::toNetwork, Serializer::fromNetwork);
 
         @Override
-        public MapCodec<ArtifactEnhancementRecipe> codec() {
+        public MapCodec<ArtifactSmithingRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ArtifactEnhancementRecipe> streamCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, ArtifactSmithingRecipe> streamCodec() {
             return STREAM_CODEC;
         }
 
-        private static ArtifactEnhancementRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
+        private static ArtifactSmithingRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
             Ingredient artifact = (Ingredient) Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             ItemStack ingredient = (ItemStack) ItemStack.STREAM_CODEC.decode(buffer);
             Holder<Attribute> attribute = (Holder<Attribute>) Attribute.STREAM_CODEC.decode(buffer);
             double amount = (double) ByteBufCodecs.DOUBLE.decode(buffer);
             AttributeModifier.Operation operation = (AttributeModifier.Operation) AttributeModifier.Operation.STREAM_CODEC
                     .decode(buffer);
-            return new ArtifactEnhancementRecipe(artifact, ingredient, attribute, amount, operation);
+            return new ArtifactSmithingRecipe(artifact, ingredient, attribute, amount, operation);
         }
 
-        private static void toNetwork(RegistryFriendlyByteBuf buffer, ArtifactEnhancementRecipe recipe) {
+        private static void toNetwork(RegistryFriendlyByteBuf buffer, ArtifactSmithingRecipe recipe) {
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.artifact);
             ItemStack.STREAM_CODEC.encode(buffer, recipe.material);
             Attribute.STREAM_CODEC.encode(buffer, recipe.attribute);

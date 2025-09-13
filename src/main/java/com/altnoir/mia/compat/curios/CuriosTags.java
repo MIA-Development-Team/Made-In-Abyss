@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
-public class CuriosItemTags {
+public class CuriosTags {
     public static final TagKey<Item> WHISTLE = createItemTag("whistle");
     public static final TagKey<Item> ARTIFACT = createItemTag("artifact");
 

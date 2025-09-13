@@ -1,12 +1,12 @@
 package com.altnoir.mia.datagen;
 
+import com.altnoir.mia.init.MiaAttributes;
 import com.altnoir.mia.init.MiaBlocks;
-import com.altnoir.mia.init.MiaItemTags;
+import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.init.MiaItems;
-import com.altnoir.mia.recipe.LampTubeRecipeBuilder;
-import com.altnoir.mia.recipe.ArtifactEnhancementRecipeBuilder;
 import com.altnoir.mia.recipe.ArtifactBundleUpgradeRecipeBuilder;
-
+import com.altnoir.mia.recipe.ArtifactSmithingRecipeBuilder;
+import com.altnoir.mia.recipe.LampTubeRecipeBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -14,8 +14,8 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -57,61 +57,61 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     private static void ArtifactEnhancement(RecipeOutput recipeOutput) {
-        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
-                new ItemStack(MiaItems.MISTFUZZ_PEACH.get(), 4),
-                Attributes.MAX_HEALTH, 2, Operation.ADD_VALUE)
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+                        new ItemStack(MiaItems.MISTFUZZ_PEACH.get(), 4),
+                        Attributes.MAX_HEALTH, 2, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
-                new ItemStack(Items.IRON_INGOT, 1),
-                Attributes.ARMOR, 0.3, Operation.ADD_MULTIPLIED_BASE)
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+                        new ItemStack(Items.IRON_INGOT, 1),
+                        Attributes.ARMOR, 0.3, Operation.ADD_MULTIPLIED_BASE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
-                new ItemStack(Items.EMERALD, 1),
-                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_TOTAL)
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+                        new ItemStack(Items.EMERALD, 1),
+                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_TOTAL)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
-                new ItemStack(Items.STONE, 1),
-                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+                        new ItemStack(Items.STONE, 1),
+                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
-                new ItemStack(Items.FIRE_CHARGE, 2),
-                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+                        new ItemStack(Items.FIRE_CHARGE, 2),
+                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
-                new ItemStack(Items.WATER_BUCKET, 3),
-                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+                        new ItemStack(Items.WATER_BUCKET, 3),
+                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
-                new ItemStack(Items.BAMBOO, 1),
-                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+                        new ItemStack(Items.BAMBOO, 1),
+                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
-                new ItemStack(Items.COBBLED_DEEPSLATE, 1),
-                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+                        new ItemStack(Items.COBBLED_DEEPSLATE, 1),
+                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
-                new ItemStack(Items.OAK_LEAVES, 1),
-                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+                        new ItemStack(Items.OAK_LEAVES, 1),
+                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
-                new ItemStack(Items.OAK_PLANKS, 1),
-                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+                        new ItemStack(Items.OAK_PLANKS, 1),
+                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
-                new ItemStack(Items.OAK_SAPLING, 1),
-                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+                        new ItemStack(Items.OAK_SAPLING, 1),
+                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
-                new ItemStack(Items.STONE_PICKAXE, 1),
-                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_BASE)
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+                        new ItemStack(MiaItems.PRASIOLITE_SHARD.get(), 8),
+                        Attributes.BLOCK_BREAK_SPEED, 0.2, Operation.ADD_MULTIPLIED_TOTAL)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
-                new ItemStack(Items.STICK, 1),
-                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_BASE)
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+                        new ItemStack(Items.STICK, 1),
+                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_BASE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactEnhancementRecipeBuilder.create(Ingredient.of(MiaItemTags.ENHANCEABLE_ARTIFACT),
-                new ItemStack(Items.DIAMOND, 1),
-                Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_BASE)
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+                        new ItemStack(Items.DIAMOND, 1),
+                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_BASE)
                 .unlockedByMaterial().save(recipeOutput);
     }
 
@@ -143,7 +143,7 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     private static void lampTube(RecipeOutput recipeOutput, TagKey<Item> tag, ItemLike output, Integer count,
-            String hasName) {
+                                 String hasName) {
         LampTubeRecipeBuilder.lampTube(tag, output, count)
                 .unlockedBy("has_" + hasName, has(output))
                 .save(recipeOutput);

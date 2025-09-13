@@ -1,8 +1,8 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.init.MiaBlockTags;
 import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.init.MiaTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
@@ -22,24 +22,24 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         // 深渊标签
-        tag(MiaBlockTags.ANDESITE_ORE_REPLACEABLES)
+        tag(MiaTags.Blocks.ANDESITE_ORE_REPLACEABLES)
                 .add(MiaBlocks.ABYSS_ANDESITE.get());
 
-        tag(MiaBlockTags.BASE_STONE_ABYSS)
+        tag(MiaTags.Blocks.BASE_STONE_ABYSS)
                 .add(MiaBlocks.ABYSS_ANDESITE.get());
 
-        tag(MiaBlockTags.COVERGRASS)
+        tag(MiaTags.Blocks.COVERGRASS)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
 
         // 深渊工具标签
-        tag(MiaBlockTags.NEED_PRASIOLITE_TOOL)
+        tag(MiaTags.Blocks.NEED_PRASIOLITE_TOOL)
                 .addTag(BlockTags.NEEDS_IRON_TOOL);
 
-        tag(MiaBlockTags.INCORRECT_FOR_PRASIOLITE_TOOL)
+        tag(MiaTags.Blocks.INCORRECT_FOR_PRASIOLITE_TOOL)
                 .addTag(BlockTags.INCORRECT_FOR_IRON_TOOL)
-                .remove(MiaBlockTags.NEED_PRASIOLITE_TOOL);
+                .remove(MiaTags.Blocks.NEED_PRASIOLITE_TOOL);
 
-        tag(MiaBlockTags.MINEABLE_WITH_COMPOSITE)
+        tag(MiaTags.Blocks.MINEABLE_WITH_COMPOSITE)
                 .addTag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .addTag(BlockTags.MINEABLE_WITH_AXE)
                 .addTag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -148,6 +148,6 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
 
         // 标签嵌套
         tag(BlockTags.SCULK_REPLACEABLE)
-                .addTag(MiaBlockTags.ANDESITE_ORE_REPLACEABLES);
+                .addTag(MiaTags.Blocks.ANDESITE_ORE_REPLACEABLES);
     }
 }

@@ -1,13 +1,13 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.compat.curios.CuriosItemTags;
+import com.altnoir.mia.compat.curios.CuriosTags;
 import com.altnoir.mia.init.MiaBlocks;
-import com.altnoir.mia.init.MiaItemTags;
 import com.altnoir.mia.init.MiaItems;
-import com.altnoir.mia.item.EnhanceableArtifact;
+import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.item.abs.IArtifactItem;
 import com.altnoir.mia.item.abs.IArtifactItem.Grade;
+import com.altnoir.mia.item.abs.IEArtifact;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -31,7 +31,7 @@ public class MiaItemTagProvider extends ItemTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         tagArtifacts(provider);
 
-        tag(MiaItemTags.ARTIFACT_ENHANCE_MATERIAL).replace(false)
+        tag(MiaTags.Items.ARTIFACT_ENHANCE_MATERIAL).replace(false)
                 .add(MiaItems.MISTFUZZ_PEACH.get())
                 .add(Items.IRON_INGOT)
                 .add(Items.EMERALD)
@@ -43,11 +43,11 @@ public class MiaItemTagProvider extends ItemTagsProvider {
                 .add(Items.OAK_LEAVES)
                 .add(Items.OAK_PLANKS)
                 .add(Items.OAK_SAPLING)
-                .add(Items.STONE_PICKAXE)
+                .add(MiaItems.PRASIOLITE_SHARD.get())
                 .add(Items.STICK)
                 .add(Items.DIAMOND);
 
-        tag(CuriosItemTags.WHISTLE).replace(false)
+        tag(CuriosTags.WHISTLE).replace(false)
                 .add(MiaItems.RED_WHISTLE.get())
                 .add(MiaItems.BLUE_WHISTLE.get())
                 .add(MiaItems.MOON_WHISTLE.get())
@@ -65,51 +65,51 @@ public class MiaItemTagProvider extends ItemTagsProvider {
 
         // 工具TAG
         tag(ItemTags.PICKAXES)
-                .add(MiaItems.PRASIOLITE_COMPOSITE.get());
+                .add(MiaItems.PRASIOLITE_PICKAXE.get());
         tag(ItemTags.AXES)
-                .add(MiaItems.PRASIOLITE_COMPOSITE.get());
+                .add(MiaItems.PRASIOLITE_PICKAXE.get());
         tag(ItemTags.SHOVELS)
-                .add(MiaItems.PRASIOLITE_COMPOSITE.get());
+                .add(MiaItems.PRASIOLITE_PICKAXE.get());
         tag(ItemTags.HOES)
                 .add(MiaItems.PRASIOLITE_HOE.get());
     }
 
     private void tagArtifacts(HolderLookup.Provider provider) {
         HolderLookup<Item> items = provider.lookupOrThrow(Registries.ITEM);
-        var allArtifactTag = tag(CuriosItemTags.ARTIFACT).replace(false);
-        var enhanceableArtifactTag = tag(MiaItemTags.ENHANCEABLE_ARTIFACT).replace(false);
-        var grade4ArtifactTag = tag(MiaItemTags.ARTIFACT_GRADE_4).replace(false);
-        var grade3ArtifactTag = tag(MiaItemTags.ARTIFACT_GRADE_3).replace(false);
-        var grade2ArtifactTag = tag(MiaItemTags.ARTIFACT_GRADE_2).replace(false);
-        var grade1ArtifactTag = tag(MiaItemTags.ARTIFACT_GRADE_1).replace(false);
-        var gradeSArtifactTag = tag(MiaItemTags.ARTIFACT_GRADE_S).replace(false);
-        var gradeUArtifactTag = tag(MiaItemTags.ARTIFACT_GRADE_U).replace(false);
+        var allArtifactTag = tag(CuriosTags.ARTIFACT).replace(false);
+        var enhanceableArtifactTag = tag(MiaTags.Items.ENHANCEABLE_ARTIFACT).replace(false);
+        var grade4ArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_D).replace(false);
+        var grade3ArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_C).replace(false);
+        var grade2ArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_B).replace(false);
+        var grade1ArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_A).replace(false);
+        var gradeSArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_S).replace(false);
+        var gradeUArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_U).replace(false);
 
         items.listElements().forEach(ref -> {
             Item item = ref.value();
 
             if (item instanceof IArtifactItem artifact) {
                 allArtifactTag.add(item);
-                if (item instanceof EnhanceableArtifact) {
+                if (item instanceof IEArtifact) {
                     enhanceableArtifactTag.add(item);
                 }
 
                 // dispatch by grade
                 Grade grade = artifact.getGrade();
                 switch (grade) {
-                    case Grade.FOURTH:
+                    case Grade.D:
                         grade4ArtifactTag.add(item);
                         break;
-                    case Grade.THIRD:
+                    case Grade.C:
                         grade3ArtifactTag.add(item);
                         break;
-                    case Grade.SECOND:
+                    case Grade.B:
                         grade2ArtifactTag.add(item);
                         break;
-                    case Grade.FIRST:
+                    case Grade.A:
                         grade1ArtifactTag.add(item);
                         break;
-                    case Grade.SPECIAL:
+                    case Grade.S:
                         gradeSArtifactTag.add(item);
                         break;
                     case Grade.UNKNOWN:

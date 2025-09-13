@@ -1,10 +1,10 @@
 package com.altnoir.mia.client.event;
 
 import com.altnoir.mia.init.MiaColors;
-import com.altnoir.mia.init.MiaItemTags;
+import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.item.IMiaTooltip;
-import com.altnoir.mia.recipe.ArtifactEnhancementRecipe;
+import com.altnoir.mia.recipe.ArtifactSmithingRecipe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -40,7 +40,7 @@ public class ClientTooltipEvent {
                 ).withColor(MiaColors.ABYSS_GREEN));
             }
         }
-        if (stack.is(MiaItemTags.ARTIFACT_ENHANCE_MATERIAL)) {
+        if (stack.is(MiaTags.Items.ARTIFACT_ENHANCE_MATERIAL)) {
             var tooltip = event.getToolTip();
             if (Screen.hasShiftDown()) {
                 RecipeManager recipeManager = Minecraft.getInstance().getConnection().getRecipeManager();
@@ -60,7 +60,7 @@ public class ClientTooltipEvent {
     }
 
     private static List<Component> materialModifiers(ItemStack material,
-                                                     List<RecipeHolder<ArtifactEnhancementRecipe>> recipes) {
+                                                     List<RecipeHolder<ArtifactSmithingRecipe>> recipes) {
         return recipes.stream().map(RecipeHolder::value)
                 .filter(recipe -> recipe.getMaterial().getItem() == material.getItem())
                 .map(recipe -> {

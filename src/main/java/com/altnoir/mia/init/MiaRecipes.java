@@ -2,7 +2,7 @@ package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.recipe.LampTubeRecipe;
-import com.altnoir.mia.recipe.ArtifactEnhancementRecipe;
+import com.altnoir.mia.recipe.ArtifactSmithingRecipe;
 import com.altnoir.mia.recipe.ArtifactBundleUpgradeRecipe;
 
 import net.minecraft.core.registries.Registries;
@@ -32,11 +32,11 @@ public class MiaRecipes {
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ArtifactBundleUpgradeRecipe>> ARTIFACT_BUNDLE_UPGRADE_SERIALIZER = SERIALIZERS
             .register("artifact_bundle_upgrade", ArtifactBundleUpgradeRecipe.Serializer::new);
 
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ArtifactEnhancementRecipe>> ARTIFACT_ENHANCEMENT_SERIALIZER = SERIALIZERS
-            .register("artifact_enhancement", ArtifactEnhancementRecipe.Serializer::new);
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ArtifactSmithingRecipe>> ARTIFACT_ENHANCEMENT_SERIALIZER = SERIALIZERS
+            .register("artifact_enhancement", ArtifactSmithingRecipe.Serializer::new);
 
-    public static final DeferredHolder<RecipeType<?>, RecipeType<ArtifactEnhancementRecipe>> ARTIFACT_ENHANCEMENT_TYPE = TYPES
-            .register("artifact_enhancement", () -> new RecipeType<ArtifactEnhancementRecipe>() {
+    public static final DeferredHolder<RecipeType<?>, RecipeType<ArtifactSmithingRecipe>> ARTIFACT_ENHANCEMENT_TYPE = TYPES
+            .register("artifact_enhancement", () -> new RecipeType<ArtifactSmithingRecipe>() {
                 @Override
                 public String toString() {
                     return "artifact_enhancement";

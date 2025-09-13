@@ -25,16 +25,16 @@ public class MiaItems {
             new Item.Properties(), 5, 20));
 
     public static final DeferredItem<Item> GRAY_ARTIFACT_BUNDLE = ITEMS.register("gray_artifact_bundle", () ->
-            new ArtifactBundle(new Item.Properties(), Grade.THIRD, 3));
+            new ArtifactBundle(new Item.Properties(), Grade.C, 3));
     public static final DeferredItem<Item> FANCY_ARTIFACT_BUNDLE = ITEMS.register("fancy_artifact_bundle", () ->
-            new ArtifactBundle(new Item.Properties(), Grade.SECOND, 6));
+            new ArtifactBundle(new Item.Properties(), Grade.B, 6));
 
     public static final DeferredItem<Item> TEST_ARTIFACT_1 = ITEMS.register("test_artifact_1", () ->
-            new EnhanceableArtifact(new Item.Properties(), Grade.FOURTH, 1));
+            new EArtifact(new Item.Properties(), Grade.D, 1));
     public static final DeferredItem<Item> TEST_ARTIFACT_2 = ITEMS.register("test_artifact_2", () ->
-            new EnhanceableArtifact(new Item.Properties(), Grade.THIRD, 2));
+            new EArtifact(new Item.Properties(), Grade.C, 2));
     public static final DeferredItem<Item> TEST_ARTIFACT_3 = ITEMS.register("test_artifact_3", () ->
-            new EnhanceableArtifact(new Item.Properties(), Grade.SPECIAL, 4));
+            new EArtifact(new Item.Properties(), Grade.S, 4));
 
     public static final DeferredItem<Item> PRASIOLITE_SHARD = ITEMS.register("prasiolite_shard", () ->
             new Item(new Item.Properties()));
@@ -52,6 +52,9 @@ public class MiaItems {
             new Item(new Item.Properties().food(MiaFoods.MISTFUZZ_PEACH)));
 
     // Block Item
+    public static final DeferredItem<Item> ENDLESS_CUP = ITEMS.register("endless_cup", () ->
+            new EArtifactBlockItem(MiaBlocks.ENDLESS_CUP.get(), new Item.Properties().stacksTo(1), Grade.C, 1));
+
     public static final DeferredItem<Item> ROPE = ITEMS.register("rope", () ->
             new RopeItem(MiaBlocks.ROPE.get(), new Item.Properties()));
 

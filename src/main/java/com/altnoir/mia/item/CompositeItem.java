@@ -1,6 +1,6 @@
 package com.altnoir.mia.item;
 
-import com.altnoir.mia.init.MiaBlockTags;
+import com.altnoir.mia.init.MiaTags;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -44,7 +44,7 @@ public class CompositeItem extends DiggerItem {
     );
 
     public CompositeItem(Tier tier, Properties properties) {
-        super(tier, MiaBlockTags.MINEABLE_WITH_COMPOSITE, properties);
+        super(tier, MiaTags.Blocks.MINEABLE_WITH_COMPOSITE, properties);
     }
 
     @Override

@@ -226,12 +226,12 @@ public class MiaBlocks {
                             .noOcclusion()));
 
     public static final DeferredBlock<Block> ARTIFACT_SMITHING_TABLE = registerBlock("artifact_smithing_table", () ->
-            new ArtifactEnhancementTableBlock(BlockBehaviour.Properties.of()
+            new ArtifactSmithingTableBlock(BlockBehaviour.Properties.of()
                     .requiresCorrectToolForDrops()
                     .strength(3.0F, 6.0F)
                     .sound(SoundType.NETHERITE_BLOCK)));
 
-    public static final DeferredBlock<Block> ENDLESS_CUP = registerBlock("endless_cup", () ->
+    public static final DeferredBlock<Block> ENDLESS_CUP = BLOCKS.register("endless_cup", () ->
             new EndlessCupBlock(
                     BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())));
 

@@ -28,7 +28,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 
-public class ArtifactEnhancementRecipeBuilder {
+public class ArtifactSmithingRecipeBuilder {
 
     private final Ingredient whistle;
     private final ItemStack material;
@@ -38,8 +38,8 @@ public class ArtifactEnhancementRecipeBuilder {
 
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap();
 
-    private ArtifactEnhancementRecipeBuilder(Ingredient whistle, ItemStack addition, Holder<Attribute> attribute,
-            double amount, AttributeModifier.Operation operation) {
+    private ArtifactSmithingRecipeBuilder(Ingredient whistle, ItemStack addition, Holder<Attribute> attribute,
+                                          double amount, AttributeModifier.Operation operation) {
         this.whistle = whistle;
         this.material = addition;
         this.attribute = attribute;
@@ -47,18 +47,18 @@ public class ArtifactEnhancementRecipeBuilder {
         this.operation = operation;
     }
 
-    public static ArtifactEnhancementRecipeBuilder create(Ingredient base, ItemStack addition,
-            Holder<Attribute> attribute,
-            double amount, AttributeModifier.Operation operation) {
-        return new ArtifactEnhancementRecipeBuilder(base, addition, attribute, amount, operation);
+    public static ArtifactSmithingRecipeBuilder create(Ingredient base, ItemStack addition,
+                                                       Holder<Attribute> attribute,
+                                                       double amount, AttributeModifier.Operation operation) {
+        return new ArtifactSmithingRecipeBuilder(base, addition, attribute, amount, operation);
     }
 
-    public ArtifactEnhancementRecipeBuilder unlockedBy(String key, Criterion<?> criterion) {
+    public ArtifactSmithingRecipeBuilder unlockedBy(String key, Criterion<?> criterion) {
         this.criteria.put(key, criterion);
         return this;
     }
 
-    public ArtifactEnhancementRecipeBuilder unlockedByMaterial() {
+    public ArtifactSmithingRecipeBuilder unlockedByMaterial() {
         String name = BuiltInRegistries.ITEM.getKey(material.getItem()).getPath();
         return this.unlockedBy("has_" + name, has(material.getItem()));
     }
@@ -114,7 +114,7 @@ public class ArtifactEnhancementRecipeBuilder {
         Objects.requireNonNull(advancementBuilder);
         criteria.forEach(advancementBuilder::addCriterion);
 
-        ArtifactEnhancementRecipe recipe = new ArtifactEnhancementRecipe(this.whistle, this.material, this.attribute,
+        ArtifactSmithingRecipe recipe = new ArtifactSmithingRecipe(this.whistle, this.material, this.attribute,
                 this.amount, this.operation);
         ResourceLocation advancementId = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, id.getPath());
         recipeOutput.accept(id, recipe,

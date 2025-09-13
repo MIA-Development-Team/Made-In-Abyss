@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_stone_pickaxe": {
+    "has_prasiolite_shard": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:stone_pickaxe"
+            "items": "mia:prasiolite_shard"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mia:artifact_enhancement/stone_pickaxe"
+        "recipe": "mia:artifact_enhancement/prasiolite_shard"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_stone_pickaxe"
+      "has_prasiolite_shard"
     ]
   ],
   "rewards": {
     "recipes": [
-      "mia:artifact_enhancement/stone_pickaxe"
+      "mia:artifact_enhancement/prasiolite_shard"
     ]
   }
 }

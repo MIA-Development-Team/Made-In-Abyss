@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "mia:item/prasiolite_composite"
+    "layer0": "mia:item/prasiolite_pickaxe"
   }
 }

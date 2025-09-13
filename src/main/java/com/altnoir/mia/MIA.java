@@ -36,7 +36,9 @@ public class MIA {
         MiaBlockEntities.register(modEventBus);
         MiaItemGroups.register(modEventBus);
 
+        MiaAttributes.register(modEventBus);
         MiaEffects.register(modEventBus);
+        MiaPotions.register(modEventBus);
         MiaComponents.register(modEventBus);
         MiaBiomeSources.register(modEventBus);
         MiaDensityFunctionTypes.register(modEventBus);

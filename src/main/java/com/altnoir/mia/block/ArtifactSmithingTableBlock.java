@@ -1,6 +1,6 @@
 package com.altnoir.mia.block;
 
-import com.altnoir.mia.inventory.ArtifactEnhancementTableMenu;
+import com.altnoir.mia.inventory.ArtifactSmithingTableMenu;
 import com.mojang.serialization.MapCodec;
 
 import net.minecraft.core.BlockPos;
@@ -16,24 +16,24 @@ import net.minecraft.world.level.block.CraftingTableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class ArtifactEnhancementTableBlock extends CraftingTableBlock {
-    public static final MapCodec<ArtifactEnhancementTableBlock> CODEC = simpleCodec(ArtifactEnhancementTableBlock::new);
+public class ArtifactSmithingTableBlock extends CraftingTableBlock {
+    public static final MapCodec<ArtifactSmithingTableBlock> CODEC = simpleCodec(ArtifactSmithingTableBlock::new);
 
     private static final Component CONTAINER_TITLE = Component
             .translatable("containier.mia.artifact.enhancement.title");
 
-    public MapCodec<ArtifactEnhancementTableBlock> codec() {
+    public MapCodec<ArtifactSmithingTableBlock> codec() {
         return CODEC;
     }
 
-    public ArtifactEnhancementTableBlock(Properties properties) {
+    public ArtifactSmithingTableBlock(Properties properties) {
         super(properties);
     }
 
     @Override
     protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
         return new SimpleMenuProvider((containerId, playerInventory, player) ->
-                new ArtifactEnhancementTableMenu(containerId, playerInventory,
+                new ArtifactSmithingTableMenu(containerId, playerInventory,
                 ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
     }
 

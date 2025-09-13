@@ -2,6 +2,7 @@
   "values": [
     "mia:test_artifact_1",
     "mia:test_artifact_2",
-    "mia:test_artifact_3"
+    "mia:test_artifact_3",
+    "mia:endless_cup"
   ]
 }

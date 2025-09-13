@@ -3,7 +3,7 @@ package com.altnoir.mia.recipe;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;
 
-public record ArtifactEnhancementRecipeInput(ItemStack base, ItemStack material)
+public record ArtifactSmithingRecipeInput(ItemStack base, ItemStack material)
         implements RecipeInput {
     public ItemStack getItem(int slot) {
         ItemStack rv;

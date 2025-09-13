@@ -57,7 +57,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.LARGE_PRASIOLITE_BUD);
                         output.accept(MiaBlocks.PRASIOLITE_CLUSTER);
                         output.accept(MiaItems.PRASIOLITE_SHARD);
-                        output.accept(MiaItems.PRASIOLITE_COMPOSITE);
+                        output.accept(MiaItems.PRASIOLITE_PICKAXE);
                         output.accept(MiaItems.PRASIOLITE_HOE);
 
                         // woods
@@ -113,7 +113,7 @@ public class MiaItemGroups {
                         output.accept(MiaItems.TEST_ARTIFACT_2);
                         output.accept(MiaItems.TEST_ARTIFACT_3);
 
-                        output.accept(MiaBlocks.ENDLESS_CUP);
+                        output.accept(MiaItems.ENDLESS_CUP);
                     }).build()
     );
 
