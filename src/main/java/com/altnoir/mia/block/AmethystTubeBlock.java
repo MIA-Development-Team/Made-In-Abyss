@@ -1,6 +1,7 @@
 package com.altnoir.mia.block;
 
 import com.altnoir.mia.block.abs.ACrystalTubeBlock;
+import com.altnoir.mia.block.entity.PedestalBlockEntity;
 import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.recipe.LampTubeRecipe;
 import com.altnoir.mia.recipe.LampTubeRecipeInput;
@@ -12,6 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -56,11 +58,37 @@ public class AmethystTubeBlock extends ACrystalTubeBlock {
 
     @Override
     protected boolean crystalProcessing(Level level, BlockPos pos, BlockState state, BlockPos targetPos, BlockState targetState, int i) {
-        if (level.getBlockEntity(targetPos) instanceof Container container) {
+        if (level.getBlockEntity(targetPos) instanceof PedestalBlockEntity pbe) {
+            return processRecipe(pbe, level, pos, state, targetPos);
+        }
+        else if (level.getBlockEntity(targetPos) instanceof Container container) {
             return processRecipe(level, pos, state, targetPos, container);
-        } else if (!targetState.isSolidRender(level, targetPos)) {
+        }
+        else if (!targetState.isSolidRender(level, targetPos)) {
             return propagateSignal(level, pos, state, targetPos, targetState, i);
         }
+        return false;
+    }
+
+    public boolean processRecipe(PedestalBlockEntity blockEntity, Level level, BlockPos pos, BlockState state, BlockPos targetPos) {
+        var inputStack = blockEntity.extractInput(Item.ABSOLUTE_MAX_STACK_SIZE, true);
+        if (inputStack.isEmpty()) return false;
+        var recipe = getCurrentRecipe(level, inputStack);
+        if (recipe.isEmpty()) return false;
+
+        var mul = state.getValue(LEVEL);
+        var result = recipe.get().value().result();
+        var outputCount = Math.min(result.getCount() * mul, result.getMaxStackSize());
+
+        var outputStack = result.copyWithCount(outputCount);
+        var success = blockEntity.insertOutput(outputStack, false);
+
+        if (success) {
+            blockEntity.extractInput(outputCount, false);
+            recipeEffect(level, pos, targetPos, state);
+            return true;
+        }
+
         return false;
     }
 
@@ -127,6 +155,12 @@ public class AmethystTubeBlock extends ACrystalTubeBlock {
     private void recipeEffect(Container container, Level level, BlockPos pos, BlockPos targetPos, BlockState state) {
         container.setChanged();
 
+        playBlast(level, targetPos, state);
+        signalParticles(1.0F, 0.5F, 1.0F, level, pos, targetPos, state);
+        targetBlockParticles(level, targetPos);
+    }
+
+    private void recipeEffect(Level level, BlockPos pos, BlockPos targetPos, BlockState state) {
         playBlast(level, targetPos, state);
         signalParticles(1.0F, 0.5F, 1.0F, level, pos, targetPos, state);
         targetBlockParticles(level, targetPos);
