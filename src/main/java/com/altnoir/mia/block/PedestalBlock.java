@@ -92,15 +92,20 @@ public class PedestalBlock extends BaseEntityBlock implements SimpleWaterloggedB
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof PedestalBlockEntity blockEntity) {
-            if (blockEntity.INVENTORY.getStackInSlot(0).isEmpty() && !stack.isEmpty()) {
-                blockEntity.INVENTORY.setStackInSlot(0, stack.copy());
+            if (stack.isEmpty()) {
+                var outStack = blockEntity.tryExtractItem(Item.ABSOLUTE_MAX_STACK_SIZE, false);
+
+                if (outStack.isEmpty())
+                    return ItemInteractionResult.CONSUME;
+
+                player.setItemInHand(hand, outStack);
+                level.playSound(player, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.5F, 1.0F);
+                return ItemInteractionResult.SUCCESS;
+            }
+            if (blockEntity.tryInsertItem(stack.copy(), false)){
                 stack.setCount(0);
                 level.playSound(player, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.5F, 1.0F);
-            } else if (stack.isEmpty()) {
-                ItemStack itemStack = blockEntity.INVENTORY.extractItem(0, Item.ABSOLUTE_MAX_STACK_SIZE, false);
-                player.setItemInHand(hand, itemStack);
-                blockEntity.clearSlots();
-                level.playSound(player, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.5F, 1.0F);
+                return ItemInteractionResult.SUCCESS;
             }
         }
         return ItemInteractionResult.CONSUME;

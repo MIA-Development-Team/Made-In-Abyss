@@ -1,4 +1,4 @@
-package com.altnoir.mia.item;
+package com.altnoir.mia.item.abs;
 
 import com.altnoir.mia.init.MiaColors;
 import net.minecraft.client.resources.language.I18n;
