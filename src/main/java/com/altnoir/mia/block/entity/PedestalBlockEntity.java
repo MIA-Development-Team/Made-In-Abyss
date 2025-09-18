@@ -84,6 +84,9 @@ public class PedestalBlockEntity extends BlockEntity implements WorldlyContainer
     }
 
     public ItemStack getOutputStack(int slot) {
+        if (slot < 0 || slot >= OutputInventory.getSlots()) {
+            return ItemStack.EMPTY;
+        }
         return OutputInventory.getStackInSlot(slot);
     }
 
