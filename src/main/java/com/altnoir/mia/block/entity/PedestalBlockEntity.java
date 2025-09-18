@@ -44,7 +44,7 @@ public class PedestalBlockEntity extends BlockEntity implements WorldlyContainer
     }
 
     public boolean tryInsertItem(ItemStack stack, boolean simulate) {
-        if (InputInventory.getStackInSlot(0).isEmpty() && !stack.isEmpty()){
+        if (InputInventory.getStackInSlot(0).isEmpty() && !stack.isEmpty()) {
             insertInput(stack, simulate);
             return true;
         }
@@ -150,22 +150,19 @@ public class PedestalBlockEntity extends BlockEntity implements WorldlyContainer
 
     @Override
     public int[] getSlotsForFace(Direction direction) {
-        if (direction == Direction.UP) {
+        if (direction != Direction.DOWN) {
             int[] inputSlots = new int[InputInventory.getSlots()];
             for (int i = 0; i < inputSlots.length; i++) inputSlots[i] = i;
             return inputSlots;
         }
-        if (direction == Direction.DOWN) {
-            int[] outputSlots = new int[OutputInventory.getSlots()];
-            for (int i = 0; i < outputSlots.length; i++) outputSlots[i] = i + InputInventory.getSlots();
-            return outputSlots;
-        }
-        return new int[0];
+        int[] outputSlots = new int[OutputInventory.getSlots()];
+        for (int i = 0; i < outputSlots.length; i++) outputSlots[i] = i + InputInventory.getSlots();
+        return outputSlots;
     }
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction dir) {
-        return dir == Direction.UP && slot < InputInventory.getSlots();
+        return dir != Direction.DOWN && slot < InputInventory.getSlots();
     }
 
     @Override
@@ -173,11 +170,14 @@ public class PedestalBlockEntity extends BlockEntity implements WorldlyContainer
         return dir == Direction.DOWN && slot >= InputInventory.getSlots();
     }
 
-    @Override public int getContainerSize() { return InputInventory.getSlots() + OutputInventory.getSlots(); }
+    @Override
+    public int getContainerSize() {
+        return InputInventory.getSlots() + OutputInventory.getSlots();
+    }
 
-    @Override public boolean isEmpty() {
-        for (int i = 0; i < getContainerSize(); i++)
-        {
+    @Override
+    public boolean isEmpty() {
+        for (int i = 0; i < getContainerSize(); i++) {
             if (!getItem(i).isEmpty())
                 return false;
         }

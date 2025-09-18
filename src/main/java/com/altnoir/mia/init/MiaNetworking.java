@@ -3,6 +3,7 @@ package com.altnoir.mia.init;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.network.CurseCapabilityPayload;
 import com.altnoir.mia.network.SkillCooldownPayload;
+import com.altnoir.mia.network.SkillPlayPayload;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 public class MiaNetworking {
@@ -19,6 +20,11 @@ public class MiaNetworking {
                 SkillCooldownPayload.TYPE,
                 SkillCooldownPayload.CODEC,
                 SkillCooldownPayload::handle
+        );
+        registrar.playToServer(
+                SkillPlayPayload.TYPE,
+                SkillPlayPayload.CODEC,
+                SkillPlayPayload::handle
         );
     }
 }

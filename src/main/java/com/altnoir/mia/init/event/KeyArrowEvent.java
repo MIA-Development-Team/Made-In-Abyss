@@ -3,13 +3,13 @@ package com.altnoir.mia.init.event;
 import com.altnoir.mia.client.event.KeyBindingEvent;
 import com.altnoir.mia.item.abs.IArtifactSkill;
 import com.altnoir.mia.network.SkillCooldownPayload;
+import com.altnoir.mia.network.SkillPlayPayload;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -35,6 +35,9 @@ public class KeyArrowEvent {
     // Ctrl键用于激活组合键输入模式
     private static boolean comboUI = false;
     private static List<IArtifactSkill> artifactSkills = new ArrayList<>();
+    private static List<ItemStack> skillItemStacks = new ArrayList<>();
+    private static List<Integer> skillSlotIndices = new ArrayList<>();
+
     private static final List<Integer> PLAYER_SEQUENCE = new ArrayList<>();
     private static final List<Long> COOLDOWN_START_TIMES = new ArrayList<>();            // 每个技能独立的冷却时间开始时间
     private static final List<Boolean> IN_COOLDOWNS = new ArrayList<>();                // 每个技能独立的冷却状态
@@ -69,6 +72,7 @@ public class KeyArrowEvent {
             if (stacksHandler.isPresent()) {
                 List<IArtifactSkill> skills = new ArrayList<>(); // 临时存储所有找到的技能
                 List<ItemStack> skillStacks = new ArrayList<>(); // 存储对应的ItemStack
+                List<Integer> slotIndices = new ArrayList<>(); // 存储对应的槽位索引
 
                 for (int i = 0; i < stacksHandler.get().getSlots(); i++) {
                     ItemStack stack = stacksHandler.get().getStacks().getStackInSlot(i);
@@ -76,6 +80,7 @@ public class KeyArrowEvent {
                     if (stack.getItem() instanceof IArtifactSkill skill) {
                         skills.add(skill);
                         skillStacks.add(stack);
+                        slotIndices.add(i);
                     }
                 }
                 // 如果技能列表大小发生变化，需要调整冷却时间列表大小
@@ -102,6 +107,8 @@ public class KeyArrowEvent {
                 }
 
                 artifactSkills = skills; // 更新技能列表
+                skillItemStacks = skillStacks; // 更新技能对应的ItemStack列表
+                skillSlotIndices = slotIndices; // 更新技能对应的槽位索引列表
 
                 // 检查每个技能的冷却时间（基于物品组件）
                 for (int i = 0; i < artifactSkills.size(); i++) {
@@ -204,43 +211,15 @@ public class KeyArrowEvent {
 
     // 辅助方法：获取技能对应的ItemStack
     private static ItemStack getSkillItemStack(int skillIndex) {
-        // 这里需要实现获取对应技能物品堆栈的逻辑
-        // 由于当前设计中没有直接存储ItemStack，我们需要重新获取
-        Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(MC.player);
-        if (curiosInventory.isPresent()) {
-            var stacksHandler = curiosInventory.get().getStacksHandler("artifact");
-            if (stacksHandler.isPresent()) {
-                int skillCount = 0;
-                for (int i = 0; i < stacksHandler.get().getSlots(); i++) {
-                    ItemStack stack = stacksHandler.get().getStacks().getStackInSlot(i);
-                    if (stack.getItem() instanceof IArtifactSkill) {
-                        if (skillCount == skillIndex) {
-                            return stack;
-                        }
-                        skillCount++;
-                    }
-                }
-            }
+        if (skillIndex >= 0 && skillIndex < skillItemStacks.size()) {
+            return skillItemStacks.get(skillIndex);
         }
         return null;
     }
 
     private static int getSkillSlotIndex(int skillIndex) {
-        Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(MC.player);
-        if (curiosInventory.isPresent()) {
-            var stacksHandler = curiosInventory.get().getStacksHandler("artifact");
-            if (stacksHandler.isPresent()) {
-                int skillCount = 0;
-                for (int i = 0; i < stacksHandler.get().getSlots(); i++) {
-                    ItemStack stack = stacksHandler.get().getStacks().getStackInSlot(i);
-                    if (stack.getItem() instanceof IArtifactSkill) {
-                        if (skillCount == skillIndex) {
-                            return i;
-                        }
-                        skillCount++;
-                    }
-                }
-            }
+        if (skillIndex >= 0 && skillIndex < skillSlotIndices.size()) {
+            return skillSlotIndices.get(skillIndex);
         }
         return -1;
     }
@@ -359,8 +338,11 @@ public class KeyArrowEvent {
     private static void onComboSuccess() {
         if (MC.player != null) {
             if (currentSkillIndex >= 0 && currentSkillIndex < artifactSkills.size()) {
-                // 执行当前技能
-                artifactSkills.get(currentSkillIndex).executeSkill(MC.player);
+                // 通过网络包在服务端执行技能
+                int slotIndex = getSkillSlotIndex(currentSkillIndex);
+                if (slotIndex >= 0) {
+                    PacketDistributor.sendToServer(new SkillPlayPayload(slotIndex));
+                }
             } else {
                 // 如果没有技能，显示默认消息
                 MC.player.displayClientMessage(Component.literal("未设置技能"), true);
@@ -369,14 +351,14 @@ public class KeyArrowEvent {
     }
 
     private static void playGoodSound() {
-        if (MC.level != null && MC.player != null) {
-            MC.level.playSound(MC.player, MC.player.blockPosition(), SoundEvents.NOTE_BLOCK_HAT.value(), SoundSource.PLAYERS);
+        if (MC.player != null) {
+            MC.player.playSound(SoundEvents.NOTE_BLOCK_HAT.value(), 1.0F, 1.0F);
         }
     }
 
     private static void playBadSound() {
-        if (MC.level != null && MC.player != null) {
-            MC.level.playSound(MC.player, MC.player.blockPosition(), SoundEvents.NOTE_BLOCK_DIDGERIDOO.value(), SoundSource.PLAYERS, 0.5F, 1.0F);
+        if (MC.player != null) {
+            MC.player.playSound(SoundEvents.NOTE_BLOCK_DIDGERIDOO.value(), 0.5F, 1.0F);
         }
     }
 
@@ -454,12 +436,17 @@ public class KeyArrowEvent {
         String cooldownText = "冷却中...";
         if (remaining > 0) {
             long seconds = remaining / 20;
-            if (seconds < 10) {
+            if (seconds >= 60) {
+                // 超过60秒显示为分钟格式
+                long minutes = seconds / 60;
+                long remainingSeconds = seconds % 60;
+                cooldownText = "冷却: " + minutes + "m" + remainingSeconds + "s";
+            } else if (seconds < 10) {
                 // 最后10秒显示小数点
                 long decimal = (remaining % 20) * 5; // 转换为0-99的值
                 cooldownText = "冷却: " + seconds + "." + String.format("%02d", decimal) + "s";
             } else {
-                // 超过10秒只显示整数秒
+                // 10秒到60秒之间只显示整数秒
                 cooldownText = "冷却: " + seconds + "s";
             }
         }

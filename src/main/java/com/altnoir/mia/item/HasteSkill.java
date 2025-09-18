@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,8 @@ public class HasteSkill extends ASkill {
     }
 
     @Override
-    public void executeSkill(Player player) {
+    public void serverSkillPlay(Level level, Player player) {
+        if (player.level().isClientSide) return;
         // 检查玩家是否已有急迫效果
         MobEffectInstance hasteEffect = player.getEffect(MobEffects.DIG_SPEED);
 
@@ -33,8 +35,7 @@ public class HasteSkill extends ASkill {
             player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, newDuration, hasteEffect.getAmplifier()));
         }
 
-        // 播放音效
-        player.playSound(SoundEvents.BEACON_POWER_SELECT);
+        level.playSound(null, player.blockPosition(), SoundEvents.BEACON_POWER_SELECT, player.getSoundSource(), 0.5F, 1.0F);
     }
 
     @Override

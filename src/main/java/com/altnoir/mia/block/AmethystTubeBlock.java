@@ -172,7 +172,7 @@ public class AmethystTubeBlock extends ACrystalTubeBlock {
         double endY = targetPos.getY() + 0.5;
         double endZ = targetPos.getZ() + 0.5;
         if (level instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(ParticleTypes.END_ROD, endX, endY, endZ, 10, 0.2, 0.2, 0.2, 0.03);
+            serverLevel.sendParticles(ParticleTypes.END_ROD, endX, endY, endZ, 5, 0.1, 0.2, 0.1, 0.03);
         }
     }
 

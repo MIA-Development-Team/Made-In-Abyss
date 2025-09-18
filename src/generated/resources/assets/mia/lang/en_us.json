@@ -66,6 +66,7 @@
   "curios.modifiers.whistle": "Red Whistle Attributes",
   "emi.category.mia.lamp_tube": "Laser Catalysis",
   "gui.mia.disconnect": "Quit?",
+  "item.mia.artifact_haste": "Artifact Haste",
   "item.mia.black_whistle": "Black Whistle",
   "item.mia.blue_whistle": "Blue Whistle",
   "item.mia.fancy_artifact_bundle": "Fancy Artifact Bundle",
@@ -113,6 +114,7 @@
   "tag.item.curios.whistle": "Whistle",
   "tooltip.mia.hold_shift": "Hold [%s] to show details",
   "tooltip.mia.item.red_whistle": "Red Whistles are novice cave raiders allowed only in the Abyss’s first layer.",
+  "tooltip.mia.skill.cooldown_value": "Cooldown: %s",
   "tooltip.mia.whistle.capacity": "Capacity: %s",
   "tooltip.mia.whistle.level": "Whistle Level: %s"
 }
