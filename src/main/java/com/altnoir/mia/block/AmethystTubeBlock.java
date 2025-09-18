@@ -78,14 +78,15 @@ public class AmethystTubeBlock extends ACrystalTubeBlock {
 
         var mul = state.getValue(LEVEL);
         var result = recipe.get().value().result();
-        var recipeCount = Math.min(result.getCount() * mul, result.getMaxStackSize());
-        if (inputStack.getCount() < recipeCount) return false;
+        var outputCount = Math.min(result.getCount() * mul, result.getMaxStackSize());
+        var inputRequirement = recipe.get().value().input().count() * mul;
+        if (inputStack.getCount() < inputRequirement) return false;
 
-        var outputStack = result.copyWithCount(recipeCount);
+        var outputStack = result.copyWithCount(outputCount);
         boolean success = blockEntity.insertOutput(outputStack, false);
 
         if (success) {
-            blockEntity.extractInput(recipeCount, false);
+            blockEntity.extractInput(inputRequirement, false);
             recipeEffect(level, pos, targetPos, state);
             return true;
         }
