@@ -3,8 +3,10 @@ package com.altnoir.mia.init;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.component.ArtifactBundleInventoryComponent;
 import com.altnoir.mia.component.ArtifactEnhancementComponent;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -26,6 +28,12 @@ public class MiaComponents {
             builder -> builder
                     .persistent(ArtifactEnhancementComponent.CODEC)
                     .networkSynchronized(ArtifactEnhancementComponent.STREAM_CODEC));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> SKILL_COOLDOWN = register(
+            "skill_cooldown",
+            builder -> builder
+                    .persistent(Codec.INT)
+                    .networkSynchronized(ByteBufCodecs.VAR_INT));
 
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(
             String name, UnaryOperator<DataComponentType.Builder<T>> builderOperator) {

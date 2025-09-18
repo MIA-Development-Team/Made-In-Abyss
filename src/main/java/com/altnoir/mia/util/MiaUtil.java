@@ -158,27 +158,8 @@ public class MiaUtil {
         return client.level.registryAccess().registryOrThrow(Registries.ENCHANTMENT);
     }
 
-    public static ItemStack getOutput(Recipe<?> recipe) {
-        Minecraft client = Minecraft.getInstance();
-        return recipe.getResultItem(client.level.registryAccess());
-    }
-
-    public static void focus(EditBox widget, boolean focused) {
-        // Also ensure a current focus-element in the screen is cleared if it changes
-        Minecraft client = Minecraft.getInstance();
-        if (client != null && client.screen != null) {
-            var currentFocus = client.screen.getFocused();
-            if (!focused && currentFocus == widget || focused && currentFocus != widget) {
-                client.screen.setFocused(null);
-            }
-        }
-        widget.setFocused(focused);
-    }
-
-    public static Stream<Item> getDisabledItems() {
-        Minecraft client = Minecraft.getInstance();
-        FeatureFlagSet fs = client.level.enabledFeatures();
-        return getItemRegistry().stream().filter(i -> !i.isEnabled(fs));
+    public static ResourceLocation getItemKey(Item item) {
+        return Objects.requireNonNull(getItemRegistry().getKey(item));
     }
 
     public static String getBlockPath(Block block) {

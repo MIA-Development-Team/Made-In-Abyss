@@ -60,8 +60,4 @@ public interface IEArtifact extends IArtifactItem, IBundleable {
         return stack.getOrDefault(MiaComponents.ARTIFACT_ENHANCEMENT,
                 ArtifactEnhancementComponent.EMPTY).getAttributeModifiers();
     }
-
-    static boolean isInstance(Object obj) {
-        return obj instanceof IEArtifact;
-    }
 }

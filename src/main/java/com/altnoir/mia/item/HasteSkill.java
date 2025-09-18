@@ -1,0 +1,49 @@
+package com.altnoir.mia.item;
+
+import com.altnoir.mia.item.abs.ASkill;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.player.Player;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class HasteSkill extends ASkill {
+    public HasteSkill(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public List<Integer> getComboSequence() {
+        return Arrays.asList(1, 1, 1);
+    }
+
+    @Override
+    public void executeSkill(Player player) {
+        // 检查玩家是否已有急迫效果
+        MobEffectInstance hasteEffect = player.getEffect(MobEffects.DIG_SPEED);
+
+        if (hasteEffect == null) {
+            // 如果没有急迫效果，添加急迫II，持续3分钟
+            player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 3600, 1));
+        } else {
+            // 如果已有急迫效果，延长3分钟
+            int newDuration = hasteEffect.getDuration() + 3600;
+            player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, newDuration, hasteEffect.getAmplifier()));
+        }
+
+        // 播放音效
+        player.playSound(SoundEvents.BEACON_POWER_SELECT);
+    }
+
+    @Override
+    public Grade getGrade() {
+        return Grade.A;
+    }
+
+    @Override
+    public int getCooldownTicks() {
+        return 7200;
+    }
+}

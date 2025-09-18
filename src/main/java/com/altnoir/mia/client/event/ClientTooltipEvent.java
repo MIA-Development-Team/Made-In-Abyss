@@ -3,7 +3,7 @@ package com.altnoir.mia.client.event;
 import com.altnoir.mia.init.MiaColors;
 import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.init.MiaRecipes;
-import com.altnoir.mia.item.IMiaTooltip;
+import com.altnoir.mia.item.abs.IMiaTooltip;
 import com.altnoir.mia.recipe.ArtifactSmithingRecipe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;

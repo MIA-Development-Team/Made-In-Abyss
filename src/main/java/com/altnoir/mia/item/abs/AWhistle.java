@@ -1,7 +1,6 @@
 package com.altnoir.mia.item.abs;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.item.IMiaTooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;

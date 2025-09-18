@@ -3,8 +3,6 @@ package com.altnoir.mia.item.abs;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-import com.altnoir.mia.item.IMiaTooltip;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;

@@ -112,6 +112,7 @@ public class MiaItemGroups {
                         output.accept(MiaItems.TEST_ARTIFACT_1);
                         output.accept(MiaItems.TEST_ARTIFACT_2);
                         output.accept(MiaItems.TEST_ARTIFACT_3);
+                        output.accept(MiaItems.ARTIFACT_HASTE);
 
                         output.accept(MiaItems.ENDLESS_CUP);
                     }).build()

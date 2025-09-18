@@ -78,6 +78,7 @@ public class MiaItemTagProvider extends ItemTagsProvider {
         HolderLookup<Item> items = provider.lookupOrThrow(Registries.ITEM);
         var allArtifactTag = tag(CuriosTags.ARTIFACT).replace(false);
         var enhanceableArtifactTag = tag(MiaTags.Items.ENHANCEABLE_ARTIFACT).replace(false);
+
         var grade4ArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_D).replace(false);
         var grade3ArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_C).replace(false);
         var grade2ArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_B).replace(false);

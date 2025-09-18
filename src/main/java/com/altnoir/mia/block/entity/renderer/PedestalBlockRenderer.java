@@ -13,9 +13,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.ArrayList;
+import java.util.Random;
 
 public class PedestalBlockRenderer implements BlockEntityRenderer<PedestalBlockEntity> {
     public PedestalBlockRenderer(BlockEntityRendererProvider.Context context) {
@@ -23,67 +24,36 @@ public class PedestalBlockRenderer implements BlockEntityRenderer<PedestalBlockE
     }
 
     @Override
-    public void render(PedestalBlockEntity blockEntity, float partialTick, PoseStack poseStack,
-                       MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        var itemRenderer = Minecraft.getInstance().getItemRenderer();
-        var level = blockEntity.getLevel();
-        if (level == null) return;
+    public void render(PedestalBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+        ItemStack stack = blockEntity.INVENTORY.getStackInSlot(0);
 
-        var time = level.getGameTime() + partialTick;
+        if (stack.isEmpty()) {return;}
+        double time = blockEntity.getLevel().getGameTime() + partialTick;
+        float yOffset = (float) Math.sin(time * 0.1F) * 0.05F;
 
-        var inputStack = blockEntity.extractInput(1, true);
-        if (!inputStack.isEmpty()) {
-            var yOffset = (float)Math.sin(time * 0.1F) * 0.05F;
+        poseStack.pushPose();
+        poseStack.translate(0.5F, 0.65F, 0.5F);
+        poseStack.scale(0.5F, 0.5F, 0.5F);
 
-            poseStack.pushPose();
-            poseStack.translate(0.5F, 0.65F + yOffset, 0.5F);
-            poseStack.scale(0.5F, 0.5F, 0.5F);
+        Vec3 cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        BlockPos blockPos = blockEntity.getBlockPos();
 
-            var inputAngle = time * 4 % 360;
-            poseStack.mulPose(Axis.YN.rotationDegrees(inputAngle));
+        double dx = cameraPos.x - (blockPos.getX() + 0.5);
+        double dy = cameraPos.y - (blockPos.getY() + 0.75);
+        double dz = cameraPos.z - (blockPos.getZ() + 0.5);
 
-            itemRenderer.renderStatic(inputStack, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY,
-                    poseStack, bufferSource, level, 0);
-            poseStack.popPose();
+        double distance = Math.sqrt(dx * dx + dz * dz);
+        if (distance <= 16D) {
+            float yRot = (float) Mth.atan2(dz, dx);
+            poseStack.mulPose(Axis.YN.rotationDegrees((float) Math.toDegrees(yRot) + 90F));
+
+            float pitch = (float) Math.atan2(dy, distance);
+            poseStack.mulPose(Axis.XN.rotationDegrees((float) Math.toDegrees(-pitch)));
         }
-        var slots = blockEntity.getOutputSlots();
-        if (slots == 0) return;
 
-        var nonEmptyStacks = new ArrayList<ItemStack>();
-        for (int i = 0; i < slots; i++) {
-            var stack = blockEntity.getOutputStack(i);
-            if (!stack.isEmpty()) nonEmptyStacks.add(stack);
-        }
-        int count = nonEmptyStacks.size();
-        if (count == 0) return;
-
-        var radius = 0.35F;
-        var yBase = 0.3F;
-        var rotationSpeed = 2F;
-
-        for (int i = 0; i < count; i++) {
-            var stack = nonEmptyStacks.get(i);
-            poseStack.pushPose();
-
-            if (count == 1) {
-                var yOffset = (float)Math.sin(time * 0.1F) * 0.05F;
-                poseStack.translate(0.5F, yBase + yOffset, 0.5F);
-            } else {
-                var angle = ((2 * Math.PI / count) * i) + Math.toRadians(time * rotationSpeed);
-                var x = 0.5F + (float)Math.cos(angle) * radius;
-                var z = 0.5F + (float)Math.sin(angle) * radius;
-                poseStack.translate(x, yBase, z);
-            }
-
-            poseStack.scale(0.35F, 0.35F, 0.35F);
-
-            var itemAngle = time * 6 % 360;
-            poseStack.mulPose(Axis.YN.rotationDegrees(itemAngle));
-
-            itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY,
-                    poseStack, bufferSource, level, 0);
-
-            poseStack.popPose();
-        }
+        itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY,
+                poseStack, bufferSource, blockEntity.getLevel(), 0);
+        poseStack.popPose();
     }
 }
