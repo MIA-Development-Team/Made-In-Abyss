@@ -1,6 +1,8 @@
 package com.altnoir.mia.network;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.compat.kubejs.KubeJSHelper;
+import com.altnoir.mia.compat.kubejs.item.KubeSkill;
 import com.altnoir.mia.item.abs.IArtifactSkill;
 import com.altnoir.mia.util.MiaUtil;
 import io.netty.buffer.ByteBuf;
@@ -33,6 +35,11 @@ public record SkillPlayPayload(int slotIndex) implements CustomPacketPayload {
                     if (stack.getItem() instanceof IArtifactSkill skill) {
                         // 执行技能
                         skill.serverSkillPlay(level, player);
+                        //KJS事件
+                        try {
+                            KubeJSHelper.skillTriggerEvent(player, stack);
+                        } catch (Exception ignored) {
+                        }
                     }
                 }
             }

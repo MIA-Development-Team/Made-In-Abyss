@@ -17,7 +17,7 @@ public class HasteSkill extends ASkill {
 
     @Override
     public List<Integer> getComboSequence() {
-        return Arrays.asList(1, 1, 1);
+        return Arrays.asList(0, 0, 0);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class HasteSkill extends ASkill {
     }
 
     @Override
-    public int getCooldownTicks() {
+    public int cooldownTicks() {
         return 7200;
     }
 }

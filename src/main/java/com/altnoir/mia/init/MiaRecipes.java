@@ -35,7 +35,7 @@ public class MiaRecipes {
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ArtifactSmithingRecipe>> ARTIFACT_ENHANCEMENT_SERIALIZER = SERIALIZERS
             .register("artifact_enhancement", ArtifactSmithingRecipe.Serializer::new);
 
-    public static final DeferredHolder<RecipeType<?>, RecipeType<ArtifactSmithingRecipe>> ARTIFACT_ENHANCEMENT_TYPE = TYPES
+    public static final DeferredHolder<RecipeType<?>, RecipeType<ArtifactSmithingRecipe>> ARTIFACT_SMITHING_TYPE = TYPES
             .register("artifact_enhancement", () -> new RecipeType<ArtifactSmithingRecipe>() {
                 @Override
                 public String toString() {

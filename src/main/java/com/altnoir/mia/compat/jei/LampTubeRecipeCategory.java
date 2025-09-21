@@ -50,7 +50,7 @@ public class LampTubeRecipeCategory implements IRecipeCategory<RecipeHolder<Lamp
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<LampTubeRecipe> recipe, IFocusGroup focuses) {
         builder.addInputSlot(1, 9)
                 .setStandardSlotBackground()
-                .addIngredients(recipe.value().ingredient());
+                .addIngredients(recipe.value().getIngredients().getFirst());
 
         builder.addOutputSlot(61, 9)
                 .setOutputSlotBackground()

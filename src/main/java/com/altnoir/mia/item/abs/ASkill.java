@@ -6,27 +6,16 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
 
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class ASkill extends Item implements IArtifactSkill {
     public ASkill(Properties properties) {
         super(properties.component(MiaComponents.SKILL_COOLDOWN.get(), 0));
     }
-
     @Override
     public ItemStack getItemStack() {
         return new ItemStack(this);
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, List<Component> tooltip) {
-        // 显示技能冷却时间组件的int值
-        Integer cooldownValue = stack.get(MiaComponents.SKILL_COOLDOWN.get());
-        if (cooldownValue != null) {
-            tooltip.add(1, Component.translatable("tooltip.mia.skill.cooldown_value", cooldownValue));
-        }
-
-        IArtifactSkill.super.appendTooltip(stack, tooltip);
     }
 
     @Override

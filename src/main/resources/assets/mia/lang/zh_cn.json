@@ -1,5 +1,6 @@
 {
     "itemgroup.mia": "来自深渊",
+    "itemgroup.mia_artifact": "来自深渊: 遗物",
 
     "item.mia.red_whistle": "赤笛",
     "item.mia.blue_whistle": "§b苍笛",
@@ -66,7 +67,9 @@
     "block.mia.abyss_portal": "深渊传送门",
     "block.mia.abyss_spawner": "深渊刷怪笼",
     "block.mia.endless_cup": "无尽水杯",
-    "block.mia.artifact_smithing_table": "遗物强化桌",
+    "block.mia.artifact_smithing_table": "遗物锻造台",
+
+    "container.mia.artifact.smithing.title": "遗物锻造台",
 
     "biome.mia.abyss_brink/abyss_brink": "阿比斯深渊",
     "biome.mia.abyss_brink/abyss_plains": "深渊平原",
@@ -81,18 +84,27 @@
     "painting.mia.fossil_tree.author": "Made In Abyss",
     "painting.mia.fossil_tree.title": "化石树",
 
+    "skill.mia.combo_skills": "组合技",
+    "skill.mia.cooldown": "冷却中...",
+    "skill.mia.cooldown_time": "冷却 ",
+    "skill.mia.minute": "分",
+    "skill.mia.second": "秒",
+    "skill.mia.unskill": "无技能",
+    "tooltip.mia.skill.cooldown_value": "冷却剩余%s刻",
+
     "tooltip.mia.hold_shift": "按住 [%s] 显示详细信息",
-    "tooltip.attribute_modifier": "%s %s",
+    "tooltip.mia.artifact.grade.s": "深渊遗物",
+    "tooltip.mia.artifact.grade.a": "奈落遗物",
+    "tooltip.mia.artifact.grade.b": "咒骸遗物",
+    "tooltip.mia.artifact.grade.c": "蚀纹遗物",
+    "tooltip.mia.artifact.grade.d": "浮尘遗物",
     "tooltip.mia.artifact.grade.unknown": "未知遗物",
-    "tooltip.mia.artifact.grade.special": "深渊遗物",
-    "tooltip.mia.artifact.grade.first": "奈落遗物",
-    "tooltip.mia.artifact.grade.second": "咒骸遗物",
-    "tooltip.mia.artifact.grade.third": "蚀纹遗物",
-    "tooltip.mia.artifact.grade.fourth": "浮尘遗物",
     "tooltip.mia.artifact.weight": "重量：%s",
-    "tooltip.mia.artifact.enhancement.level": "强化：%s/%s",
-    "tooltip.mia.artifact.enhancement.material": "强化遗物时：",
-    "tooltip.mia.artifact.enhancement.no_more_enhancement": "强化：已达上限",
+
+    "tooltip.mia.attribute_modifier": "%s %s",
+    "tooltip.mia.modifiers.artifact_material": "应用遗物时：",
+    "tooltip.mia.artifact.level": "回响：%s/%s",
+    "tooltip.mia.artifact.max": "回响：已达上限",
     "tooltip.mia.artifact_bundle.capacity": "遗物容量：%s",
 
     "tooltip.mia.description.red_whistle": "红笛—新手探窟者，适合在深渊一层活动。",
@@ -101,7 +113,11 @@
     "tooltip.mia.description.test_artifact_3": "这是一个测试遗物3。",
     "tooltip.mia.description.gray_artifact_bundle": "这是一个放遗物的包。",
 
+    "key.categories.mia": "来自深渊",
+    "key.mia.skill_dial": "技能表",
     "gui.mia.disconnect": "退出游戏？",
+
+    "stat.mia.interact_with_artifact_smithing_table": "与遗物锻造台交互次数",
 
     "mia.configuration.title": "来自深渊配置",
     "mia.configuration.ban_disconnect": "禁用退出游戏按钮",
@@ -121,8 +137,5 @@
     "curios.modifiers.artifact": "穿戴时：",
     "tag.item.curios.whistle": "笛",
     "tag.item.curios.artifact": "遗物",
-    "emi.category.mia.lamp_tube": "镭射催化",
-
-
-    "containier.mia.artifact.enhancement.title": "遗物强化台"
+    "emi.category.mia.lamp_tube": "镭射催化"
 }

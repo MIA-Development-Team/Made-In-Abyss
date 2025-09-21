@@ -31,7 +31,7 @@ public class MiaItemTagProvider extends ItemTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         tagArtifacts(provider);
 
-        tag(MiaTags.Items.ARTIFACT_ENHANCE_MATERIAL).replace(false)
+        tag(MiaTags.Items.ARTIFACT_MODIFIERS_MATERIAL).replace(false)
                 .add(MiaItems.MISTFUZZ_PEACH.get())
                 .add(Items.IRON_INGOT)
                 .add(Items.EMERALD)

@@ -15,30 +15,49 @@ group = mod_group_id
 repositories {
     mavenLocal()
 
+    // Jade
     maven {
         name = "Jade"
         url = "https://api.modrinth.com/maven"
     }
-
+    // EMI
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+    }
+    // JEI
     maven {
         name = "Jared's maven"
         url = "https://maven.blamejared.com/"
     }
 
+    // Curios
     maven {
         name = "Curios"
         url = uri("https://maven.theillusivec4.top/")
     }
-
-    maven {
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/"
-    }
+    // Patchouli
     maven { url 'https://maven.blamejared.com' }
 
+    // Simple Bedrock Model
     maven {
         url = "https://api.modrinth.com/maven"
-        content {includeGroup "maven.modrinth"}
+        content { includeGroup "maven.modrinth" }
+    }
+
+    // KubeJS
+    maven {
+        url "https://maven.latvian.dev/releases"
+        content {
+            includeGroup "dev.latvian.mods"
+            includeGroup "dev.latvian.apps"
+        }
+    }
+    maven {
+        url 'https://jitpack.io'
+        content {
+            includeGroup "com.github.rtyley"
+        }
     }
 }
 
@@ -63,6 +82,10 @@ dependencies {
     implementation "maven.modrinth:jade:${project.jade_version}"
     // Simple Bedrock Model
     implementation jarJar("maven.modrinth:simplebedrockmodel:1.4.0-neoforge+mc1.21.1")
+
+    // KubeJS
+    api("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
+    interfaceInjectionData("dev.latvian.mods:kubejs-neoforge:$kubejs_version") // optional
 }
 
 base {

@@ -13,12 +13,13 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 
-public record LampTubeRecipe(Ingredient ingredient, ItemStack result) implements Recipe<LampTubeRecipeInput> {
+public record LampTubeRecipe(SizedIngredient ingredient, ItemStack result) implements Recipe<LampTubeRecipeInput> {
     @Override
     public NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> ingredients = NonNullList.create();
-        ingredients.add(ingredient);
+        ingredients.add(ingredient.ingredient());
         return ingredients;
     }
 
@@ -57,12 +58,12 @@ public record LampTubeRecipe(Ingredient ingredient, ItemStack result) implements
     public static class Serializer implements RecipeSerializer<LampTubeRecipe> {
         public static final MapCodec<LampTubeRecipe> CODEC = RecordCodecBuilder.mapCodec(builder ->
                 builder.group(
-                        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(LampTubeRecipe::ingredient),
+                        SizedIngredient.FLAT_CODEC.fieldOf("ingredient").forGetter(LampTubeRecipe::ingredient),
                         ItemStack.CODEC.fieldOf("result").forGetter(LampTubeRecipe::result)
                 ).apply(builder, LampTubeRecipe::new)
         );
         public static final StreamCodec<RegistryFriendlyByteBuf, LampTubeRecipe> STREAM_CODEC = StreamCodec.composite(
-                Ingredient.CONTENTS_STREAM_CODEC, LampTubeRecipe::ingredient,
+                SizedIngredient.STREAM_CODEC, LampTubeRecipe::ingredient,
                 ItemStack.STREAM_CODEC, LampTubeRecipe::result,
                 LampTubeRecipe::new
         );

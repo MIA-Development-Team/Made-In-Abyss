@@ -8,7 +8,6 @@ import com.mojang.blaze3d.vertex.VertexBuffer;
 import dev.emi.emi.api.stack.Comparison;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
@@ -23,12 +22,9 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -45,7 +41,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class MiaUtil {
     private static final net.minecraft.util.RandomSource RANDOM = net.minecraft.util.RandomSource.create();
@@ -196,6 +191,10 @@ public class MiaUtil {
 
     public static ResourceLocation id(String namespace, String path) {
         return ResourceLocation.fromNamespaceAndPath(namespace, path);
+    }
+
+    public static ResourceLocation vanillaId(String path) {
+        return ResourceLocation.withDefaultNamespace(path);
     }
 
     public static ResourceLocation miaId(String path) {

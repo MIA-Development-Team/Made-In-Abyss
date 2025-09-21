@@ -8,7 +8,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -33,7 +32,7 @@ public record SkillCooldownPayload(int slotIndex) implements CustomPacketPayload
                     // 检查物品是否是技能物品
                     if (stack.getItem() instanceof IArtifactSkill skill) {
                         // 设置冷却时间
-                        stack.set(MiaComponents.SKILL_COOLDOWN.get(), skill.getCooldownTicks());
+                        stack.set(MiaComponents.SKILL_COOLDOWN.get(), skill.cooldownTicks());
                     }
                 }
             }

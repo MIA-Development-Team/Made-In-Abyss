@@ -1,6 +1,7 @@
-package com.altnoir.mia.init.event;
+package com.altnoir.mia.client.event;
 
-import com.altnoir.mia.client.event.KeyBindingEvent;
+import com.altnoir.mia.init.MiaComponents;
+import com.altnoir.mia.init.MiaKeyBinding;
 import com.altnoir.mia.item.abs.IArtifactSkill;
 import com.altnoir.mia.network.SkillCooldownPayload;
 import com.altnoir.mia.network.SkillPlayPayload;
@@ -10,6 +11,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -25,6 +27,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class KeyArrowEvent {
+    public static final String SKILL_UNSKILL = "skill.mia.unskill";
+    public static final String SKILL_COMBO_SKILLS = "skill.mia.combo_skills";
+    public static final String SKILL_COOLDOWN = "skill.mia.cooldown";
+    public static final String SKILL_COOLDOWN_TIME = "skill.mia.cooldown_time";
+    public static final String SKILL_MINUTE = "skill.mia.minute";
+    public static final String SKILL_SECOND = "skill.mia.second";
+
     private static final Minecraft MC = Minecraft.getInstance();
 
     public static final KeyMapping UP_KEY = MC.options.keyUp;
@@ -49,7 +58,7 @@ public class KeyArrowEvent {
 
     public static void onClientTick(ClientTickEvent.Post event) {
         if (MC.level == null || MC.player == null) return;
-        boolean ctrlPressed = KeyBindingEvent.ACTIVATE_KEY.isDown();
+        boolean ctrlPressed = MiaKeyBinding.SKILL_DIAL.isDown();
         if (ctrlPressed || comboUI) {
             handleSkill();
 
@@ -101,7 +110,7 @@ public class KeyArrowEvent {
                 }
                 // 如果之前有技能但现在没有了，需要清理状态
                 if (!artifactSkills.isEmpty() && skills.isEmpty()) {
-                    DeleteCombo();
+                    ComboClear();
                     artifactSkills.clear();
                     return;
                 }
@@ -113,19 +122,18 @@ public class KeyArrowEvent {
                 // 检查每个技能的冷却时间（基于物品组件）
                 for (int i = 0; i < artifactSkills.size(); i++) {
                     if (MC.level != null) {
-                        boolean onCooldown = artifactSkills.get(i).isOnCooldown(skillStacks.get(i));
-                        IN_COOLDOWNS.set(i, onCooldown);
+                        IN_COOLDOWNS.set(i, isOnCooldown(skillStacks.get(i)));
                     }
                 }
 
-                boolean ctrlPressed = KeyBindingEvent.ACTIVATE_KEY.isDown();
+                boolean ctrlPressed = MiaKeyBinding.SKILL_DIAL.isDown();
 
                 // 如果刚刚按下Ctrl键且至少有一个技能不在冷却中
                 if (ctrlPressed && !comboUI && !artifactSkills.isEmpty()) {
                     activateCombo();
                 } else if (!ctrlPressed && comboUI) {
                     // 如果释放了Ctrl键并且处于组合键模式
-                    DeleteCombo();
+                    ComboClear();
                 }
 
                 // 只有在组合键模式激活且按住Ctrl键时才处理输入
@@ -136,9 +144,14 @@ public class KeyArrowEvent {
         }
         // 如果无法获取Curios库存，清理状态
         else if (comboUI || !artifactSkills.isEmpty()) {
-            DeleteCombo();
+            ComboClear();
             artifactSkills.clear();
         }
+    }
+
+    private static boolean isOnCooldown(ItemStack stack) {
+        Integer cooldownValue = stack.get(MiaComponents.SKILL_COOLDOWN.get());
+        return cooldownValue != null && cooldownValue > 0;
     }
 
     private static void activateCombo() {
@@ -175,7 +188,7 @@ public class KeyArrowEvent {
         }
     }
 
-    private static void DeleteCombo() {
+    private static void ComboClear() {
         comboUI = false;
         PLAYER_SEQUENCE.clear();
         SKILL_SEQUENCES.clear(); // 需要清除技能序列列表
@@ -206,7 +219,7 @@ public class KeyArrowEvent {
                 }
             }
         }
-        DeleteCombo();
+        ComboClear();
     }
 
     // 辅助方法：获取技能对应的ItemStack
@@ -241,8 +254,11 @@ public class KeyArrowEvent {
     private static void checkSequence() {
         if (currentSkillIndex == -1) {
             // 尝试匹配任何一个非冷却中的技能
+            int matchingSkillCount = 0;
+            int lastMatchingSkill = -1;
+
             for (int skillIndex = 0; skillIndex < SKILL_SEQUENCES.size(); skillIndex++) {
-                // 检查该技能是否在冷却中
+                // 棜查该技能是否在冷却中
                 if (IN_COOLDOWNS.get(skillIndex)) continue;
 
                 List<Integer> skillSequence = SKILL_SEQUENCES.get(skillIndex);
@@ -269,16 +285,21 @@ public class KeyArrowEvent {
                     return;
                 }
 
-                // 找到部分匹配的技能，设置为当前技能
-                currentSkillIndex = skillIndex;
-                updatePlayerSequence();
-                return;
+                // 找到部分匹配的技能
+                matchingSkillCount++;
+                lastMatchingSkill = skillIndex;
             }
 
-            // 没有任何技能匹配
-            playBadSound();
-            PLAYER_SEQUENCE.clear();
-            currentSkillIndex = -1;
+            // 如果只有一个技能匹配，则锁定到该技能
+            if (matchingSkillCount == 1) {
+                currentSkillIndex = lastMatchingSkill;
+            } else if (matchingSkillCount == 0) {
+                // 没有任何技能匹配
+                playBadSound();
+                PLAYER_SEQUENCE.clear();
+                currentSkillIndex = -1;
+            }
+
             updatePlayerSequence();
         } else {
             // 已经确定了当前技能，继续检查该技能
@@ -345,7 +366,7 @@ public class KeyArrowEvent {
                 }
             } else {
                 // 如果没有技能，显示默认消息
-                MC.player.displayClientMessage(Component.literal("未设置技能"), true);
+                MC.player.displayClientMessage(Component.translatable(SKILL_UNSKILL), true);
             }
         }
     }
@@ -365,10 +386,10 @@ public class KeyArrowEvent {
 
     private static final int x = 10; // 整体宽度
     private static final int y = 10; // 整体高度
-    private static final int bgWidth = 60; // 背景宽度
+    private static final int yOffset = 16;
+    private static final int bgWidth = 102; // 背景宽度
     private static final int bgHeight = 12; // 背景高度
 
-    @OnlyIn(Dist.CLIENT)
     public static void onRenderGui(RenderGuiEvent.Post event) {
         if (MC.level == null || MC.player == null) return;
 
@@ -382,48 +403,64 @@ public class KeyArrowEvent {
         Font font = MC.font;
 
         // 计算背景高度
-        int dynamicHeight = bgHeight + (!artifactSkills.isEmpty() ? artifactSkills.size() * 15 : 0);
+        int dynamicHeight = bgHeight + (!artifactSkills.isEmpty() ? artifactSkills.size() * yOffset : 0);
 
         // 绘制半透明黑色背景
         guiGraphics.fill(x - 2, y - 2, x + bgWidth, y + dynamicHeight, 0x80000000);
 
         // 绘制标题
-        guiGraphics.drawString(font, "输入组合键:", x, y, 0xFFFFFF);
+        guiGraphics.drawString(font, Component.translatable(SKILL_COMBO_SKILLS), x, y, 0xFFFFFF);
 
         // 绘制每个技能的信息
         if (!artifactSkills.isEmpty()) {
             for (int i = 0; i < artifactSkills.size(); i++) {
+                IArtifactSkill skill = artifactSkills.get(i);
+                ItemStack itemStack = skill.getItemStack();
+
                 // 检查该技能是否在冷却中
                 if (IN_COOLDOWNS.get(i)) {
-                    // 显示冷却时间
-                    IArtifactSkill skill = artifactSkills.get(i);
                     ItemStack skillStack = getSkillItemStack(i);
                     long remaining = 0;
                     if (skillStack != null && MC.level != null) {
-                        remaining = skill.getRemainingCooldown(skillStack);
+                        remaining = getCooldownTicks(skillStack);
                     }
-
-                    String cooldownText = getCoolDown(remaining);
-                    guiGraphics.drawString(font, cooldownText, x, y + 15 + i * 15, 0xAAAAAA); // 冷却中用浅红色
+                    // 显示冷却时间
+                    Component cooldownText = getCoolDown(remaining);
+                    guiGraphics.renderItem(itemStack, x, y + 18 + i * yOffset - 8);
+                    guiGraphics.drawString(font, cooldownText, x + 18, y + 15 + i * yOffset, 0xAAAAAA);
                 } else {
                     // 显示组合键序列
                     if (i < SKILL_ARROWS.size()) {
                         List<String> arrows = SKILL_ARROWS.get(i);
+                        boolean canMatch = isCanMatch(i);
 
-                        // 如果是当前正在输入的技能，使用不同颜色标识
-                        int baseColor = (currentSkillIndex == i) ? 0xFFFF00 : 0xFFFFFF; // 当前技能用黄色
+                        // 根据是否可能匹配设置基础颜色
+                        int baseColor = 0xFFFFFF; // 默认白色
+                        if (currentSkillIndex == i) {
+                            baseColor = 0xFFFF00; // 当前技能用黄色
+                        } else if (!canMatch) {
+                            baseColor = 0x30FFFFFF;
+                            ; // 不可匹配
+                        }
 
                         // 渲染物品图标
-                        IArtifactSkill skill = artifactSkills.get(i);
-                        ItemStack itemStack = skill.getItemStack();
-                        guiGraphics.renderItem(itemStack, x, y + 18 + i * 15 - 8);
+                        guiGraphics.renderItem(itemStack, x, y + 18 + i * yOffset - 8);
 
                         int offsetX = 0;
                         for (int j = 0; j < arrows.size(); j++) {
                             String arrow = arrows.get(j);
-                            int color = (j < PLAYER_SEQUENCE.size()) ? 0xAAAAAA : baseColor; // 已输入部分用灰色
+                            int color = baseColor;
 
-                            guiGraphics.drawString(font, arrow, x + 20 + offsetX, y + 15 + i * 15, color);
+                            // 已输入的部分用灰色，但如果技能已不可能匹配则用黑色
+                            if (j < PLAYER_SEQUENCE.size()) {
+                                if (canMatch) {
+                                    color = 0xAAAAAA; // 已输入部分用灰色
+                                } else {
+                                    color = 0x30FFFFFF;// 不可匹配
+                                }
+                            }
+
+                            guiGraphics.drawString(font, arrow, x + 18 + offsetX, y + 15 + i * yOffset, color);
                             offsetX += font.width(arrow) + 2; // 字符宽度 + 2像素间隔
                         }
                     }
@@ -432,24 +469,64 @@ public class KeyArrowEvent {
         }
     }
 
-    private static @NotNull String getCoolDown(long remaining) {
-        String cooldownText = "冷却中...";
+    private static boolean isCanMatch(int i) {
+        List<Integer> skillSequence = SKILL_SEQUENCES.get(i);
+
+        // 判断该技能是否仍可能被匹配
+        boolean canMatch = true;
+        if (currentSkillIndex != -1 && currentSkillIndex != i) {
+            // 如果已经确定了当前技能且不是这个技能，则不能匹配
+            canMatch = false;
+        } else {
+            // 检查当前输入序列是否匹配该技能的前缀
+            for (int j = 0; j < PLAYER_SEQUENCE.size() && j < skillSequence.size(); j++) {
+                if (!PLAYER_SEQUENCE.get(j).equals(skillSequence.get(j))) {
+                    canMatch = false;
+                    break;
+                }
+            }
+            // 如果输入序列长度超过技能序列长度，也不能匹配
+            if (PLAYER_SEQUENCE.size() > skillSequence.size()) {
+                canMatch = false;
+            }
+        }
+        return canMatch;
+    }
+
+    private static @NotNull Component getCoolDown(long remaining) {
+        Component cooldownText =Component.translatable(SKILL_COOLDOWN);
+        Component cooldownRemainingText = Component.translatable(SKILL_COOLDOWN_TIME);
+        Component m = Component.translatable(SKILL_MINUTE);
+        Component s = Component.translatable(SKILL_SECOND);
         if (remaining > 0) {
             long seconds = remaining / 20;
             if (seconds >= 60) {
                 // 超过60秒显示为分钟格式
                 long minutes = seconds / 60;
                 long remainingSeconds = seconds % 60;
-                cooldownText = "冷却: " + minutes + "m" + remainingSeconds + "s";
+                cooldownText = Component.empty()
+                        .append(cooldownRemainingText)
+                        .append(String.valueOf(minutes)).append(m)
+                        .append(String.valueOf(remainingSeconds)).append(s);
             } else if (seconds < 10) {
                 // 最后10秒显示小数点
                 long decimal = (remaining % 20) * 5; // 转换为0-99的值
-                cooldownText = "冷却: " + seconds + "." + String.format("%02d", decimal) + "s";
+                cooldownText = Component.empty()
+                        .append(cooldownRemainingText)
+                        .append(String.valueOf(seconds)).append(".")
+                        .append(String.format("%02d", decimal)).append(s);
             } else {
                 // 10秒到60秒之间只显示整数秒
-                cooldownText = "冷却: " + seconds + "s";
+                cooldownText = Component.empty()
+                        .append(cooldownRemainingText)
+                        .append(String.valueOf(seconds)).append(s);
             }
         }
         return cooldownText;
+    }
+
+    private static long getCooldownTicks(ItemStack stack) {
+        Integer cooldownValue = stack.get(MiaComponents.SKILL_COOLDOWN.get());
+        return cooldownValue != null ? cooldownValue : 0;
     }
 }

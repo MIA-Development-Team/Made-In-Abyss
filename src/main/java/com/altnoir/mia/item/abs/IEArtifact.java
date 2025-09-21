@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IEArtifact extends IArtifactItem, IBundleable {
+    public static final String TOOLTIP_ARTIFACT_LEVEL = "tooltip.mia.artifact.level";
+    public static final String TOOLTIP_ARTIFACT_MAX = "tooltip.mia.artifact.max";
+
     default int getMaxLevel() {
         return switch (getGrade()) {
             case Grade.D -> 0;
@@ -35,7 +38,7 @@ public interface IEArtifact extends IArtifactItem, IBundleable {
         int currentLevel = stack.get(MiaComponents.ARTIFACT_ENHANCEMENT).getLevel();
         int maxLevel = getMaxLevel();
         if (currentLevel < maxLevel) {
-            tooltip.add(1, Component.translatable("tooltip.mia.artifact.enhancement.level",
+            tooltip.add(1, Component.translatable(TOOLTIP_ARTIFACT_LEVEL,
                             Component.literal(Optional
                                             .ofNullable(currentLevel)
                                             .map(Object::toString)
@@ -48,7 +51,7 @@ public interface IEArtifact extends IArtifactItem, IBundleable {
                                     .withStyle(ChatFormatting.YELLOW))
                     .withStyle(style -> style.withColor(ChatFormatting.GOLD)));
         } else {
-            tooltip.add(1, Component.translatable("tooltip.mia.artifact.enhancement.no_more_enhancement")
+            tooltip.add(1, Component.translatable(TOOLTIP_ARTIFACT_MAX)
                     .withStyle(style -> style.withColor(ChatFormatting.GOLD)));
         }
 

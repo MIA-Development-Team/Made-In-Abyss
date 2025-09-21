@@ -61,9 +61,9 @@ public class AmethystTubeBlock extends ACrystalTubeBlock {
         if (level.getBlockEntity(targetPos) instanceof PedestalBlockEntity pbe) {
             return processRecipe(pbe, level, pos, state, targetPos);
         }
-        else if (level.getBlockEntity(targetPos) instanceof Container container) {
+        /*else if (level.getBlockEntity(targetPos) instanceof Container container) {
             return processRecipe(level, pos, state, targetPos, container);
-        }
+        }*/
         else if (!targetState.isSolidRender(level, targetPos)) {
             return propagateSignal(level, pos, state, targetPos, targetState, i);
         }
@@ -71,37 +71,45 @@ public class AmethystTubeBlock extends ACrystalTubeBlock {
     }
 
     public boolean processRecipe(PedestalBlockEntity blockEntity, Level level, BlockPos pos, BlockState state, BlockPos targetPos) {
+        // 从置物台中提取输入物品（最大堆叠数）
         var inputStack = blockEntity.extractInput(Item.ABSOLUTE_MAX_STACK_SIZE, true);
         if (inputStack.isEmpty()) return false;
+        // 获取配方
         var recipe = getCurrentRecipe(level, inputStack);
         if (recipe.isEmpty()) return false;
 
-        var mul = state.getValue(LEVEL);
-        var result = recipe.get().value().result();
-        var outputCount = Math.min(result.getCount() * mul, result.getMaxStackSize());
+        var input = recipe.get().value().ingredient(); // 输入物品
+        var result = recipe.get().value().result(); // 输出的物品
 
-        var outputStack = result.copyWithCount(outputCount);
-        var success = blockEntity.insertOutput(outputStack, false);
+        for (int mul = state.getValue(LEVEL); mul >= 1; mul--) {
+            var inputCount = input.count() * mul;  // 输入物品数量
+            if (inputStack.getCount() < inputCount) continue;
 
-        if (success) {
-            blockEntity.extractInput(outputCount, false);
-            recipeEffect(level, pos, targetPos, state);
-            return true;
+            var outputCount = Math.min(result.getCount() * mul, result.getMaxStackSize()); // 输出物品数量
+
+            var outputStack = result.copyWithCount(outputCount);
+            var success = blockEntity.insertOutput(outputStack, false);
+
+            if (success) {
+                blockEntity.extractInput(inputCount, false);
+                recipeEffect(level, pos, targetPos, state);
+                return true;
+            }
         }
 
         return false;
     }
 
-    private boolean processRecipe(Level level, BlockPos pos, BlockState state, BlockPos targetPos, Container container) {
+   /* private boolean processRecipe(Level level, BlockPos pos, BlockState state, BlockPos targetPos, Container container) {
         for (int inputSlot = 0; inputSlot < container.getContainerSize(); inputSlot++) {
             var stack = container.getItem(inputSlot);
             var recipe = getCurrentRecipe(level, stack);
 
             if (recipe.isEmpty()) continue;
-            int mul = state.getValue(LEVEL); // 倍率
-            var result = recipe.get().value().result(); // 输出物品
-            var recipeCount = Math.min(result.getCount() * mul, result.getMaxStackSize()); // 输出物品数量
-            var stackCount = stack.getCount(); // 输入物品数量
+            int mul = state.getValue(LEVEL);
+            var result = recipe.get().value().result();
+            var recipeCount = Math.min(result.getCount() * mul, result.getMaxStackSize());
+            var stackCount = stack.getCount();
 
             if (stackCount - recipeCount < 0) return false;
 
@@ -123,7 +131,7 @@ public class AmethystTubeBlock extends ACrystalTubeBlock {
             }
         }
         return false;
-    }
+    }*/
 
     private boolean propagateSignal(Level level, BlockPos pos, BlockState state, BlockPos targetPos, BlockState targetState, int i) {
         if (!targetState.hasProperty(POWERED)) return false;

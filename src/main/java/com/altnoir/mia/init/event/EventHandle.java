@@ -1,11 +1,11 @@
 package com.altnoir.mia.init.event;
 
 import com.altnoir.mia.MiaConfig;
-import com.altnoir.mia.client.event.KeyBindingEvent;
+import com.altnoir.mia.client.event.KeyArrowEvent;
+import com.altnoir.mia.init.MiaKeyBinding;
 import com.altnoir.mia.datagen.DataGenerators;
 import com.altnoir.mia.init.MiaNetworking;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 public class EventHandle {
     public static void addListener(IEventBus modEventBus, IEventBus gameEventBus) {
@@ -22,8 +22,6 @@ public class EventHandle {
 
         modEventBus.addListener(CapabilityRegister::RegisterCapabilitiesEvent);
         modEventBus.addListener(PlayerAttributeEvent::addPlayerAttributes);
-
-        modEventBus.addListener(KeyBindingEvent::registerKeyBindings);
     }
 
     public static void addGameEventBus(IEventBus gameEventBus) {
@@ -31,8 +29,5 @@ public class EventHandle {
         gameEventBus.addListener(CurseEvent::onPlayerTick);
 
         gameEventBus.addListener(BrewingRecipesEvent::onBrewingRecipe);
-
-        gameEventBus.addListener(KeyArrowEvent::onClientTick);
-        gameEventBus.addListener(KeyArrowEvent::onRenderGui);
     }
 }

@@ -33,7 +33,7 @@ public class MiaTags {
         // 用于合成
         public static final TagKey<Item> ENHANCEABLE_ARTIFACT = create("enhanceable_artifact");
         // 用于tooltip
-        public static final TagKey<Item> ARTIFACT_ENHANCE_MATERIAL = create("artifact_enhance_material");
+        public static final TagKey<Item> ARTIFACT_MODIFIERS_MATERIAL = create("artifact_modifiers_material");
 
         private static TagKey<Item> create(String name) {
             return TagKey.create(Registries.ITEM, MiaUtil.miaId(name));

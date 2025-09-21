@@ -1,10 +1,11 @@
 {
   "type": "mia:lamp_tube",
   "ingredient": {
+    "count": 2,
     "item": "minecraft:stone"
   },
   "result": {
-    "count": 2,
+    "count": 1,
     "id": "minecraft:deepslate"
   }
 }

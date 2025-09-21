@@ -1,0 +1,1 @@
+com.altnoir.mia.compat.kubejs.MiaKubeJSPlugin

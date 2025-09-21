@@ -1,8 +1,8 @@
 package com.altnoir.mia.client.event;
 
 import com.altnoir.mia.init.MiaColors;
-import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.init.MiaRecipes;
+import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.item.abs.IMiaTooltip;
 import com.altnoir.mia.recipe.ArtifactSmithingRecipe;
 import net.minecraft.ChatFormatting;
@@ -24,6 +24,10 @@ import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientTooltipEvent {
+    public static final String TOOLTIP_HOLD_SHIFT = "tooltip.mia.hold_shift";
+    public static final String TOOLTIP_ATTRIBUTE_MODIFIER = "tooltip.mia.attribute_modifier";
+    public static final String TOOLTIP_MODIFIERS_ARTIFACT_MATERIAL = "tooltip.mia.modifiers.artifact_material";
+
     public static void onTooltip(ItemTooltipEvent event) {
         var stack = event.getItemStack();
         var item = stack.getItem();
@@ -34,33 +38,33 @@ public class ClientTooltipEvent {
             if (Screen.hasShiftDown()) {
                 tooltipProvider.appendTooltip(stack, tooltip);
             } else {
-                tooltip.add(1, Component.translatable(
-                        "tooltip.mia.hold_shift",
-                        Component.literal("Shift").withStyle(ChatFormatting.WHITE)
-                ).withColor(MiaColors.ABYSS_GREEN));
+                holdShiftTooltip(tooltip);
             }
         }
-        if (stack.is(MiaTags.Items.ARTIFACT_ENHANCE_MATERIAL)) {
+        if (stack.is(MiaTags.Items.ARTIFACT_MODIFIERS_MATERIAL)) {
             var tooltip = event.getToolTip();
             if (Screen.hasShiftDown()) {
                 RecipeManager recipeManager = Minecraft.getInstance().getConnection().getRecipeManager();
                 if (recipeManager != null) {
-                    tooltip.add(1, Component.translatable("tooltip.mia.artifact.enhancement.material")
+                    tooltip.add(1, Component.translatable(TOOLTIP_MODIFIERS_ARTIFACT_MATERIAL)
                             .withStyle(ChatFormatting.GOLD));
                     tooltip.addAll(2, materialModifiers(stack,
-                            recipeManager.getAllRecipesFor(MiaRecipes.ARTIFACT_ENHANCEMENT_TYPE.get())));
+                            recipeManager.getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get())));
                 }
             } else {
-                tooltip.add(1, Component.translatable(
-                        "tooltip.mia.hold_shift",
-                        Component.literal("Shift").withStyle(ChatFormatting.WHITE)
-                ).withColor(MiaColors.ABYSS_GREEN));
+                holdShiftTooltip(tooltip);
             }
         }
     }
 
-    private static List<Component> materialModifiers(ItemStack material,
-                                                     List<RecipeHolder<ArtifactSmithingRecipe>> recipes) {
+    private static void holdShiftTooltip(List<Component> tooltip) {
+        tooltip.add(1, Component.translatable(
+                TOOLTIP_HOLD_SHIFT,
+                Component.literal("Shift").withStyle(ChatFormatting.GRAY)
+        ).withColor(MiaColors.ABYSS_GREEN));
+    }
+
+    private static List<Component> materialModifiers(ItemStack material, List<RecipeHolder<ArtifactSmithingRecipe>> recipes) {
         return recipes.stream().map(RecipeHolder::value)
                 .filter(recipe -> recipe.getMaterial().getItem() == material.getItem())
                 .map(recipe -> {
@@ -91,7 +95,7 @@ public class ClientTooltipEvent {
         }
 
         Component attributeName = Component.translatable(attribute.getDescriptionId());
-        return Component.translatable("tooltip.attribute_modifier", valueText, attributeName)
+        return Component.translatable(TOOLTIP_ATTRIBUTE_MODIFIER, valueText, attributeName)
                 .withStyle(ChatFormatting.BLUE);
     }
 }

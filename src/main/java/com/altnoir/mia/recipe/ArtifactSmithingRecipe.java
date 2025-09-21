@@ -80,7 +80,7 @@ public class ArtifactSmithingRecipe implements Recipe<ArtifactSmithingRecipeInpu
 
     @Override
     public RecipeType<?> getType() {
-        return MiaRecipes.ARTIFACT_ENHANCEMENT_TYPE.get();
+        return MiaRecipes.ARTIFACT_SMITHING_TYPE.get();
     }
 
     public boolean isMaterialIngredient(ItemStack stack) {

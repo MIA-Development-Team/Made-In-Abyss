@@ -20,7 +20,10 @@ public class LampTubeEmiRecipe implements EmiRecipe {
 
     public LampTubeEmiRecipe(RecipeHolder<LampTubeRecipe> recipe) {
         this.id = recipe.id();
-        this.input = List.of(EmiIngredient.of(recipe.value().getIngredients().getFirst()));
+        this.input = List.of(EmiIngredient.of(
+                recipe.value().getIngredients().getFirst(),
+                recipe.value().ingredient().count()
+        ));
         this.output = List.of(EmiStack.of(recipe.value().getResultItem(null)));
     }
 

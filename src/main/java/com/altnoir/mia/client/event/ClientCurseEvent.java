@@ -18,6 +18,7 @@ import net.neoforged.neoforge.client.event.ScreenEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientCurseEvent {
+    public static final String GUI_DISCONNECT = "gui.mia.disconnect";
     private static final ResourceLocation CURSE_ORB = MiaUtil.id(MIA.MOD_ID, "textures/gui/icon.png");
     private static final int FRAME_SIZE = 18;
     private static final int FRAME_COUNT = 22;

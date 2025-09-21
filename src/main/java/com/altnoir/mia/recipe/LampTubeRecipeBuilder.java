@@ -14,8 +14,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,22 +23,30 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class LampTubeRecipeBuilder implements RecipeBuilder {
+    private final SizedIngredient ingredient;
     private final ItemStack result;
-    private final Ingredient ingredient;
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
     private static final String RECIPE_TYPE = MiaRecipes.LAMP_TUBE_TYPE.getId().getPath();
 
-    public LampTubeRecipeBuilder(Ingredient ingredient, ItemStack result) {
+    public LampTubeRecipeBuilder(SizedIngredient ingredient, ItemStack result) {
         this.ingredient = ingredient;
         this.result = result;
     }
 
     public static LampTubeRecipeBuilder lampTube(ItemLike ingredient, ItemLike result, int count) {
-        return new LampTubeRecipeBuilder(Ingredient.of(ingredient), new ItemStack(result, count));
+        return lampTube(ingredient, 1, result, count);
     }
 
     public static LampTubeRecipeBuilder lampTube(TagKey<Item> tag, ItemLike result, int count) {
-        return new LampTubeRecipeBuilder(Ingredient.of(tag), new ItemStack(result, count));
+        return lampTube(tag, 1, result, count);
+    }
+
+    public static LampTubeRecipeBuilder lampTube(ItemLike ingredient, int count, ItemLike result, int resultCount) {
+        return new LampTubeRecipeBuilder(SizedIngredient.of(ingredient, count), new ItemStack(result, resultCount));
+    }
+
+    public static LampTubeRecipeBuilder lampTube(TagKey<Item> tag, int count, ItemLike result, int resultCount) {
+        return new LampTubeRecipeBuilder(SizedIngredient.of(tag, count), new ItemStack(result, resultCount));
     }
 
     public @NotNull LampTubeRecipeBuilder unlockedBy(@NotNull String name, @NotNull Criterion<?> criterion) {

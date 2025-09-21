@@ -1,5 +1,6 @@
 package com.altnoir.mia.client.event;
 
+import com.altnoir.mia.init.MiaKeyBinding;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
@@ -23,5 +24,8 @@ public class ClientEventHandler {
         gameEventBus.addListener(ClientCurseEvent::ScreenEventInitPost);
         gameEventBus.addListener(ClientCurseEvent::onRenderOverlay);
         gameEventBus.addListener(ClientTooltipEvent::onTooltip);
+
+        gameEventBus.addListener(KeyArrowEvent::onClientTick);
+        gameEventBus.addListener(KeyArrowEvent::onRenderGui);
     }
 }

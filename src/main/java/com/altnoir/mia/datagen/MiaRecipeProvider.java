@@ -1,9 +1,8 @@
 package com.altnoir.mia.datagen;
 
-import com.altnoir.mia.init.MiaAttributes;
 import com.altnoir.mia.init.MiaBlocks;
-import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.init.MiaItems;
+import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.recipe.ArtifactBundleUpgradeRecipeBuilder;
 import com.altnoir.mia.recipe.ArtifactSmithingRecipeBuilder;
 import com.altnoir.mia.recipe.LampTubeRecipeBuilder;
@@ -40,7 +39,7 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(MiaBlocks.SKYFOG_PLANKS.get()), has(MiaBlocks.SKYFOG_PLANKS.get()))
                 .save(recipeOutput);
 
-        lampTube(recipeOutput, Items.STONE, Items.DEEPSLATE, 2);
+        lampTube(recipeOutput, Items.STONE, 2, Items.DEEPSLATE);
         ArtifactBundleUpgrade(recipeOutput);
         ArtifactEnhancement(recipeOutput);
     }
@@ -115,23 +114,12 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedByMaterial().save(recipeOutput);
     }
 
-    @SuppressWarnings("unused")
-    private static void lampTube(RecipeOutput recipeOutput, ItemLike input, ItemLike output) {
-        lampTube(recipeOutput, input, output, 1);
+    private static void lampTube(RecipeOutput recipeOutput, ItemLike input, Integer count, ItemLike output) {
+        lampTube(recipeOutput, input, count, output, 1);
     }
 
-    @SuppressWarnings("unused")
-    private static void lampTube(RecipeOutput recipeOutput, ItemLike input, ItemLike output, String id) {
-        lampTube(recipeOutput, input, output, 1, id);
-    }
-
-    @SuppressWarnings("unused")
-    private static void lampTube(RecipeOutput recipeOutput, TagKey<Item> tag, ItemLike output, String hasName) {
-        lampTube(recipeOutput, tag, output, 1, hasName);
-    }
-
-    private static void lampTube(RecipeOutput recipeOutput, ItemLike input, ItemLike output, Integer count) {
-        LampTubeRecipeBuilder.lampTube(input, output, count)
+    private static void lampTube(RecipeOutput recipeOutput, ItemLike input, Integer count, ItemLike output, Integer resultCount) {
+        LampTubeRecipeBuilder.lampTube(input, count, output, resultCount)
                 .unlockedBy(getHasName(input), has(output))
                 .save(recipeOutput);
     }
@@ -148,5 +136,4 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_" + hasName, has(output))
                 .save(recipeOutput);
     }
-
 }

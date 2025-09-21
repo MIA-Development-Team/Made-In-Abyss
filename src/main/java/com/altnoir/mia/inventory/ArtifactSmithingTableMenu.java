@@ -16,6 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +42,8 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
     protected final ContainerLevelAccess access;
 
     private final DataSlot selectedRecipeIndex;
-    private List<RecipeHolder<ArtifactSmithingRecipe>> availableRecipes;
-    private List<RecipeHolder<ArtifactSmithingRecipe>> unavailableRecipes;
+    private final List<RecipeHolder<ArtifactSmithingRecipe>> availableRecipes;
+    private final List<RecipeHolder<ArtifactSmithingRecipe>> unavailableRecipes;
 
     private final List<RecipeHolder<ArtifactSmithingRecipe>> allRecipes;
 
@@ -61,35 +62,31 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
         this.unavailableRecipes = new ArrayList<>();
         this.selectedRecipeIndex = DataSlot.standalone();
         this.selectedRecipeIndex.set(-1);
-        this.allRecipes = this.level.getRecipeManager().getAllRecipesFor(MiaRecipes.ARTIFACT_ENHANCEMENT_TYPE.get());
+        this.allRecipes = this.level.getRecipeManager().getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get());
         this.slotUpdateListener = () -> {
         };
         this.artifactContainer = new TransientCraftingContainer(this, 1, 1);
         this.materialContainer = new TransientCraftingContainer(this, 1, 1);
         this.resultContainer = new ResultContainer();
-        this.artifactSlot = this.addSlot(new Slot(this.artifactContainer, 0, 20, 20) {
+        this.artifactSlot = this.addSlot(new Slot(this.artifactContainer, 0, 20, 33) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return allRecipes.stream().anyMatch(recipe -> recipe.value().isArtifactIngredient(stack));
             }
+
             @Override
             public int getMaxStackSize() {
                 return 1;
             }
         });
-        this.materialSlot = this.addSlot(new Slot(this.materialContainer, 0, 20, 48) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return false;
-            }
-
+        this.materialSlot = this.addSlot(new Slot(this.materialContainer, 0, 20, 66) {
             @Override
             public void onTake(Player player, ItemStack stack) {
                 selectedRecipeIndex.set(-1);
                 setupResultSlot();
             }
         });
-        this.resultSlot = this.addSlot(new Slot(this.resultContainer, 0, 143, 33) {
+        this.resultSlot = this.addSlot(new Slot(this.resultContainer, 0, 143, 37) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
@@ -97,7 +94,13 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
 
             @Override
             public void onTake(Player player, ItemStack stack) {
-                materialSlot.set(ItemStack.EMPTY);
+                ItemStack materialStack = materialSlot.getItem();
+                RecipeHolder<ArtifactSmithingRecipe> recipe = availableRecipes.get(selectedRecipeIndex.get());
+                if (!materialStack.isEmpty() && recipe != null) {
+                    int recipeCount = recipe.value().getMaterial().getCount();
+                    materialStack.shrink(recipeCount);
+
+                }
                 artifactSlot.set(ItemStack.EMPTY);
             }
 
@@ -110,12 +113,12 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
         int k;
         for (k = 0; k < 3; ++k) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(playerInventory, j + k * 9 + 9, 8 + j * 18, 84 + k * 18));
+                this.addSlot(new Slot(playerInventory, j + k * 9 + 9, 8 + j * 18, 102 + k * 18));
             }
         }
 
         for (k = 0; k < 9; ++k) {
-            this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 142));
+            this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 160));
         }
 
     }
@@ -150,7 +153,7 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
             this.clearMaterialSlot();
             // add all possible enhancement recipe
             ItemStack artifact = this.artifactSlot.getItem();
-            if (inputHasEnhancementRecipe()) {
+            if (inputHasSmithingRecipe()) {
                 for (RecipeHolder<ArtifactSmithingRecipe> recipe : allRecipes) {
                     if (recipe.value().isArtifactIngredient(artifact)) {
                         if (playerHasMaterial(recipe.value())) {
@@ -161,8 +164,26 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
                     }
                 }
             }
+        } else if (inventory == this.materialContainer) {
+            tryMatchRecipe();
         }
         this.slotUpdateListener.run();
+    }
+
+    private void tryMatchRecipe() {
+        ItemStack artifact = this.artifactSlot.getItem();
+        ItemStack material = this.materialSlot.getItem();
+
+        if (!artifact.isEmpty() && !material.isEmpty()) {
+            for (int i = 0; i < this.availableRecipes.size(); i++) {
+                RecipeHolder<ArtifactSmithingRecipe> recipe = this.availableRecipes.get(i);
+                if (recipe.value().isMaterialIngredient(material)) {
+                    this.selectedRecipeIndex.set(i);
+                    this.setupResultSlot();
+                    break;
+                }
+            }
+        }
     }
 
     private void setupResultSlot() {
@@ -184,7 +205,7 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(Player player, int index) {
         ItemStack returnStack = ItemStack.EMPTY;
         Slot slot = (Slot) this.slots.get(index);
         if (slot != null && slot.hasItem()) {
@@ -208,6 +229,10 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
                 }
             } else if (canMoveIntoArtifactSlots(selectedStack)) {
                 if (!this.moveItemStackTo(selectedStack, ARTIFACT_SLOT_INDEX, ARTIFACT_SLOT_INDEX + 1, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (canMoveIntoMaterialSlot(selectedStack)) {
+                if (!this.moveItemStackTo(selectedStack, MATERIAL_SLOT_INDEX, MATERIAL_SLOT_INDEX + 1, false)) {
                     return ItemStack.EMPTY;
                 }
             } else if (index >= INV_SLOT_START && index < INV_SLOT_END) {
@@ -238,6 +263,11 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
     public boolean canMoveIntoArtifactSlots(ItemStack stack) {
         return this.allRecipes.stream()
                 .map(RecipeHolder::value).anyMatch(recipe -> recipe.isArtifactIngredient(stack));
+    }
+
+    public boolean canMoveIntoMaterialSlot(ItemStack stack) {
+        return this.availableRecipes.stream()
+                .map(RecipeHolder::value).anyMatch(recipe -> recipe.isMaterialIngredient(stack));
     }
 
     @Override
@@ -276,7 +306,7 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
         return selectedRecipeIndex.get();
     }
 
-    public boolean inputHasEnhancementRecipe() {
+    public boolean inputHasSmithingRecipe() {
         ItemStack artifactSlotItem = this.artifactSlot.getItem();
         if (artifactSlotItem.isEmpty()) {
             return false;
@@ -301,10 +331,8 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return (Boolean) this.access.evaluate((level, pos) -> {
-            return !level.getBlockState(pos).is(MiaBlocks.ARTIFACT_SMITHING_TABLE) ? false
-                    : player.canInteractWithBlock(pos, 4.0);
-        }, true);
+        return this.access.evaluate((level, pos) ->
+                level.getBlockState(pos).is(MiaBlocks.ARTIFACT_SMITHING_TABLE) && player.canInteractWithBlock(pos, 4.0), true);
     }
 
     private boolean playerHasMaterial(ArtifactSmithingRecipe recipe) {
@@ -352,7 +380,6 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
             materialSlot.setChanged();
         }
     }
-
     @Override
     public MenuType<?> getType() {
         return MiaMenus.ARTIFACT_ENHANCEMENT_TABLE.get();

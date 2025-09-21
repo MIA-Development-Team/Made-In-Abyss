@@ -1,14 +1,14 @@
 package com.altnoir.mia.item.abs;
 
-import java.util.List;
-import java.util.function.UnaryOperator;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
+
+import java.util.List;
+import java.util.function.UnaryOperator;
 
 /**
  * 继承关系
@@ -19,6 +19,13 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
  * - - - 其他特殊遗物
  */
 public interface IArtifactItem extends ICurioItem, IMiaTooltip {
+    String TOOLTIP_ARTIFACT_WEIGHT = "tooltip.mia.artifact.weight";
+    String TOOLTIP_ARTIFACT_GRADE_D = "tooltip.mia.artifact.grade.d";
+    String TOOLTIP_ARTIFACT_GRADE_C = "tooltip.mia.artifact.grade.c";
+    String TOOLTIP_ARTIFACT_GRADE_B = "tooltip.mia.artifact.grade.b";
+    String TOOLTIP_ARTIFACT_GRADE_A = "tooltip.mia.artifact.grade.a";
+    String TOOLTIP_ARTIFACT_GRADE_S = "tooltip.mia.artifact.grade.s";
+    String TOOLTIP_ARTIFACT_GRADE_UNKNOWN = "tooltip.mia.artifact.grade.unknown";
 
     @Override
     public default boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
@@ -35,9 +42,9 @@ public interface IArtifactItem extends ICurioItem, IMiaTooltip {
         tooltip.add(1, Component.translatable(getGradeTranslatable()).withStyle(getGradeStyle()));
         if (stack.getItem() instanceof IBundleable) {
             tooltip.add(2,
-                    Component.translatable("tooltip.mia.artifact.weight",
-                            Component.literal(Integer.toString(((IBundleable) stack.getItem()).getWeight()))
-                                    .withStyle(ChatFormatting.YELLOW))
+                    Component.translatable(TOOLTIP_ARTIFACT_WEIGHT,
+                                    Component.literal(Integer.toString(((IBundleable) stack.getItem()).getWeight()))
+                                            .withStyle(ChatFormatting.YELLOW))
                             .withStyle(style -> style.withColor(ChatFormatting.GOLD)));
         }
         IMiaTooltip.super.appendTooltip(stack, tooltip);
@@ -49,8 +56,8 @@ public interface IArtifactItem extends ICurioItem, IMiaTooltip {
         return switch (getGrade()) {
             case Grade.D -> style -> style.withColor(ChatFormatting.DARK_GRAY);
             case Grade.C -> style -> style.withColor(ChatFormatting.DARK_AQUA);
-            case Grade.B -> style -> style.withColor(ChatFormatting.DARK_GREEN);
-            case Grade.A -> style -> style.withColor(ChatFormatting.GOLD);
+            case Grade.B -> style -> style.withColor(ChatFormatting.DARK_PURPLE);
+            case Grade.A -> style -> style.withColor(ChatFormatting.YELLOW);
             case Grade.S -> style -> style.withColor(ChatFormatting.DARK_RED);
             default -> style -> style.withColor(ChatFormatting.BLACK);
         };
@@ -58,12 +65,12 @@ public interface IArtifactItem extends ICurioItem, IMiaTooltip {
 
     public default String getGradeTranslatable() {
         return switch (getGrade()) {
-            case Grade.D -> "tooltip.mia.artifact.grade.fourth";
-            case Grade.C -> "tooltip.mia.artifact.grade.third";
-            case Grade.B -> "tooltip.mia.artifact.grade.second";
-            case Grade.A -> "tooltip.mia.artifact.grade.first";
-            case Grade.S -> "tooltip.mia.artifact.grade.special";
-            default -> "tooltip.mia.artifact.grade.unknown";
+            case Grade.D -> TOOLTIP_ARTIFACT_GRADE_D;
+            case Grade.C -> TOOLTIP_ARTIFACT_GRADE_C;
+            case Grade.B -> TOOLTIP_ARTIFACT_GRADE_B;
+            case Grade.A -> TOOLTIP_ARTIFACT_GRADE_A;
+            case Grade.S -> TOOLTIP_ARTIFACT_GRADE_S;
+            default -> TOOLTIP_ARTIFACT_GRADE_UNKNOWN;
         };
     }
 
