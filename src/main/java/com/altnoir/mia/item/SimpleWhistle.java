@@ -1,6 +1,6 @@
 package com.altnoir.mia.item;
 
-import com.altnoir.mia.item.abs.AWhistle;
+import com.altnoir.mia.item.abs.AbsWhistle;
 import com.altnoir.mia.util.MiaUtil;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -13,7 +13,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
 
-public class SimpleWhistle extends AWhistle {
+public class SimpleWhistle extends AbsWhistle {
     private final int artifactSlotCount;
     private final Holder<Attribute> attribute;
     private final AttributeModifier attributeModifier;

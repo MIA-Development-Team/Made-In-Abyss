@@ -9,11 +9,9 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.DiggerItem;
@@ -50,10 +48,39 @@ public class CompositeItem extends DiggerItem {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Player player = context.getPlayer();
-        if (player != null && this.calculateHitResult(player).getType() == HitResult.Type.BLOCK) {
-            player.startUsingItem(context.getHand());
-        }
+        HitResult hitresult = this.calculateHitResult(player);
+        if (player != null && hitresult.getType() == HitResult.Type.BLOCK) {
+            player.swing(context.getHand());
 
+            if (hitresult instanceof BlockHitResult blockhitresult) {
+                BlockPos blockpos = blockhitresult.getBlockPos();
+                BlockState blockstate = player.level().getBlockState(blockpos);
+                Direction direction = blockhitresult.getDirection();
+                HumanoidArm humanoidarm = player.getMainArm();
+
+                if (blockstate.shouldSpawnTerrainParticles() && blockstate.getRenderShape() != RenderShape.INVISIBLE) {
+                    this.spawnDustParticles(player.level(), blockhitresult, blockstate, player.getViewVector(0.0F), humanoidarm);
+                }
+
+                SoundEvent soundevent;
+                if (blockstate.getBlock() instanceof BrushableBlock brushableblock) {
+                    soundevent = brushableblock.getBrushSound();
+                } else {
+                    soundevent = SoundEvents.AMETHYST_BLOCK_HIT;
+                }
+
+                player.level().playSound(player, blockpos, soundevent, SoundSource.BLOCKS);
+                if (!player.level().isClientSide() && player.level().getBlockEntity(blockpos) instanceof BrushableBlockEntity brushableblockentity) {
+                    boolean success = brushableblockentity.brush(player.level().getGameTime(), player, direction);
+                    if (success) {
+                        EquipmentSlot equipmentslot = context.getItemInHand().equals(player.getItemBySlot(EquipmentSlot.OFFHAND))
+                                ? EquipmentSlot.OFFHAND
+                                : EquipmentSlot.MAINHAND;
+                        context.getItemInHand().hurtAndBreak(1, player, equipmentslot);
+                    }
+                }
+            }
+        }
         return InteractionResult.CONSUME;
     }
 
@@ -61,61 +88,6 @@ public class CompositeItem extends DiggerItem {
         return ProjectileUtil.getHitResultOnViewVector(
                 player, entity -> !entity.isSpectator() && entity.isPickable(), player.blockInteractionRange()
         );
-    }
-
-    @Override
-    public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return 200;
-    }
-
-    @Override
-    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
-        if (remainingUseDuration >= 0 && livingEntity instanceof Player player) {
-            HitResult hitresult = this.calculateHitResult(player);
-
-            if (hitresult instanceof BlockHitResult blockhitresult && hitresult.getType() == HitResult.Type.BLOCK) {
-                int i = this.getUseDuration(stack, livingEntity) - remainingUseDuration + 1;
-                boolean flag = i % 10 == 5;
-                if (flag) {
-                    BlockPos blockpos = blockhitresult.getBlockPos();
-                    BlockState blockstate = level.getBlockState(blockpos);
-                    HumanoidArm humanoidarm = livingEntity.getUsedItemHand() == InteractionHand.MAIN_HAND
-                            ? player.getMainArm()
-                            : player.getMainArm().getOpposite();
-
-                    if (blockstate.shouldSpawnTerrainParticles() && blockstate.getRenderShape() != RenderShape.INVISIBLE) {
-                        this.spawnDustParticles(level, blockhitresult, blockstate, livingEntity.getViewVector(0.0F), humanoidarm);
-                    }
-
-                    SoundEvent soundevent;
-                    if (blockstate.getBlock() instanceof BrushableBlock brushableblock) {
-                        soundevent = brushableblock.getBrushSound();
-                    } else {
-                        soundevent = SoundEvents.AMETHYST_BLOCK_HIT;
-                    }
-
-                    level.playSound(player, blockpos, soundevent, SoundSource.BLOCKS);
-                    if (!level.isClientSide() && level.getBlockEntity(blockpos) instanceof BrushableBlockEntity brushableblockentity) {
-                        boolean flag1 = brushableblockentity.brush(level.getGameTime(), player, blockhitresult.getDirection());
-                        if (flag1) {
-                            EquipmentSlot equipmentslot = stack.equals(player.getItemBySlot(EquipmentSlot.OFFHAND))
-                                    ? EquipmentSlot.OFFHAND
-                                    : EquipmentSlot.MAINHAND;
-                            stack.hurtAndBreak(1, livingEntity, equipmentslot);
-                        }
-                    }
-                    if (level.isClientSide()) {
-                        player.swing(InteractionHand.MAIN_HAND);
-                    }
-                }
-
-                return;
-            }
-
-            livingEntity.releaseUsingItem();
-        } else {
-            livingEntity.releaseUsingItem();
-        }
     }
 
     private void spawnDustParticles(Level level, BlockHitResult hitResult, BlockState state, Vec3 pos, HumanoidArm arm) {

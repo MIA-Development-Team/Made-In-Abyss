@@ -1,10 +1,10 @@
 package com.altnoir.mia.compat.kubejs.item;
 
-import com.altnoir.mia.item.abs.ASkill;
+import com.altnoir.mia.item.abs.AbsSkill;
 
 import java.util.List;
 
-public class KubeSkill extends ASkill {
+public class KubeSkill extends AbsSkill {
     private final List<Integer> combo;
     private final Grade grade;
     private final int cooldown;

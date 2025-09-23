@@ -62,7 +62,7 @@ public class ArtifactSmithingRecipe implements Recipe<ArtifactSmithingRecipeInpu
 
     @Override
     public boolean matches(ArtifactSmithingRecipeInput input, Level level) {
-        if (!this.material.equals(input.material())) {
+        if (!this.material.getItem().equals(input.material().getItem()) || this.material.getCount() > input.material().getCount()) {
             return false;
         }
         if ((input.base().getItem() instanceof IEArtifact artifact)
@@ -84,7 +84,7 @@ public class ArtifactSmithingRecipe implements Recipe<ArtifactSmithingRecipeInpu
     }
 
     public boolean isMaterialIngredient(ItemStack stack) {
-        return this.material.getItem().equals(stack.getItem());
+        return this.material.getItem().equals(stack.getItem()) && this.material.getCount() <= stack.getCount();
     }
 
     public ItemStack getMaterial() {

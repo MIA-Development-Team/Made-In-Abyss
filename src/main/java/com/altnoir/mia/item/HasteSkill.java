@@ -1,6 +1,6 @@
 package com.altnoir.mia.item;
 
-import com.altnoir.mia.item.abs.ASkill;
+import com.altnoir.mia.item.abs.AbsSkill;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import java.util.Arrays;
 import java.util.List;
 
-public class HasteSkill extends ASkill {
+public class HasteSkill extends AbsSkill {
     public HasteSkill(Properties properties) {
         super(properties);
     }

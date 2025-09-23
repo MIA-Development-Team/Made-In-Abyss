@@ -1,7 +1,7 @@
 package com.altnoir.mia.compat.kubejs.item;
 
 
-import com.altnoir.mia.item.abs.ASkill;
+import com.altnoir.mia.item.abs.AbsSkill;
 import dev.latvian.mods.kubejs.item.ItemBuilder;
 import dev.latvian.mods.kubejs.typings.Info;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +13,7 @@ import java.util.List;
 @Info(value = "Builder for custom skill items in Made-In-Abyss mod.")
 public class SkillBuilder extends ItemBuilder {
     private List<Integer> combo = Arrays.asList(1, 2, 3); // 默认下左右
-    private ASkill.Grade grade = ASkill.Grade.D; // 默认D级
+    private AbsSkill.Grade grade = AbsSkill.Grade.D; // 默认D级
     private int cooldown = 300; // 默认15秒冷却 (300 ticks)
 
     public SkillBuilder(ResourceLocation id) {
@@ -27,7 +27,7 @@ public class SkillBuilder extends ItemBuilder {
     }
 
     @Info(value = "Set the grade of this skill, Just display. Default is D.")
-    public SkillBuilder grade(ASkill.Grade grade) {
+    public SkillBuilder grade(AbsSkill.Grade grade) {
         this.grade = grade;
         return this;
     }

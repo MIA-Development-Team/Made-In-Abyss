@@ -1,6 +1,6 @@
 package com.altnoir.mia.block;
 
-import com.altnoir.mia.block.abs.ACanFarmBlock;
+import com.altnoir.mia.block.abs.AbsCanFarmBlock;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.item.PrasioliteHoeItem;
@@ -17,7 +17,7 @@ import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AbyssAndesiteBlock extends ACanFarmBlock implements BonemealableBlock {
+public class AbyssAndesiteBlock extends AbsCanFarmBlock implements BonemealableBlock {
     public AbyssAndesiteBlock(Properties properties) {
         super(properties);
     }

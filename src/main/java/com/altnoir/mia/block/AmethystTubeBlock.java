@@ -1,6 +1,6 @@
 package com.altnoir.mia.block;
 
-import com.altnoir.mia.block.abs.ACrystalTubeBlock;
+import com.altnoir.mia.block.abs.AbsCrystalTubeBlock;
 import com.altnoir.mia.block.entity.PedestalBlockEntity;
 import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.recipe.LampTubeRecipe;
@@ -26,7 +26,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.Optional;
 
-public class AmethystTubeBlock extends ACrystalTubeBlock {
+public class AmethystTubeBlock extends AbsCrystalTubeBlock {
     public static final MapCodec<AmethystTubeBlock> CODEC = simpleCodec(AmethystTubeBlock::new);
     public static final IntegerProperty LEVEL = IntegerProperty.create("level", 1, 8);
 

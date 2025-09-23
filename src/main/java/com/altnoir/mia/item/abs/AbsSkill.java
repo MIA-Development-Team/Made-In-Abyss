@@ -1,16 +1,12 @@
 package com.altnoir.mia.item.abs;
 
 import com.altnoir.mia.init.MiaComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
 
-import java.util.Arrays;
-import java.util.List;
-
-public abstract class ASkill extends Item implements IArtifactSkill {
-    public ASkill(Properties properties) {
+public abstract class AbsSkill extends Item implements IArtifactSkill {
+    public AbsSkill(Properties properties) {
         super(properties.component(MiaComponents.SKILL_COOLDOWN.get(), 0));
     }
     @Override

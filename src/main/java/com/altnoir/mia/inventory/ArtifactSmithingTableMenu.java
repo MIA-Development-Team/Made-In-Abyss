@@ -188,12 +188,18 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
 
     private void setupResultSlot() {
         if (!this.availableRecipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {
-            RecipeHolder<ArtifactSmithingRecipe> recipeholder = this.availableRecipes
-                    .get(this.selectedRecipeIndex.get());
-            ItemStack itemstack = recipeholder.value().assemble(createRecipeInput(), this.level.registryAccess());
-            if (itemstack.isItemEnabled(this.level.enabledFeatures())) {
-                this.resultContainer.setRecipeUsed(recipeholder);
-                this.resultSlot.set(itemstack);
+            RecipeHolder<ArtifactSmithingRecipe> recipeholder = this.availableRecipes.get(this.selectedRecipeIndex.get());
+            ItemStack materialStack = this.materialSlot.getItem();
+            ItemStack requiredMaterial = recipeholder.value().getMaterial();
+
+            if (materialStack.getCount() >= requiredMaterial.getCount()) {
+                ItemStack itemstack = recipeholder.value().assemble(createRecipeInput(), this.level.registryAccess());
+                if (itemstack.isItemEnabled(this.level.enabledFeatures())) {
+                    this.resultContainer.setRecipeUsed(recipeholder);
+                    this.resultSlot.set(itemstack);
+                } else {
+                    this.resultSlot.set(ItemStack.EMPTY);
+                }
             } else {
                 this.resultSlot.set(ItemStack.EMPTY);
             }
@@ -380,6 +386,7 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
             materialSlot.setChanged();
         }
     }
+
     @Override
     public MenuType<?> getType() {
         return MiaMenus.ARTIFACT_ENHANCEMENT_TABLE.get();

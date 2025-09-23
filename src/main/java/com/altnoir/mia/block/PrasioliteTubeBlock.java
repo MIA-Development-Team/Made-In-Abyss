@@ -1,6 +1,6 @@
 package com.altnoir.mia.block;
 
-import com.altnoir.mia.block.abs.ACrystalTubeBlock;
+import com.altnoir.mia.block.abs.AbsCrystalTubeBlock;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class PrasioliteTubeBlock extends ACrystalTubeBlock {
+public class PrasioliteTubeBlock extends AbsCrystalTubeBlock {
     public static final IntegerProperty LEVEL = IntegerProperty.create("level", 1, 4);
     public static final MapCodec<PrasioliteTubeBlock> CODEC = simpleCodec(PrasioliteTubeBlock::new);
 
@@ -50,7 +50,7 @@ public class PrasioliteTubeBlock extends ACrystalTubeBlock {
 
     @Override
     protected boolean crystalProcessing(Level level, BlockPos pos, BlockState state, BlockPos targetPos, BlockState targetState, int i) {
-        if (targetState.getBlock() instanceof ACrystalTubeBlock) {
+        if (targetState.getBlock() instanceof AbsCrystalTubeBlock) {
             return propagateSignal(level, pos, state, targetPos, targetState, i);
         } else if (!targetState.isAir()) {
             return growOn(level, pos, state, targetPos);

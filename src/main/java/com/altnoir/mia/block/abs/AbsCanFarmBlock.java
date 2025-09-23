@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class ACanFarmBlock extends Block {
-    public ACanFarmBlock(Properties properties) {
+public abstract class AbsCanFarmBlock extends Block {
+    public AbsCanFarmBlock(Properties properties) {
         super(properties);
     }
 

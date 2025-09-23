@@ -1,6 +1,6 @@
 package com.altnoir.mia.block;
 
-import com.altnoir.mia.block.abs.ACoverGrassBlock;
+import com.altnoir.mia.block.abs.AbsCoverGrassBlock;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -23,7 +23,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import java.util.List;
 import java.util.Optional;
 
-public class CoverGrassBlock extends ACoverGrassBlock implements BonemealableBlock {
+public class CoverGrassBlock extends AbsCoverGrassBlock implements BonemealableBlock {
     public static final MapCodec<CoverGrassBlock> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     Block.CODEC.fieldOf("defaultBlock").forGetter(block -> block.defaultBlock),

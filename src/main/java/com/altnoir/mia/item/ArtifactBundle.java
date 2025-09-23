@@ -1,8 +1,8 @@
 package com.altnoir.mia.item;
 
-import com.altnoir.mia.item.abs.AArtifactBundle;
+import com.altnoir.mia.item.abs.AbsArtifactBundle;
 
-public class ArtifactBundle extends AArtifactBundle {
+public class ArtifactBundle extends AbsArtifactBundle {
 
     private final int capacity;
     private final Grade grade;

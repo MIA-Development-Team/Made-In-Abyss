@@ -1,6 +1,6 @@
 package com.altnoir.mia.component;
 
-import com.altnoir.mia.item.abs.AArtifactBundle;
+import com.altnoir.mia.item.abs.AbsArtifactBundle;
 import com.altnoir.mia.item.abs.IBundleable;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
@@ -86,9 +86,9 @@ public class ArtifactBundleInventoryComponent implements TooltipComponent {
         }
 
         public boolean tryInsert(ItemStack artifactBundle, ItemStack itemStack) {
-            if (artifactBundle.getItem() instanceof AArtifactBundle artifactBundleItem) {
+            if (artifactBundle.getItem() instanceof AbsArtifactBundle artifactBundleItem) {
                 if (itemStack.getItem() instanceof IBundleable artifact
-                        && !(itemStack.getItem() instanceof AArtifactBundle)) {
+                        && !(itemStack.getItem() instanceof AbsArtifactBundle)) {
                     if (usage + artifact.getWeight() > artifactBundleItem.getCapacity())
                         return false;
                     usage += artifact.getWeight();

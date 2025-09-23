@@ -6,7 +6,7 @@ import com.altnoir.mia.client.event.ClientCurseEvent;
 import com.altnoir.mia.client.event.ClientTooltipEvent;
 import com.altnoir.mia.client.event.KeyArrowEvent;
 import com.altnoir.mia.init.*;
-import com.altnoir.mia.item.abs.AArtifactBundle;
+import com.altnoir.mia.item.abs.AbsArtifactBundle;
 import com.altnoir.mia.item.abs.IArtifactItem;
 import com.altnoir.mia.item.abs.IArtifactSkill;
 import com.altnoir.mia.item.abs.IEArtifact;
@@ -54,7 +54,7 @@ public class MiaLangProvider extends LanguageProvider {
 
         add(IEArtifact.TOOLTIP_ARTIFACT_LEVEL, "Echo: %s/%s");
         add(IEArtifact.TOOLTIP_ARTIFACT_MAX, "Echo: MAX");
-        add(AArtifactBundle.TOOLTIP_ARTIFACT_BUNDLE_CAPACITY, "Artifact Capacity: %s");
+        add(AbsArtifactBundle.TOOLTIP_ARTIFACT_BUNDLE_CAPACITY, "Artifact Capacity: %s");
         //Tooltip end
 
         // Painting Variant

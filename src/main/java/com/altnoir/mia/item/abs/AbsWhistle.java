@@ -15,9 +15,9 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AWhistle extends Item implements ICurioItem, IMiaTooltip {
+public abstract class AbsWhistle extends Item implements ICurioItem, IMiaTooltip {
 
-    public AWhistle(Properties properties) {
+    public AbsWhistle(Properties properties) {
         super(properties);
     }
 

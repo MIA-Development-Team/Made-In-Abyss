@@ -29,14 +29,14 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-public abstract class   AArtifactBundle extends Item implements IArtifactItem {
+public abstract class AbsArtifactBundle extends Item implements IArtifactItem {
 
     public static final String TOOLTIP_ARTIFACT_BUNDLE_CAPACITY = "tooltip.mia.artifact_bundle.capacity";
 
     private static final int FULL_BAR_COLOR = 0xFF5454FF;
     private static final int BAR_COLOR = 0x7087FFFF;
 
-    public AArtifactBundle(Properties properties) {
+    public AbsArtifactBundle(Properties properties) {
         super(properties.component(MiaComponents.ARTIFACT_BUNDLE_INVENTORY, ArtifactBundleInventoryComponent.EMPTY));
     }
 

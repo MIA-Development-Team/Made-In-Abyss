@@ -20,10 +20,10 @@ import org.joml.Vector3f;
 
 import java.util.Objects;
 
-public abstract class ACrystalTubeBlock extends ATubeBlock {
+public abstract class AbsCrystalTubeBlock extends AbsTubeBlock {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    protected ACrystalTubeBlock(Properties properties) {
+    protected AbsCrystalTubeBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.UP)
