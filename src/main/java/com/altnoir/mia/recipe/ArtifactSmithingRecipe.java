@@ -57,7 +57,7 @@ public class ArtifactSmithingRecipe implements Recipe<ArtifactSmithingRecipeInpu
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return MiaRecipes.ARTIFACT_ENHANCEMENT_SERIALIZER.get();
+        return MiaRecipes.ARTIFACT_SMITHING_SERIALIZER.get();
     }
 
     @Override

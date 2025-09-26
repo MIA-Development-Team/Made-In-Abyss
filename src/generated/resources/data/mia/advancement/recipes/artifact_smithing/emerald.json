@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_oak_sapling": {
+    "has_emerald": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:oak_sapling"
+            "items": "minecraft:emerald"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mia:artifact_enhancement/oak_sapling"
+        "recipe": "mia:artifact_smithing/emerald"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_oak_sapling"
+      "has_emerald"
     ]
   ],
   "rewards": {
     "recipes": [
-      "mia:artifact_enhancement/oak_sapling"
+      "mia:artifact_smithing/emerald"
     ]
   }
 }

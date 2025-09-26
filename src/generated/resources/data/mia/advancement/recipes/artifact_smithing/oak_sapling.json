@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_iron_ingot": {
+    "has_oak_sapling": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:iron_ingot"
+            "items": "minecraft:oak_sapling"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mia:artifact_enhancement/iron_ingot"
+        "recipe": "mia:artifact_smithing/oak_sapling"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_iron_ingot"
+      "has_oak_sapling"
     ]
   ],
   "rewards": {
     "recipes": [
-      "mia:artifact_enhancement/iron_ingot"
+      "mia:artifact_smithing/oak_sapling"
     ]
   }
 }

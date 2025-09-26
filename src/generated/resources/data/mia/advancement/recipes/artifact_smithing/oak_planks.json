@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_stone": {
+    "has_oak_planks": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:stone"
+            "items": "minecraft:oak_planks"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mia:artifact_enhancement/stone"
+        "recipe": "mia:artifact_smithing/oak_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_stone"
+      "has_oak_planks"
     ]
   ],
   "rewards": {
     "recipes": [
-      "mia:artifact_enhancement/stone"
+      "mia:artifact_smithing/oak_planks"
     ]
   }
 }

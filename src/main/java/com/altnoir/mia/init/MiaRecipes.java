@@ -29,17 +29,19 @@ public class MiaRecipes {
                 }
             });
 
+
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ArtifactBundleUpgradeRecipe>> ARTIFACT_BUNDLE_UPGRADE_SERIALIZER = SERIALIZERS
             .register("artifact_bundle_upgrade", ArtifactBundleUpgradeRecipe.Serializer::new);
 
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ArtifactSmithingRecipe>> ARTIFACT_ENHANCEMENT_SERIALIZER = SERIALIZERS
-            .register("artifact_enhancement", ArtifactSmithingRecipe.Serializer::new);
+
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ArtifactSmithingRecipe>> ARTIFACT_SMITHING_SERIALIZER = SERIALIZERS
+            .register("artifact_smithing", ArtifactSmithingRecipe.Serializer::new);
 
     public static final DeferredHolder<RecipeType<?>, RecipeType<ArtifactSmithingRecipe>> ARTIFACT_SMITHING_TYPE = TYPES
-            .register("artifact_enhancement", () -> new RecipeType<ArtifactSmithingRecipe>() {
+            .register("artifact_smithing", () -> new RecipeType<ArtifactSmithingRecipe>() {
                 @Override
                 public String toString() {
-                    return "artifact_enhancement";
+                    return "artifact_smithing";
                 }
             });
 

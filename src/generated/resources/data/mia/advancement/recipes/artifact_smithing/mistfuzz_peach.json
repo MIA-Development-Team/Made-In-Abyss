@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_cobbled_deepslate": {
+    "has_mistfuzz_peach": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:cobbled_deepslate"
+            "items": "mia:mistfuzz_peach"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mia:artifact_enhancement/cobbled_deepslate"
+        "recipe": "mia:artifact_smithing/mistfuzz_peach"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_cobbled_deepslate"
+      "has_mistfuzz_peach"
     ]
   ],
   "rewards": {
     "recipes": [
-      "mia:artifact_enhancement/cobbled_deepslate"
+      "mia:artifact_smithing/mistfuzz_peach"
     ]
   }
 }

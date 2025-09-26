@@ -1,5 +1,5 @@
 {
-  "type": "mia:artifact_enhancement",
+  "type": "mia:artifact_smithing",
   "amount": 0.5,
   "artifact": {
     "tag": "mia:enhanceable_artifact"

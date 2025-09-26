@@ -1,19 +1,7 @@
 package com.altnoir.mia.recipe;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-
-import com.altnoir.mia.MIA;
-
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRequirements;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.advancements.Criterion;
+import com.altnoir.mia.util.MiaUtil;
+import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger.TriggerInstance.Slots;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -27,6 +15,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+
+import java.util.*;
 
 public class ArtifactSmithingRecipeBuilder {
 
@@ -101,7 +91,7 @@ public class ArtifactSmithingRecipeBuilder {
     public void save(RecipeOutput recipeOutput) {
         String name = BuiltInRegistries.ITEM.getKey(material.getItem()).getPath();
         this.save(recipeOutput,
-                ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "artifact_enhancement/" + name));
+                MiaUtil.miaId("artifact_smithing/" + name));
     }
 
     public void save(RecipeOutput recipeOutput, ResourceLocation id) {
@@ -116,7 +106,7 @@ public class ArtifactSmithingRecipeBuilder {
 
         ArtifactSmithingRecipe recipe = new ArtifactSmithingRecipe(this.whistle, this.material, this.attribute,
                 this.amount, this.operation);
-        ResourceLocation advancementId = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, id.getPath());
+        ResourceLocation advancementId = MiaUtil.miaId(id.getPath());
         recipeOutput.accept(id, recipe,
                 advancementBuilder.build(advancementId.withPrefix("recipes/")));
     }

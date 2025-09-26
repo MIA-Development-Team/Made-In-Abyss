@@ -1,6 +1,7 @@
 package com.altnoir.mia.compat.kubejs.item;
 
 
+import com.altnoir.mia.client.event.combo.ComboContext;
 import com.altnoir.mia.item.abs.AbsSkill;
 import dev.latvian.mods.kubejs.item.ItemBuilder;
 import dev.latvian.mods.kubejs.typings.Info;
@@ -9,6 +10,7 @@ import net.minecraft.world.item.Item;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Info(value = "Builder for custom skill items in Made-In-Abyss mod.")
 public class SkillBuilder extends ItemBuilder {
@@ -21,8 +23,16 @@ public class SkillBuilder extends ItemBuilder {
     }
 
     @Info(value = "Set the combo sequence for this skill. Each integer represents a button:0=Up, 1=Left, 2=Right, 3=Middle. Default is [1, 2, 3].")
-    public SkillBuilder combo(Integer... combo) {
+    public SkillBuilder comboInt(Integer... combo) {
         this.combo = Arrays.asList(combo);
+        return this;
+    }
+
+    @Info(value = "Set the combo sequence for this skill using a builder pattern.")
+    public SkillBuilder combo(Consumer<ComboContext> consumer) {
+        ComboContext context = new ComboContext();
+        consumer.accept(context);
+        this.combo = context.build();
         return this;
     }
 

@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_prasiolite_shard": {
+    "has_stick": {
       "conditions": {
         "items": [
           {
-            "items": "mia:prasiolite_shard"
+            "items": "minecraft:stick"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mia:artifact_enhancement/prasiolite_shard"
+        "recipe": "mia:artifact_smithing/stick"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_prasiolite_shard"
+      "has_stick"
     ]
   ],
   "rewards": {
     "recipes": [
-      "mia:artifact_enhancement/prasiolite_shard"
+      "mia:artifact_smithing/stick"
     ]
   }
 }

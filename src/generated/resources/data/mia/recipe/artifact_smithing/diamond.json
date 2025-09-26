@@ -1,13 +1,13 @@
 {
-  "type": "mia:artifact_enhancement",
-  "amount": 0.3,
+  "type": "mia:artifact_smithing",
+  "amount": 0.5,
   "artifact": {
     "tag": "mia:enhanceable_artifact"
   },
-  "attribute": "minecraft:generic.armor",
+  "attribute": "minecraft:generic.attack_damage",
   "material": {
     "count": 1,
-    "id": "minecraft:iron_ingot"
+    "id": "minecraft:diamond"
   },
   "operation": "add_multiplied_base"
 }

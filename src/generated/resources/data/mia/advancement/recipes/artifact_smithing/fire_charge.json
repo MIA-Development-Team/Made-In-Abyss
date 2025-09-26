@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mia:artifact_enhancement/fire_charge"
+        "recipe": "mia:artifact_smithing/fire_charge"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "mia:artifact_enhancement/fire_charge"
+      "mia:artifact_smithing/fire_charge"
     ]
   }
 }

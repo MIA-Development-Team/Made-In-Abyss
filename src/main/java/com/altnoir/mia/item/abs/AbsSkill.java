@@ -7,7 +7,7 @@ import top.theillusivec4.curios.api.SlotContext;
 
 public abstract class AbsSkill extends Item implements IArtifactSkill {
     public AbsSkill(Properties properties) {
-        super(properties.component(MiaComponents.SKILL_COOLDOWN.get(), 0));
+        super(properties.component(MiaComponents.SKILL_COOLDOWN.get(), 0).stacksTo(1));
     }
     @Override
     public ItemStack getItemStack() {

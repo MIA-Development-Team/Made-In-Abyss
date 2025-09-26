@@ -37,7 +37,7 @@ public class MiaItems {
             new EArtifact(new Item.Properties(), Grade.S, 4));
 
     public static final DeferredItem<Item> ARTIFACT_HASTE = ITEMS.register("artifact_haste", () ->
-            new HasteSkill(new Item.Properties().stacksTo(1)));
+            new HasteSkill(new Item.Properties()));
 
     public static final DeferredItem<Item> PRASIOLITE_SHARD = ITEMS.register("prasiolite_shard", () ->
             new Item(new Item.Properties()));

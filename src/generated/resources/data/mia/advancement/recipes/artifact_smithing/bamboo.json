@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_oak_planks": {
+    "has_bamboo": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:oak_planks"
+            "items": "minecraft:bamboo"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mia:artifact_enhancement/oak_planks"
+        "recipe": "mia:artifact_smithing/bamboo"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_oak_planks"
+      "has_bamboo"
     ]
   ],
   "rewards": {
     "recipes": [
-      "mia:artifact_enhancement/oak_planks"
+      "mia:artifact_smithing/bamboo"
     ]
   }
 }

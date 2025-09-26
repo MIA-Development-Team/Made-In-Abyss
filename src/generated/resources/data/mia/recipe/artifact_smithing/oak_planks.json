@@ -1,5 +1,5 @@
 {
-  "type": "mia:artifact_enhancement",
+  "type": "mia:artifact_smithing",
   "amount": 0.5,
   "artifact": {
     "tag": "mia:enhanceable_artifact"
@@ -7,7 +7,7 @@
   "attribute": "minecraft:generic.attack_damage",
   "material": {
     "count": 1,
-    "id": "minecraft:bamboo"
+    "id": "minecraft:oak_planks"
   },
   "operation": "add_value"
 }
