@@ -39,8 +39,6 @@ public class AbyssBrinkUtils {
         builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.WITCH, 5, 1, 1));
     }
 
-
-
     public static void abyssGeneration(BiomeGenerationSettings.Builder builder) {
         //MiaBiomeDefaultFeatures.addAbyssCarvers(builder);
         addDefaultUndergroundVariety(builder);

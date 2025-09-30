@@ -1,6 +1,6 @@
 package com.altnoir.mia.worldgen.noise_setting;
 
-import com.altnoir.mia.init.MiaDensityFunctionTypes;
+import com.altnoir.mia.init.worldgen.MiaDensityFunctionTypes;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;

@@ -7,8 +7,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
@@ -20,6 +22,7 @@ import java.util.List;
 public class AbyssBrinkPlacements {
     public static final ResourceKey<PlacedFeature> SPRING_WATER = MiaPlacementUtils.resourceKey("spring_water");
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG_AND_AZALEA = MiaPlacementUtils.resourceKey("trees_skyfog_and_azalea");
+    public static final ResourceKey<PlacedFeature> PRASIOLITE_CLUSTER = MiaPlacementUtils.resourceKey("prasiolite_cluster");
 
     public static final PlacementModifier ABYSS_BRINK_HEIGHT = HeightRangePlacement.uniform(
             VerticalAnchor.bottom(), VerticalAnchor.absolute(360)
@@ -30,6 +33,7 @@ public class AbyssBrinkPlacements {
 
         Holder<ConfiguredFeature<?, ?>> spring_water = holdergetter.getOrThrow(AbyssBrinkFeatures.SPRING_WATER);
         Holder<ConfiguredFeature<?, ?>> skyfog_and_azalea = holdergetter.getOrThrow(AbyssBrinkFeatures.TREES_SKYFOG_AND_AZALEA);
+        Holder<ConfiguredFeature<?, ?>> prasiolite_cluster = holdergetter.getOrThrow(AbyssBrinkFeatures.PRASIOLITE_CLUSTER);
 
         MiaPlacementUtils.register(
                 context,
@@ -41,8 +45,19 @@ public class AbyssBrinkPlacements {
                 BiomeFilter.biome()
         );
 
-        MiaPlacementUtils.register(context, TREES_SKYFOG_AND_AZALEA, skyfog_and_azalea, abyssTreePlace(8));
+        MiaPlacementUtils.register(
+                context, TREES_SKYFOG_AND_AZALEA, skyfog_and_azalea, abyssTreePlace(8)
+        );
+        MiaPlacementUtils.register(
+                context, PRASIOLITE_CLUSTER, prasiolite_cluster,
+                CountPlacement.of(UniformInt.of(2, 16)),
+                InSquarePlacement.spread(),
+                PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+                HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(300)),
+                BiomeFilter.biome()
+        );
     }
+
 
     private static ImmutableList.Builder<PlacementModifier> abyssTreePlacementBase(int count) {
         return ImmutableList.<PlacementModifier>builder()

@@ -73,6 +73,7 @@ public class AbyssBrinkBiomes {
         );
 
         AbyssBrinkUtils.globalAbyssGeneration(generationBuilder);
+        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AbyssBrinkPlacements.PRASIOLITE_CLUSTER);
         BiomeDefaultFeatures.addMossyStoneBlock(generationBuilder);
         BiomeDefaultFeatures.addExtraGold(generationBuilder);
 

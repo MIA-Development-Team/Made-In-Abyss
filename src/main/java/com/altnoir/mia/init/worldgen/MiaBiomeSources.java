@@ -1,4 +1,4 @@
-package com.altnoir.mia.init;
+package com.altnoir.mia.init.worldgen;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.worldgen.biome.biomesource.AbyssNoiseBiomeSource;
