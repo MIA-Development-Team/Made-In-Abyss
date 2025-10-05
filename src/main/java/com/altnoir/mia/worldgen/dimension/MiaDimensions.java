@@ -57,7 +57,7 @@ public class MiaDimensions {
                                 ),
                                 Pair.of(
                                         Climate.parameters(0.8F, -0.3F, 0.0F, 0.0F, 0.2F, 0.0F, 0.0F),
-                                        biomeRegistry.getOrThrow(Biomes.DRIPSTONE_CAVES)
+                                        biomeRegistry.getOrThrow(MiaBiomes.PRASIOLITE_CAVE)
                                 )
                         )),
                         biomeRegistry.getOrThrow(MiaBiomes.ABYSS_BRINK)

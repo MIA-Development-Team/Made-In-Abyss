@@ -12,7 +12,6 @@
     },
     "valid_blocks": [
       "mia:abyss_andesite",
-      "minecraft:stone",
       "minecraft:granite",
       "minecraft:diorite",
       "minecraft:andesite",

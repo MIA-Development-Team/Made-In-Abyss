@@ -28,6 +28,10 @@ public class MiaPlacementUtils {
         return ResourceKey.create(Registries.PLACED_FEATURE, MiaUtil.id(MIA.MOD_ID, name));
     }
 
+    public static ResourceKey<PlacedFeature> abyssBrinkKey(String name) {
+        return resourceKey("abyss_brink/" + name);
+    }
+
     public static void register(
             BootstrapContext<PlacedFeature> context,
             ResourceKey<PlacedFeature> key,
@@ -40,10 +44,10 @@ public class MiaPlacementUtils {
     public static void register(
             BootstrapContext<PlacedFeature> context,
             ResourceKey<PlacedFeature> key,
-            Holder<ConfiguredFeature<?, ?>> configuration,
-            PlacementModifier... modifiers
+            Holder<ConfiguredFeature<?, ?>> configuredFeature,
+            PlacementModifier... placements
     ) {
-        register(context, key, configuration, List.of(modifiers));
+        register(context, key, configuredFeature, List.of(placements));
     }
 
     public static BlockPredicateFilter filteredByBlockSurvival(Block block) {

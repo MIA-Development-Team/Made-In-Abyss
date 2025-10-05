@@ -67,7 +67,7 @@
           }
         },
         {
-          "biome": "minecraft:dripstone_caves",
+          "biome": "mia:abyss_brink/prasiolite_cave",
           "parameters": {
             "continentalness": 0.0,
             "depth": 0.2,

@@ -1,5 +1,6 @@
 {
   "values": [
-    "mia:abyss_andesite"
+    "mia:abyss_andesite",
+    "#minecraft:base_stone_overworld"
   ]
 }

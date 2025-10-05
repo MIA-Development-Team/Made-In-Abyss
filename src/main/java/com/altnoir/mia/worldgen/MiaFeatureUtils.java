@@ -21,6 +21,10 @@ public class MiaFeatureUtils {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, MiaUtil.id(MIA.MOD_ID, name));
     }
 
+    public static ResourceKey<ConfiguredFeature<?, ?>> abyssBrinkKey(String name) {
+        return resourceKey("abyss_brink/" + name);
+    }
+
     public static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(
             BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC configuration
     ) {

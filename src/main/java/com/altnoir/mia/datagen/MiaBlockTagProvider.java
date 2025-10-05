@@ -26,7 +26,8 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.ABYSS_ANDESITE.get());
 
         tag(MiaTags.Blocks.BASE_STONE_ABYSS)
-                .add(MiaBlocks.ABYSS_ANDESITE.get());
+                .add(MiaBlocks.ABYSS_ANDESITE.get())
+                .addTag(BlockTags.BASE_STONE_OVERWORLD);
 
         tag(MiaTags.Blocks.COVERGRASS)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());

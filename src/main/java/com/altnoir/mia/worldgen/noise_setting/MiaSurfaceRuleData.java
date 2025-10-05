@@ -30,7 +30,7 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
 
         SurfaceRules.RuleSource sequence = SurfaceRules.sequence(
                 SurfaceRules.ifTrue(
-                        SurfaceRules.isBiome(MiaBiomes.ABYSS_BRINK, MiaBiomes.SKYFOG_FOREST, MiaBiomes.ABYSS_PLAINS, Biomes.CHERRY_GROVE, Biomes.BIRCH_FOREST, Biomes.FOREST),
+                        SurfaceRules.isBiome(MiaBiomes.ABYSS_BRINK, MiaBiomes.SKYFOG_FOREST, MiaBiomes.ABYSS_PLAINS, MiaBiomes.PRASIOLITE_CAVE, Biomes.CHERRY_GROVE),
                         SurfaceRules.sequence(
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),

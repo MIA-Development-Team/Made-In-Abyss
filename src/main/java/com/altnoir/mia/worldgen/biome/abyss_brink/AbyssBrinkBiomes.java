@@ -19,16 +19,14 @@ public class AbyssBrinkBiomes {
         AbyssBrinkUtils.commonSpawns(spawnBuilder);
 
         BiomeGenerationSettings.Builder generationBuilder = new BiomeGenerationSettings.Builder(
-                context.lookup(Registries.PLACED_FEATURE),
-                context.lookup(Registries.CONFIGURED_CARVER)
+                context.lookup(Registries.PLACED_FEATURE), context.lookup(Registries.CONFIGURED_CARVER)
         );
         AbyssBrinkUtils.abyssGeneration(generationBuilder);
-        BiomeDefaultFeatures.addMossyStoneBlock(generationBuilder);
 
-        BiomeDefaultFeatures.addPlainGrass(generationBuilder);
-        BiomeDefaultFeatures.addMeadowVegetation(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.TREES_SKYFOG_AND_AZALEA);
-        BiomeDefaultFeatures.addFerns(generationBuilder);
+        AbyssBrinkUtils.addMeadowVegetation(generationBuilder);
+        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.TREES_SKYFOG_AND_AZALEA)
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.PATCH_LARGE_FERN)
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.PATCH_SUNFLOWER);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
@@ -43,18 +41,16 @@ public class AbyssBrinkBiomes {
         AbyssBrinkUtils.commonSpawns(spawnBuilder);
 
         BiomeGenerationSettings.Builder generationBuilder = new BiomeGenerationSettings.Builder(
-                context.lookup(Registries.PLACED_FEATURE),
-                context.lookup(Registries.CONFIGURED_CARVER)
+                context.lookup(Registries.PLACED_FEATURE), context.lookup(Registries.CONFIGURED_CARVER)
         );
 
         AbyssBrinkUtils.globalAbyssGeneration(generationBuilder);
-        BiomeDefaultFeatures.addMossyStoneBlock(generationBuilder);
-        BiomeDefaultFeatures.addExtraGold(generationBuilder);
+        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AbyssBrinkPlacements.RAW_IRON);
 
-        BiomeDefaultFeatures.addPlainGrass(generationBuilder);
-        BiomeDefaultFeatures.addMeadowVegetation(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.TREES_SKYFOG_AND_AZALEA);
-        BiomeDefaultFeatures.addFerns(generationBuilder);
+        AbyssBrinkUtils.addMeadowVegetation(generationBuilder);
+        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.TREES_SKYFOG_AND_AZALEA)
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.PATCH_LARGE_FERN)
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.CAVE_VINES);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
@@ -68,22 +64,44 @@ public class AbyssBrinkBiomes {
         AbyssBrinkUtils.commonSpawns(spawnBuilder);
 
         BiomeGenerationSettings.Builder generationBuilder = new BiomeGenerationSettings.Builder(
-                context.lookup(Registries.PLACED_FEATURE),
-                context.lookup(Registries.CONFIGURED_CARVER)
+                context.lookup(Registries.PLACED_FEATURE), context.lookup(Registries.CONFIGURED_CARVER)
         );
 
         AbyssBrinkUtils.globalAbyssGeneration(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AbyssBrinkPlacements.PRASIOLITE_CLUSTER);
-        BiomeDefaultFeatures.addMossyStoneBlock(generationBuilder);
-        BiomeDefaultFeatures.addExtraGold(generationBuilder);
+        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AbyssBrinkPlacements.RAW_IRON);
 
-        BiomeDefaultFeatures.addMeadowVegetation(generationBuilder);
-        BiomeDefaultFeatures.addFerns(generationBuilder);
+        AbyssBrinkUtils.addMeadowVegetation(generationBuilder);
+        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.PATCH_LARGE_FERN)
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.CAVE_VINES);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
         return baseAbyssBrink(generationBuilder, spawnBuilder).build();
     }
+
+    public static Biome prasioliteCave(BootstrapContext<Biome> context) {
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+
+        AbyssBrinkUtils.farmAnimals(spawnBuilder);
+        AbyssBrinkUtils.commonSpawns(spawnBuilder);
+
+        BiomeGenerationSettings.Builder generationBuilder = new BiomeGenerationSettings.Builder(
+                context.lookup(Registries.PLACED_FEATURE), context.lookup(Registries.CONFIGURED_CARVER)
+        );
+
+        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AbyssBrinkPlacements.PRASIOLITE_CLUSTER);
+        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AbyssBrinkPlacements.BIG_PRASIOLITE_CLUSTER);
+        BiomeDefaultFeatures.addExtraGold(generationBuilder);
+
+        AbyssBrinkUtils.addMeadowVegetation(generationBuilder);
+        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.TREES_SKYFOG);
+        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.PATCH_LARGE_FERN);
+        BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
+        BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
+
+        return baseAbyssBrink(generationBuilder, spawnBuilder).build();
+    }
+
 
     public static Biome.BiomeBuilder baseAbyssBrink(BiomeGenerationSettings.Builder generationBuilder, MobSpawnSettings.Builder spawnBuilder) {
         return new Biome.BiomeBuilder().hasPrecipitation(true).downfall(0.8F).temperature(0.8F)
@@ -98,6 +116,7 @@ public class AbyssBrinkBiomes {
                         .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_LUSH_CAVES)).build());
     }
+
 
     // 16进制转10进制
     public static int hexToRgb(String hex) {

@@ -22,13 +22,16 @@ public class AbyssBrinkUtils {
         builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CHICKEN, 10, 4, 4));
         builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.COW, 8, 4, 4));
     }
+
     public static void waterAmbient(MobSpawnSettings.Builder builder) {
         builder.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.TROPICAL_FISH, 25, 8, 8));
         builder.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.COD, 25, 3, 6));
     }
+
     public static void undergroundWaterCreatures(MobSpawnSettings.Builder builder) {
         builder.addSpawn(MobCategory.UNDERGROUND_WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 10, 4, 6));
     }
+
     public static void monsters(MobSpawnSettings.Builder builder) {
         builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 100, 4, 4));
         builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.DROWNED, 50, 4, 4));
@@ -40,10 +43,8 @@ public class AbyssBrinkUtils {
     }
 
     public static void abyssGeneration(BiomeGenerationSettings.Builder builder) {
-        //MiaBiomeDefaultFeatures.addAbyssCarvers(builder);
+        builder.addFeature(GenerationStep.Decoration.LAKES, AbyssBrinkPlacements.LAKE_WATER);
         addDefaultUndergroundVariety(builder);
-
-        BiomeDefaultFeatures.addDefaultMonsterRoom(builder);
 
         addDefaultSprings(builder);
         builder.addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, MiscOverworldPlacements.FREEZE_TOP_LAYER);
@@ -60,9 +61,14 @@ public class AbyssBrinkUtils {
         BiomeDefaultFeatures.addDefaultMonsterRoom(builder);
 
         addDefaultSprings(builder);
-        builder.addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, MiscOverworldPlacements.FREEZE_TOP_LAYER);
         addDefaultOres(builder);
         addDefaultSoftDisks(builder);
+    }
+
+    public static void addMeadowVegetation(BiomeGenerationSettings.Builder builder) {
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.PATCH_GRASS_PLAIN);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.FLOWER_MEADOW);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.FOREST_FLOWERS);
     }
 
     public static void addDefaultOres(BiomeGenerationSettings.Builder builder) {

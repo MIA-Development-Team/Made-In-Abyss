@@ -1,20 +1,16 @@
 {
-  "feature": "mia:prasiolite_cluster",
+  "feature": "mia:abyss_brink/big_prasiolite_cluster",
   "placement": [
     {
       "type": "minecraft:count",
       "count": {
         "type": "minecraft:uniform",
-        "max_inclusive": 16,
+        "max_inclusive": 4,
         "min_inclusive": 2
       }
     },
     {
       "type": "minecraft:in_square"
-    },
-    {
-      "type": "minecraft:heightmap",
-      "heightmap": "WORLD_SURFACE_WG"
     },
     {
       "type": "minecraft:height_range",

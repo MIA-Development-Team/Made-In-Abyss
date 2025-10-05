@@ -1,5 +1,5 @@
 {
-  "feature": "mia:spring_water",
+  "feature": "mia:abyss_brink/spring_water",
   "placement": [
     {
       "type": "minecraft:count",
@@ -13,7 +13,7 @@
       "height": {
         "type": "minecraft:uniform",
         "max_inclusive": {
-          "absolute": 300
+          "absolute": 200
         },
         "min_inclusive": {
           "above_bottom": 16

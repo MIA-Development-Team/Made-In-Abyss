@@ -24,10 +24,10 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.ForkingTrunkPlace
 import java.util.List;
 
 public class MiaTreeFeatures {
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE = MiaFeatureUtils.resourceKey("skyfog_tree");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> FANCY_SKYFOG_TREE = MiaFeatureUtils.resourceKey("fancy_skyfog_tree");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE_BEES = MiaFeatureUtils.resourceKey("skyfog_tree_bees");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> FANCY_SKYFOG_TREE_BEES = MiaFeatureUtils.resourceKey("fancy_skyfog_tree_bees");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE = MiaFeatureUtils.resourceKey("tree/skyfog_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FANCY_SKYFOG_TREE = MiaFeatureUtils.resourceKey("tree/fancy_skyfog_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE_BEES = MiaFeatureUtils.resourceKey("tree/skyfog_tree_bees");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FANCY_SKYFOG_TREE_BEES = MiaFeatureUtils.resourceKey("tree/fancy_skyfog_tree_bees");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
 

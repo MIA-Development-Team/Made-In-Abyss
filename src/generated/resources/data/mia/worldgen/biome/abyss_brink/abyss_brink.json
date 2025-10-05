@@ -22,14 +22,11 @@
   },
   "features": [
     [],
+    [
+      "mia:abyss_brink/lake_water"
+    ],
     [],
-    [
-      "minecraft:forest_rock"
-    ],
-    [
-      "minecraft:monster_room",
-      "minecraft:monster_room_deep"
-    ],
+    [],
     [],
     [],
     [
@@ -61,16 +58,16 @@
     ],
     [],
     [
-      "mia:spring_water"
+      "mia:abyss_brink/spring_water"
     ],
     [
       "minecraft:glow_lichen",
-      "minecraft:patch_tall_grass_2",
-      "minecraft:patch_grass_plain",
-      "minecraft:flower_meadow",
-      "minecraft:trees_meadow",
-      "mia:trees_skyfog_and_azalea",
-      "minecraft:patch_large_fern",
+      "mia:abyss_brink/patch_grass_plain",
+      "mia:abyss_brink/flower_meadow",
+      "mia:abyss_brink/forest_flowers",
+      "mia:abyss_brink/trees_skyfog_and_azalea",
+      "mia:abyss_brink/patch_large_fern",
+      "mia:abyss_brink/patch_sunflower",
       "minecraft:brown_mushroom_normal",
       "minecraft:red_mushroom_normal",
       "minecraft:patch_sugar_cane",

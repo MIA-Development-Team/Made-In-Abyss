@@ -13,9 +13,9 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class MiaTreePlacements {
-    public static final ResourceKey<PlacedFeature> AZALEA_CHECKED = MiaPlacementUtils.resourceKey("azalea_checked");
-    public static final ResourceKey<PlacedFeature> SKYFOG_BEES_002 = MiaPlacementUtils.resourceKey("skyfog_bee_002");
-    public static final ResourceKey<PlacedFeature> FANCY_SKYFOG_BEES_005 = MiaPlacementUtils.resourceKey("fancy_skyfog_bee_005");
+    public static final ResourceKey<PlacedFeature> AZALEA_CHECKED = MiaPlacementUtils.resourceKey("tree/azalea_checked");
+    public static final ResourceKey<PlacedFeature> SKYFOG_BEES_002 = MiaPlacementUtils.resourceKey("tree/skyfog_bee_002");
+    public static final ResourceKey<PlacedFeature> FANCY_SKYFOG_BEES_005 = MiaPlacementUtils.resourceKey("tree/fancy_skyfog_bee_005");
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);

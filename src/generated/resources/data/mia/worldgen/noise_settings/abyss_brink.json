@@ -281,9 +281,8 @@
                 "mia:abyss_brink/abyss_brink",
                 "mia:abyss_brink/skyfog_forest",
                 "mia:abyss_brink/abyss_plains",
-                "minecraft:cherry_grove",
-                "minecraft:birch_forest",
-                "minecraft:forest"
+                "mia:abyss_brink/prasiolite_cave",
+                "minecraft:cherry_grove"
               ]
             },
             "then_run": {
