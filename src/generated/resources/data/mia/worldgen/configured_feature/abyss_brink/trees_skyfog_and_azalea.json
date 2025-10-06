@@ -4,12 +4,16 @@
     "default": "mia:tree/fancy_skyfog_bee_005",
     "features": [
       {
-        "chance": 0.4,
-        "feature": "mia:tree/skyfog_bee_002"
+        "chance": 0.075,
+        "feature": "mia:tree/maga_skyfog"
       },
       {
         "chance": 0.1,
         "feature": "mia:tree/azalea_checked"
+      },
+      {
+        "chance": 0.5,
+        "feature": "mia:tree/skyfog_bee_002"
       }
     ]
   }

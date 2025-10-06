@@ -2,7 +2,7 @@ package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.block.*;
-import com.altnoir.mia.worldgen.feature.tree.MiaTreeGrowers;
+import com.altnoir.mia.worldgen.biome.tree.MiaTreeGrowers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffects;

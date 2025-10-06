@@ -115,7 +115,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
     }
 
     private static NoiseRouter abyssBrinkRouter(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        DensityFunction barrier = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_BARRIER), 0.5);
+        DensityFunction barrier = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_BARRIER), 2, 1);
         DensityFunction fluidLevelFloodedness = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS), 0.335, 0.5);
         DensityFunction fluidLevelSpread = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_SPREAD), 0.357142857, 0.5);
 

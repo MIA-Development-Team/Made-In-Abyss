@@ -16,9 +16,16 @@ public class AbyssBrinkHole implements DensityFunction.SimpleFunction {
         RandomSource randomsource = new LegacyRandomSource(seed);
         randomsource.consumeCount(17292);
     }
-    private static float getHeightValue(int x, int z) {
-        // 256 = √256 = 16区块.
-        float f = 256.0F - Mth.sqrt((float)(x * x + z * z)) * 8.0F; // 深渊半径
+
+    // 256 = √256 = 16区块.
+    private static final Float AbyssBrinkRadius = 256.0F;
+
+    private static float getHeightValue(int x, int y, int z) {
+        float d = Mth.sqrt((float) (x * x + z * z));
+
+        float r = Mth.clamp(1.0F + (float) y / 32.0F, 0.1F, 2.0F); // y越低半径越小
+
+        float f = (AbyssBrinkRadius / 2.0F) * r - d * 8.0F;// 深渊半径
         f = Mth.clamp(f, -100.0F, 80.0F);
 
         return f;
@@ -27,7 +34,7 @@ public class AbyssBrinkHole implements DensityFunction.SimpleFunction {
     @Override
     public double compute(DensityFunction.FunctionContext context) {
         // 反转计算结果：原公式 (height -8)/128 改为 (8 - height) / 128
-        return (8.0 - (double)getHeightValue(context.blockX() / 8, context.blockZ() / 8)) / 64; // 最终除的数越小，洞越平滑
+        return (8.0 - (double) getHeightValue(context.blockX() / 8, context.blockY() / 8, context.blockZ() / 8)) / 64; // 最终除的数越小，洞越平滑
     }
 
     @Override

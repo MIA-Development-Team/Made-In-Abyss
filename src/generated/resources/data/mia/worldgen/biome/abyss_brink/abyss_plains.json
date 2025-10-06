@@ -24,12 +24,11 @@
     [],
     [],
     [
-      "minecraft:amethyst_geode",
+      "mia:abyss_brink/prasiolite_geode",
       "mia:abyss_brink/raw_iron"
     ],
     [
-      "minecraft:monster_room",
-      "minecraft:monster_room_deep"
+      "mia:abyss_brink/monster_cheat"
     ],
     [],
     [],
@@ -65,7 +64,8 @@
       "mia:abyss_brink/spring_water"
     ],
     [
-      "minecraft:glow_lichen",
+      "mia:abyss_brink/vines",
+      "mia:abyss_brink/glow_lichen",
       "mia:abyss_brink/patch_grass_plain",
       "mia:abyss_brink/flower_meadow",
       "mia:abyss_brink/forest_flowers",

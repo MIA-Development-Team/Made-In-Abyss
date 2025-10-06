@@ -1,7 +1,8 @@
-package com.altnoir.mia.worldgen.feature.tree;
+package com.altnoir.mia.worldgen.biome.tree;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.SimpleWeightedRandomList;
@@ -9,25 +10,31 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.util.valueproviders.WeightedListInt;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.CherryFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.AlterGroundDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.BeehiveDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.LeaveVineDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TrunkVineDecorator;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.CherryTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.ForkingTrunkPlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.MegaJungleTrunkPlacer;
 
 import java.util.List;
 
 public class MiaTreeFeatures {
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE = MiaFeatureUtils.resourceKey("tree/skyfog_tree");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> FANCY_SKYFOG_TREE = MiaFeatureUtils.resourceKey("tree/fancy_skyfog_tree");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE_BEES = MiaFeatureUtils.resourceKey("tree/skyfog_tree_bees");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> FANCY_SKYFOG_TREE_BEES = MiaFeatureUtils.resourceKey("tree/fancy_skyfog_tree_bees");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE = MiaFeatureUtils.treeKey("skyfog_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE_BEES = MiaFeatureUtils.treeKey("skyfog_tree_bees");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FANCY_SKYFOG_TREE_BEES = MiaFeatureUtils.treeKey("fancy_skyfog_tree_bees");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_SKYFOG_TREE = MiaFeatureUtils.treeKey("mega_skyfog_tree");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
 
@@ -38,10 +45,27 @@ public class MiaTreeFeatures {
         var bee1 = new BeehiveDecorator(1.0F);
 
         MiaFeatureUtils.register(context, SKYFOG_TREE, Feature.TREE, skyfog().build());
-        MiaFeatureUtils.register(context, FANCY_SKYFOG_TREE, Feature.TREE, fancySkyfog().build());
         MiaFeatureUtils.register(context, SKYFOG_TREE_BEES, Feature.TREE, skyfog().decorators(List.of(bee002)).build());
-        MiaFeatureUtils.register(context, FANCY_SKYFOG_TREE_BEES, Feature.TREE, fancySkyfog().decorators(List.of(bee005)).build());
+        MiaFeatureUtils.register(context, FANCY_SKYFOG_TREE_BEES, Feature.TREE, fancySkyfog().build());
+        MiaFeatureUtils.register(
+                context, MEGA_SKYFOG_TREE, Feature.TREE,
+                new TreeConfiguration.TreeConfigurationBuilder(
+                        BlockStateProvider.simple(MiaBlocks.SKYFOG_LOG.get()),
+                        new MegaJungleTrunkPlacer(10, 2, 19),
 
+                        new WeightedStateProvider(
+                                SimpleWeightedRandomList.<BlockState>builder()
+                                        .add(MiaBlocks.SKYFOG_LEAVES.get().defaultBlockState(), 5)
+                                        .add(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get().defaultBlockState(), 1)
+                        ),
+                        new FancyFoliagePlacer(ConstantInt.of(3), ConstantInt.of(1), 4),
+                        new TwoLayersFeatureSize(1, 1, 2)
+                ).decorators(ImmutableList.of(
+                        new AlterGroundDecorator(BlockStateProvider.simple(Blocks.ROOTED_DIRT)),
+                        TrunkVineDecorator.INSTANCE,
+                        new LeaveVineDecorator(0.15F))
+                ).ignoreVines().build()
+        );
     }
 
     private static TreeConfiguration.TreeConfigurationBuilder skyfog() {
@@ -57,7 +81,7 @@ public class MiaTreeFeatures {
                 new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), ConstantInt.of(4), 0.25F, 0.5F, 0.16666667F, 0.33333334F),
 
                 new TwoLayersFeatureSize(1, 0, 1)
-        ).ignoreVines();
+        ).dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT)).forceDirt().ignoreVines();
     }
 
     private static TreeConfiguration.TreeConfigurationBuilder fancySkyfog() {
@@ -77,6 +101,9 @@ public class MiaTreeFeatures {
                 ),
                 new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), ConstantInt.of(5), 0.25F, 0.5F, 0.16666667F, 0.33333334F),
                 new TwoLayersFeatureSize(1, 0, 2)
-        ).ignoreVines();
+        )
+                .dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT)).forceDirt()
+                .decorators(ImmutableList.of(new BeehiveDecorator(0.05F), TrunkVineDecorator.INSTANCE, new LeaveVineDecorator(0.075F)))
+                .ignoreVines();
     }
 }

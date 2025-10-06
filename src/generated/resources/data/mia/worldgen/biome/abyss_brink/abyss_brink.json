@@ -61,7 +61,7 @@
       "mia:abyss_brink/spring_water"
     ],
     [
-      "minecraft:glow_lichen",
+      "mia:abyss_brink/glow_lichen",
       "mia:abyss_brink/patch_grass_plain",
       "mia:abyss_brink/flower_meadow",
       "mia:abyss_brink/forest_flowers",
@@ -72,9 +72,6 @@
       "minecraft:red_mushroom_normal",
       "minecraft:patch_sugar_cane",
       "minecraft:patch_pumpkin"
-    ],
-    [
-      "minecraft:freeze_top_layer"
     ]
   ],
   "has_precipitation": true,

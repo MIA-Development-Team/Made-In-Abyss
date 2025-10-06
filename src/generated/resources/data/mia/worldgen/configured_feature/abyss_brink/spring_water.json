@@ -11,14 +11,9 @@
       }
     },
     "valid_blocks": [
-      "mia:abyss_andesite",
-      "minecraft:granite",
-      "minecraft:diorite",
-      "minecraft:andesite",
-      "minecraft:deepslate",
       "minecraft:tuff",
-      "minecraft:calcite",
-      "minecraft:dirt"
+      "minecraft:deepslate",
+      "mia:abyss_andesite"
     ]
   }
 }

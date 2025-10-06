@@ -3,7 +3,7 @@ package com.altnoir.mia.worldgen;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.worldgen.biome.abyss_brink.AbyssBrinkFeatures;
-import com.altnoir.mia.worldgen.feature.tree.MiaTreeFeatures;
+import com.altnoir.mia.worldgen.biome.tree.MiaTreeFeatures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -21,7 +21,10 @@ public class MiaFeatureUtils {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, MiaUtil.id(MIA.MOD_ID, name));
     }
 
-    public static ResourceKey<ConfiguredFeature<?, ?>> abyssBrinkKey(String name) {
+    public static ResourceKey<ConfiguredFeature<?, ?>> treeKey(String name) {
+        return resourceKey("tree/" + name);
+    }
+ public static ResourceKey<ConfiguredFeature<?, ?>> abyssBrinkKey(String name) {
         return resourceKey("abyss_brink/" + name);
     }
 

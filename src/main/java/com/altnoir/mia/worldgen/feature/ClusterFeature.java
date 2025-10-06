@@ -66,7 +66,7 @@ public class ClusterFeature extends Feature<ClusterConfiguration> {
                         if (crystalState.hasProperty(BlockStateProperties.WATERLOGGED)) {
                             crystalState = crystalState.setValue(BlockStateProperties.WATERLOGGED, isWater(worldgenlevel, crystalPos1));
                         }
-                        worldgenlevel.setBlock(crystalPos1, crystalState, 4);
+                        worldgenlevel.setBlock(crystalPos1, crystalState, 2);
                         continue;
                     }
 
@@ -77,7 +77,7 @@ public class ClusterFeature extends Feature<ClusterConfiguration> {
                         if (crystalState.hasProperty(BlockStateProperties.WATERLOGGED)) {
                             crystalState = crystalState.setValue(BlockStateProperties.WATERLOGGED, isWater(worldgenlevel, crystalPos2));
                         }
-                        worldgenlevel.setBlock(crystalPos2, crystalState, 4);
+                        worldgenlevel.setBlock(crystalPos2, crystalState, 2);
                     }
                 }
 

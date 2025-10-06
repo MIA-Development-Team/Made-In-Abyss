@@ -125,7 +125,7 @@ public class LakeFeature extends Feature<LakeFeature.Configuration> {
                             );
                             if (flag2 && (l3 < 4 || randomsource.nextInt(2) != 0)) {
                                 BlockState blockstate = worldgenlevel.getBlockState(blockpos.offset(j2, l3, j3));
-                                if (blockstate.isSolid()) {
+                                if (blockstate.isSolid() && !blockstate.is(BlockTags.LOGS)) {
                                     BlockPos blockpos3 = blockpos.offset(j2, l3, j3);
                                     worldgenlevel.setBlock(blockpos3, blockstate2, 2);
                                     this.markAboveForPostProcessing(worldgenlevel, blockpos3);

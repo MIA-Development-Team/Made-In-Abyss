@@ -1,4 +1,4 @@
-package com.altnoir.mia.worldgen.feature.tree;
+package com.altnoir.mia.worldgen.biome.tree;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.worldgen.MiaPlacementUtils;
@@ -13,18 +13,21 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class MiaTreePlacements {
-    public static final ResourceKey<PlacedFeature> AZALEA_CHECKED = MiaPlacementUtils.resourceKey("tree/azalea_checked");
-    public static final ResourceKey<PlacedFeature> SKYFOG_BEES_002 = MiaPlacementUtils.resourceKey("tree/skyfog_bee_002");
-    public static final ResourceKey<PlacedFeature> FANCY_SKYFOG_BEES_005 = MiaPlacementUtils.resourceKey("tree/fancy_skyfog_bee_005");
+    public static final ResourceKey<PlacedFeature> AZALEA_CHECKED = MiaPlacementUtils.treeKey("azalea_checked");
+    public static final ResourceKey<PlacedFeature> SKYFOG_BEES_002 = MiaPlacementUtils.treeKey("skyfog_bee_002");
+    public static final ResourceKey<PlacedFeature> FANCY_SKYFOG_BEES_005 = MiaPlacementUtils.treeKey("fancy_skyfog_bee_005");
+    public static final ResourceKey<PlacedFeature> MEGA_SKYFOG = MiaPlacementUtils.treeKey("maga_skyfog");
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
         Holder<ConfiguredFeature<?, ?>> azalea = holdergetter.getOrThrow(TreeFeatures.AZALEA_TREE);
         Holder<ConfiguredFeature<?, ?>> skyfog_bee = holdergetter.getOrThrow(MiaTreeFeatures.SKYFOG_TREE_BEES);
         Holder<ConfiguredFeature<?, ?>> fancy_skyfog_bee = holdergetter.getOrThrow(MiaTreeFeatures.FANCY_SKYFOG_TREE_BEES);
+        Holder<ConfiguredFeature<?, ?>> maga_skyfog = holdergetter.getOrThrow(MiaTreeFeatures.MEGA_SKYFOG_TREE);
 
         MiaPlacementUtils.register(context, AZALEA_CHECKED, azalea, MiaPlacementUtils.filteredByBlockSurvival(Blocks.AZALEA));
         MiaPlacementUtils.register(context, SKYFOG_BEES_002, skyfog_bee, MiaPlacementUtils.filteredByBlockSurvival(MiaBlocks.SKYFOG_SAPLING.get()));
         MiaPlacementUtils.register(context, FANCY_SKYFOG_BEES_005, fancy_skyfog_bee, MiaPlacementUtils.filteredByBlockSurvival(MiaBlocks.SKYFOG_SAPLING.get()));
+        MiaPlacementUtils.register(context, MEGA_SKYFOG, maga_skyfog, MiaPlacementUtils.filteredByBlockSurvival(MiaBlocks.SKYFOG_SAPLING.get()));
     }
 }

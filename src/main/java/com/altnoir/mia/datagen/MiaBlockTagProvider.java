@@ -48,6 +48,8 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
         // 基础标签
         tag(BlockTags.DIRT)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
+        tag(BlockTags.ANIMALS_SPAWNABLE_ON)
+                .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
 
         tag(BlockTags.MOSS_REPLACEABLE)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())

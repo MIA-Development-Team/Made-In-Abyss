@@ -3,9 +3,10 @@ package com.altnoir.mia.worldgen.biome.abyss_brink;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.worldgen.MiaFeature;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;
+import com.altnoir.mia.worldgen.biome.tree.MiaTreePlacements;
 import com.altnoir.mia.worldgen.feature.LakeFeature;
 import com.altnoir.mia.worldgen.feature.configurations.ClusterConfiguration;
-import com.altnoir.mia.worldgen.feature.tree.MiaTreePlacements;
+import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -15,14 +16,19 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.GeodeBlockSettings;
+import net.minecraft.world.level.levelgen.GeodeCrackSettings;
+import net.minecraft.world.level.levelgen.GeodeLayerSettings;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -40,14 +46,17 @@ import net.minecraft.world.level.material.Fluids;
 import java.util.List;
 
 public class AbyssBrinkFeatures {
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MONSTER_CHEAT = MiaFeatureUtils.abyssBrinkKey("monster_cheat");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SPRING_WATER = MiaFeatureUtils.abyssBrinkKey("spring_water");
     public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_WATER = MiaFeatureUtils.abyssBrinkKey("lake_water");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GLOW_LICHEN = MiaFeatureUtils.abyssBrinkKey("glow_lichen");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW = MiaFeatureUtils.abyssBrinkKey("flower_meadow");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_FLOWERS = MiaFeatureUtils.abyssBrinkKey("forest_flowers");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_SKYFOG = MiaFeatureUtils.abyssBrinkKey("trees_skyfog");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_SKYFOG_AND_AZALEA = MiaFeatureUtils.abyssBrinkKey("trees_skyfog_and_azalea");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_CLUSTER = MiaFeatureUtils.abyssBrinkKey("prasiolite_cluster");
     public static final ResourceKey<ConfiguredFeature<?, ?>> BIG_PRASIOLITE_CLUSTER = MiaFeatureUtils.abyssBrinkKey("big_prasiolite_cluster");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_GEODE = MiaFeatureUtils.abyssBrinkKey("prasiolite_geode");
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAW_IRON = MiaFeatureUtils.abyssBrinkKey("raw_iron");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
@@ -55,23 +64,20 @@ public class AbyssBrinkFeatures {
         Holder<PlacedFeature> azalea = holdergetter1.getOrThrow(MiaTreePlacements.AZALEA_CHECKED);
         Holder<PlacedFeature> skyfog_bee = holdergetter1.getOrThrow(MiaTreePlacements.SKYFOG_BEES_002);
         Holder<PlacedFeature> fancy_skyfog_bee = holdergetter1.getOrThrow(MiaTreePlacements.FANCY_SKYFOG_BEES_005);
+        Holder<PlacedFeature> maga_skyfog = holdergetter1.getOrThrow(MiaTreePlacements.MEGA_SKYFOG);
+
+        FeatureUtils.register(context, MONSTER_CHEAT, MiaFeature.MONSTER_CHEAT.get(),
+                new MonsterCheatConfiguration(
+                        BlockStateProvider.simple(MiaBlocks.SKYFOG_LOG.get().defaultBlockState()),
+                        BlockStateProvider.simple(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get().defaultBlockState().setValue(BlockStateProperties.DISTANCE, 1)))
+        );
 
         MiaFeatureUtils.register(context, SPRING_WATER, Feature.SPRING, new SpringConfiguration(
                         Fluids.WATER.defaultFluidState(),
                         true,
                         4,
                         1,
-                        HolderSet.direct(
-                                Block::builtInRegistryHolder,
-                                MiaBlocks.ABYSS_ANDESITE.get(),
-                                Blocks.GRANITE,
-                                Blocks.DIORITE,
-                                Blocks.ANDESITE,
-                                Blocks.DEEPSLATE,
-                                Blocks.TUFF,
-                                Blocks.CALCITE,
-                                Blocks.DIRT
-                        )
+                        abyssBrinkStone()
                 )
         );
         MiaFeatureUtils.register(
@@ -80,6 +86,21 @@ public class AbyssBrinkFeatures {
                 MiaFeature.LAKE.get(),
                 new LakeFeature.Configuration(
                         BlockStateProvider.simple(Blocks.WATER.defaultBlockState()), BlockStateProvider.simple(Blocks.SAND.defaultBlockState())
+                )
+        );
+        MultifaceBlock multifaceblock = (MultifaceBlock) Blocks.GLOW_LICHEN;
+        MiaFeatureUtils.register(
+                context,
+                GLOW_LICHEN,
+                Feature.MULTIFACE_GROWTH,
+                new MultifaceGrowthConfiguration(
+                        multifaceblock,
+                        20,
+                        false,
+                        true,
+                        true,
+                        0.5F,
+                        abyssBrinkStone()
                 )
         );
 
@@ -140,7 +161,12 @@ public class AbyssBrinkFeatures {
                 context,
                 TREES_SKYFOG_AND_AZALEA,
                 Feature.RANDOM_SELECTOR,
-                new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(skyfog_bee, 0.4F), new WeightedPlacedFeature(azalea, 0.1F)), fancy_skyfog_bee)
+                new RandomFeatureConfiguration(List.of(
+                        new WeightedPlacedFeature(maga_skyfog, 0.075F),
+                        new WeightedPlacedFeature(azalea, 0.1F),
+                        new WeightedPlacedFeature(skyfog_bee, 0.5F)),
+                        fancy_skyfog_bee
+                )
         );
 
         WeightedStateProvider prasiolite1 = new WeightedStateProvider(createPrasioliteStates(false).build());
@@ -183,7 +209,53 @@ public class AbyssBrinkFeatures {
                         prasiolite1, prasiolite2,
                         0.5F, UniformInt.of(1, 5), UniformInt.of(16, 32))
         );
+
+        MiaFeatureUtils.register(
+                context,
+                PRASIOLITE_GEODE,
+                Feature.GEODE,
+                new GeodeConfiguration(
+                        new GeodeBlockSettings(
+                                BlockStateProvider.simple(Blocks.AIR),
+                                BlockStateProvider.simple(MiaBlocks.PRASIOLITE_BLOCK.get()),
+                                BlockStateProvider.simple(MiaBlocks.BUDDING_PRASIOLITE.get()),
+                                BlockStateProvider.simple(Blocks.CALCITE),
+                                BlockStateProvider.simple(Blocks.SMOOTH_BASALT),
+                                List.of(
+                                        MiaBlocks.SMALL_PRASIOLITE_BUD.get().defaultBlockState(),
+                                        MiaBlocks.MEDIUM_PRASIOLITE_BUD.get().defaultBlockState(),
+                                        MiaBlocks.LARGE_PRASIOLITE_BUD.get().defaultBlockState(),
+                                        MiaBlocks.PRASIOLITE_CLUSTER.get().defaultBlockState()
+                                ),
+                                BlockTags.FEATURES_CANNOT_REPLACE,
+                                BlockTags.GEODE_INVALID_BLOCKS
+                        ),
+                        new GeodeLayerSettings(1.7, 2.2, 3.2, 4.2),
+                        new GeodeCrackSettings(0.95, 2.0, 2),
+                        0.35,
+                        0.083,
+                        true,
+                        UniformInt.of(4, 6),
+                        UniformInt.of(3, 4),
+                        UniformInt.of(1, 2),
+                        -16,
+                        16,
+                        0.05,
+                        1
+                )
+        );
     }
+
+
+    public static HolderSet<Block> abyssBrinkStone(Block... addBlocks) {
+        return HolderSet.direct(
+                Block::builtInRegistryHolder,
+                Blocks.TUFF,
+                Blocks.DEEPSLATE,
+                MiaBlocks.ABYSS_ANDESITE.get()
+        );
+    }
+
 
     private static SimpleWeightedRandomList.Builder<BlockState> createPrasioliteStates(boolean facingDown) {
         SimpleWeightedRandomList.Builder<BlockState> builder = SimpleWeightedRandomList.builder();

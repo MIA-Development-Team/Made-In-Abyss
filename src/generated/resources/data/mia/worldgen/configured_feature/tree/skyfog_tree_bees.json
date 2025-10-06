@@ -10,7 +10,7 @@
     "dirt_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "minecraft:dirt"
+        "Name": "minecraft:rooted_dirt"
       }
     },
     "foliage_placer": {
@@ -50,7 +50,7 @@
         }
       ]
     },
-    "force_dirt": false,
+    "force_dirt": true,
     "ignore_vines": true,
     "minimum_size": {
       "type": "minecraft:two_layers_feature_size",

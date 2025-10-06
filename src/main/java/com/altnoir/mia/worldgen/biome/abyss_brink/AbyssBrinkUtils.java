@@ -1,6 +1,5 @@
 package com.altnoir.mia.worldgen.biome.abyss_brink;
 
-import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.placement.CavePlacements;
 import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.data.worldgen.placement.OrePlacements;
@@ -47,18 +46,21 @@ public class AbyssBrinkUtils {
         addDefaultUndergroundVariety(builder);
 
         addDefaultSprings(builder);
-        builder.addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, MiscOverworldPlacements.FREEZE_TOP_LAYER);
         addDefaultOres(builder);
         addDefaultSoftDisks(builder);
     }
 
 
     public static void globalAbyssGeneration(BiomeGenerationSettings.Builder builder) {
-        //MiaBiomeDefaultFeatures.addAbyssCarvers(builder);
-        addDefaultUndergroundVariety(builder);
+        builder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AbyssBrinkPlacements.PRASIOLITE_GEODE);
+        globalAbyssGenerationNotGeode(builder);
+    }
 
-        builder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, CavePlacements.AMETHYST_GEODE);
-        BiomeDefaultFeatures.addDefaultMonsterRoom(builder);
+    public static void globalAbyssGenerationNotGeode(BiomeGenerationSettings.Builder builder) {
+        //MiaBiomeDefaultFeatures.addAbyssCarvers(builder);
+        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_STRUCTURES, AbyssBrinkPlacements.MONSTER_CHEAT);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.VINES);
+        addDefaultUndergroundVariety(builder);
 
         addDefaultSprings(builder);
         addDefaultOres(builder);
@@ -97,7 +99,7 @@ public class AbyssBrinkUtils {
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, OrePlacements.ORE_DIORITE_UPPER);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, OrePlacements.ORE_DIORITE_LOWER);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, OrePlacements.ORE_TUFF);
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CavePlacements.GLOW_LICHEN);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.GLOW_LICHEN);
     }
 
     public static void addDefaultSoftDisks(BiomeGenerationSettings.Builder builder) {

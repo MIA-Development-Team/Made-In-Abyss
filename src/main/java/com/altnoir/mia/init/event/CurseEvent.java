@@ -39,7 +39,7 @@ public class CurseEvent {
         var currentY = player.getY();
         double lastY = playerMinY.computeIfAbsent(uuid, k -> currentY);
 
-        var delta = Math.min(currentY - lastY, 0);
+        var delta = Math.max(currentY - lastY, 0);
         var isCurseGod = !MiaConfig.curseGod && MiaUtil.isCreativeOrSpectator(player);
 
         if (currentY < lastY || isCurseGod || (player instanceof ServerPlayer serverPlayer && serverPlayer.isSleepingLongEnough())) {

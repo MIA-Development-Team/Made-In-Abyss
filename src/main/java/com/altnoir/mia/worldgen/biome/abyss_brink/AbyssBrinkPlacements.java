@@ -22,8 +22,11 @@ import net.minecraft.world.level.levelgen.placement.*;
 import java.util.List;
 
 public class AbyssBrinkPlacements {
+    public static final ResourceKey<PlacedFeature> MONSTER_CHEAT = MiaPlacementUtils.abyssBrinkKey("monster_cheat");
     public static final ResourceKey<PlacedFeature> SPRING_WATER = MiaPlacementUtils.abyssBrinkKey("spring_water");
     public static final ResourceKey<PlacedFeature> LAKE_WATER = MiaPlacementUtils.abyssBrinkKey("lake_water");
+    public static final ResourceKey<PlacedFeature> VINES = MiaPlacementUtils.abyssBrinkKey("vines");
+    public static final ResourceKey<PlacedFeature> GLOW_LICHEN = MiaPlacementUtils.abyssBrinkKey("glow_lichen");
     public static final ResourceKey<PlacedFeature> PATCH_GRASS_PLAIN = MiaPlacementUtils.abyssBrinkKey("patch_grass_plain");
     public static final ResourceKey<PlacedFeature> PATCH_LARGE_FERN = MiaPlacementUtils.abyssBrinkKey("patch_large_fern");
     public static final ResourceKey<PlacedFeature> PATCH_SUNFLOWER = MiaPlacementUtils.abyssBrinkKey("patch_sunflower");
@@ -34,17 +37,25 @@ public class AbyssBrinkPlacements {
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG_AND_AZALEA = MiaPlacementUtils.abyssBrinkKey("trees_skyfog_and_azalea");
     public static final ResourceKey<PlacedFeature> PRASIOLITE_CLUSTER = MiaPlacementUtils.abyssBrinkKey("prasiolite_cluster");
     public static final ResourceKey<PlacedFeature> BIG_PRASIOLITE_CLUSTER = MiaPlacementUtils.abyssBrinkKey("big_prasiolite_cluster");
+    public static final ResourceKey<PlacedFeature> PRASIOLITE_GEODE = MiaPlacementUtils.abyssBrinkKey("prasiolite_geode");
     public static final ResourceKey<PlacedFeature> RAW_IRON = MiaPlacementUtils.abyssBrinkKey("raw_iron");
 
     public static final PlacementModifier ABYSS_BRINK_HEIGHT = HeightRangePlacement.uniform(
             VerticalAnchor.bottom(), VerticalAnchor.absolute(360)
     );
 
+    public static final PlacementModifier ABYSS_BRINK_CAVE_HEIGHT = HeightRangePlacement.uniform(
+            VerticalAnchor.bottom(), VerticalAnchor.absolute(300)
+    );
+
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
 
+        Holder<ConfiguredFeature<?, ?>> monster_cheat = holdergetter.getOrThrow(AbyssBrinkFeatures.MONSTER_CHEAT);
         Holder<ConfiguredFeature<?, ?>> spring_water = holdergetter.getOrThrow(AbyssBrinkFeatures.SPRING_WATER);
         Holder<ConfiguredFeature<?, ?>> lake_water = holdergetter.getOrThrow(AbyssBrinkFeatures.LAKE_WATER);
+        Holder<ConfiguredFeature<?, ?>> vines = holdergetter.getOrThrow(VegetationFeatures.VINES);
+        Holder<ConfiguredFeature<?, ?>> glow_lichen = holdergetter.getOrThrow(AbyssBrinkFeatures.GLOW_LICHEN);
         Holder<ConfiguredFeature<?, ?>> grass = holdergetter.getOrThrow(VegetationFeatures.PATCH_GRASS);
         Holder<ConfiguredFeature<?, ?>> large_fern = holdergetter.getOrThrow(VegetationFeatures.PATCH_LARGE_FERN);
         Holder<ConfiguredFeature<?, ?>> cave_vine = holdergetter.getOrThrow(CaveFeatures.CAVE_VINE);
@@ -55,8 +66,16 @@ public class AbyssBrinkPlacements {
         Holder<ConfiguredFeature<?, ?>> skyfog_and_azalea = holdergetter.getOrThrow(AbyssBrinkFeatures.TREES_SKYFOG_AND_AZALEA);
         Holder<ConfiguredFeature<?, ?>> prasiolite_cluster = holdergetter.getOrThrow(AbyssBrinkFeatures.PRASIOLITE_CLUSTER);
         Holder<ConfiguredFeature<?, ?>> big_prasiolite_cluster = holdergetter.getOrThrow(AbyssBrinkFeatures.BIG_PRASIOLITE_CLUSTER);
+        Holder<ConfiguredFeature<?, ?>> prasiolite_geode = holdergetter.getOrThrow(AbyssBrinkFeatures.PRASIOLITE_GEODE);
         Holder<ConfiguredFeature<?, ?>> raw_iron = holdergetter.getOrThrow(AbyssBrinkFeatures.RAW_IRON);
 
+        PlacementUtils.register(
+                context, MONSTER_CHEAT, monster_cheat,
+                RarityFilter.onAverageOnceEvery(2),
+                InSquarePlacement.spread(),
+                ABYSS_BRINK_CAVE_HEIGHT,
+                BiomeFilter.biome()
+        );
         MiaPlacementUtils.register(
                 context, SPRING_WATER, spring_water,
                 CountPlacement.of(10),
@@ -65,12 +84,25 @@ public class AbyssBrinkPlacements {
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(
-                context,
-                LAKE_WATER,
-                lake_water,
-                RarityFilter.onAverageOnceEvery(2),
+                context, LAKE_WATER, lake_water,
+                RarityFilter.onAverageOnceEvery(3),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+                BiomeFilter.biome()
+        );
+        PlacementUtils.register(
+                context, VINES, vines,
+                CountPlacement.of(127),
+                InSquarePlacement.spread(),
+                ABYSS_BRINK_HEIGHT,
+                BiomeFilter.biome()
+        );
+        MiaPlacementUtils.register(
+                context, GLOW_LICHEN, glow_lichen,
+                CountPlacement.of(UniformInt.of(104, 157)),
+                ABYSS_BRINK_HEIGHT,
+                InSquarePlacement.spread(),
+                //SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -13),
                 BiomeFilter.biome()
         );
 
@@ -135,14 +167,21 @@ public class AbyssBrinkPlacements {
                 context, PRASIOLITE_CLUSTER, prasiolite_cluster,
                 CountPlacement.of(UniformInt.of(64, 128)),
                 InSquarePlacement.spread(),
-                HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(300)),
+                ABYSS_BRINK_CAVE_HEIGHT,
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(
                 context, BIG_PRASIOLITE_CLUSTER, big_prasiolite_cluster,
                 CountPlacement.of(UniformInt.of(2, 4)),
                 InSquarePlacement.spread(),
-                HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(300)),
+                ABYSS_BRINK_CAVE_HEIGHT,
+                BiomeFilter.biome()
+        );
+        MiaPlacementUtils.register(
+                context, PRASIOLITE_GEODE, prasiolite_geode,
+                RarityFilter.onAverageOnceEvery(24),
+                InSquarePlacement.spread(),
+                ABYSS_BRINK_CAVE_HEIGHT,
                 BiomeFilter.biome()
         );
     }

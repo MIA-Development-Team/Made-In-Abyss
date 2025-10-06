@@ -5,7 +5,9 @@ import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.worldgen.feature.BigClusterFeature;
 import com.altnoir.mia.worldgen.feature.ClusterFeature;
 import com.altnoir.mia.worldgen.feature.LakeFeature;
+import com.altnoir.mia.worldgen.feature.MonsterCheatFeature;
 import com.altnoir.mia.worldgen.feature.configurations.ClusterConfiguration;
+import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -25,6 +27,9 @@ public class MiaFeature {
     );
     public static final DeferredHolder<Feature<?>, LakeFeature> LAKE = FEATURE.register(
             "lake", () -> new LakeFeature(LakeFeature.Configuration.CODEC)
+    );
+    public static final DeferredHolder<Feature<?>, MonsterCheatFeature> MONSTER_CHEAT = FEATURE.register(
+            "monster_cheat", () -> new MonsterCheatFeature(MonsterCheatConfiguration.CODEC)
     );
 
     public static void register(IEventBus eventBus) {

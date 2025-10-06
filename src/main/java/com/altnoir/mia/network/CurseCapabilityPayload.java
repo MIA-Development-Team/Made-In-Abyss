@@ -20,11 +20,11 @@ public record CurseCapabilityPayload(int curse, int maxCurse) implements CustomP
     );
 
     public static void handle(CurseCapabilityPayload packet, IPayloadContext context) {
-        context.enqueueWork(() ->{
-            var player = net.minecraft.client.Minecraft.getInstance().player;
-            if (player == null) return;
+        context.enqueueWork(() -> {
+            var mc = net.minecraft.client.Minecraft.getInstance();
+            if (mc.player == null) return;
 
-            var curse = player.getCapability(MiaCapabilities.CURSE, null);
+            var curse = mc.player.getCapability(MiaCapabilities.CURSE, null);
             if (curse != null) {
                 curse.setCurse(packet.curse());
                 curse.setMaxCurse(packet.maxCurse());

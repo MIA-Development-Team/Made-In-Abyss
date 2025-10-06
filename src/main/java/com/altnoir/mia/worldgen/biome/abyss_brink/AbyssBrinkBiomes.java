@@ -89,6 +89,7 @@ public class AbyssBrinkBiomes {
                 context.lookup(Registries.PLACED_FEATURE), context.lookup(Registries.CONFIGURED_CARVER)
         );
 
+        AbyssBrinkUtils.globalAbyssGenerationNotGeode(generationBuilder);
         generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AbyssBrinkPlacements.PRASIOLITE_CLUSTER);
         generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AbyssBrinkPlacements.BIG_PRASIOLITE_CLUSTER);
         BiomeDefaultFeatures.addExtraGold(generationBuilder);
