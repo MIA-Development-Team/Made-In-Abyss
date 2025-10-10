@@ -55,7 +55,7 @@ public class MiaTreeFeatures {
 
                         new WeightedStateProvider(
                                 SimpleWeightedRandomList.<BlockState>builder()
-                                        .add(MiaBlocks.SKYFOG_LEAVES.get().defaultBlockState(), 5)
+                                        .add(MiaBlocks.SKYFOG_LEAVES.get().defaultBlockState(), 4)
                                         .add(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get().defaultBlockState(), 1)
                         ),
                         new FancyFoliagePlacer(ConstantInt.of(3), ConstantInt.of(1), 4),
@@ -75,7 +75,7 @@ public class MiaTreeFeatures {
 
                 new WeightedStateProvider(
                         SimpleWeightedRandomList.<BlockState>builder()
-                                .add(MiaBlocks.SKYFOG_LEAVES.get().defaultBlockState(), 5)
+                                .add(MiaBlocks.SKYFOG_LEAVES.get().defaultBlockState(), 9)
                                 .add(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get().defaultBlockState(), 1)
                 ),
                 new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), ConstantInt.of(4), 0.25F, 0.5F, 0.16666667F, 0.33333334F),
@@ -96,7 +96,7 @@ public class MiaTreeFeatures {
 
                 new WeightedStateProvider(
                         SimpleWeightedRandomList.<BlockState>builder()
-                                .add(MiaBlocks.SKYFOG_LEAVES.get().defaultBlockState(), 4)
+                                .add(MiaBlocks.SKYFOG_LEAVES.get().defaultBlockState(), 9)
                                 .add(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get().defaultBlockState(), 1)
                 ),
                 new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), ConstantInt.of(5), 0.25F, 0.5F, 0.16666667F, 0.33333334F),

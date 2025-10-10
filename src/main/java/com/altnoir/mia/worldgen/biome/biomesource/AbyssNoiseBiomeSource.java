@@ -1,5 +1,6 @@
 package com.altnoir.mia.worldgen.biome.biomesource;
 
+import com.altnoir.mia.MiaConfig;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.OverworldBiomeBuilder;
 import net.minecraft.world.level.levelgen.NoiseRouterData;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -41,10 +43,7 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
 
     @Override
     protected Stream<Holder<Biome>> collectPossibleBiomes() {
-        return Stream.concat(
-                Stream.of(abyss),
-                this.parameters().values().stream().map(Pair::getSecond)
-        );
+        return Stream.concat(Stream.of(abyss), this.parameters().values().stream().map(Pair::getSecond));
     }
 
     @Override
@@ -61,15 +60,14 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
     }
 
     @Override
-    public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
+    public @NotNull Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.@NotNull Sampler sampler) {
 
         int blockX = QuartPos.toBlock(x);
         int blockZ = QuartPos.toBlock(z);
         int sectionX = SectionPos.blockToSectionCoord(blockX);
         int sectionZ = SectionPos.blockToSectionCoord(blockZ);
 
-        // 256L = √256 = 16区块.
-        if ((long) sectionX * (long) sectionX + (long) sectionZ * (long) sectionZ <= 256L) {
+        if ((long) sectionX * sectionX + (long) sectionZ * sectionZ <= (long) MiaConfig.abyssRadius * 1.4F) {
             return abyss;
         } else {
             return this.getNoiseBiome(sampler.sample(x, y, z));

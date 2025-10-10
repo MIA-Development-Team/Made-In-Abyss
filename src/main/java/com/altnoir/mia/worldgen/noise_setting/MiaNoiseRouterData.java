@@ -115,7 +115,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
     }
 
     private static NoiseRouter abyssBrinkRouter(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        DensityFunction barrier = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_BARRIER), 2, 1);
+        DensityFunction barrier = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_BARRIER), 0.5);
         DensityFunction fluidLevelFloodedness = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS), 0.335, 0.5);
         DensityFunction fluidLevelSpread = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_SPREAD), 0.357142857, 0.5);
 
@@ -131,7 +131,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         DensityFunction finalDensity = DensityFunctions.min(abyssBrinkDensity(densityFunctions), getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_NOODLE));
 
         return new NoiseRouter(
-                barrier, // barrier 影响含水层是否在流体与空气之间放置阻挡方块，值越大概率越大。
+                DensityFunctions.constant(1.0), // barrier 影响含水层是否在流体与空气之间放置阻挡方块，值越大概率越大。
                 fluidLevelFloodedness, // fluid_level_floodedness 影响含水层放置流体的概率，大于1的值被视为1，小于0的值被视为0。
                 fluidLevelSpread, // fluid_level_spread 影响含水层放置流体的高度，此值越低越不可能放置含水层。
                 DensityFunctions.zero(), // lava 当绝对值大于0.3时含水层在Y=-58与海平面之间放置熔岩而不是默认流体。

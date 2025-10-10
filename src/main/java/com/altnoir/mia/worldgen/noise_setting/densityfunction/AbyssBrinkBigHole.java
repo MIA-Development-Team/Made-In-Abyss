@@ -16,9 +16,13 @@ public class AbyssBrinkBigHole implements DensityFunction.SimpleFunction {
         RandomSource randomsource = new LegacyRandomSource(seed);
         randomsource.consumeCount(17292);
     }
+
+    private static final Float AbyssBrinkBigRadius = 128.0F;
+
     private static float getHeightValue(int x, int z) {
+        float d = Mth.sqrt((float) (x * x + z * z));
         // 400 = √400 = 20区块.
-        float f = 400.0F - Mth.sqrt((float)(x * x + z * z)) * 8.0F; // 深渊半径
+        float f = (AbyssBrinkHole.getAbyssRadius() + AbyssBrinkBigRadius) - d * 8.0F; // 深渊半径
         f = Mth.clamp(f, -100.0F, 80.0F);
 
         return f;
@@ -26,7 +30,7 @@ public class AbyssBrinkBigHole implements DensityFunction.SimpleFunction {
 
     @Override
     public double compute(DensityFunction.FunctionContext context) {
-        return (8.0 - (double)getHeightValue(context.blockX() / 8, context.blockZ() / 8)) / 16;
+        return (8.0 - (double) getHeightValue(context.blockX() / 8, context.blockZ() / 8)) / 16;
     }
 
     @Override

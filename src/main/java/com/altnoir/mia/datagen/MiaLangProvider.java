@@ -88,14 +88,20 @@ public class MiaLangProvider extends LanguageProvider {
         add("mia.configuration.title", "Made In Abyss Configuration");
         add("mia.configuration.curse", "Enable Curse");
         add("mia.configuration.curse.tooltip", "Whether to enable the Curse");
-        add("mia.configuration.curse_icon", "Switch Curse Icon Position");
-        add("mia.configuration.curse_icon.tooltip", "Whether to switch the Curse icon position");
         add("mia.configuration.curse_god", "Curse the Creative and Spectator");
         add("mia.configuration.curse_god.tooltip", "Whether to Curse the Creative and Spectator");
-        add("mia.configuration.disconnect_visible", "Disconnect Button Visible");
-        add("mia.configuration.disconnect_visible.tooltip", "Whether to show the Disconnect Button");
-        add("mia.configuration.ban_disconnect", "Disable Disconnect Button");
-        add("mia.configuration.ban_disconnect.tooltip", "Whether to disable the Disconnect Button");
+        add("mia.configuration.curse_icon_position", "Curse Icon Position");
+        add("mia.configuration.curse_icon_position.tooltip", "Switch Curse Icon Position");
+        add("mia.configuration.curse_icon_position.middle", "Middle");
+        add("mia.configuration.curse_icon_position.right", "Right");
+        add("mia.configuration.curse_icon_position.hidden", "Hidden");
+        add("mia.configuration.disconnect_button_state", "Disconnect Button State");
+        add("mia.configuration.disconnect_button_state.tooltip", "Adjust the Disconnect Button");
+        add("mia.configuration.disconnect_button_state.default", "Default");
+        add("mia.configuration.disconnect_button_state.disabled", "Disabled");
+        add("mia.configuration.disconnect_button_state.hidden", "Hidden");
+        add("mia.configuration.abyss_radius", "Abyss Radius Value");
+        add("mia.configuration.abyss_radius.tooltip", "Setting The Abyss Radius");
         //Config end
 
         //Biome start

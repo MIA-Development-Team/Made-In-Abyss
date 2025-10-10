@@ -73,7 +73,7 @@
             "depth": 0.2,
             "erosion": 0.0,
             "humidity": -0.3,
-            "offset": 0.0,
+            "offset": 0.5,
             "temperature": 0.8,
             "weirdness": 0.0
           }

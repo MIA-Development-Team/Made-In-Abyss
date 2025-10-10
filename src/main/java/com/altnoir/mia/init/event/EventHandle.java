@@ -1,5 +1,6 @@
 package com.altnoir.mia.init.event;
 
+import com.altnoir.mia.MiaClientConfig;
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.client.event.KeyArrowEvent;
 import com.altnoir.mia.init.MiaKeyBinding;
@@ -14,11 +15,12 @@ public class EventHandle {
     }
 
     public static void addModEventBus(IEventBus modEventBus) {
+        modEventBus.addListener(MiaConfig::onLoad);
+
         modEventBus.addListener(DataGenerators::gatherData);
 
         modEventBus.addListener(MiaNetworking::register);
         modEventBus.addListener(CurseEvent::attachEntityCapabilities);
-        modEventBus.addListener(MiaConfig::onLoad);
 
         modEventBus.addListener(CapabilityRegister::RegisterCapabilitiesEvent);
         modEventBus.addListener(PlayerAttributeEvent::addPlayerAttributes);

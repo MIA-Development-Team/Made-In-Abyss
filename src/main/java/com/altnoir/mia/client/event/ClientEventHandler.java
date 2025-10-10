@@ -1,6 +1,6 @@
 package com.altnoir.mia.client.event;
 
-import com.altnoir.mia.init.MiaKeyBinding;
+import com.altnoir.mia.MiaClientConfig;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
@@ -13,6 +13,8 @@ public class ClientEventHandler {
     }
 
     public static void addModEventBus(IEventBus modEventBus) {
+        modEventBus.addListener(MiaClientConfig::onLoad);
+
         modEventBus.addListener(ClientDimEffects::registerDimensionEffects);
         modEventBus.addListener(RegisterParticlesEvent::registerParticles);
         modEventBus.addListener(ClientTooltipComponentEvent::onRegisterFactories);

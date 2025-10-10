@@ -56,7 +56,9 @@ public class MIA {
         MiaStats.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
-        modContainer.registerConfig(ModConfig.Type.COMMON, MiaConfig.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, MiaConfig.COMMON_SPEC);
+        modContainer.registerConfig(ModConfig.Type.CLIENT, MiaClientConfig.CLIENT_SPEC);
+        modContainer.registerConfig(ModConfig.Type.SERVER, MiaConfig.SERVER_SPEC);
         modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 
         var gameEventBus = NeoForge.EVENT_BUS;

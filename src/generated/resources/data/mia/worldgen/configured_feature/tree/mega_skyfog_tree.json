@@ -16,7 +16,7 @@
       },
       {
         "type": "minecraft:leave_vine",
-        "probability": 0.25
+        "probability": 0.15
       }
     ],
     "dirt_provider": {
@@ -43,7 +43,7 @@
               "waterlogged": "false"
             }
           },
-          "weight": 5
+          "weight": 4
         },
         {
           "data": {

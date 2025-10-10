@@ -56,7 +56,7 @@ public class MiaDimensions {
                                         biomeRegistry.getOrThrow(Biomes.CHERRY_GROVE)
                                 ),
                                 Pair.of(
-                                        Climate.parameters(0.8F, -0.3F, 0.0F, 0.0F, 0.2F, 0.0F, 0.0F),
+                                        Climate.parameters(0.8F, -0.3F, 0.0F, 0.0F, 0.2F, 0.0F, 0.5F),
                                         biomeRegistry.getOrThrow(MiaBiomes.PRASIOLITE_CAVE)
                                 )
                         )),

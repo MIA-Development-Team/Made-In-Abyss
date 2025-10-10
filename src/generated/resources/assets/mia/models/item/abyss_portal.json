@@ -1,3 +1,6 @@
 {
-  "parent": "mia:block/abyss_portal"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "mia:block/abyss_portal"
+  }
 }

@@ -33,6 +33,7 @@ public class AbyssBrinkPlacements {
     public static final ResourceKey<PlacedFeature> CAVE_VINES = MiaPlacementUtils.abyssBrinkKey("cave_vines");
     public static final ResourceKey<PlacedFeature> FLOWER_MEADOW = MiaPlacementUtils.abyssBrinkKey("flower_meadow");
     public static final ResourceKey<PlacedFeature> FOREST_FLOWERS = MiaPlacementUtils.abyssBrinkKey("forest_flowers");
+    public static final ResourceKey<PlacedFeature> ABYSS_TREES = MiaPlacementUtils.abyssBrinkKey("abyss_trees");
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG = MiaPlacementUtils.abyssBrinkKey("trees_skyfog");
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG_AND_AZALEA = MiaPlacementUtils.abyssBrinkKey("trees_skyfog_and_azalea");
     public static final ResourceKey<PlacedFeature> PRASIOLITE_CLUSTER = MiaPlacementUtils.abyssBrinkKey("prasiolite_cluster");
@@ -40,13 +41,8 @@ public class AbyssBrinkPlacements {
     public static final ResourceKey<PlacedFeature> PRASIOLITE_GEODE = MiaPlacementUtils.abyssBrinkKey("prasiolite_geode");
     public static final ResourceKey<PlacedFeature> RAW_IRON = MiaPlacementUtils.abyssBrinkKey("raw_iron");
 
-    public static final PlacementModifier ABYSS_BRINK_HEIGHT = HeightRangePlacement.uniform(
-            VerticalAnchor.bottom(), VerticalAnchor.absolute(360)
-    );
-
-    public static final PlacementModifier ABYSS_BRINK_CAVE_HEIGHT = HeightRangePlacement.uniform(
-            VerticalAnchor.bottom(), VerticalAnchor.absolute(300)
-    );
+    private static final PlacementModifier ABYSS_BRINK_HEIGHT = HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(360));
+    private static final PlacementModifier ABYSS_BRINK_CAVE_HEIGHT = HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(200));
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
@@ -73,14 +69,14 @@ public class AbyssBrinkPlacements {
                 context, MONSTER_CHEAT, monster_cheat,
                 RarityFilter.onAverageOnceEvery(2),
                 InSquarePlacement.spread(),
-                ABYSS_BRINK_CAVE_HEIGHT,
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(280)),
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(
                 context, SPRING_WATER, spring_water,
                 CountPlacement.of(10),
                 InSquarePlacement.spread(),
-                HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(16), VerticalAnchor.absolute(200)),
+                ABYSS_BRINK_CAVE_HEIGHT,
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(
@@ -155,7 +151,9 @@ public class AbyssBrinkPlacements {
                 BiomeFilter.biome()
         );
 
-
+        MiaPlacementUtils.register(
+                context, ABYSS_TREES, skyfog_and_azalea, abyssTreePlace(8, 5)
+        );
         MiaPlacementUtils.register(
                 context, TREES_SKYFOG, skyfog, abyssTreePlace(1, 3)
         );
@@ -167,7 +165,7 @@ public class AbyssBrinkPlacements {
                 context, PRASIOLITE_CLUSTER, prasiolite_cluster,
                 CountPlacement.of(UniformInt.of(64, 128)),
                 InSquarePlacement.spread(),
-                ABYSS_BRINK_CAVE_HEIGHT,
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(300)),
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(
@@ -208,21 +206,5 @@ public class AbyssBrinkPlacements {
 
     public static List<PlacementModifier> abyssTreePlace(int count, int rarity) {
         return abyssTreePlacementBase(count, rarity).build();
-    }
-
-    private static ImmutableList.Builder<PlacementModifier> treePlacementBase() {
-        return ImmutableList.<PlacementModifier>builder()
-                .add(InSquarePlacement.spread())
-                .add(ABYSS_BRINK_HEIGHT)
-                .add(RandomOffsetPlacement.vertical(ConstantInt.of(-1)))
-                .add(BiomeFilter.biome());
-    }
-
-    public static List<PlacementModifier> treePlace() {
-        return treePlacementBase().build();
-    }
-
-    public static List<PlacementModifier> treePlace(int count) {
-        return treePlacementBase().add(RarityFilter.onAverageOnceEvery(count)).build();
     }
 }

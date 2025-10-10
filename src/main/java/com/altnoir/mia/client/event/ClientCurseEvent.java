@@ -1,6 +1,7 @@
 package com.altnoir.mia.client.event;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.MiaClientConfig;
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.init.MiaCapabilities;
 import com.altnoir.mia.util.MiaUtil;
@@ -28,11 +29,13 @@ public class ClientCurseEvent {
     private static int animationTick = 0;
 
     public static void ScreenEventInitPost(ScreenEvent.Init.Post event) {
-        if (!MiaConfig.banDisconnect) return;
+        if (MiaConfig.disconnectButtonState == MiaConfig.DisconnectButtonState.DEFAULT) return;
+
         if (event.getScreen() instanceof PauseScreen pauseScreen) {
             Button disconnectButton = pauseScreen.disconnectButton;
+
             if (disconnectButton != null) {
-                if (MiaConfig.disconnectVisible) {
+                if (MiaConfig.disconnectButtonState == MiaConfig.DisconnectButtonState.HIDDEN) {
                     disconnectButton.visible = false;
                 } else {
                     disconnectButton.active = false;
@@ -40,6 +43,7 @@ public class ClientCurseEvent {
                 }
             }
         }
+
     }
 
     public static void onRenderOverlay(RenderGuiLayerEvent.Post event) {
@@ -49,7 +53,7 @@ public class ClientCurseEvent {
         var dim = player.level().dimension().location();
         var dimensionIds = MIA.CURSE_MANAGER.getDimensionIds();
 
-        if (mc.options.hideGui) return;
+        if (mc.options.hideGui || MiaClientConfig.curseIconPosition == MiaClientConfig.CurseIconPosition.HIDDEN) return;
 
         if (dimensionIds.contains(dim)) {
             if (!MiaConfig.curseGod && MiaUtil.isCreativeOrSpectator(player)) return;
@@ -73,8 +77,19 @@ public class ClientCurseEvent {
         var font = mc.font;
 
         var ch = MiaUtil.isCreativeOrSpectator(player) ? screenHeight - 30 : screenHeight - 43;
-        var cx = MiaConfig.curseIcon ? screenWidth / 2 + 100 : screenWidth / 2;
-        var cy = MiaConfig.curseIcon ? screenHeight - 11 : ch;
+        int cx, cy;
+        switch (MiaClientConfig.curseIconPosition) {
+            case MIDDLE:
+                cx = screenWidth / 2;
+                cy = ch;
+                break;
+            case RIGHT:
+                cx = screenWidth / 2 + 100;
+                cy = screenHeight - 11;
+                break;
+            default:
+                return;
+        }
 
         int frame;
 

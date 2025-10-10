@@ -2,15 +2,13 @@ package com.altnoir.mia.init.worldgen;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaTags;
-import com.altnoir.mia.worldgen.feature.BigClusterFeature;
-import com.altnoir.mia.worldgen.feature.ClusterFeature;
-import com.altnoir.mia.worldgen.feature.LakeFeature;
-import com.altnoir.mia.worldgen.feature.MonsterCheatFeature;
+import com.altnoir.mia.worldgen.feature.*;
 import com.altnoir.mia.worldgen.feature.configurations.ClusterConfiguration;
 import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -30,6 +28,9 @@ public class MiaFeature {
     );
     public static final DeferredHolder<Feature<?>, MonsterCheatFeature> MONSTER_CHEAT = FEATURE.register(
             "monster_cheat", () -> new MonsterCheatFeature(MonsterCheatConfiguration.CODEC)
+    );
+    public static final DeferredHolder<Feature<?>, AbyssBrinkPortalFeature> ABYSS_BRINK_PORTAL = FEATURE.register(
+            "abyss_brink_portal", () -> new AbyssBrinkPortalFeature(NoneFeatureConfiguration.CODEC)
     );
 
     public static void register(IEventBus eventBus) {

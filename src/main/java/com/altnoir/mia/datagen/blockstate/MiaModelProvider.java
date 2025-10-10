@@ -75,9 +75,9 @@ public class MiaModelProvider {
     }
 
     public void abyssPortalBlockModel(BlockStateProvider p, Block block) {
-        p.models().getBuilder(MiaUtil.getBlockPath(block))
+        p.models().getBuilder(MiaUtil.getBlockPath(block)).renderType("translucent")
                 .texture("particle", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
-                .texture("portal1", p.modLoc("block/" + MiaUtil.getBlockPath(block)) + "_dark")
+                .texture("portal1", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
                 .texture("portal2", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
                 .element().from(0, 1, 0).to(16, 15, 16)
                 .face(Direction.UP).uvs(0, 0, 16, 16).texture("#portal1").end()

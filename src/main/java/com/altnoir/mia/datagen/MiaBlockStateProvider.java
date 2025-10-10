@@ -150,7 +150,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     private void abyssPortalBlock() {
         modelP.abyssPortalBlockModel(this, MiaBlocks.ABYSS_PORTAL.get());
         stateP.baseBlockState(this, MiaBlocks.ABYSS_PORTAL.get());
-        blockItem(MiaBlocks.ABYSS_PORTAL);
+        crossItem(MiaBlocks.ABYSS_PORTAL);
     }
 
     private void artifactSmithingTableBlock() {

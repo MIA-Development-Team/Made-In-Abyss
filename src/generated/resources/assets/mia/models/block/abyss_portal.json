@@ -21,9 +21,10 @@
       ]
     }
   ],
+  "render_type": "minecraft:translucent",
   "textures": {
     "particle": "mia:block/abyss_portal",
-    "portal1": "mia:block/abyss_portal_dark",
+    "portal1": "mia:block/abyss_portal",
     "portal2": "mia:block/abyss_portal"
   }
 }

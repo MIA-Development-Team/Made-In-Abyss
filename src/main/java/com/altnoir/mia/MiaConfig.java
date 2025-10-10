@@ -7,38 +7,48 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 
 @EventBusSubscriber(modid = MIA.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class MiaConfig {
-    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+    private static final ModConfigSpec.Builder COMMON_BUILDER = new ModConfigSpec.Builder();
+    private static final ModConfigSpec.Builder SERVER_BUILDER = new ModConfigSpec.Builder();
+
+    public enum DisconnectButtonState {DEFAULT, DISABLED, HIDDEN}
+
+    public static int abyssRadius;
 
     public static boolean curse;
-    public static boolean curseIcon;
     public static boolean curseGod;
-    public static boolean banDisconnect;
-    public static boolean disconnectVisible;
+    public static DisconnectButtonState disconnectButtonState;
 
-    private static final ModConfigSpec.BooleanValue CURSE = BUILDER
+    private static final ModConfigSpec.IntValue ABYSS_RADIUS = COMMON_BUILDER
+            .comment("The radius of the Abyss (Default: 640) | 深渊半径 (默认值: 640)")
+            .defineInRange("abyss_radius", 640, 80, 2560);
+
+    private static final ModConfigSpec.BooleanValue CURSE = SERVER_BUILDER
             .comment("Whether to enable the Curse (Default: true) | 是否启用上升诅咒 (默认值: true)")
             .define("curse", true);
-    private static final ModConfigSpec.BooleanValue CURSE_ICON = BUILDER
-            .comment("Whether to switch the Curse icon position(Default: false) | 是否切换诅咒图标位置 (默认值: false, 需要启用诅咒)")
-            .define("curse_icon", false);
-    private static final ModConfigSpec.BooleanValue CURSE_GOD = BUILDER
+    private static final ModConfigSpec.BooleanValue CURSE_GOD = SERVER_BUILDER
             .comment("Whether to Curse the Creative and Spectator(Default: false) | 是否诅咒创造模式和观察者模式 (默认值: false, 需要启用诅咒)")
             .define("curse_god", false);
-    private static final ModConfigSpec.BooleanValue BAN_DISCONNECT = BUILDER
-            .comment("Whether to ban the Disconnect Button (Default: false) | 是否禁用退出游戏按钮 (默认值: false)")
-            .define("ban_disconnect", false);
-    private static final ModConfigSpec.BooleanValue DISCONNECT_VISIBLE = BUILDER
-            .comment("Whether to Hide the Disconnect Button (Default: false, The banDisconnect needs to be enabled) | 是否隐藏退出游戏按钮 (默认值: false，需要启用禁用退出按钮)")
-            .define("disconnect_visible", false);
+    private static final ModConfigSpec.EnumValue<DisconnectButtonState> DISCONNECT_BUTTON_STATE = SERVER_BUILDER
+            .comment("Controls the disconnect button behavior (Default: DEFAULT) | 控制退出按钮行为 (默认值: DEFAULT)",
+                    "DEFAULT: No changes to the disconnect button | 不做任何处理",
+                    "DISABLED: Disable the disconnect button | 禁用退出按钮",
+                    "HIDDEN: Hide the disconnect button | 隐藏退出按钮")
+            .defineEnum("disconnect_button_state", DisconnectButtonState.DEFAULT);
 
-    public static final ModConfigSpec SPEC = BUILDER.build();
+
+    public static final ModConfigSpec COMMON_SPEC = COMMON_BUILDER.build();
+    public static final ModConfigSpec SERVER_SPEC = SERVER_BUILDER.build();
 
     @SubscribeEvent
     public static void onLoad(final ModConfigEvent event) {
-        curse = CURSE.get();
-        curseIcon = CURSE_ICON.get();
-        curseGod = CURSE_GOD.get();
-        banDisconnect = BAN_DISCONNECT.get();
-        disconnectVisible = DISCONNECT_VISIBLE.get();
+        if (event.getConfig().getSpec() == COMMON_SPEC) {
+            abyssRadius = ABYSS_RADIUS.get();
+        }
+
+        if (event.getConfig().getSpec() == SERVER_SPEC) {
+            curse = CURSE.get();
+            curseGod = CURSE_GOD.get();
+            disconnectButtonState = DISCONNECT_BUTTON_STATE.get();
+        }
     }
 }
