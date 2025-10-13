@@ -1,6 +1,7 @@
 package com.altnoir.mia.client.event;
 
 import com.altnoir.mia.MiaClientConfig;
+import com.altnoir.mia.init.MiaKeyBinding;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
@@ -20,6 +21,7 @@ public class ClientEventHandler {
         modEventBus.addListener(ClientTooltipComponentEvent::onRegisterFactories);
         modEventBus.addListener(RegisterEntityRendererEvent::registerEntityRenderers);
         modEventBus.addListener(RegisterScreenEvent::registerScreens);
+        modEventBus.addListener(MiaKeyBinding::registerKeyBindings);
     }
 
     public static void addGameEventBus(IEventBus gameEventBus) {
