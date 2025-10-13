@@ -57,7 +57,6 @@ public class MIA {
 
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, MiaConfig.COMMON_SPEC);
-        modContainer.registerConfig(ModConfig.Type.CLIENT, MiaClientConfig.CLIENT_SPEC);
         modContainer.registerConfig(ModConfig.Type.SERVER, MiaConfig.SERVER_SPEC);
         modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 

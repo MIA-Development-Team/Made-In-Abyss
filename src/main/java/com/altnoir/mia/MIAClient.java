@@ -6,6 +6,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
 
 @Mod(value = MIA.MOD_ID, dist = Dist.CLIENT)
@@ -15,5 +16,7 @@ public class MIAClient {
 
         var gameEventBus = NeoForge.EVENT_BUS;
         ClientEventHandler.addListener(modEventBus, gameEventBus);
+
+        modContainer.registerConfig(ModConfig.Type.CLIENT, MiaClientConfig.CLIENT_SPEC);
     }
 }
