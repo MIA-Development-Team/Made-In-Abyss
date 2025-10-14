@@ -42,6 +42,8 @@ public class DataGenerators {
         generators.addProvider(event.includeClient(), new MiaBlockStateProvider(packOutput, existingFileHelper));
         generators.addProvider(event.includeClient(), new MiaItemModelProvider(packOutput, existingFileHelper));
         generators.addProvider(event.includeClient(), new MiaParticleProvider(packOutput, existingFileHelper));
+
+        generators.addProvider(event.includeClient(), new MiaSoundsProvider(packOutput, existingFileHelper));
         generators.addProvider(event.includeClient(), new MiaLangProvider(packOutput));
     }
 }

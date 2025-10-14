@@ -16,8 +16,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -43,13 +41,14 @@ public class MIA {
         MiaEffects.register(modEventBus);
         MiaPotions.register(modEventBus);
         MiaComponents.register(modEventBus);
+        MiaSounds.register(modEventBus);
+
         MiaBiomeSources.register(modEventBus);
         MiaDensityFunctionTypes.register(modEventBus);
         MiaFeature.register(modEventBus);
-        MiaAttachments.register(modEventBus);
 
         MiaRecipes.register(modEventBus);
-
+        MiaAttachments.register(modEventBus);
         MiaParticles.register(modEventBus);
         MiaEntities.register(modEventBus);
         MiaMenus.register(modEventBus);

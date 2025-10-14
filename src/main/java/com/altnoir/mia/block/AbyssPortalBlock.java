@@ -1,5 +1,6 @@
 package com.altnoir.mia.block;
 
+import com.altnoir.mia.init.MiaSounds;
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;
 import com.altnoir.mia.worldgen.feature.AbyssBrinkPortalFeature;
 import com.mojang.serialization.MapCodec;
@@ -88,13 +89,24 @@ public class AbyssPortalBlock extends Block implements Portal {
                 vec3 = entity.adjustSpawnLocation(serverlevel, blockpos).getBottomCenter();
             }
 
+            DimensionTransition.PostDimensionTransition PORTAL_SOUND = playerEntity -> {
+                if (playerEntity instanceof ServerPlayer serverplayer) {
+                    serverplayer.playNotifySound(
+                            MiaSounds.ABYSS_PORTAL_TRAVEL.get(),
+                            SoundSource.BLOCKS,
+                            1.0F,
+                            1.0F
+                    );
+                }
+            };
+
             return new DimensionTransition(
                     serverlevel,
                     vec3,
                     entity.getDeltaMovement(),
                     f,
                     entity.getXRot(),
-                    DimensionTransition.PLAY_PORTAL_SOUND.then(DimensionTransition.PLACE_PORTAL_TICKET)
+                    PORTAL_SOUND.then(DimensionTransition.PLACE_PORTAL_TICKET)
             );
         }
     }
@@ -106,7 +118,7 @@ public class AbyssPortalBlock extends Block implements Portal {
                     (double) pos.getX() + 0.5,
                     (double) pos.getY() + 0.5,
                     (double) pos.getZ() + 0.5,
-                    SoundEvents.PORTAL_AMBIENT,
+                    MiaSounds.ABYSS_PORTAL_AMBIENT.get(),
                     SoundSource.BLOCKS,
                     0.5F,
                     random.nextFloat() * 0.4F + 0.8F,

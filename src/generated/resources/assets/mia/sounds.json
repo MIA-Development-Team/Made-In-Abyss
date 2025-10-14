@@ -1,0 +1,14 @@
+{
+  "abyss_portal_ambient": {
+    "sounds": [
+      "mia:abyss_portal_ambient"
+    ],
+    "subtitle": "subtitle.mia.abyss_portal_ambient"
+  },
+  "abyss_portal_travel": {
+    "sounds": [
+      "mia:abyss_portal_travel"
+    ],
+    "subtitle": "subtitle.mia.abyss_portal_travel"
+  }
+}
