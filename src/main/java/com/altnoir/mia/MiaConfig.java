@@ -1,11 +1,10 @@
 package com.altnoir.mia;
 
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-@EventBusSubscriber(modid = MIA.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+
 public class MiaConfig {
     private static final ModConfigSpec.Builder COMMON_BUILDER = new ModConfigSpec.Builder();
     private static final ModConfigSpec.Builder SERVER_BUILDER = new ModConfigSpec.Builder();
@@ -41,8 +40,7 @@ public class MiaConfig {
     public static final ModConfigSpec COMMON_SPEC = COMMON_BUILDER.build();
     public static final ModConfigSpec SERVER_SPEC = SERVER_BUILDER.build();
 
-    @SubscribeEvent
-    public static void onLoad(final ModConfigEvent event) {
+    private static void loadValues(ModConfigEvent event) {
         if (event.getConfig().getSpec() == COMMON_SPEC) {
             abyssRadius = ABYSS_RADIUS.get();
             disconnectButtonState = DISCONNECT_BUTTON_STATE.get();
@@ -51,6 +49,12 @@ public class MiaConfig {
         if (event.getConfig().getSpec() == SERVER_SPEC) {
             curse = CURSE.get();
             curseGod = CURSE_GOD.get();
+        }
+    }
+
+    public static void loadEvent(final ModConfigEvent event) {
+        if (event instanceof ModConfigEvent.Loading || event instanceof ModConfigEvent.Reloading) {
+            loadValues(event);
         }
     }
 }

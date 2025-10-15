@@ -15,13 +15,10 @@ public class EventHandle {
     }
 
     public static void addModEventBus(IEventBus modEventBus) {
-        modEventBus.addListener(MiaConfig::onLoad);
-
+        modEventBus.addListener(MiaConfig::loadEvent);
         modEventBus.addListener(DataGenerators::gatherData);
-
         modEventBus.addListener(MiaNetworking::register);
         modEventBus.addListener(CurseEvent::attachEntityCapabilities);
-
         modEventBus.addListener(CapabilityRegister::RegisterCapabilitiesEvent);
         modEventBus.addListener(PlayerAttributeEvent::addPlayerAttributes);
     }

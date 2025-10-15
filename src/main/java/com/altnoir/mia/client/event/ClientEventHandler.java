@@ -15,7 +15,6 @@ public class ClientEventHandler {
 
     public static void addModEventBus(IEventBus modEventBus) {
         modEventBus.addListener(MiaClientConfig::onLoad);
-
         modEventBus.addListener(ClientDimEffects::registerDimensionEffects);
         modEventBus.addListener(RegisterParticlesEvent::registerParticles);
         modEventBus.addListener(ClientTooltipComponentEvent::onRegisterFactories);
@@ -28,7 +27,6 @@ public class ClientEventHandler {
         gameEventBus.addListener(ClientCurseEvent::ScreenEventInitPost);
         gameEventBus.addListener(ClientCurseEvent::onRenderOverlay);
         gameEventBus.addListener(ClientTooltipEvent::onTooltip);
-
         gameEventBus.addListener(KeyArrowEvent::onClientTick);
         gameEventBus.addListener(KeyArrowEvent::onRenderGui);
     }
