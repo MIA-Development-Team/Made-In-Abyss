@@ -10,7 +10,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -114,6 +113,9 @@ public class AbyssPortalBlock extends Block implements Portal {
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         if (random.nextInt(100) == 0) {
+            float[] pitchValues = {0.4F, 0.6F, 1.0F, 1.2F, 1.5F};
+            float pitch = pitchValues[random.nextInt(pitchValues.length)];
+
             level.playLocalSound(
                     (double) pos.getX() + 0.5,
                     (double) pos.getY() + 0.5,
@@ -121,7 +123,7 @@ public class AbyssPortalBlock extends Block implements Portal {
                     MiaSounds.ABYSS_PORTAL_AMBIENT.get(),
                     SoundSource.BLOCKS,
                     0.5F,
-                    random.nextFloat() * 0.4F + 0.8F,
+                    pitch,
                     false
             );
         }
