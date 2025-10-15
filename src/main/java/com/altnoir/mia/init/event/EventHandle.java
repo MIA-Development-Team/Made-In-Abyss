@@ -1,9 +1,6 @@
 package com.altnoir.mia.init.event;
 
-import com.altnoir.mia.MiaClientConfig;
 import com.altnoir.mia.MiaConfig;
-import com.altnoir.mia.client.event.KeyArrowEvent;
-import com.altnoir.mia.init.MiaKeyBinding;
 import com.altnoir.mia.datagen.DataGenerators;
 import com.altnoir.mia.init.MiaNetworking;
 import net.neoforged.bus.api.IEventBus;

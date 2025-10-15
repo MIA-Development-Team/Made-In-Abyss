@@ -1,7 +1,7 @@
 package com.altnoir.mia.client.event;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.MiaClientConfig;
+import com.altnoir.mia.client.MiaClientConfig;
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.init.MiaCapabilities;
 import com.altnoir.mia.util.MiaUtil;

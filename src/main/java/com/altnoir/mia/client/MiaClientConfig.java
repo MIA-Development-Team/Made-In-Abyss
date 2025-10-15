@@ -1,4 +1,4 @@
-package com.altnoir.mia;
+package com.altnoir.mia.client;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
