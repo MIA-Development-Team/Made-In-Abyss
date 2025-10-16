@@ -18,7 +18,7 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.Nullable;
 
 public class EndlessCupBlockEntity extends BlockEntity {
-    public FluidTank fluidTank = new FluidTank(100000) {
+    public FluidTank fluidTank = new FluidTank(Integer.MAX_VALUE) {
         @Override
         protected void onContentsChanged() {
             setChanged();
@@ -56,6 +56,6 @@ public class EndlessCupBlockEntity extends BlockEntity {
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, EndlessCupBlockEntity blockEntity) {
-        blockEntity.fluidTank.fill(new FluidStack(Fluids.WATER, 100000), IFluidHandler.FluidAction.EXECUTE);
+        blockEntity.fluidTank.fill(new FluidStack(Fluids.WATER, Integer.MAX_VALUE), IFluidHandler.FluidAction.EXECUTE);
     }
 }
