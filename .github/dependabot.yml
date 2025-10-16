@@ -42,7 +42,6 @@ updates:
           - "patch"
     allow:
       - dependency-type: "all"
-    ignore: []
 
   - package-ecosystem: "github-actions"
     directory: "/"
