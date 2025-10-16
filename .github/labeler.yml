@@ -97,7 +97,7 @@ labels:
 
   - name: deps
     content: dependencies
-    regexes: '[dD]pes(?:\([^)]*\))?[\:\.\,]'
+    regexes: '[dD]eps(?:\([^)]*\))?[\:\.\,]'
     skip-if:
       - skip all
     remove-if:
