@@ -6,6 +6,9 @@ labels:
   - name: skip all
     content:
     regexes: '[Ss]kip (?:[Aa]ll |)[Ll]abels?'
+  - name: skip dependabot
+    content:
+    author: 'dependabot[bot]'
   - name: remove all
     content:
     regexes: '[Rr]emove (?:[Aa]ll |)[Ll]abels?'
@@ -23,6 +26,7 @@ labels:
     regexes: '[Ff]eat(?:\([^)]*\))?[\:\.\,]'
     skip-if:
       - skip all
+      - skip dependabot
     remove-if:
       - remove all
   # `Bug fix`
@@ -31,6 +35,7 @@ labels:
     regexes: '[Ff]ix(?:\([^)]*\))?[\:\.\,]'
     skip-if:
       - skip all
+      - skip dependabot
     remove-if:
       - remove all
   # `document`
@@ -39,6 +44,7 @@ labels:
     regexes: '[Dd]ocs(?:\([^)]*\))?[\:\.\,]'
     skip-if:
       - skip all
+      - skip dependabot
     remove-if:
       - remove all
   # `test`
@@ -47,6 +53,7 @@ labels:
     regexes: '[Tt]est(?:\([^)]*\))?[\:\.\,]'
     skip-if:
       - skip all
+      - skip dependabot
     remove-if:
       - remove all
   # 工具链等修改
@@ -55,6 +62,7 @@ labels:
     regexes: '[Bb]uild(?:\([^)]*\))?[\:\.\,]'
     skip-if:
       - skip all
+      - skip dependabot
     remove-if:
       - remove all
 
@@ -64,9 +72,9 @@ labels:
     regexes: '[Cc]i(?:\([^)]*\))?[\:\.\,]'
     skip-if:
       - skip all
+      - skip dependabot
     remove-if:
       - remove all
-
 
   # 代码样式缩进等
   - name: style
@@ -74,6 +82,7 @@ labels:
     regexes: '[Ss]tyle(?:\([^)]*\))?[\:\.\,]'
     skip-if:
       - skip all
+      - skip dependabot
     remove-if:
       - remove all
 
@@ -83,6 +92,7 @@ labels:
     regexes: '[rR]factor(?:\([^)]*\))?[\:\.\,]'
     skip-if:
       - skip all
+      - skip dependabot
     remove-if:
       - remove all
 
@@ -92,6 +102,7 @@ labels:
     regexes: '[pP]erf(?:\([^)]*\))?[\:\.\,]'
     skip-if:
       - skip all
+      - skip dependabot
     remove-if:
       - remove all
 
@@ -99,6 +110,7 @@ labels:
     content: dependencies
     regexes: '[dD]eps(?:\([^)]*\))?[\:\.\,]'
     skip-if:
+      - skip dependabot
       - skip all
     remove-if:
       - remove all
