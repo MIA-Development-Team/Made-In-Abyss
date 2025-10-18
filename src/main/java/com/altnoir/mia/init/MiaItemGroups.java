@@ -20,6 +20,7 @@ public class MiaItemGroups {
                     .displayItems((parameters, output) -> {
                         // decoration blocks
                         output.accept(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
+                        output.accept(MiaBlocks.COVERGRASS_TUFF);
                         output.accept(MiaBlocks.ABYSS_ANDESITE);
                         output.accept(MiaBlocks.ABYSS_ANDESITE_STAIRS);
                         output.accept(MiaBlocks.ABYSS_ANDESITE_SLAB);

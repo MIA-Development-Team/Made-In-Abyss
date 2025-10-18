@@ -58,7 +58,7 @@ public class AbyssAndesiteBlock extends AbsCanFarmBlock implements BonemealableB
         for (BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
             BlockState blockstate = level.getBlockState(blockpos);
 
-            if (blockstate.is(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())) {
+            if (blockstate.is(MiaTags.Blocks.COVERGRASS)) {
                 flag = true;
             }
 

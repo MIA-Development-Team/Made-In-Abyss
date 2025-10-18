@@ -4,8 +4,8 @@
     "type": "minecraft:y_clamped_gradient",
     "from_value": 2.5,
     "from_y": 0,
-    "to_value": -2.5,
-    "to_y": 580
+    "to_value": -1.5,
+    "to_y": 512
   },
   "argument2": "minecraft:overworld/offset"
 }

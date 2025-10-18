@@ -111,4 +111,10 @@ public class AbyssBrinkUtils {
     public static void addDefaultSprings(BiomeGenerationSettings.Builder builder) {
         builder.addFeature(GenerationStep.Decoration.FLUID_SPRINGS, AbyssBrinkPlacements.SPRING_WATER);
     }
+
+    public static void addDripstone(BiomeGenerationSettings.Builder builder) {
+        builder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AbyssBrinkPlacements.LARGE_DRIPSTONE);
+        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, CavePlacements.DRIPSTONE_CLUSTER);
+        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, CavePlacements.POINTED_DRIPSTONE);
+    }
 }

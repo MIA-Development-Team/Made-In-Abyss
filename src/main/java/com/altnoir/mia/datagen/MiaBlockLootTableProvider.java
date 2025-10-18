@@ -13,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -38,6 +39,8 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
     protected void generate() {
         add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(),
                 block -> createSingleItemTableWithSilkTouch(block, MiaBlocks.ABYSS_COBBLED_ANDESITE.get()));
+        add(MiaBlocks.COVERGRASS_TUFF.get(),
+                block -> createSingleItemTableWithSilkTouch(block, Blocks.TUFF));
         add(MiaBlocks.ABYSS_ANDESITE.get(),
                 block -> createSingleItemTableWithSilkTouch(block, MiaBlocks.ABYSS_COBBLED_ANDESITE.get()));
         dropSelf(MiaBlocks.ABYSS_ANDESITE_STAIRS.get());

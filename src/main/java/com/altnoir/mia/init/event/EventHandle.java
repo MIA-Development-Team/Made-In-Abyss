@@ -24,6 +24,7 @@ public class EventHandle {
         gameEventBus.addListener(CurseEvent::onDimensionChange);
         gameEventBus.addListener(CurseEvent::onPlayerTick);
 
+        gameEventBus.addListener(BonemealUseEvent::onBonemealUse);
         gameEventBus.addListener(BrewingRecipesEvent::onBrewingRecipe);
     }
 }
