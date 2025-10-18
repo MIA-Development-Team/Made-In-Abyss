@@ -6,9 +6,6 @@ labels:
   - name: skip all
     content:
     regexes: '[Ss]kip (?:[Aa]ll |)[Ll]abels?'
-  - name: skip dependabot
-    content:
-    author: 'dependabot[bot]'
   - name: remove all
     content:
     regexes: '[Rr]emove (?:[Aa]ll |)[Ll]abels?'
