@@ -95,6 +95,14 @@ labels:
     remove-if:
       - remove all
 
+  - name: deps
+    content: dependencies
+    regexes: '[dD]eps(?:\([^)]*\))?[\:\.\,]'
+    skip-if:
+      - skip all
+    remove-if:
+      - remove all
+
   # `ambiguous`
   - name: pr-ambiguous
     # 不符合 commitizen 的 PR

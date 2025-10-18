@@ -1,0 +1,58 @@
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "00:00"
+      timezone: "Asia/Shanghai"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "gradle"
+    commit-message:
+      prefix: "deps"
+      prefix-development: "chore"
+      include: "scope"
+    groups:
+      minecraft-core:
+        patterns:
+          - "net.neoforged*"
+          - "org.spongepowered*"
+        update-types:
+          - "minor"
+          - "patch"
+      mod-dependencies:
+        patterns:
+          - "mezz.jei*"
+          - "dev.emi*"
+          - "top.theillusivec4.curios*"
+          - "vazkii.patchouli*"
+          - "maven.modrinth*"
+          - "dev.latvian.mods*"
+        update-types:
+          - "minor"
+          - "patch"
+      development-tools:
+        patterns:
+          - "gradle*"
+          - "org.gradle*"
+        update-types:
+          - "minor"
+          - "patch"
+    allow:
+      - dependency-type: "all"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "00:00"
+      timezone: "Asia/Shanghai"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
