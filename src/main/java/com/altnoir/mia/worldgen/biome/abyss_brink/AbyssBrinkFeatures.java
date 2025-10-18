@@ -20,6 +20,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -57,6 +58,7 @@ public class AbyssBrinkFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_CLUSTER = MiaFeatureUtils.abyssBrinkKey("prasiolite_cluster");
     public static final ResourceKey<ConfiguredFeature<?, ?>> BIG_PRASIOLITE_CLUSTER = MiaFeatureUtils.abyssBrinkKey("big_prasiolite_cluster");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_GEODE = MiaFeatureUtils.abyssBrinkKey("prasiolite_geode");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_DRIPSTONE = MiaFeatureUtils.abyssBrinkKey("large_dripstone");
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAW_IRON = MiaFeatureUtils.abyssBrinkKey("raw_iron");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
@@ -66,13 +68,16 @@ public class AbyssBrinkFeatures {
         Holder<PlacedFeature> fancy_skyfog_bee = holdergetter1.getOrThrow(MiaTreePlacements.FANCY_SKYFOG_BEES_005);
         Holder<PlacedFeature> maga_skyfog = holdergetter1.getOrThrow(MiaTreePlacements.MEGA_SKYFOG);
 
-        FeatureUtils.register(context, MONSTER_CHEAT, MiaFeature.MONSTER_CHEAT.get(),
+        FeatureUtils.register(
+                context, MONSTER_CHEAT, MiaFeature.MONSTER_CHEAT.get(),
                 new MonsterCheatConfiguration(
                         BlockStateProvider.simple(MiaBlocks.SKYFOG_LOG.get().defaultBlockState()),
                         BlockStateProvider.simple(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get().defaultBlockState().setValue(BlockStateProperties.DISTANCE, 1)))
         );
 
-        MiaFeatureUtils.register(context, SPRING_WATER, Feature.SPRING, new SpringConfiguration(
+        MiaFeatureUtils.register(
+                context, SPRING_WATER, Feature.SPRING,
+                new SpringConfiguration(
                         Fluids.WATER.defaultFluidState(),
                         true,
                         4,
@@ -81,18 +86,14 @@ public class AbyssBrinkFeatures {
                 )
         );
         MiaFeatureUtils.register(
-                context,
-                LAKE_WATER,
-                MiaFeature.LAKE.get(),
+                context, LAKE_WATER, MiaFeature.LAKE.get(),
                 new LakeFeature.Configuration(
                         BlockStateProvider.simple(Blocks.WATER.defaultBlockState()), BlockStateProvider.simple(Blocks.SAND.defaultBlockState())
                 )
         );
         MultifaceBlock multifaceblock = (MultifaceBlock) Blocks.GLOW_LICHEN;
         MiaFeatureUtils.register(
-                context,
-                GLOW_LICHEN,
-                Feature.MULTIFACE_GROWTH,
+                context, GLOW_LICHEN, Feature.MULTIFACE_GROWTH,
                 new MultifaceGrowthConfiguration(
                         multifaceblock,
                         20,
@@ -105,9 +106,7 @@ public class AbyssBrinkFeatures {
         );
 
         MiaFeatureUtils.register(
-                context,
-                FLOWER_MEADOW,
-                Feature.FLOWER,
+                context, FLOWER_MEADOW, Feature.FLOWER,
                 new RandomPatchConfiguration(
                         96,
                         6,
@@ -137,9 +136,7 @@ public class AbyssBrinkFeatures {
                 )
         );
         MiaFeatureUtils.register(
-                context,
-                FOREST_FLOWERS,
-                Feature.SIMPLE_RANDOM_SELECTOR,
+                context, FOREST_FLOWERS, Feature.SIMPLE_RANDOM_SELECTOR,
                 new SimpleRandomFeatureConfiguration(
                         HolderSet.direct(
                                 PlacementUtils.inlinePlaced(
@@ -151,16 +148,11 @@ public class AbyssBrinkFeatures {
         );
         MiaFeatureUtils.register(context, RAW_IRON, Feature.BLOCK_PILE, new BlockPileConfiguration(BlockStateProvider.simple(Blocks.RAW_IRON_BLOCK)));
 
-        MiaFeatureUtils.register(
-                context,
-                TREES_SKYFOG,
-                Feature.RANDOM_SELECTOR,
+        MiaFeatureUtils.register(context, TREES_SKYFOG, Feature.RANDOM_SELECTOR,
                 new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(skyfog_bee, 0.3F)), fancy_skyfog_bee)
         );
         MiaFeatureUtils.register(
-                context,
-                TREES_SKYFOG_AND_AZALEA,
-                Feature.RANDOM_SELECTOR,
+                context, TREES_SKYFOG_AND_AZALEA, Feature.RANDOM_SELECTOR,
                 new RandomFeatureConfiguration(List.of(
                         new WeightedPlacedFeature(maga_skyfog, 0.075F),
                         new WeightedPlacedFeature(azalea, 0.1F),
@@ -172,9 +164,7 @@ public class AbyssBrinkFeatures {
         WeightedStateProvider prasiolite1 = new WeightedStateProvider(createPrasioliteStates(false).build());
         WeightedStateProvider prasiolite2 = new WeightedStateProvider(createPrasioliteStates(true).build());
         MiaFeatureUtils.register(
-                context,
-                PRASIOLITE_CLUSTER,
-                Feature.SIMPLE_RANDOM_SELECTOR,
+                context, PRASIOLITE_CLUSTER, Feature.SIMPLE_RANDOM_SELECTOR,
                 new SimpleRandomFeatureConfiguration(
                         HolderSet.direct(
                                 PlacementUtils.inlinePlaced(
@@ -201,9 +191,7 @@ public class AbyssBrinkFeatures {
                 )
         );
         MiaFeatureUtils.register(
-                context,
-                BIG_PRASIOLITE_CLUSTER,
-                MiaFeature.BIG_CLUSTER.get(),
+                context, BIG_PRASIOLITE_CLUSTER, MiaFeature.BIG_CLUSTER.get(),
                 new ClusterConfiguration(
                         BlockStateProvider.simple(MiaBlocks.PRASIOLITE_BLOCK.get().defaultBlockState()),
                         prasiolite1, prasiolite2,
@@ -211,9 +199,7 @@ public class AbyssBrinkFeatures {
         );
 
         MiaFeatureUtils.register(
-                context,
-                PRASIOLITE_GEODE,
-                Feature.GEODE,
+                context, PRASIOLITE_GEODE, Feature.GEODE,
                 new GeodeConfiguration(
                         new GeodeBlockSettings(
                                 BlockStateProvider.simple(Blocks.AIR),
@@ -242,6 +228,21 @@ public class AbyssBrinkFeatures {
                         16,
                         0.05,
                         1
+                )
+        );
+
+        MiaFeatureUtils.register(
+                context, LARGE_DRIPSTONE, Feature.LARGE_DRIPSTONE,
+                new LargeDripstoneConfiguration(
+                        188,
+                        UniformInt.of(3, 19),
+                        UniformFloat.of(0.4F, 2.0F),
+                        0.5F,
+                        UniformFloat.of(0.3F, 0.9F),
+                        UniformFloat.of(0.4F, 1.0F),
+                        UniformFloat.of(0.0F, 0.3F),
+                        4,
+                        0.6F
                 )
         );
     }

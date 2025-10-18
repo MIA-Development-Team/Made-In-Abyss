@@ -38,7 +38,8 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         endlessCupBlock();
 
         // decoration blocks
-        coverGrassBlock();
+        coverGrassBlock(MiaBlocks.COVERGRASS_ABYSS_ANDESITE, MiaBlocks.ABYSS_ANDESITE);
+        coverGrassBlock(MiaBlocks.COVERGRASS_TUFF, Blocks.TUFF);
         mirroredBlock(MiaBlocks.ABYSS_ANDESITE);
 
         stairsBlockWithItem(MiaBlocks.ABYSS_ANDESITE_STAIRS, MiaBlocks.ABYSS_ANDESITE);
@@ -104,10 +105,16 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
     }
 
-    private void coverGrassBlock() {
-        modelP.coverGrassBlockModel(this, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(), MiaBlocks.ABYSS_ANDESITE.get());
-        stateP.rotationYBlockState(this, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
-        blockItem(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
+    private void coverGrassBlock(DeferredBlock<?> modelBlock, DeferredBlock<?> block) {
+        modelP.coverGrassBlockModel(this, modelBlock.get(), block.get());
+        stateP.rotationYBlockState(this, modelBlock.get());
+        blockItem(modelBlock);
+    }
+
+    private void coverGrassBlock(DeferredBlock<?> modelBlock, Block block) {
+        modelP.coverGrassBlockModel2(this, modelBlock.get(), block);
+        stateP.rotationYBlockState(this, modelBlock.get());
+        blockItem(modelBlock);
     }
 
     private void mirroredBlock(DeferredBlock<?> block) {

@@ -45,6 +45,15 @@ public class MiaBlocks {
                     .requiresCorrectToolForDrops()
                     .strength(3.0F, 6.0F)
                     .sound(SoundType.DEEPSLATE)));
+    public static final DeferredBlock<Block> COVERGRASS_TUFF = registerBlock("covergrass_tuff", () ->
+            new CoverGrassBlock(
+                    Blocks.TUFF, BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.GRASS)
+                    .randomTicks()
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .requiresCorrectToolForDrops()
+                    .strength(3.0F, 6.0F)
+                    .sound(SoundType.TUFF)));
 
     public static final DeferredBlock<Block> ABYSS_ANDESITE_STAIRS = registerBlock("abyss_andesite_stairs", () -> stair(ABYSS_ANDESITE.get()));
     public static final DeferredBlock<Block> ABYSS_ANDESITE_SLAB = registerBlock("abyss_andesite_slab", () -> slab(ABYSS_ANDESITE.get()));

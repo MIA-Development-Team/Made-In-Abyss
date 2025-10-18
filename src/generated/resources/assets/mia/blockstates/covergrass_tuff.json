@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "mia:block/covergrass_tuff"
+      },
+      {
+        "model": "mia:block/covergrass_tuff",
+        "y": 90
+      },
+      {
+        "model": "mia:block/covergrass_tuff",
+        "y": 180
+      },
+      {
+        "model": "mia:block/covergrass_tuff",
+        "y": 270
+      }
+    ]
+  }
+}

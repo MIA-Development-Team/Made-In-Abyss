@@ -34,7 +34,7 @@ public class MiaDensityFunction {
         HolderGetter<NormalNoise.NoiseParameters> holdergetter = context.lookup(Registries.NOISE);
         HolderGetter<DensityFunction> holdergetter1 = context.lookup(Registries.DENSITY_FUNCTION);
 
-        context.register(ABYSS_BRINK_DEPTH, DensityFunctions.add(DensityFunctions.yClampedGradient(0, 580, 2.5, -2.5), getFunction(holdergetter1, MiaNoiseRouterData.OFFSET)));
+        context.register(ABYSS_BRINK_DEPTH, DensityFunctions.add(DensityFunctions.yClampedGradient(0, 512, 2.5, -1.5), getFunction(holdergetter1, MiaNoiseRouterData.OFFSET)));
         context.register(ABYSS_BRINK_HOLE, DensityFunctions.add(MiaDensityFunctionTypes.abyssHole(0L), getFunction(holdergetter1, BASE_3D_NOISE_ABYSS_BRINK)));
         context.register(ABYSS_BRINK_BIG_HOLE, DensityFunctions.add(MiaDensityFunctionTypes.abyssBigHole(0L), getFunction(holdergetter1, BASE_3D_NOISE_ABYSS_BRINK)));
         context.register(BASE_3D_NOISE_ABYSS_BRINK, BlendedNoise.createUnseeded(0.25, 0.25, 160.0, 160.0, 8.0));

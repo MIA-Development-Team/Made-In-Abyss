@@ -6,6 +6,7 @@ import com.altnoir.mia.init.MiaTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -30,7 +31,9 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .addTag(BlockTags.BASE_STONE_OVERWORLD);
 
         tag(MiaTags.Blocks.COVERGRASS)
-                .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
+                .add(Blocks.GRASS_BLOCK)
+                .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
+                .add(MiaBlocks.COVERGRASS_TUFF.get());
 
         // 深渊工具标签
         tag(MiaTags.Blocks.NEED_PRASIOLITE_TOOL)
@@ -47,12 +50,15 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
 
         // 基础标签
         tag(BlockTags.DIRT)
-                .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
+                .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
+                .add(MiaBlocks.COVERGRASS_TUFF.get());
         tag(BlockTags.ANIMALS_SPAWNABLE_ON)
-                .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
+                .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
+                .add(MiaBlocks.COVERGRASS_TUFF.get());
 
         tag(BlockTags.MOSS_REPLACEABLE)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
+                .add(MiaBlocks.COVERGRASS_TUFF.get())
                 .add(MiaBlocks.ABYSS_ANDESITE.get());
 
         tag(BlockTags.LOGS_THAT_BURN) // 自动添加LOGS标签
@@ -109,6 +115,7 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
         // 工具标签
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
+                .add(MiaBlocks.COVERGRASS_TUFF.get())
                 .add(MiaBlocks.ABYSS_ANDESITE.get())
                 .add(MiaBlocks.ABYSS_ANDESITE_STAIRS.get())
                 .add(MiaBlocks.ABYSS_ANDESITE_SLAB.get())

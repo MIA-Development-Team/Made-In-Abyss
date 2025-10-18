@@ -16,6 +16,14 @@ public class MiaModelProvider {
                 p.modLoc("block/" + MiaUtil.getBlockPath(bottom))
         );
     }
+    public void coverGrassBlockModel2(BlockStateProvider p, Block block, Block bottom) {
+        baseTSBModel(p, MiaUtil.getBlockPath(block),
+                p.modLoc("block/abyss_grass_block_top"),
+                p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side"),
+                p.mcLoc("block/" + MiaUtil.getBlockPath(bottom)),
+                p.mcLoc("block/" + MiaUtil.getBlockPath(bottom))
+        );
+    }
 
     public void baseTSBModel(BlockStateProvider p, String block, ResourceLocation top, ResourceLocation side, ResourceLocation bottom, ResourceLocation particle) {
         p.models().withExistingParent(block, p.mcLoc("block/block"))
