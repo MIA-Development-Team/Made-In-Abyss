@@ -104,7 +104,7 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
     }
 
     private void renderButtons(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y,
-            int lastVisibleElementIndex) {
+                               int lastVisibleElementIndex) {
         int availableRecipeCount = ((ArtifactSmithingTableMenu) this.menu).getAvailableRecipes().size();
         int unavailableRecipeCount = ((ArtifactSmithingTableMenu) this.menu).getUnavailableRecipes().size();
         for (int i = this.startIndex; i < lastVisibleElementIndex

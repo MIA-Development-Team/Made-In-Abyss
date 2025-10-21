@@ -2,10 +2,27 @@
   "type": "minecraft:block_pile",
   "config": {
     "state_provider": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "minecraft:raw_iron_block"
-      }
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "minecraft:raw_iron_block"
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mia:abyss_cobbled_andesite"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:mossy_abyss_cobbled_andesite"
+          },
+          "weight": 1
+        }
+      ]
     }
   }
 }

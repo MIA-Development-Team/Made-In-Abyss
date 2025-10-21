@@ -146,7 +146,18 @@ public class AbyssBrinkFeatures {
                         )
                 )
         );
-        MiaFeatureUtils.register(context, RAW_IRON, Feature.BLOCK_PILE, new BlockPileConfiguration(BlockStateProvider.simple(Blocks.RAW_IRON_BLOCK)));
+        MiaFeatureUtils.register(
+                context, RAW_IRON, Feature.BLOCK_PILE,
+                new BlockPileConfiguration(
+                        new WeightedStateProvider(
+                                SimpleWeightedRandomList.<BlockState>builder()
+                                        .add(Blocks.RAW_IRON_BLOCK.defaultBlockState(), 2)
+                                        .add(MiaBlocks.ABYSS_COBBLED_ANDESITE.get().defaultBlockState(), 1)
+                                        .add(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE.get().defaultBlockState(), 1)
+                                        .build()
+                        )
+                )
+        );
 
         MiaFeatureUtils.register(context, TREES_SKYFOG, Feature.RANDOM_SELECTOR,
                 new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(skyfog_bee, 0.3F)), fancy_skyfog_bee)
