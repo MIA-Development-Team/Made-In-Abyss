@@ -4,6 +4,7 @@ import com.altnoir.mia.util.MiaUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.GameRenderer;
@@ -36,9 +37,25 @@ public class AbyssBrinkDimEffects extends DimensionSpecialEffects {
     public boolean renderSky(ClientLevel level, int ticks, float partialTick, Matrix4f modelViewMatrix, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
         ResourceLocation sunTexture = MiaUtil.miaId("textures/skybox/abyss_brink.png");
 
+        var oldProjectionMatrix = RenderSystem.getProjectionMatrix();
+        var projection = new Matrix4f(oldProjectionMatrix);
+
+        float m22 = projection.m22();
+        float m32 = projection.m32();
+
+        float near = m32 / (m22 - 1.0F);
+        float far = 1.0E6F;
+
+        projection.m22((far + near) / (near - far));
+        projection.m32((2.0F * far * near) / (near - far));
+
+        RenderSystem.setProjectionMatrix(projection, VertexSorting.ORTHOGRAPHIC_Z);
+
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, sunTexture);
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
 
         PoseStack poseStack = new PoseStack();
         poseStack.mulPose(modelViewMatrix);
@@ -59,6 +76,10 @@ public class AbyssBrinkDimEffects extends DimensionSpecialEffects {
         bufferbuilder.addVertex(pose, -size - playerX, height, size - playerZ).setUv(0.0F, 1.0F);
 
         BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+
+        RenderSystem.setProjectionMatrix(oldProjectionMatrix, VertexSorting.ORTHOGRAPHIC_Z);
+        RenderSystem.disableBlend();
+
         return true;
     }
 }
