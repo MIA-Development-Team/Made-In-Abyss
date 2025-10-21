@@ -63,8 +63,6 @@ public class MIA {
         var gameEventBus = NeoForge.EVENT_BUS;
         gameEventBus.register(this);
         EventHandle.addListener(modEventBus, gameEventBus);
-
-        NeoForge.EVENT_BUS.register(new ArtifactSmithingTableEventHandler());
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
