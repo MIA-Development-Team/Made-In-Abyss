@@ -133,6 +133,12 @@ public class MiaLangProvider extends LanguageProvider {
             add("stat.mia.interact_with_" + name, "Interactions with " + formatName(name));
         });
 
+        // Sounds start
+        add(MiaSoundsProvider.ABYSS_PORTAL_AMBIENT, "Abyss Portal: Ambient");
+        add(MiaSoundsProvider.ABYSS_PORTAL_TRAVEL, "Abyss Portal: Travel");
+        // Sounds end
+
+
         //Compat start
         add("curios.identifier.whistle", "Whistle");
         add("curios.modifiers.whistle", "Red Whistle Attributes");

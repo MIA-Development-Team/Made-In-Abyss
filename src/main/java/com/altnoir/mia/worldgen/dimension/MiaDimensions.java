@@ -64,7 +64,7 @@ public class MiaDimensions {
                                         Climate.Parameter.span(-0.8F, 0.2F),
                                         Climate.Parameter.point(0.0F),
                                         Climate.Parameter.span(-0.5F, -0.3F),
-                                        0.0F, biomeRegistry.getOrThrow(Biomes.CHERRY_GROVE)
+                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
                                 ),
                                 biomePair(
                                         Climate.Parameter.span(-0.5F, 0.5F),

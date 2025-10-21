@@ -2,7 +2,6 @@ package com.altnoir.mia.block;
 
 import com.altnoir.mia.init.MiaSounds;
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;
-import com.altnoir.mia.worldgen.feature.AbyssBrinkPortalFeature;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -75,7 +74,9 @@ public class AbyssPortalBlock extends Block implements Portal {
             Vec3 vec3 = blockpos.getBottomCenter();
             float f = entity.getYRot();
             if (flag) {
-                AbyssBrinkPortalFeature.createAbyssBrinkPlatform(serverlevel, BlockPos.containing(vec3).below(), true);
+                //AbyssPortalFeature.createAbyssBrinkPlatform(serverlevel, BlockPos.containing(vec3).below(), true);
+                BlockPos suitablePos = findSuitablePositionAndCreatePlatform(serverlevel, blockpos);
+                vec3 = suitablePos.getBottomCenter();
                 f = Direction.WEST.toYRot();
                 if (entity instanceof ServerPlayer) {
                     vec3 = vec3.subtract(0.0, 1.0, 0.0);
@@ -109,6 +110,40 @@ public class AbyssPortalBlock extends Block implements Portal {
             );
         }
     }
+
+    /**
+     * 从指定高度开始向下搜索合适的位置
+     *
+     * @param level     目标世界
+     * @param centerPos 中心位置
+     * @return 适合站立的位置
+     */
+    private BlockPos findSuitablePositionAndCreatePlatform(ServerLevel level, BlockPos centerPos) {
+        int endY = Math.max(250, level.getMinBuildHeight());
+
+        // 扩大搜索范围
+        for (int dxOffset = -8; dxOffset <= 8; dxOffset++) {
+            for (int dzOffset = -8; dzOffset <= 8; dzOffset++) {
+                BlockPos searchCenter = centerPos.offset(dxOffset * 8, 0, dzOffset * 8);
+
+                // 向下搜索合适的位置
+                for (int y = 350; y >= endY; y--) {
+                    BlockPos belowPos = new BlockPos(searchCenter.getX(), y, searchCenter.getZ());
+                    BlockPos feetPos = belowPos.above(1);
+                    BlockPos headPos = belowPos.above(2);
+
+                    boolean hasSpace = level.getBlockState(belowPos).isAir() && level.getBlockState(feetPos).isAir() && level.getBlockState(headPos).isAir();
+                    boolean hasSupport = !level.getBlockState(belowPos.below()).isAir();
+
+                    if (hasSpace && hasSupport) {
+                        return feetPos;
+                    }
+                }
+            }
+        }
+        return centerPos;
+    }
+
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {

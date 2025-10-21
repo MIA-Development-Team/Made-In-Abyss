@@ -1,0 +1,73 @@
+{
+  "variants": {
+    "axis=x": [
+      {
+        "model": "mia:block/stripped_fossilized_log_horizontal0",
+        "weight": 12,
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "mia:block/stripped_fossilized_log_horizontal1",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "mia:block/stripped_fossilized_log_horizontal2",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "mia:block/stripped_fossilized_log_horizontal3",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "mia:block/stripped_fossilized_log_horizontal4",
+        "x": 90,
+        "y": 90
+      }
+    ],
+    "axis=y": [
+      {
+        "model": "mia:block/stripped_fossilized_log0",
+        "weight": 12
+      },
+      {
+        "model": "mia:block/stripped_fossilized_log1"
+      },
+      {
+        "model": "mia:block/stripped_fossilized_log2"
+      },
+      {
+        "model": "mia:block/stripped_fossilized_log3"
+      },
+      {
+        "model": "mia:block/stripped_fossilized_log4"
+      }
+    ],
+    "axis=z": [
+      {
+        "model": "mia:block/stripped_fossilized_log_horizontal0",
+        "weight": 12,
+        "x": 90
+      },
+      {
+        "model": "mia:block/stripped_fossilized_log_horizontal1",
+        "x": 90
+      },
+      {
+        "model": "mia:block/stripped_fossilized_log_horizontal2",
+        "x": 90
+      },
+      {
+        "model": "mia:block/stripped_fossilized_log_horizontal3",
+        "x": 90
+      },
+      {
+        "model": "mia:block/stripped_fossilized_log_horizontal4",
+        "x": 90
+      }
+    ]
+  }
+}

@@ -72,7 +72,7 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
         tag(BlockTags.PLANKS)
                 .add(MiaBlocks.SKYFOG_PLANKS.get());
         tag(BlockTags.WOODEN_STAIRS) // 自动添加STAIRS标签
-                .add(MiaBlocks.SKYFOG_STARIS.get());
+                .add(MiaBlocks.SKYFOG_STAIRS.get());
         tag(BlockTags.STAIRS)
                 .add(MiaBlocks.ABYSS_ANDESITE_STAIRS.get())
                 .add(MiaBlocks.ABYSS_COBBLED_ANDESITE_STAIRS.get())

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "mia:block/stripped_fossilized_wood_bricks_slab"
+    },
+    "type=double": {
+      "model": "mia:block/stripped_fossilized_wood_bricks"
+    },
+    "type=top": {
+      "model": "mia:block/stripped_fossilized_wood_bricks_slab_top"
+    }
+  }
+}

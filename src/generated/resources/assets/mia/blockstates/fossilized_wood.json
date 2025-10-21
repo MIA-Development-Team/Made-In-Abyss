@@ -1,0 +1,46 @@
+{
+  "variants": {
+    "axis=x": [
+      {
+        "model": "mia:block/fossilized_wood_horizontal0",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "mia:block/fossilized_wood_horizontal1",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "mia:block/fossilized_wood_horizontal2",
+        "x": 90,
+        "y": 90
+      }
+    ],
+    "axis=y": [
+      {
+        "model": "mia:block/fossilized_wood0"
+      },
+      {
+        "model": "mia:block/fossilized_wood1"
+      },
+      {
+        "model": "mia:block/fossilized_wood2"
+      }
+    ],
+    "axis=z": [
+      {
+        "model": "mia:block/fossilized_wood_horizontal0",
+        "x": 90
+      },
+      {
+        "model": "mia:block/fossilized_wood_horizontal1",
+        "x": 90
+      },
+      {
+        "model": "mia:block/fossilized_wood_horizontal2",
+        "x": 90
+      }
+    ]
+  }
+}

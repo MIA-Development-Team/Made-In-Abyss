@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "mia:block/stripped_fossilized_wood_bricks",
+    "side": "mia:block/stripped_fossilized_wood_bricks",
+    "top": "mia:block/stripped_fossilized_wood_bricks"
+  }
+}

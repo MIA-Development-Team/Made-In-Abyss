@@ -29,8 +29,9 @@ public class MiaFeature {
     public static final DeferredHolder<Feature<?>, MonsterCheatFeature> MONSTER_CHEAT = FEATURE.register(
             "monster_cheat", () -> new MonsterCheatFeature(MonsterCheatConfiguration.CODEC)
     );
-    public static final DeferredHolder<Feature<?>, AbyssBrinkPortalFeature> ABYSS_BRINK_PORTAL = FEATURE.register(
-            "abyss_brink_portal", () -> new AbyssBrinkPortalFeature(NoneFeatureConfiguration.CODEC)
+
+    public static final DeferredHolder<Feature<?>, AbyssPortalFeature> ABYSS_PORTAL = FEATURE.register(
+            "abyss_portal", () -> new AbyssPortalFeature(NoneFeatureConfiguration.CODEC)
     );
 
     public static void register(IEventBus eventBus) {

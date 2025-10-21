@@ -1,9 +1,13 @@
 package com.altnoir.mia.worldgen.biome.abyss_brink;
 
+import com.altnoir.mia.datagen.MiaSoundsProvider;
+import com.altnoir.mia.init.MiaSounds;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.sounds.Musics;
+import net.minecraft.sounds.Music;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -11,6 +15,8 @@ import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
 public class AbyssBrinkBiomes {
+    public static final Holder<SoundEvent> ABYSS_BRINK_MUSIC = MiaSoundsProvider.ABYSS_MUSIC ? MiaSounds.MUSIC_ABYSS_BRINK_DIM : SoundEvents.MUSIC_BIOME_LUSH_CAVES;
+
     public static Biome abyssBrink(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
         spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CAT, 10, 4, 4));
@@ -144,8 +150,11 @@ public class AbyssBrinkBiomes {
                         .skyColor(8888490)
                         .fogColor(8888490)
                         .grassColorOverride(11335504)
+                        .ambientLoopSound(SoundEvents.AMBIENT_BASALT_DELTAS_LOOP)
                         .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_LUSH_CAVES)).build());
+                        .ambientAdditionsSound(new AmbientAdditionsSettings(SoundEvents.AMBIENT_BASALT_DELTAS_ADDITIONS, 0.0111))
+                        .backgroundMusic(new Music(ABYSS_BRINK_MUSIC, 1200, 2400, false))
+                        .build());
     }
 
 

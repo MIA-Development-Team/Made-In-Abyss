@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "mia:skyfog_staris"
+          "name": "mia:stripped_fossilized_wood_bricks"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "mia:blocks/skyfog_staris"
+  "random_sequence": "mia:blocks/stripped_fossilized_wood_bricks"
 }

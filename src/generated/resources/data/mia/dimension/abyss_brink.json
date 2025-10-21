@@ -79,7 +79,7 @@
           }
         },
         {
-          "biome": "minecraft:cherry_grove",
+          "biome": "mia:abyss_brink/skyfog_forest",
           "parameters": {
             "continentalness": 0.0,
             "depth": 0.0,

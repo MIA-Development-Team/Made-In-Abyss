@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "mia:block/stripped_fossilized_log2",
+    "side": "mia:block/stripped_fossilized_log2"
+  }
+}

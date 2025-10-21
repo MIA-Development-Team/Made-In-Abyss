@@ -48,6 +48,28 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS);
                         output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB);
                         output.accept(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL);
+                        // 化石树
+                        output.accept(MiaBlocks.FOSSILIZED_LOG);
+                        output.accept(MiaBlocks.FOSSILIZED_WOOD);
+                        output.accept(MiaBlocks.STRIPPED_FOSSILIZED_LOG);
+                        output.accept(MiaBlocks.STRIPPED_FOSSILIZED_WOOD);
+                        output.accept(MiaBlocks.POLISHED_FOSSILIZED_WOOD);
+                        output.accept(MiaBlocks.POLISHED_FOSSILIZED_WOOD_STAIRS);
+                        output.accept(MiaBlocks.POLISHED_FOSSILIZED_WOOD_SLAB);
+                        output.accept(MiaBlocks.POLISHED_FOSSILIZED_WOOD_WALL);
+                        output.accept(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD);
+                        output.accept(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_STAIRS);
+                        output.accept(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_SLAB);
+                        output.accept(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_WALL);
+                        output.accept(MiaBlocks.CHISLED_STRIPPED_FOSSILIZED_WOOD);
+                        output.accept(MiaBlocks.FOSSILIZED_WOOD_BRICKS);
+                        output.accept(MiaBlocks.FOSSILIZED_WOOD_BRICKS_STAIRS);
+                        output.accept(MiaBlocks.FOSSILIZED_WOOD_BRICKS_SLAB);
+                        output.accept(MiaBlocks.FOSSILIZED_WOOD_BRICKS_WALL);
+                        output.accept(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
+                        output.accept(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS);
+                        output.accept(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB);
+                        output.accept(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL);
 
                         output.accept(MiaBlocks.HOPPER_FARMLAND);
 
@@ -61,13 +83,15 @@ public class MiaItemGroups {
                         output.accept(MiaItems.PRASIOLITE_PICKAXE);
                         output.accept(MiaItems.PRASIOLITE_HOE);
 
+
+
                         // woods
                         output.accept(MiaBlocks.SKYFOG_LOG);
                         output.accept(MiaBlocks.SKYFOG_WOOD);
                         output.accept(MiaBlocks.STRIPPED_SKYFOG_LOG);
                         output.accept(MiaBlocks.STRIPPED_SKYFOG_WOOD);
                         output.accept(MiaBlocks.SKYFOG_PLANKS);
-                        output.accept(MiaBlocks.SKYFOG_STARIS);
+                        output.accept(MiaBlocks.SKYFOG_STAIRS);
                         output.accept(MiaBlocks.SKYFOG_SLAB);
                         output.accept(MiaBlocks.SKYFOG_FENCE);
                         output.accept(MiaBlocks.SKYFOG_FENCE_GATE);
@@ -81,6 +105,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.SKYFOG_BUTTON);
 
                         output.accept(MiaBlocks.ABYSS_PORTAL);
+                        output.accept(MiaBlocks.ABYSS_PORTAL_FRAME);
                         output.accept(MiaBlocks.ABYSS_SPAWNER);
 
                         // foods

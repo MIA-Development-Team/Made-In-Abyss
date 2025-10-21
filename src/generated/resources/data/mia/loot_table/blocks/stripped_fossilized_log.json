@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "mia:abyss_portal"
+          "name": "mia:stripped_fossilized_log"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "mia:blocks/abyss_portal"
+  "random_sequence": "mia:blocks/stripped_fossilized_log"
 }

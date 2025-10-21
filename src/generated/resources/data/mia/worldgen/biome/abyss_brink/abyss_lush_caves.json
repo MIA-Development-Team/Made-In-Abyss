@@ -2,6 +2,11 @@
   "carvers": {},
   "downfall": 0.8,
   "effects": {
+    "additions_sound": {
+      "sound": "minecraft:ambient.basalt_deltas.additions",
+      "tick_chance": 0.0111
+    },
+    "ambient_sound": "minecraft:ambient.basalt_deltas.loop",
     "fog_color": 8888490,
     "grass_color": 11335504,
     "mood_sound": {
@@ -11,10 +16,10 @@
       "tick_delay": 6000
     },
     "music": {
-      "max_delay": 24000,
-      "min_delay": 12000,
+      "max_delay": 2400,
+      "min_delay": 1200,
       "replace_current_music": false,
-      "sound": "minecraft:music.overworld.lush_caves"
+      "sound": "mia:music.abyss_brink.dim"
     },
     "sky_color": 8888490,
     "water_color": 6141935,

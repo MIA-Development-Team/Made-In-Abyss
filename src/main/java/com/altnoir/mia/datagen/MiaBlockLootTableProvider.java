@@ -41,41 +41,68 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
                 block -> createSingleItemTableWithSilkTouch(block, MiaBlocks.ABYSS_COBBLED_ANDESITE.get()));
         add(MiaBlocks.COVERGRASS_TUFF.get(),
                 block -> createSingleItemTableWithSilkTouch(block, Blocks.TUFF));
+        // 深界安山岩
         add(MiaBlocks.ABYSS_ANDESITE.get(),
                 block -> createSingleItemTableWithSilkTouch(block, MiaBlocks.ABYSS_COBBLED_ANDESITE.get()));
         dropSelf(MiaBlocks.ABYSS_ANDESITE_STAIRS.get());
-        dropSelf(MiaBlocks.ABYSS_ANDESITE_SLAB.get());
+        add(MiaBlocks.ABYSS_ANDESITE_SLAB.get(), this::createSlabItemTable);
         dropSelf(MiaBlocks.ABYSS_ANDESITE_WALL.get());
         dropSelf(MiaBlocks.ABYSS_COBBLED_ANDESITE.get());
         dropSelf(MiaBlocks.ABYSS_COBBLED_ANDESITE_STAIRS.get());
-        dropSelf(MiaBlocks.ABYSS_COBBLED_ANDESITE_SLAB.get());
+        add(MiaBlocks.ABYSS_COBBLED_ANDESITE_SLAB.get(), this::createSlabItemTable);
         dropSelf(MiaBlocks.ABYSS_COBBLED_ANDESITE_WALL.get());
         dropSelf(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE.get());
         dropSelf(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_STAIRS.get());
-        dropSelf(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_SLAB.get());
+        add(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_SLAB.get(), this::createSlabItemTable);
         dropSelf(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_WALL.get());
         dropSelf(MiaBlocks.POLISHED_ABYSS_ANDESITE.get());
         dropSelf(MiaBlocks.POLISHED_ABYSS_ANDESITE_STAIRS.get());
-        dropSelf(MiaBlocks.POLISHED_ABYSS_ANDESITE_SLAB.get());
+        add(MiaBlocks.POLISHED_ABYSS_ANDESITE_SLAB.get(), this::createSlabItemTable);
         dropSelf(MiaBlocks.POLISHED_ABYSS_ANDESITE_WALL.get());
         dropSelf(MiaBlocks.ABYSS_ANDESITE_PILLAR.get());
         dropSelf(MiaBlocks.ABYSS_ANDESITE_BRICKS.get());
         dropSelf(MiaBlocks.CHISLED_ABYSS_ANDESITE.get());
         dropSelf(MiaBlocks.ABYSS_ANDESITE_BRICKS_STAIRS.get());
-        dropSelf(MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB.get());
+        add(MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB.get(), this::createSlabItemTable);
         dropSelf(MiaBlocks.ABYSS_ANDESITE_BRICKS_WALL.get());
         dropSelf(MiaBlocks.CRACKED_ABYSS_ANDESITE_BRICKS.get());
         dropSelf(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS.get());
         dropSelf(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS.get());
-        dropSelf(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get());
+        add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get(), this::createSlabItemTable);
         dropSelf(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL.get());
 
+        // 化石树
+        dropSelf(MiaBlocks.FOSSILIZED_LOG.get());
+        dropSelf(MiaBlocks.FOSSILIZED_WOOD.get());
+        dropSelf(MiaBlocks.STRIPPED_FOSSILIZED_LOG.get());
+        dropSelf(MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get());
+
+        dropSelf(MiaBlocks.POLISHED_FOSSILIZED_WOOD.get());
+        dropSelf(MiaBlocks.POLISHED_FOSSILIZED_WOOD_STAIRS.get());
+        add(MiaBlocks.POLISHED_FOSSILIZED_WOOD_SLAB.get(), this::createSlabItemTable);
+        dropSelf(MiaBlocks.POLISHED_FOSSILIZED_WOOD_WALL.get());
+        dropSelf(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get());
+        dropSelf(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_STAIRS.get());
+        add(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_SLAB.get(), this::createSlabItemTable);
+        dropSelf(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_WALL.get());
+        dropSelf(MiaBlocks.CHISLED_STRIPPED_FOSSILIZED_WOOD.get());
+
+        dropSelf(MiaBlocks.FOSSILIZED_WOOD_BRICKS.get());
+        dropSelf(MiaBlocks.FOSSILIZED_WOOD_BRICKS_STAIRS.get());
+        add(MiaBlocks.FOSSILIZED_WOOD_BRICKS_SLAB.get(), this::createSlabItemTable);
+        dropSelf(MiaBlocks.FOSSILIZED_WOOD_BRICKS_WALL.get());
+        dropSelf(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS.get());
+        dropSelf(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS.get());
+        add(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB.get(), this::createSlabItemTable);
+        dropSelf(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL.get());
+
+        // 天雾树
         dropSelf(MiaBlocks.SKYFOG_LOG.get());
         dropSelf(MiaBlocks.SKYFOG_WOOD.get());
         dropSelf(MiaBlocks.STRIPPED_SKYFOG_LOG.get());
         dropSelf(MiaBlocks.STRIPPED_SKYFOG_WOOD.get());
         dropSelf(MiaBlocks.SKYFOG_PLANKS.get());
-        dropSelf(MiaBlocks.SKYFOG_STARIS.get());
+        dropSelf(MiaBlocks.SKYFOG_STAIRS.get());
         add(MiaBlocks.SKYFOG_SLAB.get(), this::createSlabItemTable);
         dropSelf(MiaBlocks.SKYFOG_FENCE.get());
         dropSelf(MiaBlocks.SKYFOG_FENCE_GATE.get());
@@ -89,6 +116,7 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(MiaBlocks.SKYFOG_PRESSURE_PLATE.get());
         dropSelf(MiaBlocks.SKYFOG_BUTTON.get());
 
+        // 晶石
         dropSelf(MiaBlocks.PRASIOLITE_BLOCK.get());
         add(MiaBlocks.BUDDING_PRASIOLITE.get(), noDrop());
         add(MiaBlocks.PRASIOLITE_CLUSTER.get(), block -> createClusterDrops(block, MiaItems.PRASIOLITE_SHARD.get(), 4.0f));
@@ -97,14 +125,14 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
         dropWhenSilkTouch(MiaBlocks.SMALL_PRASIOLITE_BUD.get());
 
         dropSelf(MiaBlocks.FORTITUDE_FLOWER.get());
-
+        // 工作台
         dropSelf(MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
-
+        // 设备
         dropOther(MiaBlocks.HOPPER_FARMLAND.get(), MiaBlocks.ABYSS_COBBLED_ANDESITE.get());
         dropSelf(MiaBlocks.AMETHYST_LAMPTUBE.get());
         dropSelf(MiaBlocks.PRASIOLITE_LAMPTUBE.get());
         dropSelf(MiaBlocks.PEDESTAL.get());
-        dropSelf(MiaBlocks.ABYSS_PORTAL.get());
+        dropSelf(MiaBlocks.ABYSS_PORTAL_FRAME.get());
         dropWhenSilkTouch(MiaBlocks.ABYSS_SPAWNER.get());
         dropSelf(MiaBlocks.ENDLESS_CUP.get());
         dropSelf(MiaBlocks.ROPE.get());

@@ -21,7 +21,7 @@ public class AbyssBrinkHole implements DensityFunction.SimpleFunction {
     // 256 = √256 = 16区块.
     public static float getAbyssRadius() {
         return MiaConfig.abyssRadius;
-    }
+    } // 深渊半径
 
     private static float getHeightValue(int x, int y, int z) {
         float d = Mth.sqrt((float) (x * x + z * z));
@@ -29,7 +29,7 @@ public class AbyssBrinkHole implements DensityFunction.SimpleFunction {
         float maxY = 2.5F;
         float r = Mth.clamp(1.0F + (float) y / 32.0F, 1.0F, maxY); // y除的数越小，坡度就越平滑
 
-        float f = (getAbyssRadius() / maxY) * r - d * 8.0F; // 深渊半径
+        float f = (getAbyssRadius() / maxY) * r - d * 8.0F;
         f = Mth.clamp(f, -100.0F, 80.0F);
 
         return f;

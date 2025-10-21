@@ -4,6 +4,7 @@
   "package": "com.altnoir.mia.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "MinecraftMixin"
   ],
   "client": [
   ],

@@ -36,6 +36,7 @@ public class MiaBlocks {
                             .requiresCorrectToolForDrops()
                             .strength(3.0F, 6.0F)
                             .sound(SoundType.DEEPSLATE)));
+    // 草方块
     public static final DeferredBlock<Block> COVERGRASS_ABYSS_ANDESITE = registerBlock("covergrass_abyss_andesite", () ->
             new CoverGrassBlock(
                     ABYSS_ANDESITE.get(), BlockBehaviour.Properties.of()
@@ -55,10 +56,11 @@ public class MiaBlocks {
                     .strength(3.0F, 6.0F)
                     .sound(SoundType.TUFF)));
 
+    // 深界安山岩
     public static final DeferredBlock<Block> ABYSS_ANDESITE_STAIRS = registerBlock("abyss_andesite_stairs", () -> stair(ABYSS_ANDESITE.get()));
     public static final DeferredBlock<Block> ABYSS_ANDESITE_SLAB = registerBlock("abyss_andesite_slab", () -> slab(ABYSS_ANDESITE.get()));
     public static final DeferredBlock<Block> ABYSS_ANDESITE_WALL = registerBlock("abyss_andesite_wall", () -> wall(ABYSS_ANDESITE.get()));
-
+    // 圆石
     public static final DeferredBlock<Block> ABYSS_COBBLED_ANDESITE = registerBlock("abyss_cobbled_andesite", () ->
             new Block(
                     BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
@@ -66,14 +68,14 @@ public class MiaBlocks {
     public static final DeferredBlock<Block> ABYSS_COBBLED_ANDESITE_STAIRS = registerBlock("abyss_cobbled_andesite_stairs", () -> stair(ABYSS_COBBLED_ANDESITE.get()));
     public static final DeferredBlock<Block> ABYSS_COBBLED_ANDESITE_SLAB = registerBlock("abyss_cobbled_andesite_slab", () -> slab(ABYSS_COBBLED_ANDESITE.get()));
     public static final DeferredBlock<Block> ABYSS_COBBLED_ANDESITE_WALL = registerBlock("abyss_cobbled_andesite_wall", () -> wall(ABYSS_COBBLED_ANDESITE.get()));
-
+    // 苔石
     public static final DeferredBlock<Block> MOSSY_ABYSS_COBBLED_ANDESITE = registerBlock("mossy_abyss_cobbled_andesite", () ->
             new Block(
                     BlockBehaviour.Properties.ofFullCopy(ABYSS_COBBLED_ANDESITE.get())));
     public static final DeferredBlock<Block> MOSSY_ABYSS_COBBLED_ANDESITE_STAIRS = registerBlock("mossy_abyss_cobbled_andesite_stairs", () -> stair(MOSSY_ABYSS_COBBLED_ANDESITE.get()));
     public static final DeferredBlock<Block> MOSSY_ABYSS_COBBLED_ANDESITE_SLAB = registerBlock("mossy_abyss_cobbled_andesite_slab", () -> slab(MOSSY_ABYSS_COBBLED_ANDESITE.get()));
     public static final DeferredBlock<Block> MOSSY_ABYSS_COBBLED_ANDESITE_WALL = registerBlock("mossy_abyss_cobbled_andesite_wall", () -> wall(MOSSY_ABYSS_COBBLED_ANDESITE.get()));
-
+    // 磨制
     public static final DeferredBlock<Block> POLISHED_ABYSS_ANDESITE = registerBlock("polished_abyss_andesite", () ->
             new Block(
                     BlockBehaviour.Properties.ofFullCopy(ABYSS_COBBLED_ANDESITE.get())
@@ -81,38 +83,81 @@ public class MiaBlocks {
     public static final DeferredBlock<Block> POLISHED_ABYSS_ANDESITE_STAIRS = registerBlock("polished_abyss_andesite_stairs", () -> stair(POLISHED_ABYSS_ANDESITE.get()));
     public static final DeferredBlock<Block> POLISHED_ABYSS_ANDESITE_SLAB = registerBlock("polished_abyss_andesite_slab", () -> slab(POLISHED_ABYSS_ANDESITE.get()));
     public static final DeferredBlock<Block> POLISHED_ABYSS_ANDESITE_WALL = registerBlock("polished_abyss_andesite_wall", () -> wall(POLISHED_ABYSS_ANDESITE.get()));
-
+    // 柱
     public static final DeferredBlock<Block> ABYSS_ANDESITE_PILLAR = registerBlock("abyss_andesite_pillar", () ->
-            new RotatedPillarBlock(
-                    BlockBehaviour.Properties.ofFullCopy(POLISHED_ABYSS_ANDESITE.get())));
+            new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_ABYSS_ANDESITE.get())));
+    // 切
     public static final DeferredBlock<Block> CHISLED_ABYSS_ANDESITE = registerBlock("chiseled_abyss_andesite", () ->
-            new Block(
-                    BlockBehaviour.Properties.ofFullCopy(POLISHED_ABYSS_ANDESITE.get())));
-
+            new Block(BlockBehaviour.Properties.ofFullCopy(POLISHED_ABYSS_ANDESITE.get())));
+    // 砖
     public static final DeferredBlock<Block> ABYSS_ANDESITE_BRICKS = registerBlock("abyss_andesite_bricks", () ->
-            new Block(
-                    BlockBehaviour.Properties.ofFullCopy(ABYSS_COBBLED_ANDESITE.get())
-                            .sound(SoundType.DEEPSLATE_TILES)));
+            new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_COBBLED_ANDESITE.get()).sound(SoundType.DEEPSLATE_TILES)));
     public static final DeferredBlock<Block> CRACKED_ABYSS_ANDESITE_BRICKS = registerBlock("cracked_abyss_andesite_bricks", () ->
-            new Block(
-                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE_BRICKS.get())));
+            new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE_BRICKS.get())));
     public static final DeferredBlock<Block> ABYSS_ANDESITE_BRICKS_STAIRS = registerBlock("abyss_andesite_bricks_stairs", () -> stair(ABYSS_ANDESITE_BRICKS.get()));
     public static final DeferredBlock<Block> ABYSS_ANDESITE_BRICKS_SLAB = registerBlock("abyss_andesite_bricks_slab", () -> slab(ABYSS_ANDESITE_BRICKS.get()));
     public static final DeferredBlock<Block> ABYSS_ANDESITE_BRICKS_WALL = registerBlock("abyss_andesite_bricks_wall", () -> wall(ABYSS_ANDESITE_BRICKS.get()));
 
     public static final DeferredBlock<Block> MOSSY_ABYSS_ANDESITE_BRICKS = registerBlock("mossy_abyss_andesite_bricks", () ->
-            new Block(
-                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE_BRICKS.get())));
+            new Block(BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE_BRICKS.get())));
     public static final DeferredBlock<Block> MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS = registerBlock("mossy_abyss_andesite_bricks_stairs", () -> stair(MOSSY_ABYSS_ANDESITE_BRICKS.get()));
     public static final DeferredBlock<Block> MOSSY_ABYSS_ANDESITE_BRICKS_SLAB = registerBlock("mossy_abyss_andesite_bricks_slab", () -> slab(MOSSY_ABYSS_ANDESITE_BRICKS.get()));
     public static final DeferredBlock<Block> MOSSY_ABYSS_ANDESITE_BRICKS_WALL = registerBlock("mossy_abyss_andesite_bricks_wall", () -> wall(MOSSY_ABYSS_ANDESITE_BRICKS.get()));
 
+    // 化石树
+    public static final DeferredBlock<Block> FOSSILIZED_LOG = registerBlock("fossilized_log", () ->
+            new StrippedRotatedPillarBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? MapColor.COLOR_BLACK : MapColor.PODZOL)
+                            .instrument(NoteBlockInstrument.BASEDRUM)
+                            .strength(2.0F, 4.2F)
+                            .sound(SoundType.BASALT))
+    );
+    public static final DeferredBlock<Block> FOSSILIZED_WOOD = registerBlock("fossilized_wood", () ->
+            new StrippedRotatedPillarBlock(
+                    BlockBehaviour.Properties.ofFullCopy(FOSSILIZED_LOG.get())
+                            .mapColor(MapColor.PODZOL)
+                            .strength(3.0F, 4.2F))
+    );
+
+    public static final DeferredBlock<Block> STRIPPED_FOSSILIZED_LOG = registerBlock("stripped_fossilized_log", () ->
+            new StrippedRotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(FOSSILIZED_LOG.get()).mapColor(MapColor.COLOR_BLACK)));
+    public static final DeferredBlock<Block> STRIPPED_FOSSILIZED_WOOD = registerBlock("stripped_fossilized_wood", () ->
+            new StrippedRotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(FOSSILIZED_WOOD.get()).mapColor(MapColor.COLOR_BLACK)));
+    // 磨制
+    public static final DeferredBlock<Block> POLISHED_FOSSILIZED_WOOD = registerBlock("polished_fossilized_wood", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(FOSSILIZED_WOOD.get())));
+    public static final DeferredBlock<Block> POLISHED_FOSSILIZED_WOOD_STAIRS = registerBlock("polished_fossilized_wood_stairs", () -> stair(POLISHED_FOSSILIZED_WOOD.get()));
+    public static final DeferredBlock<Block> POLISHED_FOSSILIZED_WOOD_SLAB = registerBlock("polished_fossilized_wood_slab", () -> slab(POLISHED_FOSSILIZED_WOOD.get()));
+    public static final DeferredBlock<Block> POLISHED_FOSSILIZED_WOOD_WALL = registerBlock("polished_fossilized_wood_wall", () -> wall(POLISHED_FOSSILIZED_WOOD.get()));
+
+    public static final DeferredBlock<Block> POLISHED_STRIPPED_FOSSILIZED_WOOD = registerBlock("polished_stripped_fossilized_wood", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(STRIPPED_FOSSILIZED_WOOD.get())));
+    public static final DeferredBlock<Block> POLISHED_STRIPPED_FOSSILIZED_WOOD_STAIRS = registerBlock("polished_stripped_fossilized_wood_stairs", () -> stair(POLISHED_STRIPPED_FOSSILIZED_WOOD.get()));
+    public static final DeferredBlock<Block> POLISHED_STRIPPED_FOSSILIZED_WOOD_SLAB = registerBlock("polished_stripped_fossilized_wood_slab", () -> slab(POLISHED_STRIPPED_FOSSILIZED_WOOD.get()));
+    public static final DeferredBlock<Block> POLISHED_STRIPPED_FOSSILIZED_WOOD_WALL = registerBlock("polished_stripped_fossilized_wood_wall", () -> wall(POLISHED_STRIPPED_FOSSILIZED_WOOD.get()));
+    public static final DeferredBlock<Block> CHISLED_STRIPPED_FOSSILIZED_WOOD = registerBlock("chiseled_stripped_fossilized_wood", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(STRIPPED_FOSSILIZED_WOOD.get())));
+    // 砖
+    public static final DeferredBlock<Block> FOSSILIZED_WOOD_BRICKS = registerBlock("fossilized_wood_bricks", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(FOSSILIZED_WOOD.get())));
+    public static final DeferredBlock<Block> FOSSILIZED_WOOD_BRICKS_STAIRS = registerBlock("fossilized_wood_bricks_stairs", () -> stair(FOSSILIZED_WOOD_BRICKS.get()));
+    public static final DeferredBlock<Block> FOSSILIZED_WOOD_BRICKS_SLAB = registerBlock("fossilized_wood_bricks_slab", () -> slab(FOSSILIZED_WOOD_BRICKS.get()));
+    public static final DeferredBlock<Block> FOSSILIZED_WOOD_BRICKS_WALL = registerBlock("fossilized_wood_bricks_wall", () -> wall(FOSSILIZED_WOOD_BRICKS.get()));
+
+    public static final DeferredBlock<Block> STRIPPED_FOSSILIZED_WOOD_BRICKS = registerBlock("stripped_fossilized_wood_bricks", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(STRIPPED_FOSSILIZED_WOOD.get())));
+    public static final DeferredBlock<Block> STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS = registerBlock("stripped_fossilized_wood_bricks_stairs", () -> stair(STRIPPED_FOSSILIZED_WOOD_BRICKS.get()));
+    public static final DeferredBlock<Block> STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB = registerBlock("stripped_fossilized_wood_bricks_slab", () -> slab(STRIPPED_FOSSILIZED_WOOD_BRICKS.get()));
+    public static final DeferredBlock<Block> STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL = registerBlock("stripped_fossilized_wood_bricks_wall", () -> wall(STRIPPED_FOSSILIZED_WOOD_BRICKS.get()));
+
+    // 天雾树
     public static final DeferredBlock<Block> SKYFOG_LOG = registerBlock("skyfog_log", () -> log(MapColor.WOOD, MapColor.PODZOL));
     public static final DeferredBlock<Block> SKYFOG_WOOD = registerBlock("skyfog_wood", () -> wood(MapColor.WOOD));
     public static final DeferredBlock<Block> STRIPPED_SKYFOG_LOG = registerBlock("stripped_skyfog_log", () -> log(MapColor.WOOD, MapColor.WOOD));
     public static final DeferredBlock<Block> STRIPPED_SKYFOG_WOOD = registerBlock("stripped_skyfog_wood", () -> wood(MapColor.WOOD));
     public static final DeferredBlock<Block> SKYFOG_PLANKS = registerBlock("skyfog_planks", () -> planks(MapColor.COLOR_GREEN));
-    public static final DeferredBlock<Block> SKYFOG_STARIS = registerBlock("skyfog_staris", () -> stair(SKYFOG_PLANKS.get()));
+    public static final DeferredBlock<Block> SKYFOG_STAIRS = registerBlock("skyfog_stairs", () -> stair(SKYFOG_PLANKS.get()));
     public static final DeferredBlock<Block> SKYFOG_SLAB = registerBlock("skyfog_slab", () -> slab(SKYFOG_PLANKS.get()));
     public static final DeferredBlock<Block> SKYFOG_FENCE = registerBlock("skyfog_fence", () -> fence(SKYFOG_PLANKS.get()));
     public static final DeferredBlock<Block> SKYFOG_FENCE_GATE = registerBlock("skyfog_fence_gate", () -> fenceGate(WoodType.OAK, SKYFOG_PLANKS.get()));
@@ -130,6 +175,7 @@ public class MiaBlocks {
                     .sound(SoundType.CHERRY_SAPLING)
                     .pushReaction(PushReaction.DESTROY)));
 
+    // 植物
     public static final DeferredBlock<Block> FORTITUDE_FLOWER = registerBlock("fortitude_flower", () -> new FlowerBlock(
             MobEffects.WEAKNESS,
             9.0F,
@@ -141,11 +187,13 @@ public class MiaBlocks {
                     .offsetType(BlockBehaviour.OffsetType.XZ)
                     .pushReaction(PushReaction.DESTROY)));
 
+    // 红石
     public static final DeferredBlock<Block> SKYFOG_PRESSURE_PLATE = registerBlock("skyfog_pressure_plate", () ->
             woodenPressurePlate(BlockSetType.OAK, SKYFOG_PLANKS.get().defaultMapColor()));
     public static final DeferredBlock<Block> SKYFOG_BUTTON = registerBlock("skyfog_button", () ->
             woodenButton(BlockSetType.OAK));
 
+    // 晶石
     public static final DeferredBlock<Block> PRASIOLITE_BLOCK = registerBlock("prasiolite_block", () ->
             new PrasioliteBlock(
                     BlockBehaviour.Properties.of()
@@ -177,6 +225,7 @@ public class MiaBlocks {
             cluster(3, 3, SoundType.AMETHYST_CLUSTER, 1)
     );
 
+    // 设备
     public static final DeferredBlock<Block> HOPPER_FARMLAND = registerBlock("hopper_farmland", () ->
             new HopperFarmBlock(
                     BlockBehaviour.Properties.of()
@@ -218,10 +267,19 @@ public class MiaBlocks {
             new AbyssPortalBlock(
                     BlockBehaviour.Properties.of()
                             .noCollission()
-                            .strength(3.0F, 6.0F)
+                            .noLootTable()
+                            .strength(-1.0F, 3600000.0F)
                             .lightLevel(state -> 15)
                             .sound(SoundType.GLASS)
                             .pushReaction(PushReaction.BLOCK)));
+    public static final DeferredBlock<Block> ABYSS_PORTAL_FRAME = registerBlock("abyss_portal_frame", () ->
+            new AbyssPortalFrameBlock(
+                    BlockBehaviour.Properties.of()
+                            .forceSolidOff()
+                            .strength(3.0F, 6.0F)
+                            .lightLevel(state -> 1)
+                            .sound(SoundType.NETHERITE_BLOCK)
+                            .noOcclusion()));
 
     public static final DeferredBlock<Block> ABYSS_SPAWNER = registerBlock("abyss_spawner", () ->
             new AbyssSpawnerBlock(
@@ -233,7 +291,14 @@ public class MiaBlocks {
                             .sound(SoundType.TRIAL_SPAWNER)
                             .isViewBlocking(MiaBlocks::never)
                             .noOcclusion()));
+    @SuppressWarnings("deprecation")
+    public static final DeferredBlock<Block> ROPE = BLOCKS.register("rope", () ->
+            new RopeBlock(BlockBehaviour.Properties.of()
+                    .forceSolidOff().strength(0.4F)
+                    .sound(SoundType.WOOL).noOcclusion()
+                    .pushReaction(PushReaction.DESTROY)));
 
+    // 工作台
     public static final DeferredBlock<Block> ARTIFACT_SMITHING_TABLE = registerBlock("artifact_smithing_table", () ->
             new ArtifactSmithingTableBlock(BlockBehaviour.Properties.of()
                     .requiresCorrectToolForDrops()
@@ -244,13 +309,6 @@ public class MiaBlocks {
             new EndlessCupBlock(
                     BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())));
 
-    @SuppressWarnings("deprecation")
-    public static final DeferredBlock<Block> ROPE = BLOCKS.register("rope", () ->
-            new RopeBlock(BlockBehaviour.Properties.of()
-                    .forceSolidOff().strength(0.4F)
-                    .sound(SoundType.WOOL).noOcclusion()
-                    .pushReaction(PushReaction.DESTROY)));
-
 
     private static boolean never(BlockState state, BlockGetter blockGetter, BlockPos pos) {
         return false;
@@ -260,7 +318,7 @@ public class MiaBlocks {
         return true;
     }
 
-
+    // 工具
     private static Block log(MapColor topMapColor, MapColor sideMapColor) {
         return new MiaWoodBlock(
                 BlockBehaviour.Properties.of()

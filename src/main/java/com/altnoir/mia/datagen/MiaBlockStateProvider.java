@@ -5,11 +5,14 @@ import com.altnoir.mia.datagen.blockstate.MiaModelProvider;
 import com.altnoir.mia.datagen.blockstate.MiaStateProvider;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.util.MiaUtil;
+import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
@@ -41,45 +44,71 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         coverGrassBlock(MiaBlocks.COVERGRASS_ABYSS_ANDESITE, MiaBlocks.ABYSS_ANDESITE);
         coverGrassBlock(MiaBlocks.COVERGRASS_TUFF, Blocks.TUFF);
         mirroredBlock(MiaBlocks.ABYSS_ANDESITE);
-
+        // 深界安山岩
         stairsBlockWithItem(MiaBlocks.ABYSS_ANDESITE_STAIRS, MiaBlocks.ABYSS_ANDESITE);
         slabBlockWithItem(MiaBlocks.ABYSS_ANDESITE_SLAB, MiaBlocks.ABYSS_ANDESITE);
         wallBlockWithItem(MiaBlocks.ABYSS_ANDESITE_WALL, MiaBlocks.ABYSS_ANDESITE);
-
+        // 圆石
         blockWithItem(MiaBlocks.ABYSS_COBBLED_ANDESITE);
         stairsBlockWithItem(MiaBlocks.ABYSS_COBBLED_ANDESITE_STAIRS, MiaBlocks.ABYSS_COBBLED_ANDESITE);
         slabBlockWithItem(MiaBlocks.ABYSS_COBBLED_ANDESITE_SLAB, MiaBlocks.ABYSS_COBBLED_ANDESITE);
         wallBlockWithItem(MiaBlocks.ABYSS_COBBLED_ANDESITE_WALL, MiaBlocks.ABYSS_COBBLED_ANDESITE);
-
+        // 苔石
         blockWithItem(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE);
         stairsBlockWithItem(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_STAIRS, MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE);
         slabBlockWithItem(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_SLAB, MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE);
         wallBlockWithItem(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_WALL, MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE);
-
+        //  磨制
         blockWithItem(MiaBlocks.POLISHED_ABYSS_ANDESITE);
         stairsBlockWithItem(MiaBlocks.POLISHED_ABYSS_ANDESITE_STAIRS, MiaBlocks.POLISHED_ABYSS_ANDESITE);
         slabBlockWithItem(MiaBlocks.POLISHED_ABYSS_ANDESITE_SLAB, MiaBlocks.POLISHED_ABYSS_ANDESITE);
         wallBlockWithItem(MiaBlocks.POLISHED_ABYSS_ANDESITE_WALL, MiaBlocks.POLISHED_ABYSS_ANDESITE);
         pillarBlockWithItem(MiaBlocks.ABYSS_ANDESITE_PILLAR);
-
+        // 石砖
         blockWithItem(MiaBlocks.ABYSS_ANDESITE_BRICKS);
         blockWithItem(MiaBlocks.CHISLED_ABYSS_ANDESITE);
         stairsBlockWithItem(MiaBlocks.ABYSS_ANDESITE_BRICKS_STAIRS, MiaBlocks.ABYSS_ANDESITE_BRICKS);
         slabBlockWithItem(MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB, MiaBlocks.ABYSS_ANDESITE_BRICKS);
         wallBlockWithItem(MiaBlocks.ABYSS_ANDESITE_BRICKS_WALL, MiaBlocks.ABYSS_ANDESITE_BRICKS);
         blockWithItem(MiaBlocks.CRACKED_ABYSS_ANDESITE_BRICKS);
-
+        // 苔石砖
         blockWithItem(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS);
         stairsBlockWithItem(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS, MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS);
         slabBlockWithItem(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB, MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS);
         wallBlockWithItem(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL, MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS);
 
+        // 化石树
+        variantPillarBlockWithItem(MiaBlocks.FOSSILIZED_LOG, 3);
+        variantAxisBlockWithItem(MiaBlocks.FOSSILIZED_WOOD, MiaBlocks.FOSSILIZED_LOG, 3);
+        variantPillarBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_LOG, 5, new int[]{12, 1, 1, 1, 1});
+        variantAxisBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD, MiaBlocks.STRIPPED_FOSSILIZED_LOG, 5, new int[]{12, 1, 1, 1, 1});
+
+        blockWithItem(MiaBlocks.POLISHED_FOSSILIZED_WOOD);
+        stairsBlockWithItem(MiaBlocks.POLISHED_FOSSILIZED_WOOD_STAIRS, MiaBlocks.POLISHED_FOSSILIZED_WOOD);
+        slabBlockWithItem(MiaBlocks.POLISHED_FOSSILIZED_WOOD_SLAB, MiaBlocks.POLISHED_FOSSILIZED_WOOD);
+        wallBlockWithItem(MiaBlocks.POLISHED_FOSSILIZED_WOOD_WALL, MiaBlocks.POLISHED_FOSSILIZED_WOOD);
+        blockWithItem(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD);
+        stairsBlockWithItem(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_STAIRS, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD);
+        slabBlockWithItem(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_SLAB, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD);
+        wallBlockWithItem(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_WALL, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD);
+        blockWithItem(MiaBlocks.CHISLED_STRIPPED_FOSSILIZED_WOOD);
+
+        blockWithItem(MiaBlocks.FOSSILIZED_WOOD_BRICKS);
+        stairsBlockWithItem(MiaBlocks.FOSSILIZED_WOOD_BRICKS_STAIRS, MiaBlocks.FOSSILIZED_WOOD_BRICKS);
+        slabBlockWithItem(MiaBlocks.FOSSILIZED_WOOD_BRICKS_SLAB, MiaBlocks.FOSSILIZED_WOOD_BRICKS);
+        wallBlockWithItem(MiaBlocks.FOSSILIZED_WOOD_BRICKS_WALL, MiaBlocks.FOSSILIZED_WOOD_BRICKS);
+        blockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        stairsBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        slabBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        wallBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
+
+        // 天雾树
         logBlockWithItem(MiaBlocks.SKYFOG_LOG);
         woodBlockWithItem(MiaBlocks.SKYFOG_WOOD, MiaBlocks.SKYFOG_LOG);
         logBlockWithItem(MiaBlocks.STRIPPED_SKYFOG_LOG);
         woodBlockWithItem(MiaBlocks.STRIPPED_SKYFOG_WOOD, MiaBlocks.STRIPPED_SKYFOG_LOG);
         blockWithItem(MiaBlocks.SKYFOG_PLANKS);
-        stairsBlockWithItem(MiaBlocks.SKYFOG_STARIS, MiaBlocks.SKYFOG_PLANKS);
+        stairsBlockWithItem(MiaBlocks.SKYFOG_STAIRS, MiaBlocks.SKYFOG_PLANKS);
         slabBlockWithItem(MiaBlocks.SKYFOG_SLAB, MiaBlocks.SKYFOG_PLANKS);
         fenceBlockWithItem(MiaBlocks.SKYFOG_FENCE, MiaBlocks.SKYFOG_PLANKS);
         doorBlockWithItem(MiaBlocks.SKYFOG_DOOR);
@@ -89,6 +118,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         leavesBlock(MiaBlocks.SKYFOG_LEAVES);
         leavesBlock(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS);
 
+        // 晶石
         blockWithItem(MiaBlocks.PRASIOLITE_BLOCK);
         blockWithItem(MiaBlocks.BUDDING_PRASIOLITE);
         clusterBlock(MiaBlocks.PRASIOLITE_CLUSTER);
@@ -96,9 +126,10 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         clusterBlock(MiaBlocks.MEDIUM_PRASIOLITE_BUD);
         clusterBlock(MiaBlocks.SMALL_PRASIOLITE_BUD);
 
+        // 植物
         sapingAndCrossBlock(MiaBlocks.FORTITUDE_FLOWER);
 
-        // 压力板和按钮单独分列
+        // 红石
         pressurePlateBlockWithItem(MiaBlocks.SKYFOG_PRESSURE_PLATE, MiaBlocks.SKYFOG_PLANKS);
         buttonBlockWithItem(MiaBlocks.SKYFOG_BUTTON, MiaBlocks.SKYFOG_PLANKS);
 
@@ -274,6 +305,62 @@ public class MiaBlockStateProvider extends BlockStateProvider {
                 extend(blockTexture(block.get()), "_top"));
     }
 
+    protected void variantPillarBlockWithItem(DeferredBlock<?> block, int variants) {
+        variantAxisBlock(block, variants, null);
+        blockItem(block, "0");
+    }
+
+    protected void variantPillarBlockWithItem(DeferredBlock<?> block, int variants, int[] weights) {
+        variantAxisBlock(block, variants, weights);
+        blockItem(block, "0");
+    }
+
+    protected void variantAxisBlockWithItem(DeferredBlock<?> block, DeferredBlock<?> variant, int variants) {
+        variantAxisBlock(block, variant, variants, null);
+        blockItem(block, "0");
+    }
+
+    protected void variantAxisBlockWithItem(DeferredBlock<?> block, DeferredBlock<?> variant, int variants, int[] weights) {
+        variantAxisBlock(block, variant, variants, weights);
+        blockItem(block, "0");
+    }
+
+    protected void variantAxisBlock(DeferredBlock<?> block, int variants, int[] weights) {
+        variantAxisBlock((RotatedPillarBlock) block.get(), block.get(), extend(blockTexture(block.get()), "_top"), variants, weights);
+    }
+
+    protected void variantAxisBlock(DeferredBlock<?> block, DeferredBlock<?> variant, int variants, int[] weights) {
+        variantAxisBlock((RotatedPillarBlock) block.get(), variant.get(), null, variants, weights);
+    }
+
+    protected void variantAxisBlock(RotatedPillarBlock block, Block side, ResourceLocation end, int variants, int[] weights) {
+        ConfiguredModel[] yModels = new ConfiguredModel[variants];
+        ConfiguredModel[] zModels = new ConfiguredModel[variants];
+        ConfiguredModel[] xModels = new ConfiguredModel[variants];
+
+        for (int i = 0; i < variants; i++) {
+            ResourceLocation variantSide = MiaUtil.miaId("block/" + MiaUtil.getBlockPath(side) + i);
+            ResourceLocation topTexture = end != null ? end : variantSide;
+
+            ModelFile model = models().cubeColumn(MiaUtil.getBlockPath(block) + i, variantSide, topTexture);
+            ModelFile horizontalModel = models().cubeColumnHorizontal(MiaUtil.getBlockPath(block) + "_horizontal" + i, variantSide, topTexture);
+
+            int weight = weights != null ? weights[i] : 1;
+
+            yModels[i] = new ConfiguredModel(model, 0, 0, false, weight);
+            zModels[i] = new ConfiguredModel(horizontalModel, 90, 0, false, weight);
+            xModels[i] = new ConfiguredModel(horizontalModel, 90, 90, false, weight);
+        }
+
+        getVariantBuilder(block)
+                .partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y)
+                .setModels(yModels)
+                .partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Z)
+                .setModels(zModels)
+                .partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.X)
+                .setModels(xModels);
+    }
+
     protected void fenceItem(DeferredBlock<?> block, DeferredBlock<?> texture) {
         vanillaBlockItem(block, "fence_inventory")
                 .texture("texture", modLoc("block/" + MiaUtil.getBlockPath(texture.get())));
@@ -300,6 +387,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     protected ItemModelBuilder baseBlockItem(DeferredBlock<?> block, String suffix) {
         return itemModels().withExistingParent(MiaUtil.getBlockPath(block.get()), modLoc("block/" + suffix));
     }
+
 
     protected ItemModelBuilder vanillaBlockItem(DeferredBlock<?> block, String suffix) {
         return itemModels().withExistingParent(MiaUtil.getBlockPath(block.get()), mcLoc("block/" + suffix));
