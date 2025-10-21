@@ -1,11 +1,13 @@
 package com.altnoir.mia;
 
+import com.altnoir.mia.client.gui.screens.ArtifactSmithingTableScreen;
 import com.altnoir.mia.core.curse.CurseManager;
 import com.altnoir.mia.init.*;
 import com.altnoir.mia.init.event.EventHandle;
 import com.altnoir.mia.init.worldgen.MiaBiomeSources;
 import com.altnoir.mia.init.worldgen.MiaDensityFunctionTypes;
 import com.altnoir.mia.init.worldgen.MiaFeature;
+import com.altnoir.mia.inventory.ArtifactSmithingTableEventHandler;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -84,7 +86,7 @@ public class MIA {
     // You can use EventBusSubscriber to automatically register all static methods
     // in the class
     // annotated with @SubscribeEvent
-    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
