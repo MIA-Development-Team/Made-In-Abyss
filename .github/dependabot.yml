@@ -9,7 +9,8 @@ updates:
     open-pull-requests-limit: 10
     labels:
       - "dependencies"
-      - "gradle"
+      - "minecraft"
+      - "skip dependabot"
     commit-message:
       prefix: "deps"
       prefix-development: "chore"
@@ -52,7 +53,8 @@ updates:
     open-pull-requests-limit: 5
     labels:
       - "dependencies"
-      - "github-actions"
+      - "ci"
+      - "skip dependabot"
     commit-message:
       prefix: "ci"
       include: "scope"

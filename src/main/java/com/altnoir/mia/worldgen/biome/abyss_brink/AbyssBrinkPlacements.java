@@ -39,6 +39,7 @@ public class AbyssBrinkPlacements {
     public static final ResourceKey<PlacedFeature> PRASIOLITE_CLUSTER = MiaPlacementUtils.abyssBrinkKey("prasiolite_cluster");
     public static final ResourceKey<PlacedFeature> BIG_PRASIOLITE_CLUSTER = MiaPlacementUtils.abyssBrinkKey("big_prasiolite_cluster");
     public static final ResourceKey<PlacedFeature> PRASIOLITE_GEODE = MiaPlacementUtils.abyssBrinkKey("prasiolite_geode");
+    public static final ResourceKey<PlacedFeature> LARGE_DRIPSTONE = MiaPlacementUtils.abyssBrinkKey("large_dripstone");
     public static final ResourceKey<PlacedFeature> RAW_IRON = MiaPlacementUtils.abyssBrinkKey("raw_iron");
 
     private static final PlacementModifier ABYSS_BRINK_HEIGHT = HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(360));
@@ -63,6 +64,7 @@ public class AbyssBrinkPlacements {
         Holder<ConfiguredFeature<?, ?>> prasiolite_cluster = holdergetter.getOrThrow(AbyssBrinkFeatures.PRASIOLITE_CLUSTER);
         Holder<ConfiguredFeature<?, ?>> big_prasiolite_cluster = holdergetter.getOrThrow(AbyssBrinkFeatures.BIG_PRASIOLITE_CLUSTER);
         Holder<ConfiguredFeature<?, ?>> prasiolite_geode = holdergetter.getOrThrow(AbyssBrinkFeatures.PRASIOLITE_GEODE);
+        Holder<ConfiguredFeature<?, ?>> large_dripstone = holdergetter.getOrThrow(AbyssBrinkFeatures.LARGE_DRIPSTONE);
         Holder<ConfiguredFeature<?, ?>> raw_iron = holdergetter.getOrThrow(AbyssBrinkFeatures.RAW_IRON);
 
         PlacementUtils.register(
@@ -180,6 +182,14 @@ public class AbyssBrinkPlacements {
                 RarityFilter.onAverageOnceEvery(24),
                 InSquarePlacement.spread(),
                 ABYSS_BRINK_CAVE_HEIGHT,
+                BiomeFilter.biome()
+        );
+
+        MiaPlacementUtils.register(
+                context, LARGE_DRIPSTONE, large_dripstone,
+                CountPlacement.of(UniformInt.of(5, 24)),
+                InSquarePlacement.spread(),
+                ABYSS_BRINK_HEIGHT,
                 BiomeFilter.biome()
         );
     }
