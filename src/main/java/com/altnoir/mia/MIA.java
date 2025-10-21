@@ -1,13 +1,11 @@
 package com.altnoir.mia;
 
-import com.altnoir.mia.client.gui.screens.ArtifactSmithingTableScreen;
 import com.altnoir.mia.core.curse.CurseManager;
 import com.altnoir.mia.init.*;
 import com.altnoir.mia.init.event.EventHandle;
 import com.altnoir.mia.init.worldgen.MiaBiomeSources;
 import com.altnoir.mia.init.worldgen.MiaDensityFunctionTypes;
 import com.altnoir.mia.init.worldgen.MiaFeature;
-import com.altnoir.mia.inventory.ArtifactSmithingTableEventHandler;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;

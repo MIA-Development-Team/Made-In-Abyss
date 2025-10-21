@@ -1,6 +1,5 @@
 package com.altnoir.mia.client.gui.screens;
 
-import com.altnoir.mia.MIA;
 import com.altnoir.mia.client.event.ClientTooltipEvent;
 import com.altnoir.mia.inventory.ArtifactSmithingTableMenu;
 import com.altnoir.mia.recipe.ArtifactSmithingRecipe;
@@ -21,21 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArtifactSmithingTableScreen extends AbstractContainerScreen<ArtifactSmithingTableMenu> {
-    private static final ResourceLocation BACKGROUND = MiaUtil
-            .miaId("textures/gui/container/artifact_smithing_table.png");
+    private static final ResourceLocation BACKGROUND = MiaUtil.miaId("textures/gui/container/artifact_smithing_table.png");
 
-    private static final ResourceLocation RECIPE_SELECTED_SPRITE = MiaUtil
-            .miaId("container/artifact_smithing_table/recipe_selected");
-    private static final ResourceLocation RECIPE_HIGHLIGHTED_SPRITE = MiaUtil
-            .miaId("container/artifact_smithing_table/recipe_highlighted");
-    private static final ResourceLocation RECIPE_AVAILABLE_SPRITE = MiaUtil
-            .miaId("container/artifact_smithing_table/recipe_available");
-    private static final ResourceLocation RECIPE_UNAVAILABLE_SPRITE = MiaUtil
-            .miaId("container/artifact_smithing_table/recipe_unavailable");
+    private static final ResourceLocation RECIPE_SELECTED_SPRITE = MiaUtil.miaId("container/artifact_smithing_table/recipe_selected");
+    private static final ResourceLocation RECIPE_HIGHLIGHTED_SPRITE = MiaUtil.miaId("container/artifact_smithing_table/recipe_highlighted");
+    private static final ResourceLocation RECIPE_AVAILABLE_SPRITE = MiaUtil.miaId("container/artifact_smithing_table/recipe_available");
+    private static final ResourceLocation RECIPE_UNAVAILABLE_SPRITE = MiaUtil.miaId("container/artifact_smithing_table/recipe_unavailable");
 
     private static final ResourceLocation SCROLLER_SPRITE = MiaUtil.miaId("container/artifact_smithing_table/scroller");
-    private static final ResourceLocation SCROLLER_DISABLED_SPRITE = MiaUtil
-            .miaId("container/artifact_smithing_table/scroller_disabled");
+    private static final ResourceLocation SCROLLER_DISABLED_SPRITE = MiaUtil.miaId("container/artifact_smithing_table/scroller_disabled");
 
     // 每行槽间隔高度为18像素
     private static final int RECIPES_COLUMNS = 4; // 配方显示网格列数
@@ -98,13 +91,12 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
                     recipeSelected.value().getAttributeAmount(),
                     recipeSelected.value().getAttributeOperation());
 
-            guiGraphics.drawString(this.font, text, this.leftPos + RECIPES_X, this.topPos + RECIPES_Y - 10, 0x000000,
-                    false);
+            guiGraphics.drawString(this.font, text, this.leftPos + RECIPES_X, this.topPos + RECIPES_Y - 10, 0x000000, false);
         }
     }
 
     private void renderButtons(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y,
-            int lastVisibleElementIndex) {
+                               int lastVisibleElementIndex) {
         int availableRecipeCount = ((ArtifactSmithingTableMenu) this.menu).getAvailableRecipes().size();
         int unavailableRecipeCount = ((ArtifactSmithingTableMenu) this.menu).getUnavailableRecipes().size();
         for (int i = this.startIndex; i < lastVisibleElementIndex
@@ -116,8 +108,6 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
             ResourceLocation resourcelocation;
 
             if (i == ((ArtifactSmithingTableMenu) this.menu).getSelectedRecipeIndex()) {
-                MIA.LOGGER.debug("selected " + i);
-
                 resourcelocation = RECIPE_SELECTED_SPRITE;
             } else if (i < availableRecipeCount) {
                 if (mouseX >= k && mouseY >= i1 && mouseX < k + RECIPES_IMAGE_SIZE_WIDTH
