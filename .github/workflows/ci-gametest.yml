@@ -23,30 +23,8 @@ jobs:
           java-version: 17
           cache: gradle
 
-      - name: Restore caches
-        uses: actions/cache/restore@v4
-        id: cache
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-${{ hashFiles('**/gradle-wrapper.properties') }}
-
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
-
-      - name: Prepare run GameTest server
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: ./gradlew prepareGameTestServerRun --no-daemon
-
-      - name: Save caches
-        if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-${{ hashFiles('**/gradle-wrapper.properties') }}
 
       - name: Run game tests
         id: game_test
