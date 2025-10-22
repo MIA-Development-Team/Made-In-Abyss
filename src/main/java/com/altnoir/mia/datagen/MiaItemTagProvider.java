@@ -60,8 +60,15 @@ public class MiaItemTagProvider extends ItemTagsProvider {
                 .add(MiaBlocks.STRIPPED_SKYFOG_LOG.get().asItem())
                 .add(MiaBlocks.STRIPPED_SKYFOG_WOOD.get().asItem());
 
+        //合成标签
         tag(ItemTags.PLANKS)
                 .add(MiaBlocks.SKYFOG_PLANKS.get().asItem());
+
+        tag(MiaTags.Items.SKYFOG_LOGS)
+                .add(MiaBlocks.SKYFOG_LOG.get().asItem())
+                .add(MiaBlocks.SKYFOG_WOOD.get().asItem())
+                .add(MiaBlocks.STRIPPED_SKYFOG_LOG.get().asItem())
+                .add(MiaBlocks.STRIPPED_SKYFOG_WOOD.get().asItem());
 
         // 工具TAG
         tag(ItemTags.PICKAXES)

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stripped_skyfog_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mia:stripped_skyfog_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mia:stripped_skyfog_wood"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_stripped_skyfog_log"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mia:stripped_skyfog_wood"
+    ]
+  }
+}

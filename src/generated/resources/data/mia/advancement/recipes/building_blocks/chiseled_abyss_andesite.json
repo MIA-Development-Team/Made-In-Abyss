@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_abyss_andesite_bricks_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mia:abyss_andesite_bricks_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mia:chiseled_abyss_andesite"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_abyss_andesite_bricks_slab"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mia:chiseled_abyss_andesite"
+    ]
+  }
+}

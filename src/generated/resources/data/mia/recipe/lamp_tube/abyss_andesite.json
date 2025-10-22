@@ -1,0 +1,11 @@
+{
+  "type": "mia:lamp_tube",
+  "ingredient": {
+    "count": 2,
+    "item": "minecraft:andesite"
+  },
+  "result": {
+    "count": 1,
+    "id": "mia:abyss_andesite"
+  }
+}

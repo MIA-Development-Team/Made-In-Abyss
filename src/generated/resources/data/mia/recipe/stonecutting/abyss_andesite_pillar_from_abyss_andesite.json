@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "mia:abyss_andesite"
+  },
+  "result": {
+    "count": 1,
+    "id": "mia:abyss_andesite_pillar"
+  }
+}

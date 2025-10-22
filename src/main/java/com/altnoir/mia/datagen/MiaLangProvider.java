@@ -138,11 +138,15 @@ public class MiaLangProvider extends LanguageProvider {
         add(MiaSoundsProvider.ABYSS_PORTAL_TRAVEL, "Abyss Portal: Travel");
         // Sounds end
 
+        // Tags start
+        add("tag.item.curios.whistle", "Whistle");
+        add("tag.item.mia.skyfog_logs", "Skyfog Logs");
+        // Tags end
+
 
         //Compat start
         add("curios.identifier.whistle", "Whistle");
         add("curios.modifiers.whistle", "Red Whistle Attributes");
-        add("tag.item.curios.whistle", "Whistle");
         add("emi.category.mia.lamp_tube", "Laser Catalysis");
         //Compat end
     }

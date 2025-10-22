@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "mia:mossy_abyss_cobbled_andesite"
+  },
+  "result": {
+    "count": 1,
+    "id": "mia:mossy_abyss_cobbled_andesite_wall"
+  }
+}

@@ -13,8 +13,11 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 public class AbyssBrinkDimEffects extends DimensionSpecialEffects {
+    public static final float SIZE = 2048.0F;
+    public static final float HEIGHT = 1536.0F;
+
     public AbyssBrinkDimEffects() {
-        super(24.0F, true, SkyType.NONE, false, false);
+        super(32.0F, true, SkyType.NONE, false, false);
     }
 
     @Override
@@ -62,17 +65,16 @@ public class AbyssBrinkDimEffects extends DimensionSpecialEffects {
         float playerX = (float) camera.getPosition().x;
         float playerY = (float) camera.getPosition().y;
         float playerZ = (float) camera.getPosition().z;
-        float size = 1024.0F;
-        float height = 768.0F - playerY;
+        float height = HEIGHT - playerY;
 
         Matrix4f pose = poseStack.last().pose();
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
-        bufferbuilder.addVertex(pose, -size - playerX, height, -size - playerZ).setUv(0.0F, 0.0F);
-        bufferbuilder.addVertex(pose, size - playerX, height, -size - playerZ).setUv(1.0F, 0.0F);
-        bufferbuilder.addVertex(pose, size - playerX, height, size - playerZ).setUv(1.0F, 1.0F);
-        bufferbuilder.addVertex(pose, -size - playerX, height, size - playerZ).setUv(0.0F, 1.0F);
+        bufferbuilder.addVertex(pose, -SIZE - playerX, height, -SIZE - playerZ).setUv(0.0F, 0.0F);
+        bufferbuilder.addVertex(pose, SIZE - playerX, height, -SIZE - playerZ).setUv(1.0F, 0.0F);
+        bufferbuilder.addVertex(pose, SIZE - playerX, height, SIZE - playerZ).setUv(1.0F, 1.0F);
+        bufferbuilder.addVertex(pose, -SIZE - playerX, height, SIZE - playerZ).setUv(0.0F, 1.0F);
 
         BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
 
