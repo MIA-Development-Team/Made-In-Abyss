@@ -1,19 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "stairs",
   "key": {
-    "#": {
-      "item": "mia:abyss_andesite"
+    "S": {
+      "item": "mia:polished_stripped_fossilized_wood"
     }
   },
   "pattern": [
-    "#  ",
-    "## ",
-    "###"
+    "SS",
+    "SS"
   ],
   "result": {
     "count": 4,
-    "id": "mia:abyss_andesite_stairs"
+    "id": "mia:stripped_fossilized_wood_bricks"
   }
 }

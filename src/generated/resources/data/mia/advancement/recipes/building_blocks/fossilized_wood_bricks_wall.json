@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_fossilized_wood_bricks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mia:fossilized_wood_bricks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mia:fossilized_wood_bricks_wall"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_fossilized_wood_bricks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mia:fossilized_wood_bricks_wall"
+    ]
+  }
+}

@@ -36,43 +36,66 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
     protected void buildRecipes(@NotNull RecipeOutput recipeOutput) {
         //安山岩
         stoneBlocks(recipeOutput, MiaBlocks.ABYSS_COBBLED_ANDESITE.get(),
-                MiaBlocks.ABYSS_COBBLED_ANDESITE_STAIRS.get(), MiaBlocks.ABYSS_COBBLED_ANDESITE_SLAB.get(), MiaBlocks.ABYSS_COBBLED_ANDESITE_WALL.get()
-        );
+                MiaBlocks.ABYSS_COBBLED_ANDESITE_STAIRS.get(), MiaBlocks.ABYSS_COBBLED_ANDESITE_SLAB.get(), MiaBlocks.ABYSS_COBBLED_ANDESITE_WALL.get());
+
         shapeless2B1(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE.get(), MiaBlocks.ABYSS_COBBLED_ANDESITE.get(), Blocks.MOSS_BLOCK);
         shapeless2B1(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE.get(), MiaBlocks.ABYSS_COBBLED_ANDESITE.get(), Blocks.VINE);
         stoneBlocks(recipeOutput, MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE.get(),
-                MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_STAIRS.get(), MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_SLAB.get(), MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_WALL.get()
-        );
+                MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_STAIRS.get(), MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_SLAB.get(), MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_WALL.get());
 
         smeltingResultFromBase(recipeOutput, MiaBlocks.ABYSS_ANDESITE.get(), MiaBlocks.ABYSS_COBBLED_ANDESITE.get());
         stoneBlocks(recipeOutput, MiaBlocks.ABYSS_ANDESITE.get(),
-                MiaBlocks.ABYSS_ANDESITE_STAIRS.get(), MiaBlocks.ABYSS_ANDESITE_SLAB.get(), MiaBlocks.ABYSS_ANDESITE_WALL.get()
-        );
+                MiaBlocks.ABYSS_ANDESITE_STAIRS.get(), MiaBlocks.ABYSS_ANDESITE_SLAB.get(), MiaBlocks.ABYSS_ANDESITE_WALL.get());
+
         // 磨制安山岩
         polished(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.POLISHED_ABYSS_ANDESITE.get(), MiaBlocks.ABYSS_ANDESITE.get());
         stoneCutter(recipeOutput, MiaBlocks.POLISHED_ABYSS_ANDESITE.get(), MiaBlocks.ABYSS_ANDESITE.get());
         stoneBlocks(recipeOutput, Arrays.asList(MiaBlocks.POLISHED_ABYSS_ANDESITE.get(), MiaBlocks.ABYSS_ANDESITE.get()),
-                MiaBlocks.POLISHED_ABYSS_ANDESITE_STAIRS.get(), MiaBlocks.POLISHED_ABYSS_ANDESITE_SLAB.get(), MiaBlocks.POLISHED_ABYSS_ANDESITE_WALL.get()
-        );
+                MiaBlocks.POLISHED_ABYSS_ANDESITE_STAIRS.get(), MiaBlocks.POLISHED_ABYSS_ANDESITE_SLAB.get(), MiaBlocks.POLISHED_ABYSS_ANDESITE_WALL.get());
+
         chiseled(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.ABYSS_ANDESITE_PILLAR.get(), MiaBlocks.POLISHED_ABYSS_ANDESITE_SLAB.get());
         stoneCutter(recipeOutput, MiaBlocks.ABYSS_ANDESITE_PILLAR.get(), Arrays.asList(MiaBlocks.POLISHED_ABYSS_ANDESITE.get(), MiaBlocks.ABYSS_ANDESITE.get()));
         // 安山岩砖
         polished(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.ABYSS_ANDESITE_BRICKS.get(), MiaBlocks.POLISHED_ABYSS_ANDESITE.get());
         stoneCutter(recipeOutput, MiaBlocks.ABYSS_ANDESITE_BRICKS.get(), Arrays.asList(MiaBlocks.POLISHED_ABYSS_ANDESITE.get(), MiaBlocks.ABYSS_ANDESITE.get()));
         stoneBlocks(recipeOutput, Arrays.asList(MiaBlocks.ABYSS_ANDESITE_BRICKS.get(), MiaBlocks.POLISHED_ABYSS_ANDESITE.get(), MiaBlocks.ABYSS_ANDESITE.get()),
-                MiaBlocks.ABYSS_ANDESITE_BRICKS_STAIRS.get(), MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB.get(), MiaBlocks.ABYSS_ANDESITE_BRICKS_WALL.get()
-        );
+                MiaBlocks.ABYSS_ANDESITE_BRICKS_STAIRS.get(), MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB.get(), MiaBlocks.ABYSS_ANDESITE_BRICKS_WALL.get());
+
         chiseled(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.CHISLED_ABYSS_ANDESITE.get(), MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB.get());
         stoneCutter(recipeOutput, MiaBlocks.CHISLED_ABYSS_ANDESITE.get(), Arrays.asList(MiaBlocks.ABYSS_ANDESITE_BRICKS.get(), MiaBlocks.POLISHED_ABYSS_ANDESITE.get(), MiaBlocks.ABYSS_ANDESITE.get()));
         // 安山岩苔石砖
         shapeless2B1(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS.get(), MiaBlocks.ABYSS_ANDESITE_BRICKS.get(), Blocks.MOSS_BLOCK);
         shapeless2B1(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS.get(), MiaBlocks.ABYSS_ANDESITE_BRICKS.get(), Blocks.VINE);
         stoneBlocks(recipeOutput, MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS.get(),
-                MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS.get(), MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get(), MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL.get()
-        );
+                MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS.get(), MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get(), MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL.get());
 
+        // 化石树
+        twoByTwoPacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.FOSSILIZED_WOOD.get(), MiaBlocks.FOSSILIZED_LOG.get(), 3);
+        twoByTwoPacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get(), MiaBlocks.STRIPPED_FOSSILIZED_LOG.get(), 3);
+
+        stoneFromLog(recipeOutput, MiaBlocks.POLISHED_FOSSILIZED_WOOD.get(), MiaTags.Items.FOSSILIZED_LOGS, 4);
+        stoneCutter(recipeOutput, MiaBlocks.POLISHED_FOSSILIZED_WOOD.get(), Arrays.asList(MiaBlocks.FOSSILIZED_WOOD.get(), MiaBlocks.FOSSILIZED_LOG.get()));
+        stoneBlocks(recipeOutput, MiaBlocks.POLISHED_FOSSILIZED_WOOD.get(),
+                MiaBlocks.POLISHED_FOSSILIZED_WOOD_STAIRS.get(), MiaBlocks.POLISHED_FOSSILIZED_WOOD_SLAB.get(), MiaBlocks.POLISHED_FOSSILIZED_WOOD_WALL.get());
+        polished(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.FOSSILIZED_WOOD_BRICKS.get(), MiaBlocks.POLISHED_FOSSILIZED_WOOD.get());
+        stoneCutter(recipeOutput, MiaBlocks.FOSSILIZED_WOOD_BRICKS.get(), Arrays.asList(MiaBlocks.POLISHED_FOSSILIZED_WOOD.get(), MiaBlocks.FOSSILIZED_WOOD.get(), MiaBlocks.FOSSILIZED_LOG.get()));
+        stoneBlocks(recipeOutput, MiaBlocks.FOSSILIZED_WOOD_BRICKS.get(),
+                MiaBlocks.FOSSILIZED_WOOD_BRICKS_STAIRS.get(), MiaBlocks.FOSSILIZED_WOOD_BRICKS_SLAB.get(), MiaBlocks.FOSSILIZED_WOOD_BRICKS_WALL.get());
+
+        stoneFromLog(recipeOutput, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get(), MiaTags.Items.STRIPPED_FOSSILIZED_LOGS, 4);
+        stoneCutter(recipeOutput, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get(), Arrays.asList(MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get(), MiaBlocks.STRIPPED_FOSSILIZED_LOG.get()));
+        stoneBlocks(recipeOutput, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get(),
+                MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_STAIRS.get(), MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_SLAB.get(), MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_WALL.get());
+        polished(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS.get(), MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get());
+        stoneCutter(recipeOutput, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS.get(), Arrays.asList(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get(), MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get(), MiaBlocks.STRIPPED_FOSSILIZED_LOG.get()));
+        stoneBlocks(recipeOutput, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS.get(),
+                MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS.get(), MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB.get(), MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL.get());
+
+
+        // 工具
         pickaxe(recipeOutput, MiaItems.PRASIOLITE_PICKAXE.get(), MiaItems.PRASIOLITE_SHARD.get());
         hoe(recipeOutput, MiaItems.PRASIOLITE_HOE.get(), MiaItems.PRASIOLITE_SHARD.get());
+
 
         // 木头
         planksFromLog(recipeOutput, MiaBlocks.SKYFOG_PLANKS.get(), MiaTags.Items.SKYFOG_LOGS, 4);
@@ -100,59 +123,59 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     private static void ArtifactEnhancement(RecipeOutput recipeOutput) {
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(MiaItems.MISTFUZZ_PEACH.get(), 4),
                         Attributes.MAX_HEALTH, 2, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(Items.IRON_INGOT, 1),
                         Attributes.ARMOR, 0.3, Operation.ADD_MULTIPLIED_BASE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(Items.EMERALD, 1),
                         Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_TOTAL)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(Items.STONE, 1),
                         Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(Items.FIRE_CHARGE, 2),
                         Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(Items.WATER_BUCKET, 3),
                         Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(Items.BAMBOO, 1),
                         Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(Items.COBBLED_DEEPSLATE, 1),
                         Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(Items.OAK_LEAVES, 1),
                         Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(Items.OAK_PLANKS, 1),
                         Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(Items.OAK_SAPLING, 1),
                         Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(MiaItems.PRASIOLITE_SHARD.get(), 8),
                         Attributes.BLOCK_BREAK_SPEED, 0.2, Operation.ADD_MULTIPLIED_TOTAL)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(Items.STICK, 1),
                         Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_BASE)
                 .unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.ENHANCEABLE_ARTIFACT),
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(Items.DIAMOND, 1),
                         Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_BASE)
                 .unlockedByMaterial().save(recipeOutput);
@@ -222,6 +245,13 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(material), RecipeCategory.BUILDING_BLOCKS, result, resultCount)
                 .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput, MIA.MOD_ID + ":stonecutting/" + getConversionRecipeName(result, material));
+    }
+
+    private static void stoneFromLog(RecipeOutput recipeOutput, ItemLike planks, TagKey<Item> logs, int resultCount) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, planks, resultCount)
+                .define('#', logs).pattern("##").pattern("##")
+                .unlockedBy("has_log", has(logs))
+                .save(recipeOutput);
     }
 
     private static void pickaxe(RecipeOutput recipeOutput, ItemLike output, ItemLike input) {

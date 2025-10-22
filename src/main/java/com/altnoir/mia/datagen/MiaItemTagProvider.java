@@ -64,6 +64,13 @@ public class MiaItemTagProvider extends ItemTagsProvider {
         tag(ItemTags.PLANKS)
                 .add(MiaBlocks.SKYFOG_PLANKS.get().asItem());
 
+        tag(MiaTags.Items.FOSSILIZED_LOGS)
+                .add(MiaBlocks.FOSSILIZED_LOG.get().asItem())
+                .add(MiaBlocks.FOSSILIZED_WOOD.get().asItem());
+        tag(MiaTags.Items.STRIPPED_FOSSILIZED_LOGS)
+                .add(MiaBlocks.STRIPPED_FOSSILIZED_LOG.get().asItem())
+                .add(MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get().asItem());
+
         tag(MiaTags.Items.SKYFOG_LOGS)
                 .add(MiaBlocks.SKYFOG_LOG.get().asItem())
                 .add(MiaBlocks.SKYFOG_WOOD.get().asItem())
@@ -84,7 +91,7 @@ public class MiaItemTagProvider extends ItemTagsProvider {
     private void tagArtifacts(HolderLookup.Provider provider) {
         HolderLookup<Item> items = provider.lookupOrThrow(Registries.ITEM);
         var allArtifactTag = tag(CuriosTags.ARTIFACT).replace(false);
-        var enhanceableArtifactTag = tag(MiaTags.Items.ENHANCEABLE_ARTIFACT).replace(false);
+        var enhanceableArtifactTag = tag(MiaTags.Items.SMITHING_ARTIFACT).replace(false);
 
         var grade4ArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_D).replace(false);
         var grade3ArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_C).replace(false);

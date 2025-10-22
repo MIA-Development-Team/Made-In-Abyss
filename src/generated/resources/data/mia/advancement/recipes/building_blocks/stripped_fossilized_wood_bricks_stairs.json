@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stripped_fossilized_wood_bricks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mia:stripped_fossilized_wood_bricks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mia:stripped_fossilized_wood_bricks_stairs"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_stripped_fossilized_wood_bricks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mia:stripped_fossilized_wood_bricks_stairs"
+    ]
+  }
+}

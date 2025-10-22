@@ -1,19 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "stairs",
   "key": {
     "#": {
-      "item": "mia:skyfog_planks"
+      "item": "mia:fossilized_log"
     }
   },
   "pattern": [
-    "#  ",
-    "## ",
-    "###"
+    "##",
+    "##"
   ],
   "result": {
-    "count": 4,
-    "id": "mia:skyfog_stairs"
+    "count": 3,
+    "id": "mia:fossilized_wood"
   }
 }

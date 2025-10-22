@@ -4,7 +4,7 @@
   "group": "stairs",
   "key": {
     "#": {
-      "item": "mia:abyss_cobbled_andesite"
+      "item": "mia:fossilized_wood_bricks"
     }
   },
   "pattern": [
@@ -14,6 +14,6 @@
   ],
   "result": {
     "count": 4,
-    "id": "mia:abyss_cobbled_andesite_stairs"
+    "id": "mia:fossilized_wood_bricks_stairs"
   }
 }

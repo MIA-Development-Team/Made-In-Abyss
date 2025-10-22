@@ -31,7 +31,9 @@ public class MiaTags {
         public static final TagKey<Item> ARTIFACT_GRADE_S = create("artifact_grade_s");
         public static final TagKey<Item> ARTIFACT_GRADE_U = create("artifact_grade_u");
         // 用于合成
-        public static final TagKey<Item> ENHANCEABLE_ARTIFACT = create("enhanceable_artifact");
+        public static final TagKey<Item> SMITHING_ARTIFACT = create("smithing_artifact");
+        public static final TagKey<Item> FOSSILIZED_LOGS = create("fossilized_logs");
+        public static final TagKey<Item> STRIPPED_FOSSILIZED_LOGS = create("stripped_fossilized_logs");
         public static final TagKey<Item> SKYFOG_LOGS = create("skyfog_logs");
         // 用于tooltip
         public static final TagKey<Item> ARTIFACT_MODIFIERS_MATERIAL = create("artifact_modifiers_material");

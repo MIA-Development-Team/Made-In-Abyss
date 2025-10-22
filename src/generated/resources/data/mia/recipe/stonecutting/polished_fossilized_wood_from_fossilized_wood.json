@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "mia:fossilized_wood"
+  },
+  "result": {
+    "count": 1,
+    "id": "mia:polished_fossilized_wood"
+  }
+}

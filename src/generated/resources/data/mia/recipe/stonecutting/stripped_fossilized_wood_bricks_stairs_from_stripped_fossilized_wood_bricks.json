@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "mia:stripped_fossilized_wood_bricks"
+  },
+  "result": {
+    "count": 1,
+    "id": "mia:stripped_fossilized_wood_bricks_stairs"
+  }
+}

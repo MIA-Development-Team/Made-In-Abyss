@@ -140,6 +140,8 @@ public class MiaLangProvider extends LanguageProvider {
 
         // Tags start
         add("tag.item.curios.whistle", "Whistle");
+        add("tag.item.mia.fossilized_logs", "Fossilized Logs");
+        add("tag.item.mia.stripped_fossilized_logs", "Stripped Fossilized Logs");
         add("tag.item.mia.skyfog_logs", "Skyfog Logs");
         // Tags end
 

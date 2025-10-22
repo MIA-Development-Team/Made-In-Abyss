@@ -1,19 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "stairs",
   "key": {
     "#": {
-      "item": "mia:abyss_cobbled_andesite"
+      "tag": "mia:fossilized_logs"
     }
   },
   "pattern": [
-    "#  ",
-    "## ",
-    "###"
+    "##",
+    "##"
   ],
   "result": {
     "count": 4,
-    "id": "mia:abyss_cobbled_andesite_stairs"
+    "id": "mia:polished_fossilized_wood"
   }
 }
