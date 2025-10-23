@@ -1,6 +1,6 @@
 package com.altnoir.mia.worldgen.biome.biomesource;
 
-import com.altnoir.mia.MiaConfig;
+import com.altnoir.mia.worldgen.noise_setting.densityfunction.AbyssBrinkHole;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -67,7 +67,7 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
         int sectionX = SectionPos.blockToSectionCoord(blockX);
         int sectionZ = SectionPos.blockToSectionCoord(blockZ);
 
-        if ((long) sectionX * sectionX + (long) sectionZ * sectionZ <= (long) MiaConfig.abyssRadius * 1.4F) {
+        if ((long) sectionX * sectionX + (long) sectionZ * sectionZ <= (long) AbyssBrinkHole.getAbyssRadius()) {
             return abyss;
         } else {
             return this.getNoiseBiome(sampler.sample(x, y, z));

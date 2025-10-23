@@ -1,0 +1,47 @@
+{
+  "type": "mia:slab_ruins",
+  "config": {
+    "block_state_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "mia:mossy_abyss_andesite_bricks"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:abyss_andesite_bricks"
+          },
+          "weight": 1
+        }
+      ]
+    },
+    "slab_state_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "mia:mossy_abyss_andesite_bricks_slab",
+            "Properties": {
+              "type": "bottom",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:abyss_andesite_bricks_slab",
+            "Properties": {
+              "type": "bottom",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    }
+  }
+}

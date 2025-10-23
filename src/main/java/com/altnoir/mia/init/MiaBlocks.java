@@ -110,6 +110,7 @@ public class MiaBlocks {
                     BlockBehaviour.Properties.of()
                             .mapColor(state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? MapColor.COLOR_BLACK : MapColor.PODZOL)
                             .instrument(NoteBlockInstrument.BASEDRUM)
+                            .requiresCorrectToolForDrops()
                             .strength(2.0F, 4.2F)
                             .sound(SoundType.BASALT))
     );

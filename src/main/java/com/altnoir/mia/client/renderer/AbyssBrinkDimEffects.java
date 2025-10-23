@@ -17,7 +17,7 @@ public class AbyssBrinkDimEffects extends DimensionSpecialEffects {
     public static final float HEIGHT = 1536.0F;
 
     public AbyssBrinkDimEffects() {
-        super(32.0F, true, SkyType.NONE, false, false);
+        super(40.0F, true, SkyType.NONE, false, false);
     }
 
     @Override

@@ -2,7 +2,7 @@
   "type": "mia:artifact_smithing",
   "amount": 0.3,
   "artifact": {
-    "tag": "mia:enhanceable_artifact"
+    "tag": "mia:smithing_artifact"
   },
   "attribute": "minecraft:generic.armor",
   "material": {

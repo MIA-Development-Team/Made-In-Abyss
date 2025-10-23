@@ -23,6 +23,7 @@ import java.util.List;
 
 public class AbyssBrinkPlacements {
     public static final ResourceKey<PlacedFeature> MONSTER_CHEAT = MiaPlacementUtils.abyssBrinkKey("monster_cheat");
+    public static final ResourceKey<PlacedFeature> SLAB_RUINS = MiaPlacementUtils.abyssBrinkKey("slab_ruins");
     public static final ResourceKey<PlacedFeature> SPRING_WATER = MiaPlacementUtils.abyssBrinkKey("spring_water");
     public static final ResourceKey<PlacedFeature> LAKE_WATER = MiaPlacementUtils.abyssBrinkKey("lake_water");
     public static final ResourceKey<PlacedFeature> VINES = MiaPlacementUtils.abyssBrinkKey("vines");
@@ -49,6 +50,7 @@ public class AbyssBrinkPlacements {
         HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
 
         Holder<ConfiguredFeature<?, ?>> monster_cheat = holdergetter.getOrThrow(AbyssBrinkFeatures.MONSTER_CHEAT);
+        Holder<ConfiguredFeature<?, ?>> slab_ruins = holdergetter.getOrThrow(AbyssBrinkFeatures.SLAB_RUINS);
         Holder<ConfiguredFeature<?, ?>> spring_water = holdergetter.getOrThrow(AbyssBrinkFeatures.SPRING_WATER);
         Holder<ConfiguredFeature<?, ?>> lake_water = holdergetter.getOrThrow(AbyssBrinkFeatures.LAKE_WATER);
         Holder<ConfiguredFeature<?, ?>> vines = holdergetter.getOrThrow(VegetationFeatures.VINES);
@@ -69,9 +71,16 @@ public class AbyssBrinkPlacements {
 
         PlacementUtils.register(
                 context, MONSTER_CHEAT, monster_cheat,
-                RarityFilter.onAverageOnceEvery(2),
+                RarityFilter.onAverageOnceEvery(3),
                 InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(280)),
+                BiomeFilter.biome()
+        );
+        PlacementUtils.register(
+                context, SLAB_RUINS, slab_ruins,
+                RarityFilter.onAverageOnceEvery(2),
+                InSquarePlacement.spread(),
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(320)),
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(

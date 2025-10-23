@@ -7,6 +7,7 @@ import com.altnoir.mia.worldgen.biome.tree.MiaTreePlacements;
 import com.altnoir.mia.worldgen.feature.LakeFeature;
 import com.altnoir.mia.worldgen.feature.configurations.ClusterConfiguration;
 import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
+import com.altnoir.mia.worldgen.feature.configurations.SlabRuinsConfiguration;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -48,6 +49,7 @@ import java.util.List;
 
 public class AbyssBrinkFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MONSTER_CHEAT = MiaFeatureUtils.abyssBrinkKey("monster_cheat");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SLAB_RUINS = MiaFeatureUtils.abyssBrinkKey("slab_ruins");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SPRING_WATER = MiaFeatureUtils.abyssBrinkKey("spring_water");
     public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_WATER = MiaFeatureUtils.abyssBrinkKey("lake_water");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLOW_LICHEN = MiaFeatureUtils.abyssBrinkKey("glow_lichen");
@@ -73,6 +75,21 @@ public class AbyssBrinkFeatures {
                 new MonsterCheatConfiguration(
                         BlockStateProvider.simple(MiaBlocks.SKYFOG_LOG.get().defaultBlockState()),
                         BlockStateProvider.simple(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get().defaultBlockState().setValue(BlockStateProperties.DISTANCE, 1)))
+        );
+        FeatureUtils.register(
+                context, SLAB_RUINS, MiaFeature.SLAB_RUINS.get(),
+                new SlabRuinsConfiguration(
+                        new WeightedStateProvider(
+                                SimpleWeightedRandomList.<BlockState>builder()
+                                        .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get().defaultBlockState())
+                                        .add(MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB.get().defaultBlockState())
+                                        .build()),
+                        new WeightedStateProvider(
+                                SimpleWeightedRandomList.<BlockState>builder()
+                                        .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS.get().defaultBlockState())
+                                        .add(MiaBlocks.ABYSS_ANDESITE_BRICKS.get().defaultBlockState())
+                                        .build())
+                )
         );
 
         MiaFeatureUtils.register(

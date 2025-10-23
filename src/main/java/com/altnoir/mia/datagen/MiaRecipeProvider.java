@@ -73,7 +73,7 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
         twoByTwoPacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.FOSSILIZED_WOOD.get(), MiaBlocks.FOSSILIZED_LOG.get(), 3);
         twoByTwoPacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get(), MiaBlocks.STRIPPED_FOSSILIZED_LOG.get(), 3);
 
-        stoneFromLog(recipeOutput, MiaBlocks.POLISHED_FOSSILIZED_WOOD.get(), MiaTags.Items.FOSSILIZED_LOGS, 4);
+        stoneFromLog(recipeOutput, MiaBlocks.POLISHED_FOSSILIZED_WOOD.get(), MiaTags.Items.FOSSILIZED_LOGS);
         stoneCutter(recipeOutput, MiaBlocks.POLISHED_FOSSILIZED_WOOD.get(), Arrays.asList(MiaBlocks.FOSSILIZED_WOOD.get(), MiaBlocks.FOSSILIZED_LOG.get()));
         stoneBlocks(recipeOutput, MiaBlocks.POLISHED_FOSSILIZED_WOOD.get(),
                 MiaBlocks.POLISHED_FOSSILIZED_WOOD_STAIRS.get(), MiaBlocks.POLISHED_FOSSILIZED_WOOD_SLAB.get(), MiaBlocks.POLISHED_FOSSILIZED_WOOD_WALL.get());
@@ -82,10 +82,12 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
         stoneBlocks(recipeOutput, MiaBlocks.FOSSILIZED_WOOD_BRICKS.get(),
                 MiaBlocks.FOSSILIZED_WOOD_BRICKS_STAIRS.get(), MiaBlocks.FOSSILIZED_WOOD_BRICKS_SLAB.get(), MiaBlocks.FOSSILIZED_WOOD_BRICKS_WALL.get());
 
-        stoneFromLog(recipeOutput, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get(), MiaTags.Items.STRIPPED_FOSSILIZED_LOGS, 4);
+        stoneFromLog(recipeOutput, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get(), MiaTags.Items.STRIPPED_FOSSILIZED_LOGS);
         stoneCutter(recipeOutput, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get(), Arrays.asList(MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get(), MiaBlocks.STRIPPED_FOSSILIZED_LOG.get()));
         stoneBlocks(recipeOutput, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get(),
                 MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_STAIRS.get(), MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_SLAB.get(), MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_WALL.get());
+        chiseled(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.CHISLED_STRIPPED_FOSSILIZED_WOOD.get(), MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_SLAB.get());
+        stoneCutter(recipeOutput, MiaBlocks.CHISLED_STRIPPED_FOSSILIZED_WOOD.get(), Arrays.asList(MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get(), MiaBlocks.STRIPPED_FOSSILIZED_LOG.get()));
         polished(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS.get(), MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get());
         stoneCutter(recipeOutput, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS.get(), Arrays.asList(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get(), MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get(), MiaBlocks.STRIPPED_FOSSILIZED_LOG.get()));
         stoneBlocks(recipeOutput, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS.get(),
@@ -247,9 +249,13 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(recipeOutput, MIA.MOD_ID + ":stonecutting/" + getConversionRecipeName(result, material));
     }
 
-    private static void stoneFromLog(RecipeOutput recipeOutput, ItemLike planks, TagKey<Item> logs, int resultCount) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, planks, resultCount)
-                .define('#', logs).pattern("##").pattern("##")
+    private static void stoneFromLog(RecipeOutput recipeOutput, ItemLike stones, TagKey<Item> logs) {
+        stoneFromLog(recipeOutput, stones, logs, 1);
+    }
+
+    private static void stoneFromLog(RecipeOutput recipeOutput, ItemLike stones, TagKey<Item> logs, int resultCount) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, stones, resultCount)
+                .requires(logs)
                 .unlockedBy("has_log", has(logs))
                 .save(recipeOutput);
     }

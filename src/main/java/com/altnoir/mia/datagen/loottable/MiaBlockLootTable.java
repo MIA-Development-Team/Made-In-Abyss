@@ -1,4 +1,4 @@
-package com.altnoir.mia.datagen;
+package com.altnoir.mia.datagen.loottable;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaItems;
@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -28,15 +27,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-public class MiaBlockLootTableProvider extends BlockLootSubProvider {
-    protected MiaBlockLootTableProvider(HolderLookup.Provider registries) {
+public class MiaBlockLootTable extends BlockLootSubProvider {
+    public MiaBlockLootTable(HolderLookup.Provider registries) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
     }
 
     private final HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 
     @Override
-    protected void generate() {
+    public void generate() {
         add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(),
                 block -> createSingleItemTableWithSilkTouch(block, MiaBlocks.ABYSS_COBBLED_ANDESITE.get()));
         add(MiaBlocks.COVERGRASS_TUFF.get(),
@@ -168,13 +167,13 @@ public class MiaBlockLootTableProvider extends BlockLootSubProvider {
                                 .setRolls(ConstantValue.exactly(1.0F))
                                 .when(this.doesNotHaveShearsOrSilkTouch())
                                 .add(
-                                        ((LootPoolSingletonContainer.Builder) this.applyExplosionCondition(
+                                        this.applyExplosionCondition(
                                                 oakLeavesBlock,
                                                 LootItem.lootTableItem(MiaItems.MISTFUZZ_PEACH.get())
                                                         .apply(SetItemCountFunction
                                                                 .setCount(UniformGenerator.between(1.0F, 2.0F)))
                                                         .apply(ApplyBonusCount.addOreBonusCount(
-                                                                registrylookup.getOrThrow(Enchantments.FORTUNE)))))));
+                                                                registrylookup.getOrThrow(Enchantments.FORTUNE))))));
     }
 
     private LootItemCondition.Builder doesNotHaveShearsOrSilkTouch() {

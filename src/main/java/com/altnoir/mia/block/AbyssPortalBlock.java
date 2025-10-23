@@ -1,5 +1,6 @@
 package com.altnoir.mia.block;
 
+import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.init.MiaSounds;
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;
 import com.mojang.serialization.MapCodec;
@@ -70,12 +71,14 @@ public class AbyssPortalBlock extends Block implements Portal {
             return null;
         } else {
             boolean flag = resourcekey == MiaDimensions.ABYSS_BRINK_LEVEL;
-            BlockPos blockpos = flag ? new BlockPos(0, 301, 633) : serverlevel.getSharedSpawnPos();
-            Vec3 vec3 = blockpos.getBottomCenter();
+            BlockPos blockpos;
+            Vec3 vec3;
             float f = entity.getYRot();
             if (flag) {
                 //AbyssPortalFeature.createAbyssBrinkPlatform(serverlevel, BlockPos.containing(vec3).below(), true);
-                BlockPos suitablePos = findSuitablePositionAndCreatePlatform(serverlevel, blockpos);
+                blockpos = nearestAbyssPosition(entity.getX(), entity.getZ());
+                BlockPos suitablePos = findSuitablePosition(serverlevel, blockpos);
+
                 vec3 = suitablePos.getBottomCenter();
                 f = Direction.WEST.toYRot();
                 if (entity instanceof ServerPlayer) {
@@ -85,7 +88,7 @@ public class AbyssPortalBlock extends Block implements Portal {
                 if (entity instanceof ServerPlayer serverplayer) {
                     return serverplayer.findRespawnPositionAndUseSpawnBlock(false, DimensionTransition.DO_NOTHING);
                 }
-
+                blockpos = serverlevel.getSharedSpawnPos();
                 vec3 = entity.adjustSpawnLocation(serverlevel, blockpos).getBottomCenter();
             }
 
@@ -112,19 +115,38 @@ public class AbyssPortalBlock extends Block implements Portal {
     }
 
     /**
+     * 计算距离原点指定半径的圆上最接近给定坐标的位置
+     *
+     * @param x 目标X坐标
+     * @param z 目标Z坐标
+     * @return 圆周上的最近位置
+     */
+    private BlockPos nearestAbyssPosition(double x, double z) {
+        // 计算角度
+        double angle = Math.atan2(z, x);
+
+        // 使用配置的半径计算圆周上的坐标
+        int radius = MiaConfig.abyssRadius * 2;
+        int targetX = (int) (Math.cos(angle) * radius);
+        int targetZ = (int) (Math.sin(angle) * radius);
+
+        return new BlockPos(targetX, 320, targetZ);
+    }
+
+    /**
      * 从指定高度开始向下搜索合适的位置
      *
      * @param level     目标世界
      * @param centerPos 中心位置
      * @return 适合站立的位置
      */
-    private BlockPos findSuitablePositionAndCreatePlatform(ServerLevel level, BlockPos centerPos) {
+    private BlockPos findSuitablePosition(ServerLevel level, BlockPos centerPos) {
         int endY = Math.max(250, level.getMinBuildHeight());
 
         // 扩大搜索范围
         for (int dxOffset = -8; dxOffset <= 8; dxOffset++) {
             for (int dzOffset = -8; dzOffset <= 8; dzOffset++) {
-                BlockPos searchCenter = centerPos.offset(dxOffset * 8, 0, dzOffset * 8);
+                BlockPos searchCenter = centerPos.offset(dxOffset * 2, 0, dzOffset * 2);
 
                 // 向下搜索合适的位置
                 for (int y = 350; y >= endY; y--) {

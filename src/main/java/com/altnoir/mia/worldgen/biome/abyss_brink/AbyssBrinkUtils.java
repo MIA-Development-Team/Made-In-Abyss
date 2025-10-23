@@ -59,6 +59,7 @@ public class AbyssBrinkUtils {
     public static void globalAbyssGenerationNotGeode(BiomeGenerationSettings.Builder builder) {
         //MiaBiomeDefaultFeatures.addAbyssCarvers(builder);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_STRUCTURES, AbyssBrinkPlacements.MONSTER_CHEAT);
+        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_STRUCTURES, AbyssBrinkPlacements.SLAB_RUINS);
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.VINES);
         addDefaultUndergroundVariety(builder);
 

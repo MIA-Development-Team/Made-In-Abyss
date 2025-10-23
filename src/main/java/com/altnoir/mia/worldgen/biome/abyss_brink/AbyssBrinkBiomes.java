@@ -110,7 +110,7 @@ public class AbyssBrinkBiomes {
 
         BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
 
-        AbyssBrinkUtils.globalAbyssGenerationNotGeode(generationBuilder);
+        AbyssBrinkUtils.globalAbyssGeneration(generationBuilder);
 
         AbyssBrinkUtils.addMeadowVegetation(generationBuilder);
         generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.TREES_SKYFOG);
@@ -128,7 +128,7 @@ public class AbyssBrinkBiomes {
 
         BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
 
-        AbyssBrinkUtils.globalAbyssGenerationNotGeode(generationBuilder);
+        AbyssBrinkUtils.globalAbyssGeneration(generationBuilder);
         BiomeDefaultFeatures.addExtraGold(generationBuilder);
 
         AbyssBrinkUtils.addMeadowVegetation(generationBuilder);

@@ -2,7 +2,7 @@
   "type": "mia:artifact_smithing",
   "amount": 0.2,
   "artifact": {
-    "tag": "mia:enhanceable_artifact"
+    "tag": "mia:smithing_artifact"
   },
   "attribute": "minecraft:player.block_break_speed",
   "material": {

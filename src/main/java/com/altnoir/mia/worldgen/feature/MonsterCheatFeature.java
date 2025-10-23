@@ -1,6 +1,7 @@
 package com.altnoir.mia.worldgen.feature;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.datagen.loottable.MiaCheatLootTable;
 import com.altnoir.mia.init.worldgen.MiaFeature;
 import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
 import com.mojang.serialization.Codec;
@@ -17,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 
 import java.util.function.Predicate;
 
@@ -66,7 +66,7 @@ public class MonsterCheatFeature extends Feature<MonsterCheatConfiguration> {
 
             BlockPos chestPos = spawnerPos.below();
             this.safeSetBlock(worldgenlevel, chestPos, StructurePiece.reorient(worldgenlevel, chestPos, Blocks.CHEST.defaultBlockState()), predicate);
-            RandomizableContainer.setBlockEntityLootTable(worldgenlevel, randomsource, chestPos, BuiltInLootTables.SIMPLE_DUNGEON);
+            RandomizableContainer.setBlockEntityLootTable(worldgenlevel, randomsource, chestPos, MiaCheatLootTable.SIMPLE_RUINS);
 
             if (worldgenlevel.isEmptyBlock(blockpos)) {
                 this.safeSetBlock(worldgenlevel, blockpos, bsc.coreStateProvider.getState(randomsource, blockpos), predicate);

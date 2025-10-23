@@ -1,17 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "category": "building",
-  "key": {
-    "#": {
+  "ingredients": [
+    {
       "tag": "mia:stripped_fossilized_logs"
     }
-  },
-  "pattern": [
-    "##",
-    "##"
   ],
   "result": {
-    "count": 4,
+    "count": 1,
     "id": "mia:polished_stripped_fossilized_wood"
   }
 }

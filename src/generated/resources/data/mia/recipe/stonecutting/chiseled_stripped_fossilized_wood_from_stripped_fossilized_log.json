@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "mia:stripped_fossilized_log"
+  },
+  "result": {
+    "count": 1,
+    "id": "mia:chiseled_stripped_fossilized_wood"
+  }
+}

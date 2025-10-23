@@ -5,6 +5,7 @@ import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.worldgen.feature.*;
 import com.altnoir.mia.worldgen.feature.configurations.ClusterConfiguration;
 import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
+import com.altnoir.mia.worldgen.feature.configurations.SlabRuinsConfiguration;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -28,6 +29,9 @@ public class MiaFeature {
     );
     public static final DeferredHolder<Feature<?>, MonsterCheatFeature> MONSTER_CHEAT = FEATURE.register(
             "monster_cheat", () -> new MonsterCheatFeature(MonsterCheatConfiguration.CODEC)
+    );
+    public static final DeferredHolder<Feature<?>, SlabRuinsFeature> SLAB_RUINS = FEATURE.register(
+            "slab_ruins", () -> new SlabRuinsFeature(SlabRuinsConfiguration.CODEC)
     );
 
     public static final DeferredHolder<Feature<?>, AbyssPortalFeature> ABYSS_PORTAL = FEATURE.register(

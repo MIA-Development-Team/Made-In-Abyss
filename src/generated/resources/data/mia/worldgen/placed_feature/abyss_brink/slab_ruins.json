@@ -1,9 +1,9 @@
 {
-  "feature": "mia:abyss_brink/monster_cheat",
+  "feature": "mia:abyss_brink/slab_ruins",
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 3
+      "chance": 2
     },
     {
       "type": "minecraft:in_square"
@@ -13,7 +13,7 @@
       "height": {
         "type": "minecraft:uniform",
         "max_inclusive": {
-          "absolute": 280
+          "absolute": 320
         },
         "min_inclusive": {
           "absolute": 0

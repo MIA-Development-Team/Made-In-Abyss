@@ -19,8 +19,8 @@ public class MiaConfig {
     public static DisconnectButtonState disconnectButtonState;
 
     private static final ModConfigSpec.IntValue ABYSS_RADIUS = COMMON_BUILDER
-            .comment("The radius of the Abyss (Default: 640) | 深渊半径 (默认值: 640)")
-            .defineInRange("abyss_radius", 640, 80, 2560);
+            .comment("The radius of the Abyss (Default: 320) | 深渊半径 (默认值: 320)")
+            .defineInRange("abyss_radius", 320, 64, 3200);
 
     private static final ModConfigSpec.BooleanValue CURSE = SERVER_BUILDER
             .comment("Whether to enable the Curse (Default: true) | 是否启用上升诅咒 (默认值: true)")
