@@ -128,6 +128,7 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         dropSelf(MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
         // 设备
         dropOther(MiaBlocks.HOPPER_FARMLAND.get(), MiaBlocks.ABYSS_COBBLED_ANDESITE.get());
+        dropSelf(MiaBlocks.SUN_STONE.get());
         dropSelf(MiaBlocks.AMETHYST_LAMPTUBE.get());
         dropSelf(MiaBlocks.PRASIOLITE_LAMPTUBE.get());
         dropSelf(MiaBlocks.PEDESTAL.get());

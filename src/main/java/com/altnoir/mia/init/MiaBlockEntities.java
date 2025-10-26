@@ -4,6 +4,7 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.block.entity.AbyssSpawnerBlockEntity;
 import com.altnoir.mia.block.entity.EndlessCupBlockEntity;
 import com.altnoir.mia.block.entity.PedestalBlockEntity;
+import com.altnoir.mia.block.entity.SunStoneBlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -26,6 +27,11 @@ public class MiaBlockEntities {
     public static final Supplier<BlockEntityType<EndlessCupBlockEntity>> ENDLESS_CUP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("endless_cup_block_entity", () ->
             BlockEntityType.Builder.of(
                     EndlessCupBlockEntity::new, MiaBlocks.ENDLESS_CUP.get()).build(null)
+    );
+
+    public static final Supplier<BlockEntityType<SunStoneBlockEntity>> SUN_STONE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("sun_stone_block_entity", () ->
+            BlockEntityType.Builder.of(
+                    SunStoneBlockEntity::new, MiaBlocks.SUN_STONE.get()).build(null)
     );
 
     public static void register(IEventBus eventBus) {

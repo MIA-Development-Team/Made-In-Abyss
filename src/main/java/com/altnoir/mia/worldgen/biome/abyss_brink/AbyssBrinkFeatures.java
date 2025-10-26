@@ -52,6 +52,7 @@ public class AbyssBrinkFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> SLAB_RUINS = MiaFeatureUtils.abyssBrinkKey("slab_ruins");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SPRING_WATER = MiaFeatureUtils.abyssBrinkKey("spring_water");
     public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_WATER = MiaFeatureUtils.abyssBrinkKey("lake_water");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SUN_STONE = MiaFeatureUtils.abyssBrinkKey("sun_stone");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLOW_LICHEN = MiaFeatureUtils.abyssBrinkKey("glow_lichen");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW = MiaFeatureUtils.abyssBrinkKey("flower_meadow");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_FLOWERS = MiaFeatureUtils.abyssBrinkKey("forest_flowers");
@@ -107,6 +108,10 @@ public class AbyssBrinkFeatures {
                 new LakeFeature.Configuration(
                         BlockStateProvider.simple(Blocks.WATER.defaultBlockState()), BlockStateProvider.simple(Blocks.SAND.defaultBlockState())
                 )
+        );
+        MiaFeatureUtils.register(
+                context, SUN_STONE, Feature.SIMPLE_BLOCK,
+                new SimpleBlockConfiguration(BlockStateProvider.simple(MiaBlocks.SUN_STONE.get().defaultBlockState()))
         );
         MultifaceBlock multifaceblock = (MultifaceBlock) Blocks.GLOW_LICHEN;
         MiaFeatureUtils.register(

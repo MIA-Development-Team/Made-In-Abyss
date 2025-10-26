@@ -188,7 +188,7 @@ public class MiaBlocks {
                     .offsetType(BlockBehaviour.OffsetType.XZ)
                     .pushReaction(PushReaction.DESTROY)));
 
-    // 红石
+    // 开关
     public static final DeferredBlock<Block> SKYFOG_PRESSURE_PLATE = registerBlock("skyfog_pressure_plate", () ->
             woodenPressurePlate(BlockSetType.OAK, SKYFOG_PLANKS.get().defaultMapColor()));
     public static final DeferredBlock<Block> SKYFOG_BUTTON = registerBlock("skyfog_button", () ->
@@ -237,6 +237,16 @@ public class MiaBlocks {
                             .isViewBlocking(MiaBlocks::always)
                             .isSuffocating(MiaBlocks::always)
             ));
+    public static final DeferredBlock<Block> SUN_STONE = registerBlock("sun_stone", () ->
+            new SunStoneBlock(
+                    BlockBehaviour.Properties.of()
+                            .strength(0.3F)
+                            .requiresCorrectToolForDrops()
+                            .lightLevel(state -> 15)
+                            .sound(SoundType.FROGLIGHT)
+            )
+    );
+
     public static final DeferredBlock<Block> PRASIOLITE_LAMPTUBE = registerBlock("prasiolite_lamptube", () ->
             new PrasioliteTubeBlock(
                     BlockBehaviour.Properties.of()

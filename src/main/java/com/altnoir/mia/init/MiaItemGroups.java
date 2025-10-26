@@ -72,6 +72,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL);
 
                         output.accept(MiaBlocks.HOPPER_FARMLAND);
+                        output.accept(MiaBlocks.SUN_STONE);
 
                         output.accept(MiaBlocks.PRASIOLITE_BLOCK);
                         output.accept(MiaBlocks.BUDDING_PRASIOLITE);
@@ -82,7 +83,6 @@ public class MiaItemGroups {
                         output.accept(MiaItems.PRASIOLITE_SHARD);
                         output.accept(MiaItems.PRASIOLITE_PICKAXE);
                         output.accept(MiaItems.PRASIOLITE_HOE);
-
 
 
                         // woods
@@ -104,6 +104,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.SKYFOG_PRESSURE_PLATE);
                         output.accept(MiaBlocks.SKYFOG_BUTTON);
 
+                        // 设备
                         output.accept(MiaBlocks.ABYSS_PORTAL);
                         output.accept(MiaBlocks.ABYSS_PORTAL_FRAME);
                         output.accept(MiaBlocks.ABYSS_SPAWNER);

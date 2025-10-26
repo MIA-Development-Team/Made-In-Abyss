@@ -20,11 +20,15 @@
         },
         {
           "type": "minecraft:item",
-          "name": "mia:test_artifact_3"
+          "name": "mia:test_artifact_1"
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:stick"
+          "name": "mia:test_artifact_2"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "mia:test_artifact_3"
         },
         {
           "type": "minecraft:item",

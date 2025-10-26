@@ -43,11 +43,7 @@ public class AbyssBrinkUtils {
 
     public static void abyssGeneration(BiomeGenerationSettings.Builder builder) {
         builder.addFeature(GenerationStep.Decoration.LAKES, AbyssBrinkPlacements.LAKE_WATER);
-        addDefaultUndergroundVariety(builder);
-
-        addDefaultSprings(builder);
-        addDefaultOres(builder);
-        addDefaultSoftDisks(builder);
+        globalAbyssGenerationNotGeode(builder);
     }
 
 
@@ -60,6 +56,7 @@ public class AbyssBrinkUtils {
         //MiaBiomeDefaultFeatures.addAbyssCarvers(builder);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_STRUCTURES, AbyssBrinkPlacements.MONSTER_CHEAT);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_STRUCTURES, AbyssBrinkPlacements.SLAB_RUINS);
+        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_STRUCTURES, AbyssBrinkPlacements.SUN_STONE);
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbyssBrinkPlacements.VINES);
         addDefaultUndergroundVariety(builder);
 

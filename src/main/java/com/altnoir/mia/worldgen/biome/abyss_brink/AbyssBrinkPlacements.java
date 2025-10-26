@@ -26,6 +26,7 @@ public class AbyssBrinkPlacements {
     public static final ResourceKey<PlacedFeature> SLAB_RUINS = MiaPlacementUtils.abyssBrinkKey("slab_ruins");
     public static final ResourceKey<PlacedFeature> SPRING_WATER = MiaPlacementUtils.abyssBrinkKey("spring_water");
     public static final ResourceKey<PlacedFeature> LAKE_WATER = MiaPlacementUtils.abyssBrinkKey("lake_water");
+    public static final ResourceKey<PlacedFeature> SUN_STONE = MiaPlacementUtils.abyssBrinkKey("sun_stone");
     public static final ResourceKey<PlacedFeature> VINES = MiaPlacementUtils.abyssBrinkKey("vines");
     public static final ResourceKey<PlacedFeature> GLOW_LICHEN = MiaPlacementUtils.abyssBrinkKey("glow_lichen");
     public static final ResourceKey<PlacedFeature> PATCH_GRASS_PLAIN = MiaPlacementUtils.abyssBrinkKey("patch_grass_plain");
@@ -53,6 +54,7 @@ public class AbyssBrinkPlacements {
         Holder<ConfiguredFeature<?, ?>> slab_ruins = holdergetter.getOrThrow(AbyssBrinkFeatures.SLAB_RUINS);
         Holder<ConfiguredFeature<?, ?>> spring_water = holdergetter.getOrThrow(AbyssBrinkFeatures.SPRING_WATER);
         Holder<ConfiguredFeature<?, ?>> lake_water = holdergetter.getOrThrow(AbyssBrinkFeatures.LAKE_WATER);
+        Holder<ConfiguredFeature<?, ?>> sun_stone = holdergetter.getOrThrow(AbyssBrinkFeatures.SUN_STONE);
         Holder<ConfiguredFeature<?, ?>> vines = holdergetter.getOrThrow(VegetationFeatures.VINES);
         Holder<ConfiguredFeature<?, ?>> glow_lichen = holdergetter.getOrThrow(AbyssBrinkFeatures.GLOW_LICHEN);
         Holder<ConfiguredFeature<?, ?>> grass = holdergetter.getOrThrow(VegetationFeatures.PATCH_GRASS);
@@ -92,9 +94,18 @@ public class AbyssBrinkPlacements {
         );
         MiaPlacementUtils.register(
                 context, LAKE_WATER, lake_water,
-                RarityFilter.onAverageOnceEvery(3),
+                RarityFilter.onAverageOnceEvery(4),
                 InSquarePlacement.spread(),
                 PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+                BiomeFilter.biome()
+        );
+        MiaPlacementUtils.register(
+                context, SUN_STONE, sun_stone,
+                CountPlacement.of(2),
+                InSquarePlacement.spread(),
+                ABYSS_BRINK_HEIGHT,
+                EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.hasSturdyFace(Direction.DOWN), BlockPredicate.ONLY_IN_AIR_PREDICATE, 12),
+                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
                 BiomeFilter.biome()
         );
         PlacementUtils.register(

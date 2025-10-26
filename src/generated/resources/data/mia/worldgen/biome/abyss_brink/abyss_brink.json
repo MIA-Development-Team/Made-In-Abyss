@@ -31,7 +31,11 @@
       "mia:abyss_brink/lake_water"
     ],
     [],
-    [],
+    [
+      "mia:abyss_brink/monster_cheat",
+      "mia:abyss_brink/slab_ruins",
+      "mia:abyss_brink/sun_stone"
+    ],
     [],
     [],
     [
@@ -66,6 +70,7 @@
       "mia:abyss_brink/spring_water"
     ],
     [
+      "mia:abyss_brink/vines",
       "mia:abyss_brink/glow_lichen",
       "mia:abyss_brink/patch_grass_plain",
       "mia:abyss_brink/flower_meadow",
