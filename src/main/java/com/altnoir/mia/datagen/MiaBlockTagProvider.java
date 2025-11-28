@@ -23,7 +23,7 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         // 深渊标签
-        tag(MiaTags.Blocks.ANDESITE_ORE_REPLACEABLES)
+        tag(MiaTags.Blocks.ABYSS_ANDESITE_ORE_REPLACEABLES)
                 .add(MiaBlocks.ABYSS_ANDESITE.get());
 
         tag(MiaTags.Blocks.BASE_STONE_ABYSS)
@@ -34,6 +34,9 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(Blocks.GRASS_BLOCK)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
                 .add(MiaBlocks.COVERGRASS_TUFF.get());
+
+        tag(MiaTags.Blocks.ABYSS_DRIPSTONE_UNREPLACEABLE)
+                .add(Blocks.BEDROCK);
 
         // 深渊工具标签
         tag(MiaTags.Blocks.NEED_PRASIOLITE_TOOL)
@@ -181,6 +184,6 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
 
         // 标签嵌套
         tag(BlockTags.SCULK_REPLACEABLE)
-                .addTag(MiaTags.Blocks.ANDESITE_ORE_REPLACEABLES);
+                .addTag(MiaTags.Blocks.ABYSS_ANDESITE_ORE_REPLACEABLES);
     }
 }

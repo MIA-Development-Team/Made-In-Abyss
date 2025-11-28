@@ -10,8 +10,9 @@ public class MiaTags {
     public static class Blocks {
         // 新增多个自定义方块标签定义
         public static final TagKey<Block> BASE_STONE_ABYSS = create("base_stone_abyss");
-        public static final TagKey<Block> ANDESITE_ORE_REPLACEABLES = create("andesite_ore_replaceables");
+        public static final TagKey<Block> ABYSS_ANDESITE_ORE_REPLACEABLES = create("abyss_andesite_ore_replaceables");
         public static final TagKey<Block> COVERGRASS = create("covergrass");
+        public static final TagKey<Block> ABYSS_DRIPSTONE_UNREPLACEABLE = create("abyss_dripstone_replaceable");
         // 用于tooltip
         public static final TagKey<Block> NEED_PRASIOLITE_TOOL = create("need_prasiolite_tool");
         public static final TagKey<Block> INCORRECT_FOR_PRASIOLITE_TOOL = create("incorrect_for_prasiolite_tool");
@@ -33,6 +34,7 @@ public class MiaTags {
         // 用于合成
         public static final TagKey<Item> SMITHING_ARTIFACT = create("smithing_artifact");
         public static final TagKey<Item> FOSSILIZED_LOGS = create("fossilized_logs");
+        public static final TagKey<Item> UNSTRIPPED_FOSSILIZED_LOGS = create("unstripped_fossilized_logs");
         public static final TagKey<Item> STRIPPED_FOSSILIZED_LOGS = create("stripped_fossilized_logs");
         public static final TagKey<Item> SKYFOG_LOGS = create("skyfog_logs");
         // 用于tooltip

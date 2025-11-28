@@ -145,6 +145,7 @@ public class MiaLangProvider extends LanguageProvider {
         add("tag.item.mia.skyfog_logs", "Skyfog Logs");
         // Tags end
 
+        add("pack.mia.music_pack.name", "Made In Abyss: Music Pack");
 
         //Compat start
         add("curios.identifier.whistle", "Whistle");

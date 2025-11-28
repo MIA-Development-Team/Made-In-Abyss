@@ -18,6 +18,8 @@ public class EventHandle {
         modEventBus.addListener(CurseEvent::attachEntityCapabilities);
         modEventBus.addListener(CapabilityRegister::RegisterCapabilitiesEvent);
         modEventBus.addListener(PlayerAttributeEvent::addPlayerAttributes);
+
+        modEventBus.addListener(PackFindersEvent::packSetup);
     }
 
     public static void addGameEventBus(IEventBus gameEventBus) {

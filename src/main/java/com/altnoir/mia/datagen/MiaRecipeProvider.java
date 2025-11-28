@@ -73,7 +73,7 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
         twoByTwoPacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.FOSSILIZED_WOOD.get(), MiaBlocks.FOSSILIZED_LOG.get(), 3);
         twoByTwoPacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get(), MiaBlocks.STRIPPED_FOSSILIZED_LOG.get(), 3);
 
-        stoneFromLog(recipeOutput, MiaBlocks.POLISHED_FOSSILIZED_WOOD.get(), MiaTags.Items.FOSSILIZED_LOGS);
+        stoneFromLog(recipeOutput, MiaBlocks.POLISHED_FOSSILIZED_WOOD.get(), MiaTags.Items.UNSTRIPPED_FOSSILIZED_LOGS);
         stoneCutter(recipeOutput, MiaBlocks.POLISHED_FOSSILIZED_WOOD.get(), Arrays.asList(MiaBlocks.FOSSILIZED_WOOD.get(), MiaBlocks.FOSSILIZED_LOG.get()));
         stoneBlocks(recipeOutput, MiaBlocks.POLISHED_FOSSILIZED_WOOD.get(),
                 MiaBlocks.POLISHED_FOSSILIZED_WOOD_STAIRS.get(), MiaBlocks.POLISHED_FOSSILIZED_WOOD_SLAB.get(), MiaBlocks.POLISHED_FOSSILIZED_WOOD_WALL.get());
@@ -109,6 +109,7 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
 
         lampTube(recipeOutput, Items.STONE, 2, Items.DEEPSLATE);
         lampTube(recipeOutput, Items.ANDESITE, 2, MiaBlocks.ABYSS_ANDESITE);
+        lampTube(recipeOutput, MiaTags.Items.FOSSILIZED_LOGS, Items.COAL, "fossilized_logs");
         ArtifactBundleUpgrade(recipeOutput);
         ArtifactEnhancement(recipeOutput);
     }
@@ -199,8 +200,12 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(recipeOutput, getItemName(output) + "_from_" + id);
     }
 
-    private static void lampTube(RecipeOutput recipeOutput, TagKey<Item> tag, ItemLike output, Integer count, String hasName) {
-        LampTubeRecipeBuilder.lampTube(tag, output, count)
+    private static void lampTube(RecipeOutput recipeOutput, TagKey<Item> tag, ItemLike output, String hasName) {
+        lampTube(recipeOutput, tag, output, 1, hasName);
+    }
+
+    private static void lampTube(RecipeOutput recipeOutput, TagKey<Item> tag, ItemLike output, Integer resultCount, String hasName) {
+        LampTubeRecipeBuilder.lampTube(tag, output, resultCount)
                 .unlockedBy("has_" + hasName, has(output))
                 .save(recipeOutput);
     }

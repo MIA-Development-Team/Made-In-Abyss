@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_log": {
+    "has_fossilized_logs": {
       "conditions": {
         "items": [
           {
-            "items": "#mia:unstripped_fossilized_logs"
+            "items": "minecraft:coal"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mia:polished_fossilized_wood"
+        "recipe": "mia:lamp_tube/coal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_log"
+      "has_fossilized_logs"
     ]
   ],
   "rewards": {
     "recipes": [
-      "mia:polished_fossilized_wood"
+      "mia:lamp_tube/coal"
     ]
   }
 }

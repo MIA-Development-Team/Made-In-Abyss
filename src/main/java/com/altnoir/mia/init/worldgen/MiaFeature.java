@@ -4,6 +4,7 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.worldgen.feature.*;
 import com.altnoir.mia.worldgen.feature.configurations.ClusterConfiguration;
+import com.altnoir.mia.worldgen.feature.configurations.MiaLargeDripstoneConfiguration;
 import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
 import com.altnoir.mia.worldgen.feature.configurations.SlabRuinsConfiguration;
 import net.minecraft.core.registries.Registries;
@@ -23,6 +24,9 @@ public class MiaFeature {
     );
     public static final DeferredHolder<Feature<?>, ClusterFeature> CLUSTER = FEATURE.register(
             "cluster", () -> new ClusterFeature(ClusterConfiguration.CODEC)
+    );
+    public static final DeferredHolder<Feature<?>, MiaLargeDripstoneFeature> ABYSS_LARGE_DRIPSTONE = FEATURE.register(
+            "abyss_large_dripstone", () -> new MiaLargeDripstoneFeature(MiaLargeDripstoneConfiguration.CODEC)
     );
     public static final DeferredHolder<Feature<?>, LakeFeature> LAKE = FEATURE.register(
             "lake", () -> new LakeFeature(LakeFeature.Configuration.CODEC)

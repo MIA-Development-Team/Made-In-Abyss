@@ -16,8 +16,8 @@
       "tick_delay": 6000
     },
     "music": {
-      "max_delay": 2400,
-      "min_delay": 1200,
+      "max_delay": 24000,
+      "min_delay": 12000,
       "replace_current_music": false,
       "sound": "mia:music.abyss_brink.dim"
     },

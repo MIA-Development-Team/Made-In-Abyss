@@ -64,12 +64,15 @@ public class MiaItemTagProvider extends ItemTagsProvider {
         tag(ItemTags.PLANKS)
                 .add(MiaBlocks.SKYFOG_PLANKS.get().asItem());
 
-        tag(MiaTags.Items.FOSSILIZED_LOGS)
+        tag(MiaTags.Items.UNSTRIPPED_FOSSILIZED_LOGS)
                 .add(MiaBlocks.FOSSILIZED_LOG.get().asItem())
                 .add(MiaBlocks.FOSSILIZED_WOOD.get().asItem());
         tag(MiaTags.Items.STRIPPED_FOSSILIZED_LOGS)
                 .add(MiaBlocks.STRIPPED_FOSSILIZED_LOG.get().asItem())
                 .add(MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get().asItem());
+        tag(MiaTags.Items.FOSSILIZED_LOGS)
+                .addTag(MiaTags.Items.UNSTRIPPED_FOSSILIZED_LOGS)
+                .addTag(MiaTags.Items.STRIPPED_FOSSILIZED_LOGS);
 
         tag(MiaTags.Items.SKYFOG_LOGS)
                 .add(MiaBlocks.SKYFOG_LOG.get().asItem())

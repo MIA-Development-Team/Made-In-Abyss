@@ -12,6 +12,7 @@
     "subtitle": "subtitle.mia.abyss_portal_travel"
   },
   "music.abyss_brink.dim": {
+    "replace": true,
     "sounds": [
       {
         "name": "mia:music/the_first_layer",

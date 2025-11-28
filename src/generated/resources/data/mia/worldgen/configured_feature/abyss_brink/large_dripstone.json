@@ -1,16 +1,16 @@
 {
-  "type": "minecraft:large_dripstone",
+  "type": "mia:abyss_large_dripstone",
   "config": {
     "column_radius": {
       "type": "minecraft:uniform",
-      "max_inclusive": 19,
+      "max_inclusive": 18,
       "min_inclusive": 3
     },
     "floor_to_ceiling_search_range": 188,
     "height_scale": {
       "type": "minecraft:uniform",
-      "max_exclusive": 2.0,
-      "min_inclusive": 0.4
+      "max_exclusive": 3.0,
+      "min_inclusive": 0.5
     },
     "max_column_radius_to_cave_height_ratio": 0.5,
     "min_bluntness_for_wind": 0.6,

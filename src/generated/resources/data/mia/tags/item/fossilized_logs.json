@@ -1,6 +1,6 @@
 {
   "values": [
-    "mia:fossilized_log",
-    "mia:fossilized_wood"
+    "#mia:unstripped_fossilized_logs",
+    "#mia:stripped_fossilized_logs"
   ]
 }

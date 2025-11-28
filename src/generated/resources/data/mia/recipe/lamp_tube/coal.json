@@ -1,0 +1,11 @@
+{
+  "type": "mia:lamp_tube",
+  "ingredient": {
+    "count": 1,
+    "tag": "mia:fossilized_logs"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:coal"
+  }
+}

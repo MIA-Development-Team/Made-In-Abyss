@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     {
-      "tag": "mia:fossilized_logs"
+      "tag": "mia:unstripped_fossilized_logs"
     }
   ],
   "result": {

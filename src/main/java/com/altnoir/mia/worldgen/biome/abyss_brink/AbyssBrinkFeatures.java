@@ -6,6 +6,7 @@ import com.altnoir.mia.worldgen.MiaFeatureUtils;
 import com.altnoir.mia.worldgen.biome.tree.MiaTreePlacements;
 import com.altnoir.mia.worldgen.feature.LakeFeature;
 import com.altnoir.mia.worldgen.feature.configurations.ClusterConfiguration;
+import com.altnoir.mia.worldgen.feature.configurations.MiaLargeDripstoneConfiguration;
 import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
 import com.altnoir.mia.worldgen.feature.configurations.SlabRuinsConfiguration;
 import net.minecraft.core.Direction;
@@ -265,11 +266,11 @@ public class AbyssBrinkFeatures {
         );
 
         MiaFeatureUtils.register(
-                context, LARGE_DRIPSTONE, Feature.LARGE_DRIPSTONE,
-                new LargeDripstoneConfiguration(
+                context, LARGE_DRIPSTONE, MiaFeature.ABYSS_LARGE_DRIPSTONE.get(),
+                new MiaLargeDripstoneConfiguration(
                         188,
-                        UniformInt.of(3, 19),
-                        UniformFloat.of(0.4F, 2.0F),
+                        UniformInt.of(3, 18),
+                        UniformFloat.of(0.5F, 3.0F),
                         0.5F,
                         UniformFloat.of(0.3F, 0.9F),
                         UniformFloat.of(0.4F, 1.0F),
