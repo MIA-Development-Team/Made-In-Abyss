@@ -82,7 +82,7 @@ public class MiaStateProvider {
                 TrialSpawnerState.EJECTING_REWARD, "_ejecting_reward",
                 TrialSpawnerState.INACTIVE, "",
                 TrialSpawnerState.WAITING_FOR_PLAYERS, "_active",
-                TrialSpawnerState.WAITING_FOR_REWARD_EJECTION, "_active"
+                TrialSpawnerState.WAITING_FOR_REWARD_EJECTION, "_ejecting_reward"
         );
 
         for (boolean ominous : new boolean[]{false, true}) {
