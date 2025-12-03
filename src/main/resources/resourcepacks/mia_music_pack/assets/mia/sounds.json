@@ -1,0 +1,29 @@
+{
+  "abyss_portal_ambient": {
+    "sounds": [
+      "mia:block/abyss_portal_ambient"
+    ],
+    "subtitle": "subtitle.mia.abyss_portal_ambient"
+  },
+  "abyss_portal_travel": {
+    "sounds": [
+      "mia:block/abyss_portal_travel"
+    ],
+    "subtitle": "subtitle.mia.abyss_portal_travel"
+  },
+  "music.abyss_brink.dim": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "mia:music/the_first_layer",
+        "stream": true,
+        "volume": 0.4
+      },
+      {
+        "name": "mia:music/rikos_cooking",
+        "stream": true,
+        "volume": 0.4
+      }
+    ]
+  }
+}
