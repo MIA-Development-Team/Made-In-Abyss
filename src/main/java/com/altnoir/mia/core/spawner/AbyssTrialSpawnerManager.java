@@ -56,8 +56,8 @@ public class AbyssTrialSpawnerManager extends SimpleJsonResourceReloadListener {
                 var fixedLoc = ResourceLocation.fromNamespaceAndPath(namespace, parts[0]);
                 var res = entry.getValue();
                 
-                try (var stream = res.open()) {
-                    var json = GsonHelper.fromJson(GSON, new InputStreamReader(stream), JsonElement.class);
+                try (var stream = res.open(); var reader = new InputStreamReader(stream)) {
+                    var json = GsonHelper.fromJson(GSON, reader, JsonElement.class);
                     result.put(fixedLoc, json);
                 } catch (IOException | JsonParseException e) {
                     LOGGER.error("Failed to load trial spawner JSON from {}", fileLoc, e);
