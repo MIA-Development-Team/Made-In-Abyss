@@ -1,0 +1,34 @@
+{
+  "base_mobs": 3,
+  "entity_tables": [
+    {
+      "entity": "minecraft:zombie",
+      "weight": 10
+    },
+    {
+      "entity": "minecraft:husk",
+      "weight": 5
+    },
+    {
+      "entity": "minecraft:drowned",
+      "weight": 3
+    }
+  ],
+  "loot_tables": [
+    {
+      "loot_table": "minecraft:chests/trial_chambers/reward_common",
+      "weight": 10
+    },
+    {
+      "loot_table": "minecraft:chests/trial_chambers/reward_rare",
+      "weight": 3
+    },
+    {
+      "loot_table": "minecraft:chests/trial_chambers/reward_unique",
+      "weight": 1
+    }
+  ],
+  "mobs_per_player": 2,
+  "spawn_per_tick": 1,
+  "spawn_range": 4
+}

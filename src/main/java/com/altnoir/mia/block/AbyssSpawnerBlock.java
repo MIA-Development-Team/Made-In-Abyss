@@ -80,6 +80,12 @@ public class AbyssSpawnerBlock extends BaseEntityBlock {
     @Override
     public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, List<Component> components, TooltipFlag flag) {
         super.appendHoverText(itemStack, context, components, flag);
-        Spawner.appendHoverText(itemStack, components, "spawn_data");
+        if (itemStack.has(net.minecraft.core.component.DataComponents.BLOCK_ENTITY_DATA)) {
+            var beData = itemStack.get(net.minecraft.core.component.DataComponents.BLOCK_ENTITY_DATA);
+            if (beData != null && beData.copyTag().contains("pattern_id")) {
+                String patternId = beData.copyTag().getString("pattern_id");
+                components.add(Component.literal("Pattern: " + patternId).withStyle(net.minecraft.ChatFormatting.GRAY));
+            }
+        }
     }
 }

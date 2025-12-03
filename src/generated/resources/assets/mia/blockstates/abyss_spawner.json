@@ -16,7 +16,7 @@
       "model": "mia:block/abyss_spawner_active"
     },
     "ominous=false,trial_spawner_state=waiting_for_reward_ejection": {
-      "model": "mia:block/abyss_spawner_active"
+      "model": "mia:block/abyss_spawner_ejecting_reward"
     },
     "ominous=true,trial_spawner_state=active": {
       "model": "mia:block/abyss_spawner_active_ominous"
@@ -34,7 +34,7 @@
       "model": "mia:block/abyss_spawner_active_ominous"
     },
     "ominous=true,trial_spawner_state=waiting_for_reward_ejection": {
-      "model": "mia:block/abyss_spawner_active_ominous"
+      "model": "mia:block/abyss_spawner_ejecting_reward_ominous"
     }
   }
 }

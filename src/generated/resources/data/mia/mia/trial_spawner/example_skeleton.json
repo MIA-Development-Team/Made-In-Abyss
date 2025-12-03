@@ -1,0 +1,30 @@
+{
+  "base_mobs": 2,
+  "entity_tables": [
+    {
+      "entity": "minecraft:skeleton",
+      "weight": 10
+    },
+    {
+      "entity": "minecraft:stray",
+      "weight": 5
+    },
+    {
+      "entity": "minecraft:bogged",
+      "weight": 2
+    }
+  ],
+  "loot_tables": [
+    {
+      "loot_table": "minecraft:chests/trial_chambers/reward_common",
+      "weight": 10
+    },
+    {
+      "loot_table": "minecraft:chests/trial_chambers/reward_rare",
+      "weight": 5
+    }
+  ],
+  "mobs_per_player": 1,
+  "spawn_per_tick": 1,
+  "spawn_range": 5
+}

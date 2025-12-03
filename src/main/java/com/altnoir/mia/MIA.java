@@ -1,6 +1,8 @@
 package com.altnoir.mia;
 
 import com.altnoir.mia.core.curse.CurseManager;
+import com.altnoir.mia.core.spawner.AbyssTrialSpawnerManager;
+import com.altnoir.mia.core.spawner.records.AbyssTrialSpawnerPattern;
 import com.altnoir.mia.init.*;
 import com.altnoir.mia.init.event.EventHandle;
 import com.altnoir.mia.init.worldgen.MiaBiomeSources;
@@ -28,6 +30,7 @@ public class MIA {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final CurseManager CURSE_MANAGER = new CurseManager();
+    public static final AbyssTrialSpawnerManager SPAWNER_MANAGER = new AbyssTrialSpawnerManager();
 
     public MIA(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
@@ -79,6 +82,7 @@ public class MIA {
     @SubscribeEvent
     private void reload(final AddReloadListenerEvent event) {
         event.addListener(CURSE_MANAGER);
+        event.addListener(SPAWNER_MANAGER);
     }
 
     // You can use EventBusSubscriber to automatically register all static methods

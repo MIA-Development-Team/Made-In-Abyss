@@ -1,0 +1,22 @@
+{
+  "base_mobs": 4,
+  "entity_tables": [
+    {
+      "entity": "minecraft:spider",
+      "weight": 10
+    },
+    {
+      "entity": "minecraft:cave_spider",
+      "weight": 5
+    }
+  ],
+  "loot_tables": [
+    {
+      "loot_table": "minecraft:chests/trial_chambers/reward_common",
+      "weight": 10
+    }
+  ],
+  "mobs_per_player": 2,
+  "spawn_per_tick": 2,
+  "spawn_range": 6
+}

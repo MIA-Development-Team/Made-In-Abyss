@@ -210,4 +210,28 @@ public class MiaUtil {
     public static boolean isCreativeOrSpectator(Player player) {
         return player.isSpectator() || player.isCreative();
     }
+
+    /**
+     * Parses a resource location path by trimming the base path and removing .json extension
+     * @param filePath The full file path from ResourceLocation
+     * @param basePath The base path to trim (e.g., "mia/curse")
+     * @return Array of path parts after processing, or null if path doesn't start with basePath
+     */
+    public static @Nullable String[] parseResourcePath(String filePath, String basePath) {
+        if (!filePath.startsWith(basePath)) {
+            return null;
+        }
+        
+        // Ensure there is at least one character after basePath before substring
+        if (filePath.length() <= basePath.length()) {
+            return null;
+        }
+        
+        var trimmedPath = filePath.substring(basePath.length() + 1);
+        if (trimmedPath.endsWith(".json")) {
+            trimmedPath = trimmedPath.substring(0, trimmedPath.length() - 5);
+        }
+        
+        return trimmedPath.split("/");
+    }
 }
