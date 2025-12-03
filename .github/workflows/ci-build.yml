@@ -50,7 +50,7 @@ jobs:
           mv "$ORIG_JAR" "$NEW_NAME"
 
       - name: Upload Mod JAR
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.binary-version.outputs.jar_name }}
           path: build/libs/*.jar
