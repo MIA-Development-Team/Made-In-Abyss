@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_abyss_andesite": {
+    "has_polished_abyss_andesite": {
       "conditions": {
         "items": [
           {
-            "items": "mia:abyss_andesite"
+            "items": "mia:polished_abyss_andesite"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_abyss_andesite"
+      "has_polished_abyss_andesite"
     ]
   ],
   "rewards": {

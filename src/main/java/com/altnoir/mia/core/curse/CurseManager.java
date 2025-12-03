@@ -2,6 +2,7 @@ package com.altnoir.mia.core.curse;
 
 import com.altnoir.mia.core.curse.records.CurseDimension;
 import com.altnoir.mia.core.curse.records.CurseEffect;
+import com.altnoir.mia.util.MiaUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -15,6 +16,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -34,7 +36,7 @@ public class CurseManager extends SimpleJsonResourceReloadListener {
     }
 
     @Override
-    protected Map<ResourceLocation, JsonElement> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
+    protected @NotNull Map<ResourceLocation, JsonElement> prepare(ResourceManager resourceManager, @NotNull ProfilerFiller profiler) {
         Map<ResourceLocation, JsonElement> result = new HashMap<>();
 
         for (var namespace : resourceManager.getNamespaces()) {
@@ -42,14 +44,10 @@ public class CurseManager extends SimpleJsonResourceReloadListener {
             var resources = resourceManager.listResources(basePath, loc -> loc.getPath().endsWith(".json"));
             for (Map.Entry<ResourceLocation, Resource> entry : resources.entrySet()) {
                 var fileLoc = entry.getKey();
-                var path = fileLoc.getPath();
-                if (!path.startsWith(basePath)) continue;
-                var trimmedPath = path.substring(basePath.length() + 1);
-                if (trimmedPath.endsWith(".json")) {
-                    trimmedPath = trimmedPath.substring(0, trimmedPath.length() - 5);
-                }
-                var parts = trimmedPath.split("/");
-                if (parts.length > 2) continue;
+                var parts = MiaUtil.parseResourcePath(fileLoc.getPath(), basePath);
+                
+                if (parts == null || parts.length > 2) continue;
+                
                 var fixedLoc = ResourceLocation.fromNamespaceAndPath(parts[0], parts[1]);
                 var res = entry.getValue();
                 try (var stream = res.open()) {
@@ -65,7 +63,7 @@ public class CurseManager extends SimpleJsonResourceReloadListener {
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> resourceLocationJsonElementMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
+    protected void apply(Map<ResourceLocation, JsonElement> resourceLocationJsonElementMap, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller) {
         curseCache.clear();
 
         LOGGER.info("Found {} curse config files.", resourceLocationJsonElementMap.size());

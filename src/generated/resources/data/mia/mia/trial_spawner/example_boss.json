@@ -1,0 +1,22 @@
+{
+  "base_mobs": 1,
+  "entity_tables": [
+    {
+      "entity": "minecraft:warden",
+      "weight": 1
+    }
+  ],
+  "loot_tables": [
+    {
+      "loot_table": "minecraft:chests/trial_chambers/reward_unique",
+      "weight": 10
+    },
+    {
+      "loot_table": "minecraft:chests/trial_chambers/reward_ominous_rare",
+      "weight": 5
+    }
+  ],
+  "mobs_per_player": 0,
+  "spawn_per_tick": 1,
+  "spawn_range": 8
+}
