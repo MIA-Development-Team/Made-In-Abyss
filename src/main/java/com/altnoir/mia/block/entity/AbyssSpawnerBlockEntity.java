@@ -109,6 +109,7 @@ public class AbyssSpawnerBlockEntity extends BlockEntity implements AbyssTrialSp
     }
     
     @Nullable
+    @Override
     public ResourceLocation getPatternId() {
         return this.patternId;
     }
@@ -125,10 +126,12 @@ public class AbyssSpawnerBlockEntity extends BlockEntity implements AbyssTrialSp
     }
     
     @Nullable
+    @Override
     public AbyssTrialSpawnerPattern getPattern() {
         return this.cachedPattern;
     }
     
+    @Override
     public boolean hasValidPattern() {
         return this.cachedPattern != null;
     }
