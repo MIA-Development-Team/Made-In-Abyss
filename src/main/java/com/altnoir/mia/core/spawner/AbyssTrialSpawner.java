@@ -304,6 +304,8 @@ public class AbyssTrialSpawner {
                     attributeInstance.addPermanentModifier(entry.getValue());
                 }
             }
+            // Ensure mob's health matches new max health after modifiers
+            mob.setHealth(mob.getMaxHealth());
         }
     }
     
