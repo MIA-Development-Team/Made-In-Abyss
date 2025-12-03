@@ -174,7 +174,8 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.PRASIOLITE_LAMPTUBE.get())
                 .add(MiaBlocks.PEDESTAL.get())
                 .add(MiaBlocks.ARTIFACT_SMITHING_TABLE.get())
-                .add(MiaBlocks.ENDLESS_CUP.get());
+                .add(MiaBlocks.ENDLESS_CUP.get())
+                .add(MiaBlocks.SUN_STONE.get());
 
 //        tag(BlockTags.MINEABLE_WITH_SHOVEL)
 //                .add(MiaBlocks.HOPPER_FARMLAND.get());
