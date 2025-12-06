@@ -455,18 +455,6 @@ public class AbyssTrialSpawner {
         return this.oSpin;
     }
     
-    @Nullable
-    public Entity getOrCreateDisplayEntity(Level level, BlockPos pos) {
-        if (this.displayEntity == null && hasValidPattern() && level instanceof ServerLevel serverLevel) {
-            var pattern = getPattern();
-            var selected = WeightedRandom.getRandomItem(this.random, pattern.entityTables().unwrap());
-            if (selected.isPresent()) {
-                this.displayEntity = selected.get().getEntityType().create(serverLevel, null, pos, MobSpawnType.TRIAL_SPAWNER, false, false);
-            }
-        }
-        return this.displayEntity;
-    }
-    
     public interface StateAccessor {
         TrialSpawnerState getState();
         void setState(Level level, TrialSpawnerState state);
