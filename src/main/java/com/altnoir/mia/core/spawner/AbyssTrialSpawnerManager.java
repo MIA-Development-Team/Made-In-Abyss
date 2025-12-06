@@ -7,8 +7,10 @@ import com.altnoir.mia.util.MiaUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.logging.LogUtils;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -19,7 +21,11 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.util.random.WeightedRandomList;
-import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -107,7 +113,12 @@ public class AbyssTrialSpawnerManager extends SimpleJsonResourceReloadListener {
                         var weight = entityJson.get("weight").getAsInt();
                         
                         var entityType = BuiltInRegistries.ENTITY_TYPE.get(entityId);
-                        entityTablesList.add(new EntityTableInstance(entityType, weight));
+                        
+                        Map<EquipmentSlot, ItemStack> equipment = parseEquipment(entityJson);
+                        List<MobEffectInstance> effects = parseEffects(entityJson);
+                        Map<Holder<Attribute>, AttributeModifier> attributeModifiers = parseAttributeModifiers(entityJson);
+                        
+                        entityTablesList.add(new EntityTableInstance(entityType, weight, equipment, effects, attributeModifiers));
                     }
                 }
 
@@ -147,5 +158,68 @@ public class AbyssTrialSpawnerManager extends SimpleJsonResourceReloadListener {
 
     public Map<ResourceLocation, AbyssTrialSpawnerPattern> getPatterns() {
         return Collections.unmodifiableMap(spawnerPatterns);
+    }
+    
+    private Map<EquipmentSlot, ItemStack> parseEquipment(JsonObject entityJson) {
+        var equipment = new HashMap<EquipmentSlot, ItemStack>();
+        if (entityJson.has("equipment")) {
+            var equipmentJson = entityJson.getAsJsonObject("equipment");
+            for (var slotEntry : equipmentJson.entrySet()) {
+                var slotName = slotEntry.getKey();
+                var itemId = slotEntry.getValue().getAsString();
+                
+                var slot = EquipmentSlot.byName(slotName);
+                var item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(itemId));
+                equipment.put(slot, new ItemStack(item));
+            }
+        }
+        return equipment;
+    }
+    
+    private List<MobEffectInstance> parseEffects(JsonObject entityJson) {
+        var effects = new ArrayList<MobEffectInstance>();
+        if (entityJson.has("effects")) {
+            var effectsArray = entityJson.getAsJsonArray("effects");
+            for (var effectElement : effectsArray) {
+                var effectJson = effectElement.getAsJsonObject();
+                var effectId = ResourceLocation.parse(effectJson.get("effect").getAsString());
+                var duration = effectJson.has("duration") ? effectJson.get("duration").getAsInt() : -1;
+                var amplifier = effectJson.has("amplifier") ? effectJson.get("amplifier").getAsInt() : 0;
+                var ambient = effectJson.has("ambient") && effectJson.get("ambient").getAsBoolean();
+                var visible = !effectJson.has("visible") || effectJson.get("visible").getAsBoolean();
+                var showIcon = !effectJson.has("show_icon") || effectJson.get("show_icon").getAsBoolean();
+                
+                var effectHolder = BuiltInRegistries.MOB_EFFECT.getHolder(effectId);
+                effectHolder.ifPresent(effect -> effects.add(new MobEffectInstance(effect, duration, amplifier, ambient, visible, showIcon)));
+            }
+        }
+        return effects;
+    }
+    
+    private Map<Holder<Attribute>, AttributeModifier> parseAttributeModifiers(JsonObject entityJson) {
+        var modifiers = new HashMap<Holder<Attribute>, AttributeModifier>();
+        if (entityJson.has("attribute_modifiers")) {
+            var modifiersArray = entityJson.getAsJsonArray("attribute_modifiers");
+            for (var modifierElement : modifiersArray) {
+                var modifierJson = modifierElement.getAsJsonObject();
+                var attributeId = ResourceLocation.parse(modifierJson.get("attribute").getAsString());
+                var modifierId = ResourceLocation.parse(modifierJson.get("id").getAsString());
+                var amount = modifierJson.get("amount").getAsDouble();
+                var operationStr = modifierJson.has("operation") ? modifierJson.get("operation").getAsString() : "add_value";
+                
+                var operation = switch (operationStr.toLowerCase()) {
+                    case "add_multiplied_base" -> AttributeModifier.Operation.ADD_MULTIPLIED_BASE;
+                    case "add_multiplied_total" -> AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
+                    default -> AttributeModifier.Operation.ADD_VALUE;
+                };
+                
+                var attributeHolder = BuiltInRegistries.ATTRIBUTE.getHolder(attributeId);
+                attributeHolder.ifPresent(attribute -> {
+                    var modifier = new AttributeModifier(modifierId, amount, operation);
+                    modifiers.put(attribute, modifier);
+                });
+            }
+        }
+        return modifiers;
     }
 }
