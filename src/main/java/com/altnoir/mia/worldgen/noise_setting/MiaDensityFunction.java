@@ -52,10 +52,10 @@ public class MiaDensityFunction {
         int maxY = 360;
         double d0 = 2.6666666666666665;
         DensityFunction densityFunction1 = yLimitedInterpolatable(
-                densityfunction, DensityFunctions.constant(0.0), minY, maxY, -1
+                densityfunction, DensityFunctions.constant(0.0), minY, maxY + 40, -1
         );
         DensityFunction densityFunction2 = yLimitedInterpolatable(
-                densityfunction, DensityFunctions.mappedNoise(noiseParameters.getOrThrow(Noises.NOODLE_THICKNESS), 1.0, 1.0, -0.1, -0.15), minY, maxY, 0
+                densityfunction, DensityFunctions.mappedNoise(noiseParameters.getOrThrow(Noises.NOODLE_THICKNESS), 1.0, 1.0, -0.1, -0.15), minY, maxY + 40, 0
         );
         DensityFunction densityFunction3 = yLimitedInterpolatable(
                 densityfunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_A), d0, d0), minY, maxY, 0
@@ -64,7 +64,7 @@ public class MiaDensityFunction {
                 densityfunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_B), d0, d0), minY, maxY, 0
         );
         DensityFunction densityFunction5 = DensityFunctions.mul(
-                DensityFunctions.constant(1.5), DensityFunctions.max(densityFunction3.abs(), densityFunction4.abs())
+                DensityFunctions.constant(1.5), DensityFunctions.max(densityFunction3.abs(), DensityFunctions.zero().abs())
         );
         return DensityFunctions.rangeChoice(
                 densityFunction1, -1000000.0, 0.0, DensityFunctions.constant(64.0), DensityFunctions.add(densityFunction2, densityFunction5)

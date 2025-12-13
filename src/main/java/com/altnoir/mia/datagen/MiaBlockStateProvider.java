@@ -44,7 +44,6 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         coverGrassBlock(MiaBlocks.COVERGRASS_ABYSS_ANDESITE, MiaBlocks.ABYSS_ANDESITE);
         coverGrassBlock(MiaBlocks.COVERGRASS_TUFF, Blocks.TUFF);
         mirroredBlock(MiaBlocks.ABYSS_ANDESITE);
-        blockWithItem(MiaBlocks.SUN_STONE);
         // 深界安山岩
         stairsBlockWithItem(MiaBlocks.ABYSS_ANDESITE_STAIRS, MiaBlocks.ABYSS_ANDESITE);
         slabBlockWithItem(MiaBlocks.ABYSS_ANDESITE_SLAB, MiaBlocks.ABYSS_ANDESITE);
@@ -129,6 +128,8 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
         // 植物
         sapingAndCrossBlock(MiaBlocks.FORTITUDE_FLOWER);
+        //遗物
+        blockWithItem(MiaBlocks.SUN_STONE);
 
         // 红石
         pressurePlateBlockWithItem(MiaBlocks.SKYFOG_PRESSURE_PLATE, MiaBlocks.SKYFOG_PLANKS);
