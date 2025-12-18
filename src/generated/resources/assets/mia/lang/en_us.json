@@ -1,7 +1,7 @@
 {
-  "biome.mia.abyss_brink/abyss_brink": "Abyss Brink",
-  "biome.mia.abyss_brink/abyss_plains": "Abyss Plains",
-  "biome.mia.abyss_brink/skyfog_forest": "Skyfog Forest",
+  "biome.mia.abyss_edge/abyss_edge": "Abyss Edge",
+  "biome.mia.abyss_edge/abyss_plains": "Abyss Plains",
+  "biome.mia.abyss_edge/skyfog_forest": "Skyfog Forest",
   "block.mia.abyss_andesite": "Abyss Andesite",
   "block.mia.abyss_andesite_bricks": "Abyss Andesite Bricks",
   "block.mia.abyss_andesite_bricks_slab": "Abyss Andesite Bricks Slab",

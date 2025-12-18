@@ -2,7 +2,7 @@ package com.altnoir.mia.worldgen;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.util.MiaUtil;
-import com.altnoir.mia.worldgen.biome.abyss_brink.AbyssBrinkFeatures;
+import com.altnoir.mia.worldgen.biome.abyss_edge.AbyssEdgeFeatures;
 import com.altnoir.mia.worldgen.biome.tree.MiaTreeFeatures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 public class MiaFeatureUtils {
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         MiaTreeFeatures.bootstrap(context);
-        AbyssBrinkFeatures.bootstrap(context);
+        AbyssEdgeFeatures.bootstrap(context);
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> resourceKey(String name) {
@@ -24,8 +24,8 @@ public class MiaFeatureUtils {
     public static ResourceKey<ConfiguredFeature<?, ?>> treeKey(String name) {
         return resourceKey("tree/" + name);
     }
- public static ResourceKey<ConfiguredFeature<?, ?>> abyssBrinkKey(String name) {
-        return resourceKey("abyss_brink/" + name);
+ public static ResourceKey<ConfiguredFeature<?, ?>> abyssEdgeKey(String name) {
+        return resourceKey("abyss_edge/" + name);
     }
 
     public static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(

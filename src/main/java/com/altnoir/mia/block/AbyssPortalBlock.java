@@ -65,12 +65,12 @@ public class AbyssPortalBlock extends Block implements Portal {
 
     @Override
     public @Nullable DimensionTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
-        ResourceKey<Level> resourcekey = level.dimension() == MiaDimensions.ABYSS_BRINK_LEVEL ? Level.OVERWORLD : MiaDimensions.ABYSS_BRINK_LEVEL;
+        ResourceKey<Level> resourcekey = level.dimension() == MiaDimensions.ABYSS_EDGE_LEVEL ? Level.OVERWORLD : MiaDimensions.ABYSS_EDGE_LEVEL;
         ServerLevel serverlevel = level.getServer().getLevel(resourcekey);
         if (serverlevel == null) {
             return null;
         } else {
-            boolean flag = resourcekey == MiaDimensions.ABYSS_BRINK_LEVEL;
+            boolean flag = resourcekey == MiaDimensions.ABYSS_EDGE_LEVEL;
             BlockPos blockpos;
             Vec3 vec3;
             float f = entity.getYRot();

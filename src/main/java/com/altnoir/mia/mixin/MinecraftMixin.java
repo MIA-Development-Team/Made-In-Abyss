@@ -35,7 +35,7 @@ public class MinecraftMixin {
     @Unique
     private Set<ResourceKey<Level>> mia$getExcludedDimensions() {
         return Set.of(
-                MiaDimensions.ABYSS_BRINK_LEVEL
+                MiaDimensions.ABYSS_EDGE_LEVEL
         );
     }
 }

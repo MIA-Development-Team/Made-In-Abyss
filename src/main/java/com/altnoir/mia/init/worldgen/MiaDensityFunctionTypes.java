@@ -1,8 +1,8 @@
 package com.altnoir.mia.init.worldgen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.worldgen.noise_setting.densityfunction.AbyssBrinkBigHole;
-import com.altnoir.mia.worldgen.noise_setting.densityfunction.AbyssBrinkHole;
+import com.altnoir.mia.worldgen.noise_setting.densityfunction.GeneralAbyssHole;
+import com.altnoir.mia.worldgen.noise_setting.densityfunction.HopperAbyssHole;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.DensityFunction;
@@ -13,17 +13,17 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class MiaDensityFunctionTypes {
     public static final DeferredRegister<MapCodec<? extends DensityFunction>> DENSITY_FUNCTION_TYPE = DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, MIA.MOD_ID);
 
-    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<AbyssBrinkHole>> ABYSS_HOLE =
-            DENSITY_FUNCTION_TYPE.register("abyss_hole", AbyssBrinkHole.CODEC::codec);
-    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<AbyssBrinkBigHole>> ABYSS_BIG_HOLE =
-            DENSITY_FUNCTION_TYPE.register("abyss_big_hole", AbyssBrinkBigHole.CODEC::codec);
+    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<HopperAbyssHole>> ABYSS_HOLE =
+            DENSITY_FUNCTION_TYPE.register("abyss_hole", HopperAbyssHole.CODEC::codec);
+    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<GeneralAbyssHole>> GENERAL_ABYSS_HOLE =
+            DENSITY_FUNCTION_TYPE.register("general_abyss_hole", GeneralAbyssHole.CODEC::codec);
 
-    public static DensityFunction abyssHole(long seed) {
-        return new AbyssBrinkHole(seed);
+    public static DensityFunction hopperAbyssHole(float radius) {
+        return new HopperAbyssHole(radius);
     }
 
-    public static DensityFunction abyssBigHole(long seed) {
-        return new AbyssBrinkBigHole(seed);
+    public static DensityFunction generalAbyssHole(float radius) {
+        return new GeneralAbyssHole(radius);
     }
 
     public static void register(IEventBus eventBus) {

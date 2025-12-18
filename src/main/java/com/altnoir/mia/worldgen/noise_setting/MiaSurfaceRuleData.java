@@ -25,7 +25,7 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
         return SurfaceRules.state(block.defaultBlockState());
     }
 
-    public static SurfaceRules.RuleSource abyssBrink(boolean aboveGround) {
+    public static SurfaceRules.RuleSource abyssEdge(boolean aboveGround) {
         SurfaceRules.ConditionSource surfacerules$waterBlockCheck = SurfaceRules.waterBlockCheck(0, 0);
         SurfaceRules.RuleSource coverGrass_andesite = SurfaceRules.ifTrue(surfacerules$waterBlockCheck, COVERGRASS_ABYSS_ANDESITE);
         SurfaceRules.RuleSource coverGrass_tuff = SurfaceRules.ifTrue(surfacerules$waterBlockCheck, COVERGRASS_TUFF);
@@ -33,7 +33,7 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
         SurfaceRules.RuleSource sequence = SurfaceRules.sequence(
                 SurfaceRules.ifTrue(
                         SurfaceRules.isBiome(
-                                MiaBiomes.ABYSS_BRINK,
+                                MiaBiomes.ABYSS_EDGE,
                                 MiaBiomes.SKYFOG_FOREST,
                                 MiaBiomes.ABYSS_PLAINS,
                                 MiaBiomes.PRASIOLITE_CAVES,

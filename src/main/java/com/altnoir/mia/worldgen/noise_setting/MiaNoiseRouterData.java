@@ -57,37 +57,25 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         return DensityFunctions.mul(DensityFunctions.interpolated(densityfunction), DensityFunctions.constant(0.64)).squeeze();
     }
 
-    private static DensityFunction abyssBrinkDensity(HolderGetter<DensityFunction> densityFunctions) {
-        DensityFunction abyssHole = getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_HOLE);
-        DensityFunction abyssBigHole = getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_BIG_HOLE);
-        DensityFunction insideAbyssHole = getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_INSIDE_HOLE);
-        DensityFunction middleAbyssNoise = getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_MIDDLE_BASE_3D);
-        DensityFunction outsideAbyssNoise = getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_OUTSIDE_BASE_3D);
-        DensityFunction abyssPillars = getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_ABYSS_PILLARS);
+    private static DensityFunction abyssEdgeDensity(HolderGetter<DensityFunction> densityFunctions) {
+        DensityFunction abyssHole = getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_HOLE);
+        DensityFunction abyssBigHole = getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_BIG_HOLE);
+        DensityFunction insideAbyssHole = getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_INSIDE_HOLE);
+        DensityFunction middleAbyssNoise = getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_MIDDLE_BASE_3D);
+        DensityFunction outsideAbyssNoise = getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_OUTSIDE_BASE_3D);
+        DensityFunction abyssPillars = getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_ABYSS_PILLARS);
 
-        DensityFunction inside = DensityFunctions.min(insideAbyssHole,
-                DensityFunctions.add(
-                        getFunction(densityFunctions, SPAGHETTI_2D),
-                        getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION)
-                )
-        );
 
         DensityFunction middle = DensityFunctions.max(
                 DensityFunctions.min(middleAbyssNoise,
-                        DensityFunctions.add(
-                                getFunction(densityFunctions, SPAGHETTI_2D),
-                                getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION)
-                        )
+                        DensityFunctions.add(getFunction(densityFunctions, SPAGHETTI_2D), getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION))
                 ),
                 abyssPillars
         );
 
         DensityFunction outside = DensityFunctions.max(
                 DensityFunctions.min(outsideAbyssNoise,
-                        DensityFunctions.add(
-                                getFunction(densityFunctions, SPAGHETTI_2D),
-                                getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION)
-                        )
+                        DensityFunctions.add(getFunction(densityFunctions, SPAGHETTI_2D), getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION))
                 ),
                 abyssPillars
         );
@@ -96,7 +84,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 abyssBigHole, -1000000.0, 0.025, middle, outside
         );
         DensityFunction rangeChoice1 = DensityFunctions.rangeChoice(
-                abyssHole, -1000000.0, 0.025, inside, rangeChoice2
+                abyssHole, -1000000.0, 0.025, insideAbyssHole, rangeChoice2
         );
 
         DensityFunction ycg1 = DensityFunctions.yClampedGradient(320, 368, 1, 1);
@@ -114,21 +102,52 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         return postProcess(add4);
     }
 
-    private static NoiseRouter abyssBrinkRouter(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        DensityFunction barrier = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_BARRIER), 0.5);
+    private static DensityFunction temptationForestDensity(HolderGetter<DensityFunction> densityFunctions) {
+        DensityFunction abyssHole = getFunction(densityFunctions, MiaDensityFunction.TEMPTATION_FOREST_HOLE);
+        DensityFunction inside = getFunction(densityFunctions, MiaDensityFunction.TEMPTATION_FOREST_INSIDE_HOLE);
+        DensityFunction outsideAbyssNoise = getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_OUTSIDE_BASE_3D);
+        DensityFunction abyssPillars = getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_ABYSS_PILLARS);
+
+        DensityFunction outside = DensityFunctions.max(
+                DensityFunctions.min(outsideAbyssNoise,
+                        DensityFunctions.add(getFunction(densityFunctions, SPAGHETTI_2D), getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION))
+                ),
+                abyssPillars
+        );
+
+        DensityFunction rangeChoice1 = DensityFunctions.rangeChoice(
+                abyssHole, -1000000.0, 0.025, inside, outside
+        );
+
+        DensityFunction ycg1 = DensityFunctions.yClampedGradient(192, 256, 1, 0);
+        DensityFunction add1 = DensityFunctions.add(DensityFunctions.constant(-1.025), rangeChoice1);
+
+        DensityFunction mul1 = DensityFunctions.mul(ycg1, add1);
+        DensityFunction add2 = DensityFunctions.add(DensityFunctions.constant(0.8975), mul1);
+
+        DensityFunction ycg2 = DensityFunctions.yClampedGradient(-16, 16, 0, 1);
+        DensityFunction add3 = DensityFunctions.add(DensityFunctions.constant(0.4), add2);
+
+        DensityFunction mul2 = DensityFunctions.mul(ycg2, add3);
+        DensityFunction add4 = DensityFunctions.add(DensityFunctions.constant(-0.4), mul2);
+
+        return postProcess(add4);
+    }
+
+    private static NoiseRouter abyssEdgeRouter(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
         DensityFunction fluidLevelFloodedness = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS), 0.335, 0.5);
         DensityFunction fluidLevelSpread = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_SPREAD), 0.357142857, 0.5);
 
-        DensityFunction densityfunction = getFunction(densityFunctions, SHIFT_X);
-        DensityFunction densityfunction1 = getFunction(densityFunctions, SHIFT_Z);
-        DensityFunction temperature = DensityFunctions.shiftedNoise2d(densityfunction, densityfunction1, 0.25, noiseParameters.getOrThrow(Noises.TEMPERATURE));
-        DensityFunction vegetation = DensityFunctions.shiftedNoise2d(densityfunction, densityfunction1, 0.25, noiseParameters.getOrThrow(Noises.VEGETATION));
+        DensityFunction shiftX = getFunction(densityFunctions, SHIFT_X);
+        DensityFunction shiftZ = getFunction(densityFunctions, SHIFT_Z);
+        DensityFunction temperature = DensityFunctions.shiftedNoise2d(shiftX, shiftZ, 0.25, noiseParameters.getOrThrow(Noises.TEMPERATURE));
+        DensityFunction vegetation = DensityFunctions.shiftedNoise2d(shiftX, shiftZ, 0.25, noiseParameters.getOrThrow(Noises.VEGETATION));
 
-        DensityFunction densityfunction6 = getFunction(densityFunctions, FACTOR);
-        DensityFunction densityfunction7 = noiseGradientDensity(DensityFunctions.cache2d(densityfunction6), MiaDensityFunctionTypes.abyssHole(0L));
-        DensityFunction densityfunction8 = DensityFunctions.add(densityfunction7, DensityFunctions.constant(-0.703125));
+        DensityFunction idwj = getFunction(densityFunctions, FACTOR);
+        DensityFunction idwj2 = noiseGradientDensity(DensityFunctions.cache2d(idwj), MiaDensityFunctionTypes.hopperAbyssHole(0.0F));
+        DensityFunction idwj3 = DensityFunctions.add(idwj2, DensityFunctions.constant(-0.703125));
 
-        DensityFunction finalDensity = DensityFunctions.min(abyssBrinkDensity(densityFunctions), getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_NOODLE));
+        DensityFunction finalDensity = DensityFunctions.min(abyssEdgeDensity(densityFunctions), getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_NOODLE));
 
         return new NoiseRouter(
                 DensityFunctions.constant(1.0), // barrier 影响含水层是否在流体与空气之间放置阻挡方块，值越大概率越大。
@@ -139,9 +158,45 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 vegetation, // vegetation 生物群系湿度函数。
                 DensityFunctions.zero(), // continents 生物群系大陆性函数。
                 DensityFunctions.zero(), // erosion 生物群系侵蚀度函数。
-                getFunction(densityFunctions, MiaDensityFunction.ABYSS_BRINK_DEPTH), // depth 生物群系深度函数。
+                getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_DEPTH), // depth 生物群系深度函数。
                 getFunction(densityFunctions, RIDGES), // ridges 生物群系奇异度函数。
-                slideAbyssBrink(densityfunction8), // initial_density_without_jaggedness// 预处理地表高度，影响表面规则的含水层的放置。游戏会从世界顶部以4*整型noise.size_vertical的精度向下查找，将首个大于25/64的值的高度作为预处理地表高度。
+                slideAbyssEdge(idwj3), // initial_density_without_jaggedness// 预处理地表高度，影响表面规则的含水层的放置。游戏会从世界顶部以4*整型noise.size_vertical的精度向下查找，将首个大于25/64的值的高度作为预处理地表高度。
+                finalDensity, // final_density 最终密度。大于0的区域将放置默认方块并被表面规则替换，小于0的区域将放置空气并被含水层替换。
+                DensityFunctions.zero(),
+                DensityFunctions.zero(),
+                DensityFunctions.zero()
+                // 最后三个参数是矿脉生成相关的，因为是硬编码就不用它的
+        );
+    }
+
+    private static NoiseRouter temptationForestRouter(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
+        DensityFunction barrier = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_BARRIER), 0.5);
+        DensityFunction fluidLevelFloodedness = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS), 0.335, 0.5);
+        DensityFunction fluidLevelSpread = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_SPREAD), 0.357142857, 0.5);
+
+        DensityFunction shiftX = getFunction(densityFunctions, SHIFT_X);
+        DensityFunction shiftZ = getFunction(densityFunctions, SHIFT_Z);
+        DensityFunction temperature = DensityFunctions.shiftedNoise2d(shiftX, shiftZ, 0.25, noiseParameters.getOrThrow(Noises.TEMPERATURE));
+        DensityFunction vegetation = DensityFunctions.shiftedNoise2d(shiftX, shiftZ, 0.25, noiseParameters.getOrThrow(Noises.VEGETATION));
+
+        DensityFunction idwj = getFunction(densityFunctions, FACTOR);
+        DensityFunction idwj2 = noiseGradientDensity(DensityFunctions.cache2d(idwj), MiaDensityFunctionTypes.generalAbyssHole(0.0F));
+        DensityFunction idwj3 = DensityFunctions.add(idwj2, DensityFunctions.constant(-0.703125));
+
+        DensityFunction finalDensity = DensityFunctions.min(temptationForestDensity(densityFunctions), getFunction(densityFunctions, MiaDensityFunction.TEMPTATION_FOREST_NOODLE));
+
+        return new NoiseRouter(
+                barrier, // barrier 影响含水层是否在流体与空气之间放置阻挡方块，值越大概率越大。
+                fluidLevelFloodedness, // fluid_level_floodedness 影响含水层放置流体的概率，大于1的值被视为1，小于0的值被视为0。
+                fluidLevelSpread, // fluid_level_spread 影响含水层放置流体的高度，此值越低越不可能放置含水层。
+                DensityFunctions.zero(), // lava 当绝对值大于0.3时含水层在Y=-58与海平面之间放置熔岩而不是默认流体。
+                temperature, // temperature 生物群系温度函数。此参数同下方共六个参数也负责了多噪声型生物群系计算时使用的噪声参数。
+                vegetation, // vegetation 生物群系湿度函数。
+                DensityFunctions.zero(), // continents 生物群系大陆性函数。
+                DensityFunctions.zero(), // erosion 生物群系侵蚀度函数。
+                getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_DEPTH), // depth 生物群系深度函数。
+                getFunction(densityFunctions, RIDGES), // ridges 生物群系奇异度函数。
+                DensityFunctions.zero(), // initial_density_without_jaggedness// 预处理地表高度，影响表面规则的含水层的放置。游戏会从世界顶部以4*整型noise.size_vertical的精度向下查找，将首个大于25/64的值的高度作为预处理地表高度。
                 finalDensity, // final_density 最终密度。大于0的区域将放置默认方块并被表面规则替换，小于0的区域将放置空气并被含水层替换。
                 DensityFunctions.zero(),
                 DensityFunctions.zero(),
@@ -176,7 +231,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         return DensityFunctions.mul(DensityFunctions.constant(4.0), densityfunction.quarterNegative());
     }
 
-    private static DensityFunction slideAbyssBrink(DensityFunction densityFunction) {
+    private static DensityFunction slideAbyssEdge(DensityFunction densityFunction) {
         return slide(densityFunction, 0, 300, 70, 0, -0.078125, 0, 24, 0.1171875);
     }
 
@@ -187,7 +242,11 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         return DensityFunctions.lerp(densityFunction2, v2, lerped);
     }
 
-    protected static NoiseRouter abyssBrink(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        return abyssBrinkRouter(densityFunctions, noiseParameters);
+    public static NoiseRouter abyssEdge(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
+        return abyssEdgeRouter(densityFunctions, noiseParameters);
+    }
+
+    public static NoiseRouter temptationForest(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
+        return temptationForestRouter(densityFunctions, noiseParameters);
     }
 }
