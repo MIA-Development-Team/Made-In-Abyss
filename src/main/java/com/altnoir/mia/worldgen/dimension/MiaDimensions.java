@@ -102,7 +102,7 @@ public class MiaDimensions {
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
                                 )
                         )),
-                        biomeRegistry.getOrThrow(MiaBiomes.ABYSS_EDGE)
+                        biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
                 ),
                 noiseGenSettings.getOrThrow(MiaNoiseGeneratorSettings.TEMPTATION_FOREST)
         );

@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 public class MiaDensityFunction {
-    public static final ResourceKey<DensityFunction> BASE_3D_NOISE_ABYSS_EDGE = abyssEdgeKey("base_3d_noise");
+    public static final ResourceKey<DensityFunction> BASE_3D_NOISE_ABYSS_EDGE = createKey("base_3d_noise");
     public static final ResourceKey<DensityFunction> ABYSS_EDGE_DEPTH = abyssEdgeKey("depth");
     public static final ResourceKey<DensityFunction> ABYSS_EDGE_HOLE = abyssEdgeKey("abyss_hole");
     public static final ResourceKey<DensityFunction> ABYSS_EDGE_BIG_HOLE = abyssEdgeKey("big_abyss_hole");
@@ -28,6 +28,7 @@ public class MiaDensityFunction {
 
     public static final ResourceKey<DensityFunction> TEMPTATION_FOREST_HOLE = temptationForestKey("abyss_hole");
     public static final ResourceKey<DensityFunction> TEMPTATION_FOREST_INSIDE_HOLE = temptationForestKey("inside_abyss_hole");
+    public static final ResourceKey<DensityFunction> TEMPTATION_FOREST_OUTSIDE_BASE_3D = temptationForestKey("outside_abyss_3d_noise");
     public static final ResourceKey<DensityFunction> TEMPTATION_FOREST_NOODLE = temptationForestKey("caves/noodle");
 
     private static ResourceKey<DensityFunction> createKey(String location) {
@@ -56,8 +57,9 @@ public class MiaDensityFunction {
         context.register(ABYSS_EDGE_ABYSS_PILLARS, abyssEdgePillars(holdergetter1));
         context.register(ABYSS_EDGE_NOODLE, abyssEdgeNoodle(holdergetter1, holdergetter));
 
-        context.register(TEMPTATION_FOREST_HOLE, DensityFunctions.add(MiaDensityFunctionTypes.generalAbyssHole(0.0F), getFunction(holdergetter1, BASE_3D_NOISE_ABYSS_EDGE)));
+        context.register(TEMPTATION_FOREST_HOLE, DensityFunctions.add(MiaDensityFunctionTypes.generalAbyssHole(-320.0F), getFunction(holdergetter1, BASE_3D_NOISE_ABYSS_EDGE)));
         context.register(TEMPTATION_FOREST_INSIDE_HOLE, insideTempationForestHole(holdergetter1));
+        context.register(TEMPTATION_FOREST_OUTSIDE_BASE_3D, outsideTempationForestBASE3D(holdergetter1));
         context.register(TEMPTATION_FOREST_NOODLE, tempationForestNoodle(holdergetter1, holdergetter));
 
         return context.register(BASE_3D_NOISE_ABYSS_EDGE, BlendedNoise.createUnseeded(0.25, 0.25, 160.0, 160.0, 8.0));
@@ -83,19 +85,16 @@ public class MiaDensityFunction {
         );
 
         DensityFunction densityFunction2 = yLimitedInterpolatable(
-                densityfunction, DensityFunctions.mappedNoise(noiseParameters.getOrThrow(Noises.NOODLE_THICKNESS),
-                        1.0, 1.0, -0.1, -0.15),
+                densityfunction, DensityFunctions.mappedNoise(noiseParameters.getOrThrow(Noises.NOODLE_THICKNESS), 1.0, 1.0, -0.1, -0.15),
                 FMinY, FMaxY, 0
         );
 
         DensityFunction densityFunction3 = yLimitedInterpolatable(
-                densityfunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_A), d0, d0),
-                minY, maxY, 0
+                densityfunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_A), d0, d0), minY, maxY, 0
         );
 
         DensityFunction densityFunction4 = yLimitedInterpolatable(
-                densityfunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_B), d0, d0),
-                minY, maxY, 0
+                densityfunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_B), d0, d0), minY, maxY, 0
         );
 
         DensityFunction densityFunction5 = DensityFunctions.mul(
@@ -105,29 +104,6 @@ public class MiaDensityFunction {
         return DensityFunctions.rangeChoice(
                 densityFunction1, -1000000.0, 0.0, DensityFunctions.constant(64.0),
                 DensityFunctions.add(densityFunction2, densityFunction5)
-        );
-    }
-
-    private static DensityFunction noodle2(int minY, int maxY, HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        DensityFunction densityfunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
-        double d0 = 2.6666666666666665;
-        DensityFunction densityFunction1 = yLimitedInterpolatable(
-                densityfunction, DensityFunctions.constant(0.0), minY - 40, maxY, -1
-        );
-        DensityFunction densityFunction2 = yLimitedInterpolatable(
-                densityfunction, DensityFunctions.mappedNoise(noiseParameters.getOrThrow(Noises.NOODLE_THICKNESS), 1.0, 1.0, -0.1, -0.15), minY - 40, maxY, 0
-        );
-        DensityFunction densityFunction3 = yLimitedInterpolatable(
-                densityfunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_A), d0, d0), minY, maxY, 0
-        );
-        DensityFunction densityFunction4 = yLimitedInterpolatable(
-                densityfunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_B), d0, d0), minY, maxY, 0
-        );
-        DensityFunction densityFunction5 = DensityFunctions.mul(
-                DensityFunctions.constant(1.5), DensityFunctions.max(densityFunction3.abs(), DensityFunctions.zero().abs())
-        );
-        return DensityFunctions.rangeChoice(
-                densityFunction1, -1000000.0, 0.0, DensityFunctions.constant(64.0), DensityFunctions.add(densityFunction2, densityFunction5)
         );
     }
 
@@ -146,22 +122,26 @@ public class MiaDensityFunction {
     }
 
     private static DensityFunction insideAbyssEdgeHole(HolderGetter<DensityFunction> densityFunctions) {
-        return abyssEdgeDensityFunction(densityFunctions, ABYSS_EDGE_HOLE, 0, 300, -1.0);
+        return abyssDensityFunction(densityFunctions, ABYSS_EDGE_HOLE, 0, 300, -1.0);
     }
 
     private static DensityFunction middleAbyssEdgeBASE3D(HolderGetter<DensityFunction> densityFunctions) {
-        return abyssEdgeDensityFunction(densityFunctions, BASE_3D_NOISE_ABYSS_EDGE, 0, 300, -1.0);
+        return abyssDensityFunction(densityFunctions, BASE_3D_NOISE_ABYSS_EDGE, 0, 300, -1.0);
     }
 
     private static DensityFunction outsideAbyssEdgeBASE3D(HolderGetter<DensityFunction> densityFunctions) {
-        return abyssEdgeDensityFunction(densityFunctions, BASE_3D_NOISE_ABYSS_EDGE, 24, 320, 1.0);
+        return abyssDensityFunction(densityFunctions, BASE_3D_NOISE_ABYSS_EDGE, 24, 320, 1.0);
     }
 
     private static DensityFunction insideTempationForestHole(HolderGetter<DensityFunction> densityFunctions) {
-        return abyssEdgeDensityFunction(densityFunctions, TEMPTATION_FOREST_HOLE, -64, 256, -1.0);
+        return abyssDensityFunction(densityFunctions, TEMPTATION_FOREST_HOLE, -64, 256, -1.0);
     }
 
-    private static DensityFunction abyssEdgeDensityFunction(HolderGetter<DensityFunction> densityFunctions, ResourceKey<DensityFunction> mainFunctionKey, int minY, int maxY, double outOfRangeValue) {
+    private static DensityFunction outsideTempationForestBASE3D(HolderGetter<DensityFunction> densityFunctions) {
+        return abyssDensityFunction(densityFunctions, BASE_3D_NOISE_ABYSS_EDGE, -64, 256, 1.0);
+    }
+
+    private static DensityFunction abyssDensityFunction(HolderGetter<DensityFunction> densityFunctions, ResourceKey<DensityFunction> mainFunctionKey, int minY, int maxY, double outOfRangeValue) {
         DensityFunction yFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
         DensityFunction rangeChoice = DensityFunctions.rangeChoice(yFunction,
                 minY,

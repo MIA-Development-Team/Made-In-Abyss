@@ -105,7 +105,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
     private static DensityFunction temptationForestDensity(HolderGetter<DensityFunction> densityFunctions) {
         DensityFunction abyssHole = getFunction(densityFunctions, MiaDensityFunction.TEMPTATION_FOREST_HOLE);
         DensityFunction inside = getFunction(densityFunctions, MiaDensityFunction.TEMPTATION_FOREST_INSIDE_HOLE);
-        DensityFunction outsideAbyssNoise = getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_OUTSIDE_BASE_3D);
+        DensityFunction outsideAbyssNoise = getFunction(densityFunctions, MiaDensityFunction.TEMPTATION_FOREST_OUTSIDE_BASE_3D);
         DensityFunction abyssPillars = getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_ABYSS_PILLARS);
 
         DensityFunction outside = DensityFunctions.max(
@@ -187,8 +187,8 @@ public class MiaNoiseRouterData extends NoiseRouterData {
 
         return new NoiseRouter(
                 barrier, // barrier 影响含水层是否在流体与空气之间放置阻挡方块，值越大概率越大。
-                fluidLevelFloodedness, // fluid_level_floodedness 影响含水层放置流体的概率，大于1的值被视为1，小于0的值被视为0。
-                fluidLevelSpread, // fluid_level_spread 影响含水层放置流体的高度，此值越低越不可能放置含水层。
+                DensityFunctions.zero(), // fluid_level_floodedness 影响含水层放置流体的概率，大于1的值被视为1，小于0的值被视为0。
+                DensityFunctions.zero(), // fluid_level_spread 影响含水层放置流体的高度，此值越低越不可能放置含水层。
                 DensityFunctions.zero(), // lava 当绝对值大于0.3时含水层在Y=-58与海平面之间放置熔岩而不是默认流体。
                 temperature, // temperature 生物群系温度函数。此参数同下方共六个参数也负责了多噪声型生物群系计算时使用的噪声参数。
                 vegetation, // vegetation 生物群系湿度函数。

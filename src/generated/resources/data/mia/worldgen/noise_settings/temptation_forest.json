@@ -4,10 +4,7 @@
     "Name": "mia:abyss_andesite"
   },
   "default_fluid": {
-    "Name": "minecraft:water",
-    "Properties": {
-      "level": "0"
-    }
+    "Name": "minecraft:cave_air"
   },
   "disable_mob_generation": false,
   "legacy_random_source": false,
@@ -78,7 +75,7 @@
                               "type": "minecraft:max",
                               "argument1": {
                                 "type": "minecraft:min",
-                                "argument1": "mia:abyss_edge/outside_abyss_3d_noise",
+                                "argument1": "mia:temptation_forest/outside_abyss_3d_noise",
                                 "argument2": {
                                   "type": "minecraft:add",
                                   "argument1": "minecraft:overworld/caves/spaghetti_2d",
@@ -100,18 +97,8 @@
       },
       "argument2": "mia:temptation_forest/caves/noodle"
     },
-    "fluid_level_floodedness": {
-      "type": "minecraft:noise",
-      "noise": "minecraft:aquifer_fluid_level_floodedness",
-      "xz_scale": 0.335,
-      "y_scale": 0.5
-    },
-    "fluid_level_spread": {
-      "type": "minecraft:noise",
-      "noise": "minecraft:aquifer_fluid_level_spread",
-      "xz_scale": 0.357142857,
-      "y_scale": 0.5
-    },
+    "fluid_level_floodedness": 0.0,
+    "fluid_level_spread": 0.0,
     "initial_density_without_jaggedness": 0.0,
     "lava": 0.0,
     "ridges": "minecraft:overworld/ridges",
@@ -138,7 +125,7 @@
     "vein_toggle": 0.0
   },
   "ore_veins_enabled": true,
-  "sea_level": -64,
+  "sea_level": -128,
   "spawn_target": [],
   "surface_rule": {
     "type": "minecraft:sequence",
@@ -156,28 +143,6 @@
             "true_at_and_below": {
               "below_top": 5
             }
-          }
-        },
-        "then_run": {
-          "type": "minecraft:block",
-          "result_state": {
-            "Name": "minecraft:deepslate",
-            "Properties": {
-              "axis": "y"
-            }
-          }
-        }
-      },
-      {
-        "type": "minecraft:condition",
-        "if_true": {
-          "type": "minecraft:vertical_gradient",
-          "false_at_and_above": {
-            "above_bottom": 5
-          },
-          "random_name": "minecraft:bedrock_floor",
-          "true_at_and_below": {
-            "above_bottom": 0
           }
         },
         "then_run": {

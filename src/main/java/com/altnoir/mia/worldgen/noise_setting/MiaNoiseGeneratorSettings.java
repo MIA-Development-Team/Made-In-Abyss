@@ -31,9 +31,9 @@ public class MiaNoiseGeneratorSettings {
         return new NoiseGeneratorSettings(
                 ABYSS_EDGE_NOISE_SETTINGS,
                 MiaBlocks.ABYSS_ANDESITE.get().defaultBlockState(),
-                Blocks.WATER.defaultBlockState(),
+                Blocks.CAVE_AIR.defaultBlockState(),
                 MiaNoiseRouterData.abyssEdge(context.lookup(Registries.DENSITY_FUNCTION), context.lookup(Registries.NOISE)),
-                MiaSurfaceRuleData.abyssEdge(false),
+                MiaSurfaceRuleData.abyssEdge(),
                 List.of(), // 生成目标
                 0, // 海平面高度
                 false, // 禁用生物生成
@@ -47,11 +47,11 @@ public class MiaNoiseGeneratorSettings {
         return new NoiseGeneratorSettings(
                 TEMPTATION_FOREST_NOISE_SETTINGS,
                 MiaBlocks.ABYSS_ANDESITE.get().defaultBlockState(),
-                Blocks.WATER.defaultBlockState(),
+                Blocks.CAVE_AIR.defaultBlockState(),
                 MiaNoiseRouterData.temptationForest(context.lookup(Registries.DENSITY_FUNCTION), context.lookup(Registries.NOISE)),
-                MiaSurfaceRuleData.abyssEdge(false),
+                MiaSurfaceRuleData.temptationForest(),
                 List.of(),
-                -64,
+                -128,
                 false,
                 true,
                 true,

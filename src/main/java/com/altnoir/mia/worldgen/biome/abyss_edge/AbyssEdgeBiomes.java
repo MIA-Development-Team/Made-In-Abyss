@@ -152,7 +152,6 @@ public class AbyssEdgeBiomes {
                         .build());
     }
 
-
     private static BiomeGenerationSettings.Builder createGenerationBuilder(BootstrapContext<Biome> context) {
         return new BiomeGenerationSettings.Builder(context.lookup(Registries.PLACED_FEATURE), context.lookup(Registries.CONFIGURED_CARVER));
     }
