@@ -57,7 +57,7 @@ public class MiaDensityFunction {
         context.register(ABYSS_EDGE_ABYSS_PILLARS, abyssEdgePillars(holdergetter1));
         context.register(ABYSS_EDGE_NOODLE, abyssEdgeNoodle(holdergetter1, holdergetter));
 
-        context.register(TEMPTATION_FOREST_HOLE, DensityFunctions.add(MiaDensityFunctionTypes.generalAbyssHole(-320.0F), getFunction(holdergetter1, BASE_3D_NOISE_ABYSS_EDGE)));
+        context.register(TEMPTATION_FOREST_HOLE, MiaDensityFunctionTypes.generalAbyssHole(-320.0F));
         context.register(TEMPTATION_FOREST_INSIDE_HOLE, insideTempationForestHole(holdergetter1));
         context.register(TEMPTATION_FOREST_OUTSIDE_BASE_3D, outsideTempationForestBASE3D(holdergetter1));
         context.register(TEMPTATION_FOREST_NOODLE, tempationForestNoodle(holdergetter1, holdergetter));
@@ -98,6 +98,9 @@ public class MiaDensityFunction {
         );
 
         DensityFunction densityFunction5 = DensityFunctions.mul(
+                DensityFunctions.constant(1.5), densityFunction3.abs()
+        );
+        DensityFunction densityFunction6 = DensityFunctions.mul(
                 DensityFunctions.constant(1.5), DensityFunctions.max(densityFunction3.abs(), DensityFunctions.zero().abs())
         );
 

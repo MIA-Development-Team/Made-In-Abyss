@@ -4,7 +4,7 @@
     "type": "minecraft:noise",
     "biome_source": {
       "type": "mia:the_abyss",
-      "abyss_biome": "mia:abyss_edge/abyss_edge",
+      "abyss_biome": "mia:abyss_edge/skyfog_forest",
       "biomes": [
         {
           "biome": "mia:abyss_edge/skyfog_forest",

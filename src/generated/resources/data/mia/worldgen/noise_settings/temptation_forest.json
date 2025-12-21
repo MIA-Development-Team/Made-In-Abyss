@@ -52,7 +52,7 @@
                     "argument1": 0.4,
                     "argument2": {
                       "type": "minecraft:add",
-                      "argument1": 0.8975,
+                      "argument1": 1.5625,
                       "argument2": {
                         "type": "minecraft:mul",
                         "argument1": {
@@ -60,7 +60,7 @@
                           "from_value": 1.0,
                           "from_y": 192,
                           "to_value": 0.0,
-                          "to_y": 256
+                          "to_y": 240
                         },
                         "argument2": {
                           "type": "minecraft:add",
@@ -72,17 +72,32 @@
                             "min_inclusive": -1000000.0,
                             "when_in_range": "mia:temptation_forest/inside_abyss_hole",
                             "when_out_of_range": {
-                              "type": "minecraft:max",
-                              "argument1": {
+                              "type": "minecraft:range_choice",
+                              "input": "minecraft:overworld/sloped_cheese",
+                              "max_exclusive": 1.5625,
+                              "min_inclusive": -1000000.0,
+                              "when_in_range": {
                                 "type": "minecraft:min",
-                                "argument1": "mia:temptation_forest/outside_abyss_3d_noise",
+                                "argument1": "minecraft:overworld/sloped_cheese",
                                 "argument2": {
-                                  "type": "minecraft:add",
+                                  "type": "minecraft:mul",
                                   "argument1": "minecraft:overworld/caves/spaghetti_2d",
-                                  "argument2": "minecraft:overworld/caves/spaghetti_roughness_function"
+                                  "argument2": "minecraft:overworld/caves/entrances"
                                 }
                               },
-                              "argument2": "mia:abyss_edge/caves/abyss_pillars"
+                              "when_out_of_range": {
+                                "type": "minecraft:max",
+                                "argument1": {
+                                  "type": "minecraft:min",
+                                  "argument1": "minecraft:overworld/caves/entrances",
+                                  "argument2": {
+                                    "type": "minecraft:add",
+                                    "argument1": "minecraft:overworld/caves/spaghetti_2d",
+                                    "argument2": "minecraft:overworld/caves/spaghetti_roughness_function"
+                                  }
+                                },
+                                "argument2": "mia:abyss_edge/caves/abyss_pillars"
+                              }
                             }
                           }
                         }

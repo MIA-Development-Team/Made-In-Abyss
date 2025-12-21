@@ -35,7 +35,8 @@ public class MinecraftMixin {
     @Unique
     private Set<ResourceKey<Level>> mia$getExcludedDimensions() {
         return Set.of(
-                MiaDimensions.ABYSS_EDGE_LEVEL
+                MiaDimensions.ABYSS_EDGE_LEVEL,
+                MiaDimensions.TEMPTATION_FOREST_LEVEL
         );
     }
 }
