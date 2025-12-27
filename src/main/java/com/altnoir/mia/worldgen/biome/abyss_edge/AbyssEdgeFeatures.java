@@ -6,7 +6,7 @@ import com.altnoir.mia.worldgen.MiaFeatureUtils;
 import com.altnoir.mia.worldgen.biome.tree.MiaTreePlacements;
 import com.altnoir.mia.worldgen.feature.LakeFeature;
 import com.altnoir.mia.worldgen.feature.configurations.ClusterConfiguration;
-import com.altnoir.mia.worldgen.feature.configurations.MiaLargeDripstoneConfiguration;
+import com.altnoir.mia.worldgen.feature.configurations.MiaCavePillarConfiguration;
 import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
 import com.altnoir.mia.worldgen.feature.configurations.SlabRuinsConfiguration;
 import net.minecraft.core.Direction;
@@ -62,7 +62,7 @@ public class AbyssEdgeFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_CLUSTER = MiaFeatureUtils.abyssEdgeKey("prasiolite_cluster");
     public static final ResourceKey<ConfiguredFeature<?, ?>> BIG_PRASIOLITE_CLUSTER = MiaFeatureUtils.abyssEdgeKey("big_prasiolite_cluster");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_GEODE = MiaFeatureUtils.abyssEdgeKey("prasiolite_geode");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_DRIPSTONE = MiaFeatureUtils.abyssEdgeKey("large_dripstone");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> CAVE_PILLAR = MiaFeatureUtils.abyssEdgeKey("cave_pillar");
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAW_IRON = MiaFeatureUtils.abyssEdgeKey("raw_iron");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
@@ -266,13 +266,13 @@ public class AbyssEdgeFeatures {
         );
 
         MiaFeatureUtils.register(
-                context, LARGE_DRIPSTONE, MiaFeature.ABYSS_LARGE_DRIPSTONE.get(),
-                new MiaLargeDripstoneConfiguration(
+                context, CAVE_PILLAR, MiaFeature.ABYSS_CAVE_PILLAR.get(),
+                new MiaCavePillarConfiguration(
                         188,
-                        UniformInt.of(3, 18),
+                        UniformInt.of(3, 15),
                         UniformFloat.of(0.5F, 3.0F),
                         0.5F,
-                        UniformFloat.of(0.3F, 0.9F),
+                        UniformFloat.of(0.3F, 0.6F),
                         UniformFloat.of(0.4F, 1.0F),
                         UniformFloat.of(0.0F, 0.3F),
                         4,

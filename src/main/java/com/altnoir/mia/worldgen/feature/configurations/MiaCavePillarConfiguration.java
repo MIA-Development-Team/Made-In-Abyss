@@ -6,8 +6,8 @@ import net.minecraft.util.valueproviders.FloatProvider;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class MiaLargeDripstoneConfiguration implements FeatureConfiguration {
-    public static final Codec<MiaLargeDripstoneConfiguration> CODEC = RecordCodecBuilder.create(
+public class MiaCavePillarConfiguration implements FeatureConfiguration {
+    public static final Codec<MiaCavePillarConfiguration> CODEC = RecordCodecBuilder.create(
             p_160966_ -> p_160966_.group(
                             Codec.intRange(1, 512).fieldOf("floor_to_ceiling_search_range").orElse(30).forGetter(p_160984_ -> p_160984_.floorToCeilingSearchRange),
                             IntProvider.codec(1, 60).fieldOf("column_radius").forGetter(p_160982_ -> p_160982_.columnRadius),
@@ -21,7 +21,7 @@ public class MiaLargeDripstoneConfiguration implements FeatureConfiguration {
                             Codec.intRange(0, 100).fieldOf("min_radius_for_wind").forGetter(p_160970_ -> p_160970_.minRadiusForWind),
                             Codec.floatRange(0.0F, 5.0F).fieldOf("min_bluntness_for_wind").forGetter(p_160968_ -> p_160968_.minBluntnessForWind)
                     )
-                    .apply(p_160966_, MiaLargeDripstoneConfiguration::new)
+                    .apply(p_160966_, MiaCavePillarConfiguration::new)
     );
     public final int floorToCeilingSearchRange;
     public final IntProvider columnRadius;
@@ -33,7 +33,7 @@ public class MiaLargeDripstoneConfiguration implements FeatureConfiguration {
     public final int minRadiusForWind;
     public final float minBluntnessForWind;
 
-    public MiaLargeDripstoneConfiguration(
+    public MiaCavePillarConfiguration(
             int floorToCeilingSearchRange,
             IntProvider columnRadius,
             FloatProvider heightScale,

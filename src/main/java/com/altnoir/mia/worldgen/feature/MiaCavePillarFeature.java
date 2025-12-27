@@ -1,7 +1,7 @@
 package com.altnoir.mia.worldgen.feature;
 
 import com.altnoir.mia.init.MiaBlocks;
-import com.altnoir.mia.worldgen.feature.configurations.MiaLargeDripstoneConfiguration;
+import com.altnoir.mia.worldgen.feature.configurations.MiaCavePillarConfiguration;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,16 +21,16 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class MiaLargeDripstoneFeature extends Feature<MiaLargeDripstoneConfiguration> {
-    public MiaLargeDripstoneFeature(Codec<MiaLargeDripstoneConfiguration> codec) {
+public class MiaCavePillarFeature extends Feature<MiaCavePillarConfiguration> {
+    public MiaCavePillarFeature(Codec<MiaCavePillarConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<MiaLargeDripstoneConfiguration> context) {
+    public boolean place(FeaturePlaceContext<MiaCavePillarConfiguration> context) {
         WorldGenLevel worldgenlevel = context.level();
         BlockPos blockpos = context.origin();
-        MiaLargeDripstoneConfiguration ldg = context.config();
+        MiaCavePillarConfiguration ldg = context.config();
         RandomSource randomsource = context.random();
         if (!MiaDripstoneUtils.isEmptyOrWater(worldgenlevel, blockpos)) {
             return false;
@@ -42,15 +42,14 @@ public class MiaLargeDripstoneFeature extends Feature<MiaLargeDripstoneConfigura
                     MiaDripstoneUtils::isEmptyOrWater,
                     MiaDripstoneUtils::isDripstoneBaseOrLava
             );
-            if (!optional.isEmpty() && optional.get() instanceof Column.Range) {
-                Column.Range column$range = (Column.Range) optional.get();
+            if (optional.isPresent() && optional.get() instanceof Column.Range column$range) {
                 if (column$range.height() < 4) {
                     return false;
                 } else {
                     int i = (int) ((float) column$range.height() * ldg.maxColumnRadiusToCaveHeightRatio);
                     int j = Mth.clamp(i, ldg.columnRadius.getMinValue(), ldg.columnRadius.getMaxValue());
                     int k = Mth.randomBetweenInclusive(randomsource, ldg.columnRadius.getMinValue(), j);
-                    MiaLargeDripstoneFeature.LargeDripstone MiaLargeDripstoneFeature$largedripstone = makeDripstone(
+                    CavePillar miaCavePillarFeature$largedripstone = makePillar(
                             blockpos.atY(column$range.ceiling() - 1),
                             false,
                             randomsource,
@@ -58,7 +57,7 @@ public class MiaLargeDripstoneFeature extends Feature<MiaLargeDripstoneConfigura
                             ldg.stalactiteBluntness,
                             ldg.heightScale
                     );
-                    MiaLargeDripstoneFeature.LargeDripstone MiaLargeDripstoneFeature$largedripstone1 = makeDripstone(
+                    CavePillar miaCavePillarFeature$largedripstone1 = makePillar(
                             blockpos.atY(column$range.floor() + 1),
                             true,
                             randomsource,
@@ -66,28 +65,28 @@ public class MiaLargeDripstoneFeature extends Feature<MiaLargeDripstoneConfigura
                             ldg.stalagmiteBluntness,
                             ldg.heightScale
                     );
-                    MiaLargeDripstoneFeature.WindOffsetter MiaLargeDripstoneFeature$windoffsetter;
-                    if (MiaLargeDripstoneFeature$largedripstone.isSuitableForWind(ldg)
-                            && MiaLargeDripstoneFeature$largedripstone1.isSuitableForWind(ldg)) {
-                        MiaLargeDripstoneFeature$windoffsetter = new MiaLargeDripstoneFeature.WindOffsetter(
+                    MiaCavePillarFeature.WindOffsetter MiaLargeDripstoneFeature$windoffsetter;
+                    if (miaCavePillarFeature$largedripstone.isSuitableForWind(ldg)
+                            && miaCavePillarFeature$largedripstone1.isSuitableForWind(ldg)) {
+                        MiaLargeDripstoneFeature$windoffsetter = new MiaCavePillarFeature.WindOffsetter(
                                 blockpos.getY(), randomsource, ldg.windSpeed
                         );
                     } else {
-                        MiaLargeDripstoneFeature$windoffsetter = MiaLargeDripstoneFeature.WindOffsetter.noWind();
+                        MiaLargeDripstoneFeature$windoffsetter = MiaCavePillarFeature.WindOffsetter.noWind();
                     }
 
-                    boolean flag = MiaLargeDripstoneFeature$largedripstone.moveBackUntilBaseIsInsideStoneAndShrinkRadiusIfNecessary(
+                    boolean flag = miaCavePillarFeature$largedripstone.moveBackUntilBaseIsInsideStoneAndShrinkRadiusIfNecessary(
                             worldgenlevel, MiaLargeDripstoneFeature$windoffsetter
                     );
-                    boolean flag1 = MiaLargeDripstoneFeature$largedripstone1.moveBackUntilBaseIsInsideStoneAndShrinkRadiusIfNecessary(
+                    boolean flag1 = miaCavePillarFeature$largedripstone1.moveBackUntilBaseIsInsideStoneAndShrinkRadiusIfNecessary(
                             worldgenlevel, MiaLargeDripstoneFeature$windoffsetter
                     );
                     if (flag) {
-                        MiaLargeDripstoneFeature$largedripstone.placeBlocks(worldgenlevel, randomsource, MiaLargeDripstoneFeature$windoffsetter);
+                        miaCavePillarFeature$largedripstone.placeBlocks(worldgenlevel, randomsource, MiaLargeDripstoneFeature$windoffsetter, blockpos);
                     }
 
                     if (flag1) {
-                        MiaLargeDripstoneFeature$largedripstone1.placeBlocks(worldgenlevel, randomsource, MiaLargeDripstoneFeature$windoffsetter);
+                        miaCavePillarFeature$largedripstone1.placeBlocks(worldgenlevel, randomsource, MiaLargeDripstoneFeature$windoffsetter, blockpos);
                     }
 
                     return true;
@@ -98,22 +97,22 @@ public class MiaLargeDripstoneFeature extends Feature<MiaLargeDripstoneConfigura
         }
     }
 
-    private static MiaLargeDripstoneFeature.LargeDripstone makeDripstone(
+    private static CavePillar makePillar(
             BlockPos root, boolean pointingUp, RandomSource random, int radius, FloatProvider bluntnessBase, FloatProvider scaleBase
     ) {
-        return new MiaLargeDripstoneFeature.LargeDripstone(
+        return new CavePillar(
                 root, pointingUp, radius, (double) bluntnessBase.sample(random), (double) scaleBase.sample(random)
         );
     }
 
-    static final class LargeDripstone {
+    static final class CavePillar {
         private BlockPos root;
         private final boolean pointingUp;
         private int radius;
         private final double bluntness;
         private final double scale;
 
-        LargeDripstone(BlockPos root, boolean pointingUp, int radius, double bluntness, double scale) {
+        CavePillar(BlockPos root, boolean pointingUp, int radius, double bluntness, double scale) {
             this.root = root;
             this.pointingUp = pointingUp;
             this.radius = radius;
@@ -133,7 +132,7 @@ public class MiaLargeDripstoneFeature extends Feature<MiaLargeDripstoneConfigura
             return !this.pointingUp ? this.root.getY() : this.root.getY() + this.getHeight();
         }
 
-        boolean moveBackUntilBaseIsInsideStoneAndShrinkRadiusIfNecessary(WorldGenLevel level, MiaLargeDripstoneFeature.WindOffsetter windOffsetter) {
+        boolean moveBackUntilBaseIsInsideStoneAndShrinkRadiusIfNecessary(WorldGenLevel level, MiaCavePillarFeature.WindOffsetter windOffsetter) {
             while (this.radius > 1) {
                 BlockPos.MutableBlockPos blockpos$mutableblockpos = this.root.mutable();
                 int i = Math.min(10, this.getHeight());
@@ -161,7 +160,7 @@ public class MiaLargeDripstoneFeature extends Feature<MiaLargeDripstoneConfigura
             return (int) MiaDripstoneUtils.getDripstoneHeight((double) radius, (double) this.radius, this.scale, this.bluntness);
         }
 
-        void placeBlocks(WorldGenLevel level, RandomSource random, MiaLargeDripstoneFeature.WindOffsetter windOffsetter) {
+        void placeBlocks(WorldGenLevel level, RandomSource random, MiaCavePillarFeature.WindOffsetter windOffsetter, BlockPos origin) {
             for (int i = -this.radius; i <= this.radius; i++) {
                 for (int j = -this.radius; j <= this.radius; j++) {
                     float f = Mth.sqrt((float) (i * i + j * j));
@@ -180,6 +179,7 @@ public class MiaLargeDripstoneFeature extends Feature<MiaLargeDripstoneConfigura
 
                             for (int i1 = 0; i1 < k && blockpos$mutableblockpos.getY() < l; i1++) {
                                 BlockPos blockpos = windOffsetter.offset(blockpos$mutableblockpos);
+
                                 if (level.isStateAtPosition(blockpos, MiaDripstoneUtils::isDripstoneBase)) {
                                     flag = true;
                                     Block block = MiaBlocks.FOSSILIZED_LOG.get();
@@ -196,7 +196,7 @@ public class MiaLargeDripstoneFeature extends Feature<MiaLargeDripstoneConfigura
             }
         }
 
-        boolean isSuitableForWind(MiaLargeDripstoneConfiguration config) {
+        boolean isSuitableForWind(MiaCavePillarConfiguration config) {
             return this.radius >= config.minRadiusForWind && this.bluntness >= (double) config.minBluntnessForWind;
         }
     }
@@ -218,8 +218,8 @@ public class MiaLargeDripstoneFeature extends Feature<MiaLargeDripstoneConfigura
             this.windSpeed = null;
         }
 
-        static MiaLargeDripstoneFeature.WindOffsetter noWind() {
-            return new MiaLargeDripstoneFeature.WindOffsetter();
+        static MiaCavePillarFeature.WindOffsetter noWind() {
+            return new MiaCavePillarFeature.WindOffsetter();
         }
 
         BlockPos offset(BlockPos pos) {

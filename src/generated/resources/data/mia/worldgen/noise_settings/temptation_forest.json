@@ -4,7 +4,10 @@
     "Name": "mia:abyss_andesite"
   },
   "default_fluid": {
-    "Name": "minecraft:cave_air"
+    "Name": "minecraft:water",
+    "Properties": {
+      "level": "0"
+    }
   },
   "disable_mob_generation": false,
   "legacy_random_source": false,

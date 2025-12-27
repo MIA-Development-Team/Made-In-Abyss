@@ -87,7 +87,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 abyssHole, -1000000.0, 0.025, insideAbyssHole, rangeChoice2
         );
 
-        DensityFunction ycg1 = DensityFunctions.yClampedGradient(320, 368, 1, 1);
+        DensityFunction ycg1 = DensityFunctions.yClampedGradient(460, 512, 1, 1);
         DensityFunction add1 = DensityFunctions.add(DensityFunctions.constant(1.025), rangeChoice1);
 
         DensityFunction mul1 = DensityFunctions.mul(ycg1, add1);
@@ -158,6 +158,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         DensityFunction idwj = getFunction(densityFunctions, FACTOR);
         DensityFunction idwj2 = noiseGradientDensity(DensityFunctions.cache2d(idwj), MiaDensityFunctionTypes.hopperAbyssHole(0.0F));
         DensityFunction idwj3 = DensityFunctions.add(idwj2, DensityFunctions.constant(-0.703125));
+        DensityFunction idwj4 = slide(idwj3, 0, 448, 70, 0, -0.078125, 0, 24, 0.1171875);
 
         DensityFunction finalDensity = DensityFunctions.min(abyssEdgeDensity(densityFunctions), getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_NOODLE));
 
@@ -172,7 +173,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 DensityFunctions.zero(), // erosion 生物群系侵蚀度函数。
                 getFunction(densityFunctions, MiaDensityFunction.ABYSS_EDGE_DEPTH), // depth 生物群系深度函数。
                 getFunction(densityFunctions, RIDGES), // ridges 生物群系奇异度函数。
-                slideAbyssEdge(idwj3), // initial_density_without_jaggedness// 预处理地表高度，影响表面规则的含水层的放置。游戏会从世界顶部以4*整型noise.size_vertical的精度向下查找，将首个大于25/64的值的高度作为预处理地表高度。
+                idwj4, // initial_density_without_jaggedness// 预处理地表高度，影响表面规则的含水层的放置。游戏会从世界顶部以4*整型noise.size_vertical的精度向下查找，将首个大于25/64的值的高度作为预处理地表高度。
                 finalDensity, // final_density 最终密度。大于0的区域将放置默认方块并被表面规则替换，小于0的区域将放置空气并被含水层替换。
                 DensityFunctions.zero(),
                 DensityFunctions.zero(),
@@ -241,10 +242,6 @@ public class MiaNoiseRouterData extends NoiseRouterData {
     private static DensityFunction noiseGradientDensity(DensityFunction minFunction, DensityFunction maxFunction) {
         DensityFunction densityfunction = DensityFunctions.mul(maxFunction, minFunction);
         return DensityFunctions.mul(DensityFunctions.constant(4.0), densityfunction.quarterNegative());
-    }
-
-    private static DensityFunction slideAbyssEdge(DensityFunction densityFunction) {
-        return slide(densityFunction, 0, 300, 70, 0, -0.078125, 0, 24, 0.1171875);
     }
 
     private static DensityFunction slide(DensityFunction input, int minY, int maxY, int i1, int i2, double v1, int i3, int i4, double v2) {

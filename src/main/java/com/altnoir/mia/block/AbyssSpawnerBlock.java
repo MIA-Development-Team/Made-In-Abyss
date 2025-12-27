@@ -10,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.Spawner;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -65,13 +64,13 @@ public class AbyssSpawnerBlock extends BaseEntityBlock {
         return level instanceof ServerLevel serverlevel
                 ? createTickerHelper(
                 entityType,
-                MiaBlockEntities.ABYSS_SPAWNER.get(),
+                MiaBlockEntities.ABYSS_SPAWNER_ENTITY.get(),
                 (blockLevel, blockPos, blockState, e) -> e.getAbyssSpawner()
                         .tickServer(serverlevel, blockPos, blockState.getOptionalValue(BlockStateProperties.OMINOUS).orElse(false))
         )
                 : createTickerHelper(
                 entityType,
-                MiaBlockEntities.ABYSS_SPAWNER.get(),
+                MiaBlockEntities.ABYSS_SPAWNER_ENTITY.get(),
                 (blockLevel, blockPos, blockState, e) -> e.getAbyssSpawner()
                         .tickClient(blockLevel, blockPos, blockState.getOptionalValue(BlockStateProperties.OMINOUS).orElse(false))
         );

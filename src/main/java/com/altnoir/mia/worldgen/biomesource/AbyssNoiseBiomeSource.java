@@ -1,4 +1,4 @@
-package com.altnoir.mia.worldgen.biome.biomesource;
+package com.altnoir.mia.worldgen.biomesource;
 
 import com.altnoir.mia.worldgen.noise_setting.densityfunction.HopperAbyssHole;
 import com.mojang.datafixers.util.Pair;

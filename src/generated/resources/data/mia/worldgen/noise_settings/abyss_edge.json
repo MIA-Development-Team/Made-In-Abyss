@@ -4,12 +4,15 @@
     "Name": "mia:abyss_andesite"
   },
   "default_fluid": {
-    "Name": "minecraft:cave_air"
+    "Name": "minecraft:water",
+    "Properties": {
+      "level": "0"
+    }
   },
   "disable_mob_generation": false,
   "legacy_random_source": false,
   "noise": {
-    "height": 368,
+    "height": 512,
     "min_y": 0,
     "size_horizontal": 4,
     "size_vertical": 4
@@ -53,9 +56,9 @@
                         "argument1": {
                           "type": "minecraft:y_clamped_gradient",
                           "from_value": 1.0,
-                          "from_y": 320,
+                          "from_y": 460,
                           "to_value": 1.0,
-                          "to_y": 368
+                          "to_y": 512
                         },
                         "argument2": {
                           "type": "minecraft:add",
@@ -146,9 +149,9 @@
               "argument1": {
                 "type": "minecraft:y_clamped_gradient",
                 "from_value": 1.0,
-                "from_y": 230,
+                "from_y": 378,
                 "to_value": 0.0,
-                "to_y": 300
+                "to_y": 448
               },
               "argument2": {
                 "type": "minecraft:add",

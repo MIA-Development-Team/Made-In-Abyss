@@ -41,7 +41,7 @@ public class AbyssEdgePlacements {
     public static final ResourceKey<PlacedFeature> PRASIOLITE_CLUSTER = MiaPlacementUtils.abyssEdgeKey("prasiolite_cluster");
     public static final ResourceKey<PlacedFeature> BIG_PRASIOLITE_CLUSTER = MiaPlacementUtils.abyssEdgeKey("big_prasiolite_cluster");
     public static final ResourceKey<PlacedFeature> PRASIOLITE_GEODE = MiaPlacementUtils.abyssEdgeKey("prasiolite_geode");
-    public static final ResourceKey<PlacedFeature> LARGE_DRIPSTONE = MiaPlacementUtils.abyssEdgeKey("large_dripstone");
+    public static final ResourceKey<PlacedFeature> CAVE_PILLAR = MiaPlacementUtils.abyssEdgeKey("cave_pillar");
     public static final ResourceKey<PlacedFeature> RAW_IRON = MiaPlacementUtils.abyssEdgeKey("raw_iron");
 
     private static final PlacementModifier ABYSS_BRINK_HEIGHT = HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(360));
@@ -68,7 +68,7 @@ public class AbyssEdgePlacements {
         Holder<ConfiguredFeature<?, ?>> prasiolite_cluster = holdergetter.getOrThrow(AbyssEdgeFeatures.PRASIOLITE_CLUSTER);
         Holder<ConfiguredFeature<?, ?>> big_prasiolite_cluster = holdergetter.getOrThrow(AbyssEdgeFeatures.BIG_PRASIOLITE_CLUSTER);
         Holder<ConfiguredFeature<?, ?>> prasiolite_geode = holdergetter.getOrThrow(AbyssEdgeFeatures.PRASIOLITE_GEODE);
-        Holder<ConfiguredFeature<?, ?>> large_dripstone = holdergetter.getOrThrow(AbyssEdgeFeatures.LARGE_DRIPSTONE);
+        Holder<ConfiguredFeature<?, ?>> cave_pillar = holdergetter.getOrThrow(AbyssEdgeFeatures.CAVE_PILLAR);
         Holder<ConfiguredFeature<?, ?>> raw_iron = holdergetter.getOrThrow(AbyssEdgeFeatures.RAW_IRON);
 
         PlacementUtils.register(
@@ -206,7 +206,7 @@ public class AbyssEdgePlacements {
         );
 
         MiaPlacementUtils.register(
-                context, LARGE_DRIPSTONE, large_dripstone,
+                context, CAVE_PILLAR, cave_pillar,
                 CountPlacement.of(UniformInt.of(5, 24)),
                 InSquarePlacement.spread(),
                 ABYSS_BRINK_HEIGHT,

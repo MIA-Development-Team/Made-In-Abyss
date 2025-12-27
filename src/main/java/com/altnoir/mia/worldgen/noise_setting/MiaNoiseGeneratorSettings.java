@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.NoiseSettings;
 import java.util.List;
 
 public class MiaNoiseGeneratorSettings {
-    public static final NoiseSettings ABYSS_EDGE_NOISE_SETTINGS = NoiseSettings.create(0, 368, 4, 4);
+    public static final NoiseSettings ABYSS_EDGE_NOISE_SETTINGS = NoiseSettings.create(0, 512, 4, 4);
     public static final NoiseSettings TEMPTATION_FOREST_NOISE_SETTINGS = NoiseSettings.create(-64, 320, 4, 4);
 
     public static final ResourceKey<NoiseGeneratorSettings> ABYSS_EDGE = ResourceKey.create(
@@ -31,7 +31,7 @@ public class MiaNoiseGeneratorSettings {
         return new NoiseGeneratorSettings(
                 ABYSS_EDGE_NOISE_SETTINGS,
                 MiaBlocks.ABYSS_ANDESITE.get().defaultBlockState(),
-                Blocks.CAVE_AIR.defaultBlockState(),
+                Blocks.WATER.defaultBlockState(),
                 MiaNoiseRouterData.abyssEdge(context.lookup(Registries.DENSITY_FUNCTION), context.lookup(Registries.NOISE)),
                 MiaSurfaceRuleData.abyssEdge(),
                 List.of(), // 生成目标
@@ -47,7 +47,7 @@ public class MiaNoiseGeneratorSettings {
         return new NoiseGeneratorSettings(
                 TEMPTATION_FOREST_NOISE_SETTINGS,
                 MiaBlocks.ABYSS_ANDESITE.get().defaultBlockState(),
-                Blocks.CAVE_AIR.defaultBlockState(),
+                Blocks.WATER.defaultBlockState(),
                 MiaNoiseRouterData.temptationForest(context.lookup(Registries.DENSITY_FUNCTION), context.lookup(Registries.NOISE)),
                 MiaSurfaceRuleData.temptationForest(),
                 List.of(),

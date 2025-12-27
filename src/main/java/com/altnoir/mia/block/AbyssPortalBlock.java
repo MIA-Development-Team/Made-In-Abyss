@@ -130,7 +130,7 @@ public class AbyssPortalBlock extends Block implements Portal {
         int targetX = (int) (Math.cos(angle) * radius);
         int targetZ = (int) (Math.sin(angle) * radius);
 
-        return new BlockPos(targetX, 320, targetZ);
+        return new BlockPos(targetX, 460, targetZ);
     }
 
     /**
@@ -141,7 +141,7 @@ public class AbyssPortalBlock extends Block implements Portal {
      * @return 适合站立的位置
      */
     private BlockPos findSuitablePosition(ServerLevel level, BlockPos centerPos) {
-        int endY = Math.max(250, level.getMinBuildHeight());
+        int endY = Math.max(380, level.getMinBuildHeight());
 
         // 扩大搜索范围
         for (int dxOffset = -8; dxOffset <= 8; dxOffset++) {
@@ -149,7 +149,7 @@ public class AbyssPortalBlock extends Block implements Portal {
                 BlockPos searchCenter = centerPos.offset(dxOffset * 2, 0, dzOffset * 2);
 
                 // 向下搜索合适的位置
-                for (int y = 350; y >= endY; y--) {
+                for (int y = 480; y >= endY; y--) {
                     BlockPos belowPos = new BlockPos(searchCenter.getX(), y, searchCenter.getZ());
                     BlockPos feetPos = belowPos.above(1);
                     BlockPos headPos = belowPos.above(2);

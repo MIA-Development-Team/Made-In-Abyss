@@ -3,7 +3,7 @@ package com.altnoir.mia.worldgen.dimension;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.worldgen.biome.MiaBiomes;
-import com.altnoir.mia.worldgen.biome.biomesource.AbyssNoiseBiomeSource;
+import com.altnoir.mia.worldgen.biomesource.AbyssNoiseBiomeSource;
 import com.altnoir.mia.worldgen.noise_setting.MiaNoiseGeneratorSettings;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;

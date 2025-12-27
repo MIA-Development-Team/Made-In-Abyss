@@ -111,7 +111,7 @@ public class AbyssEdgeUtils {
     }
 
     public static void addDripstone(BiomeGenerationSettings.Builder builder) {
-        builder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AbyssEdgePlacements.LARGE_DRIPSTONE);
+        builder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AbyssEdgePlacements.CAVE_PILLAR);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, CavePlacements.DRIPSTONE_CLUSTER);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, CavePlacements.POINTED_DRIPSTONE);
     }

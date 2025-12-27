@@ -1,9 +1,9 @@
 {
-  "type": "mia:abyss_large_dripstone",
+  "type": "mia:abyss_cave_pillar",
   "config": {
     "column_radius": {
       "type": "minecraft:uniform",
-      "max_inclusive": 18,
+      "max_inclusive": 15,
       "min_inclusive": 3
     },
     "floor_to_ceiling_search_range": 188,
@@ -17,7 +17,7 @@
     "min_radius_for_wind": 4,
     "stalactite_bluntness": {
       "type": "minecraft:uniform",
-      "max_exclusive": 0.9,
+      "max_exclusive": 0.6,
       "min_inclusive": 0.3
     },
     "stalagmite_bluntness": {

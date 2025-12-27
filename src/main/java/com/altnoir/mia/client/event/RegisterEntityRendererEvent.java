@@ -11,7 +11,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 @OnlyIn(Dist.CLIENT)
 public class RegisterEntityRendererEvent {
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(MiaBlockEntities.PEDESTAL.get(), PedestalBlockRenderer::new);
+        event.registerBlockEntityRenderer(MiaBlockEntities.PEDESTAL_ENTITY.get(), PedestalBlockRenderer::new);
         event.registerBlockEntityRenderer(MiaBlockEntities.ENDLESS_CUP_BLOCK_ENTITY.get(), EndlessCupBlockRenderer::new);
         event.registerBlockEntityRenderer(MiaBlockEntities.SUN_STONE_BLOCK_ENTITY.get(), SunStoneBlockRenderer::new);
     }
