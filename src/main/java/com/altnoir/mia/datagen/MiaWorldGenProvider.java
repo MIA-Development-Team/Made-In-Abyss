@@ -7,7 +7,7 @@ import com.altnoir.mia.worldgen.MiaPlacementUtils;
 import com.altnoir.mia.worldgen.biome.MiaBiomes;
 import com.altnoir.mia.worldgen.dimension.MiaDimensionTypes;
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;
-import com.altnoir.mia.worldgen.noise_setting.MiaDensityFunction;
+import com.altnoir.mia.worldgen.noise_setting.MiaDensityFunctions;
 import com.altnoir.mia.worldgen.noise_setting.MiaNoiseGeneratorSettings;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
@@ -25,7 +25,7 @@ public class MiaWorldGenProvider extends DatapackBuiltinEntriesProvider {
             .add(Registries.PLACED_FEATURE, MiaPlacementUtils::bootstrap)
             .add(Registries.BIOME, MiaBiomes::boostrap)
             .add(Registries.LEVEL_STEM, MiaDimensions::bootstrapStem)
-            .add(Registries.DENSITY_FUNCTION, MiaDensityFunction::bootstrap)
+            .add(Registries.DENSITY_FUNCTION, MiaDensityFunctions::bootstrap)
             .add(Registries.NOISE_SETTINGS, MiaNoiseGeneratorSettings::bootstrap)
             .add(Registries.PAINTING_VARIANT, MiaPaintingVariants::bootstrap);
 

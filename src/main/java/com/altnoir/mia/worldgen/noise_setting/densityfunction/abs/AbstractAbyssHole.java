@@ -7,11 +7,13 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 
 public abstract class AbstractAbyssHole implements DensityFunction.SimpleFunction {
     protected final float radius;
+    protected final float mul;
 
     protected abstract KeyDispatchDataCodec<? extends DensityFunction> getCodec();
 
-    public AbstractAbyssHole(float radius) {
+    public AbstractAbyssHole(float radius,float mul) {
         this.radius = radius;
+        this.mul = mul;
         RandomSource randomsource = new LegacyRandomSource(0L);
         randomsource.consumeCount(17292);
     }

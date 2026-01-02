@@ -2,7 +2,7 @@ package com.altnoir.mia.worldgen;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.util.MiaUtil;
-import com.altnoir.mia.worldgen.biome.abyss_edge.AbyssEdgePlacements;
+import com.altnoir.mia.worldgen.biome.the_abyss.TheAbyssPlacements;
 import com.altnoir.mia.worldgen.biome.tree.MiaTreePlacements;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -21,7 +21,7 @@ import java.util.List;
 public class MiaPlacementUtils {
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         MiaTreePlacements.bootstrap(context);
-        AbyssEdgePlacements.bootstrap(context);
+        TheAbyssPlacements.bootstrap(context);
     }
 
     public static ResourceKey<PlacedFeature> resourceKey(String name) {
@@ -33,7 +33,7 @@ public class MiaPlacementUtils {
     }
 
     public static ResourceKey<PlacedFeature> abyssEdgeKey(String name) {
-        return resourceKey("abyss_edge/" + name);
+        return resourceKey("the_abyss/" + name);
     }
 
     public static void register(

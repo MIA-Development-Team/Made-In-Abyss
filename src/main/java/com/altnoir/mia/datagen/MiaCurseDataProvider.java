@@ -17,7 +17,7 @@ public class MiaCurseDataProvider extends CurseDataProvider {
 
     @Override
     protected void addCurse() {
-        add(MiaDimensions.ABYSS_EDGE.location(),
+        add(MiaDimensions.THE_ABYSS_LEVEL.location(),
                 new CurseEffect[] {
                         new CurseEffect(MobEffects.HUNGER.getKey(), 0, 600),
                         new CurseEffect(MobEffects.MOVEMENT_SLOWDOWN.getKey(), 0, 200),

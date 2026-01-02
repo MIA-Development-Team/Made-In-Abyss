@@ -10,18 +10,19 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 public class GeneralAbyssHole extends AbstractAbyssHole {
     public static final KeyDispatchDataCodec<GeneralAbyssHole> CODEC = KeyDispatchDataCodec.of(
             RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    Codec.FLOAT.fieldOf("radius").forGetter(g -> g.radius)
+                    Codec.FLOAT.fieldOf("radius").forGetter(g -> g.radius),
+                    Codec.FLOAT.fieldOf("mul").forGetter(g -> g.mul)
             ).apply(instance, GeneralAbyssHole::new))
     );
 
-    public GeneralAbyssHole(float radius) {
-        super(radius);
+    public GeneralAbyssHole(float radius, float mul) {
+        super(radius, mul);
     }
 
-    private static float getHeightValue(int x, int z, float r) {
+    private static float getHeightValue(int x, int z, float r, float m) {
         float d = Mth.sqrt((float) (x * x + z * z));
         // 400 = √400 = 20区块.
-        float f = (HopperAbyssHole.getAbyssRadius() + r) - d * 8.0F; // 深渊半径
+        float f = (HopperAbyssHole.getAbyssRadius() * m + r) - d * 8.0F; // 深渊半径
         f = Mth.clamp(f, -100.0F, 80.0F);
 
         return f;
@@ -29,7 +30,7 @@ public class GeneralAbyssHole extends AbstractAbyssHole {
 
     @Override
     public double compute(DensityFunction.FunctionContext context) {
-        return (8.0 - (double) getHeightValue(context.blockX() / 8, context.blockZ() / 8, this.radius)) / 16;
+        return (8.0 - (double) getHeightValue(context.blockX() / 8, context.blockZ() / 8, this.radius, this.mul)) / 16;
     }
 
     @Override

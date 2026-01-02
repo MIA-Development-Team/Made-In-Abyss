@@ -32,11 +32,11 @@ public class MinecraftMixin {
         }
     }
 
+    // 禁用创造背景音乐
     @Unique
     private Set<ResourceKey<Level>> mia$getExcludedDimensions() {
         return Set.of(
-                MiaDimensions.ABYSS_EDGE_LEVEL,
-                MiaDimensions.TEMPTATION_FOREST_LEVEL
+                MiaDimensions.THE_ABYSS_LEVEL
         );
     }
 }

@@ -1,0 +1,12 @@
+{
+  "feature": "mia:the_abyss/trees_skyfog_and_azalea",
+  "placement": [
+    {
+      "type": "minecraft:count_on_every_layer",
+      "count": 8
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

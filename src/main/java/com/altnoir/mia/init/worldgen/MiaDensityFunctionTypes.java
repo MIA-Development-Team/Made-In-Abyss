@@ -18,12 +18,25 @@ public class MiaDensityFunctionTypes {
     public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<GeneralAbyssHole>> GENERAL_ABYSS_HOLE =
             DENSITY_FUNCTION_TYPE.register("general_abyss_hole", GeneralAbyssHole.CODEC::codec);
 
-    public static DensityFunction hopperAbyssHole(float radius) {
-        return new HopperAbyssHole(radius);
+    public static DensityFunction hopperAbyssHole() {
+        return hopperAbyssHole(0.0F);
     }
 
+    public static DensityFunction hopperAbyssHole(float radius) {
+        return hopperAbyssHole(radius, 1.0F);
+    }
+
+    public static DensityFunction hopperAbyssHole(float radius, float mul) {
+        return new HopperAbyssHole(radius, mul);
+    }
+
+
     public static DensityFunction generalAbyssHole(float radius) {
-        return new GeneralAbyssHole(radius);
+        return generalAbyssHole(radius, 1.0F);
+    }
+
+    public static DensityFunction generalAbyssHole(float radius, float mul) {
+        return new GeneralAbyssHole(radius, mul);
     }
 
     public static void register(IEventBus eventBus) {

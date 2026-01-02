@@ -1,0 +1,169 @@
+{
+  "type": "mia:the_abyss_type",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "mia:the_abyss",
+      "abyss_biome": "mia:the_abyss/the_abyss",
+      "biomes": [
+        {
+          "biome": "mia:the_abyss/skyfog_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 0.0,
+            "erosion": 0.0,
+            "humidity": [
+              -0.5,
+              0.5
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              0.3,
+              0.5
+            ]
+          }
+        },
+        {
+          "biome": "mia:the_abyss/skyfog_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              0.0,
+              0.8
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -0.5,
+              0.0
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              0.3,
+              0.5
+            ]
+          }
+        },
+        {
+          "biome": "mia:the_abyss/abyss_plains",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 0.0,
+            "erosion": 0.0,
+            "humidity": [
+              -1.0,
+              0.5
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": 0.0
+          }
+        },
+        {
+          "biome": "mia:the_abyss/abyss_plains",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              0.0,
+              0.8
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              0.0,
+              0.5
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": 0.0
+          }
+        },
+        {
+          "biome": "mia:the_abyss/skyfog_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 0.0,
+            "erosion": 0.0,
+            "humidity": [
+              -0.8,
+              0.2
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              -0.5,
+              -0.3
+            ]
+          }
+        },
+        {
+          "biome": "mia:the_abyss/skyfog_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 2.0,
+            "erosion": 0.0,
+            "humidity": 0.0,
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": 0.0
+          }
+        },
+        {
+          "biome": "mia:the_abyss/abyss_lush_caves",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              0.1,
+              0.6
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -0.5,
+              0.5
+            ],
+            "offset": 0.175,
+            "temperature": 0.8,
+            "weirdness": 0.0
+          }
+        },
+        {
+          "biome": "mia:the_abyss/abyss_dripstone_caves",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              0.6,
+              1.1
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -0.5,
+              0.0
+            ],
+            "offset": 0.25,
+            "temperature": 0.8,
+            "weirdness": 0.0
+          }
+        },
+        {
+          "biome": "mia:the_abyss/prasiolite_caves",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              1.1,
+              1.6
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -0.3,
+              0.5
+            ],
+            "offset": 0.375,
+            "temperature": 0.8,
+            "weirdness": 0.0
+          }
+        }
+      ]
+    },
+    "settings": "mia:the_abyss"
+  }
+}

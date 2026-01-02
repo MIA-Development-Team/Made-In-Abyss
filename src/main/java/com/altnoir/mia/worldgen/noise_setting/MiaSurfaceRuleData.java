@@ -12,20 +12,18 @@ import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
 
 public class MiaSurfaceRuleData extends SurfaceRuleData {
-    private static final SurfaceRules.RuleSource AIR = makeStateRule(Blocks.AIR);
     private static final SurfaceRules.RuleSource DEEPSLATE = makeStateRule(Blocks.DEEPSLATE);
+    private static final SurfaceRules.RuleSource ROOTED_DIRT = makeStateRule(Blocks.ROOTED_DIRT);
     private static final SurfaceRules.RuleSource BEDROCK = makeStateRule(Blocks.BEDROCK);
 
-    private static final SurfaceRules.RuleSource ABYSS_ANDESITE = makeStateRule(MiaBlocks.ABYSS_ANDESITE.get());
     private static final SurfaceRules.RuleSource COVERGRASS_ABYSS_ANDESITE = makeStateRule(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
     private static final SurfaceRules.RuleSource COVERGRASS_TUFF = makeStateRule(MiaBlocks.COVERGRASS_TUFF.get());
-    private static final SurfaceRules.RuleSource SAND = makeStateRule(Blocks.SAND);
 
     private static SurfaceRules.RuleSource makeStateRule(Block block) {
         return SurfaceRules.state(block.defaultBlockState());
     }
 
-    public static SurfaceRules.RuleSource abyssEdge() {
+    public static SurfaceRules.RuleSource theAbyss() {
         SurfaceRules.ConditionSource surfacerules$waterBlockCheck = SurfaceRules.waterBlockCheck(0, 0);
         SurfaceRules.RuleSource coverGrass_andesite = SurfaceRules.ifTrue(surfacerules$waterBlockCheck, COVERGRASS_ABYSS_ANDESITE);
         SurfaceRules.RuleSource coverGrass_tuff = SurfaceRules.ifTrue(surfacerules$waterBlockCheck, COVERGRASS_TUFF);
@@ -33,7 +31,7 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
         SurfaceRules.RuleSource sequence = SurfaceRules.sequence(
                 SurfaceRules.ifTrue(
                         SurfaceRules.isBiome(
-                                MiaBiomes.ABYSS_EDGE,
+                                MiaBiomes.THE_ABYSS,
                                 MiaBiomes.SKYFOG_FOREST,
                                 MiaBiomes.ABYSS_PLAINS,
                                 MiaBiomes.PRASIOLITE_CAVES,
@@ -61,7 +59,7 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
         ImmutableList.Builder<SurfaceRules.RuleSource> builder = ImmutableList.builder();
 
         builder.add(SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.verticalGradient("deepslate_roof", VerticalAnchor.belowTop(5), VerticalAnchor.top())), DEEPSLATE));
-        builder.add(SurfaceRules.ifTrue(SurfaceRules.verticalGradient("bedrock_floor", VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(5)), BEDROCK));
+        builder.add(SurfaceRules.ifTrue(SurfaceRules.verticalGradient("bedrock_floor", VerticalAnchor.aboveBottom(128), VerticalAnchor.aboveBottom(133)), ROOTED_DIRT));
 
         SurfaceRules.RuleSource ruleSource = SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(), sequence);
         builder.add(sequence); // 为ture时，表面覆盖物只会在最上层生成
@@ -69,44 +67,4 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
         return SurfaceRules.sequence(builder.build().toArray(SurfaceRules.RuleSource[]::new));
     }
 
-    public static SurfaceRules.RuleSource temptationForest() {
-        SurfaceRules.ConditionSource surfacerules$waterBlockCheck = SurfaceRules.waterBlockCheck(0, 0);
-        SurfaceRules.RuleSource coverGrass_andesite = SurfaceRules.ifTrue(surfacerules$waterBlockCheck, COVERGRASS_ABYSS_ANDESITE);
-        SurfaceRules.RuleSource coverGrass_tuff = SurfaceRules.ifTrue(surfacerules$waterBlockCheck, COVERGRASS_TUFF);
-
-        SurfaceRules.RuleSource sequence = SurfaceRules.sequence(
-                SurfaceRules.ifTrue(
-                        SurfaceRules.isBiome(
-                                MiaBiomes.ABYSS_EDGE,
-                                MiaBiomes.SKYFOG_FOREST,
-                                MiaBiomes.ABYSS_PLAINS,
-                                MiaBiomes.PRASIOLITE_CAVES,
-                                MiaBiomes.ABYSS_LUSH_CAVES,
-                                Biomes.CHERRY_GROVE
-                        ),
-                        SurfaceRules.sequence(
-                                SurfaceRules.ifTrue(
-                                        SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
-                                        coverGrass_andesite
-                                )
-                        )
-                ),
-                SurfaceRules.ifTrue(
-                        SurfaceRules.isBiome(MiaBiomes.ABYSS_DRIPSTONE_CAVES),
-                        SurfaceRules.sequence(
-                                SurfaceRules.ifTrue(
-                                        SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
-                                        coverGrass_tuff
-                                ),
-                                makeStateRule(Blocks.TUFF)
-                        )
-                )
-        );
-        ImmutableList.Builder<SurfaceRules.RuleSource> builder = ImmutableList.builder();
-
-        builder.add(SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.verticalGradient("deepslate_roof", VerticalAnchor.belowTop(5), VerticalAnchor.top())), BEDROCK));
-
-        builder.add(sequence);
-        return SurfaceRules.sequence(builder.build().toArray(SurfaceRules.RuleSource[]::new));
-    }
 }

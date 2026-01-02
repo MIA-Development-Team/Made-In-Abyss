@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:add",
-  "argument1": {
-    "type": "mia:abyss_hole",
-    "radius": 0.0
-  },
-  "argument2": "mia:base_3d_noise"
-}

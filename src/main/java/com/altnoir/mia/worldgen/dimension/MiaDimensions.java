@@ -24,19 +24,18 @@ import java.util.List;
 public class MiaDimensions {
     public static final ResourceKey<LevelStem> ABYSS_EDGE = ResourceKey.create(Registries.LEVEL_STEM,
             MiaUtil.id(MIA.MOD_ID, "abyss_edge"));
-    public static final ResourceKey<Level> ABYSS_EDGE_LEVEL = ResourceKey.create(Registries.DIMENSION,
-            MiaUtil.id(MIA.MOD_ID, "abyss_edge"));
-    public static final ResourceKey<LevelStem> TEMPTATION_FOREST = ResourceKey.create(Registries.LEVEL_STEM,
-            MiaUtil.id(MIA.MOD_ID, "temptation_forest"));
-    public static final ResourceKey<Level> TEMPTATION_FOREST_LEVEL = ResourceKey.create(Registries.DIMENSION,
-            MiaUtil.id(MIA.MOD_ID, "temptation_forest"));
+
+    public static final ResourceKey<LevelStem> THE_ABYSS = ResourceKey.create(Registries.LEVEL_STEM,
+            MiaUtil.id(MIA.MOD_ID, "the_abyss"));
+    public static final ResourceKey<Level> THE_ABYSS_LEVEL = ResourceKey.create(Registries.DIMENSION,
+            MiaUtil.id(MIA.MOD_ID, "the_abyss"));
 
     public static void bootstrapStem(BootstrapContext<LevelStem> context) {
         HolderGetter<Biome> biomeRegistry = context.lookup(Registries.BIOME);
         HolderGetter<DimensionType> dimensionTypes = context.lookup(Registries.DIMENSION_TYPE);
         HolderGetter<NoiseGeneratorSettings> noiseGenSettings = context.lookup(Registries.NOISE_SETTINGS);
 
-        NoiseBasedChunkGenerator abyss_edge = new NoiseBasedChunkGenerator(
+        NoiseBasedChunkGenerator the_abyss = new NoiseBasedChunkGenerator(
                 AbyssNoiseBiomeSource.createFromList(
                         new Climate.ParameterList<>(List.of(
                                 biomePair(
@@ -70,6 +69,12 @@ public class MiaDimensions {
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
                                 ),
                                 biomePair(
+                                        Climate.Parameter.point(0.0F),
+                                        Climate.Parameter.point(2.0F),
+                                        Climate.Parameter.point(0.0F),
+                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
+                                ),
+                                biomePair(
                                         Climate.Parameter.span(-0.5F, 0.5F),
                                         Climate.Parameter.span(0.1F, 0.6F),
                                         Climate.Parameter.point(0.0F),
@@ -88,30 +93,13 @@ public class MiaDimensions {
                                         0.375F, biomeRegistry.getOrThrow(MiaBiomes.PRASIOLITE_CAVES)
                                 )
                         )),
-                        biomeRegistry.getOrThrow(MiaBiomes.ABYSS_EDGE)
+                        biomeRegistry.getOrThrow(MiaBiomes.THE_ABYSS)
                 ),
-                noiseGenSettings.getOrThrow(MiaNoiseGeneratorSettings.ABYSS_EDGE)
+                noiseGenSettings.getOrThrow(MiaNoiseGeneratorSettings.THE_ABYSS)
         );
-        NoiseBasedChunkGenerator temptation_forest = new NoiseBasedChunkGenerator(
-                AbyssNoiseBiomeSource.createFromList(
-                        new Climate.ParameterList<>(List.of(
-                                biomePair(
-                                        Climate.Parameter.span(-0.5F, 0.5F),
-                                        Climate.Parameter.point(0.0F),
-                                        Climate.Parameter.span(0.3F, 0.5F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
-                                )
-                        )),
-                        biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
-                ),
-                noiseGenSettings.getOrThrow(MiaNoiseGeneratorSettings.TEMPTATION_FOREST)
-        );
+        LevelStem the_abyss_stem = new LevelStem(dimensionTypes.getOrThrow(MiaDimensionTypes.THE_ABYSS_TYPE), the_abyss);
 
-        LevelStem abyss_edge_stem = new LevelStem(dimensionTypes.getOrThrow(MiaDimensionTypes.ABYSS_EDGE_TYPE), abyss_edge);
-        LevelStem temptation_forest_stem = new LevelStem(dimensionTypes.getOrThrow(MiaDimensionTypes.TEMPTATION_FOREST_TYPE), temptation_forest);
-
-        context.register(ABYSS_EDGE, abyss_edge_stem);
-        context.register(TEMPTATION_FOREST, temptation_forest_stem);
+        context.register(THE_ABYSS, the_abyss_stem);
     }
 
     private static Pair<Climate.ParameterPoint, Holder<Biome>> biomePair(
