@@ -1,6 +1,7 @@
 package com.altnoir.mia.client.event;
 
 import com.altnoir.mia.MIA;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
@@ -76,14 +77,28 @@ public class CompassOverlayEvent {
                 dirX = -dirX;
                 dirY = -dirY;
             }
+            final float EPSILON = 1e-3f;
             var len = (float) Math.sqrt(dirX * dirX + dirY * dirY);
-            if (len > 0) {
+            if (len < EPSILON) {
+                dirX = 0f;
+                dirY = -1f;
+            } else {
                 dirX /= len;
                 dirY /= len;
             }
             var margin = ICON_SIZE / 2 + 10;
-            var maxX = (screenWidth / 2f - margin) / Math.abs(dirX + 0.001f);
-            var maxY = (screenHeight / 2f - margin) / Math.abs(dirY + 0.001f);
+            float maxX;
+            if (Math.abs(dirX) < EPSILON) {
+                maxX = Float.POSITIVE_INFINITY;
+            } else {
+                maxX = (screenWidth / 2f - margin) / Math.abs(dirX);
+            }
+            float maxY;
+            if (Math.abs(dirY) < EPSILON) {
+                maxY = Float.POSITIVE_INFINITY;
+            } else {
+                maxY = (screenHeight / 2f - margin) / Math.abs(dirY);
+            }
             var maxDist = Math.min(maxX, maxY);
             screenX = centerX + dirX * maxDist;
             screenY = centerY + dirY * maxDist;
@@ -96,11 +111,14 @@ public class CompassOverlayEvent {
         int iconX = x - ICON_SIZE / 2;
         int iconY = y - ICON_SIZE / 2;
         
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
         graphics.pose().pushPose();
         graphics.setColor(1f, 1f, 1f, alpha);
         graphics.blit(COMPASS_ICON, iconX, iconY, 0, 0, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE);
         graphics.setColor(1f, 1f, 1f, 1f);
         graphics.pose().popPose();
+        RenderSystem.disableBlend();
     }
 
     private static float[] projectToScreen(Vec3 worldPos, Vec3 cameraPos, float yaw, float pitch,
