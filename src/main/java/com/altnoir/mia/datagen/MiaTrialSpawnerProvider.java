@@ -5,7 +5,9 @@ import com.altnoir.mia.core.spawner.AbyssTrialSpawnerDataProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 
 import java.util.List;
@@ -88,6 +90,35 @@ public class MiaTrialSpawnerProvider extends AbyssTrialSpawnerDataProvider {
                 0,
                 1,
                 8
+            )
+        );
+        
+        add(
+            ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "example_equipped_zombie"),
+            createPattern(
+                List.of(
+                    entityBuilder(EntityType.ZOMBIE, 10)
+                        .mainHand(Items.DIAMOND_SWORD)
+                        .head(Items.IRON_HELMET)
+                        .chest(Items.IRON_CHESTPLATE)
+                        .permanentEffect(MobEffects.FIRE_RESISTANCE)
+                        .multiplyHealth(MIA.MOD_ID, 1.5)
+                        .build(),
+                    entityBuilder(EntityType.SKELETON, 5)
+                        .mainHand(Items.BOW)
+                        .head(Items.CHAINMAIL_HELMET)
+                        .effect(MobEffects.MOVEMENT_SPEED, -1, 1)
+                        .addDamage(MIA.MOD_ID, 2.0)
+                        .build()
+                ),
+                List.of(
+                    loot(BuiltInLootTables.TRIAL_CHAMBERS_REWARD_RARE, 10),
+                    loot(BuiltInLootTables.TRIAL_CHAMBERS_REWARD_UNIQUE, 3)
+                ),
+                2,
+                1,
+                1,
+                5
             )
         );
     }

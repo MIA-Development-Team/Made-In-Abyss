@@ -243,7 +243,8 @@ public class AbyssTrialSpawner {
             return false;
         }
         
-        var entityType = selectedEntity.get().getEntityType();
+        var entityInstance = selectedEntity.get();
+        var entityType = entityInstance.getEntityType();
         
         int range = pattern.spawnRange();
         for (int attempts = 0; attempts < 20; attempts++) {
@@ -258,6 +259,8 @@ public class AbyssTrialSpawner {
                 if (entity != null) {
                     if (entity instanceof Mob mob) {
                         mob.finalizeSpawn(level, level.getCurrentDifficultyAt(spawnPos), MobSpawnType.TRIAL_SPAWNER, null);
+                        
+                        applyEntityConfiguration(mob, entityInstance);
                     }
                     
                     level.addFreshEntity(entity);
@@ -278,6 +281,32 @@ public class AbyssTrialSpawner {
         }
         
         return false;
+    }
+    
+    private void applyEntityConfiguration(Mob mob, EntityTableInstance entityInstance) {
+        if (entityInstance.hasEquipment()) {
+            for (var entry : entityInstance.getEquipment().entrySet()) {
+                mob.setItemSlot(entry.getKey(), entry.getValue().copy());
+                mob.setDropChance(entry.getKey(), 0.0F);
+            }
+        }
+        
+        if (entityInstance.hasEffects()) {
+            for (var effect : entityInstance.getEffects()) {
+                mob.addEffect(new net.minecraft.world.effect.MobEffectInstance(effect));
+            }
+        }
+        
+        if (entityInstance.hasAttributeModifiers()) {
+            for (var entry : entityInstance.getAttributeModifiers().entrySet()) {
+                var attributeInstance = mob.getAttribute(entry.getKey());
+                if (attributeInstance != null) {
+                    attributeInstance.addPermanentModifier(entry.getValue());
+                }
+            }
+            // Ensure mob's health matches new max health after modifiers
+            mob.setHealth(mob.getMaxHealth());
+        }
     }
     
     private void collectRewardsForPlayer(ServerLevel level, BlockPos pos, Player player, AbyssTrialSpawnerPattern pattern) {
@@ -424,18 +453,6 @@ public class AbyssTrialSpawner {
     
     public double getOSpin() {
         return this.oSpin;
-    }
-    
-    @Nullable
-    public Entity getOrCreateDisplayEntity(Level level, BlockPos pos) {
-        if (this.displayEntity == null && hasValidPattern() && level instanceof ServerLevel serverLevel) {
-            var pattern = getPattern();
-            var selected = WeightedRandom.getRandomItem(this.random, pattern.entityTables().unwrap());
-            if (selected.isPresent()) {
-                this.displayEntity = selected.get().getEntityType().create(serverLevel, null, pos, MobSpawnType.TRIAL_SPAWNER, false, false);
-            }
-        }
-        return this.displayEntity;
     }
     
     public interface StateAccessor {
