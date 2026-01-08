@@ -1,0 +1,65 @@
+{
+  "base_mobs": 2,
+  "entity_tables": [
+    {
+      "attribute_modifiers": [
+        {
+          "amount": 0.5,
+          "attribute": "minecraft:generic.max_health",
+          "id": "mia:trial_spawner_health",
+          "operation": "add_multiplied_total"
+        }
+      ],
+      "effects": [
+        {
+          "amplifier": 0,
+          "duration": -1,
+          "effect": "minecraft:fire_resistance"
+        }
+      ],
+      "entity": "minecraft:zombie",
+      "equipment": {
+        "chest": "minecraft:iron_chestplate",
+        "head": "minecraft:iron_helmet",
+        "mainhand": "minecraft:diamond_sword"
+      },
+      "weight": 10
+    },
+    {
+      "attribute_modifiers": [
+        {
+          "amount": 2.0,
+          "attribute": "minecraft:generic.attack_damage",
+          "id": "mia:trial_spawner_damage",
+          "operation": "add_value"
+        }
+      ],
+      "effects": [
+        {
+          "amplifier": 1,
+          "duration": -1,
+          "effect": "minecraft:speed"
+        }
+      ],
+      "entity": "minecraft:skeleton",
+      "equipment": {
+        "head": "minecraft:chainmail_helmet",
+        "mainhand": "minecraft:bow"
+      },
+      "weight": 5
+    }
+  ],
+  "loot_tables": [
+    {
+      "loot_table": "minecraft:chests/trial_chambers/reward_rare",
+      "weight": 10
+    },
+    {
+      "loot_table": "minecraft:chests/trial_chambers/reward_unique",
+      "weight": 3
+    }
+  ],
+  "mobs_per_player": 1,
+  "spawn_per_tick": 1,
+  "spawn_range": 5
+}

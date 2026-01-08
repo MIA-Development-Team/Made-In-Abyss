@@ -5,6 +5,7 @@ import com.altnoir.mia.core.spawner.records.EntityTableInstance;
 import com.altnoir.mia.core.spawner.records.LootTableInstance;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -14,12 +15,22 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedRandomList;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class AbyssTrialSpawnerDataProvider implements DataProvider {
@@ -54,6 +65,107 @@ public abstract class AbyssTrialSpawnerDataProvider implements DataProvider {
 
     protected EntityTableInstance entity(EntityType<?> entityType, int weight) {
         return new EntityTableInstance(entityType, weight);
+    }
+
+    protected EntityTableBuilder entityBuilder(EntityType<?> entityType, int weight) {
+        return new EntityTableBuilder(entityType, weight);
+    }
+
+    public static class EntityTableBuilder {
+        private final EntityType<?> entityType;
+        private final int weight;
+        private final Map<EquipmentSlot, ItemStack> equipment = new HashMap<>();
+        private final List<MobEffectInstance> effects = new ArrayList<>();
+        private final Map<Holder<Attribute>, AttributeModifier> attributeModifiers = new HashMap<>();
+
+        public EntityTableBuilder(EntityType<?> entityType, int weight) {
+            this.entityType = entityType;
+            this.weight = weight;
+        }
+
+        public EntityTableBuilder equipment(EquipmentSlot slot, Item item) {
+            this.equipment.put(slot, new ItemStack(item));
+            return this;
+        }
+
+        public EntityTableBuilder equipment(EquipmentSlot slot, ItemStack stack) {
+            this.equipment.put(slot, stack);
+            return this;
+        }
+
+        public EntityTableBuilder mainHand(Item item) {
+            return equipment(EquipmentSlot.MAINHAND, item);
+        }
+
+        public EntityTableBuilder offHand(Item item) {
+            return equipment(EquipmentSlot.OFFHAND, item);
+        }
+
+        public EntityTableBuilder head(Item item) {
+            return equipment(EquipmentSlot.HEAD, item);
+        }
+
+        public EntityTableBuilder chest(Item item) {
+            return equipment(EquipmentSlot.CHEST, item);
+        }
+
+        public EntityTableBuilder legs(Item item) {
+            return equipment(EquipmentSlot.LEGS, item);
+        }
+
+        public EntityTableBuilder feet(Item item) {
+            return equipment(EquipmentSlot.FEET, item);
+        }
+
+        public EntityTableBuilder effect(Holder<MobEffect> effect, int duration, int amplifier) {
+            this.effects.add(new MobEffectInstance(effect, duration, amplifier));
+            return this;
+        }
+
+        public EntityTableBuilder effect(Holder<MobEffect> effect, int duration) {
+            return effect(effect, duration, 0);
+        }
+
+        public EntityTableBuilder permanentEffect(Holder<MobEffect> effect, int amplifier) {
+            return effect(effect, -1, amplifier);
+        }
+
+        public EntityTableBuilder permanentEffect(Holder<MobEffect> effect) {
+            return permanentEffect(effect, 0);
+        }
+
+        public EntityTableBuilder attribute(Holder<Attribute> attribute, ResourceLocation id, double amount, AttributeModifier.Operation operation) {
+            this.attributeModifiers.put(attribute, new AttributeModifier(id, amount, operation));
+            return this;
+        }
+
+        public EntityTableBuilder addHealth(String modId, double amount) {
+            return attribute(Attributes.MAX_HEALTH, ResourceLocation.fromNamespaceAndPath(modId, "trial_spawner_health"), amount, AttributeModifier.Operation.ADD_VALUE);
+        }
+
+        public EntityTableBuilder multiplyHealth(String modId, double multiplier) {
+            return attribute(Attributes.MAX_HEALTH, ResourceLocation.fromNamespaceAndPath(modId, "trial_spawner_health"), multiplier - 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        }
+
+        public EntityTableBuilder addDamage(String modId, double amount) {
+            return attribute(Attributes.ATTACK_DAMAGE, ResourceLocation.fromNamespaceAndPath(modId, "trial_spawner_damage"), amount, AttributeModifier.Operation.ADD_VALUE);
+        }
+
+        public EntityTableBuilder multiplyDamage(String modId, double multiplier) {
+            return attribute(Attributes.ATTACK_DAMAGE, ResourceLocation.fromNamespaceAndPath(modId, "trial_spawner_damage"), multiplier - 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        }
+
+        public EntityTableBuilder addSpeed(String modId, double amount) {
+            return attribute(Attributes.MOVEMENT_SPEED, ResourceLocation.fromNamespaceAndPath(modId, "trial_spawner_speed"), amount, AttributeModifier.Operation.ADD_VALUE);
+        }
+
+        public EntityTableBuilder multiplySpeed(String modId, double multiplier) {
+            return attribute(Attributes.MOVEMENT_SPEED, ResourceLocation.fromNamespaceAndPath(modId, "trial_spawner_speed"), multiplier - 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        }
+
+        public EntityTableInstance build() {
+            return new EntityTableInstance(entityType, weight, equipment, effects, attributeModifiers);
+        }
     }
 
     protected LootTableInstance loot(ResourceKey<LootTable> lootTableKey, int weight) {
@@ -111,6 +223,46 @@ public abstract class AbyssTrialSpawnerDataProvider implements DataProvider {
                         var entityId = BuiltInRegistries.ENTITY_TYPE.getKey(entityEntry.getEntityType());
                         entityJson.addProperty("entity", entityId.toString());
                         entityJson.addProperty("weight", entityEntry.getWeight().asInt());
+                        
+                        if (entityEntry.hasEquipment()) {
+                            var equipmentJson = new JsonObject();
+                            for (var equipEntry : entityEntry.getEquipment().entrySet()) {
+                                var itemId = BuiltInRegistries.ITEM.getKey(equipEntry.getValue().getItem());
+                                equipmentJson.addProperty(equipEntry.getKey().getName(), itemId.toString());
+                            }
+                            entityJson.add("equipment", equipmentJson);
+                        }
+                        
+                        if (entityEntry.hasEffects()) {
+                            var effectsArray = new JsonArray();
+                            for (var effect : entityEntry.getEffects()) {
+                                var effectJson = new JsonObject();
+                                var effectId = BuiltInRegistries.MOB_EFFECT.getKey(effect.getEffect().value());
+                                effectJson.addProperty("effect", effectId.toString());
+                                effectJson.addProperty("duration", effect.getDuration());
+                                effectJson.addProperty("amplifier", effect.getAmplifier());
+                                if (effect.isAmbient()) effectJson.addProperty("ambient", true);
+                                if (!effect.isVisible()) effectJson.addProperty("visible", false);
+                                if (!effect.showIcon()) effectJson.addProperty("show_icon", false);
+                                effectsArray.add(effectJson);
+                            }
+                            entityJson.add("effects", effectsArray);
+                        }
+                        
+                        if (entityEntry.hasAttributeModifiers()) {
+                            var modifiersArray = new JsonArray();
+                            for (var modEntry : entityEntry.getAttributeModifiers().entrySet()) {
+                                var modJson = new JsonObject();
+                                var attrId = BuiltInRegistries.ATTRIBUTE.getKey(modEntry.getKey().value());
+                                modJson.addProperty("attribute", attrId.toString());
+                                modJson.addProperty("id", modEntry.getValue().id().toString());
+                                modJson.addProperty("amount", modEntry.getValue().amount());
+                                modJson.addProperty("operation", modEntry.getValue().operation().name().toLowerCase());
+                                modifiersArray.add(modJson);
+                            }
+                            entityJson.add("attribute_modifiers", modifiersArray);
+                        }
+                        
                         entityTablesArray.add(entityJson);
                     }
                     root.add("entity_tables", entityTablesArray);
