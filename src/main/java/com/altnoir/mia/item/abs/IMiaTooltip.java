@@ -11,9 +11,8 @@ import java.util.List;
 
 public interface IMiaTooltip {
     default void appendTooltip(ItemStack stack, List<Component> tooltip) {
-        // 放最后面
-        ResourceLocation rl = BuiltInRegistries.ITEM.getKey(stack.getItem());
-        String description = String.format("tooltip.mia.description.%s", rl.getPath());
+        var rl = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        var description = String.format("tooltip.mia.description.%s", rl.getPath());
         if (I18n.exists(description)) {
             tooltip.add(1, Component.translatable(description).withColor(MiaColors.ABYSS_GREEN));
         }
