@@ -1,0 +1,18 @@
+"project_id_env": "CROWDIN_PROJECT_ID"
+"api_token_env": "CROWDIN_PERSONAL_TOKEN"
+"base_path": "."
+
+"preserve_hierarchy": true
+
+"files": [
+  {
+    "source": "src/generated/resources/assets/mia/lang/en_us.json",
+    "translation": "src/main/resources/assets/mia/lang/%locale_with_underscore%.json",
+    "languages_mapping": {
+      "locale_with_underscore": {
+        "zh-CN": "zh_cn",
+        "zh-TW": "zh_tw"
+      }
+    }
+  }
+]

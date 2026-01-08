@@ -40,7 +40,7 @@ public class PedestalBlockEntity extends BlockEntity implements WorldlyContainer
     };
 
     public PedestalBlockEntity(BlockPos pos, BlockState blockState) {
-        super(MiaBlockEntities.PEDESTAL.get(), pos, blockState);
+        super(MiaBlockEntities.PEDESTAL_ENTITY.get(), pos, blockState);
     }
 
     public boolean tryInsertItem(ItemStack stack, boolean simulate) {

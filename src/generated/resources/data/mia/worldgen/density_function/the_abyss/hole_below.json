@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "mia:general_abyss_hole",
+    "mul": 0.25,
+    "radius": 0.0
+  },
+  "argument2": "mia:base_3d_noise_the_abyss"
+}

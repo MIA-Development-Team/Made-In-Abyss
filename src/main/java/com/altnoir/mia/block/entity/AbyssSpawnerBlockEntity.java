@@ -1,7 +1,6 @@
 package com.altnoir.mia.block.entity;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.block.AbyssSpawnerBlock;
 import com.altnoir.mia.core.spawner.AbyssTrialSpawner;
 import com.altnoir.mia.core.spawner.records.AbyssTrialSpawnerPattern;
 import com.altnoir.mia.init.MiaBlockEntities;
@@ -25,7 +24,7 @@ public class AbyssSpawnerBlockEntity extends BlockEntity implements AbyssTrialSp
     private AbyssTrialSpawnerPattern cachedPattern;
 
     public AbyssSpawnerBlockEntity(BlockPos pos, BlockState state) {
-        super(MiaBlockEntities.ABYSS_SPAWNER.get(), pos, state);
+        super(MiaBlockEntities.ABYSS_SPAWNER_ENTITY.get(), pos, state);
         this.abyssSpawner = new AbyssTrialSpawner(this);
     }
 

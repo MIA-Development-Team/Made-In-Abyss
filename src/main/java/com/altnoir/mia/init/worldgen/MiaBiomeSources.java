@@ -1,7 +1,7 @@
 package com.altnoir.mia.init.worldgen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.worldgen.biome.biomesource.AbyssNoiseBiomeSource;
+import com.altnoir.mia.worldgen.biomesource.AbyssNoiseBiomeSource;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.biome.BiomeSource;

@@ -9,9 +9,9 @@ import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientDimEffects {
-    public static final ResourceLocation ABYSS_BRINK_EFFECTS = MiaUtil.miaId("abyss_brink");
+    public static final ResourceLocation ABYSS_EDGE_EFFECTS = MiaUtil.miaId("abyss_edge");
 
     public static void registerDimensionEffects(RegisterDimensionSpecialEffectsEvent event) {
-        event.register(ABYSS_BRINK_EFFECTS, new AbyssBrinkDimEffects());
+        event.register(ABYSS_EDGE_EFFECTS, new AbyssBrinkDimEffects());
     }
 }

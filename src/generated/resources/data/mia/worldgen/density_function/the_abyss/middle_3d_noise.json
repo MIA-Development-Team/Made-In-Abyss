@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:min",
+  "argument1": {
+    "type": "minecraft:range_choice",
+    "input": "minecraft:y",
+    "max_exclusive": 460.0,
+    "min_inclusive": -128.0,
+    "when_in_range": "mia:base_3d_noise_the_abyss",
+    "when_out_of_range": -1.0
+  },
+  "argument2": {
+    "type": "minecraft:mul",
+    "argument1": 5.0,
+    "argument2": "minecraft:overworld/caves/entrances"
+  }
+}

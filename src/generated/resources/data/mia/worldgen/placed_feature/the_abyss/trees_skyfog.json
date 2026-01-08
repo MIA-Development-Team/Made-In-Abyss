@@ -1,0 +1,16 @@
+{
+  "feature": "mia:the_abyss/trees_skyfog",
+  "placement": [
+    {
+      "type": "minecraft:count_on_every_layer",
+      "count": 1
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 3
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

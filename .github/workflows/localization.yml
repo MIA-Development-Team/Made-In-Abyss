@@ -12,8 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
         with:
           node-version: '20.x'
       - run: npm i --omit=dev
@@ -23,3 +21,30 @@ jobs:
           script: |
             const script = require('./.github/scripts/localization.js')
             await script({github, context})
+            
+  crowdin:
+    if: github.repository == 'MIA-Development-Team/Made-In-Abyss'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: crowdin action
+        uses: crowdin/github-action@v2
+        with:
+          upload_sources: true
+          upload_translations: false
+          download_translations: true
+          localization_branch_name: l10n/crowdin_translations
+          create_pull_request: true
+          pull_request_title: 'chore(l10n): new crowdin translations'
+          pull_request_body: 'New Crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)'
+          pull_request_base_branch_name: 'main'
+          config: .github/crowdin.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+      
