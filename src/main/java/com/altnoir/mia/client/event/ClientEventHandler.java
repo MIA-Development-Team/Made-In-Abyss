@@ -29,5 +29,6 @@ public class ClientEventHandler {
         gameEventBus.addListener(ClientTooltipEvent::onTooltip);
         gameEventBus.addListener(KeyArrowEvent::onClientTick);
         gameEventBus.addListener(KeyArrowEvent::onRenderGui);
+        gameEventBus.addListener(CompassOverlayEvent::onRenderGui);
     }
 }

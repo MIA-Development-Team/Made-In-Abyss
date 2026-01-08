@@ -1,6 +1,7 @@
 package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.network.CompassTargetPayload;
 import com.altnoir.mia.network.CurseCapabilityPayload;
 import com.altnoir.mia.network.SkillCooldownPayload;
 import com.altnoir.mia.network.SkillPlayPayload;
@@ -15,6 +16,11 @@ public class MiaNetworking {
                 CurseCapabilityPayload.TYPE,
                 CurseCapabilityPayload.CODEC,
                 CurseCapabilityPayload::handle
+        );
+        registrar.playToClient(
+                CompassTargetPayload.TYPE,
+                CompassTargetPayload.CODEC,
+                CompassTargetPayload::handle
         );
         registrar.playToServer(
                 SkillCooldownPayload.TYPE,

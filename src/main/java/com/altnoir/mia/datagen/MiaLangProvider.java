@@ -55,6 +55,8 @@ public class MiaLangProvider extends LanguageProvider {
         add(IEArtifact.TOOLTIP_ARTIFACT_LEVEL, "Echo: %s/%s");
         add(IEArtifact.TOOLTIP_ARTIFACT_MAX, "Echo: MAX");
         add(AbsArtifactBundle.TOOLTIP_ARTIFACT_BUNDLE_CAPACITY, "Artifact Capacity: %s");
+
+        add("tooltip.mia.description.abyss_compass", "It will point the way toward the abyss.");
         //Tooltip end
 
         // Painting Variant

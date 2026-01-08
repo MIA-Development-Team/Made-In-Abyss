@@ -123,6 +123,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.AMETHYST_LAMPTUBE);
                         output.accept(MiaBlocks.PEDESTAL);
                         output.accept(MiaBlocks.ARTIFACT_SMITHING_TABLE);
+                        output.accept(MiaItems.ABYSS_COMPASS);
                     })
                     .build());
 
