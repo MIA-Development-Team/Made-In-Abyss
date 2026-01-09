@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "compass=false": {
+      "model": "mia:block/abyss_portal_frame"
+    },
+    "compass=true": {
+      "model": "mia:block/abyss_portal_frame_open"
+    }
+  }
+}

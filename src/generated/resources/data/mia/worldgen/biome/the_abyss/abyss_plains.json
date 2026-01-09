@@ -19,7 +19,7 @@
       "max_delay": 24000,
       "min_delay": 12000,
       "replace_current_music": false,
-      "sound": "mia:music.abyss_edge.dim"
+      "sound": "mia:music.the_abyss.dim"
     },
     "sky_color": 8888490,
     "water_color": 6141935,

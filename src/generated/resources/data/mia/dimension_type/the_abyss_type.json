@@ -2,7 +2,7 @@
   "ambient_light": 0.12,
   "bed_works": true,
   "coordinate_scale": 1.0,
-  "effects": "mia:abyss_edge",
+  "effects": "mia:the_abyss",
   "fixed_time": 6000,
   "has_ceiling": false,
   "has_raids": true,

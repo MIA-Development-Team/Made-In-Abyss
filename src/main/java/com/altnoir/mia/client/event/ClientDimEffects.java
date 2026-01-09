@@ -1,6 +1,6 @@
 package com.altnoir.mia.client.event;
 
-import com.altnoir.mia.client.renderer.AbyssBrinkDimEffects;
+import com.altnoir.mia.client.renderer.TheAbyssDimEffects;
 import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
@@ -9,9 +9,9 @@ import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientDimEffects {
-    public static final ResourceLocation ABYSS_EDGE_EFFECTS = MiaUtil.miaId("abyss_edge");
+    public static final ResourceLocation THE_ABYSS_EFFECTS = MiaUtil.miaId("the_abyss");
 
     public static void registerDimensionEffects(RegisterDimensionSpecialEffectsEvent event) {
-        event.register(ABYSS_EDGE_EFFECTS, new AbyssBrinkDimEffects());
+        event.register(THE_ABYSS_EFFECTS, new TheAbyssDimEffects());
     }
 }

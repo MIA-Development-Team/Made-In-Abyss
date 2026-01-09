@@ -38,7 +38,7 @@ public class MiaSoundsProvider extends SoundDefinitionsProvider {
 
         // Biomes
         if (ABYSS_MUSIC) {
-            this.add(MiaSounds.MUSIC_ABYSS_EDGE_DIM.get(),
+            this.add(MiaSounds.MUSIC_THE_ABYSS_DIM.get(),
                     definition().replace(true)
                             .with(
                                     sound(MiaUtil.miaId("music/the_first_layer")).volume(0.4F).stream(),
@@ -46,7 +46,7 @@ public class MiaSoundsProvider extends SoundDefinitionsProvider {
                             )
             );
         } else {
-            this.add(MiaSounds.MUSIC_ABYSS_EDGE_DIM.get(), definition().with(defaultMusicSounds()));
+            this.add(MiaSounds.MUSIC_THE_ABYSS_DIM.get(), definition().with(defaultMusicSounds()));
         }
     }
 

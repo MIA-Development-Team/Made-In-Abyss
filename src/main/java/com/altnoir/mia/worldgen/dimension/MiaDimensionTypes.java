@@ -28,7 +28,7 @@ public class MiaDimensionTypes {
                         768, // 高度 (必须为16的倍数)
                         768, // 逻辑高度 (紫颂果的传送和游戏创建的传送门不会超过此高度)
                         BlockTags.INFINIBURN_OVERWORLD, // 火能在哪些方块上永久燃烧
-                        ClientDimEffects.ABYSS_EDGE_EFFECTS, // 天空效果
+                        ClientDimEffects.THE_ABYSS_EFFECTS, // 天空效果
                         0.12F, // 环境光
                         new DimensionType.MonsterSettings(false, true, UniformInt.of(0, 7), 0)
                 )

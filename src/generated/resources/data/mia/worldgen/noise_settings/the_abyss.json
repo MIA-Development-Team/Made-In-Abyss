@@ -15,7 +15,7 @@
     "height": 768,
     "min_y": -256,
     "size_horizontal": 2,
-    "size_vertical": 2
+    "size_vertical": 1
   },
   "noise_router": {
     "barrier": 1.0,
@@ -130,7 +130,27 @@
           }
         }
       },
-      "argument2": "mia:the_abyss/caves/noodle"
+      "argument2": {
+        "type": "minecraft:add",
+        "argument1": {
+          "type": "minecraft:y_clamped_gradient",
+          "from_value": -1.5,
+          "from_y": -16,
+          "to_value": 0.0,
+          "to_y": 16
+        },
+        "argument2": {
+          "type": "minecraft:add",
+          "argument1": {
+            "type": "minecraft:y_clamped_gradient",
+            "from_value": 1.5,
+            "from_y": 0,
+            "to_value": 0.0,
+            "to_y": 32
+          },
+          "argument2": "mia:the_abyss/caves/noodle"
+        }
+      }
     },
     "fluid_level_floodedness": {
       "type": "minecraft:range_choice",
@@ -147,7 +167,7 @@
         "type": "minecraft:range_choice",
         "input": "minecraft:y",
         "max_exclusive": 512.0,
-        "min_inclusive": 64.0,
+        "min_inclusive": 0.0,
         "when_in_range": {
           "type": "minecraft:noise",
           "noise": "minecraft:aquifer_fluid_level_floodedness",
@@ -172,7 +192,7 @@
         "type": "minecraft:range_choice",
         "input": "minecraft:y",
         "max_exclusive": 512.0,
-        "min_inclusive": 64.0,
+        "min_inclusive": 0.0,
         "when_in_range": {
           "type": "minecraft:noise",
           "noise": "minecraft:aquifer_fluid_level_spread",

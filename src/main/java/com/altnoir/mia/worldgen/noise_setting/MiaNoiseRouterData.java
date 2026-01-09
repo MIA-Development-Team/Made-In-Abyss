@@ -119,7 +119,9 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         DensityFunction idwj3 = DensityFunctions.add(idwj2, DensityFunctions.constant(-0.703125));
         DensityFunction idwj4 = slide(idwj3, -64, 448, 70, 0, -0.078125, 0, 24, 0.1171875);
 
-        DensityFunction finalDensity = DensityFunctions.min(theAbyssDensity(densityFunctions), getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_NOODLE));
+        DensityFunction noodle = DensityFunctions.add(DensityFunctions.yClampedGradient(-16, 16, -1.5, 0.0),
+                DensityFunctions.add(DensityFunctions.yClampedGradient(0, 32, 1.5, 0.0), getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_NOODLE)));
+        DensityFunction finalDensity = DensityFunctions.min(theAbyssDensity(densityFunctions), noodle);
 
         return new NoiseRouter(
                 DensityFunctions.constant(1.0), // barrier 影响含水层是否在流体与空气之间放置阻挡方块，值越大概率越大。
@@ -173,7 +175,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         return DensityFunctions.rangeChoice(
                 yFunction, -120, -64, noise,
                 DensityFunctions.rangeChoice(
-                        yFunction, 64, 512, noise, DensityFunctions.constant(1)
+                        yFunction, 0, 512, noise, DensityFunctions.constant(1)
                 )
         );
     }

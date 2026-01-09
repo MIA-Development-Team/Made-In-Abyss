@@ -44,8 +44,8 @@ public class TheAbyssPlacements {
     public static final ResourceKey<PlacedFeature> CAVE_PILLAR = theAbyssKey("cave_pillar");
     public static final ResourceKey<PlacedFeature> RAW_IRON = theAbyssKey("raw_iron");
 
-    private static final PlacementModifier ABYSS_BRINK_HEIGHT = HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(360));
-    private static final PlacementModifier ABYSS_BRINK_CAVE_HEIGHT = HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(200));
+    private static final PlacementModifier ABYSS_BRINK_HEIGHT = HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(128), VerticalAnchor.belowTop(8));
+    private static final PlacementModifier ABYSS_BRINK_CAVE_HEIGHT = HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(128), VerticalAnchor.belowTop(64));
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
@@ -75,21 +75,21 @@ public class TheAbyssPlacements {
                 context, MONSTER_CHEAT, monster_cheat,
                 RarityFilter.onAverageOnceEvery(3),
                 InSquarePlacement.spread(),
-                HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(280)),
+                ABYSS_BRINK_CAVE_HEIGHT,
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(
                 context, SLAB_RUINS, slab_ruins,
                 RarityFilter.onAverageOnceEvery(2),
                 InSquarePlacement.spread(),
-                HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(320)),
+                ABYSS_BRINK_CAVE_HEIGHT,
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(
                 context, SPRING_WATER, spring_water,
                 CountPlacement.of(10),
                 InSquarePlacement.spread(),
-                ABYSS_BRINK_CAVE_HEIGHT,
+                HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.top()),
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(
@@ -187,14 +187,14 @@ public class TheAbyssPlacements {
                 context, PRASIOLITE_CLUSTER, prasiolite_cluster,
                 CountPlacement.of(UniformInt.of(64, 128)),
                 InSquarePlacement.spread(),
-                HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(300)),
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(450)),
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(
                 context, BIG_PRASIOLITE_CLUSTER, big_prasiolite_cluster,
                 CountPlacement.of(UniformInt.of(2, 4)),
                 InSquarePlacement.spread(),
-                HeightRangePlacement.uniform(VerticalAnchor.absolute(96), VerticalAnchor.absolute(200)),
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(16), VerticalAnchor.absolute(400)),
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(

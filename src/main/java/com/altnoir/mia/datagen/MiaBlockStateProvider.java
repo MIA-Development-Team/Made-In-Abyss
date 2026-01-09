@@ -1,6 +1,7 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.block.AbyssPortalFrameBlock;
 import com.altnoir.mia.datagen.blockstate.MiaModelProvider;
 import com.altnoir.mia.datagen.blockstate.MiaStateProvider;
 import com.altnoir.mia.init.MiaBlocks;
@@ -26,6 +27,9 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+        // 模板模型
+        modelP.templateTSBModel(this);
+        modelP.templateHopperFarmland(this);
 
         // props
         ropeBlock();
@@ -34,6 +38,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         pedestalBlock();
         abyssSpawnerBlock();
         abyssPortalBlock();
+        abyssPortalFrameBlock();
 
         // artifact
         artifactSmithingTableBlock();
@@ -139,13 +144,19 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     private void coverGrassBlock(DeferredBlock<?> modelBlock, DeferredBlock<?> block) {
-        modelP.coverGrassBlockModel(this, modelBlock.get(), block.get());
+        models().withExistingParent(MiaUtil.getBlockPath(modelBlock.get()), modLoc("block/template/cube_tsb"))
+                .texture("top", this.modLoc("block/abyss_grass_block_top"))
+                .texture("side", this.modLoc("block/" + MiaUtil.getBlockPath(modelBlock.get()) + "_side"))
+                .texture("bottom", this.modLoc("block/" + MiaUtil.getBlockPath(block.get())));
         stateP.rotationYBlockState(this, modelBlock.get());
         blockItem(modelBlock);
     }
 
     private void coverGrassBlock(DeferredBlock<?> modelBlock, Block block) {
-        modelP.coverGrassBlockModel2(this, modelBlock.get(), block);
+        models().withExistingParent(MiaUtil.getBlockPath(modelBlock.get()), modLoc("block/template/cube_tsb"))
+                .texture("top", this.modLoc("block/abyss_grass_block_top"))
+                .texture("side", this.modLoc("block/" + MiaUtil.getBlockPath(modelBlock.get()) + "_side"))
+                .texture("bottom", this.mcLoc("block/" + MiaUtil.getBlockPath(block)));
         stateP.rotationYBlockState(this, modelBlock.get());
         blockItem(modelBlock);
     }
@@ -193,6 +204,19 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         crossItem(MiaBlocks.ABYSS_PORTAL);
     }
 
+    private void abyssPortalFrameBlock() {
+        ModelFile defaultModel = modelP.abyssPortalFrameModel(this, MiaBlocks.ABYSS_PORTAL_FRAME.get(), false);
+        ModelFile openModel = modelP.abyssPortalFrameModel(this, MiaBlocks.ABYSS_PORTAL_FRAME.get(), true);
+
+        getVariantBuilder(MiaBlocks.ABYSS_PORTAL_FRAME.get())
+                .partialState().with(AbyssPortalFrameBlock.COMPASS, false)
+                .modelForState().modelFile(defaultModel).addModel()
+                .partialState().with(AbyssPortalFrameBlock.COMPASS, true)
+                .modelForState().modelFile(openModel).addModel();
+
+        blockItem(MiaBlocks.ABYSS_PORTAL_FRAME);
+    }
+
     private void artifactSmithingTableBlock() {
         modelP.artifactSmithingTableBlockModel(this, MiaBlocks.ARTIFACT_SMITHING_TABLE.get(), MiaBlocks.CHISLED_ABYSS_ANDESITE.get());
         stateP.baseBlockState(this, MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
@@ -234,8 +258,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     protected void stairsBlockWithItem(DeferredBlock<?> block, DeferredBlock<?> texture) {
-        stairsBlock((StairBlock) block.get(), blockTexture(texture.get()), blockTexture(texture.get()),
-                blockTexture(texture.get()));
+        stairsBlock((StairBlock) block.get(), blockTexture(texture.get()), blockTexture(texture.get()), blockTexture(texture.get()));
         blockItem(block);
     }
 
@@ -244,8 +267,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     protected void slabBlockWithItem(DeferredBlock<?> block, ResourceLocation doubleslab, DeferredBlock<?> texture) {
-        slabBlock((SlabBlock) block.get(), doubleslab, blockTexture(texture.get()), blockTexture(texture.get()),
-                blockTexture(texture.get()));
+        slabBlock((SlabBlock) block.get(), doubleslab, blockTexture(texture.get()), blockTexture(texture.get()), blockTexture(texture.get()));
         blockItem(block);
     }
 

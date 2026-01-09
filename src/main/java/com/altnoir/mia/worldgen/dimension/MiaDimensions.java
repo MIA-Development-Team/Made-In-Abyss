@@ -69,7 +69,13 @@ public class MiaDimensions {
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
                                 ),
                                 biomePair(
+                                        Climate.Parameter.span(0.0F, 0.5F),
+                                        Climate.Parameter.point(2.0F),
                                         Climate.Parameter.point(0.0F),
+                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.ABYSS_PLAINS)
+                                ),
+                                biomePair(
+                                        Climate.Parameter.span(-0.5F, 0.5F),
                                         Climate.Parameter.point(2.0F),
                                         Climate.Parameter.point(0.0F),
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)

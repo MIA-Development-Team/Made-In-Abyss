@@ -1,0 +1,8 @@
+{
+  "parent": "mia:block/template/cube_tsb",
+  "textures": {
+    "bottom": "mia:block/abyss_portal_frame_bottom",
+    "side": "mia:block/abyss_portal_frame_side",
+    "top": "mia:block/abyss_portal_frame_top_open"
+  }
+}

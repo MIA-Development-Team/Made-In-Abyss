@@ -3,40 +3,12 @@ package com.altnoir.mia.datagen.blockstate;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 
 public class MiaModelProvider {
-    public void coverGrassBlockModel(BlockStateProvider p, Block block, Block bottom) {
-        baseTSBModel(p, MiaUtil.getBlockPath(block),
-                p.modLoc("block/abyss_grass_block_top"),
-                p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side"),
-                p.modLoc("block/" + MiaUtil.getBlockPath(bottom)),
-                p.modLoc("block/" + MiaUtil.getBlockPath(bottom))
-        );
-    }
-    public void coverGrassBlockModel2(BlockStateProvider p, Block block, Block bottom) {
-        baseTSBModel(p, MiaUtil.getBlockPath(block),
-                p.modLoc("block/abyss_grass_block_top"),
-                p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side"),
-                p.mcLoc("block/" + MiaUtil.getBlockPath(bottom)),
-                p.mcLoc("block/" + MiaUtil.getBlockPath(bottom))
-        );
-    }
-
-    public void baseTSBModel(BlockStateProvider p, String block, ResourceLocation top, ResourceLocation side, ResourceLocation bottom, ResourceLocation particle) {
-        p.models().withExistingParent(block, p.mcLoc("block/block"))
-                .texture("top", top).texture("side", side).texture("bottom", bottom).texture("particle", particle)
-                .element().from(0, 0, 0).to(16, 16, 16)
-                .allFaces((face, faceBuilder) -> faceBuilder
-                        .texture(face == Direction.UP ? "#top" : face == Direction.DOWN ? "#bottom" : "#side")
-                        .cullface(face)
-                        .uvs(0, 0, 16, 16));
-    }
-
     public void hopperFarmBlockModel(BlockStateProvider p, Block block) {
-        templateHopperFarmland(p);
         p.models().withExistingParent(MiaUtil.getBlockPath(block), p.modLoc("block/template/hopper_farmland"))
                 .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
                 .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(MiaBlocks.ABYSS_ANDESITE.get())))
@@ -46,18 +18,6 @@ public class MiaModelProvider {
                 .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_moist"))
                 .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(MiaBlocks.ABYSS_ANDESITE.get())))
                 .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"));
-    }
-
-    private void templateHopperFarmland(BlockStateProvider p) {
-        p.models().withExistingParent("block/template/hopper_farmland", p.mcLoc("block/block"))
-                .texture("particle", p.mcLoc("block/dirt"))
-                .element().from(0, 0, 0).to(16, 15, 16)
-                .face(Direction.DOWN).uvs(0, 0, 16, 16).texture("#bottom").cullface(Direction.DOWN).end()
-                .face(Direction.UP).uvs(0, 0, 16, 16).texture("#top").end()
-                .face(Direction.NORTH).uvs(0, 1, 16, 16).texture("#side").cullface(Direction.NORTH).end()
-                .face(Direction.SOUTH).uvs(0, 1, 16, 16).texture("#side").cullface(Direction.SOUTH).end()
-                .face(Direction.WEST).uvs(0, 1, 16, 16).texture("#side").cullface(Direction.WEST).end()
-                .face(Direction.EAST).uvs(0, 1, 16, 16).texture("#side").cullface(Direction.EAST).end();
     }
 
     public void ropeBlockModel(BlockStateProvider p, Block block) {
@@ -90,6 +50,16 @@ public class MiaModelProvider {
                 .element().from(0, 1, 0).to(16, 15, 16)
                 .face(Direction.UP).uvs(0, 0, 16, 16).texture("#portal1").end()
                 .face(Direction.DOWN).uvs(0, 0, 16, 16).texture("#portal2").end();
+    }
+
+    public ModelFile abyssPortalFrameModel(BlockStateProvider p, Block block, boolean isOpen) {
+        String suffix = isOpen ? "_open" : "";
+        String blockPath = MiaUtil.getBlockPath(block);
+
+        return p.models().withExistingParent(blockPath + suffix, p.modLoc("block/template/cube_tsb"))
+                .texture("top", p.modLoc("block/" + blockPath + "_top" + suffix))
+                .texture("side", p.modLoc("block/" + blockPath + "_side"))
+                .texture("bottom", p.modLoc("block/" + blockPath + "_bottom"));
     }
 
     public void artifactSmithingTableBlockModel(BlockStateProvider p, Block block, Block bottom) {
@@ -187,5 +157,28 @@ public class MiaModelProvider {
                 .texture("all", p.modLoc("block/" + MiaUtil.getBlockPath(block)));
         p.models().withExistingParent(MiaUtil.getBlockPath(block) + "_mirrored", p.mcLoc("block/cube_mirrored_all"))
                 .texture("all", p.modLoc("block/" + MiaUtil.getBlockPath(block)));
+    }
+
+    // Template models
+    public void templateTSBModel(BlockStateProvider p) {
+        p.models().withExistingParent("block/template/cube_tsb", p.mcLoc("block/block"))
+                .texture("particle", "#bottom")
+                .element().from(0, 0, 0).to(16, 16, 16)
+                .allFaces((face, faceBuilder) -> faceBuilder
+                        .texture(face == Direction.UP ? "#top" : face == Direction.DOWN ? "#bottom" : "#side")
+                        .cullface(face)
+                        .uvs(0, 0, 16, 16)).end();
+    }
+
+    public void templateHopperFarmland(BlockStateProvider p) {
+        p.models().withExistingParent("block/template/hopper_farmland", p.mcLoc("block/block"))
+                .texture("particle", p.mcLoc("block/dirt"))
+                .element().from(0, 0, 0).to(16, 15, 16)
+                .face(Direction.DOWN).uvs(0, 0, 16, 16).texture("#bottom").cullface(Direction.DOWN).end()
+                .face(Direction.UP).uvs(0, 0, 16, 16).texture("#top").end()
+                .face(Direction.NORTH).uvs(0, 1, 16, 16).texture("#side").cullface(Direction.NORTH).end()
+                .face(Direction.SOUTH).uvs(0, 1, 16, 16).texture("#side").cullface(Direction.SOUTH).end()
+                .face(Direction.WEST).uvs(0, 1, 16, 16).texture("#side").cullface(Direction.WEST).end()
+                .face(Direction.EAST).uvs(0, 1, 16, 16).texture("#side").cullface(Direction.EAST).end();
     }
 }

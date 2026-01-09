@@ -22,13 +22,12 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class AbyssPortalFrameBlock extends Block {
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty COMPASS = BooleanProperty.create("compass");
     ;
 
     public AbyssPortalFrameBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(COMPASS, Boolean.valueOf(false)));
+        this.registerDefaultState(this.stateDefinition.any().setValue(COMPASS, Boolean.valueOf(false)));
     }
 
     @Override
@@ -39,8 +38,7 @@ public class AbyssPortalFrameBlock extends Block {
                 level.levelEvent(1503, pos, 0);
 
                 ServerLevel serverLevel = level.getServer().getLevel(Level.OVERWORLD);
-                Direction facing = state.getValue(FACING).getOpposite();
-                BlockPos targetPos = pos.relative(facing, 2).below(5);
+                BlockPos targetPos = pos.below(5);
                 AbyssPortalFeature.createPortalStructure(serverLevel, targetPos, 5, 2, true);
 
                 level.globalLevelEvent(1038, targetPos, 0);
@@ -52,7 +50,7 @@ public class AbyssPortalFrameBlock extends Block {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(COMPASS, Boolean.valueOf(false));
+        return this.defaultBlockState().setValue(COMPASS, Boolean.valueOf(false));
     }
 
     @Override
@@ -66,17 +64,7 @@ public class AbyssPortalFrameBlock extends Block {
     }
 
     @Override
-    protected BlockState rotate(BlockState state, Rotation rotation) {
-        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
-    }
-
-    @Override
-    protected BlockState mirror(BlockState state, Mirror mirror) {
-        return state.rotate(mirror.getRotation(state.getValue(FACING)));
-    }
-
-    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, COMPASS);
+        builder.add(COMPASS);
     }
 }

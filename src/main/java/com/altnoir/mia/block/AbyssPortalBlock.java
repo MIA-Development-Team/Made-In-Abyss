@@ -120,7 +120,7 @@ public class AbyssPortalBlock extends Block implements Portal {
         double angle = Math.atan2(z, x);
 
         // 根据进入的坐标计算圆周上的坐标
-        int radius = MiaConfig.abyssRadius * 2;
+        int radius = MiaConfig.abyssRadius * 2 + 32;
         int targetX = (int) (Math.cos(angle) * radius);
         int targetZ = (int) (Math.sin(angle) * radius);
 

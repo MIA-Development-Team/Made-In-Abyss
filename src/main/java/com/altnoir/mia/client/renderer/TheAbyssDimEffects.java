@@ -9,19 +9,20 @@ import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
-public class AbyssBrinkDimEffects extends DimensionSpecialEffects {
+public class TheAbyssDimEffects extends DimensionSpecialEffects {
     public static final float SIZE = 2048.0F;
     public static final float HEIGHT = 1536.0F;
 
-    public AbyssBrinkDimEffects() {
+    public TheAbyssDimEffects() {
         super(40.0F, true, SkyType.NONE, false, false);
     }
 
     @Override
-    public Vec3 getBrightnessDependentFogColor(Vec3 fogColor, float brightness) {
+    public @NotNull Vec3 getBrightnessDependentFogColor(Vec3 fogColor, float brightness) {
         return fogColor.multiply(brightness * 0.94F + 0.06F, brightness * 0.94F + 0.06F, brightness * 0.91F + 0.09F);
     }
 
@@ -37,7 +38,7 @@ public class AbyssBrinkDimEffects extends DimensionSpecialEffects {
 
     @Override
     public boolean renderSky(ClientLevel level, int ticks, float partialTick, Matrix4f modelViewMatrix, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
-        ResourceLocation sunTexture = MiaUtil.miaId("textures/skybox/abyss_brink.png");
+        ResourceLocation sunTexture = MiaUtil.miaId("textures/skybox/the_abyss.png");
 
         var oldProjectionMatrix = RenderSystem.getProjectionMatrix();
         var projection = new Matrix4f(oldProjectionMatrix);

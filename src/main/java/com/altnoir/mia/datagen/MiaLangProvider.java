@@ -107,7 +107,7 @@ public class MiaLangProvider extends LanguageProvider {
         //Config end
 
         //Biome start
-        addBiome(MiaBiomes.THE_ABYSS, "Abyss Edge");
+        addBiome(MiaBiomes.THE_ABYSS, "The Abyss");
         addBiome(MiaBiomes.ABYSS_PLAINS, "Abyss Plains");
         addBiome(MiaBiomes.SKYFOG_FOREST, "Skyfog Forest");
         //Biome end

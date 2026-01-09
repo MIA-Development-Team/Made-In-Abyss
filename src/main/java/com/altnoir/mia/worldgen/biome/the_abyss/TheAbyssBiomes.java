@@ -29,7 +29,7 @@ public class TheAbyssBiomes {
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
-        return baseAbyssEdge(generationBuilder, spawnBuilder).build();
+        return baseTheAbyss(generationBuilder, spawnBuilder).build();
     }
 
     public static Biome skyfogForest(BootstrapContext<Biome> context) {
@@ -51,7 +51,7 @@ public class TheAbyssBiomes {
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
-        return baseAbyssEdge(generationBuilder, spawnBuilder).build();
+        return baseTheAbyss(generationBuilder, spawnBuilder).build();
     }
 
     public static Biome abyssPlains(BootstrapContext<Biome> context) {
@@ -71,7 +71,7 @@ public class TheAbyssBiomes {
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
-        return baseAbyssEdge(generationBuilder, spawnBuilder).build();
+        return baseTheAbyss(generationBuilder, spawnBuilder).build();
     }
 
     public static Biome prasioliteCaves(BootstrapContext<Biome> context) {
@@ -93,7 +93,7 @@ public class TheAbyssBiomes {
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
-        return baseAbyssEdge(generationBuilder, spawnBuilder).build();
+        return baseTheAbyss(generationBuilder, spawnBuilder).build();
     }
 
     public static Biome abyssLushCaves(BootstrapContext<Biome> context) {
@@ -112,7 +112,7 @@ public class TheAbyssBiomes {
         BiomeDefaultFeatures.addLushCavesVegetationFeatures(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
-        return baseAbyssEdge(generationBuilder, spawnBuilder).build();
+        return baseTheAbyss(generationBuilder, spawnBuilder).build();
     }
 
     public static Biome abyssDripstoneCaves(BootstrapContext<Biome> context) {
@@ -131,11 +131,11 @@ public class TheAbyssBiomes {
         TheAbyssUtils.addDripstone(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
-        return baseAbyssEdge(generationBuilder, spawnBuilder).build();
+        return baseTheAbyss(generationBuilder, spawnBuilder).build();
     }
 
 
-    public static Biome.BiomeBuilder baseAbyssEdge(BiomeGenerationSettings.Builder generationBuilder, MobSpawnSettings.Builder spawnBuilder) {
+    public static Biome.BiomeBuilder baseTheAbyss(BiomeGenerationSettings.Builder generationBuilder, MobSpawnSettings.Builder spawnBuilder) {
         return new Biome.BiomeBuilder().hasPrecipitation(true).downfall(0.8F).temperature(0.8F)
                 .generationSettings(generationBuilder.build())
                 .mobSpawnSettings(spawnBuilder.build())
@@ -148,7 +148,7 @@ public class TheAbyssBiomes {
                         .ambientLoopSound(SoundEvents.AMBIENT_BASALT_DELTAS_LOOP)
                         .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .ambientAdditionsSound(new AmbientAdditionsSettings(SoundEvents.AMBIENT_BASALT_DELTAS_ADDITIONS, 0.0111))
-                        .backgroundMusic(Musics.createGameMusic(MiaSounds.MUSIC_ABYSS_EDGE_DIM))
+                        .backgroundMusic(Musics.createGameMusic(MiaSounds.MUSIC_THE_ABYSS_DIM))
                         .build());
     }
 

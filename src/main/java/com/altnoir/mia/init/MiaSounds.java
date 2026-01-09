@@ -16,7 +16,7 @@ public class MiaSounds {
     public static final Supplier<SoundEvent> ABYSS_PORTAL_AMBIENT = registerSoundEvent("abyss_portal_ambient");
     public static final Supplier<SoundEvent> ABYSS_PORTAL_TRAVEL = registerSoundEvent("abyss_portal_travel");
 
-    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_ABYSS_EDGE_DIM = registerMusicEvent("music.abyss_edge.dim");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_THE_ABYSS_DIM = registerMusicEvent("music.the_abyss.dim");
 
     private static Supplier<SoundEvent> registerSoundEvent(String name) {
         return SOUND_EVENT.register(name, () -> SoundEvent.createVariableRangeEvent(MiaUtil.miaId(name)));
@@ -29,5 +29,4 @@ public class MiaSounds {
     public static void register(IEventBus bus) {
         SOUND_EVENT.register(bus);
     }
-
 }

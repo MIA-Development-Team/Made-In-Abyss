@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.NoiseSettings;
 import java.util.List;
 
 public class MiaNoiseGeneratorSettings {
-    private static final NoiseSettings THE_ABYSS_NOISE_SETTINGS = NoiseSettings.create(-256, 768, 2, 2);
+    private static final NoiseSettings THE_ABYSS_NOISE_SETTINGS = NoiseSettings.create(-256, 768, 2, 1);
 
     public static final ResourceKey<NoiseGeneratorSettings> THE_ABYSS = ResourceKey.create(
             Registries.NOISE_SETTINGS, MiaUtil.miaId("the_abyss")

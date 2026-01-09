@@ -1,6 +1,5 @@
 package com.altnoir.mia.block.abs;
 
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -55,9 +54,11 @@ public abstract class AbsTubeBlock extends DirectionalBlock implements SimpleWat
         var direction = context.getNearestLookingDirection().getOpposite();
         var fluidState = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
 
+        var player = context.getPlayer();
+        boolean isSneaking = player != null && player.isShiftKeyDown();
         var defaultState = this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluidState));
 
-        return Screen.hasShiftDown() ? defaultState.setValue(FACING, direction.getOpposite()) : defaultState.setValue(FACING, direction);
+        return isSneaking ? defaultState.setValue(FACING, direction.getOpposite()) : defaultState.setValue(FACING, direction);
     }
 
     @Override
