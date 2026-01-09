@@ -3,8 +3,10 @@ package com.altnoir.mia.client.event;
 import com.altnoir.mia.MIA;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -16,11 +18,11 @@ import javax.annotation.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class CompassOverlayEvent {
     private static final ResourceLocation COMPASS_ICON = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "textures/gui/sprites/world/compass_icon.png");
-    private static final int ICON_SIZE = 32;
+    private static final int ICON_SIZE = 16;
 
     @Nullable
     private static BlockPos targetPosition = null;
-    
+
     private static long lastTargetTime = 0;
     private static final long FADE_IN_DURATION = 800;
     private static final long DISPLAY_DURATION = 15000;
@@ -104,20 +106,38 @@ public class CompassOverlayEvent {
             screenY = centerY + dirY * maxDist;
         }
 
-        renderIcon(graphics, (int) screenX, (int) screenY, alpha);
+        // 距离计算
+        var playerPos = mc.player.blockPosition();
+        var distance = Math.sqrt(
+                Math.pow(targetPosition.getX() - playerPos.getX(), 2) +
+                        Math.pow(targetPosition.getY() - playerPos.getY(), 2) +
+                        Math.pow(targetPosition.getZ() - playerPos.getZ(), 2)
+        );
+
+        renderIcon(graphics, (int) screenX, (int) screenY, alpha, distance);
     }
 
-    private static void renderIcon(GuiGraphics graphics, int x, int y, float alpha) {
+    private static void renderIcon(GuiGraphics graphics, int x, int y, float alpha, double distance) {
         int iconX = x - ICON_SIZE / 2;
         int iconY = y - ICON_SIZE / 2;
-        
+
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         graphics.pose().pushPose();
         graphics.setColor(1f, 1f, 1f, alpha);
         graphics.blit(COMPASS_ICON, iconX, iconY, 0, 0, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE);
         graphics.setColor(1f, 1f, 1f, 1f);
+
+        // 距离文本
+        Font font = Minecraft.getInstance().font;
+        String distanceText = String.format("%.1f M", distance);
+        int textWidth = font.width(distanceText);
+        int textX = x - textWidth / 2;
+        int textY = y + ICON_SIZE / 2 + 5;
+
+        graphics.drawString(font, Component.literal(distanceText), textX, textY, 0xFFFFFF, true);
         graphics.pose().popPose();
+
         RenderSystem.disableBlend();
     }
 
@@ -130,7 +150,7 @@ public class CompassOverlayEvent {
         var x1 = relative.x * Math.cos(yawRad) + relative.z * Math.sin(yawRad);
         var z1 = -relative.x * Math.sin(yawRad) + relative.z * Math.cos(yawRad);
         var y1 = relative.y;
-        
+
         var y2 = y1 * Math.cos(pitchRad) + z1 * Math.sin(pitchRad);
         var z2 = -y1 * Math.sin(pitchRad) + z1 * Math.cos(pitchRad);
 
@@ -138,12 +158,12 @@ public class CompassOverlayEvent {
         var fov = mc.options.fov().get().floatValue();
         var tanHalfFov = Math.tan(Math.toRadians(fov / 2.0));
         var aspect = (double) screenWidth / screenHeight;
-        
+
         if (Math.abs(z2) < 0.01) z2 = 0.01;
-        
+
         var screenX = (-x1 / (z2 * tanHalfFov * aspect)) * (screenWidth / 2.0) + (screenWidth / 2.0);
         var screenY = (-y2 / (z2 * tanHalfFov)) * (screenHeight / 2.0) + (screenHeight / 2.0);
-        
+
         return new float[]{(float) screenX, (float) screenY, (float) z2};
     }
 }

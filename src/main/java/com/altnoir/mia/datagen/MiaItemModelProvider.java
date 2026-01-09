@@ -31,7 +31,7 @@ public class MiaItemModelProvider extends ItemModelProvider {
         basicItem(MiaItems.TEST_ARTIFACT_2.get());
         basicItem(MiaItems.TEST_ARTIFACT_3.get());
 
-        basicItem(MiaItems.ABYSS_COMPASS.get());
+        basicItem(MiaItems.STAR_COMPASS.get());
 
         skillItem(MiaItems.ARTIFACT_HASTE.get());
 

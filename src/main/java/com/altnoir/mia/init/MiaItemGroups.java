@@ -113,6 +113,7 @@ public class MiaItemGroups {
                         output.accept(MiaItems.MISTFUZZ_PEACH);
 
                         // tools
+                        output.accept(MiaItems.STAR_COMPASS);
                         output.accept(MiaItems.RED_WHISTLE);
                         output.accept(MiaItems.BLUE_WHISTLE);
                         output.accept(MiaItems.MOON_WHISTLE);
@@ -123,7 +124,6 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.AMETHYST_LAMPTUBE);
                         output.accept(MiaBlocks.PEDESTAL);
                         output.accept(MiaBlocks.ARTIFACT_SMITHING_TABLE);
-                        output.accept(MiaItems.ABYSS_COMPASS);
                     })
                     .build());
 

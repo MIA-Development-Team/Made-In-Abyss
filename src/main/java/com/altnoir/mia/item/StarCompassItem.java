@@ -22,11 +22,11 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
 
-public class AbyssCompassItem extends Item implements IMiaTooltip {
+public class StarCompassItem extends Item implements IMiaTooltip {
     private static final int SEARCH_RADIUS = 6400;
     private static final ResourceKey<Structure> TARGET_STRUCTURE = BuiltinStructures.DESERT_PYRAMID;
 
-    public AbyssCompassItem(Properties properties) {
+    public StarCompassItem(Properties properties) {
         super(properties);
     }
 

@@ -1,5 +1,6 @@
 package com.altnoir.mia.block;
 
+import com.altnoir.mia.init.MiaItems;
 import com.altnoir.mia.worldgen.feature.AbyssPortalFeature;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,7 +33,7 @@ public class AbyssPortalFrameBlock extends Block {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (stack.is(Items.RECOVERY_COMPASS) && !state.getValue(COMPASS)) {
+        if (stack.is(MiaItems.STAR_COMPASS.get()) && !state.getValue(COMPASS)) {
             if (!level.isClientSide()) {
                 level.setBlock(pos, state.setValue(COMPASS, Boolean.valueOf(true)), 3);
                 level.levelEvent(1503, pos, 0);

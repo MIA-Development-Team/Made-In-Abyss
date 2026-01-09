@@ -61,8 +61,8 @@ public class MiaItems {
     public static final DeferredItem<Item> ROPE = ITEMS.register("rope", () ->
             new RopeItem(MiaBlocks.ROPE.get(), new Item.Properties()));
 
-    public static final DeferredItem<Item> ABYSS_COMPASS = ITEMS.register("abyss_compass", () ->
-            new AbyssCompassItem(new Item.Properties()));
+    public static final DeferredItem<Item> STAR_COMPASS = ITEMS.register("star_compass", () ->
+            new StarCompassItem(new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

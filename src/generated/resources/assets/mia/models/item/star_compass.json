@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "mia:item/abyss_compass"
+    "layer0": "mia:item/star_compass"
   }
 }
