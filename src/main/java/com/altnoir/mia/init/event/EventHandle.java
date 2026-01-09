@@ -27,6 +27,7 @@ public class EventHandle {
         gameEventBus.addListener(CurseEvent::onPlayerTick);
 
         gameEventBus.addListener(BonemealUseEvent::onBonemealUse);
+        gameEventBus.addListener(KillCountEvent::onLivingDeath);
         gameEventBus.addListener(BrewingRecipesEvent::onBrewingRecipe);
     }
 }

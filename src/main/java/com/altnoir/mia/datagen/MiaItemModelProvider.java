@@ -35,6 +35,7 @@ public class MiaItemModelProvider extends ItemModelProvider {
 
         skillItem(MiaItems.ARTIFACT_HASTE.get());
 
+        handheldItem(MiaItems.GROW_SWORD.get());
         handheldItem(MiaItems.PRASIOLITE_PICKAXE.get());
         handheldItem(MiaItems.PRASIOLITE_HOE.get());
 

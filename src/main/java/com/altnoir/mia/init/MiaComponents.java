@@ -35,6 +35,12 @@ public class MiaComponents {
                     .persistent(Codec.INT)
                     .networkSynchronized(ByteBufCodecs.VAR_INT));
 
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> KILL_COUNT = register(
+            "kill_count",
+            builder -> builder
+                    .persistent(Codec.INT)
+                    .networkSynchronized(ByteBufCodecs.VAR_INT));
+
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(
             String name, UnaryOperator<DataComponentType.Builder<T>> builderOperator) {
         return DATA_COMPONENT_TYPES.register(name, () -> builderOperator.apply(DataComponentType.builder()).build());

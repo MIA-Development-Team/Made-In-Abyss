@@ -81,6 +81,8 @@ public class MiaItemTagProvider extends ItemTagsProvider {
                 .add(MiaBlocks.STRIPPED_SKYFOG_WOOD.get().asItem());
 
         // 工具TAG
+        tag(ItemTags.SWORDS)
+                .add(MiaItems.GROW_SWORD.get());
         tag(ItemTags.PICKAXES)
                 .add(MiaItems.PRASIOLITE_PICKAXE.get());
         tag(ItemTags.AXES)

@@ -6,6 +6,7 @@ import com.altnoir.mia.item.*;
 import com.altnoir.mia.item.abs.IArtifactItem.Grade;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SwordItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -41,6 +42,11 @@ public class MiaItems {
 
     public static final DeferredItem<Item> PRASIOLITE_SHARD = ITEMS.register("prasiolite_shard", () ->
             new Item(new Item.Properties()));
+    public static final DeferredItem<Item> GROW_SWORD = ITEMS.register("grow_sword", () ->
+            new GrowSwordItem(
+                    MiaTiers.PRASIOLITE, new Item.Properties()
+                    .attributes(SwordItem.createAttributes(MiaTiers.PRASIOLITE, 0.0F, -2.4F))
+            ));
     public static final DeferredItem<Item> PRASIOLITE_PICKAXE = ITEMS.register("prasiolite_pickaxe", () ->
             new CompositeItem(
                     MiaTiers.PRASIOLITE, new Item.Properties()

@@ -81,6 +81,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.LARGE_PRASIOLITE_BUD);
                         output.accept(MiaBlocks.PRASIOLITE_CLUSTER);
                         output.accept(MiaItems.PRASIOLITE_SHARD);
+                        output.accept(MiaItems.GROW_SWORD);
                         output.accept(MiaItems.PRASIOLITE_PICKAXE);
                         output.accept(MiaItems.PRASIOLITE_HOE);
 
