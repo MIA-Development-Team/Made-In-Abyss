@@ -12,6 +12,7 @@ import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
 public class TheAbyssBiomes {
+    // Layer 1
     public static Biome theAbyss(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
         spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CAT, 10, 4, 4));
@@ -134,6 +135,28 @@ public class TheAbyssBiomes {
         return baseTheAbyss(generationBuilder, spawnBuilder).build();
     }
 
+    // Layer 2
+    public static Biome temptationForest(BootstrapContext<Biome> context) {
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        spawnBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SLIME, 10, 4, 4));
+
+        TheAbyssUtils.farmAnimals(spawnBuilder);
+        TheAbyssUtils.commonSpawns(spawnBuilder);
+
+        BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
+
+        TheAbyssUtils.globalAbyssGeneration(generationBuilder);
+        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.RAW_IRON);
+
+        TheAbyssUtils.addMeadowVegetation(generationBuilder);
+        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_SKYFOG_AND_AZALEA)
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_LARGE_FERN)
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
+        BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
+        BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
+
+        return baseTheAbyss(generationBuilder, spawnBuilder).build();
+    }
 
     public static Biome.BiomeBuilder baseTheAbyss(BiomeGenerationSettings.Builder generationBuilder, MobSpawnSettings.Builder spawnBuilder) {
         return new Biome.BiomeBuilder().hasPrecipitation(true).downfall(0.8F).temperature(0.8F)

@@ -151,8 +151,7 @@ public class AmethystTubeBlock extends AbsCrystalTubeBlock {
     }
 
     private Optional<RecipeHolder<LampTubeRecipe>> getCurrentRecipe(Level level, ItemStack stack) {
-        return level.getRecipeManager()
-                .getRecipeFor(MiaRecipes.LAMP_TUBE_TYPE.get(), new LampTubeRecipeInput(stack), level);
+        return level.getRecipeManager().getRecipeFor(MiaRecipes.LAMP_TUBE_TYPE.get(), new LampTubeRecipeInput(stack), level);
     }
 
     private void recipeShrinkEffect(Container container, Level level, ItemStack stack, BlockPos targetPos, BlockPos pos, BlockState state, int count) {

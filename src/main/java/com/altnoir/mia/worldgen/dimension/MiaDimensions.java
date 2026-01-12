@@ -38,29 +38,12 @@ public class MiaDimensions {
         NoiseBasedChunkGenerator the_abyss = new NoiseBasedChunkGenerator(
                 AbyssNoiseBiomeSource.createFromList(
                         new Climate.ParameterList<>(List.of(
+                                // 地表
                                 biomePair(
                                         Climate.Parameter.span(-0.5F, 0.5F),
                                         Climate.Parameter.point(0.0F),
                                         Climate.Parameter.span(0.3F, 0.5F),
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-0.5F, 0.0F),
-                                        Climate.Parameter.span(0.0F, 0.8F),
-                                        Climate.Parameter.span(0.3F, 0.5F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-1.0F, 0.5F),
-                                        Climate.Parameter.point(0.0F),
-                                        Climate.Parameter.point(0.0F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.ABYSS_PLAINS)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(0.0F, 0.5F),
-                                        Climate.Parameter.span(0.0F, 0.8F),
-                                        Climate.Parameter.point(0.0F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.ABYSS_PLAINS)
                                 ),
                                 biomePair(
                                         Climate.Parameter.span(-0.8F, 0.2F),
@@ -69,42 +52,56 @@ public class MiaDimensions {
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
                                 ),
                                 biomePair(
+                                        Climate.Parameter.span(-1.0F, 0.5F),
+                                        Climate.Parameter.point(0.0F),
+                                        Climate.Parameter.point(0.0F),
+                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.ABYSS_PLAINS)
+                                ),
+                                // 第一层洞穴
+                                biomePair(
+                                        Climate.Parameter.span(-0.5F, 0.0F),
+                                        Climate.Parameter.span(0.0F, 0.8F),
+                                        Climate.Parameter.span(0.3F, 0.5F),
+                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
+                                ),
+                                biomePair(
                                         Climate.Parameter.span(0.0F, 0.5F),
-                                        Climate.Parameter.point(2.0F),
+                                        Climate.Parameter.span(0.0F, 0.8F),
                                         Climate.Parameter.point(0.0F),
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.ABYSS_PLAINS)
                                 ),
                                 biomePair(
                                         Climate.Parameter.span(-0.5F, 0.5F),
-                                        Climate.Parameter.point(2.0F),
-                                        Climate.Parameter.point(0.0F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-0.5F, 0.5F),
-                                        Climate.Parameter.span(0.1F, 0.6F),
+                                        Climate.Parameter.span(0.1F, 0.4F),
                                         Climate.Parameter.point(0.0F),
                                         0.175F, biomeRegistry.getOrThrow(MiaBiomes.ABYSS_LUSH_CAVES)
                                 ),
                                 biomePair(
                                         Climate.Parameter.span(-0.5F, 0.0F),
-                                        Climate.Parameter.span(0.6F, 1.1F),
+                                        Climate.Parameter.span(0.4F, 0.7F),
                                         Climate.Parameter.point(0.0F),
                                         0.25F, biomeRegistry.getOrThrow(MiaBiomes.ABYSS_DRIPSTONE_CAVES)
                                 ),
                                 biomePair(
                                         Climate.Parameter.span(-0.3F, 0.5F),
-                                        Climate.Parameter.span(1.1F, 1.6F),
+                                        Climate.Parameter.span(0.7F, 1.0F),
                                         Climate.Parameter.point(0.0F),
                                         0.375F, biomeRegistry.getOrThrow(MiaBiomes.PRASIOLITE_CAVES)
+                                ),
+                                // 第二层洞穴
+                                biomePair(
+                                        Climate.Parameter.span(-0.5F, 0.5F),
+                                        Climate.Parameter.point(2.0F),
+                                        Climate.Parameter.point(0.0F),
+                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.TEMPTATION_FOREST)
                                 )
                         )),
                         biomeRegistry.getOrThrow(MiaBiomes.THE_ABYSS)
                 ),
                 noiseGenSettings.getOrThrow(MiaNoiseGeneratorSettings.THE_ABYSS)
         );
-        LevelStem the_abyss_stem = new LevelStem(dimensionTypes.getOrThrow(MiaDimensionTypes.THE_ABYSS_TYPE), the_abyss);
 
+        LevelStem the_abyss_stem = new LevelStem(dimensionTypes.getOrThrow(MiaDimensionTypes.THE_ABYSS_TYPE), the_abyss);
         context.register(THE_ABYSS, the_abyss_stem);
     }
 

@@ -78,7 +78,7 @@ public class MiaDensityFunctions {
                 -1000000, 0.03, DensityFunctions.constant(-1000000),
                 getFunction(holdergetter1, THE_ABYSS_PILLARS)
         ));
-        DensityFunction the_abyss_depth = DensityFunctions.add(DensityFunctions.yClampedGradient(0, 512, 2.5, -1.5), getFunction(holdergetter1, MiaNoiseRouterData.OFFSET));
+        DensityFunction the_abyss_depth = DensityFunctions.add(DensityFunctions.yClampedGradient(5, 1200, 1.5, -2.5), getFunction(holdergetter1, MiaNoiseRouterData.OFFSET));
         context.register(THE_ABYSS_DEPTH, DensityFunctions.rangeChoice(yFunction, -256, 5, DensityFunctions.constant(2.0), the_abyss_depth));
 
         context.register(THE_ABYSS_HOLE_ABOVE, DensityFunctions.add(MiaDensityFunctionTypes.hopperAbyssHole(), getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));

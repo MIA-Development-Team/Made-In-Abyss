@@ -32,8 +32,7 @@ public class ArtifactSmithingTableBlock extends CraftingTableBlock {
     @Override
     protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
         return new SimpleMenuProvider((containerId, playerInventory, player) ->
-                new ArtifactSmithingTableMenu(containerId, playerInventory,
-                        ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
+                new ArtifactSmithingTableMenu(containerId, playerInventory, ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
     }
 
     @Override

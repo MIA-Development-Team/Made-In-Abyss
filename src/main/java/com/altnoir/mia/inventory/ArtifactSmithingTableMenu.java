@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
-
     private static final int ARTIFACT_SLOT_INDEX = 0;
     private static final int MATERIAL_SLOT_INDEX = 1;
     private static final int RESULT_SLOT_INDEX = 2;
@@ -40,7 +39,6 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
 
     private final Level level;
     private final Player player;
-    private final Inventory inventory;
     protected final ContainerLevelAccess access;
 
     private final DataSlot selectedRecipeIndex;
@@ -60,7 +58,6 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
         this.access = access;
         this.player = playerInventory.player;
         this.level = playerInventory.player.level();
-        this.inventory = playerInventory;
         this.inventoryTimesChanged = playerInventory.getTimesChanged();
         this.availableRecipes = new ArrayList<>();
         this.unavailableRecipes = new ArrayList<>();
@@ -424,5 +421,4 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
             this.clearContainer(player, this.materialContainer);
         });
     }
-
 }

@@ -4,7 +4,6 @@ import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.worldgen.biome.MiaBiomes;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.data.worldgen.SurfaceRuleData;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.SurfaceRules;
@@ -15,9 +14,11 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
     private static final SurfaceRules.RuleSource DEEPSLATE = makeStateRule(Blocks.DEEPSLATE);
     private static final SurfaceRules.RuleSource ROOTED_DIRT = makeStateRule(Blocks.ROOTED_DIRT);
     private static final SurfaceRules.RuleSource BEDROCK = makeStateRule(Blocks.BEDROCK);
-
+    // Layer 1
     private static final SurfaceRules.RuleSource COVERGRASS_ABYSS_ANDESITE = makeStateRule(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
     private static final SurfaceRules.RuleSource COVERGRASS_TUFF = makeStateRule(MiaBlocks.COVERGRASS_TUFF.get());
+    // Layer 2
+    private static final SurfaceRules.RuleSource MUD = makeStateRule(Blocks.MUD);
 
     private static SurfaceRules.RuleSource makeStateRule(Block block) {
         return SurfaceRules.state(block.defaultBlockState());
@@ -25,18 +26,21 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
 
     public static SurfaceRules.RuleSource theAbyss() {
         SurfaceRules.ConditionSource surfacerules$waterBlockCheck = SurfaceRules.waterBlockCheck(0, 0);
+        // Layer 1
         SurfaceRules.RuleSource coverGrass_andesite = SurfaceRules.ifTrue(surfacerules$waterBlockCheck, COVERGRASS_ABYSS_ANDESITE);
         SurfaceRules.RuleSource coverGrass_tuff = SurfaceRules.ifTrue(surfacerules$waterBlockCheck, COVERGRASS_TUFF);
+        // Layer 2
+        SurfaceRules.RuleSource mud = SurfaceRules.ifTrue(surfacerules$waterBlockCheck, MUD);
 
         SurfaceRules.RuleSource sequence = SurfaceRules.sequence(
+                // Layer 1
                 SurfaceRules.ifTrue(
                         SurfaceRules.isBiome(
                                 MiaBiomes.THE_ABYSS,
                                 MiaBiomes.SKYFOG_FOREST,
                                 MiaBiomes.ABYSS_PLAINS,
                                 MiaBiomes.PRASIOLITE_CAVES,
-                                MiaBiomes.ABYSS_LUSH_CAVES,
-                                Biomes.CHERRY_GROVE
+                                MiaBiomes.ABYSS_LUSH_CAVES
                         ),
                         SurfaceRules.sequence(
                                 SurfaceRules.ifTrue(
@@ -53,6 +57,18 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
                                         coverGrass_tuff
                                 ),
                                 makeStateRule(Blocks.TUFF)
+                        )
+                ),
+                // Layer 2
+                SurfaceRules.ifTrue(
+                        SurfaceRules.isBiome(
+                                MiaBiomes.TEMPTATION_FOREST
+                        ),
+                        SurfaceRules.sequence(
+                                SurfaceRules.ifTrue(
+                                        SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
+                                        mud
+                                )
                         )
                 )
         );

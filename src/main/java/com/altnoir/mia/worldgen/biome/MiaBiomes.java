@@ -8,20 +8,26 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 
 public class MiaBiomes {
+    // Layer 1
     public static final ResourceKey<Biome> THE_ABYSS = abyssEdgeKey("the_abyss");
     public static final ResourceKey<Biome> SKYFOG_FOREST = abyssEdgeKey("skyfog_forest");
     public static final ResourceKey<Biome> ABYSS_PLAINS = abyssEdgeKey("abyss_plains");
     public static final ResourceKey<Biome> PRASIOLITE_CAVES = abyssEdgeKey("prasiolite_caves");
     public static final ResourceKey<Biome> ABYSS_LUSH_CAVES = abyssEdgeKey("abyss_lush_caves");
     public static final ResourceKey<Biome> ABYSS_DRIPSTONE_CAVES = abyssEdgeKey("abyss_dripstone_caves");
+    // Layer 2
+    public static final ResourceKey<Biome> TEMPTATION_FOREST = abyssEdgeKey("temptation_forest");
 
     public static void boostrap(BootstrapContext<Biome> context) {
+        // Layer 1
         context.register(THE_ABYSS, TheAbyssBiomes.theAbyss(context));
         context.register(SKYFOG_FOREST, TheAbyssBiomes.skyfogForest(context));
         context.register(ABYSS_PLAINS, TheAbyssBiomes.abyssPlains(context));
         context.register(PRASIOLITE_CAVES, TheAbyssBiomes.prasioliteCaves(context));
         context.register(ABYSS_LUSH_CAVES, TheAbyssBiomes.abyssLushCaves(context));
         context.register(ABYSS_DRIPSTONE_CAVES, TheAbyssBiomes.abyssDripstoneCaves(context));
+        // Layer 2
+        context.register(TEMPTATION_FOREST, TheAbyssBiomes.temptationForest(context));
     }
 
     private static ResourceKey<Biome> register(String path) {
