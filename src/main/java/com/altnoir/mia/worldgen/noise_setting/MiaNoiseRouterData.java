@@ -1,6 +1,7 @@
 package com.altnoir.mia.worldgen.noise_setting;
 
 import com.altnoir.mia.init.worldgen.MiaDensityFunctionTypes;
+import com.altnoir.mia.worldgen.MiaHeight;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -88,7 +89,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 abyssHole, -1000000.0, 0.025, rangeChoice1, layer
         );
 
-        DensityFunction ycg1 = DensityFunctions.yClampedGradient(460, 512, 1, 1);
+        DensityFunction ycg1 = DensityFunctions.yClampedGradient(MiaHeight.THE_ABYSS.maxY() - 64, MiaHeight.THE_ABYSS.maxY(), 1, 1);
         DensityFunction add1 = DensityFunctions.add(DensityFunctions.constant(1.025), rangeChoice);
 
         DensityFunction mul1 = DensityFunctions.mul(ycg1, add1);
@@ -117,7 +118,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         DensityFunction idwj1 = DensityFunctions.rangeChoice(yFunction, -128, 0, MiaDensityFunctionTypes.generalAbyssHole(0.0F, 0.25F), MiaDensityFunctionTypes.hopperAbyssHole());
         DensityFunction idwj2 = noiseGradientDensity(DensityFunctions.cache2d(idwj0), idwj1);
         DensityFunction idwj3 = DensityFunctions.add(idwj2, DensityFunctions.constant(-0.703125));
-        DensityFunction idwj4 = slide(idwj3, -64, 448, 70, 0, -0.078125, 0, 24, 0.1171875);
+        DensityFunction idwj4 = slide(idwj3, -64, 300, 70, 0, -0.078125, 0, 24, 0.1171875);
 
         DensityFunction noodle = DensityFunctions.add(DensityFunctions.yClampedGradient(-16, 16, -1.5, 0.0),
                 DensityFunctions.add(DensityFunctions.yClampedGradient(0, 32, 1.5, 0.0), getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_NOODLE)));

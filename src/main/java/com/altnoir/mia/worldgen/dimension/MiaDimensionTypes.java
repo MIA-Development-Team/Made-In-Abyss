@@ -2,6 +2,7 @@ package com.altnoir.mia.worldgen.dimension;
 
 import com.altnoir.mia.client.event.ClientDimEffects;
 import com.altnoir.mia.util.MiaUtil;
+import com.altnoir.mia.worldgen.MiaHeight;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -24,9 +25,9 @@ public class MiaDimensionTypes {
                         1.0, // 坐标缩放值
                         true, // 床是否可用
                         false, // 重生锚是否可用
-                        -256, // 最小Y
-                        768, // 高度 (必须为16的倍数)
-                        768, // 逻辑高度 (紫颂果的传送和游戏创建的传送门不会超过此高度)
+                        MiaHeight.THE_ABYSS.minY(), // 最小Y
+                        MiaHeight.THE_ABYSS.allY(), // 高度 (必须为16的倍数)
+                        MiaHeight.THE_ABYSS.allY(), // 逻辑高度 (紫颂果的传送和游戏创建的传送门不会超过此高度)
                         BlockTags.INFINIBURN_OVERWORLD, // 火能在哪些方块上永久燃烧
                         ClientDimEffects.THE_ABYSS_EFFECTS, // 天空效果
                         0.12F, // 环境光

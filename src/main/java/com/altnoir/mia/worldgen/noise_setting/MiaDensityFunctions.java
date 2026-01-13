@@ -2,6 +2,7 @@ package com.altnoir.mia.worldgen.noise_setting;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.worldgen.MiaDensityFunctionTypes;
+import com.altnoir.mia.worldgen.MiaHeight;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -79,14 +80,14 @@ public class MiaDensityFunctions {
                 getFunction(holdergetter1, THE_ABYSS_PILLARS)
         ));
         DensityFunction the_abyss_depth = DensityFunctions.add(DensityFunctions.yClampedGradient(5, 1200, 1.5, -2.5), getFunction(holdergetter1, MiaNoiseRouterData.OFFSET));
-        context.register(THE_ABYSS_DEPTH, DensityFunctions.rangeChoice(yFunction, -256, 5, DensityFunctions.constant(2.0), the_abyss_depth));
+        context.register(THE_ABYSS_DEPTH, DensityFunctions.rangeChoice(yFunction, MiaHeight.THE_ABYSS.minY(), 5, DensityFunctions.constant(2.0), the_abyss_depth));
 
         context.register(THE_ABYSS_HOLE_ABOVE, DensityFunctions.add(MiaDensityFunctionTypes.hopperAbyssHole(), getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
-        context.register(THE_ABYSS_HOLE_BELOW, DensityFunctions.add(MiaDensityFunctionTypes.generalAbyssHole(0.0F, 0.25F), getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
+        context.register(THE_ABYSS_HOLE_BELOW, DensityFunctions.add(MiaDensityFunctionTypes.generalAbyssHole(0.0F, 0.3F), getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
         context.register(THE_ABYSS_BIG_HOLE, DensityFunctions.add(MiaDensityFunctionTypes.generalAbyssHole(128.0F), getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
-        context.register(THE_ABYSS_INSIDE_HOLE_ABOVE, abyssDensityFunction(holdergetter1, THE_ABYSS_HOLE_ABOVE, 5, 460, -1.0));
-        context.register(THE_ABYSS_INSIDE_HOLE_BELOW, abyssDensityFunction(holdergetter1, THE_ABYSS_HOLE_BELOW, -128, 5, -1.0));
-        context.register(THE_ABYSS_MIDDLE_BASE_3D, abyssDensityFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS, -128, 460, -1.0));
+        context.register(THE_ABYSS_INSIDE_HOLE_ABOVE, abyssDensityFunction(holdergetter1, THE_ABYSS_HOLE_ABOVE, 5, MiaHeight.THE_ABYSS.maxY() - 64, -1.0));
+        context.register(THE_ABYSS_INSIDE_HOLE_BELOW, abyssDensityFunction(holdergetter1, THE_ABYSS_HOLE_BELOW, MiaHeight.THE_ABYSS.minY() + 128, 5, -1.0));
+        context.register(THE_ABYSS_MIDDLE_BASE_3D, abyssDensityFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS, MiaHeight.THE_ABYSS.minY() + 128, MiaHeight.THE_ABYSS.maxY() - 64, -1.0));
         context.register(THE_ABYSS_OUTSIDE_BASE_3D, abyssDensityFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS));
 
         DensityFunction densityfunction3 = DensityFunctions.noise(holdergetter.getOrThrow(Noises.JAGGED), 1500.0, 0.0);
@@ -98,12 +99,8 @@ public class MiaDensityFunctions {
         return context.register(THE_ABYSS_NOODLE, theAbyssNoodle(holdergetter1, holdergetter));
     }
 
-    private static DensityFunction abyssEdgeNoodle(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        return noodle(5, 512, densityFunctions, noiseParameters, 0, 40, false);
-    }
-
     private static DensityFunction theAbyssNoodle(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        return noodle(-128, 512, densityFunctions, noiseParameters, -40, 40, false);
+        return noodle(MiaHeight.THE_ABYSS.minY() + 128, MiaHeight.THE_ABYSS.maxY(), densityFunctions, noiseParameters, -40, 40, false);
     }
 
     private static DensityFunction noodle(int minY, int maxY, HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters, int minYOffset, int maxYOffset, boolean ridgeB) {

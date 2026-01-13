@@ -29,11 +29,12 @@ public class HopperAbyssHole extends AbstractAbyssHole {
     } // 深渊半径
 
     private static float getHeightValue(int x, int y, int z, float r, float m) {
-        float d = Mth.sqrt((float) (x * x + z * z));
+        float v = 80.0F;// 数越大，坡越陡
 
         float maxY = 2.0F;
-        float yr = Mth.clamp(1.0F + (float) y / 64.0F, 1.0F, maxY); // y除的数越小，坡度就越平滑
+        float yr = Mth.clamp(1.0F + (float) y / v, 1.0F, maxY);
 
+        float d = Mth.sqrt((float) (x * x + z * z));
         float f = ((getAbyssRadius() * m + r) / maxY) * yr - d * 8.0F;
         f = Mth.clamp(f, -100.0F, 80.0F);
 

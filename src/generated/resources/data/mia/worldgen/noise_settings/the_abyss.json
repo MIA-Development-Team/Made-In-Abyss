@@ -12,7 +12,7 @@
   "disable_mob_generation": false,
   "legacy_random_source": false,
   "noise": {
-    "height": 768,
+    "height": 640,
     "min_y": -256,
     "size_horizontal": 2,
     "size_vertical": 1
@@ -56,9 +56,9 @@
                         "argument1": {
                           "type": "minecraft:y_clamped_gradient",
                           "from_value": 1.0,
-                          "from_y": 460,
+                          "from_y": 320,
                           "to_value": 1.0,
-                          "to_y": 512
+                          "to_y": 384
                         },
                         "argument2": {
                           "type": "minecraft:add",
@@ -225,9 +225,9 @@
               "argument1": {
                 "type": "minecraft:y_clamped_gradient",
                 "from_value": 1.0,
-                "from_y": 314,
+                "from_y": 166,
                 "to_value": 0.0,
-                "to_y": 384
+                "to_y": 236
               },
               "argument2": {
                 "type": "minecraft:add",

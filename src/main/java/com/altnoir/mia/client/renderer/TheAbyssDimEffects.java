@@ -16,15 +16,13 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 public class TheAbyssDimEffects extends DimensionSpecialEffects {
-    protected static final ResourceLocation CLOUDS_LOCATION = MiaUtil.vanillaId("textures/environment/clouds.png");
     protected static final ResourceLocation THE_ABYSS = MiaUtil.miaId("textures/skybox/the_abyss.png");
 
     public static final float SIZE = 2048.0F;
     public static final float HEIGHT = 1536.0F;
     public static final float CLOUD_0 = -64.0F;
     public static final float CLOUD_1 = 40.0F;
-    public static final float CLOUD_2 = 256.0F;
-    public static final float CLOUD_3 = 450.0F;
+    public static final float CLOUD_2 = 384.0F;
 
     private int prevCloudX = Integer.MIN_VALUE;
     private int prevCloudY = Integer.MIN_VALUE;
@@ -37,7 +35,7 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
     private VertexBuffer cloudBuffer;
 
     public TheAbyssDimEffects() {
-        super(Float.NaN, true, SkyType.NONE, true, false);
+        super(Float.NaN, true, SkyType.NONE, false, false);
     }
 
     @Override
@@ -106,8 +104,7 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
     public boolean renderClouds(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, double camX, double camY, double camZ, Matrix4f modelViewMatrix, Matrix4f projectionMatrix) {
         return renderCloud(poseStack, modelViewMatrix, projectionMatrix, partialTick, camX, camY, camZ, level, ticks, CLOUD_0)
                 || renderCloud(poseStack, modelViewMatrix, projectionMatrix, partialTick, camX, camY, camZ, level, ticks, CLOUD_1)
-                || renderCloud(poseStack, modelViewMatrix, projectionMatrix, partialTick, camX, camY, camZ, level, ticks, CLOUD_2)
-                || renderCloud(poseStack, modelViewMatrix, projectionMatrix, partialTick, camX, camY, camZ, level, ticks, CLOUD_3);
+                || renderCloud(poseStack, modelViewMatrix, projectionMatrix, partialTick, camX, camY, camZ, level, ticks, CLOUD_2);
     }
 
     private boolean renderCloud(PoseStack poseStack, Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, double camX, double camY, double camZ,
