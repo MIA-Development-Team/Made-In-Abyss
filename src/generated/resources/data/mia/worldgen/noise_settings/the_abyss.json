@@ -12,7 +12,7 @@
   "disable_mob_generation": false,
   "legacy_random_source": false,
   "noise": {
-    "height": 640,
+    "height": 656,
     "min_y": -256,
     "size_horizontal": 2,
     "size_vertical": 1
@@ -23,99 +23,98 @@
     "depth": "mia:the_abyss/caves/depth",
     "erosion": 0.0,
     "final_density": {
-      "type": "minecraft:min",
+      "type": "minecraft:max",
       "argument1": {
-        "type": "minecraft:squeeze",
-        "argument": {
-          "type": "minecraft:mul",
-          "argument1": 0.64,
-          "argument2": {
-            "type": "minecraft:interpolated",
-            "argument": {
-              "type": "minecraft:blend_density",
+        "type": "minecraft:min",
+        "argument1": {
+          "type": "minecraft:squeeze",
+          "argument": {
+            "type": "minecraft:mul",
+            "argument1": 0.64,
+            "argument2": {
+              "type": "minecraft:interpolated",
               "argument": {
-                "type": "minecraft:add",
-                "argument1": -0.4,
-                "argument2": {
-                  "type": "minecraft:mul",
-                  "argument1": {
-                    "type": "minecraft:y_clamped_gradient",
-                    "from_value": 0.0,
-                    "from_y": -136,
-                    "to_value": 1.0,
-                    "to_y": -120
-                  },
+                "type": "minecraft:blend_density",
+                "argument": {
+                  "type": "minecraft:add",
+                  "argument1": -0.4,
                   "argument2": {
-                    "type": "minecraft:add",
-                    "argument1": 0.4,
+                    "type": "minecraft:mul",
+                    "argument1": {
+                      "type": "minecraft:y_clamped_gradient",
+                      "from_value": 0.0,
+                      "from_y": -136,
+                      "to_value": 1.0,
+                      "to_y": -120
+                    },
                     "argument2": {
                       "type": "minecraft:add",
-                      "argument1": -0.8975,
+                      "argument1": 0.4,
                       "argument2": {
-                        "type": "minecraft:mul",
-                        "argument1": {
-                          "type": "minecraft:y_clamped_gradient",
-                          "from_value": 1.0,
-                          "from_y": 320,
-                          "to_value": 1.0,
-                          "to_y": 384
-                        },
+                        "type": "minecraft:add",
+                        "argument1": -0.8975,
                         "argument2": {
-                          "type": "minecraft:add",
-                          "argument1": 1.025,
+                          "type": "minecraft:mul",
+                          "argument1": {
+                            "type": "minecraft:y_clamped_gradient",
+                            "from_value": 1.0,
+                            "from_y": 336,
+                            "to_value": 1.0,
+                            "to_y": 400
+                          },
                           "argument2": {
-                            "type": "minecraft:range_choice",
-                            "input": "mia:the_abyss/hole_above",
-                            "max_exclusive": 0.025,
-                            "min_inclusive": -1000000.0,
-                            "when_in_range": {
+                            "type": "minecraft:add",
+                            "argument1": 1.025,
+                            "argument2": {
                               "type": "minecraft:range_choice",
-                              "input": "minecraft:y",
-                              "max_exclusive": 5.0,
-                              "min_inclusive": -256.0,
-                              "when_in_range": "mia:the_abyss/inside_hole_below",
-                              "when_out_of_range": "mia:the_abyss/inside_hole_above"
-                            },
-                            "when_out_of_range": {
-                              "type": "minecraft:range_choice",
-                              "input": "minecraft:y",
-                              "max_exclusive": 5.0,
-                              "min_inclusive": -128.0,
+                              "input": "mia:the_abyss/hole_above",
+                              "max_exclusive": 0.025,
+                              "min_inclusive": -1000000.0,
                               "when_in_range": {
-                                "type": "minecraft:add",
-                                "argument1": 0.2,
-                                "argument2": "mia:the_abyss/great_cave"
+                                "type": "minecraft:range_choice",
+                                "input": "minecraft:y",
+                                "max_exclusive": 5.0,
+                                "min_inclusive": -256.0,
+                                "when_in_range": "mia:the_abyss/inside_hole_below",
+                                "when_out_of_range": "mia:the_abyss/inside_hole_above"
                               },
                               "when_out_of_range": {
                                 "type": "minecraft:range_choice",
-                                "input": "mia:the_abyss/big_abyss_hole",
-                                "max_exclusive": 0.025,
-                                "min_inclusive": -1000000.0,
+                                "input": "minecraft:y",
+                                "max_exclusive": 5.0,
+                                "min_inclusive": -128.0,
                                 "when_in_range": {
-                                  "type": "minecraft:max",
-                                  "argument1": {
-                                    "type": "minecraft:min",
-                                    "argument1": "mia:the_abyss/middle_3d_noise",
-                                    "argument2": {
-                                      "type": "minecraft:add",
-                                      "argument1": "minecraft:overworld/caves/spaghetti_2d",
-                                      "argument2": "minecraft:overworld/caves/spaghetti_roughness_function"
-                                    }
-                                  },
-                                  "argument2": "mia:the_abyss/caves/abyss_pillars"
+                                  "type": "minecraft:add",
+                                  "argument1": 0.2,
+                                  "argument2": "mia:the_abyss/great_cave"
                                 },
                                 "when_out_of_range": {
                                   "type": "minecraft:max",
                                   "argument1": {
-                                    "type": "minecraft:min",
-                                    "argument1": "mia:the_abyss/outside_abyss_3d_noise",
-                                    "argument2": {
-                                      "type": "minecraft:add",
-                                      "argument1": "minecraft:overworld/caves/spaghetti_2d",
-                                      "argument2": "minecraft:overworld/caves/spaghetti_roughness_function"
+                                    "type": "minecraft:range_choice",
+                                    "input": "mia:the_abyss/big_abyss_hole",
+                                    "max_exclusive": 0.025,
+                                    "min_inclusive": -1000000.0,
+                                    "when_in_range": {
+                                      "type": "minecraft:min",
+                                      "argument1": "mia:the_abyss/middle_3d_noise",
+                                      "argument2": {
+                                        "type": "minecraft:add",
+                                        "argument1": "minecraft:overworld/caves/spaghetti_2d",
+                                        "argument2": "minecraft:overworld/caves/spaghetti_roughness_function"
+                                      }
+                                    },
+                                    "when_out_of_range": {
+                                      "type": "minecraft:min",
+                                      "argument1": "mia:the_abyss/outside_abyss_3d_noise",
+                                      "argument2": {
+                                        "type": "minecraft:add",
+                                        "argument1": "minecraft:overworld/caves/spaghetti_2d",
+                                        "argument2": "minecraft:overworld/caves/spaghetti_roughness_function"
+                                      }
                                     }
                                   },
-                                  "argument2": "mia:the_abyss/caves/abyss_pillars"
+                                  "argument2": "mia:the_abyss/caves/pillars"
                                 }
                               }
                             }
@@ -128,29 +127,30 @@
               }
             }
           }
-        }
-      },
-      "argument2": {
-        "type": "minecraft:add",
-        "argument1": {
-          "type": "minecraft:y_clamped_gradient",
-          "from_value": -1.5,
-          "from_y": -16,
-          "to_value": 0.0,
-          "to_y": 16
         },
         "argument2": {
           "type": "minecraft:add",
           "argument1": {
             "type": "minecraft:y_clamped_gradient",
-            "from_value": 1.5,
-            "from_y": 0,
+            "from_value": -1.5,
+            "from_y": -16,
             "to_value": 0.0,
-            "to_y": 32
+            "to_y": 16
           },
-          "argument2": "mia:the_abyss/caves/noodle"
+          "argument2": {
+            "type": "minecraft:add",
+            "argument1": {
+              "type": "minecraft:y_clamped_gradient",
+              "from_value": 1.5,
+              "from_y": 0,
+              "to_value": 0.0,
+              "to_y": 32
+            },
+            "argument2": "mia:the_abyss/caves/noodle"
+          }
         }
-      }
+      },
+      "argument2": "mia:the_abyss/caves/great_cave_noodle"
     },
     "fluid_level_floodedness": {
       "type": "minecraft:range_choice",
@@ -166,7 +166,7 @@
       "when_out_of_range": {
         "type": "minecraft:range_choice",
         "input": "minecraft:y",
-        "max_exclusive": 512.0,
+        "max_exclusive": 400.0,
         "min_inclusive": 0.0,
         "when_in_range": {
           "type": "minecraft:noise",
@@ -191,7 +191,7 @@
       "when_out_of_range": {
         "type": "minecraft:range_choice",
         "input": "minecraft:y",
-        "max_exclusive": 512.0,
+        "max_exclusive": 400.0,
         "min_inclusive": 0.0,
         "when_in_range": {
           "type": "minecraft:noise",
@@ -225,9 +225,9 @@
               "argument1": {
                 "type": "minecraft:y_clamped_gradient",
                 "from_value": 1.0,
-                "from_y": 166,
+                "from_y": 202,
                 "to_value": 0.0,
-                "to_y": 236
+                "to_y": 272
               },
               "argument2": {
                 "type": "minecraft:add",

@@ -2,6 +2,7 @@ package com.altnoir.mia.block;
 
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.init.MiaSounds;
+import com.altnoir.mia.worldgen.MiaHeight;
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -48,12 +49,9 @@ public class AbyssPortalBlock extends Block implements Portal {
 
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        if (entity.canUsePortal(false)
-                && Shapes.joinIsNotEmpty(
-                Shapes.create(entity.getBoundingBox().move((double) (-pos.getX()), (double) (-pos.getY()), (double) (-pos.getZ()))),
-                state.getShape(level, pos),
-                BooleanOp.AND
-        )) {
+        if (entity.canUsePortal(false) &&
+                Shapes.joinIsNotEmpty(Shapes.create(entity.getBoundingBox().move(-pos.getX(), -pos.getY(), -pos.getZ())), state.getShape(level, pos), BooleanOp.AND)
+        ) {
 //            if (!level.isClientSide && level.dimension() == Level.OVERWORLD && entity instanceof ServerPlayer serverplayer && !serverplayer.seenCredits) {
 //                serverplayer.showEndCredits(); // 片尾字幕
 //                return;
@@ -124,7 +122,7 @@ public class AbyssPortalBlock extends Block implements Portal {
         int targetX = (int) (Math.cos(angle) * radius);
         int targetZ = (int) (Math.sin(angle) * radius);
 
-        return new BlockPos(targetX, 460, targetZ);
+        return new BlockPos(targetX, MiaHeight.THE_ABYSS.maxY(), targetZ);
     }
 
     /**
@@ -135,23 +133,22 @@ public class AbyssPortalBlock extends Block implements Portal {
      * @return 适合站立的位置
      */
     private BlockPos findSuitablePosition(ServerLevel level, BlockPos centerPos) {
-        int endY = Math.max(380, level.getMinBuildHeight());
+        int endY = Math.max(MiaHeight.THE_ABYSS.maxY() - 128, level.getMinBuildHeight());
+        int startY = MiaHeight.THE_ABYSS.maxY() - 28;
 
-        // 扩大搜索范围
-        for (int dxOffset = -8; dxOffset <= 8; dxOffset++) {
-            for (int dzOffset = -8; dzOffset <= 8; dzOffset++) {
-                BlockPos searchCenter = centerPos.offset(dxOffset * 2, 0, dzOffset * 2);
+        int maxRadius = 8;
+        for (int radius = 0; radius <= maxRadius; radius++) {
+            for (int angle = 0; angle < 360; angle += 45) {
+                double rad = Math.toRadians(angle);
+                int dx = (int) (Math.cos(rad) * radius * 2);
+                int dz = (int) (Math.sin(rad) * radius * 2);
 
-                // 向下搜索合适的位置
-                for (int y = 480; y >= endY; y--) {
-                    BlockPos belowPos = new BlockPos(searchCenter.getX(), y, searchCenter.getZ());
-                    BlockPos feetPos = belowPos.above(1);
-                    BlockPos headPos = belowPos.above(2);
+                BlockPos searchCenter = centerPos.offset(dx, 0, dz);
 
-                    boolean hasSpace = level.getBlockState(belowPos).isAir() && level.getBlockState(feetPos).isAir() && level.getBlockState(headPos).isAir();
-                    boolean hasSupport = !level.getBlockState(belowPos.below()).isAir();
-
-                    if (hasSpace && hasSupport) {
+                // 从上到下搜索，找到第一个合适位置就返回
+                for (int y = startY; y >= endY; y--) {
+                    BlockPos feetPos = new BlockPos(searchCenter.getX(), y, searchCenter.getZ());
+                    if (isSafePosition(level, feetPos)) {
                         return feetPos;
                     }
                 }
@@ -160,6 +157,15 @@ public class AbyssPortalBlock extends Block implements Portal {
         return centerPos;
     }
 
+    private boolean isSafePosition(ServerLevel level, BlockPos feetPos) {
+        BlockPos belowPos = feetPos.below();
+        BlockPos headPos = feetPos.above(1);
+
+        boolean hasSpace = level.getBlockState(feetPos).isAir() && level.getBlockState(headPos).isAir();
+        boolean hasSupport = !level.getBlockState(belowPos).isAir();
+
+        return hasSpace && hasSupport;
+    }
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {

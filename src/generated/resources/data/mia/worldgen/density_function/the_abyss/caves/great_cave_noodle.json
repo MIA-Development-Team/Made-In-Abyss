@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:range_choice",
+  "input": {
+    "type": "minecraft:min",
+    "argument1": "mia:the_abyss/caves/base_great_cave_noodle",
+    "argument2": {
+      "type": "mia:noodle_abyss_hole",
+      "mul": 0.2,
+      "radius": 0.0
+    }
+  },
+  "max_exclusive": 0.03,
+  "min_inclusive": -1000000.0,
+  "when_in_range": -1000000.0,
+  "when_out_of_range": "mia:the_abyss/caves/base_great_cave_noodle"
+}

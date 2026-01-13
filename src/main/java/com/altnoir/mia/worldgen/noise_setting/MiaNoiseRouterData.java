@@ -58,19 +58,13 @@ public class MiaNoiseRouterData extends NoiseRouterData {
 
         DensityFunction middleAbyssNoise = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_MIDDLE_BASE_3D);
         DensityFunction outsideAbyssNoise = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_OUTSIDE_BASE_3D);
-        DensityFunction abyssPillars = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_ABYSS_PILLARS);
+        DensityFunction abyssPillars = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_PILLARS);
 
-        DensityFunction middle = DensityFunctions.max(
-                DensityFunctions.min(middleAbyssNoise,
-                        DensityFunctions.add(getFunction(densityFunctions, SPAGHETTI_2D), getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION))
-                ),
-                abyssPillars
+        DensityFunction middle = DensityFunctions.min(middleAbyssNoise,
+                DensityFunctions.add(getFunction(densityFunctions, SPAGHETTI_2D), getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION))
         );
-        DensityFunction outside = DensityFunctions.max(
-                DensityFunctions.min(outsideAbyssNoise,
-                        DensityFunctions.add(getFunction(densityFunctions, SPAGHETTI_2D), getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION))
-                ),
-                abyssPillars
+        DensityFunction outside = DensityFunctions.min(outsideAbyssNoise,
+                DensityFunctions.add(getFunction(densityFunctions, SPAGHETTI_2D), getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION))
         );
 
         DensityFunction rangeChoice2 = DensityFunctions.rangeChoice(
@@ -79,11 +73,12 @@ public class MiaNoiseRouterData extends NoiseRouterData {
 
         DensityFunction layer2 = DensityFunctions.add(DensityFunctions.constant(0.2), abyssGreatCave);
         DensityFunction layer = DensityFunctions.rangeChoice(
-                yFunction, -128.0, 5.0, layer2, rangeChoice2
+                yFunction, -128.0, MiaHeight.THE_ABYSS.midY(), layer2,
+                DensityFunctions.max(rangeChoice2, abyssPillars)
         );
 
         DensityFunction rangeChoice1 = DensityFunctions.rangeChoice(
-                yFunction, -256.0, 5.0, insideAbyssHoleB, insideAbyssHoleA
+                yFunction, MiaHeight.THE_ABYSS.minY(), MiaHeight.THE_ABYSS.midY(), insideAbyssHoleB, insideAbyssHoleA
         );
         DensityFunction rangeChoice = DensityFunctions.rangeChoice(
                 abyssHole, -1000000.0, 0.025, rangeChoice1, layer
@@ -118,11 +113,12 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         DensityFunction idwj1 = DensityFunctions.rangeChoice(yFunction, -128, 0, MiaDensityFunctionTypes.generalAbyssHole(0.0F, 0.25F), MiaDensityFunctionTypes.hopperAbyssHole());
         DensityFunction idwj2 = noiseGradientDensity(DensityFunctions.cache2d(idwj0), idwj1);
         DensityFunction idwj3 = DensityFunctions.add(idwj2, DensityFunctions.constant(-0.703125));
-        DensityFunction idwj4 = slide(idwj3, -64, 300, 70, 0, -0.078125, 0, 24, 0.1171875);
+        DensityFunction idwj4 = slide(idwj3, -64, MiaHeight.THE_ABYSS.maxY() - 64, 70, 0, -0.078125, 0, 24, 0.1171875);
 
+        DensityFunction greatCaveNoodle = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_GREAT_CAVE_NOODLE);
         DensityFunction noodle = DensityFunctions.add(DensityFunctions.yClampedGradient(-16, 16, -1.5, 0.0),
                 DensityFunctions.add(DensityFunctions.yClampedGradient(0, 32, 1.5, 0.0), getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_NOODLE)));
-        DensityFunction finalDensity = DensityFunctions.min(theAbyssDensity(densityFunctions), noodle);
+        DensityFunction finalDensity = DensityFunctions.max(DensityFunctions.min(theAbyssDensity(densityFunctions), noodle), greatCaveNoodle);
 
         return new NoiseRouter(
                 DensityFunctions.constant(1.0), // barrier 影响含水层是否在流体与空气之间放置阻挡方块，值越大概率越大。
@@ -176,7 +172,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         return DensityFunctions.rangeChoice(
                 yFunction, -120, -64, noise,
                 DensityFunctions.rangeChoice(
-                        yFunction, 0, 512, noise, DensityFunctions.constant(1)
+                        yFunction, 0, MiaHeight.THE_ABYSS.maxY(), noise, DensityFunctions.constant(1)
                 )
         );
     }

@@ -29,22 +29,21 @@ public class HopperAbyssHole extends AbstractAbyssHole {
     } // 深渊半径
 
     private static float getHeightValue(int x, int y, int z, float r, float m) {
-        float v = 80.0F;// 数越大，坡越陡
+        float v = 64.0F;// 数越大，坡越陡
 
-        float maxY = 2.0F;
-        float yr = Mth.clamp(1.0F + (float) y / v, 1.0F, maxY);
+        float max = 2.0F;
+        float yr = Mth.clamp(1.0F + (float) y / v, 1.0F, max);
 
         float d = Mth.sqrt((float) (x * x + z * z));
-        float f = ((getAbyssRadius() * m + r) / maxY) * yr - d * 8.0F;
-        f = Mth.clamp(f, -100.0F, 80.0F);
+        float f = d * 8.0F - ((getAbyssRadius() * m + r) / max) * yr;
+        f = Mth.clamp(f, -80.0F, 100.0F);
 
         return f;
     }
 
     @Override
     public double compute(DensityFunction.FunctionContext context) {
-        // 反转计算结果：原公式 (height -8)/128 改为 (8 - height) / 128
-        return (8.0 - (double) getHeightValue(context.blockX() / 8, context.blockY() / 8, context.blockZ() / 8, this.radius, this.mul)) / 64; // 最终除的数越小，洞越平滑
+        return (double) getHeightValue(context.blockX() / 8, context.blockY() / 8, context.blockZ() / 8, this.radius, this.mul) / 64; // 最终除的数越小，洞越平滑
     }
 
     @Override

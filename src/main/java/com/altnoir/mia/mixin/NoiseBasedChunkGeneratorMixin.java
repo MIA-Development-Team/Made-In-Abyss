@@ -11,9 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = NoiseBasedChunkGenerator.class)
 public class NoiseBasedChunkGeneratorMixin {
-    @Inject(
-            method = "createFluidPicker", at = @At("RETURN"), cancellable = true
-    )
+    @Inject(method = "createFluidPicker", at = @At("RETURN"), cancellable = true)
     private static void modifyCreateFluidPicker(NoiseGeneratorSettings settings, CallbackInfoReturnable<Aquifer.FluidPicker> cir) {
         if (settings.defaultBlock() == MiaBlocks.ABYSS_ANDESITE.get().defaultBlockState()) {
             Aquifer.FluidStatus fluidStatus = new Aquifer.FluidStatus(settings.seaLevel(), settings.defaultFluid());

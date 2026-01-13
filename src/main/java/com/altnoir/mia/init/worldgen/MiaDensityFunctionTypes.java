@@ -3,6 +3,7 @@ package com.altnoir.mia.init.worldgen;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.worldgen.noise_setting.densityfunction.GeneralAbyssHole;
 import com.altnoir.mia.worldgen.noise_setting.densityfunction.HopperAbyssHole;
+import com.altnoir.mia.worldgen.noise_setting.densityfunction.NoodleAbyssHole;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.DensityFunction;
@@ -17,6 +18,8 @@ public class MiaDensityFunctionTypes {
             DENSITY_FUNCTION_TYPE.register("abyss_hole", HopperAbyssHole.CODEC::codec);
     public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<GeneralAbyssHole>> GENERAL_ABYSS_HOLE =
             DENSITY_FUNCTION_TYPE.register("general_abyss_hole", GeneralAbyssHole.CODEC::codec);
+    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<NoodleAbyssHole>> NOODLE_ABYSS_HOLE =
+            DENSITY_FUNCTION_TYPE.register("noodle_abyss_hole", NoodleAbyssHole.CODEC::codec);
 
     public static DensityFunction hopperAbyssHole() {
         return hopperAbyssHole(0.0F);
@@ -37,6 +40,11 @@ public class MiaDensityFunctionTypes {
 
     public static DensityFunction generalAbyssHole(float radius, float mul) {
         return new GeneralAbyssHole(radius, mul);
+    }
+
+
+    public static DensityFunction noodleAbyssHole(float radius, float mul) {
+        return new NoodleAbyssHole(radius, mul);
     }
 
     public static void register(IEventBus eventBus) {
