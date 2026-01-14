@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Portal;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -203,5 +204,10 @@ public class AbyssPortalBlock extends Block implements Portal {
 
             level.addParticle(ParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
         }
+    }
+
+    @Override
+    protected boolean canBeReplaced(BlockState state, Fluid fluid) {
+        return false;
     }
 }

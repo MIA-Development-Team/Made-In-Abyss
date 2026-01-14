@@ -2,7 +2,7 @@
   "parent": "minecraft:block/cube_bottom_top_inner_faces",
   "render_type": "minecraft:cutout",
   "textures": {
-    "bottom": "mia:block/abyss_spawner_bottom",
+    "bottom": "mia:block/abyss_spawner_bottom_active",
     "side": "mia:block/abyss_spawner_side_active",
     "top": "mia:block/abyss_spawner_top_active"
   }

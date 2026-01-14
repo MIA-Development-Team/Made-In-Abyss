@@ -103,7 +103,7 @@ public class MiaDensityFunctions {
                         getFunction(holdergetter1, THE_ABYSS_BASE_GREAT_CAVE_NOODLE),
                         MiaDensityFunctionTypes.noodleAbyssHole(0.0F, 0.2F)
                 ),
-                -1000000, 0.03, DensityFunctions.constant(-1000000),
+                -1000000, 0.05, DensityFunctions.constant(-1000000),
                 getFunction(holdergetter1, THE_ABYSS_BASE_GREAT_CAVE_NOODLE)
         ));
 

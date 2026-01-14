@@ -73,7 +73,7 @@ public class MiaItemGroups {
 
                         output.accept(MiaBlocks.HOPPER_FARMLAND);
                         output.accept(MiaBlocks.SUN_STONE);
-
+                        // 翡翠
                         output.accept(MiaBlocks.PRASIOLITE_BLOCK);
                         output.accept(MiaBlocks.BUDDING_PRASIOLITE);
                         output.accept(MiaBlocks.SMALL_PRASIOLITE_BUD);
@@ -81,7 +81,6 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.LARGE_PRASIOLITE_BUD);
                         output.accept(MiaBlocks.PRASIOLITE_CLUSTER);
                         output.accept(MiaItems.PRASIOLITE_SHARD);
-                        output.accept(MiaItems.GROW_SWORD);
                         output.accept(MiaItems.PRASIOLITE_PICKAXE);
                         output.accept(MiaItems.PRASIOLITE_HOE);
 
@@ -106,7 +105,8 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.SKYFOG_BUTTON);
 
                         // 设备
-                        output.accept(MiaBlocks.ABYSS_PORTAL);
+                        //output.accept(MiaBlocks.ABYSS_PORTAL);
+                        output.accept(MiaItems.STAR_COMPASS);
                         output.accept(MiaBlocks.ABYSS_PORTAL_FRAME);
                         output.accept(MiaBlocks.ABYSS_SPAWNER);
 
@@ -114,7 +114,6 @@ public class MiaItemGroups {
                         output.accept(MiaItems.MISTFUZZ_PEACH);
 
                         // tools
-                        output.accept(MiaItems.STAR_COMPASS);
                         output.accept(MiaItems.RED_WHISTLE);
                         output.accept(MiaItems.BLUE_WHISTLE);
                         output.accept(MiaItems.MOON_WHISTLE);
@@ -137,6 +136,8 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.ARTIFACT_SMITHING_TABLE);
                         output.accept(MiaItems.GRAY_ARTIFACT_BUNDLE);
                         output.accept(MiaItems.FANCY_ARTIFACT_BUNDLE);
+
+                        output.accept(MiaItems.GROW_SWORD);
 
                         output.accept(MiaItems.TEST_ARTIFACT_1);
                         output.accept(MiaItems.TEST_ARTIFACT_2);

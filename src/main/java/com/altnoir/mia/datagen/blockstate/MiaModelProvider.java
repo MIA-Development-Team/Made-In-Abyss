@@ -56,10 +56,7 @@ public class MiaModelProvider {
         String suffix = isOpen ? "_open" : "";
         String blockPath = MiaUtil.getBlockPath(block);
 
-        return p.models().withExistingParent(blockPath + suffix, p.modLoc("block/template/cube_tsb"))
-                .texture("top", p.modLoc("block/" + blockPath + "_top" + suffix))
-                .texture("side", p.modLoc("block/" + blockPath + "_side"))
-                .texture("bottom", p.modLoc("block/" + blockPath + "_bottom"));
+        return createTSBModel(p, blockPath, suffix, "_top" + suffix, "_side", "_bottom");
     }
 
     public void artifactSmithingTableBlockModel(BlockStateProvider p, Block block, Block bottom) {
@@ -103,48 +100,11 @@ public class MiaModelProvider {
     }
 
     public void abyssSpawnerBlockModel(BlockStateProvider p, Block block) {
-        p.models()
-                .withExistingParent(MiaUtil.getBlockPath(block), p.mcLoc("block/cube_bottom_top_inner_faces"))
-                .renderType("cutout")
-                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
-                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_inactive"))
-                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_inactive"));
-        p.models()
-                .withExistingParent(MiaUtil.getBlockPath(block) + "_active",
-                        p.mcLoc("block/cube_bottom_top_inner_faces"))
-                .renderType("cutout")
-                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
-                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_active"))
-                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_active"));
-        p.models()
-                .withExistingParent(MiaUtil.getBlockPath(block) + "_active_ominous",
-                        p.mcLoc("block/cube_bottom_top_inner_faces"))
-                .renderType("cutout")
-                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
-                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_active_ominous"))
-                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_active_ominous"));
-        p.models()
-                .withExistingParent(MiaUtil.getBlockPath(block) + "_ejecting_reward",
-                        p.mcLoc("block/cube_bottom_top_inner_faces"))
-                .renderType("cutout")
-                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
-                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_active"))
-                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_ejecting_reward"));
-        p.models()
-                .withExistingParent(MiaUtil.getBlockPath(block) + "_ejecting_reward_ominous",
-                        p.mcLoc("block/cube_bottom_top_inner_faces"))
-                .renderType("cutout")
-                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
-                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_active_ominous"))
-                .texture("top",
-                        p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_ejecting_reward_ominous"));
-        p.models()
-                .withExistingParent(MiaUtil.getBlockPath(block) + "_ominous",
-                        p.mcLoc("block/cube_bottom_top_inner_faces"))
-                .renderType("cutout")
-                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"))
-                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side_inactive_ominous"))
-                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top_inactive_ominous"));
+        String blockPath = MiaUtil.getBlockPath(block);
+
+        createCBTIFModel(p, blockPath, "", "_top_inactive", "_side_inactive", "_bottom");
+        createCBTIFModel(p, blockPath, "_active", "_top_active", "_side_active", "_bottom_active");
+        createCBTIFModel(p, blockPath, "_ejecting_reward", "_top_ejecting_reward", "_side_active", "_bottom_active");
     }
 
     public void crossModel(BlockStateProvider p, Block block) {
@@ -160,6 +120,23 @@ public class MiaModelProvider {
     }
 
     // Template models
+    private ModelFile createCBTIFModel(BlockStateProvider p, String blockPath, String suffix, String topSuffix, String sideSuffix, String bottomSuffix) {
+        return p.models()
+                .withExistingParent(blockPath + suffix, p.mcLoc("block/cube_bottom_top_inner_faces"))
+                .renderType("cutout")
+                .texture("top", p.modLoc("block/" + blockPath + topSuffix))
+                .texture("side", p.modLoc("block/" + blockPath + sideSuffix))
+                .texture("bottom", p.modLoc("block/" + blockPath + bottomSuffix));
+    }
+
+    public ModelFile createTSBModel(BlockStateProvider p, String blockPath, String suffix, String topSuffix, String sideSuffix, String bottomSuffix) {
+        return p.models()
+                .withExistingParent(blockPath + suffix, p.modLoc("block/template/cube_tsb"))
+                .texture("top", p.modLoc("block/" + blockPath + topSuffix))
+                .texture("side", p.modLoc("block/" + blockPath + sideSuffix))
+                .texture("bottom", p.modLoc("block/" + blockPath + bottomSuffix));
+    }
+
     public void templateTSBModel(BlockStateProvider p) {
         p.models().withExistingParent("block/template/cube_tsb", p.mcLoc("block/block"))
                 .texture("particle", "#bottom")

@@ -279,8 +279,8 @@ public class MiaBlocks {
                     BlockBehaviour.Properties.of()
                             .noCollission()
                             .noLootTable()
-                            .strength(-1.0F, 3600000.0F)
                             .lightLevel(state -> 15)
+                            .strength(-1.0F, 3600000.0F)
                             .sound(SoundType.GLASS)
                             .pushReaction(PushReaction.BLOCK)));
     public static final DeferredBlock<Block> ABYSS_PORTAL_FRAME = registerBlock("abyss_portal_frame", () ->

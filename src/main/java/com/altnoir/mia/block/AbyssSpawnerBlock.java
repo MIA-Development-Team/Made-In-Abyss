@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 import javax.annotation.Nullable;
@@ -30,7 +29,6 @@ import java.util.List;
 public class AbyssSpawnerBlock extends BaseEntityBlock {
     public static final MapCodec<AbyssSpawnerBlock> CODEC = simpleCodec(AbyssSpawnerBlock::new);
     public static final EnumProperty<TrialSpawnerState> STATE = BlockStateProperties.TRIAL_SPAWNER_STATE;
-    public static final BooleanProperty OMINOUS = BlockStateProperties.OMINOUS;
 
     @Override
     public MapCodec<AbyssSpawnerBlock> codec() {
@@ -39,12 +37,12 @@ public class AbyssSpawnerBlock extends BaseEntityBlock {
 
     public AbyssSpawnerBlock(BlockBehaviour.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(STATE, TrialSpawnerState.INACTIVE).setValue(OMINOUS, Boolean.valueOf(false)));
+        this.registerDefaultState(this.stateDefinition.any().setValue(STATE, TrialSpawnerState.INACTIVE));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
-        stateBuilder.add(STATE, OMINOUS);
+        stateBuilder.add(STATE);
     }
 
     @Override
@@ -87,4 +85,6 @@ public class AbyssSpawnerBlock extends BaseEntityBlock {
             }
         }
     }
+
+    // /give @s mia:abyss_spawner[block_entity_data={id:"mia:abyss_spawner",pattern_id:"mia:example_zombie"}]
 }

@@ -3,28 +3,21 @@ package com.altnoir.mia.block;
 import com.altnoir.mia.init.MiaItems;
 import com.altnoir.mia.worldgen.feature.AbyssPortalFeature;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class AbyssPortalFrameBlock extends Block {
     public static final BooleanProperty COMPASS = BooleanProperty.create("compass");
-    ;
 
     public AbyssPortalFrameBlock(Properties properties) {
         super(properties);
@@ -33,18 +26,17 @@ public class AbyssPortalFrameBlock extends Block {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (stack.is(MiaItems.STAR_COMPASS.get()) && !state.getValue(COMPASS)) {
+        if (stack.is(MiaItems.STAR_COMPASS.get()) && !state.getValue(COMPASS) && level.dimension() == Level.OVERWORLD) {
             if (!level.isClientSide()) {
                 level.setBlock(pos, state.setValue(COMPASS, Boolean.valueOf(true)), 3);
                 level.levelEvent(1503, pos, 0);
 
                 ServerLevel serverLevel = level.getServer().getLevel(Level.OVERWORLD);
                 BlockPos targetPos = pos.below(5);
-                AbyssPortalFeature.createPortalStructure(serverLevel, targetPos, 5, 2, true);
+                AbyssPortalFeature.createPortalStructure(serverLevel, targetPos, 5, 8, true);
 
                 level.globalLevelEvent(1038, targetPos, 0);
             }
-
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }

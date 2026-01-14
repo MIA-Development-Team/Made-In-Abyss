@@ -85,18 +85,15 @@ public class MiaStateProvider {
                 TrialSpawnerState.WAITING_FOR_REWARD_EJECTION, "_ejecting_reward"
         );
 
-        for (boolean ominous : new boolean[]{false, true}) {
-            for (TrialSpawnerState state : stateSuffixMap.keySet()) {
-                String suffix = stateSuffixMap.get(state);
-                String modelName = blockPath + suffix + (ominous ? "_ominous" : "");
+        for (TrialSpawnerState state : stateSuffixMap.keySet()) {
+            String suffix = stateSuffixMap.get(state);
+            String modelName = blockPath + suffix;
 
-                builder.partialState()
-                        .with(BlockStateProperties.TRIAL_SPAWNER_STATE, state)
-                        .with(BlockStateProperties.OMINOUS, ominous)
-                        .modelForState()
-                        .modelFile(p.models().getExistingFile(p.modLoc("block/" + modelName)))
-                        .addModel();
-            }
+            builder.partialState()
+                    .with(BlockStateProperties.TRIAL_SPAWNER_STATE, state)
+                    .modelForState()
+                    .modelFile(p.models().getExistingFile(p.modLoc("block/" + modelName)))
+                    .addModel();
         }
     }
 
