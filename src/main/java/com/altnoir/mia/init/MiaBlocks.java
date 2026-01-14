@@ -254,8 +254,8 @@ public class MiaBlocks {
                             .strength(1.5F)
                             .lightLevel(state -> 5)
                             .sound(SoundType.AMETHYST)
-                            .noOcclusion()));
-
+                            .noOcclusion())
+    );
     @SuppressWarnings("deprecation")
     public static final DeferredBlock<Block> AMETHYST_LAMPTUBE = registerBlock("amethyst_lamptube", () ->
             new AmethystTubeBlock(
@@ -264,33 +264,36 @@ public class MiaBlocks {
                             .strength(1.5F)
                             .lightLevel(state -> 5)
                             .sound(SoundType.AMETHYST)
-                            .noOcclusion()));
-
+                            .noOcclusion())
+    );
     public static final DeferredBlock<Block> PEDESTAL = registerBlock("pedestal", () ->
             new PedestalBlock(
                     BlockBehaviour.Properties.of()
                             .forceSolidOff()
                             .strength(1.5F)
                             .sound(SoundType.NETHERITE_BLOCK)
-                            .noOcclusion()));
-
+                            .noOcclusion())
+    );
     public static final DeferredBlock<Block> ABYSS_PORTAL = registerBlock("abyss_portal", () ->
             new AbyssPortalBlock(
                     BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_LIGHT_GREEN)
                             .noCollission()
-                            .noLootTable()
                             .lightLevel(state -> 15)
                             .strength(-1.0F, 3600000.0F)
-                            .sound(SoundType.GLASS)
-                            .pushReaction(PushReaction.BLOCK)));
+                            .noLootTable()
+                            .pushReaction(PushReaction.BLOCK))
+    );
     public static final DeferredBlock<Block> ABYSS_PORTAL_FRAME = registerBlock("abyss_portal_frame", () ->
             new AbyssPortalFrameBlock(
                     BlockBehaviour.Properties.of()
-                            .forceSolidOff()
-                            .strength(3.0F, 6.0F)
-                            .lightLevel(state -> 1)
+                            .mapColor(MapColor.COLOR_YELLOW)
+                            .instrument(NoteBlockInstrument.BASEDRUM)
                             .sound(SoundType.NETHERITE_BLOCK)
-                            .noOcclusion()));
+                            .lightLevel(state -> 1)
+                            .strength(-1.0F, 3600000.0F)
+                            .noLootTable())
+    );
 
     public static final DeferredBlock<Block> ABYSS_SPAWNER = registerBlock("abyss_spawner", () ->
             new AbyssSpawnerBlock(
@@ -301,25 +304,26 @@ public class MiaBlocks {
                             .strength(50.0F)
                             .sound(SoundType.TRIAL_SPAWNER)
                             .isViewBlocking(MiaBlocks::never)
-                            .noOcclusion()));
+                            .noOcclusion())
+    );
     @SuppressWarnings("deprecation")
     public static final DeferredBlock<Block> ROPE = BLOCKS.register("rope", () ->
             new RopeBlock(BlockBehaviour.Properties.of()
                     .forceSolidOff().strength(0.4F)
                     .sound(SoundType.WOOL).noOcclusion()
-                    .pushReaction(PushReaction.DESTROY)));
-
+                    .pushReaction(PushReaction.DESTROY))
+    );
     // 工作台
     public static final DeferredBlock<Block> ARTIFACT_SMITHING_TABLE = registerBlock("artifact_smithing_table", () ->
             new ArtifactSmithingTableBlock(BlockBehaviour.Properties.of()
                     .requiresCorrectToolForDrops()
                     .strength(3.0F, 6.0F)
-                    .sound(SoundType.NETHERITE_BLOCK)));
-
+                    .sound(SoundType.NETHERITE_BLOCK))
+    );
     public static final DeferredBlock<Block> ENDLESS_CUP = BLOCKS.register("endless_cup", () ->
             new EndlessCupBlock(
-                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())));
-
+                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get()))
+    );
 
     private static boolean never(BlockState state, BlockGetter blockGetter, BlockPos pos) {
         return false;

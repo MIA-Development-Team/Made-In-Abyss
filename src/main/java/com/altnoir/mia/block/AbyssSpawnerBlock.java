@@ -62,13 +62,13 @@ public class AbyssSpawnerBlock extends BaseEntityBlock {
         return level instanceof ServerLevel serverlevel
                 ? createTickerHelper(
                 entityType,
-                MiaBlockEntities.ABYSS_SPAWNER_ENTITY.get(),
+                MiaBlockEntities.ABYSS_SPAWNER_BLOCK_ENTITY.get(),
                 (blockLevel, blockPos, blockState, e) -> e.getAbyssSpawner()
                         .tickServer(serverlevel, blockPos, blockState.getOptionalValue(BlockStateProperties.OMINOUS).orElse(false))
         )
                 : createTickerHelper(
                 entityType,
-                MiaBlockEntities.ABYSS_SPAWNER_ENTITY.get(),
+                MiaBlockEntities.ABYSS_SPAWNER_BLOCK_ENTITY.get(),
                 (blockLevel, blockPos, blockState, e) -> e.getAbyssSpawner()
                         .tickClient(blockLevel, blockPos, blockState.getOptionalValue(BlockStateProperties.OMINOUS).orElse(false))
         );

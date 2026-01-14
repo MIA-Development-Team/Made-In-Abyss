@@ -13,8 +13,8 @@ import net.minecraft.util.RandomSource;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class SunStoneBlockRenderer implements BlockEntityRenderer<SunStoneBlockEntity> {
-    public SunStoneBlockRenderer(BlockEntityRendererProvider.Context context) {
+public class SunStoneRenderer implements BlockEntityRenderer<SunStoneBlockEntity> {
+    public SunStoneRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override

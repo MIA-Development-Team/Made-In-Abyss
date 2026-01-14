@@ -24,7 +24,7 @@ public class AbyssSpawnerBlockEntity extends BlockEntity implements AbyssTrialSp
     private AbyssTrialSpawnerPattern cachedPattern;
 
     public AbyssSpawnerBlockEntity(BlockPos pos, BlockState state) {
-        super(MiaBlockEntities.ABYSS_SPAWNER_ENTITY.get(), pos, state);
+        super(MiaBlockEntities.ABYSS_SPAWNER_BLOCK_ENTITY.get(), pos, state);
         this.abyssSpawner = new AbyssTrialSpawner(this);
     }
 

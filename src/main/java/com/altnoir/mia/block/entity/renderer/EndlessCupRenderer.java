@@ -17,8 +17,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 
-public class EndlessCupBlockRenderer implements BlockEntityRenderer<EndlessCupBlockEntity> {
-    public EndlessCupBlockRenderer(BlockEntityRendererProvider.Context context) {
+public class EndlessCupRenderer implements BlockEntityRenderer<EndlessCupBlockEntity> {
+    public EndlessCupRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override

@@ -32,7 +32,7 @@ public class AbyssPortalFrameBlock extends Block {
                 level.levelEvent(1503, pos, 0);
 
                 ServerLevel serverLevel = level.getServer().getLevel(Level.OVERWORLD);
-                BlockPos targetPos = pos.below(5);
+                BlockPos targetPos = pos.below(6);
                 AbyssPortalFeature.createPortalStructure(serverLevel, targetPos, 5, 8, true);
 
                 level.globalLevelEvent(1038, targetPos, 0);

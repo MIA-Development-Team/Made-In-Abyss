@@ -4,10 +4,12 @@
   "package": "com.altnoir.mia.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "FlowingFluidMixin",
     "MinecraftMixin",
     "NoiseBasedChunkGeneratorMixin"
   ],
   "client": [
+    "FogRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

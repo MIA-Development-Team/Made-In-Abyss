@@ -7,18 +7,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 
-public class PedestalBlockRenderer implements BlockEntityRenderer<PedestalBlockEntity> {
-    public PedestalBlockRenderer(BlockEntityRendererProvider.Context context) {
+public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity> {
+    public PedestalRenderer(BlockEntityRendererProvider.Context context) {
 
     }
 

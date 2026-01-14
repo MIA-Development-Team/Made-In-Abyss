@@ -41,12 +41,10 @@ public class AbyssPortalBlock extends Block implements Portal {
         return CODEC;
     }
 
-
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
-
 
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
@@ -60,6 +58,11 @@ public class AbyssPortalBlock extends Block implements Portal {
 
             entity.setAsInsidePortal(this, pos);
         }
+    }
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Override
@@ -149,23 +152,15 @@ public class AbyssPortalBlock extends Block implements Portal {
                 // 从上到下搜索，找到第一个合适位置就返回
                 for (int y = startY; y >= endY; y--) {
                     BlockPos feetPos = new BlockPos(searchCenter.getX(), y, searchCenter.getZ());
-                    if (isSafePosition(level, feetPos)) {
+                    boolean hasSpace = level.getBlockState(feetPos).isAir() && level.getBlockState(feetPos.above(1)).isAir();
+                    boolean hasSupport = !level.getBlockState(feetPos.below()).isAir();
+                    if (hasSpace && hasSupport) {
                         return feetPos;
                     }
                 }
             }
         }
         return centerPos;
-    }
-
-    private boolean isSafePosition(ServerLevel level, BlockPos feetPos) {
-        BlockPos belowPos = feetPos.below();
-        BlockPos headPos = feetPos.above(1);
-
-        boolean hasSpace = level.getBlockState(feetPos).isAir() && level.getBlockState(headPos).isAir();
-        boolean hasSupport = !level.getBlockState(belowPos).isAir();
-
-        return hasSpace && hasSupport;
     }
 
     @Override

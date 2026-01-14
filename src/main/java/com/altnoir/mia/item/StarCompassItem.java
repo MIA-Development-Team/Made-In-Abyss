@@ -3,6 +3,7 @@ package com.altnoir.mia.item;
 import com.altnoir.mia.block.AbyssPortalFrameBlock;
 import com.altnoir.mia.item.abs.IMiaTooltip;
 import com.altnoir.mia.network.CompassTargetPayload;
+import com.altnoir.mia.worldgen.structure.MiaStructures;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class StarCompassItem extends Item implements IMiaTooltip {
     private static final int SEARCH_RADIUS = 6400;
-    private static final ResourceKey<Structure> TARGET_STRUCTURE = BuiltinStructures.DESERT_PYRAMID;
+    private static final ResourceKey<Structure> TARGET_STRUCTURE = MiaStructures.ABYSS_STRONGHOLD;
 
     public StarCompassItem(Properties properties) {
         super(properties);

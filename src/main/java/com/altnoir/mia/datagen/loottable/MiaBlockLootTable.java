@@ -132,7 +132,6 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         dropSelf(MiaBlocks.AMETHYST_LAMPTUBE.get());
         dropSelf(MiaBlocks.PRASIOLITE_LAMPTUBE.get());
         dropSelf(MiaBlocks.PEDESTAL.get());
-        dropSelf(MiaBlocks.ABYSS_PORTAL_FRAME.get());
         dropWhenSilkTouch(MiaBlocks.ABYSS_SPAWNER.get());
         dropSelf(MiaBlocks.ENDLESS_CUP.get());
         dropSelf(MiaBlocks.ROPE.get());

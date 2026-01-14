@@ -157,12 +157,16 @@ public class MiaUtil {
         return Objects.requireNonNull(getItemRegistry().getKey(item));
     }
 
+    public static ResourceLocation getBlockKey(Block block) {
+        return Objects.requireNonNull(getBlockRegistry().getKey(block));
+    }
+
     public static String getBlockPath(Block block) {
-        return Objects.requireNonNull(getBlockRegistry().getKey(block)).getPath();
+        return getBlockKey(block).getPath();
     }
 
     public static String getBlockNamespace(Block block) {
-        return Objects.requireNonNull(getBlockRegistry().getKey(block)).getNamespace();
+        return getBlockKey(block).getNamespace();
     }
 
     public static ResourceLocation getBlockLoc(String name, Block block) {
@@ -213,6 +217,7 @@ public class MiaUtil {
 
     /**
      * Parses a resource location path by trimming the base path and removing .json extension
+     *
      * @param filePath The full file path from ResourceLocation
      * @param basePath The base path to trim (e.g., "mia/curse")
      * @return Array of path parts after processing, or null if path doesn't start with basePath
@@ -221,17 +226,17 @@ public class MiaUtil {
         if (!filePath.startsWith(basePath)) {
             return null;
         }
-        
+
         // Ensure there is at least one character after basePath before substring
         if (filePath.length() <= basePath.length()) {
             return null;
         }
-        
+
         var trimmedPath = filePath.substring(basePath.length() + 1);
         if (trimmedPath.endsWith(".json")) {
             trimmedPath = trimmedPath.substring(0, trimmedPath.length() - 5);
         }
-        
+
         return trimmedPath.split("/");
     }
 }
