@@ -1,7 +1,6 @@
 package com.altnoir.mia.block;
 
 import com.altnoir.mia.block.abs.InvertedBushBlock;
-import com.altnoir.mia.block.grower.InvertedTreeGrower;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -12,6 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -22,15 +22,15 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class InvertedSaplingBlock extends InvertedBushBlock implements BonemealableBlock {
     public static final MapCodec<InvertedSaplingBlock> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                            InvertedTreeGrower.CODEC.fieldOf("tree").forGetter(saplingBlock -> saplingBlock.treeGrower)
+                            TreeGrower.CODEC.fieldOf("tree").forGetter(saplingBlock -> saplingBlock.treeGrower)
                             , propertiesCodec())
                     .apply(instance, InvertedSaplingBlock::new)
     );
     public static final IntegerProperty STAGE = BlockStateProperties.STAGE;
     protected static final VoxelShape SHAPE = Block.box(2.0, 4.0, 2.0, 14.0, 16.0, 14.0);
-    protected final InvertedTreeGrower treeGrower;
+    protected final TreeGrower treeGrower;
 
-    public InvertedSaplingBlock(InvertedTreeGrower treeGrower, Properties properties) {
+    public InvertedSaplingBlock(TreeGrower treeGrower, Properties properties) {
         super(properties);
         this.treeGrower = treeGrower;
         this.registerDefaultState(this.stateDefinition.any().setValue(STAGE, Integer.valueOf(0)));

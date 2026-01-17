@@ -1,12 +1,11 @@
 package com.altnoir.mia.worldgen.structure;
 
 import com.altnoir.mia.util.MiaUtil;
+import com.altnoir.mia.worldgen.structure.pools.AbyssStrongholdPools;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.AncientCityStructurePieces;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
@@ -17,8 +16,10 @@ import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.pools.DimensionPadding;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +37,8 @@ public class MiaStructures {
                 ABYSS_STRONGHOLD,
                 new JigsawStructure(
                         new Structure.StructureSettings.Builder(biome.getOrThrow(BiomeTags.IS_OVERWORLD))
+                                .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
+                                .terrainAdapation(TerrainAdjustment.ENCAPSULATE)
                                 .spawnOverrides(
                                         Arrays.stream(MobCategory.values())
                                                 .collect(
@@ -45,19 +48,17 @@ public class MiaStructures {
                                                         )
                                                 )
                                 )
-                                .generationStep(GenerationStep.Decoration.UNDERGROUND_DECORATION)
-                                .terrainAdapation(TerrainAdjustment.BURY)
                                 .build(),
-                        templatePool.getOrThrow(AncientCityStructurePieces.START),
-                        Optional.of(ResourceLocation.withDefaultNamespace("city_anchor")),
+                        templatePool.getOrThrow(AbyssStrongholdPools.START),
+                        Optional.empty(),
                         7,
-                        ConstantHeight.of(VerticalAnchor.absolute(-27)),
+                        ConstantHeight.of(VerticalAnchor.absolute(-57)),
                         false,
                         Optional.empty(),
                         116,
                         List.of(),
-                        JigsawStructure.DEFAULT_DIMENSION_PADDING,
-                        JigsawStructure.DEFAULT_LIQUID_SETTINGS
+                        new DimensionPadding(10),
+                        LiquidSettings.IGNORE_WATERLOGGING
                 )
         );
     }

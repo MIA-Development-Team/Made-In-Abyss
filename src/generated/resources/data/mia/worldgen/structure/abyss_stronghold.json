@@ -1,6 +1,8 @@
 {
   "type": "minecraft:jigsaw",
   "biomes": "#minecraft:is_overworld",
+  "dimension_padding": 10,
+  "liquid_settings": "ignore_waterlogging",
   "max_distance_from_center": 116,
   "size": 7,
   "spawn_overrides": {
@@ -38,11 +40,10 @@
     }
   },
   "start_height": {
-    "absolute": -27
+    "absolute": -57
   },
-  "start_jigsaw_name": "minecraft:city_anchor",
-  "start_pool": "minecraft:ancient_city/city_center",
-  "step": "underground_decoration",
-  "terrain_adaptation": "bury",
+  "start_pool": "mia:abyss_stronghold/portal_center",
+  "step": "underground_structures",
+  "terrain_adaptation": "encapsulate",
   "use_expansion_hack": false
 }

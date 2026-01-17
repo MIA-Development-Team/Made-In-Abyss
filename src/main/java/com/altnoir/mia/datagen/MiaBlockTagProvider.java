@@ -76,6 +76,7 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.SKYFOG_PLANKS.get());
         tag(BlockTags.WOODEN_STAIRS) // 自动添加STAIRS标签
                 .add(MiaBlocks.SKYFOG_STAIRS.get());
+
         tag(BlockTags.STAIRS)
                 .add(MiaBlocks.ABYSS_ANDESITE_STAIRS.get())
                 .add(MiaBlocks.ABYSS_COBBLED_ANDESITE_STAIRS.get())
@@ -97,7 +98,12 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_WALL.get())
                 .add(MiaBlocks.POLISHED_ABYSS_ANDESITE_WALL.get())
                 .add(MiaBlocks.ABYSS_ANDESITE_BRICKS_WALL.get())
-                .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL.get());
+                .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL.get())
+                .add(MiaBlocks.POLISHED_FOSSILIZED_WOOD_WALL.get())
+                .add(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_WALL.get())
+                .add(MiaBlocks.FOSSILIZED_WOOD_BRICKS_WALL.get())
+                .add(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL.get());
+
         tag(BlockTags.FENCES)
                 .add(MiaBlocks.SKYFOG_FENCE.get());
         tag(BlockTags.FENCE_GATES)

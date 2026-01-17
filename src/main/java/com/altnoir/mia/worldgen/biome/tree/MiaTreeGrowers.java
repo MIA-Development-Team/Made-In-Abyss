@@ -1,7 +1,6 @@
 package com.altnoir.mia.worldgen.biome.tree;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.block.grower.InvertedTreeGrower;
 import net.minecraft.world.level.block.grower.TreeGrower;
 
 import java.util.Optional;
@@ -12,7 +11,7 @@ public class MiaTreeGrowers {
             Optional.of(MiaTreeFeatures.SKYFOG_TREE),
             Optional.of(MiaTreeFeatures.SKYFOG_TREE_BEES)
     );
-    public static final InvertedTreeGrower INVERTED_TREE = new InvertedTreeGrower(MIA.MOD_ID + ":inverted_tree",
+    public static final TreeGrower INVERTED_TREE = new TreeGrower(MIA.MOD_ID + ":inverted_tree",
             Optional.empty(),
             Optional.of(MiaTreeFeatures.INVERTED_TREE),
             Optional.of(MiaTreeFeatures.INVERTED_TREE)

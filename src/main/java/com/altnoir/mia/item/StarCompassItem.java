@@ -18,7 +18,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -28,7 +27,7 @@ import java.util.List;
 
 public class StarCompassItem extends Item implements IMiaTooltip {
     private static final int SEARCH_RADIUS = 6400;
-    private static final ResourceKey<Structure> TARGET_STRUCTURE = MiaStructures.ABYSS_STRONGHOLD;
+    private static final ResourceKey<Structure> ABYSS_STRONGHOLD = MiaStructures.ABYSS_STRONGHOLD;
 
     public StarCompassItem(Properties properties) {
         super(properties);
@@ -58,7 +57,7 @@ public class StarCompassItem extends Item implements IMiaTooltip {
                 var serverPlayer = (ServerPlayer) player;
 
                 var structureRegistry = serverLevel.registryAccess().registryOrThrow(Registries.STRUCTURE);
-                var structureHolder = structureRegistry.getHolder(TARGET_STRUCTURE);
+                var structureHolder = structureRegistry.getHolder(ABYSS_STRONGHOLD);
 
                 if (structureHolder.isPresent()) {
                     var structures = HolderSet.direct(structureHolder.get());

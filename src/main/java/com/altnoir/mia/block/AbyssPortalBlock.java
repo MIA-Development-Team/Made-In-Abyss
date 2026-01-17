@@ -84,7 +84,7 @@ public class AbyssPortalBlock extends Block implements Portal {
                 vec3 = suitablePos.getBottomCenter();
                 f = Direction.WEST.toYRot();
                 if (entity instanceof ServerPlayer) {
-                    vec3 = vec3.subtract(0.0, 1.0, 0.0);
+                    vec3 = vec3.subtract(0.0, 0.0, 0.0);
                 }
             } else {
                 if (entity instanceof ServerPlayer serverplayer) {

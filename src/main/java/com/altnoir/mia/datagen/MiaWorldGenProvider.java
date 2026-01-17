@@ -11,6 +11,7 @@ import com.altnoir.mia.worldgen.noise_setting.MiaDensityFunctions;
 import com.altnoir.mia.worldgen.noise_setting.MiaNoiseGeneratorSettings;
 import com.altnoir.mia.worldgen.structure.MiaStructureSets;
 import com.altnoir.mia.worldgen.structure.MiaStructures;
+import com.altnoir.mia.worldgen.structure.pools.MiaPools;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -27,6 +28,7 @@ public class MiaWorldGenProvider extends DatapackBuiltinEntriesProvider {
             .add(Registries.PLACED_FEATURE, MiaPlacementUtils::bootstrap)
             .add(Registries.STRUCTURE, MiaStructures::bootstrap)
             .add(Registries.STRUCTURE_SET, MiaStructureSets::bootstrap)
+            .add(Registries.TEMPLATE_POOL, MiaPools::bootstrap)
             .add(Registries.BIOME, MiaBiomes::boostrap)
             .add(Registries.LEVEL_STEM, MiaDimensions::bootstrapStem)
             .add(Registries.DENSITY_FUNCTION, MiaDensityFunctions::bootstrap)
