@@ -61,7 +61,8 @@ public class MiaLangProvider extends LanguageProvider {
 
         // Painting Variant
         addPainting(MiaPaintingVariants.ABYSS_MAP);
-        addPainting(MiaPaintingVariants.ABYSS);
+        addPainting(MiaPaintingVariants.THE_ABYSS);
+        addPainting(MiaPaintingVariants.THE_ABYSS_2);
         addPainting(MiaPaintingVariants.FOSSIL_TREE);
         addPainting(MiaPaintingVariants.FORTITUDE_FLOWER);
 

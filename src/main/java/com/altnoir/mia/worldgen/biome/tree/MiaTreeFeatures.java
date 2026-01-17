@@ -1,7 +1,9 @@
 package com.altnoir.mia.worldgen.biome.tree;
 
 import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.init.worldgen.MiaFeature;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;
+import com.altnoir.mia.worldgen.feature.trunk.InvertedStraightTrunkPlacer;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -36,6 +38,8 @@ public class MiaTreeFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> FANCY_SKYFOG_TREE_BEES = MiaFeatureUtils.treeKey("fancy_skyfog_tree_bees");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_SKYFOG_TREE = MiaFeatureUtils.treeKey("mega_skyfog_tree");
 
+    public static final ResourceKey<ConfiguredFeature<?, ?>> INVERTED_TREE = MiaFeatureUtils.treeKey("inverted_tree");
+
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
 
         var bee0002 = new BeehiveDecorator(0.002F);
@@ -63,7 +67,27 @@ public class MiaTreeFeatures {
                 ).decorators(ImmutableList.of(
                         new AlterGroundDecorator(BlockStateProvider.simple(Blocks.ROOTED_DIRT)),
                         TrunkVineDecorator.INSTANCE,
-                        new LeaveVineDecorator(0.15F))
+                        new LeaveVineDecorator(0.075F))
+                ).ignoreVines().build()
+        );
+
+        MiaFeatureUtils.register(
+                context, INVERTED_TREE, MiaFeature.INVERTED_TREE.get(),
+                new TreeConfiguration.TreeConfigurationBuilder(
+                        BlockStateProvider.simple(MiaBlocks.SKYFOG_LOG.get()),
+                        new InvertedStraightTrunkPlacer(10, 2, 19),
+
+                        new WeightedStateProvider(
+                                SimpleWeightedRandomList.<BlockState>builder()
+                                        .add(MiaBlocks.SKYFOG_LEAVES.get().defaultBlockState(), 4)
+                                        .add(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get().defaultBlockState(), 1)
+                        ),
+                        new FancyFoliagePlacer(ConstantInt.of(3), ConstantInt.of(1), 4),
+                        new TwoLayersFeatureSize(1, 1, 2)
+                ).decorators(ImmutableList.of(
+                        new AlterGroundDecorator(BlockStateProvider.simple(Blocks.ROOTED_DIRT)),
+                        TrunkVineDecorator.INSTANCE,
+                        new LeaveVineDecorator(0.075F))
                 ).ignoreVines().build()
         );
     }
@@ -78,7 +102,7 @@ public class MiaTreeFeatures {
                                 .add(MiaBlocks.SKYFOG_LEAVES.get().defaultBlockState(), 9)
                                 .add(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get().defaultBlockState(), 1)
                 ),
-                new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), ConstantInt.of(4), 0.25F, 0.5F, 0.16666667F, 0.33333334F),
+                new CherryFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), ConstantInt.of(4), 0.25F, 0.5F, 0.16666667F, 0.33333334F),
 
                 new TwoLayersFeatureSize(1, 0, 1)
         ).dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT)).forceDirt().ignoreVines();
@@ -103,7 +127,7 @@ public class MiaTreeFeatures {
                 new TwoLayersFeatureSize(1, 0, 2)
         )
                 .dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT)).forceDirt()
-                .decorators(ImmutableList.of(new BeehiveDecorator(0.05F), TrunkVineDecorator.INSTANCE, new LeaveVineDecorator(0.075F)))
+                .decorators(ImmutableList.of(new BeehiveDecorator(0.05F), TrunkVineDecorator.INSTANCE, new LeaveVineDecorator(0.05F)))
                 .ignoreVines();
     }
 }

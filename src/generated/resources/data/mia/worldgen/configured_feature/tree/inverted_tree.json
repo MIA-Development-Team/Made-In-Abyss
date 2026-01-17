@@ -1,27 +1,35 @@
 {
-  "type": "minecraft:tree",
+  "type": "mia:inverted_tree",
   "config": {
     "decorators": [
       {
-        "type": "minecraft:beehive",
-        "probability": 0.02
+        "type": "minecraft:alter_ground",
+        "provider": {
+          "type": "minecraft:simple_state_provider",
+          "state": {
+            "Name": "minecraft:rooted_dirt"
+          }
+        }
+      },
+      {
+        "type": "minecraft:trunk_vine"
+      },
+      {
+        "type": "minecraft:leave_vine",
+        "probability": 0.075
       }
     ],
     "dirt_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "minecraft:rooted_dirt"
+        "Name": "minecraft:dirt"
       }
     },
     "foliage_placer": {
-      "type": "minecraft:cherry_foliage_placer",
-      "corner_hole_chance": 0.25,
-      "hanging_leaves_chance": 0.16666667,
-      "hanging_leaves_extension_chance": 0.33333334,
+      "type": "minecraft:fancy_foliage_placer",
       "height": 4,
-      "offset": 0,
-      "radius": 3,
-      "wide_bottom_layer_hole_chance": 0.25
+      "offset": 1,
+      "radius": 3
     },
     "foliage_provider": {
       "type": "minecraft:weighted_state_provider",
@@ -35,7 +43,7 @@
               "waterlogged": "false"
             }
           },
-          "weight": 9
+          "weight": 4
         },
         {
           "data": {
@@ -50,19 +58,19 @@
         }
       ]
     },
-    "force_dirt": true,
+    "force_dirt": false,
     "ignore_vines": true,
     "minimum_size": {
       "type": "minecraft:two_layers_feature_size",
       "limit": 1,
-      "lower_size": 0,
-      "upper_size": 1
+      "lower_size": 1,
+      "upper_size": 2
     },
     "trunk_placer": {
-      "type": "minecraft:forking_trunk_placer",
-      "base_height": 6,
+      "type": "mia:inverted_straight_trunk_placer",
+      "base_height": 10,
       "height_rand_a": 2,
-      "height_rand_b": 2
+      "height_rand_b": 19
     },
     "trunk_provider": {
       "type": "minecraft:simple_state_provider",

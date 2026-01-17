@@ -53,8 +53,8 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         DensityFunction abyssHole = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_HOLE_ABOVE);
         DensityFunction abyssBigHole = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_BIG_HOLE);
 
-        DensityFunction insideAbyssHoleA = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_INSIDE_HOLE_ABOVE);
         DensityFunction insideAbyssHoleB = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_INSIDE_HOLE_BELOW);
+        DensityFunction insideAbyssHoleA = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_INSIDE_HOLE_ABOVE);
 
         DensityFunction middleAbyssNoise = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_MIDDLE_BASE_3D);
         DensityFunction outsideAbyssNoise = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_OUTSIDE_BASE_3D);

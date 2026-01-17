@@ -1,6 +1,7 @@
-package com.altnoir.mia.init;
+package com.altnoir.mia;
 
-import com.altnoir.mia.MIA;
+import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.init.MiaItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -100,7 +101,10 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.SKYFOG_LEAVES);
                         output.accept(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS);
                         output.accept(MiaBlocks.SKYFOG_SAPLING);
+                        output.accept(MiaBlocks.INVERTED_SAPLING);
+                        // 植物
                         output.accept(MiaBlocks.FORTITUDE_FLOWER);
+                        // 红石
                         output.accept(MiaBlocks.SKYFOG_PRESSURE_PLATE);
                         output.accept(MiaBlocks.SKYFOG_BUTTON);
 

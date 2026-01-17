@@ -175,7 +175,16 @@ public class MiaBlocks {
                     .instabreak()
                     .sound(SoundType.CHERRY_SAPLING)
                     .pushReaction(PushReaction.DESTROY)));
-
+    //倒悬树
+    public static final DeferredBlock<Block> INVERTED_SAPLING = registerBlock("inverted_sapling", () -> new InvertedSaplingBlock(
+            MiaTreeGrowers.INVERTED_TREE,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
+                    .sound(SoundType.CHERRY_SAPLING)
+                    .pushReaction(PushReaction.DESTROY)));
     // 植物
     public static final DeferredBlock<Block> FORTITUDE_FLOWER = registerBlock("fortitude_flower", () -> new FlowerBlock(
             MobEffects.WEAKNESS,

@@ -115,6 +115,9 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         dropSelf(MiaBlocks.SKYFOG_PRESSURE_PLATE.get());
         dropSelf(MiaBlocks.SKYFOG_BUTTON.get());
 
+        //倒悬树
+        dropSelf(MiaBlocks.INVERTED_SAPLING.get());
+
         // 晶石
         dropSelf(MiaBlocks.PRASIOLITE_BLOCK.get());
         add(MiaBlocks.BUDDING_PRASIOLITE.get(), noDrop());

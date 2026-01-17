@@ -27,8 +27,8 @@ public class MiaDensityFunctions {
     public static final ResourceKey<DensityFunction> THE_ABYSS_HOLE_ABOVE = theAbyssKey("hole_above");
     public static final ResourceKey<DensityFunction> THE_ABYSS_HOLE_BELOW = theAbyssKey("hole_below");
     public static final ResourceKey<DensityFunction> THE_ABYSS_BIG_HOLE = theAbyssKey("big_abyss_hole");
-    public static final ResourceKey<DensityFunction> THE_ABYSS_INSIDE_HOLE_ABOVE = theAbyssKey("inside_hole_above");
     public static final ResourceKey<DensityFunction> THE_ABYSS_INSIDE_HOLE_BELOW = theAbyssKey("inside_hole_below");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_INSIDE_HOLE_ABOVE = theAbyssKey("inside_hole_above");
     public static final ResourceKey<DensityFunction> THE_ABYSS_MIDDLE_BASE_3D = theAbyssKey("middle_3d_noise");
     public static final ResourceKey<DensityFunction> THE_ABYSS_OUTSIDE_BASE_3D = theAbyssKey("outside_abyss_3d_noise");
     public static final ResourceKey<DensityFunction> THE_ABYSS_GREAT_CAVE = theAbyssKey("great_cave");
@@ -87,8 +87,8 @@ public class MiaDensityFunctions {
         context.register(THE_ABYSS_HOLE_ABOVE, DensityFunctions.add(MiaDensityFunctionTypes.hopperAbyssHole(), getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
         context.register(THE_ABYSS_HOLE_BELOW, DensityFunctions.add(MiaDensityFunctionTypes.generalAbyssHole(0.0F, 0.3F), getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
         context.register(THE_ABYSS_BIG_HOLE, DensityFunctions.add(MiaDensityFunctionTypes.generalAbyssHole(128.0F), getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
-        context.register(THE_ABYSS_INSIDE_HOLE_ABOVE, abyssDensityFunction(holdergetter1, THE_ABYSS_HOLE_ABOVE, MiaHeight.THE_ABYSS.midY(), MiaHeight.THE_ABYSS.maxY() - 64));
         context.register(THE_ABYSS_INSIDE_HOLE_BELOW, abyssDensityFunction(holdergetter1, THE_ABYSS_HOLE_BELOW, MiaHeight.THE_ABYSS.minY() + 128, MiaHeight.THE_ABYSS.midY()));
+        context.register(THE_ABYSS_INSIDE_HOLE_ABOVE, abyssDensityFunction(holdergetter1, THE_ABYSS_HOLE_ABOVE, MiaHeight.THE_ABYSS.midY(), MiaHeight.THE_ABYSS.maxY() - 64));
         context.register(THE_ABYSS_MIDDLE_BASE_3D, abyssDensityFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS, MiaHeight.THE_ABYSS.minY() + 128, MiaHeight.THE_ABYSS.maxY() - 64));
         context.register(THE_ABYSS_OUTSIDE_BASE_3D, abyssDensityFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS));
 

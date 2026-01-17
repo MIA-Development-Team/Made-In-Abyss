@@ -11,7 +11,7 @@
       },
       {
         "type": "minecraft:leave_vine",
-        "probability": 0.075
+        "probability": 0.05
       }
     ],
     "dirt_provider": {

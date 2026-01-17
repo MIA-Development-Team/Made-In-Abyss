@@ -362,34 +362,50 @@
               ]
             },
             "then_run": {
-              "type": "minecraft:sequence",
-              "sequence": [
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:stone_depth",
-                    "add_surface_depth": false,
-                    "offset": 0,
-                    "secondary_depth_range": 0,
-                    "surface_type": "floor"
-                  },
-                  "then_run": {
+              "type": "minecraft:condition",
+              "if_true": {
+                "type": "minecraft:stone_depth",
+                "add_surface_depth": true,
+                "offset": 0,
+                "secondary_depth_range": 0,
+                "surface_type": "floor"
+              },
+              "then_run": {
+                "type": "minecraft:sequence",
+                "sequence": [
+                  {
                     "type": "minecraft:condition",
                     "if_true": {
-                      "type": "minecraft:water",
-                      "add_stone_depth": false,
+                      "type": "minecraft:stone_depth",
+                      "add_surface_depth": false,
                       "offset": 0,
-                      "surface_depth_multiplier": 0
+                      "secondary_depth_range": 0,
+                      "surface_type": "floor"
                     },
                     "then_run": {
-                      "type": "minecraft:block",
-                      "result_state": {
-                        "Name": "mia:covergrass_abyss_andesite"
+                      "type": "minecraft:condition",
+                      "if_true": {
+                        "type": "minecraft:water",
+                        "add_stone_depth": false,
+                        "offset": 0,
+                        "surface_depth_multiplier": 0
+                      },
+                      "then_run": {
+                        "type": "minecraft:block",
+                        "result_state": {
+                          "Name": "mia:covergrass_abyss_andesite"
+                        }
                       }
                     }
+                  },
+                  {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "mia:abyss_andesite"
+                    }
                   }
-                }
-              ]
+                ]
+              }
             }
           },
           {
@@ -446,35 +462,252 @@
               ]
             },
             "then_run": {
-              "type": "minecraft:sequence",
-              "sequence": [
-                {
+              "type": "minecraft:condition",
+              "if_true": {
+                "type": "minecraft:stone_depth",
+                "add_surface_depth": true,
+                "offset": 0,
+                "secondary_depth_range": 1,
+                "surface_type": "floor"
+              },
+              "then_run": {
+                "type": "minecraft:condition",
+                "if_true": {
+                  "type": "minecraft:water",
+                  "add_stone_depth": false,
+                  "offset": 0,
+                  "surface_depth_multiplier": 0
+                },
+                "then_run": {
+                  "type": "minecraft:block",
+                  "result_state": {
+                    "Name": "minecraft:mud"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "minecraft:sequence",
+            "sequence": [
+              {
+                "type": "minecraft:condition",
+                "if_true": {
+                  "type": "minecraft:y_above",
+                  "add_stone_depth": false,
+                  "anchor": {
+                    "absolute": 320
+                  },
+                  "surface_depth_multiplier": 0
+                },
+                "then_run": {
                   "type": "minecraft:condition",
                   "if_true": {
-                    "type": "minecraft:stone_depth",
-                    "add_surface_depth": true,
-                    "offset": 0,
-                    "secondary_depth_range": 1,
-                    "surface_type": "floor"
+                    "type": "minecraft:not",
+                    "invert": {
+                      "type": "minecraft:y_above",
+                      "add_stone_depth": false,
+                      "anchor": {
+                        "absolute": 321
+                      },
+                      "surface_depth_multiplier": 0
+                    }
                   },
                   "then_run": {
-                    "type": "minecraft:condition",
-                    "if_true": {
-                      "type": "minecraft:water",
-                      "add_stone_depth": false,
-                      "offset": 0,
-                      "surface_depth_multiplier": 0
-                    },
-                    "then_run": {
-                      "type": "minecraft:block",
-                      "result_state": {
-                        "Name": "minecraft:mud"
-                      }
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "minecraft:calcite"
                     }
                   }
                 }
-              ]
-            }
+              },
+              {
+                "type": "minecraft:condition",
+                "if_true": {
+                  "type": "minecraft:y_above",
+                  "add_stone_depth": true,
+                  "anchor": {
+                    "absolute": 288
+                  },
+                  "surface_depth_multiplier": 1
+                },
+                "then_run": {
+                  "type": "minecraft:condition",
+                  "if_true": {
+                    "type": "minecraft:not",
+                    "invert": {
+                      "type": "minecraft:y_above",
+                      "add_stone_depth": false,
+                      "anchor": {
+                        "absolute": 288
+                      },
+                      "surface_depth_multiplier": 0
+                    }
+                  },
+                  "then_run": {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "minecraft:calcite"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "minecraft:condition",
+                "if_true": {
+                  "type": "minecraft:y_above",
+                  "add_stone_depth": false,
+                  "anchor": {
+                    "absolute": 256
+                  },
+                  "surface_depth_multiplier": 0
+                },
+                "then_run": {
+                  "type": "minecraft:condition",
+                  "if_true": {
+                    "type": "minecraft:not",
+                    "invert": {
+                      "type": "minecraft:y_above",
+                      "add_stone_depth": false,
+                      "anchor": {
+                        "absolute": 261
+                      },
+                      "surface_depth_multiplier": 0
+                    }
+                  },
+                  "then_run": {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "minecraft:calcite"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "minecraft:condition",
+                "if_true": {
+                  "type": "minecraft:y_above",
+                  "add_stone_depth": true,
+                  "anchor": {
+                    "absolute": 192
+                  },
+                  "surface_depth_multiplier": 1
+                },
+                "then_run": {
+                  "type": "minecraft:condition",
+                  "if_true": {
+                    "type": "minecraft:not",
+                    "invert": {
+                      "type": "minecraft:y_above",
+                      "add_stone_depth": false,
+                      "anchor": {
+                        "absolute": 195
+                      },
+                      "surface_depth_multiplier": 0
+                    }
+                  },
+                  "then_run": {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "minecraft:calcite"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "minecraft:condition",
+                "if_true": {
+                  "type": "minecraft:y_above",
+                  "add_stone_depth": false,
+                  "anchor": {
+                    "absolute": 128
+                  },
+                  "surface_depth_multiplier": 0
+                },
+                "then_run": {
+                  "type": "minecraft:condition",
+                  "if_true": {
+                    "type": "minecraft:not",
+                    "invert": {
+                      "type": "minecraft:y_above",
+                      "add_stone_depth": false,
+                      "anchor": {
+                        "absolute": 133
+                      },
+                      "surface_depth_multiplier": 0
+                    }
+                  },
+                  "then_run": {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "minecraft:calcite"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "minecraft:condition",
+                "if_true": {
+                  "type": "minecraft:y_above",
+                  "add_stone_depth": true,
+                  "anchor": {
+                    "absolute": 64
+                  },
+                  "surface_depth_multiplier": 1
+                },
+                "then_run": {
+                  "type": "minecraft:condition",
+                  "if_true": {
+                    "type": "minecraft:not",
+                    "invert": {
+                      "type": "minecraft:y_above",
+                      "add_stone_depth": false,
+                      "anchor": {
+                        "absolute": 64
+                      },
+                      "surface_depth_multiplier": 0
+                    }
+                  },
+                  "then_run": {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "minecraft:calcite"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "minecraft:condition",
+                "if_true": {
+                  "type": "minecraft:y_above",
+                  "add_stone_depth": false,
+                  "anchor": {
+                    "absolute": 48
+                  },
+                  "surface_depth_multiplier": 0
+                },
+                "then_run": {
+                  "type": "minecraft:condition",
+                  "if_true": {
+                    "type": "minecraft:not",
+                    "invert": {
+                      "type": "minecraft:y_above",
+                      "add_stone_depth": false,
+                      "anchor": {
+                        "absolute": 49
+                      },
+                      "surface_depth_multiplier": 0
+                    }
+                  },
+                  "then_run": {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "minecraft:calcite"
+                    }
+                  }
+                }
+              }
+            ]
           }
         ]
       }

@@ -21,7 +21,8 @@ public class MiaPaintingVariantTagsProvider extends PaintingVariantTagsProvider 
         this.tag(PaintingVariantTags.PLACEABLE)
                 .add(
                         MiaPaintingVariants.ABYSS_MAP,
-                        MiaPaintingVariants.ABYSS,
+                        MiaPaintingVariants.THE_ABYSS,
+                        MiaPaintingVariants.THE_ABYSS_2,
                         MiaPaintingVariants.FOSSIL_TREE,
                         MiaPaintingVariants.FORTITUDE_FLOWER
                 );

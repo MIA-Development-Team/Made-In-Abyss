@@ -15,7 +15,7 @@
       "hanging_leaves_extension_chance": 0.33333334,
       "height": 4,
       "offset": 0,
-      "radius": 4,
+      "radius": 3,
       "wide_bottom_layer_hole_chance": 0.25
     },
     "foliage_provider": {

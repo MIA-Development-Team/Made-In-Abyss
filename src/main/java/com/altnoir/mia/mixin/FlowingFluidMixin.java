@@ -14,9 +14,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = FlowingFluid.class)
 public class FlowingFluidMixin {
     @Inject(method = "canHoldFluid", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z",
-            shift = At.Shift.AFTER,
-            ordinal = 0),
+            target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z", ordinal = 5,
+            shift = At.Shift.AFTER),
             cancellable = true)
     private void injectAfterNetherPortalCheck(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
         if (state.is(MiaBlocks.ABYSS_PORTAL.get())) {

@@ -9,12 +9,20 @@ import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.util.Mth;
 import net.neoforged.neoforge.client.ClientHooks;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = FogRenderer.class)
 public class FogRendererMixin {
+    @Unique
+    private static float mia$start;
+    @Unique
+    private static float mia$end;
+    @Unique
+    private static FogShape mia$shape = FogShape.SPHERE;
+
     @Inject(method = "setupFog", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/util/Mth;clamp(FFF)F", ordinal = 0,
             shift = At.Shift.AFTER),
@@ -22,6 +30,7 @@ public class FogRendererMixin {
     private static void setupFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, boolean shouldCreateFog, float partialTick, CallbackInfo ci) {
         var player = camera.getEntity();
         var level = player.level();
+
         if (level.dimension().equals(MiaDimensions.THE_ABYSS_LEVEL)) {
             float entityY = (float) player.getY();
 
@@ -36,14 +45,17 @@ public class FogRendererMixin {
             float maxEnd = noFogBiome ? farPlaneDistance : Math.min(farPlaneDistance, 192.0F) * 0.5F;
 
             float fogIntensity = Mth.clamp(1.0F - (entityY - minY) / (maxY - minY), 0.0F, 1.0F);
-            float fogStart = Mth.lerp(fogIntensity, start, maxStart);
-            float fogEnd = Mth.lerp(fogIntensity, farPlaneDistance, maxEnd);
-            var fogShape = FogShape.CYLINDER;
+            mia$start = Mth.lerp(fogIntensity, start, maxStart);
+            mia$end = Mth.lerp(fogIntensity, farPlaneDistance, maxEnd);
+            if (mia$end >= farPlaneDistance) {
+                mia$end = farPlaneDistance;
+                mia$shape = FogShape.CYLINDER;
+            }
 
-            RenderSystem.setShaderFogStart(fogStart);
-            RenderSystem.setShaderFogEnd(fogEnd);
-            RenderSystem.setShaderFogShape(fogShape);
-            ClientHooks.onFogRender(fogMode, camera.getFluidInCamera(), camera, partialTick, farPlaneDistance, fogStart, fogEnd, fogShape);
+            RenderSystem.setShaderFogStart(mia$start);
+            RenderSystem.setShaderFogEnd(mia$end);
+            RenderSystem.setShaderFogShape(mia$shape);
+            ClientHooks.onFogRender(fogMode, camera.getFluidInCamera(), camera, partialTick, farPlaneDistance, mia$start, mia$end, mia$shape);
 
             ci.cancel();
         }

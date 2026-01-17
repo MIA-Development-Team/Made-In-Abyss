@@ -119,7 +119,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         doorBlockWithItem(MiaBlocks.SKYFOG_DOOR);
         trapdoorBlockWithItem(MiaBlocks.SKYFOG_TRAPDOOR);
         fenceGateBlockWithItem(MiaBlocks.SKYFOG_FENCE_GATE, MiaBlocks.SKYFOG_PLANKS);
-        sapingAndCrossBlock(MiaBlocks.SKYFOG_SAPLING);
+        bushBlock(MiaBlocks.SKYFOG_SAPLING);
         leavesBlock(MiaBlocks.SKYFOG_LEAVES);
         leavesBlock(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS);
 
@@ -132,7 +132,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         clusterBlock(MiaBlocks.SMALL_PRASIOLITE_BUD);
 
         // 植物
-        sapingAndCrossBlock(MiaBlocks.FORTITUDE_FLOWER);
+        bushBlock(MiaBlocks.FORTITUDE_FLOWER);
         //遗物
         blockWithItem(MiaBlocks.SUN_STONE);
 
@@ -201,7 +201,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     private void abyssPortalBlock() {
         modelP.abyssPortalBlockModel(this, MiaBlocks.ABYSS_PORTAL.get());
         stateP.baseBlockState(this, MiaBlocks.ABYSS_PORTAL.get());
-        crossItem(MiaBlocks.ABYSS_PORTAL);
+        bushItem(MiaBlocks.ABYSS_PORTAL);
     }
 
     private void abyssPortalFrameBlock() {
@@ -232,13 +232,13 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     private void clusterBlock(DeferredBlock<?> block) {
         modelP.crossModel(this, block.get());
         stateP.ColumnWithFacingState(this, block.get());
-        crossItem(block);
+        bushItem(block);
     }
 
-    protected void sapingAndCrossBlock(DeferredBlock<?> block) {
+    protected void bushBlock(DeferredBlock<?> block) {
         simpleBlock(block.get(),
                 models().cross(MiaUtil.getBlockPath(block.get()), blockTexture(block.get())).renderType("cutout"));
-        crossItem(block);
+        bushItem(block);
     }
 
     protected void leavesBlock(DeferredBlock<?> block) {
@@ -423,7 +423,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
                 MiaUtil.miaId("item/" + block.getId().getPath()));
     }
 
-    protected ItemModelBuilder crossItem(DeferredBlock<?> block) {
+    protected ItemModelBuilder bushItem(DeferredBlock<?> block) {
         return itemModels().withExistingParent(block.getId().getPath(),
                 MiaUtil.id("item/generated")).texture("layer0",
                 MiaUtil.miaId("block/" + block.getId().getPath()));

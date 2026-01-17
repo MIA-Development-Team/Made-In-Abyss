@@ -11,6 +11,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -20,10 +21,12 @@ public class MiaFeature {
 
     public static final DeferredHolder<Feature<?>, BigClusterFeature> BIG_CLUSTER = FEATURE.register(
             "big_cluster", () -> new BigClusterFeature(ClusterConfiguration.CODEC)
-
     );
     public static final DeferredHolder<Feature<?>, ClusterFeature> CLUSTER = FEATURE.register(
             "cluster", () -> new ClusterFeature(ClusterConfiguration.CODEC)
+    );
+    public static final DeferredHolder<Feature<?>, InvertedTreeFeature> INVERTED_TREE = FEATURE.register(
+            "inverted_tree", () -> new InvertedTreeFeature(TreeConfiguration.CODEC)
     );
     public static final DeferredHolder<Feature<?>, MiaCavePillarFeature> ABYSS_CAVE_PILLAR = FEATURE.register(
             "abyss_cave_pillar", () -> new MiaCavePillarFeature(MiaCavePillarConfiguration.CODEC)

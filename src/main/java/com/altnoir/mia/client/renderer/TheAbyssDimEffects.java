@@ -1,6 +1,7 @@
 package com.altnoir.mia.client.renderer;
 
 import com.altnoir.mia.util.MiaUtil;
+import com.altnoir.mia.worldgen.MiaHeight;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Camera;
@@ -21,8 +22,8 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
     public static final float SIZE = 2048.0F;
     public static final float HEIGHT = 1536.0F;
     public static final float CLOUD_0 = -64.0F;
-    public static final float CLOUD_1 = 40.0F;
-    public static final float CLOUD_2 = 384.0F;
+    public static final float CLOUD_1 = 128.0F;
+    public static final float CLOUD_2 = MiaHeight.THE_ABYSS.maxY();
 
     private int prevCloudX = Integer.MIN_VALUE;
     private int prevCloudY = Integer.MIN_VALUE;
@@ -102,18 +103,24 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
 
     @Override
     public boolean renderClouds(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, double camX, double camY, double camZ, Matrix4f modelViewMatrix, Matrix4f projectionMatrix) {
-        return renderCloud(poseStack, modelViewMatrix, projectionMatrix, partialTick, camX, camY, camZ, level, ticks, CLOUD_0)
-                || renderCloud(poseStack, modelViewMatrix, projectionMatrix, partialTick, camX, camY, camZ, level, ticks, CLOUD_1)
-                || renderCloud(poseStack, modelViewMatrix, projectionMatrix, partialTick, camX, camY, camZ, level, ticks, CLOUD_2);
+        float[] cloudHeights = {CLOUD_0, CLOUD_1, CLOUD_2};
+        int[] cloudOffsets = {0, 250, -250};
+
+        for (int i = 0; i < cloudHeights.length; i++) {
+            renderCloud(poseStack, modelViewMatrix, projectionMatrix, partialTick, camX, camY, camZ, level, ticks, cloudHeights[i], cloudOffsets[i]);
+        }
+
+        return true;
     }
 
     private boolean renderCloud(PoseStack poseStack, Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, double camX, double camY, double camZ,
-                                ClientLevel level, int ticks, float cloudY) {
+                                ClientLevel level, int ticks, float cloudY, int cloudOffset) {
 
         double d1 = ((float) ticks + partialTick) * 0.03F;
-        double d2 = (camX + d1) / 12.0;
+
+        double d2 = (camX + d1 + (double) cloudOffset) / 12.0;
         double d3 = cloudY - (float) camY + 0.33F;
-        double d4 = camZ / 12.0 + 0.33F;
+        double d4 = (camZ + cloudOffset * 0.5) / 12.0 + 0.33F;
         d2 -= Mth.floor(d2 / 2048.0) * 2048;
         d4 -= Mth.floor(d4 / 2048.0) * 2048;
         float f3 = (float) (d2 - (double) Mth.floor(d2));
