@@ -197,7 +197,7 @@ public class AbyssPortalBlock extends Block implements Portal {
                 d5 = (double) (random.nextFloat() * 2.0F * (float) j);
             }
 
-            level.addParticle(ParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
+            level.addParticle(ParticleTypes.GLOW, d0, d1, d2, d3, d4, d5);
         }
     }
 

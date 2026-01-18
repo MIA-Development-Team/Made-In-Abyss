@@ -81,4 +81,13 @@ public class CurseEvent {
                 (entity, side) -> entity.getData(MiaAttachments.CURSE)
         );
     }
+
+    /**
+     * 设置玩家的最小Y坐标
+     * @param playerUUID 玩家UUID
+     * @param minY 最小Y坐标
+     */
+    public static void setPlayerMinY(UUID playerUUID, double minY) {
+        playerMinY.put(playerUUID, minY);
+    }
 }

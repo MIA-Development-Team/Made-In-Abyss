@@ -17,10 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = FogRenderer.class)
 public class FogRendererMixin {
     @Unique
-    private static float mia$start;
-    @Unique
-    private static float mia$end;
-    @Unique
     private static FogShape mia$shape = FogShape.SPHERE;
 
     @Inject(method = "setupFog", at = @At(value = "INVOKE",
@@ -40,13 +36,20 @@ public class FogRendererMixin {
             boolean fogSky = level.isRaining() || level.isThundering();
             float start = fogSky ? 0.0F : farPlaneDistance - Mth.clamp(farPlaneDistance / 10.0F, 4.0F, 64.0F);
 
-            boolean noFogBiome = level.getBiome(player.blockPosition()).is(MiaBiomes.TEMPTATION_FOREST);
-            float maxStart = noFogBiome ? start : farPlaneDistance * 0.05F;
-            float maxEnd = noFogBiome ? farPlaneDistance : Math.min(farPlaneDistance, 192.0F) * 0.5F;
+            float maxStart = farPlaneDistance * 0.05F;
+            float maxEnd = Math.min(farPlaneDistance, 192.0F) * 0.5F;
 
             float fogIntensity = Mth.clamp(1.0F - (entityY - minY) / (maxY - minY), 0.0F, 1.0F);
-            mia$start = Mth.lerp(fogIntensity, start, maxStart);
-            mia$end = Mth.lerp(fogIntensity, farPlaneDistance, maxEnd);
+
+            float mia$start, mia$end;
+            if (level.getBiome(player.blockPosition()).is(MiaBiomes.TEMPTATION_FOREST)) {
+                mia$start = start;
+                mia$end = farPlaneDistance;
+            } else {
+                mia$start = Mth.lerp(fogIntensity, start, maxStart);
+                mia$end = Mth.lerp(fogIntensity, farPlaneDistance, maxEnd);
+            }
+
             if (mia$end >= farPlaneDistance) {
                 mia$end = farPlaneDistance;
                 mia$shape = FogShape.CYLINDER;

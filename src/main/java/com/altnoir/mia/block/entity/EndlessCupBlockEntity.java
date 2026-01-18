@@ -29,7 +29,7 @@ public class EndlessCupBlockEntity extends BlockEntity {
     };
 
     public EndlessCupBlockEntity(BlockPos pos, BlockState blockState) {
-        super(MiaBlockEntities.ENDLESS_CUP_BLOCK_ENTITY.get(), pos, blockState);
+        super(MiaBlockEntities.ENDLESS_CUP_ENTITY.get(), pos, blockState);
     }
 
     @Override

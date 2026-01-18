@@ -1,6 +1,7 @@
 package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.effect.AbyssBlessingEffect;
 import com.altnoir.mia.effect.AbyssCurseEffect;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -14,6 +15,8 @@ public class MiaEffects {
             MIA.MOD_ID);
     public static final Holder<MobEffect> ABYSS_CURSE = MOB_EFFECTS.register("abyss_curse",
             () -> new AbyssCurseEffect(MobEffectCategory.HARMFUL, 0x47311A).setBlendDuration(22));
+    public static final Holder<MobEffect> ABYSS_BLESSING = MOB_EFFECTS.register("abyss_blessing",
+            () -> new AbyssBlessingEffect(MobEffectCategory.BENEFICIAL, 0xA6E467));
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

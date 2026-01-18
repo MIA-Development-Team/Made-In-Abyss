@@ -315,6 +315,18 @@ public class MiaBlocks {
                             .isViewBlocking(MiaBlocks::never)
                             .noOcclusion())
     );
+    public static final DeferredBlock<Block> CAVE_EXPLORER_BEACON = registerBlock("cave_explorer_beacon",() ->
+            new CaveExplorerBeaconBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.EMERALD)
+                            .instrument(NoteBlockInstrument.HAT)
+                            .strength(3.0F)
+                            .lightLevel(state -> 15)
+                            .noOcclusion()
+                            .isRedstoneConductor(MiaBlocks::never)
+            )
+    );
+
     @SuppressWarnings("deprecation")
     public static final DeferredBlock<Block> ROPE = BLOCKS.register("rope", () ->
             new RopeBlock(BlockBehaviour.Properties.of()

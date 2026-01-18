@@ -1,6 +1,7 @@
-package com.altnoir.mia.init;
+package com.altnoir.mia.init.event;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.init.MiaCapabilities;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -12,9 +13,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
-@EventBusSubscriber(modid = MIA.MOD_ID)
-public class MiaCommands {
-    @SubscribeEvent
+public class MiaCommandsEvent {
     public static void onRegisterCommands(RegisterCommandsEvent event) {
         event.getDispatcher().register(
                 Commands.literal("mia")

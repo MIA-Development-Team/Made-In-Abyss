@@ -14,7 +14,7 @@ public class CapabilityRegister {
         CapabilityRegister.CAPABILITIES.add((event -> {
             event.registerBlockEntity(
                     Capabilities.FluidHandler.BLOCK,
-                    MiaBlockEntities.ENDLESS_CUP_BLOCK_ENTITY.get(),
+                    MiaBlockEntities.ENDLESS_CUP_ENTITY.get(),
                     (blockEntity, side) -> blockEntity.fluidTank
             );
         }));

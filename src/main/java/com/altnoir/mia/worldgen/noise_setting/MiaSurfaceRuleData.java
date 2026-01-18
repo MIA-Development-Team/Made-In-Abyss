@@ -76,12 +76,12 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
                 ),
                 SurfaceRules.sequence(
                         addCalciteRule(320, 2),
-                        addCalciteRule(288),
+                        addCalciteRule(288,3),
                         addCalciteRule(256, 5),
-                        addCalciteRule(192, 3, true),
+                        addCalciteRule(192),
                         addCalciteRule(128, 5),
-                        addCalciteRule(64),
-                        addCalciteRule(48, 1)
+                        addCalciteRule(64,3),
+                        addCalciteRule(48, 2)
                 )
         );
         ImmutableList.Builder<SurfaceRules.RuleSource> builder = ImmutableList.builder();
@@ -105,8 +105,8 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
 
     private static SurfaceRules.RuleSource addCalciteRule(int y, int offset, boolean extend) {
         var conditionSource = extend
-                ? SurfaceRules.yBlockCheck(VerticalAnchor.absolute(y), 0)
-                : SurfaceRules.yStartCheck(VerticalAnchor.absolute(y), -1);
+                ? SurfaceRules.yStartCheck(VerticalAnchor.absolute(y), -1)
+                : SurfaceRules.yBlockCheck(VerticalAnchor.absolute(y), 0);
         return SurfaceRules.ifTrue(conditionSource,
                 SurfaceRules.ifTrue(
                         SurfaceRules.not(

@@ -22,7 +22,7 @@ public interface MiaStructureSets {
                 ABYSS_STRONGHOLDS,
                 new StructureSet(
                         structure.getOrThrow(MiaStructures.ABYSS_STRONGHOLD),
-                        new ConcentricRingsStructurePlacement(16, 3, 128, biome.getOrThrow(BiomeTags.IS_OVERWORLD))
+                        new ConcentricRingsStructurePlacement(32, 12, 64, biome.getOrThrow(BiomeTags.IS_OVERWORLD))
                 )
         );
     }

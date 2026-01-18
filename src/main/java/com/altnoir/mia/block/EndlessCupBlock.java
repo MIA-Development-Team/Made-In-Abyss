@@ -102,6 +102,6 @@ public class EndlessCupBlock extends BaseEntityBlock implements SimpleWaterlogge
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide() ? null : createTickerHelper(blockEntityType, MiaBlockEntities.ENDLESS_CUP_BLOCK_ENTITY.get(), EndlessCupBlockEntity::tick);
+        return level.isClientSide() ? null : createTickerHelper(blockEntityType, MiaBlockEntities.ENDLESS_CUP_ENTITY.get(), EndlessCupBlockEntity::tick);
     }
 }

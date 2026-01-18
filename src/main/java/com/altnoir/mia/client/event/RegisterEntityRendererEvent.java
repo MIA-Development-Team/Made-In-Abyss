@@ -9,9 +9,9 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 @OnlyIn(Dist.CLIENT)
 public class RegisterEntityRendererEvent {
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(MiaBlockEntities.PEDESTAL_BLOCK_ENTITY.get(), PedestalRenderer::new);
-        event.registerBlockEntityRenderer(MiaBlockEntities.ENDLESS_CUP_BLOCK_ENTITY.get(), EndlessCupRenderer::new);
-        event.registerBlockEntityRenderer(MiaBlockEntities.SUN_STONE_BLOCK_ENTITY.get(), SunStoneRenderer::new);
-        event.registerBlockEntityRenderer(MiaBlockEntities.ABYSS_SPAWNER_BLOCK_ENTITY.get(), AbyssSpawnerRenderer::new);
+        event.registerBlockEntityRenderer(MiaBlockEntities.PEDESTAL_ENTITY.get(), PedestalRenderer::new);
+        event.registerBlockEntityRenderer(MiaBlockEntities.ENDLESS_CUP_ENTITY.get(), EndlessCupRenderer::new);
+        event.registerBlockEntityRenderer(MiaBlockEntities.SUN_STONE_ENTITY.get(), SunStoneRenderer::new);
+        event.registerBlockEntityRenderer(MiaBlockEntities.ABYSS_SPAWNER_ENTITY.get(), AbyssSpawnerRenderer::new);
     }
 }

@@ -75,7 +75,7 @@ public class SunStoneRenderer implements BlockEntityRenderer<SunStoneBlockEntity
 
     @Override
     public int getViewDistance() {
-        return BlockEntityRenderer.super.getViewDistance() * 2;
+        return BlockEntityRenderer.super.getViewDistance() * 4;
     }
 
     @Override
