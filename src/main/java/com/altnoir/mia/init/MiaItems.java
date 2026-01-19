@@ -4,9 +4,11 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.component.MiaFoods;
 import com.altnoir.mia.item.*;
 import com.altnoir.mia.item.abs.IArtifactItem.Grade;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.component.CustomData;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -62,7 +64,7 @@ public class MiaItems {
 
     public static final DeferredItem<Item> HOOK_ITEM = ITEMS.register(
             "hook_item",
-            () -> new HookItem(new Item.Properties().stacksTo(1))
+            () -> new HookItem(new Item.Properties().component(DataComponents.CUSTOM_DATA, CustomData.EMPTY).stacksTo(1))
     );
 
     // Block Item

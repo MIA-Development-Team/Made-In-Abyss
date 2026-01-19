@@ -14,6 +14,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import org.slf4j.Logger;
@@ -27,6 +28,8 @@ public class MIA {
     public static final AbyssTrialSpawnerManager SPAWNER_MANAGER = new AbyssTrialSpawnerManager();
 
     public MIA(IEventBus modEventBus, ModContainer modContainer) {
+        modEventBus.addListener(this::commonSetup);
+        
         MiaItems.register(modEventBus);
         MiaBlocks.register(modEventBus);
         MiaBlockEntities.register(modEventBus);
@@ -56,6 +59,10 @@ public class MIA {
         var gameEventBus = NeoForge.EVENT_BUS;
         gameEventBus.register(this);
         EventHandle.addListener(modEventBus, gameEventBus);
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        MiaStats.init();
     }
 
     @SubscribeEvent

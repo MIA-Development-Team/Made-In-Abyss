@@ -69,7 +69,7 @@ public class KeyArrowEvent {
             RIGHT_KEY.consumeClick();
         }
 
-        HookHandler.handler(MC.player, MC.options.keyJump.consumeClick());
+        HookHandler.handler(MC.player, MC.level, MC.options.keyJump.consumeClick());
     }
 
     private static void handleSkill() {

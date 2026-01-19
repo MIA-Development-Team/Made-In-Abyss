@@ -1,10 +1,15 @@
 package com.altnoir.mia.client.handler;
 
 import com.altnoir.mia.entity.projectile.HookEntity;
+import com.altnoir.mia.init.MiaItems;
 import com.altnoir.mia.network.server.DiscardHookPayload;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -12,15 +17,21 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 @OnlyIn(Dist.CLIENT)
 public class HookHandler {
-    // TODO 这里的缓存模式得改，不能直接缓存实体,不然在退出存档的时候，缓存的实体不会清空
-    public static HookEntity hookEntity;
-
-    public static void handler(LocalPlayer player, boolean isJump) {
-        if (player.isCrouching() || hookEntity == null || hookEntity.getHookState() != HookEntity.HookState.HOOKED) {
+    public static void handler(LocalPlayer player, Level level, boolean isJump) {
+        HookEntity hookEntity = null;
+        ItemStack stack;
+        if (player.getMainHandItem().is(MiaItems.HOOK_ITEM)) {
+            stack = player.getMainHandItem();
+        } else if (player.getOffhandItem().is(MiaItems.HOOK_ITEM)) {
+            stack = player.getOffhandItem();
+        } else {
             return;
         }
-        if (player.level().getEntity(hookEntity.getId()) != hookEntity || hookEntity.isRemoved()) {
-            hookEntity = null;
+        CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+        if (customData.contains("hook") && level.getEntity(customData.copyTag().getInt("hook")) instanceof HookEntity entity) {
+            hookEntity = entity;
+        }
+        if (player.isCrouching() || hookEntity == null || hookEntity.getHookState() != HookEntity.HookState.HOOKED) {
             return;
         }
         // TODO 玩家乘坐实体应不应该被操作
@@ -36,7 +47,6 @@ public class HookHandler {
                 player.setDeltaMovement(player.getDeltaMovement().add(-Mth.sin(f) * 0.2, 0.0, Mth.cos(f) * 0.2));
             }
             PacketDistributor.sendToServer(new DiscardHookPayload(hookEntity.getId()));
-            hookEntity = null;
             return;
         }
         Vec3 subtract = hookEntity.position().subtract(player.position());
