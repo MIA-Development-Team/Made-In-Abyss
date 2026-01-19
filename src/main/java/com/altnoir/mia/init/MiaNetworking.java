@@ -3,7 +3,6 @@ package com.altnoir.mia.init;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.network.client.CompassTargetPayload;
 import com.altnoir.mia.network.client.CurseCapabilityPayload;
-import com.altnoir.mia.network.client.SyncHookPayload;
 import com.altnoir.mia.network.server.DiscardHookPayload;
 import com.altnoir.mia.network.server.SkillCooldownPayload;
 import com.altnoir.mia.network.server.SkillPlayPayload;
@@ -23,11 +22,6 @@ public class MiaNetworking {
                 CompassTargetPayload.TYPE,
                 CompassTargetPayload.CODEC,
                 CompassTargetPayload::handle
-        );
-        registrar.playToClient(
-                SyncHookPayload.TYPE,
-                SyncHookPayload.CODEC,
-                SyncHookPayload::handle
         );
         registrar.playToServer(
                 SkillCooldownPayload.TYPE,
