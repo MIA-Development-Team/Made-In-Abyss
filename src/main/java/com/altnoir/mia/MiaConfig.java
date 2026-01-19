@@ -8,32 +8,35 @@ public class MiaConfig {
     private static final ModConfigSpec.Builder COMMON_BUILDER = new ModConfigSpec.Builder();
     private static final ModConfigSpec.Builder SERVER_BUILDER = new ModConfigSpec.Builder();
 
-    public enum DisconnectButtonState {
-        DEFAULT, DISABLED, HIDDEN
-    }
-
     public static int abyssRadius;
 
     public static boolean curse;
     public static boolean curseGod;
-    public static DisconnectButtonState disconnectButtonState;
+    public static int caveExplorerBeaconHorizontal;
+    public static int caveExplorerBeaconVertical;
+    public static boolean caveExplorerBeaconMaxVertical;
 
     private static final ModConfigSpec.IntValue ABYSS_RADIUS = COMMON_BUILDER
             .comment("The radius of the Abyss (Default: 160) | 深渊半径 (默认值: 160)")
             .defineInRange("abyss_radius", 160, 64, 10000);
-
+    /**
+     * 诅咒相关的配置
+     */
     private static final ModConfigSpec.BooleanValue CURSE = SERVER_BUILDER
             .comment("Whether to enable the Curse (Default: true) | 是否启用上升诅咒 (默认值: true)")
             .define("curse", true);
     private static final ModConfigSpec.BooleanValue CURSE_GOD = SERVER_BUILDER
             .comment("Whether to Curse the Creative and Spectator(Default: false) | 是否诅咒创造模式和观察者模式 (默认值: false, 需要启用诅咒)")
             .define("curse_god", false);
-    private static final ModConfigSpec.EnumValue<DisconnectButtonState> DISCONNECT_BUTTON_STATE = COMMON_BUILDER
-            .comment("Controls the disconnect button behavior (Default: DEFAULT) | 控制退出按钮行为 (默认值: DEFAULT)",
-                    "DEFAULT: No changes to the disconnect button | 不做任何处理",
-                    "DISABLED: Disable the disconnect button | 禁用退出按钮",
-                    "HIDDEN: Hide the disconnect button | 隐藏退出按钮")
-            .defineEnum("disconnect_button_state", DisconnectButtonState.DEFAULT);
+    private static final ModConfigSpec.IntValue CAVE_EXPLORER_BEACON_HORIZONTAL = SERVER_BUILDER
+            .comment("The horizontal range of the Cave Explorer Beacon, Beacon Level x (Default: 10) + 10 | 探窟者信标水平半径范围,信标等级 x (默认值: 10) + 10")
+            .defineInRange("cave_explorer_beacon_horizontal", 10, 1, 1000);
+    private static final ModConfigSpec.IntValue CAVE_EXPLORER_BEACON_VERTICAL = SERVER_BUILDER
+            .comment("The vertical range of the Cave Explorer Beacon, Beacon Level x (Default: 5) + 5 | 探窟者信标垂直半径范围,信标等级 x (默认值: 5) + 5")
+            .defineInRange("cave_explorer_beacon_vertical", 5, 1, 1000);
+    private static final ModConfigSpec.BooleanValue CAVE_EXPLORER_BEACON_MAX_VERTICAL = SERVER_BUILDER
+            .comment("Whether to set the vertical range of the Cave Explorer Beacon to the world height (Default: false) | 是否把探窟者信标垂直半径范围设置为世界高度 (默认值: false)")
+            .define("cave_explorer_beacon_max_vertical", false);
 
 
     public static final ModConfigSpec COMMON_SPEC = COMMON_BUILDER.build();
@@ -42,12 +45,14 @@ public class MiaConfig {
     private static void loadValues(ModConfigEvent event) {
         if (event.getConfig().getSpec() == COMMON_SPEC) {
             abyssRadius = ABYSS_RADIUS.get();
-            disconnectButtonState = DISCONNECT_BUTTON_STATE.get();
         }
 
         if (event.getConfig().getSpec() == SERVER_SPEC) {
             curse = CURSE.get();
             curseGod = CURSE_GOD.get();
+            caveExplorerBeaconHorizontal = CAVE_EXPLORER_BEACON_HORIZONTAL.get();
+            caveExplorerBeaconVertical = CAVE_EXPLORER_BEACON_VERTICAL.get();
+            caveExplorerBeaconMaxVertical = CAVE_EXPLORER_BEACON_MAX_VERTICAL.get();
         }
     }
 

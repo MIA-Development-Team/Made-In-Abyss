@@ -1,6 +1,6 @@
 package com.altnoir.mia.worldgen.dimension;
 
-import com.altnoir.mia.client.event.ClientDimEffects;
+import com.altnoir.mia.event.client.ClientDimEffects;
 import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.worldgen.MiaHeight;
 import net.minecraft.core.registries.Registries;

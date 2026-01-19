@@ -1,7 +1,6 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.datagen.loottable.MiaArchaeologyLoot;
-import com.altnoir.mia.datagen.loottable.MiaBlockLootTable;
 import com.altnoir.mia.datagen.loottable.MiaCheatLootTable;
 import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.core.HolderLookup;

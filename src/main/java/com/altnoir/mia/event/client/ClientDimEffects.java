@@ -1,4 +1,4 @@
-package com.altnoir.mia.client.event;
+package com.altnoir.mia.event.client;
 
 import com.altnoir.mia.client.renderer.TheAbyssDimEffects;
 import com.altnoir.mia.util.MiaUtil;

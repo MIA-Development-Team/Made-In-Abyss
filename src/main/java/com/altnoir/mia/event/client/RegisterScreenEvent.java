@@ -1,4 +1,4 @@
-package com.altnoir.mia.client.event;
+package com.altnoir.mia.event.client;
 
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;

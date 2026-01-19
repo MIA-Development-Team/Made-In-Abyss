@@ -1,4 +1,4 @@
-package com.altnoir.mia.client.event.combo;
+package com.altnoir.mia.compat.kubejs.combo;
 
 import java.util.ArrayList;
 import java.util.Arrays;

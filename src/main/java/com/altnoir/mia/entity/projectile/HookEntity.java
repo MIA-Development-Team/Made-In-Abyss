@@ -28,7 +28,7 @@ import java.util.function.IntFunction;
 public class HookEntity extends ThrowableItemProjectile {
     public static final EntityDataAccessor<Integer> DATA_HOOK_STATE = SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Boolean> DATA_SHOOT_HAND = SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.BOOLEAN);
-    public final float hookRangeSqr = 400;
+    public final float hookRangeSqr = 2000;
     protected BlockPos hookPos;
     protected BlockState hookedState;
 
@@ -104,7 +104,7 @@ public class HookEntity extends ThrowableItemProjectile {
                                             .subtract(position())
                                             .normalize()
                                             // 收回速度
-                                            .scale(0.2)
+                                            .scale(0.5)
                             )
             );
             if (distanceToSqr(player) < 4.0) {

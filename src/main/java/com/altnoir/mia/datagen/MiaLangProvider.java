@@ -2,9 +2,9 @@ package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.block.ArtifactSmithingTableBlock;
-import com.altnoir.mia.client.event.ClientCurseEvent;
-import com.altnoir.mia.client.event.ClientTooltipEvent;
-import com.altnoir.mia.client.event.KeyArrowEvent;
+import com.altnoir.mia.event.client.ClientCurseEvent;
+import com.altnoir.mia.event.client.ClientTooltipEvent;
+import com.altnoir.mia.event.client.KeyArrowEvent;
 import com.altnoir.mia.init.*;
 import com.altnoir.mia.item.abs.AbsArtifactBundle;
 import com.altnoir.mia.item.abs.IArtifactItem;
@@ -87,26 +87,6 @@ public class MiaLangProvider extends LanguageProvider {
         add(ClientCurseEvent.GUI_DISCONNECT, "Quit?");
         //GUI end
 
-        //Config start
-        add("mia.configuration.title", "Made In Abyss Configuration");
-        add("mia.configuration.curse", "Enable Curse");
-        add("mia.configuration.curse.tooltip", "Whether to enable the Curse");
-        add("mia.configuration.curse_god", "Curse the Creative and Spectator");
-        add("mia.configuration.curse_god.tooltip", "Whether to Curse the Creative and Spectator");
-        add("mia.configuration.curse_icon_position", "Curse Icon Position");
-        add("mia.configuration.curse_icon_position.tooltip", "Switch Curse Icon Position");
-        add("mia.configuration.curse_icon_position.middle", "Middle");
-        add("mia.configuration.curse_icon_position.right", "Right");
-        add("mia.configuration.curse_icon_position.hidden", "Hidden");
-        add("mia.configuration.disconnect_button_state", "Disconnect Button State");
-        add("mia.configuration.disconnect_button_state.tooltip", "Adjust the Disconnect Button");
-        add("mia.configuration.disconnect_button_state.default", "Default");
-        add("mia.configuration.disconnect_button_state.disabled", "Disabled");
-        add("mia.configuration.disconnect_button_state.hidden", "Hidden");
-        add("mia.configuration.abyss_radius", "Abyss Radius Value");
-        add("mia.configuration.abyss_radius.tooltip", "Setting The Abyss Radius");
-        //Config end
-
         //Biome start
         addBiome(MiaBiomes.THE_ABYSS, "The Abyss");
         addBiome(MiaBiomes.ABYSS_PLAINS, "Abyss Plains");
@@ -140,6 +120,35 @@ public class MiaLangProvider extends LanguageProvider {
         add(MiaSoundsProvider.ABYSS_PORTAL_AMBIENT, "Abyss Portal: Ambient");
         add(MiaSoundsProvider.ABYSS_PORTAL_TRAVEL, "Abyss Portal: Travel");
         // Sounds end
+
+        //Config start
+        add("mia.configuration.title", "Made In Abyss Configuration");
+
+        add("mia.configuration.curse", "Enable Curse");
+        add("mia.configuration.curse.tooltip", "Whether to enable the Curse");
+        add("mia.configuration.curse_god", "Curse the Creative and Spectator");
+        add("mia.configuration.curse_god.tooltip", "Whether to Curse the Creative and Spectator");
+        add("mia.configuration.cave_explorer_beacon_horizontal", "Cave Explorer Beacon Horizontal");
+        add("mia.configuration.cave_explorer_beacon_horizontal.tooltip", "Setting The Cave Explorer Beacon Horizontal");
+        add("mia.configuration.cave_explorer_beacon_vertical", "Cave Explorer Beacon Vertical");
+        add("mia.configuration.cave_explorer_beacon_vertical.tooltip", "Setting The Cave Explorer Beacon Vertical");
+        add("mia.configuration.cave_explorer_beacon_max_vertical", "Cave Explorer Beacon Max Vertical");
+        add("mia.configuration.cave_explorer_beacon_max_vertical.tooltip", "Setting The Cave Explorer Beacon Max Vertical");
+
+        add("mia.configuration.curse_icon_position", "Curse Icon Position");
+        add("mia.configuration.curse_icon_position.tooltip", "Switch Curse Icon Position");
+        add("mia.configuration.curse_icon_position.middle", "Middle");
+        add("mia.configuration.curse_icon_position.right", "Right");
+        add("mia.configuration.curse_icon_position.hidden", "Hidden");
+        add("mia.configuration.disconnect_button_state", "Disconnect Button State");
+        add("mia.configuration.disconnect_button_state.tooltip", "Adjust the Disconnect Button");
+        add("mia.configuration.disconnect_button_state.default", "Default");
+        add("mia.configuration.disconnect_button_state.disabled", "Disabled");
+        add("mia.configuration.disconnect_button_state.hidden", "Hidden");
+
+        add("mia.configuration.abyss_radius", "Abyss Radius Value");
+        add("mia.configuration.abyss_radius.tooltip", "Setting The Abyss Radius");
+        //Config end
 
         // Tags start
         add("tag.item.curios.whistle", "Whistle");

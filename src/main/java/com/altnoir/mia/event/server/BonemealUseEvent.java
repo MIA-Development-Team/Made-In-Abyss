@@ -1,4 +1,4 @@
-package com.altnoir.mia.init.event;
+package com.altnoir.mia.event.server;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaTags;

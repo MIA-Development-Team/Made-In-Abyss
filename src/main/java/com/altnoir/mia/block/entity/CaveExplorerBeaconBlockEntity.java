@@ -1,8 +1,8 @@
 package com.altnoir.mia.block.entity;
 
+import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.init.MiaBlockEntities;
 import com.altnoir.mia.init.MiaEffects;
-import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -84,10 +84,15 @@ public class CaveExplorerBeaconBlockEntity extends BlockEntity {
 
     private static void applyEffects(Level level, BlockPos pos, int beaconLevel) {
         if (!level.isClientSide) {
-            double horizontalRange = beaconLevel * 10 + 10;
-            double verticalRange = beaconLevel * 5 + 5;
+            double horizontalRange = beaconLevel * MiaConfig.caveExplorerBeaconHorizontal + 10;
+            double verticalRange = beaconLevel * MiaConfig.caveExplorerBeaconVertical + 5;
+            boolean maxVertical = MiaConfig.caveExplorerBeaconMaxVertical;
 
-            AABB aabb = new AABB(pos).inflate(horizontalRange, verticalRange, horizontalRange);
+            AABB aabb = new AABB(pos).inflate(
+                    horizontalRange,
+                    maxVertical ? level.getMaxBuildHeight() : verticalRange,
+                    horizontalRange
+            );
             List<Player> players = level.getEntitiesOfClass(Player.class, aabb);
 
             int duration = (9 + beaconLevel * 2) * 20;

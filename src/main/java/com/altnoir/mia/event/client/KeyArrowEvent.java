@@ -1,4 +1,4 @@
-package com.altnoir.mia.client.event;
+package com.altnoir.mia.event.client;
 
 import com.altnoir.mia.client.handler.HookHandler;
 import com.altnoir.mia.init.MiaComponents;
@@ -6,7 +6,6 @@ import com.altnoir.mia.init.MiaKeyBinding;
 import com.altnoir.mia.item.abs.IArtifactSkill;
 import com.altnoir.mia.network.server.SkillCooldownPayload;
 import com.altnoir.mia.network.server.SkillPlayPayload;
-import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;

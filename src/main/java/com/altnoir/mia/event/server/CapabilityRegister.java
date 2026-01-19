@@ -1,4 +1,4 @@
-package com.altnoir.mia.init.event;
+package com.altnoir.mia.event.server;
 
 import com.altnoir.mia.init.MiaBlockEntities;
 import net.neoforged.neoforge.capabilities.Capabilities;

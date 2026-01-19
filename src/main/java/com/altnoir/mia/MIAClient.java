@@ -1,7 +1,6 @@
 package com.altnoir.mia;
 
-import com.altnoir.mia.client.MiaClientConfig;
-import com.altnoir.mia.client.event.ClientEventHandler;
+import com.altnoir.mia.init.event.ClientEventHandler;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;

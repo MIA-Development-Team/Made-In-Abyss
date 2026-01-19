@@ -1,7 +1,7 @@
 package com.altnoir.mia.client.gui.screens;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.client.event.ClientTooltipEvent;
+import com.altnoir.mia.event.client.ClientTooltipEvent;
 import com.altnoir.mia.inventory.ArtifactSmithingTableMenu;
 import com.altnoir.mia.recipe.ArtifactSmithingRecipe;
 import com.altnoir.mia.util.MiaUtil;

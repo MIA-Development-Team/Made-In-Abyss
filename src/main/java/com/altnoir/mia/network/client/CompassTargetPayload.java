@@ -1,6 +1,6 @@
 package com.altnoir.mia.network.client;
 
-import com.altnoir.mia.client.event.CompassOverlayEvent;
+import com.altnoir.mia.event.client.CompassOverlayEvent;
 import com.altnoir.mia.util.MiaUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;

@@ -1,4 +1,4 @@
-package com.altnoir.mia.init.event;
+package com.altnoir.mia.event.server;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.MiaConfig;

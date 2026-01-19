@@ -1,7 +1,5 @@
-package com.altnoir.mia.init.event;
+package com.altnoir.mia.event.server;
 
-import com.altnoir.mia.init.MiaAttributes;
-import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 
 public class PlayerAttributeEvent {

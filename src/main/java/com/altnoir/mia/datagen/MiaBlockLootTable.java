@@ -1,4 +1,4 @@
-package com.altnoir.mia.datagen.loottable;
+package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaItems;
@@ -132,6 +132,7 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         // 设备
         dropOther(MiaBlocks.HOPPER_FARMLAND.get(), MiaBlocks.ABYSS_COBBLED_ANDESITE.get());
         dropSelf(MiaBlocks.SUN_STONE.get());
+        dropSelf(MiaBlocks.CAVE_EXPLORER_BEACON.get());
         dropSelf(MiaBlocks.AMETHYST_LAMPTUBE.get());
         dropSelf(MiaBlocks.PRASIOLITE_LAMPTUBE.get());
         dropSelf(MiaBlocks.PEDESTAL.get());

@@ -1,6 +1,5 @@
-package com.altnoir.mia.init.event;
+package com.altnoir.mia.event.server;
 
-import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaCapabilities;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -9,8 +8,6 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 public class MiaCommandsEvent {

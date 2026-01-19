@@ -1,7 +1,7 @@
-package com.altnoir.mia.client.event;
+package com.altnoir.mia.event.client;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.client.MiaClientConfig;
+import com.altnoir.mia.MiaClientConfig;
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.init.MiaCapabilities;
 import com.altnoir.mia.util.MiaUtil;
@@ -29,13 +29,13 @@ public class ClientCurseEvent {
     private static int animationTick = 0;
 
     public static void ScreenEventInitPost(ScreenEvent.Init.Post event) {
-        if (MiaConfig.disconnectButtonState == MiaConfig.DisconnectButtonState.DEFAULT) return;
+        if (MiaClientConfig.disconnectButtonState == MiaClientConfig.DisconnectButtonState.DEFAULT) return;
 
         if (event.getScreen() instanceof PauseScreen pauseScreen) {
             Button disconnectButton = pauseScreen.disconnectButton;
 
             if (disconnectButton != null) {
-                if (MiaConfig.disconnectButtonState == MiaConfig.DisconnectButtonState.HIDDEN) {
+                if (MiaClientConfig.disconnectButtonState == MiaClientConfig.DisconnectButtonState.HIDDEN) {
                     disconnectButton.visible = false;
                 } else {
                     disconnectButton.active = false;

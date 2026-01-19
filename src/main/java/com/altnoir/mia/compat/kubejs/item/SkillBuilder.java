@@ -1,7 +1,7 @@
 package com.altnoir.mia.compat.kubejs.item;
 
 
-import com.altnoir.mia.client.event.combo.ComboContext;
+import com.altnoir.mia.compat.kubejs.combo.ComboContext;
 import com.altnoir.mia.item.abs.AbsSkill;
 import dev.latvian.mods.kubejs.item.ItemBuilder;
 import dev.latvian.mods.kubejs.typings.Info;

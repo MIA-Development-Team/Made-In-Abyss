@@ -2,6 +2,7 @@ package com.altnoir.mia.init.event;
 
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.datagen.DataGenerators;
+import com.altnoir.mia.event.server.*;
 import com.altnoir.mia.init.MiaNetworking;
 import net.neoforged.bus.api.IEventBus;
 

@@ -1,6 +1,7 @@
-package com.altnoir.mia.client.event;
+package com.altnoir.mia.init.event;
 
-import com.altnoir.mia.client.MiaClientConfig;
+import com.altnoir.mia.MiaClientConfig;
+import com.altnoir.mia.event.client.*;
 import com.altnoir.mia.init.MiaKeyBinding;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;

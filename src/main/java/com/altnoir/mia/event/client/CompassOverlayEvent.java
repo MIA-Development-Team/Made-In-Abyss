@@ -1,4 +1,4 @@
-package com.altnoir.mia.client.event;
+package com.altnoir.mia.event.client;
 
 import com.altnoir.mia.MIA;
 import com.mojang.blaze3d.systems.RenderSystem;
