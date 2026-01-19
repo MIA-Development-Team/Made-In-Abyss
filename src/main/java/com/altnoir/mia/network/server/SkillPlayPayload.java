@@ -1,8 +1,7 @@
-package com.altnoir.mia.network;
+package com.altnoir.mia.network.server;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.compat.kubejs.KubeJSHelper;
-import com.altnoir.mia.compat.kubejs.item.KubeSkill;
 import com.altnoir.mia.item.abs.IArtifactSkill;
 import com.altnoir.mia.util.MiaUtil;
 import io.netty.buffer.ByteBuf;

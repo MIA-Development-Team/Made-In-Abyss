@@ -1,4 +1,4 @@
-package com.altnoir.mia.network;
+package com.altnoir.mia.network.client;
 
 import com.altnoir.mia.client.event.CompassOverlayEvent;
 import com.altnoir.mia.util.MiaUtil;

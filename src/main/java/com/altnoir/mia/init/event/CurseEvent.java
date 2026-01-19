@@ -4,7 +4,7 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.init.MiaAttachments;
 import com.altnoir.mia.init.MiaCapabilities;
-import com.altnoir.mia.network.CurseCapabilityPayload;
+import com.altnoir.mia.network.client.CurseCapabilityPayload;
 import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;

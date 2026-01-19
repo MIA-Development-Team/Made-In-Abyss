@@ -60,6 +60,11 @@ public class MiaItems {
     public static final DeferredItem<Item> MISTFUZZ_PEACH = ITEMS.register("mistfuzz_peach", () ->
             new Item(new Item.Properties().food(MiaFoods.MISTFUZZ_PEACH)));
 
+    public static final DeferredItem<Item> HOOK_ITEM = ITEMS.register(
+            "hook_item",
+            () -> new HookItem(new Item.Properties().stacksTo(1))
+    );
+
     // Block Item
     public static final DeferredItem<Item> ENDLESS_CUP = ITEMS.register("endless_cup", () ->
             new EArtifactBlockItem(MiaBlocks.ENDLESS_CUP.get(), new Item.Properties().stacksTo(1), Grade.C, 1));

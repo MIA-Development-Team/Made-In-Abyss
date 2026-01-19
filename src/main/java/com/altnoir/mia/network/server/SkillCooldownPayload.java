@@ -1,4 +1,4 @@
-package com.altnoir.mia.network;
+package com.altnoir.mia.network.server;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaComponents;

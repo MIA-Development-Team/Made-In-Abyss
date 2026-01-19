@@ -1,20 +1,19 @@
 package com.altnoir.mia.client.event;
 
+import com.altnoir.mia.client.handler.HookHandler;
 import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.init.MiaKeyBinding;
 import com.altnoir.mia.item.abs.IArtifactSkill;
-import com.altnoir.mia.network.SkillCooldownPayload;
-import com.altnoir.mia.network.SkillPlayPayload;
+import com.altnoir.mia.network.server.SkillCooldownPayload;
+import com.altnoir.mia.network.server.SkillPlayPayload;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -69,6 +68,8 @@ public class KeyArrowEvent {
             LEFT_KEY.consumeClick();
             RIGHT_KEY.consumeClick();
         }
+
+        HookHandler.handler(MC.player, MC.options.keyJump.consumeClick());
     }
 
     private static void handleSkill() {
