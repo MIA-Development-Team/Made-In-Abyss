@@ -1,6 +1,7 @@
 package com.altnoir.mia.event.client;
 
 import com.altnoir.mia.block.entity.renderer.*;
+import com.altnoir.mia.client.renderer.HookEntityRenderer;
 import com.altnoir.mia.init.MiaBlockEntities;
 import com.altnoir.mia.init.MiaEntities;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -15,6 +16,6 @@ public class RegisterEntityRendererEvent {
         event.registerBlockEntityRenderer(MiaBlockEntities.ENDLESS_CUP_ENTITY.get(), EndlessCupRenderer::new);
         event.registerBlockEntityRenderer(MiaBlockEntities.SUN_STONE_ENTITY.get(), SunStoneRenderer::new);
         event.registerBlockEntityRenderer(MiaBlockEntities.ABYSS_SPAWNER_ENTITY.get(), AbyssSpawnerRenderer::new);
-        event.registerEntityRenderer(MiaEntities.HOOK.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(MiaEntities.HOOK.get(), HookEntityRenderer::new);
     }
 }

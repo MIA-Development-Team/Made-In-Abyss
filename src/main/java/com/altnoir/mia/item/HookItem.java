@@ -22,8 +22,13 @@ public class HookItem extends Item {
         CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
         boolean flag = customData.contains("hook");
         if (flag && level.getEntity(customData.copyTag().getInt("hook")) instanceof HookEntity entity) {
-            entity.setHookState(HookEntity.HookState.POP);
-            return super.use(level, player, usedHand);
+            // 尝试优化手感，当距离小于4时，删除原来抓钩，立即发射,不需收回
+            if (entity.distanceToSqr(player) > 16) {
+                entity.setHookState(HookEntity.HookState.POP);
+                return super.use(level, player, usedHand);
+            } else {
+                entity.discard();
+            }
         }
         HookEntity hookEntity = new HookEntity(player, usedHand);
         hookEntity.shootFromRotation(
