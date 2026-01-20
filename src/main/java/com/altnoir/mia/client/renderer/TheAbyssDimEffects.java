@@ -107,14 +107,14 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
         int[] cloudOffsets = {0, 250, -250};
 
         for (int i = 0; i < cloudHeights.length; i++) {
-            renderCloud(poseStack, modelViewMatrix, projectionMatrix, partialTick, camX, camY, camZ, level, ticks, cloudHeights[i], cloudOffsets[i]);
+            cloudsRender(poseStack, modelViewMatrix, projectionMatrix, partialTick, camX, camY, camZ, level, ticks, cloudHeights[i], cloudOffsets[i]);
         }
 
         return true;
     }
 
-    private boolean renderCloud(PoseStack poseStack, Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, double camX, double camY, double camZ,
-                                ClientLevel level, int ticks, float cloudY, int cloudOffset) {
+    private boolean cloudsRender(PoseStack poseStack, Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, double camX, double camY, double camZ,
+                                 ClientLevel level, int ticks, float cloudY, int cloudOffset) {
 
         double d1 = ((float) ticks + partialTick) * 0.03F;
 

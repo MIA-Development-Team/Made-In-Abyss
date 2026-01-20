@@ -128,11 +128,14 @@ public class MiaLangProvider extends LanguageProvider {
         add("mia.configuration.curse.tooltip", "Whether to enable the Curse");
         add("mia.configuration.curse_god", "Curse the Creative and Spectator");
         add("mia.configuration.curse_god.tooltip", "Whether to Curse the Creative and Spectator");
-        add("mia.configuration.cave_explorer_beacon_horizontal", "Cave Explorer Beacon Horizontal");
-        add("mia.configuration.cave_explorer_beacon_horizontal.tooltip", "Setting The Cave Explorer Beacon Horizontal");
-        add("mia.configuration.cave_explorer_beacon_vertical", "Cave Explorer Beacon Vertical");
-        add("mia.configuration.cave_explorer_beacon_vertical.tooltip", "Setting The Cave Explorer Beacon Vertical");
-        add("mia.configuration.cave_explorer_beacon_max_vertical", "Cave Explorer Beacon Max Vertical");
+
+        add("mia.configuration.cave_explorer_beacon", "Cave Explorer Beacon");
+        add("mia.configuration.cave_explorer_beacon.tooltip", "Cave Explorer Beacon Configuration");
+        add("mia.configuration.cave_explorer_beacon_horizontal", "Horizontal Range");
+        add("mia.configuration.cave_explorer_beacon_horizontal.tooltip", "Setting The Cave Explorer Beacon Horizontal Range");
+        add("mia.configuration.cave_explorer_beacon_vertical", "Vertical Range");
+        add("mia.configuration.cave_explorer_beacon_vertical.tooltip", "Setting The Cave Explorer Beacon Vertical Range");
+        add("mia.configuration.cave_explorer_beacon_max_vertical", "Max Vertical Range");
         add("mia.configuration.cave_explorer_beacon_max_vertical.tooltip", "Setting The Cave Explorer Beacon Max Vertical");
 
         add("mia.configuration.curse_icon_position", "Curse Icon Position");

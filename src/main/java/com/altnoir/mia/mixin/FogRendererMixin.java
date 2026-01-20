@@ -1,12 +1,15 @@
 package com.altnoir.mia.mixin;
 
+import com.altnoir.mia.MIA;
 import com.altnoir.mia.worldgen.biome.MiaBiomes;
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.ClientHooks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -14,10 +17,33 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 @Mixin(value = FogRenderer.class)
 public class FogRendererMixin {
+    // 新添加的缓存变量
     @Unique
-    private static FogShape mia$shape = FogShape.SPHERE;
+    private static final Map<Long, Float> FOG_DENSITY_CACHE = new HashMap<>();
+
+    // 新添加的过渡控制变量
+    @Unique
+    private static final int TRANSITION_RANGE = 32; // 过渡范围32格
+    @Unique
+    private static float lastFogStart = 0;
+    @Unique
+    private static float lastFogEnd = 192;
+    @Unique
+    private static long lastUpdateTime = 0;
+
+    // 性能保护变量
+    @Unique
+    private static int samplesThisFrame = 0;
+    @Unique
+    private static long lastFrameTime = 0;
+    @Unique
+    private static final int MAX_SAMPLES_PER_FRAME = 8;
 
     @Inject(method = "setupFog", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/util/Mth;clamp(FFF)F", ordinal = 0,
@@ -29,30 +55,54 @@ public class FogRendererMixin {
 
         if (level.dimension().equals(MiaDimensions.THE_ABYSS_LEVEL)) {
             float entityY = (float) player.getY();
+            double entityX = player.getX();
+            double entityZ = player.getZ();
 
             float maxY = 256.0F; // 雾起高度
             float minY = -16.0F; // 雾止高度
 
             boolean fogSky = level.isRaining() || level.isThundering();
-            float start = fogSky ? 0.0F : farPlaneDistance - Mth.clamp(farPlaneDistance / 10.0F, 4.0F, 64.0F);
-
+            float baseStart = fogSky ? 0.0F : farPlaneDistance - Mth.clamp(farPlaneDistance / 10.0F, 4.0F, 64.0F);
             float maxStart = farPlaneDistance * 0.05F;
             float maxEnd = Math.min(farPlaneDistance, 192.0F) * 0.5F;
 
+            // 获取平滑后的群系混合因子
+            float biomeFactor = getSmoothedBiomeFactor(level, entityX, entityY, entityZ);
+            // 根据高度计算雾强度
             float fogIntensity = Mth.clamp(1.0F - (entityY - minY) / (maxY - minY), 0.0F, 1.0F);
 
-            float mia$start, mia$end;
-            if (level.getBiome(player.blockPosition()).is(MiaBiomes.TEMPTATION_FOREST)) {
-                mia$start = start;
-                mia$end = farPlaneDistance;
-            } else {
-                mia$start = Mth.lerp(fogIntensity, start, maxStart);
-                mia$end = Mth.lerp(fogIntensity, farPlaneDistance, maxEnd);
-            }
+            // 计算两种群系的雾值
+            float temptationStart = baseStart;               // 诱惑森林：基础起始
+            float temptationEnd = farPlaneDistance;          // 诱惑森林：远距离结束（稀薄雾）
 
+            float otherStart = Mth.lerp(fogIntensity, baseStart, maxStart);     // 其他群系：根据高度变化的起始
+            float otherEnd = Mth.lerp(fogIntensity, farPlaneDistance, maxEnd);   // 其他群系：根据高度变化的结束（浓雾）
+
+            // 关键修复：混合因子逻辑
+            // biomeFactor = 1: 全是诱惑森林 → 使用temptation参数（稀薄雾）
+            // biomeFactor = 0: 没有诱惑森林 → 使用other参数（浓雾）
+            float mia$start = Mth.lerp(biomeFactor, otherStart, temptationStart);
+            float mia$end = Mth.lerp(biomeFactor, otherEnd, temptationEnd);
+
+            // 时间平滑过渡（避免帧间跳变）
+            long currentTime = System.currentTimeMillis();
+            float timeDelta = (currentTime - lastUpdateTime) / 1000.0f; // 转换为秒
+            float smoothFactor = Mth.clamp(timeDelta * 2.0f, 0, 1); // 0.5秒内完成过渡
+
+            mia$start = Mth.lerp(smoothFactor, lastFogStart, mia$start);
+            mia$end = Mth.lerp(smoothFactor, lastFogEnd, mia$end);
+
+            // 更新缓存值
+            lastFogStart = mia$start;
+            lastFogEnd = mia$end;
+            lastUpdateTime = currentTime;
+
+            FogShape mia$shape;
             if (mia$end >= farPlaneDistance) {
                 mia$end = farPlaneDistance;
                 mia$shape = FogShape.CYLINDER;
+            } else {
+                mia$shape = FogShape.SPHERE;
             }
 
             RenderSystem.setShaderFogStart(mia$start);
@@ -62,5 +112,91 @@ public class FogRendererMixin {
 
             ci.cancel();
         }
+    }
+
+    @Unique
+    private static float getSmoothedBiomeFactor(Level level, double x, double y, double z) {
+        // 计算在过渡网格中的位置
+        int gridX = Mth.floor(x / TRANSITION_RANGE);
+        int gridZ = Mth.floor(z / TRANSITION_RANGE);
+
+        // 获取四个角点的混合因子
+        float[] factors = new float[4];
+        factors[0] = calculateBiomeBlendFactor(level, gridX * TRANSITION_RANGE, y, gridZ * TRANSITION_RANGE);
+        factors[1] = calculateBiomeBlendFactor(level, (gridX + 1) * TRANSITION_RANGE, y, gridZ * TRANSITION_RANGE);
+        factors[2] = calculateBiomeBlendFactor(level, gridX * TRANSITION_RANGE, y, (gridZ + 1) * TRANSITION_RANGE);
+        factors[3] = calculateBiomeBlendFactor(level, (gridX + 1) * TRANSITION_RANGE, y, (gridZ + 1) * TRANSITION_RANGE);
+
+        // 计算在网格内的相对位置（0-1）
+        float dx = (float) (x - gridX * TRANSITION_RANGE) / TRANSITION_RANGE;
+        float dz = (float) (z - gridZ * TRANSITION_RANGE) / TRANSITION_RANGE;
+
+        // 双线性插值
+        float a = Mth.lerp(dx, factors[0], factors[1]);
+        float b = Mth.lerp(dx, factors[2], factors[3]);
+
+        return Mth.lerp(dz, a, b);
+    }
+
+    @Unique
+    private static float calculateBiomeBlendFactor(Level level, double x, double y, double z) {
+        // 性能保护：每帧重置采样计数器
+        long currentFrameTime = System.currentTimeMillis();
+        if (currentFrameTime != lastFrameTime) {
+            samplesThisFrame = 0;
+            lastFrameTime = currentFrameTime;
+        }
+
+        // 如果超过每帧最大采样次数，返回默认值
+        if (samplesThisFrame >= MAX_SAMPLES_PER_FRAME) {
+            return 0.5f; // 默认值，表示混合状态
+        }
+
+        // 将世界坐标转换为区块坐标
+        int chunkX = Mth.floor(x / 16);
+        int chunkZ = Mth.floor(z / 16);
+        // 将Y坐标分为高度层（每8格一层）
+        int heightLayer = (int) y / 8 + 8;
+        long key = ((long) chunkX << 42) | ((long) chunkZ << 21) | (heightLayer & 0x1FFFFFL);
+
+        // 检查缓存
+        if (FOG_DENSITY_CACHE.containsKey(key)) {
+            return FOG_DENSITY_CACHE.get(key);
+        }
+
+        samplesThisFrame++; // 增加采样计数
+
+        // 采样3x3区块区域
+        int temptationCount = 0;
+        int totalSamples = 0;
+
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                BlockPos pos = new BlockPos((chunkX + dx) * 16 + 8, (int) y, (chunkZ + dz) * 16 + 8);
+
+                // 检查是否为诱惑森林群系
+                if (level.getBiome(pos).is(MiaBiomes.TEMPTATION_FOREST)) {
+                    temptationCount++;
+                }
+                totalSamples++;
+            }
+        }
+
+        // 计算诱惑森林的比例
+        float blendFactor = (float) temptationCount / totalSamples;
+
+        // 存入缓存
+        FOG_DENSITY_CACHE.put(key, blendFactor);
+
+        // 限制缓存大小，避免内存泄漏
+        if (FOG_DENSITY_CACHE.size() > 256) {
+            Iterator<Map.Entry<Long, Float>> it = FOG_DENSITY_CACHE.entrySet().iterator();
+            if (it.hasNext()) {
+                it.next();
+                it.remove();
+            }
+        }
+
+        return blendFactor;
     }
 }

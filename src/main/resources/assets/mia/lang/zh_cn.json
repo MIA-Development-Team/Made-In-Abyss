@@ -18,6 +18,7 @@
     "item.mia.prasiolite_hoe": "翡翠锄",
     "item.mia.prasiolite_pickaxe": "翡翠镐",
     "item.mia.prasiolite_shard": "翡翠碎片",
+    "item.mia.star_compass": "星之罗盘",
 
     "block.mia.abyss_andesite": "深界安山岩",
     "block.mia.abyss_andesite_slab": "深界安山岩台阶",
@@ -87,6 +88,9 @@
     "block.mia.skyfog_leaves": "天雾树叶",
     "block.mia.skyfog_leaves_with_fruits": "结果的天雾树叶",
     "block.mia.skyfog_sapling": "天雾树苗",
+
+    "block.mia.inverted_sapling": "倒悬树苗",
+
     "block.mia.rope": "绳索",
 
     "block.mia.fortitude_flower": "不屈之花",
@@ -106,17 +110,20 @@
     "block.mia.endless_cup": "无尽水杯",
     "block.mia.artifact_smithing_table": "遗物锻造台",
     "block.mia.sun_stone": "太阳石",
+    "block.mia.cave_explorer_beacon": "探窟者信标",
 
     "container.mia.artifact.smithing.title": "遗物锻造台",
 
-    "biome.mia.abyss_brink/abyss_brink": "阿比斯深渊",
-    "biome.mia.abyss_brink/abyss_plains": "深渊平原",
-    "biome.mia.abyss_brink/skyfog_forest": "天雾森林",
+    "biome.mia.the_abyss/abyss_plains": "深渊平原",
+    "biome.mia.the_abyss/skyfog_forest": "天雾森林",
+    "biome.mia.the_abyss/the_abyss": "阿比斯深渊",
 
-    "painting.mia.abyss.author": "Made In Abyss",
-    "painting.mia.abyss.title": "Abyss",
+    "painting.mia.the_abyss.author": "Made In Abyss",
+    "painting.mia.the_abyss.title": "The Abyss",
+    "painting.mia.the_abyss2.author": "Made In Abyss",
+    "painting.mia.the_abyss2.title": "The Abyss",
     "painting.mia.abyss_map.author": "Made In Abyss",
-    "painting.mia.abyss_map.title": "Abyss地图",
+    "painting.mia.abyss_map.title": "深渊地图",
     "painting.mia.fortitude_flower.author": "Made In Abyss",
     "painting.mia.fortitude_flower.title": "不屈之花",
     "painting.mia.fossil_tree.author": "Made In Abyss",
@@ -162,6 +169,16 @@
     "mia.configuration.curse.tooltip": "是否启用上升诅咒\n§7(默认值: true)",
     "mia.configuration.curse_god": "诅咒创造模式和观察者模式",
     "mia.configuration.curse_god.tooltip": "是否诅咒创造模式和观察者模式\n§7(默认值: false, 需要启用诅咒)",
+
+    "mia.configuration.cave_explorer_beacon": "探窟者信标",
+    "mia.configuration.cave_explorer_beacon.tooltip": "探窟者信标配置",
+    "mia.configuration.cave_explorer_beacon_horizontal": "水平半径",
+    "mia.configuration.cave_explorer_beacon_horizontal.tooltip": "设置探窟者信标水平半径\n§7水平半径 = 信标等级 x (默认值: 10) + 10",
+    "mia.configuration.cave_explorer_beacon_vertical": "垂直半径",
+    "mia.configuration.cave_explorer_beacon_vertical.tooltip": "设置探窟者信标垂直半径\n§7垂直半径 = 信标等级 x (默认值: 5) + 5",
+    "mia.configuration.cave_explorer_beacon_max_vertical": "最大垂直半径",
+    "mia.configuration.cave_explorer_beacon_max_vertical.tooltip": "把世界高度作为探窟者信标最大垂直半径\n§7(默认值: false)",
+
     "mia.configuration.curse_icon": "切换诅咒图标位置",
     "mia.configuration.curse_icon.tooltip": "是否切换诅咒图标位置\n§7(默认值: false, 需要启用诅咒)",
     "mia.configuration.curse_icon_position": "诅咒图标位置",
@@ -177,12 +194,18 @@
     "mia.configuration.abyss_radius": "深渊半径",
     "mia.configuration.abyss_radius.tooltip": "设置深渊半径\n§7(默认值: 640)",
 
+    "subtitle.mia.abyss_portal_ambient": "深渊传送门: 环境音",
+    "subtitle.mia.abyss_portal_travel": "深渊传送门: 传送音效",
+
     "curios.identifier.whistle": "笛",
     "curios.identifier.artifact": "遗物",
     "curios.modifiers.whistle": "穿戴时：",
     "curios.modifiers.artifact": "穿戴时：",
     "tag.item.curios.whistle": "笛",
     "tag.item.curios.artifact": "遗物",
-
+    "tag.item.mia.fossilized_logs": "化石木",
+    "tag.item.mia.skyfog_logs": "天雾木",
+    "tag.item.mia.stripped_fossilized_logs": "去皮化石木",
     "emi.category.mia.lamp_tube": "镭射催化"
+
 }
