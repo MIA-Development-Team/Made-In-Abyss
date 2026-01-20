@@ -10,20 +10,20 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public record DiscardHookPayload(int id) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<DiscardHookPayload> TYPE = new CustomPacketPayload.Type<>(MiaUtil.id(MIA.MOD_ID, "discard_hook"));
+public record PopHookPayload(int id) implements CustomPacketPayload {
+    public static final CustomPacketPayload.Type<PopHookPayload> TYPE = new CustomPacketPayload.Type<>(MiaUtil.id(MIA.MOD_ID, "discard_hook"));
 
-    public static final StreamCodec<ByteBuf, DiscardHookPayload> CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, PopHookPayload> CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT,
-            DiscardHookPayload::id,
-            DiscardHookPayload::new
+            PopHookPayload::id,
+            PopHookPayload::new
     );
 
-    public static void handle(DiscardHookPayload packet, IPayloadContext context) {
+    public static void handle(PopHookPayload packet, IPayloadContext context) {
         context.enqueueWork(() -> {
             Player player = context.player();
             if (player.level().getEntity(packet.id) instanceof HookEntity entity) {
-                entity.discard();
+                entity.setHookState(HookEntity.HookState.POP);
             }
         });
     }

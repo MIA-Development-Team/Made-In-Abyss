@@ -12,23 +12,24 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.IntFunction;
 
-// TODO 暂时先用ThrowableItemProjectile，可以简单的用item做渲染
-public class HookEntity extends ThrowableItemProjectile {
+public class HookEntity extends Projectile {
     public static final EntityDataAccessor<Integer> DATA_HOOK_STATE = SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Boolean> DATA_SHOOT_HAND = SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.BOOLEAN);
-    public final float hookRangeSqr = 2000;
+    // 20格距离
+    public final float hookRangeSqr = 400;
     protected BlockPos hookPos;
     protected BlockState hookedState;
 
@@ -49,18 +50,12 @@ public class HookEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    protected Item getDefaultItem() {
-        return Items.COBWEB;
-    }
-
-    @Override
     public boolean isPushedByFluid(FluidType type) {
         return false;
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
         builder.define(DATA_HOOK_STATE, 0)
                 .define(DATA_SHOOT_HAND, true);
     }
@@ -93,6 +88,21 @@ public class HookEntity extends ThrowableItemProjectile {
             discard();
             return;
         }
+        HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        if (hitresult.getType() != HitResult.Type.MISS && !EventHooks.onProjectileImpact(this, hitresult)) {
+            this.hitTargetOrDeflectSelf(hitresult);
+        }
+        this.checkInsideBlocks();
+        this.updateRotation();
+        Vec3 vec3 = getDeltaMovement();
+        this.setDeltaMovement(vec3.scale(0.99));
+        this.applyGravity();
+        this.setPos(
+                getX() + vec3.x,
+                getY() + vec3.y,
+                getZ() + vec3.z
+        );
+        player.resetFallDistance();
         HookState hookState = getHookState();
         if (hookState == HookState.POP) {
             setDeltaMovement(
