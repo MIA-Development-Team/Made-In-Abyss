@@ -49,25 +49,23 @@ public class AbyssTrialSpawnerManager extends SimpleJsonResourceReloadListener {
     protected @NotNull Map<ResourceLocation, JsonElement> prepare(ResourceManager resourceManager, @NotNull ProfilerFiller profiler) {
         Map<ResourceLocation, JsonElement> result = new HashMap<>();
 
-        for (var namespace : resourceManager.getNamespaces()) {
-            var basePath = "mia/trial_spawner";
-            var resources = resourceManager.listResources(basePath, loc -> loc.getPath().endsWith(".json"));
+        var basePath = "mia/trial_spawner";
+        var resources = resourceManager.listResources(basePath, loc -> loc.getPath().endsWith(".json"));
+        
+        for (Map.Entry<ResourceLocation, Resource> entry : resources.entrySet()) {
+            var fileLoc = entry.getKey();
+            var parts = MiaUtil.parseResourcePath(fileLoc.getPath(), basePath);
             
-            for (Map.Entry<ResourceLocation, Resource> entry : resources.entrySet()) {
-                var fileLoc = entry.getKey();
-                var parts = MiaUtil.parseResourcePath(fileLoc.getPath(), basePath);
-                
-                if (parts == null || parts.length != 1) continue;
-                
-                var fixedLoc = ResourceLocation.fromNamespaceAndPath(namespace, parts[0]);
-                var res = entry.getValue();
-                
-                try (var stream = res.open(); var reader = new InputStreamReader(stream)) {
-                    var json = GsonHelper.fromJson(GSON, reader, JsonElement.class);
-                    result.put(fixedLoc, json);
-                } catch (IOException | JsonParseException e) {
-                    LOGGER.error("Failed to load trial spawner JSON from {}", fileLoc, e);
-                }
+            if (parts == null || parts.length != 1) continue;
+
+            var fixedLoc = ResourceLocation.fromNamespaceAndPath(fileLoc.getNamespace(), parts[0]);
+            var res = entry.getValue();
+            
+            try (var stream = res.open(); var reader = new InputStreamReader(stream)) {
+                var json = GsonHelper.fromJson(GSON, reader, JsonElement.class);
+                result.put(fixedLoc, json);
+            } catch (IOException | JsonParseException e) {
+                LOGGER.error("Failed to load trial spawner JSON from {}", fileLoc, e);
             }
         }
 
