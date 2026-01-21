@@ -1,8 +1,8 @@
 package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.effect.AbyssBlessingEffect;
-import com.altnoir.mia.effect.AbyssCurseEffect;
+import com.altnoir.mia.common.effect.AbyssBlessingEffect;
+import com.altnoir.mia.common.effect.AbyssCurseEffect;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;

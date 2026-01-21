@@ -1,11 +1,9 @@
 package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.attachments.Curse;
-import com.mojang.serialization.Codec;
+import com.altnoir.mia.common.attachments.Curse;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 

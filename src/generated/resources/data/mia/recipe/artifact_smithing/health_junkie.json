@@ -1,0 +1,13 @@
+{
+  "type": "mia:artifact_smithing",
+  "amount": 1.1,
+  "artifact": {
+    "tag": "mia:smithing_artifact"
+  },
+  "attribute": "minecraft:generic.knockback_resistance",
+  "material": {
+    "count": 1,
+    "id": "mia:health_junkie"
+  },
+  "operation": "add_multiplied_base"
+}

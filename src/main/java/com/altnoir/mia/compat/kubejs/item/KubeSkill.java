@@ -1,6 +1,6 @@
 package com.altnoir.mia.compat.kubejs.item;
 
-import com.altnoir.mia.item.abs.AbsSkill;
+import com.altnoir.mia.common.item.abs.AbsSkill;
 
 import java.util.List;
 

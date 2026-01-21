@@ -1,7 +1,7 @@
 package com.altnoir.mia.client.handler;
 
-import com.altnoir.mia.MiaClientConfig;
-import com.altnoir.mia.entity.projectile.HookEntity;
+import com.altnoir.mia.client.MiaClientConfig;
+import com.altnoir.mia.common.entity.projectile.HookEntity;
 import com.altnoir.mia.init.MiaItems;
 import com.altnoir.mia.network.server.PopHookPayload;
 import net.minecraft.client.player.LocalPlayer;
@@ -59,7 +59,7 @@ public class HookHandler {
             double velocity = 0.2;
             Vec3 currentMotion = player.getDeltaMovement();
             // 玩家在地面给予速度补偿，但手动的很鬼畜
-            if (player.onGround()) velocity *= 1.5;
+            if (player.onGround()) velocity *= 2.0;
 
             Vec3 vec3 = subtract.normalize().scale(velocity);
 

@@ -30,6 +30,7 @@ public class MiaItemModelProvider extends ItemModelProvider {
         basicItem(MiaItems.TEST_ARTIFACT_1.get());
         basicItem(MiaItems.TEST_ARTIFACT_2.get());
         basicItem(MiaItems.TEST_ARTIFACT_3.get());
+        basicItem(MiaItems.HEALTH_JUNKIE.get());
 
         basicItem(MiaItems.STAR_COMPASS.get());
 

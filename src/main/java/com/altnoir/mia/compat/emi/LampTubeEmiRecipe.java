@@ -1,6 +1,6 @@
 package com.altnoir.mia.compat.emi;
 
-import com.altnoir.mia.recipe.LampTubeRecipe;
+import com.altnoir.mia.common.recipe.LampTubeRecipe;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;

@@ -2,7 +2,7 @@ package com.altnoir.mia.event.client;
 
 import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.init.MiaKeyBinding;
-import com.altnoir.mia.item.abs.IArtifactSkill;
+import com.altnoir.mia.common.item.abs.IArtifactSkill;
 import com.altnoir.mia.network.server.SkillCooldownPayload;
 import com.altnoir.mia.network.server.SkillPlayPayload;
 import net.minecraft.client.KeyMapping;
@@ -12,7 +12,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;

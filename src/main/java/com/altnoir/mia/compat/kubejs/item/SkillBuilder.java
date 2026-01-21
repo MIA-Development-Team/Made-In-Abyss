@@ -2,7 +2,7 @@ package com.altnoir.mia.compat.kubejs.item;
 
 
 import com.altnoir.mia.compat.kubejs.combo.ComboContext;
-import com.altnoir.mia.item.abs.AbsSkill;
+import com.altnoir.mia.common.item.abs.AbsSkill;
 import dev.latvian.mods.kubejs.item.ItemBuilder;
 import dev.latvian.mods.kubejs.typings.Info;
 import net.minecraft.resources.ResourceLocation;

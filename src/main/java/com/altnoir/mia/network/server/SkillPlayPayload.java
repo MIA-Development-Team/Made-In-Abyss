@@ -2,7 +2,7 @@ package com.altnoir.mia.network.server;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.compat.kubejs.KubeJSHelper;
-import com.altnoir.mia.item.abs.IArtifactSkill;
+import com.altnoir.mia.common.item.abs.IArtifactSkill;
 import com.altnoir.mia.util.MiaUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;

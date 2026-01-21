@@ -1,7 +1,7 @@
 package com.altnoir.mia.compat.jei;
 
 import com.altnoir.mia.init.MiaBlocks;
-import com.altnoir.mia.recipe.LampTubeRecipe;
+import com.altnoir.mia.common.recipe.LampTubeRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;

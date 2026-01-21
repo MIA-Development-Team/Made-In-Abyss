@@ -1,8 +1,8 @@
 package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.component.ArtifactBundleInventoryComponent;
-import com.altnoir.mia.component.ArtifactEnhancementComponent;
+import com.altnoir.mia.common.component.ArtifactBundleInventoryComponent;
+import com.altnoir.mia.common.component.ArtifactEnhancementComponent;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;

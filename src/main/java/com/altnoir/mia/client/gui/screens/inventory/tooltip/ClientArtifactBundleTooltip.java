@@ -1,6 +1,6 @@
 package com.altnoir.mia.client.gui.screens.inventory.tooltip;
 
-import com.altnoir.mia.component.ArtifactBundleInventoryComponent;
+import com.altnoir.mia.common.component.ArtifactBundleInventoryComponent;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;

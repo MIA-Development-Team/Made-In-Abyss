@@ -1,7 +1,7 @@
 package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.core.curse.ICurse;
+import com.altnoir.mia.common.core.curse.ICurse;
 import com.altnoir.mia.util.MiaUtil;
 import net.neoforged.neoforge.capabilities.EntityCapability;
 

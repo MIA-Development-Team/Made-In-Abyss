@@ -4,9 +4,9 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaItems;
 import com.altnoir.mia.init.MiaTags;
-import com.altnoir.mia.recipe.ArtifactBundleUpgradeRecipeBuilder;
-import com.altnoir.mia.recipe.ArtifactSmithingRecipeBuilder;
-import com.altnoir.mia.recipe.LampTubeRecipeBuilder;
+import com.altnoir.mia.common.recipe.ArtifactBundleUpgradeRecipeBuilder;
+import com.altnoir.mia.common.recipe.ArtifactSmithingRecipeBuilder;
+import com.altnoir.mia.common.recipe.LampTubeRecipeBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -127,8 +127,8 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
 
     private static void ArtifactEnhancement(RecipeOutput recipeOutput) {
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(MiaItems.MISTFUZZ_PEACH.get(), 4),
-                        Attributes.MAX_HEALTH, 2, Operation.ADD_VALUE)
+                        new ItemStack(MiaItems.HEALTH_JUNKIE.get(), 1),
+                        Attributes.KNOCKBACK_RESISTANCE, 1.1, Operation.ADD_MULTIPLIED_BASE)
                 .unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                         new ItemStack(Items.IRON_INGOT, 1),

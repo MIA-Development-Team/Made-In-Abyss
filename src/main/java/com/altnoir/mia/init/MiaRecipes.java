@@ -1,9 +1,9 @@
 package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.recipe.LampTubeRecipe;
-import com.altnoir.mia.recipe.ArtifactSmithingRecipe;
-import com.altnoir.mia.recipe.ArtifactBundleUpgradeRecipe;
+import com.altnoir.mia.common.recipe.LampTubeRecipe;
+import com.altnoir.mia.common.recipe.ArtifactSmithingRecipe;
+import com.altnoir.mia.common.recipe.ArtifactBundleUpgradeRecipe;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;

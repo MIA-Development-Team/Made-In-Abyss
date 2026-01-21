@@ -1,7 +1,7 @@
 package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.entity.projectile.HookEntity;
+import com.altnoir.mia.common.entity.projectile.HookEntity;
 import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;

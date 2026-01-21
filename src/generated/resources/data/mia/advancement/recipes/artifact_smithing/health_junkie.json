@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_health_junkie": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mia:health_junkie"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mia:artifact_smithing/health_junkie"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_health_junkie"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mia:artifact_smithing/health_junkie"
+    ]
+  }
+}

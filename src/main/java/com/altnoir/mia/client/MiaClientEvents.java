@@ -1,11 +1,10 @@
 package com.altnoir.mia.client;
 
-import com.altnoir.mia.MiaClientConfig;
 import com.altnoir.mia.client.gui.screens.ArtifactSmithingTableScreen;
 import com.altnoir.mia.client.gui.screens.inventory.tooltip.ClientArtifactBundleTooltip;
 import com.altnoir.mia.client.handler.HookHandler;
 import com.altnoir.mia.client.renderer.TheAbyssDimEffects;
-import com.altnoir.mia.component.ArtifactBundleInventoryComponent;
+import com.altnoir.mia.common.component.ArtifactBundleInventoryComponent;
 import com.altnoir.mia.event.client.*;
 import com.altnoir.mia.init.MiaKeyBinding;
 import com.altnoir.mia.init.MiaMenus;

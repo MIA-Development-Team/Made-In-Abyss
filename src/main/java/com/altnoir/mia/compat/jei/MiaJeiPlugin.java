@@ -3,7 +3,7 @@ package com.altnoir.mia.compat.jei;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaRecipes;
-import com.altnoir.mia.recipe.LampTubeRecipe;
+import com.altnoir.mia.common.recipe.LampTubeRecipe;
 import com.altnoir.mia.util.MiaUtil;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;

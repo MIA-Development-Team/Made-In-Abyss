@@ -2,7 +2,7 @@ package com.altnoir.mia.compat.emi;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaBlocks;
-import com.altnoir.mia.recipe.LampTubeRecipe;
+import com.altnoir.mia.common.recipe.LampTubeRecipe;
 import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.util.MiaUtil;
 import dev.emi.emi.api.EmiEntrypoint;

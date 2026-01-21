@@ -1,9 +1,9 @@
 package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.component.MiaFoods;
-import com.altnoir.mia.item.*;
-import com.altnoir.mia.item.abs.IArtifactItem.Grade;
+import com.altnoir.mia.common.component.MiaFoods;
+import com.altnoir.mia.common.item.*;
+import com.altnoir.mia.common.item.abs.IArtifactItem.Grade;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
@@ -38,6 +38,9 @@ public class MiaItems {
             new EArtifact(new Item.Properties(), Grade.C, 2));
     public static final DeferredItem<Item> TEST_ARTIFACT_3 = ITEMS.register("test_artifact_3", () ->
             new EArtifact(new Item.Properties(), Grade.S, 4));
+
+    public static final DeferredItem<Item> HEALTH_JUNKIE = ITEMS.register("health_junkie", () ->
+            new EArtifact(new Item.Properties(), Grade.D, 1));
 
     public static final DeferredItem<Item> ARTIFACT_HASTE = ITEMS.register("artifact_haste", () ->
             new HasteSkill(new Item.Properties()));

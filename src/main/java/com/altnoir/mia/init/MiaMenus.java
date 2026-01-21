@@ -3,7 +3,7 @@ package com.altnoir.mia.init;
 import java.util.function.Supplier;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.inventory.ArtifactSmithingTableMenu;
+import com.altnoir.mia.common.inventory.ArtifactSmithingTableMenu;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.flag.FeatureFlags;

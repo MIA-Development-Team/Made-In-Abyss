@@ -1,7 +1,7 @@
 package com.altnoir.mia.event.client;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.MiaClientConfig;
+import com.altnoir.mia.client.MiaClientConfig;
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.init.MiaCapabilities;
 import com.altnoir.mia.util.MiaUtil;
@@ -15,8 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
-import net.neoforged.neoforge.client.event.ScreenEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientCurseEvent {

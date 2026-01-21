@@ -1,9 +1,9 @@
 package com.altnoir.mia.event.client;
 
-import com.altnoir.mia.block.entity.renderer.AbyssSpawnerRenderer;
-import com.altnoir.mia.block.entity.renderer.EndlessCupRenderer;
-import com.altnoir.mia.block.entity.renderer.PedestalRenderer;
-import com.altnoir.mia.block.entity.renderer.SunStoneRenderer;
+import com.altnoir.mia.common.block.entity.renderer.AbyssSpawnerRenderer;
+import com.altnoir.mia.common.block.entity.renderer.EndlessCupRenderer;
+import com.altnoir.mia.common.block.entity.renderer.PedestalRenderer;
+import com.altnoir.mia.common.block.entity.renderer.SunStoneRenderer;
 import com.altnoir.mia.client.renderer.HookEntityRenderer;
 import com.altnoir.mia.init.MiaBlockEntities;
 import com.altnoir.mia.init.MiaEntities;

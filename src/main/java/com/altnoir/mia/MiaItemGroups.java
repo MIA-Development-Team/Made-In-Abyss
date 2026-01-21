@@ -146,7 +146,10 @@ public class MiaItemGroups {
                         output.accept(MiaItems.TEST_ARTIFACT_1);
                         output.accept(MiaItems.TEST_ARTIFACT_2);
                         output.accept(MiaItems.TEST_ARTIFACT_3);
+                        output.accept(MiaItems.HEALTH_JUNKIE);
                         output.accept(MiaItems.ARTIFACT_HASTE);
+                        output.accept(MiaItems.HOOK_ITEM);
+                        output.accept(MiaBlocks.CAVE_EXPLORER_BEACON);
 
                         output.accept(MiaItems.ENDLESS_CUP);
                     }).build()

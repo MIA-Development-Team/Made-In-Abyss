@@ -1,15 +1,15 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.block.ArtifactSmithingTableBlock;
+import com.altnoir.mia.common.block.ArtifactSmithingTableBlock;
 import com.altnoir.mia.event.client.ClientCurseEvent;
 import com.altnoir.mia.event.client.ClientTooltipEvent;
 import com.altnoir.mia.event.client.KeyArrowEvent;
 import com.altnoir.mia.init.*;
-import com.altnoir.mia.item.abs.AbsArtifactBundle;
-import com.altnoir.mia.item.abs.IArtifactItem;
-import com.altnoir.mia.item.abs.IArtifactSkill;
-import com.altnoir.mia.item.abs.IEArtifact;
+import com.altnoir.mia.common.item.abs.AbsArtifactBundle;
+import com.altnoir.mia.common.item.abs.IArtifactItem;
+import com.altnoir.mia.common.item.abs.IArtifactSkill;
+import com.altnoir.mia.common.item.abs.IEArtifact;
 import com.altnoir.mia.worldgen.biome.MiaBiomes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;

@@ -1,7 +1,7 @@
 package com.altnoir.mia;
 
-import com.altnoir.mia.core.curse.CurseManager;
-import com.altnoir.mia.core.spawner.AbyssTrialSpawnerManager;
+import com.altnoir.mia.common.core.curse.CurseManager;
+import com.altnoir.mia.common.core.spawner.AbyssTrialSpawnerManager;
 import com.altnoir.mia.init.*;
 import com.altnoir.mia.event.EventHandle;
 import com.altnoir.mia.init.worldgen.MiaBiomeSources;

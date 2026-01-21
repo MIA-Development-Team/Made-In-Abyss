@@ -1,6 +1,6 @@
 package com.altnoir.mia.client.renderer;
 
-import com.altnoir.mia.entity.projectile.HookEntity;
+import com.altnoir.mia.common.entity.projectile.HookEntity;
 import com.altnoir.mia.init.MiaItems;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
