@@ -1,7 +1,9 @@
 package com.altnoir.mia.event.client;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.util.MiaUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -17,7 +19,7 @@ import javax.annotation.Nullable;
 
 @OnlyIn(Dist.CLIENT)
 public class CompassOverlayEvent {
-    private static final ResourceLocation COMPASS_ICON = ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "textures/gui/sprites/world/compass_icon.png");
+    private static final ResourceLocation COMPASS_ICON = MiaUtil.miaId("textures/gui/sprites/world/compass_icon.png");
     private static final int ICON_SIZE = 16;
 
     @Nullable
@@ -37,7 +39,7 @@ public class CompassOverlayEvent {
         targetPosition = null;
     }
 
-    public static void onRenderGui(RenderGuiEvent.Post event) {
+    public static void onRenderGui(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         var mc = Minecraft.getInstance();
         if (mc.player == null || mc.level == null || targetPosition == null) return;
 
@@ -55,11 +57,10 @@ public class CompassOverlayEvent {
             }
         }
 
-        var graphics = event.getGuiGraphics();
-        var screenWidth = graphics.guiWidth();
-        var screenHeight = graphics.guiHeight();
+        var screenWidth = guiGraphics.guiWidth();
+        var screenHeight = guiGraphics.guiHeight();
 
-        var partialTick = event.getPartialTick().getGameTimeDeltaTicks();
+        var partialTick = deltaTracker.getGameTimeDeltaTicks();
         var cameraPos = mc.player.getEyePosition(partialTick);
         var targetVec = Vec3.atCenterOf(targetPosition);
         var yaw = mc.player.getYRot();
@@ -114,7 +115,7 @@ public class CompassOverlayEvent {
                         Math.pow(targetPosition.getZ() - playerPos.getZ(), 2)
         );
 
-        renderIcon(graphics, (int) screenX, (int) screenY, alpha, distance);
+        renderIcon(guiGraphics, (int) screenX, (int) screenY, alpha, distance);
     }
 
     private static void renderIcon(GuiGraphics graphics, int x, int y, float alpha, double distance) {

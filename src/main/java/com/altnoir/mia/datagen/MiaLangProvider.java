@@ -129,6 +129,11 @@ public class MiaLangProvider extends LanguageProvider {
         //Config start
         add("mia.configuration.title", "Made In Abyss Configuration");
 
+        // 通用配置
+        add("mia.configuration.abyss_radius", "Abyss Radius Value");
+        add("mia.configuration.abyss_radius.tooltip", "Setting The Abyss Radius");
+
+        // 服务端配置
         add("mia.configuration.curse", "Enable Curse");
         add("mia.configuration.curse.tooltip", "Whether to enable the Curse");
         add("mia.configuration.curse_god", "Curse the Creative and Spectator");
@@ -143,6 +148,7 @@ public class MiaLangProvider extends LanguageProvider {
         add("mia.configuration.cave_explorer_beacon_max_vertical", "Max Vertical Range");
         add("mia.configuration.cave_explorer_beacon_max_vertical.tooltip", "Setting The Cave Explorer Beacon Max Vertical");
 
+        // 客户端配置
         add("mia.configuration.curse_icon_position", "Curse Icon Position");
         add("mia.configuration.curse_icon_position.tooltip", "Switch Curse Icon Position");
         add("mia.configuration.curse_icon_position.middle", "Middle");
@@ -154,8 +160,10 @@ public class MiaLangProvider extends LanguageProvider {
         add("mia.configuration.disconnect_button_state.disabled", "Disabled");
         add("mia.configuration.disconnect_button_state.hidden", "Hidden");
 
-        add("mia.configuration.abyss_radius", "Abyss Radius Value");
-        add("mia.configuration.abyss_radius.tooltip", "Setting The Abyss Radius");
+        add("mia.configuration.hook", "Hook");
+        add("mia.configuration.hook.tooltip", "Hook Configuration");
+        add("mia.configuration.auto_hook", "auto hook");
+        add("mia.configuration.auto_hook.tooltip", "Whether to enable auto hook");
         //Config end
 
         // Tags start

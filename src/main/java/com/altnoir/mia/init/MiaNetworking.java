@@ -7,12 +7,13 @@ import com.altnoir.mia.network.server.PopHookPayload;
 import com.altnoir.mia.network.server.SkillCooldownPayload;
 import com.altnoir.mia.network.server.SkillPlayPayload;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 public class MiaNetworking {
     private static final String VERSION = "1";
 
-    public static void register(RegisterPayloadHandlersEvent event) {
-        var registrar = event.registrar(MIA.MOD_ID).versioned(VERSION);
+    public static void register(PayloadRegistrar payloadRegistrar) {
+        var registrar = payloadRegistrar.versioned(VERSION);
         registrar.playToClient(
                 CurseCapabilityPayload.TYPE,
                 CurseCapabilityPayload.CODEC,

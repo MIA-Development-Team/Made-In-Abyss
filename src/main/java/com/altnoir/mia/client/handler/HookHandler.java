@@ -1,5 +1,6 @@
 package com.altnoir.mia.client.handler;
 
+import com.altnoir.mia.MiaClientConfig;
 import com.altnoir.mia.entity.projectile.HookEntity;
 import com.altnoir.mia.init.MiaItems;
 import com.altnoir.mia.network.server.PopHookPayload;
@@ -47,6 +48,10 @@ public class HookHandler {
         }
         Vec3 subtract = hookEntity.position().subtract(player.position());
         if (subtract.lengthSqr() < 1.0) {
+            if (MiaClientConfig.autoHook) {
+                PacketDistributor.sendToServer(new PopHookPayload(hookEntity.getId()));
+                return;
+            }
             Vec3 vec3 = player.getDeltaMovement().scale(0.05);
             player.setDeltaMovement(vec3.x, 0.0, vec3.z);
         } else {
@@ -54,13 +59,14 @@ public class HookHandler {
             double velocity = 0.2;
             Vec3 currentMotion = player.getDeltaMovement();
             // 玩家在地面给予速度补偿，但手动的很鬼畜
-            if (player.onGround()) {
-                velocity *= 1.5;
-            } else {
-                player.setDeltaMovement(currentMotion.x, currentMotion.y + player.getGravity() * 0.95, currentMotion.z);
-            }
+            if (player.onGround()) velocity *= 1.5;
+
             Vec3 vec3 = subtract.normalize().scale(velocity);
-            player.setDeltaMovement(currentMotion.add(vec3).scale(0.96));
+
+            Vec3 gravity = new Vec3(0, player.getGravity() * 0.975, 0);
+            Vec3 totalForce = !player.onGround() ? vec3.add(gravity) : vec3;
+
+            player.setDeltaMovement(currentMotion.add(totalForce).scale(0.96));
         }
     }
 }

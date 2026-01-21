@@ -16,7 +16,6 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,13 +27,10 @@ public class ClientTooltipEvent {
     public static final String TOOLTIP_ATTRIBUTE_MODIFIER = "tooltip.mia.attribute_modifier";
     public static final String TOOLTIP_MODIFIERS_ARTIFACT_MATERIAL = "tooltip.mia.modifiers.artifact_material";
 
-    public static void onTooltip(ItemTooltipEvent event) {
-        var stack = event.getItemStack();
+    public static void onTooltip(ItemStack stack, List<Component> tooltip) {
         var item = stack.getItem();
 
         if (item instanceof IMiaTooltip tooltipProvider) {
-            var tooltip = event.getToolTip();
-
             if (Screen.hasShiftDown()) {
                 tooltipProvider.appendTooltip(stack, tooltip);
             } else {
@@ -42,7 +38,6 @@ public class ClientTooltipEvent {
             }
         }
         if (stack.is(MiaTags.Items.ARTIFACT_MODIFIERS_MATERIAL)) {
-            var tooltip = event.getToolTip();
             if (Screen.hasShiftDown()) {
                 RecipeManager recipeManager = Minecraft.getInstance().getConnection().getRecipeManager();
                 if (recipeManager != null) {

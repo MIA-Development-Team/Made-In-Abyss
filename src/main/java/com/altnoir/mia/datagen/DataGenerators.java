@@ -12,36 +12,33 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import java.util.concurrent.CompletableFuture;
 
 public class DataGenerators {
-    public static void gatherData(GatherDataEvent event) {
-        DataGenerator generators = event.getGenerator();
-        PackOutput packOutput = generators.getPackOutput();
-        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
-        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+    public static void gatherData(DataGenerator generator, ExistingFileHelper existingFileHelper, CompletableFuture<HolderLookup.Provider> lookupProvider, boolean includeServer, boolean includeClient) {
+        PackOutput packOutput = generator.getPackOutput();
 
-//        generators.addProvider(event.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(),
+//        generators.addProvider(includeServer, new LootTableProvider(packOutput, Collections.emptySet(),
 //                List.of(new LootTableProvider.SubProviderEntry(MiaBlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
-        generators.addProvider(event.includeServer(), MiaLootTableProvider.create(packOutput, lookupProvider));
-        generators.addProvider(event.includeServer(), new MiaRecipeProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, MiaLootTableProvider.create(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new MiaRecipeProvider(packOutput, lookupProvider));
 
         BlockTagsProvider blockTagsProvider = new MiaBlockTagProvider(packOutput, lookupProvider, existingFileHelper);
         ItemTagsProvider itemTagsProvider = new MiaItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper);
-        generators.addProvider(event.includeServer(), blockTagsProvider);
-        generators.addProvider(event.includeServer(), itemTagsProvider);
-        generators.addProvider(event.includeServer(), new MiaDataMapProvider(packOutput, lookupProvider));
-        generators.addProvider(event.includeServer(), new MiaWorldGenProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, blockTagsProvider);
+        generator.addProvider(includeServer, itemTagsProvider);
+        generator.addProvider(includeServer, new MiaDataMapProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new MiaWorldGenProvider(packOutput, lookupProvider));
 
         var worldGenLookup = new MiaWorldGenProvider(packOutput, lookupProvider).getRegistryProvider();
-        generators.addProvider(event.includeServer(), new MiaPaintingVariantTagsProvider(packOutput, worldGenLookup, existingFileHelper));
+        generator.addProvider(includeServer, new MiaPaintingVariantTagsProvider(packOutput, worldGenLookup, existingFileHelper));
 
-        generators.addProvider(event.includeServer(), new MiaCuriosProvider(packOutput, existingFileHelper, lookupProvider));
-        generators.addProvider(event.includeServer(), new MiaCurseDataProvider(packOutput, lookupProvider));
-        generators.addProvider(event.includeServer(), new MiaTrialSpawnerProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new MiaCuriosProvider(packOutput, existingFileHelper, lookupProvider));
+        generator.addProvider(includeServer, new MiaCurseDataProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new MiaTrialSpawnerProvider(packOutput, lookupProvider));
 
-        generators.addProvider(event.includeClient(), new MiaBlockStateProvider(packOutput, existingFileHelper));
-        generators.addProvider(event.includeClient(), new MiaItemModelProvider(packOutput, existingFileHelper));
-        generators.addProvider(event.includeClient(), new MiaParticleProvider(packOutput, existingFileHelper));
+        generator.addProvider(includeClient, new MiaBlockStateProvider(packOutput, existingFileHelper));
+        generator.addProvider(includeClient, new MiaItemModelProvider(packOutput, existingFileHelper));
+        generator.addProvider(includeClient, new MiaParticleProvider(packOutput, existingFileHelper));
 
-        generators.addProvider(event.includeClient(), new MiaSoundsProvider(packOutput, existingFileHelper));
-        generators.addProvider(event.includeClient(), new MiaLangProvider(packOutput));
+        generator.addProvider(includeClient, new MiaSoundsProvider(packOutput, existingFileHelper));
+        generator.addProvider(includeClient, new MiaLangProvider(packOutput));
     }
 }

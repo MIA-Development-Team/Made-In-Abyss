@@ -1,6 +1,7 @@
 package com.altnoir.mia.event.server;
 
 import com.altnoir.mia.init.MiaCapabilities;
+import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -8,11 +9,10 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 public class MiaCommandsEvent {
-    public static void onRegisterCommands(RegisterCommandsEvent event) {
-        event.getDispatcher().register(
+    public static void onRegisterCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(
                 Commands.literal("mia")
                         .then(Commands.literal("curse")
                                 .then(Commands.argument("player", EntityArgument.player())

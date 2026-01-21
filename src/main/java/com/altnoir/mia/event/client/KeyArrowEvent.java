@@ -1,6 +1,5 @@
 package com.altnoir.mia.event.client;
 
-import com.altnoir.mia.client.handler.HookHandler;
 import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.init.MiaKeyBinding;
 import com.altnoir.mia.item.abs.IArtifactSkill;
@@ -13,7 +12,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
@@ -54,8 +52,7 @@ public class KeyArrowEvent {
     private static final List<List<String>> SKILL_ARROWS = new ArrayList<>();      // 用于存储多个技能的箭头
     private static final List<List<Integer>> SKILL_COLORS = new ArrayList<>();     // 用于存储多个技能的颜色
 
-    public static void onClientTick(ClientTickEvent.Post event) {
-        if (MC.level == null || MC.player == null) return;
+    public static void onClientTick() {
         boolean ctrlPressed = MiaKeyBinding.SKILL_DIAL.isDown();
         if (ctrlPressed || comboUI) {
             handleSkill();
@@ -67,8 +64,6 @@ public class KeyArrowEvent {
             LEFT_KEY.consumeClick();
             RIGHT_KEY.consumeClick();
         }
-
-        HookHandler.handler(MC.player, MC.level, MC.options.keyJump.consumeClick());
     }
 
     private static void handleSkill() {
@@ -390,12 +385,12 @@ public class KeyArrowEvent {
     private static final int bgWidth = 102; // 背景宽度
     private static final int bgHeight = 12; // 背景高度
 
-    public static void onRenderGui(RenderGuiEvent.Post event) {
+    public static void onRenderGui(GuiGraphics guiGraphics) {
         if (MC.level == null || MC.player == null) return;
 
         // 只有在组合键模式激活时才显示界面
         if (comboUI) {
-            renderComboUI(event.getGuiGraphics());
+            renderComboUI(guiGraphics);
         }
     }
 
@@ -494,7 +489,7 @@ public class KeyArrowEvent {
     }
 
     private static @NotNull Component getCoolDown(long remaining) {
-        Component cooldownText =Component.translatable(SKILL_COOLDOWN);
+        Component cooldownText = Component.translatable(SKILL_COOLDOWN);
         Component cooldownRemainingText = Component.translatable(SKILL_COOLDOWN_TIME);
         Component m = Component.translatable(SKILL_MINUTE);
         Component s = Component.translatable(SKILL_SECOND);

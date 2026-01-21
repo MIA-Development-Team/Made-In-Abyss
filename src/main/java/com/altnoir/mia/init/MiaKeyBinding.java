@@ -2,9 +2,6 @@ package com.altnoir.mia.init;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
 import org.lwjgl.glfw.GLFW;
 
@@ -21,8 +18,4 @@ public class MiaKeyBinding {
             GLFW.GLFW_KEY_LEFT_CONTROL,
             CATEGORY
     );
-
-    public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
-        event.register(SKILL_DIAL);
-    }
 }

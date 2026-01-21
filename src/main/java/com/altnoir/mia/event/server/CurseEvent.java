@@ -10,6 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -21,15 +22,14 @@ import java.util.UUID;
 public class CurseEvent {
     private static final HashMap<UUID, Double> playerMinY = new HashMap<>();
 
-    public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
-        var uuid = event.getEntity().getUUID();
-        playerMinY.put(uuid, event.getEntity().getY());
+    public static void onDimensionChange(Player player) {
+        var uuid =player.getUUID();
+        playerMinY.put(uuid, player.getY());
     }
 
-    public static void onPlayerTick(PlayerTickEvent.Post event) {
+    public static void onPlayerTick(Player player) {
         if (!MiaConfig.curse) return;
 
-        var player = event.getEntity();
         if (player.level().isClientSide()) return;
 
         var cap = player.getCapability(MiaCapabilities.CURSE, null);
@@ -72,14 +72,6 @@ public class CurseEvent {
 
             PacketDistributor.sendToPlayer((ServerPlayer) player, new CurseCapabilityPayload(cap.getCurse(), cap.getMaxCurse()));
         }
-    }
-
-    public static void attachEntityCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerEntity(
-                MiaCapabilities.CURSE,
-                EntityType.PLAYER,
-                (entity, side) -> entity.getData(MiaAttachments.CURSE)
-        );
     }
 
     /**

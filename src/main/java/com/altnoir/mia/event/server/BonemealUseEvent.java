@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.neoforged.neoforge.event.entity.player.BonemealEvent;
 
 import java.util.Map;
 
@@ -22,11 +21,8 @@ public class BonemealUseEvent {
             .put(Blocks.TUFF, MiaBlocks.COVERGRASS_TUFF.get())
             .build();
 
-    public static void onBonemealUse(BonemealEvent event) {
-        BlockState state = event.getState();
+    public static void onBonemealUse(BlockState state, BlockPos pos, ItemStack stack, Level level, Player player) {
         Block block = state.getBlock();
-        BlockPos pos = event.getPos();
-        Level level = event.getLevel();
 
         if (COVERGRASS_BLOCKS.containsKey(block)) {
             Block coverGrassBlock = COVERGRASS_BLOCKS.get(block);
@@ -42,7 +38,7 @@ public class BonemealUseEvent {
 
             if (flag) {
                 level.setBlock(pos, coverGrassBlock.defaultBlockState(), 3);
-                bonemealSuccess(event);
+                bonemealSuccess(pos, stack, level, player);
             }
         }
     }
@@ -50,14 +46,12 @@ public class BonemealUseEvent {
     /**
      * 处理骨粉使用成功后的逻辑
      *
-     * @param event 骨粉事件
+     * @param pos    块位置
+     * @param stack  骨粉物品栈
+     * @param level  世界
+     * @param player 玩家
      */
-    private static void bonemealSuccess(BonemealEvent event) {
-        Level level = event.getLevel();
-        BlockPos pos = event.getPos();
-        Player player = event.getPlayer();
-        ItemStack stack = event.getStack();
-
+    private static void bonemealSuccess(BlockPos pos, ItemStack stack, Level level, Player player) {
         if (!level.isClientSide) {
             if (player != null) {
                 player.gameEvent(GameEvent.ITEM_INTERACT_FINISH);

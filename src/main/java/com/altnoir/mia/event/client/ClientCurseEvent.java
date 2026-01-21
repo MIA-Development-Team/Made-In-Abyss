@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.PauseScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -25,13 +26,12 @@ public class ClientCurseEvent {
     private static final int FRAME_COUNT = 22;
     private static final int FRAME_DURATION = 1000;
 
-    private static boolean firstFrame = false;
     private static int animationTick = 0;
 
-    public static void ScreenEventInitPost(ScreenEvent.Init.Post event) {
+    public static void ScreenInitPost(Screen screen) {
         if (MiaClientConfig.disconnectButtonState == MiaClientConfig.DisconnectButtonState.DEFAULT) return;
 
-        if (event.getScreen() instanceof PauseScreen pauseScreen) {
+        if (screen instanceof PauseScreen pauseScreen) {
             Button disconnectButton = pauseScreen.disconnectButton;
 
             if (disconnectButton != null) {
@@ -43,10 +43,9 @@ public class ClientCurseEvent {
                 }
             }
         }
-
     }
 
-    public static void onRenderOverlay(RenderGuiLayerEvent.Post event) {
+    public static void onRenderOverlay(GuiGraphics guiGraphics) {
         if (!MiaConfig.curse) return;
         var mc = Minecraft.getInstance();
         var player = mc.player;
@@ -66,7 +65,7 @@ public class ClientCurseEvent {
 
             if (max <= 0) return;
 
-            drawCurseOrb(event.getGuiGraphics(), player, value, max);
+            drawCurseOrb(guiGraphics, player, value, max);
         }
     }
 

@@ -2,6 +2,7 @@ package com.altnoir.mia;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
@@ -15,6 +16,8 @@ public class MiaClientConfig {
 
     public static CurseIconPosition curseIconPosition;
     public static DisconnectButtonState disconnectButtonState;
+
+    public static boolean autoHook;
 
     private static final ModConfigSpec.EnumValue<CurseIconPosition> CURSE_ICON_POSITION = BUILDER
             .comment("Curse icon position (Default: MIDDLE) | 诅咒图标位置 (默认值: MIDDLE)",
@@ -30,12 +33,19 @@ public class MiaClientConfig {
                     "HIDDEN: Hide the disconnect button | 隐藏退出按钮")
             .defineEnum("disconnect_button_state", DisconnectButtonState.DEFAULT);
 
+    private static final ModConfigSpec.Builder HOOK = BUILDER.push("hook")
+            .comment("Hook Configuration | 钩爪配置");
+    public static final ModConfigSpec.BooleanValue AUTO_HOOK = HOOK
+            .comment("Enable auto hook | 启用自动回收")
+            .define("auto_hook", false);
+
     public static final ModConfigSpec CLIENT_SPEC = BUILDER.build();
 
-    public static void onLoad(final ModConfigEvent event) {
-        if (event.getConfig().getSpec() == CLIENT_SPEC) {
+    public static void onLoad(ModConfig config) {
+        if (config.getSpec() == CLIENT_SPEC) {
             curseIconPosition = CURSE_ICON_POSITION.get();
             disconnectButtonState = DISCONNECT_BUTTON_STATE.get();
+            autoHook = AUTO_HOOK.get();
         }
     }
 }
