@@ -100,6 +100,13 @@ public class CurseManager extends SimpleJsonResourceReloadListener {
                 .map(d -> List.of(d.curseEffects()))
                 .orElse(List.of());
     }
+
+    public int getCurseLevel(ResourceLocation dimensionId) {
+        return Optional.ofNullable(curseCache.get(dimensionId))
+                .map(CurseDimension::level)
+                .orElse(0);
+    }
+
     public Set<ResourceLocation> getDimensionIds() {
         return curseCache.keySet();
     }
