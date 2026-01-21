@@ -89,7 +89,9 @@ public class CurseManager extends SimpleJsonResourceReloadListener {
                 effects.add(new CurseEffect(effectKey, amplifier, duration));
             }
 
-            curseCache.put(id, new CurseDimension(id, effects.toArray(new CurseEffect[0])));
+            var level = json.get("level").getAsInt();
+
+            curseCache.put(id, new CurseDimension(id, effects.toArray(new CurseEffect[0]), level));
         }
     }
 
