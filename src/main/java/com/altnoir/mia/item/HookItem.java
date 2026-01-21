@@ -24,7 +24,7 @@ public class HookItem extends Item {
         if (flag && level.getEntity(customData.copyTag().getInt("hook")) instanceof HookEntity entity) {
             // 尝试优化手感，当距离小于4时，删除原来抓钩，立即发射,不需收回
             if (entity.distanceToSqr(player) > 16) {
-                entity.setHookState(HookEntity.HookState.POP);
+                entity.setHookState(HookEntity.HookState.BACK);
                 return super.use(level, player, usedHand);
             } else {
                 entity.discard();
@@ -37,7 +37,7 @@ public class HookItem extends Item {
                 player.getYRot(),
                 0,
                 2,
-                1
+                0
         );
         level.addFreshEntity(hookEntity);
         CompoundTag tag = new CompoundTag();

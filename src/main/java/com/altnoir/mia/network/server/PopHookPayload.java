@@ -23,7 +23,7 @@ public record PopHookPayload(int id) implements CustomPacketPayload {
         context.enqueueWork(() -> {
             Player player = context.player();
             if (player.level().getEntity(packet.id) instanceof HookEntity entity) {
-                entity.setHookState(HookEntity.HookState.POP);
+                entity.setHookState(HookEntity.HookState.BACK);
             }
         });
     }

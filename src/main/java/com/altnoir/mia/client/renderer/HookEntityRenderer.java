@@ -108,10 +108,10 @@ public class HookEntityRenderer extends EntityRenderer<HookEntity> {
             float x, float y, float z, VertexConsumer consumer, PoseStack.Pose pose, float stringFraction, float nextStringFraction
     ) {
         float f = x * stringFraction;
-        float f1 = y * (stringFraction * stringFraction + stringFraction) * 0.5F + 0.25F;
+        float f1 = y * stringFraction;
         float f2 = z * stringFraction;
         float f3 = x * nextStringFraction - f;
-        float f4 = y * (nextStringFraction * nextStringFraction + nextStringFraction) * 0.5F + 0.25F - f1;
+        float f4 = y * nextStringFraction - f1;
         float f5 = z * nextStringFraction - f2;
         float f6 = Mth.sqrt(f3 * f3 + f4 * f4 + f5 * f5);
         f3 /= f6;

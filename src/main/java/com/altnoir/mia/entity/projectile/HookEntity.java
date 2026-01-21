@@ -29,7 +29,7 @@ public class HookEntity extends Projectile {
     public static final EntityDataAccessor<Integer> DATA_HOOK_STATE = SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Boolean> DATA_SHOOT_HAND = SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.BOOLEAN);
     // 20格距离
-    public final float hookRangeSqr = 180;
+    public final float hookRangeSqr = 20 * 20;
     protected BlockPos hookPos;
     protected BlockState hookedState;
 
@@ -103,7 +103,7 @@ public class HookEntity extends Projectile {
         );
         player.resetFallDistance();
         HookState hookState = getHookState();
-        if (hookState == HookState.POP) {
+        if (hookState == HookState.BACK) {
             setDeltaMovement(
                     getDeltaMovement()
                             .scale(0.95)
@@ -116,16 +116,20 @@ public class HookEntity extends Projectile {
                                             .scale(0.75)
                             )
             );
+            // 有时会出现延迟销毁的bug，目前没诊断出原因，但触发概率不大
             if (distanceToSqr(player) < 4.0) {
                 discard();
                 return;
             }
         }
-        if (level().isClientSide()) return;
-        if (hookState != HookState.POP && distanceToSqr(player) > (hookRangeSqr * 20)) {
-            setHookState(HookState.POP);
-        } else if (hookState == HookState.HOOKED && (hookPos == null || level().getBlockState(hookPos) != hookedState)) {
-            setHookState(HookState.POP);
+        if (!level().isClientSide()) {
+            // 由于HookHandler的触发先于此tick逻辑，导致HookHandler先一步判断能够拉取，然后此处判断收回
+            // HookHandler需要重构
+            if (hookState != HookState.BACK && distanceToSqr(player) > hookRangeSqr) {
+                setHookState(HookState.BACK);
+            } else if (hookState == HookState.HOOKED && (hookPos == null || level().getBlockState(hookPos) != hookedState)) {
+                setHookState(HookState.BACK);
+            }
         }
     }
 
@@ -133,10 +137,10 @@ public class HookEntity extends Projectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         HookState hookState = getHookState();
-        if (hookState == HookState.POP) return;
+        if (hookState == HookState.BACK) return;
         Vec3 vec3 = result.getLocation().subtract(position());
         setDeltaMovement(vec3);
-        if (hookState == HookState.PUSH) {
+        if (hookState == HookState.SHOOT) {
             setHookState(HookState.HOOKED);
             hookPos = result.getBlockPos();
             hookedState = level().getBlockState(hookPos);
@@ -144,8 +148,8 @@ public class HookEntity extends Projectile {
     }
 
     public enum HookState implements StringRepresentable {
-        PUSH(0, "push"), // 发射
-        POP(1, "pop"), // 收回
+        SHOOT(0, "shoot"), // 发射
+        BACK(1, "back"), // 收回
         HOOKED(2, "hooked"); // 抓住
 
         public static final Codec<HookState> CODEC = StringRepresentable.fromEnum(HookState::values);

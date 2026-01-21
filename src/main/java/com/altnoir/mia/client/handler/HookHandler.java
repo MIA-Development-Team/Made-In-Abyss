@@ -5,7 +5,6 @@ import com.altnoir.mia.init.MiaItems;
 import com.altnoir.mia.network.server.PopHookPayload;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
@@ -15,14 +14,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-/**
- * Hook 拉取实体处理逻辑
- * <p>
- * 本实现参考了 Confluence Mod (LGPL-3.0 License)
- * 中的 org.confluence.mod.client.handler.HookThrowingHandler 类
- * <p>
- * Confluence Mod: https://github.com/Magic-team-jvav/confluence
- */
+// TODO HookHandler需要重构
 @OnlyIn(Dist.CLIENT)
 public class HookHandler {
     public static void handler(LocalPlayer player, Level level, boolean isJump) {
@@ -46,13 +38,10 @@ public class HookHandler {
         if (isJump) {
             Vec3 vec3 = player.getDeltaMovement();
             // at开不了，等后续有缘人
-            // double motionY =  player.getJumpPower() * 1.25;
-            double motionY = player.getAttributeValue(Attributes.JUMP_STRENGTH) * 1.25;
-            player.setDeltaMovement(vec3.x, motionY, vec3.z);
-            if (player.isSprinting()) {
-                float f = player.getYRot() * Mth.DEG_TO_RAD;
-                player.setDeltaMovement(player.getDeltaMovement().add(-Mth.sin(f) * 0.2, 0.0, Mth.cos(f) * 0.2));
-            }
+            // double y =  player.getJumpPower() * 1.25;
+            // 二编，再次尝试了一下at，失败，把getJumpBoostPower加上去了
+            double y = (player.getAttributeValue(Attributes.JUMP_STRENGTH) + player.getJumpBoostPower()) * 1.25;
+            player.setDeltaMovement(vec3.x, y, vec3.z);
             PacketDistributor.sendToServer(new PopHookPayload(hookEntity.getId()));
             return;
         }
