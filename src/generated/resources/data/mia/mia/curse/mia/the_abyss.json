@@ -20,5 +20,6 @@
       "duration": 60,
       "effect": "minecraft:darkness"
     }
-  ]
+  ],
+  "level": 1
 }
