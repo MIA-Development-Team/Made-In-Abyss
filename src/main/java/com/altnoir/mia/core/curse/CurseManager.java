@@ -89,7 +89,9 @@ public class CurseManager extends SimpleJsonResourceReloadListener {
                 effects.add(new CurseEffect(effectKey, amplifier, duration));
             }
 
-            curseCache.put(id, new CurseDimension(id, effects.toArray(new CurseEffect[0])));
+            var level = json.get("level").getAsInt();
+
+            curseCache.put(id, new CurseDimension(id, effects.toArray(new CurseEffect[0]), level));
         }
     }
 
@@ -98,6 +100,13 @@ public class CurseManager extends SimpleJsonResourceReloadListener {
                 .map(d -> List.of(d.curseEffects()))
                 .orElse(List.of());
     }
+
+    public int getCurseLevel(ResourceLocation dimensionId) {
+        return Optional.ofNullable(curseCache.get(dimensionId))
+                .map(CurseDimension::level)
+                .orElse(0);
+    }
+
     public Set<ResourceLocation> getDimensionIds() {
         return curseCache.keySet();
     }

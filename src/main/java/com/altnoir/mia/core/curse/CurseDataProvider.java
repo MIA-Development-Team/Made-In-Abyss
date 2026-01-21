@@ -29,8 +29,8 @@ public abstract class CurseDataProvider implements DataProvider {
 
     protected abstract void addCurse();
 
-    protected void add(ResourceLocation dimension, CurseEffect[] effects) {
-        definitions.add(new CurseDimension(dimension, effects));
+    protected void add(ResourceLocation dimension, CurseEffect[] effects, int level) {
+        definitions.add(new CurseDimension(dimension, effects, level));
     }
 
     private void validate(HolderLookup.Provider registries, ResourceLocation dimension, CurseEffect[] effects) {
@@ -72,6 +72,7 @@ public abstract class CurseDataProvider implements DataProvider {
                     effectsArray.add(e);
                 }
                 root.add("effects", effectsArray);
+                root.addProperty("level", def.level());
 
                 var dim = def.dimension();
                 var namespace = dim.getNamespace();

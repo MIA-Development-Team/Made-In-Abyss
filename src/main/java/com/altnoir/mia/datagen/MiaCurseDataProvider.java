@@ -23,7 +23,8 @@ public class MiaCurseDataProvider extends CurseDataProvider {
                         new CurseEffect(MobEffects.MOVEMENT_SLOWDOWN.getKey(), 0, 200),
                         new CurseEffect(MobEffects.BLINDNESS.getKey(), 0, 200),
                         new CurseEffect(MobEffects.DARKNESS.getKey(), 0, 60)
-                }
+                },
+                1
         );
     }
 }
