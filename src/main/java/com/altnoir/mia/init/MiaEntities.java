@@ -30,7 +30,7 @@ public class MiaEntities {
                     .noSummon()
                     .sized(0.5F, 0.5F)
                     .clientTrackingRange(4)
-                    .updateInterval(20)
+                    .updateInterval(5)
     );
 
     public static <T extends Entity> Supplier<EntityType<T>> registerHook(String name, EntityType.Builder<T> builder) {

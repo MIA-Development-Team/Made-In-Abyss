@@ -28,10 +28,10 @@ import java.util.function.IntFunction;
 public class HookEntity extends Projectile {
     public static final EntityDataAccessor<Integer> DATA_HOOK_STATE = SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Boolean> DATA_SHOOT_HAND = SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.BOOLEAN);
-    // 20格距离
-    public final float hookRangeSqr = 20 * 20;
-    protected BlockPos hookPos;
-    protected BlockState hookedState;
+    // 32格距离
+    public final float hookRangeSqr = 32 * 32;
+    public BlockPos hookPos;
+    public BlockState hookedState;
 
     public HookEntity(EntityType<? extends HookEntity> entityType, Level level) {
         super(entityType, level);
@@ -117,7 +117,7 @@ public class HookEntity extends Projectile {
                             )
             );
             // 有时会出现延迟销毁的bug，目前没诊断出原因，但触发概率不大
-            if (distanceToSqr(player) < 4.0) {
+            if (distanceToSqr(player) < 4) {
                 discard();
                 return;
             }
@@ -145,6 +145,12 @@ public class HookEntity extends Projectile {
             hookPos = result.getBlockPos();
             hookedState = level().getBlockState(hookPos);
         }
+    }
+
+    @Override
+    public boolean shouldRenderAtSqrDistance(double distance) {
+        // 64 * 64
+        return distance < 4096;
     }
 
     public enum HookState implements StringRepresentable {

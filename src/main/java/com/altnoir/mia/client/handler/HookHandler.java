@@ -60,7 +60,7 @@ public class HookHandler {
                 player.setDeltaMovement(currentMotion.x, currentMotion.y + player.getGravity() * 0.95, currentMotion.z);
             }
             Vec3 vec3 = subtract.normalize().scale(velocity);
-            player.setDeltaMovement(currentMotion.scale(0.96).add(vec3));
+            player.setDeltaMovement(currentMotion.add(vec3).scale(0.96));
         }
     }
 }
