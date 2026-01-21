@@ -29,7 +29,7 @@ public class HookEntity extends Projectile {
     public static final EntityDataAccessor<Integer> DATA_HOOK_STATE = SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Boolean> DATA_SHOOT_HAND = SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.BOOLEAN);
     // 20格距离
-    public final float hookRangeSqr = 400;
+    public final float hookRangeSqr = 180;
     protected BlockPos hookPos;
     protected BlockState hookedState;
 
@@ -56,8 +56,7 @@ public class HookEntity extends Projectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_HOOK_STATE, 0)
-                .define(DATA_SHOOT_HAND, true);
+        builder.define(DATA_HOOK_STATE, 0).define(DATA_SHOOT_HAND, true);
     }
 
     public @Nullable Player getPlayer() {
@@ -114,7 +113,7 @@ public class HookEntity extends Projectile {
                                             .subtract(position())
                                             .normalize()
                                             // 收回速度
-                                            .scale(0.5)
+                                            .scale(0.75)
                             )
             );
             if (distanceToSqr(player) < 4.0) {
@@ -123,7 +122,7 @@ public class HookEntity extends Projectile {
             }
         }
         if (level().isClientSide()) return;
-        if (hookState != HookState.POP && distanceToSqr(player) > hookRangeSqr) {
+        if (hookState != HookState.POP && distanceToSqr(player) > (hookRangeSqr * 20)) {
             setHookState(HookState.POP);
         } else if (hookState == HookState.HOOKED && (hookPos == null || level().getBlockState(hookPos) != hookedState)) {
             setHookState(HookState.POP);

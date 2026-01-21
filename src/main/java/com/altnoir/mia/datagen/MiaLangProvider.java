@@ -91,6 +91,11 @@ public class MiaLangProvider extends LanguageProvider {
         addBiome(MiaBiomes.THE_ABYSS, "The Abyss");
         addBiome(MiaBiomes.ABYSS_PLAINS, "Abyss Plains");
         addBiome(MiaBiomes.SKYFOG_FOREST, "Skyfog Forest");
+        addBiome(MiaBiomes.PRASIOLITE_CAVES, "Prasiolite Caves");
+        addBiome(MiaBiomes.ABYSS_LUSH_CAVES, "Abyss Lush Caves");
+        addBiome(MiaBiomes.ABYSS_DRIPSTONE_CAVES, "Abyss Dripstone Caves");
+
+        addBiome(MiaBiomes.TEMPTATION_FOREST, "Temptation Forest");
         //Biome end
 
         MiaItems.ITEMS.getEntries().stream()

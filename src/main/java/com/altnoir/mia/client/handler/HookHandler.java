@@ -63,10 +63,15 @@ public class HookHandler {
         } else {
             // 拉动速度
             double velocity = 0.2;
+            Vec3 currentMotion = player.getDeltaMovement();
             // 玩家在地面给予速度补偿，但手动的很鬼畜
-            if(player.onGround()) velocity *= 1.5;
+            if (player.onGround()) {
+                velocity *= 1.5;
+            } else {
+                player.setDeltaMovement(currentMotion.x, currentMotion.y + player.getGravity() * 0.95, currentMotion.z);
+            }
             Vec3 vec3 = subtract.normalize().scale(velocity);
-            player.setDeltaMovement(player.getDeltaMovement().scale(0.96).add(vec3));
+            player.setDeltaMovement(currentMotion.scale(0.96).add(vec3));
         }
     }
 }

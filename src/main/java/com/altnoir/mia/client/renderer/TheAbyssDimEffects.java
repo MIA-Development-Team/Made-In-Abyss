@@ -1,5 +1,6 @@
 package com.altnoir.mia.client.renderer;
 
+import com.altnoir.mia.client.render.MiaRenderType;
 import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.worldgen.MiaHeight;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -104,23 +105,24 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
     @Override
     public boolean renderClouds(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, double camX, double camY, double camZ, Matrix4f modelViewMatrix, Matrix4f projectionMatrix) {
         float[] cloudHeights = {CLOUD_0, CLOUD_1, CLOUD_2};
-        int[] cloudOffsets = {0, 250, -250};
+        float[] cloudScales = {1.0F, 4.0F, 1.0F};
+        int[] cloudOffsets = {0, 0, -128};
 
         for (int i = 0; i < cloudHeights.length; i++) {
-            cloudsRender(poseStack, modelViewMatrix, projectionMatrix, partialTick, camX, camY, camZ, level, ticks, cloudHeights[i], cloudOffsets[i]);
+            cloudsRender(poseStack, modelViewMatrix, projectionMatrix, partialTick, camX, camY, camZ, level, ticks, cloudHeights[i], cloudScales[i], cloudOffsets[i]);
         }
 
         return true;
     }
 
-    private boolean cloudsRender(PoseStack poseStack, Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, double camX, double camY, double camZ,
-                                 ClientLevel level, int ticks, float cloudY, int cloudOffset) {
+    private void cloudsRender(PoseStack poseStack, Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, double camX, double camY, double camZ,
+                              ClientLevel level, int ticks, float cloudY, float cloudScale, int cloudOffset) {
 
         double d1 = ((float) ticks + partialTick) * 0.03F;
 
-        double d2 = (camX + d1 + (double) cloudOffset) / 12.0;
-        double d3 = cloudY - (float) camY + 0.33F;
-        double d4 = (camZ + cloudOffset * 0.5) / 12.0 + 0.33F;
+        double d2 = (camX + d1 + (double) cloudOffset) / (12.0F * cloudScale);
+        double d3 = (cloudY - (float) camY + 0.33F) / cloudScale;
+        double d4 = (camZ + cloudOffset) / (12.0F * cloudScale) + 0.33F;
         d2 -= Mth.floor(d2 / 2048.0) * 2048;
         d4 -= Mth.floor(d4 / 2048.0) * 2048;
         float f3 = (float) (d2 - (double) Mth.floor(d2));
@@ -154,14 +156,17 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
         FogRenderer.levelFogColor();
         poseStack.pushPose();
         poseStack.mulPose(frustumMatrix);
-        poseStack.scale(12.0F, 1.0F, 12.0F);
+        poseStack.scale(12.0F * cloudScale, cloudScale, 12.0F * cloudScale);
         poseStack.translate(-f3, f4, -f5);
         if (this.cloudBuffer != null) {
             this.cloudBuffer.bind();
             int l = this.prevCloudsType == CloudStatus.FANCY ? 0 : 1;
 
             for (int i1 = l; i1 < 2; i1++) {
-                RenderType rendertype = i1 == 0 ? RenderType.cloudsDepthOnly() : RenderType.clouds();
+                RenderType vanRendertype = i1 == 0 ? RenderType.cloudsDepthOnly() : RenderType.clouds();
+                RenderType modRendertype = i1 == 0 ? MiaRenderType.cloudsDepthOnly() : MiaRenderType.clouds();
+                RenderType rendertype = cloudScale != 1.0F ? modRendertype : vanRendertype;
+
                 rendertype.setupRenderState();
                 ShaderInstance shaderinstance = RenderSystem.getShader();
                 this.cloudBuffer.drawWithShader(poseStack.last().pose(), projectionMatrix, shaderinstance);
@@ -170,9 +175,7 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
 
             VertexBuffer.unbind();
         }
-
         poseStack.popPose();
-        return false;
     }
 
     private MeshData buildClouds(Tesselator tesselator, double x, double y, double z, Vec3 cloudColor) {

@@ -33,7 +33,7 @@
           "argument1": 0.25,
           "argument2": {
             "type": "minecraft:mul",
-            "argument1": 0.0,
+            "argument1": -0.05,
             "argument2": {
               "type": "minecraft:noise",
               "noise": "minecraft:noodle_thickness",

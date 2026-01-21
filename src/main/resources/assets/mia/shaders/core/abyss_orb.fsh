@@ -48,22 +48,22 @@ void main() {
     
     float n = fbm(distortedUV * 5.0 + t * 0.5);
     
-    vec3 deepPurple = vec3(0.15, 0.05, 0.25);
-    vec3 darkBlue = vec3(0.05, 0.1, 0.2);
-    vec3 abyssBlack = vec3(0.02, 0.02, 0.05);
-    vec3 highlight = vec3(0.4, 0.2, 0.6);
+    vec3 deepPurple = vec3(0.35, 0.15, 0.45);
+    vec3 darkBlue = vec3(0.25, 0.3, 0.4);
+    vec3 abyssBlack = vec3(0.12, 0.12, 0.15);
+    vec3 highlight = vec3(0.6, 0.4, 0.8);
     
     vec3 color = mix(abyssBlack, deepPurple, n);
     color = mix(color, darkBlue, smoothNoise(distortedUV * 8.0 + t));
     
     float pulse = sin(t * 2.0) * 0.5 + 0.5;
     float edge = smoothstep(0.3, 0.7, n + pulse * 0.2);
-    color += highlight * edge * 0.3;
+    color += highlight * edge * 0.5;
     
-    float glow = smoothstep(0.0, 0.5, n) * pulse * 0.2;
+    float glow = smoothstep(0.0, 0.5, n) * pulse * 0.4;
     color += vec3(0.3, 0.1, 0.5) * glow;
     
-    float alpha = vertexColor.a * ColorModulator.a * 0.85;
+    float alpha = vertexColor.a * ColorModulator.a;
     alpha += pulse * 0.1;
     
     fragColor = vec4(color * vertexColor.rgb * ColorModulator.rgb, alpha);

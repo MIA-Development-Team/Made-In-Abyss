@@ -1,7 +1,7 @@
 package com.altnoir.mia.block.entity.renderer;
 
 import com.altnoir.mia.block.entity.AbyssSpawnerBlockEntity;
-import com.altnoir.mia.client.render.MiaRenderTypes;
+import com.altnoir.mia.client.render.MiaRenderType;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -20,8 +20,8 @@ public class AbyssSpawnerRenderer implements BlockEntityRenderer<AbyssSpawnerBlo
     private static final int SPHERE_RINGS = 12;
     private static final float BASE_RADIUS = 0.25f;
 
-    private static final int CORE_COLOR = FastColor.ARGB32.color(230, 80, 20, 120);
-    private static final int OUTER_COLOR = FastColor.ARGB32.color(180, 120, 60, 180);
+    private static final int CORE_COLOR = FastColor.ARGB32.color(250, 120, 60, 160);
+    private static final int OUTER_COLOR = FastColor.ARGB32.color(100, 160, 100, 220);
 
     public AbyssSpawnerRenderer(BlockEntityRendererProvider.Context context) {
     }
@@ -52,16 +52,18 @@ public class AbyssSpawnerRenderer implements BlockEntityRenderer<AbyssSpawnerBlo
         float pulse = 1.0f + Mth.sin(time * 2.0f) * 0.1f;
         float radius = BASE_RADIUS * pulse;
 
+        poseStack.scale(1.25f, 1.25f, 1.25f);
         renderDistortedSphere(poseStack, bufferSource, radius, time, packedLight);
-
-        poseStack.scale(1.3f, 1.3f, 1.3f);
-        renderGlowingSphere(poseStack, bufferSource, radius * 0.8f, time);
+        poseStack.scale(1.1f, 1.1f, 1.1f);
+        renderDistortedSphere(poseStack, bufferSource, radius, time * 0.5f, packedLight);
+        //poseStack.scale(0.75f, 0.75f, 0.75f);
+        //renderGlowingSphere(poseStack, bufferSource, radius * 0.8f, time);
 
         poseStack.popPose();
     }
 
     private void renderDistortedSphere(PoseStack poseStack, MultiBufferSource bufferSource, float radius, float time, int packedLight) {
-        VertexConsumer buffer = bufferSource.getBuffer(MiaRenderTypes.ABYSS_ORB);
+        VertexConsumer buffer = bufferSource.getBuffer(MiaRenderType.ABYSS_ORB);
         Matrix4f matrix = poseStack.last().pose();
 
         RandomSource random = RandomSource.create(42L);
@@ -102,11 +104,11 @@ public class AbyssSpawnerRenderer implements BlockEntityRenderer<AbyssSpawnerBlo
     }
 
     private void renderGlowingSphere(PoseStack poseStack, MultiBufferSource bufferSource, float radius, float time) {
-        VertexConsumer buffer = bufferSource.getBuffer(MiaRenderTypes.ABYSS_ORB_GLOW);
+        VertexConsumer buffer = bufferSource.getBuffer(MiaRenderType.ABYSS_ORB_GLOW);
         Matrix4f matrix = poseStack.last().pose();
 
         float glowPulse = Mth.sin(time * 3.0f) * 0.5f + 0.5f;
-        int glowAlpha = (int) (80 + glowPulse * 100);
+        int glowAlpha = (int) (150 + glowPulse * 105);
         int glowColor = FastColor.ARGB32.color(glowAlpha, 180, 80, 220);
 
         for (int ring = 0; ring < SPHERE_RINGS / 2; ring++) {

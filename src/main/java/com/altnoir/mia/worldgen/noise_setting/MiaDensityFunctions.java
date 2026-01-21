@@ -115,7 +115,7 @@ public class MiaDensityFunctions {
     }
 
     private static DensityFunction theAbyssNoodle(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        return noodle(MiaHeight.THE_ABYSS.minY() + 128, MiaHeight.THE_ABYSS.maxY(), densityFunctions, noiseParameters, -40, 40, false, false, true);
+        return noodle(MiaHeight.THE_ABYSS.minY() + 128, MiaHeight.THE_ABYSS.maxY(), densityFunctions, noiseParameters, -40, 40, true, false, true);
     }
 
     private static DensityFunction noodle(
@@ -132,7 +132,8 @@ public class MiaDensityFunctions {
         );
 
         DensityFunction densityFunction2 = yLimitedInterpolatable(
-                densityfunction, DensityFunctions.mappedNoise(noiseParameters.getOrThrow(Noises.NOODLE_THICKNESS), 1.0, 1.0, inverse ? 0.25 : -0.15, inverse ? 0.25 : -0.15),
+                densityfunction, DensityFunctions.mappedNoise(noiseParameters.getOrThrow(Noises.NOODLE_THICKNESS), 1.0, 1.0,
+                        inverse ? 0.3 : -0.25, inverse ? 0.2 : -0.25),
                 FMinY, FMaxY, 0
         );
 
