@@ -17,9 +17,53 @@ public class MiaConfig {
     public static int caveExplorerBeaconVertical;
     public static boolean caveExplorerBeaconMaxVertical;
 
+    // ==================== 钩爪配置 ====================
+    public static double hookMaxDistance;
+    public static double hookAutoRetractDistance;
+    public static double hookRetractVelocity;
+    public static double hookInstantRetractDistance;
+    public static double hookPullVelocity;
+    public static double hookJumpBoost;
+    public static double hookShootVelocity;
+
     private static final ModConfigSpec.IntValue ABYSS_RADIUS = COMMON_BUILDER
             .comment("The radius of the Abyss (Default: 160) | 深渊半径 (默认值: 160)")
             .defineInRange("abyss_radius", 160, 64, 10000);
+
+    /**
+     * 钩爪相关的配置
+     */
+    private static final ModConfigSpec.Builder HOOK = COMMON_BUILDER.push("hook")
+            .comment("Hook Configuration | 钩爪配置");
+
+    private static final ModConfigSpec.DoubleValue HOOK_MAX_DISTANCE = HOOK
+            .comment("Maximum hook distance in blocks (Default: 32.0) | 最大钩爪距离 (默认值: 32.0)")
+            .defineInRange("max_distance", 32.0, 1.0, 256.0);
+
+    private static final ModConfigSpec.DoubleValue HOOK_SHOOT_VELOCITY = HOOK
+            .comment("Hook shoot velocity (Default: 4.0) | 钩爪射击速度 (默认值: 4.0)")
+            .defineInRange("shoot_velocity", 4.0, 0.5, 10.0);
+
+    private static final ModConfigSpec.DoubleValue HOOK_AUTO_RETRACT_DISTANCE = HOOK
+            .comment("Auto retract distance in blocks (Default: 1.0) | 自动回收距离 (默认值: 1.0)")
+            .defineInRange("auto_retract_distance", 1.0, 1.0, 10.0);
+
+    private static final ModConfigSpec.DoubleValue HOOK_RETRACT_VELOCITY = HOOK
+            .comment("Hook retract velocity (Default: 0.75) | 钩爪收回速度 (默认值: 0.75)")
+            .defineInRange("retract_velocity", 0.75, 0.1, 5.0);
+
+    private static final ModConfigSpec.DoubleValue HOOK_INSTANT_RETRACT_DISTANCE = HOOK
+            .comment("Instant retract distance in blocks (Default: 4.0) | 瞬间收回距离 (默认值: 4.0)")
+            .defineInRange("instant_retract_distance", 4.0, 1.0, 16.0);
+
+    private static final ModConfigSpec.DoubleValue HOOK_PULL_VELOCITY = HOOK
+            .comment("Base pull velocity (Default: 0.3) | 基础拉取速度 (默认值: 0.3)")
+            .defineInRange("pull_velocity", 0.3, 0.01, 2.0);
+
+    private static final ModConfigSpec.DoubleValue HOOK_JUMP_BOOST = HOOK
+            .comment("Jump boost multiplier (Default: 1.25) | 跳跃增强倍数 (默认值: 1.25)")
+            .defineInRange("jump_boost", 1.25, 1.0, 3.0);
+
     /**
      * 诅咒相关的配置
      */
@@ -45,13 +89,20 @@ public class MiaConfig {
             .comment("Whether to set the vertical range of the Cave Explorer Beacon to the world height (Default: false) | 是否把探窟者信标垂直半径设置为世界高度 (默认值: false)")
             .define("cave_explorer_beacon_max_vertical", false);
 
-
     public static final ModConfigSpec COMMON_SPEC = COMMON_BUILDER.build();
     public static final ModConfigSpec SERVER_SPEC = SERVER_BUILDER.build();
 
     public static void onLoad(ModConfig config) {
         if (config.getSpec() == COMMON_SPEC) {
             abyssRadius = ABYSS_RADIUS.get();
+
+            hookMaxDistance = HOOK_MAX_DISTANCE.get();
+            hookShootVelocity = HOOK_SHOOT_VELOCITY.get();
+            hookAutoRetractDistance = HOOK_AUTO_RETRACT_DISTANCE.get();
+            hookRetractVelocity = HOOK_RETRACT_VELOCITY.get();
+            hookInstantRetractDistance = HOOK_INSTANT_RETRACT_DISTANCE.get();
+            hookPullVelocity = HOOK_PULL_VELOCITY.get();
+            hookJumpBoost = HOOK_JUMP_BOOST.get();
         }
 
         if (config.getSpec() == SERVER_SPEC) {

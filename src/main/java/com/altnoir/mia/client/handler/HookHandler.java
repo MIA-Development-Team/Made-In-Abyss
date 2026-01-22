@@ -1,5 +1,6 @@
 package com.altnoir.mia.client.handler;
 
+import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.client.MiaClientConfig;
 import com.altnoir.mia.common.entity.projectile.HookEntity;
 import com.altnoir.mia.init.MiaItems;
@@ -15,58 +16,81 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-// TODO HookHandler需要重构
+/**
+ * 钩爪客户端处理
+ */
 @OnlyIn(Dist.CLIENT)
 public class HookHandler {
+    /**
+     * 处理钩爪
+     */
     public static void handler(LocalPlayer player, Level level, boolean isJump) {
-        ItemStack stack;
-        if (player.getMainHandItem().is(MiaItems.HOOK_ITEM)) {
-            stack = player.getMainHandItem();
-        } else if (player.getOffhandItem().is(MiaItems.HOOK_ITEM)) {
-            stack = player.getOffhandItem();
-        } else {
-            return;
-        }
-        HookEntity hookEntity = null;
-        CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
-        if (customData.contains("hook") && level.getEntity(customData.copyTag().getInt("hook")) instanceof HookEntity entity) {
-            hookEntity = entity;
-        }
-        if (hookEntity == null || hookEntity.getHookState() != HookEntity.HookState.HOOKED || player.isCrouching()) {
-            return;
-        }
-        // TODO 玩家乘坐实体不知道应不应该被操作
+        ItemStack stack = findHookItem(player);
+        if (stack == null) return;
+        HookEntity hook = getHookEntity(stack, level);
+        if (hook == null || !hook.isHooked() || player.isCrouching()) return;
         if (isJump) {
-            Vec3 vec3 = player.getDeltaMovement();
-            // at开不了，等后续有缘人
-            // double y =  player.getJumpPower() * 1.25;
-            // 二编，再次尝试了一下at，失败，把getJumpBoostPower加上去了
-            double y = (player.getAttributeValue(Attributes.JUMP_STRENGTH) + player.getJumpBoostPower()) * 1.25;
-            player.setDeltaMovement(vec3.x, y, vec3.z);
-            PacketDistributor.sendToServer(new PopHookPayload(hookEntity.getId()));
-            return;
+            handleJump(player, hook);
+        } else {
+            handlePull(player, hook);
         }
-        Vec3 subtract = hookEntity.position().subtract(player.position());
-        if (subtract.lengthSqr() < 1.0) {
+    }
+
+    /**
+     * 处理跳跃
+     */
+    private static void handleJump(LocalPlayer player, HookEntity hook) {
+        // at开不了，等后续有缘人
+        // double y = player.getJumpPower() * MiaConfig.hookJumpBoost;
+        double y = (player.getAttributeValue(Attributes.JUMP_STRENGTH) + player.getJumpBoostPower()) * MiaConfig.hookJumpBoost;
+        Vec3 vec3 = player.getDeltaMovement();
+        player.setDeltaMovement(vec3.x, y, vec3.z);
+        PacketDistributor.sendToServer(new PopHookPayload(hook.getId()));
+    }
+
+    /**
+     * 处理拉取
+     */
+    private static void handlePull(LocalPlayer player, HookEntity hook) {
+        if (player.distanceToSqr(hook) < MiaConfig.hookAutoRetractDistance * MiaConfig.hookAutoRetractDistance) {
+            // 自动回收
             if (MiaClientConfig.autoHook) {
-                PacketDistributor.sendToServer(new PopHookPayload(hookEntity.getId()));
+                PacketDistributor.sendToServer(new PopHookPayload(hook.getId()));
                 return;
             }
-            Vec3 vec3 = player.getDeltaMovement().scale(0.05);
+            Vec3 vec3 = player.getDeltaMovement().scale(0.01);
             player.setDeltaMovement(vec3.x, 0.0, vec3.z);
-        } else {
-            // 拉动速度
-            double velocity = 0.2;
-            Vec3 currentMotion = player.getDeltaMovement();
-            // 玩家在地面给予速度补偿，但手动的很鬼畜
-            if (player.onGround()) velocity *= 2.0;
-
-            Vec3 vec3 = subtract.normalize().scale(velocity);
-
-            Vec3 gravity = new Vec3(0, player.getGravity() * 0.975, 0);
-            Vec3 totalForce = !player.onGround() ? vec3.add(gravity) : vec3;
-
-            player.setDeltaMovement(currentMotion.add(totalForce).scale(0.96));
+            return;
         }
+        double velocity = MiaConfig.hookPullVelocity;
+        if (player.onGround()) {
+            // 地面2倍速度
+            velocity *= 2.0;
+        }
+        // 应用拉取
+        Vec3 vec3 = hook.position().subtract(player.position()).normalize().scale(velocity);
+        player.setDeltaMovement(player.getDeltaMovement().add(vec3.x, vec3.y + player.getGravity() * 0.95, vec3.z).scale(0.95));
+    }
+
+    private static ItemStack findHookItem(LocalPlayer player) {
+        ItemStack mainHand = player.getMainHandItem();
+        ItemStack offhand = player.getOffhandItem();
+        if (mainHand.is(MiaItems.HOOK_ITEM)) {
+            return mainHand;
+        } else if (offhand.is(MiaItems.HOOK_ITEM)) {
+            return offhand;
+        }
+        return null;
+    }
+
+    private static HookEntity getHookEntity(ItemStack stack, Level level) {
+        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+        if (data != null && data.contains("hook")) {
+            int id = data.copyTag().getInt("hook");
+            if (level.getEntity(id) instanceof HookEntity hook) {
+                return hook;
+            }
+        }
+        return null;
     }
 }

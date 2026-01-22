@@ -1,5 +1,6 @@
 package com.altnoir.mia.common.entity.projectile;
 
+import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.init.MiaEntities;
 import com.altnoir.mia.init.MiaItems;
 import com.mojang.serialization.Codec;
@@ -28,17 +29,17 @@ import java.util.function.IntFunction;
 public class HookEntity extends Projectile {
     public static final EntityDataAccessor<Integer> DATA_HOOK_STATE = SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Boolean> DATA_SHOOT_HAND = SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.BOOLEAN);
-    // 32格距离
-    public final float hookRangeSqr = 32 * 32;
-    public BlockPos hookPos;
-    public BlockState hookedState;
+    // 钩住位置和方块状态
+    public BlockPos hookedBlockPos;
+    public BlockState hookedBlockState;
 
     public HookEntity(EntityType<? extends HookEntity> entityType, Level level) {
         super(entityType, level);
+        this.noCulling = true;
     }
 
     public HookEntity(Player player, InteractionHand hand) {
-        super(MiaEntities.HOOK.get(), player.level());
+        this(MiaEntities.HOOK.get(), player.level());
         setOwner(player);
         setShootHand(hand);
         setNoGravity(true);
@@ -56,7 +57,14 @@ public class HookEntity extends Projectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_HOOK_STATE, 0).define(DATA_SHOOT_HAND, true);
+        builder.define(DATA_HOOK_STATE, HookState.SHOOT.id)
+                .define(DATA_SHOOT_HAND, true);
+    }
+
+    @Override
+    public boolean shouldRenderAtSqrDistance(double distance) {
+        // 64 * 64
+        return distance < 4096;
     }
 
     public @Nullable Player getPlayer() {
@@ -69,6 +77,10 @@ public class HookEntity extends Projectile {
 
     public void setHookState(HookState hookState) {
         entityData.set(DATA_HOOK_STATE, hookState.id);
+    }
+
+    public boolean isHooked() {
+        return getHookState() == HookState.HOOKED;
     }
 
     public InteractionHand getShootHand() {
@@ -87,6 +99,21 @@ public class HookEntity extends Projectile {
             discard();
             return;
         }
+        switch (getHookState()) {
+            // SHOOT：飞行中
+            case SHOOT -> tickShoot(player);
+            // BACK：收回中
+            case BACK -> tickHooked(player);
+            // HOOKED：已钩住
+            case HOOKED -> tickBack(player);
+        }
+        ;
+    }
+
+    /**
+     * SHOOT 状态逻辑
+     */
+    private void tickShoot(Player player) {
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (hitresult.getType() != HitResult.Type.MISS && !EventHooks.onProjectileImpact(this, hitresult)) {
             this.hitTargetOrDeflectSelf(hitresult);
@@ -102,32 +129,52 @@ public class HookEntity extends Projectile {
                 getZ() + vec3.z
         );
         player.resetFallDistance();
-        HookState hookState = getHookState();
-        if (hookState == HookState.BACK) {
-            setDeltaMovement(
-                    getDeltaMovement()
-                            .scale(0.95)
-                            .add(
-                                    player.position()
-                                            .add(0, player.getEyeHeight() - 0.1, 0)
-                                            .subtract(position())
-                                            .normalize()
-                                            // 收回速度
-                                            .scale(0.75)
-                            )
-            );
-            // 有时会出现延迟销毁的bug，目前没诊断出原因，但触发概率不大
-            if (distanceToSqr(player) < 4) {
-                discard();
+        // 检查是否超出最大距离
+        double distanceSqr = position().distanceToSqr(player.position());
+        if (distanceSqr > MiaConfig.hookMaxDistance * MiaConfig.hookMaxDistance) {
+            setHookState(HookState.BACK);
+        }
+    }
+
+    /**
+     * BACK 状态逻辑
+     */
+    private void tickBack(Player player) {
+        // 计算返回速度
+        Vec3 direction = player.position()
+                .add(0, player.getEyeHeight() - 0.1, 0)
+                .subtract(position())
+                .normalize()
+                .scale(MiaConfig.hookRetractVelocity);
+        Vec3 velocity = getDeltaMovement()
+                .scale(0.95)
+                .add(direction);
+        setDeltaMovement(velocity);
+        // 移动实体
+        Vec3 vec3 = getDeltaMovement();
+        this.setPos(
+                getX() + vec3.x,
+                getY() + vec3.y,
+                getZ() + vec3.z
+        );
+        // 到达玩家后销毁
+        if (distanceToSqr(player) < MiaConfig.hookInstantRetractDistance * MiaConfig.hookInstantRetractDistance) {
+            discard();
+        }
+    }
+
+    /**
+     * HOOKED 状态逻辑
+     */
+    private void tickHooked(Player player) {
+        if (!level().isClientSide()) {
+            // 检查方块是否仍然存在
+            if (hookedBlockPos == null || level().getBlockState(hookedBlockPos) != hookedBlockState) {
+                setHookState(HookState.BACK);
                 return;
             }
-        }
-        if (!level().isClientSide()) {
-            // 由于HookHandler的触发先于此tick逻辑，导致HookHandler先一步判断能够拉取，然后此处判断收回
-            // HookHandler需要重构
-            if (hookState != HookState.BACK && distanceToSqr(player) > hookRangeSqr) {
-                setHookState(HookState.BACK);
-            } else if (hookState == HookState.HOOKED && (hookPos == null || level().getBlockState(hookPos) != hookedState)) {
+            // 检查是否超出最大距离
+            if (distanceToSqr(player.position()) > MiaConfig.hookMaxDistance * MiaConfig.hookMaxDistance) {
                 setHookState(HookState.BACK);
             }
         }
@@ -140,22 +187,15 @@ public class HookEntity extends Projectile {
         if (hookState == HookState.BACK) return;
         Vec3 vec3 = result.getLocation().subtract(position());
         setDeltaMovement(vec3);
-        if (hookState == HookState.SHOOT) {
-            setHookState(HookState.HOOKED);
-            hookPos = result.getBlockPos();
-            hookedState = level().getBlockState(hookPos);
-        }
-    }
-
-    @Override
-    public boolean shouldRenderAtSqrDistance(double distance) {
-        // 64 * 64
-        return distance < 4096;
+        if (hookState != HookState.SHOOT) return;
+        setHookState(HookState.HOOKED);
+        hookedBlockPos = result.getBlockPos();
+        hookedBlockState = level().getBlockState(hookedBlockPos);
     }
 
     public enum HookState implements StringRepresentable {
-        SHOOT(0, "shoot"), // 发射
-        BACK(1, "back"), // 收回
+        SHOOT(0, "shoot"),   // 发射
+        BACK(1, "back"),     // 收回
         HOOKED(2, "hooked"); // 抓住
 
         public static final Codec<HookState> CODEC = StringRepresentable.fromEnum(HookState::values);

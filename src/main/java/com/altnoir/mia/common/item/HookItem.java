@@ -1,5 +1,6 @@
 package com.altnoir.mia.common.item;
 
+import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.common.entity.projectile.HookEntity;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -22,8 +23,7 @@ public class HookItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
         CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
-        boolean flag = customData.contains("hook");
-        if (flag && level.getEntity(customData.copyTag().getInt("hook")) instanceof HookEntity entity) {
+        if (customData.contains("hook") && level.getEntity(customData.copyTag().getInt("hook")) instanceof HookEntity entity) {
             // 尝试优化手感，当距离小于4时，删除原来抓钩，立即发射,不需收回
             if (entity.distanceToSqr(player) > 16) {
                 level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -44,7 +44,7 @@ public class HookItem extends Item {
                 player.getXRot(),
                 player.getYRot(),
                 0,
-                2,
+                (float) MiaConfig.hookShootVelocity,
                 0
         );
         level.addFreshEntity(hookEntity);
