@@ -162,6 +162,22 @@ public class MiaLangProvider extends LanguageProvider {
 
         add("mia.configuration.hook", "Hook");
         add("mia.configuration.hook.tooltip", "Hook Configuration");
+
+        add("mia.configuration.hook_max_distance", "Max Hook Distance");
+        add("mia.configuration.hook_max_distance.tooltip", "Maximum hook distance in blocks");
+        add("mia.configuration.hook_stop_distance", "Hook Pull Stop Distance");
+        add("mia.configuration.hook_stop_distance.tooltip", "Distance at which the hook stops pulling the player");
+        add("mia.configuration.hook_shoot_velocity", "Hook Shoot Velocity");
+        add("mia.configuration.hook_shoot_velocity.tooltip", "Hook shoot velocity");
+        add("mia.configuration.hook_pull_velocity", "Hook Pull Velocity");
+        add("mia.configuration.hook_pull_velocity.tooltip", "Base pull velocity");
+        add("mia.configuration.hook_retract_velocity", "Hook Retract Velocity");
+        add("mia.configuration.hook_retract_velocity.tooltip", "Hook retract velocity");
+        add("mia.configuration.hook_instant_retract_distance", "Hook Retract Distance");
+        add("mia.configuration.hook_instant_retract_distance.tooltip", "Distance at which the hook automatically retracts");
+        add("mia.configuration.hook_jump_boost", "Jump Boost Multiplier");
+        add("mia.configuration.hook_jump_boost.tooltip", "Jump boost multiplier when using hook");
+
         add("mia.configuration.auto_hook", "auto hook");
         add("mia.configuration.auto_hook.tooltip", "Whether to enable auto hook");
         //Config end

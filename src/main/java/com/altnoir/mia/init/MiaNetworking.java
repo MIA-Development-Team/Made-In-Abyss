@@ -2,7 +2,7 @@ package com.altnoir.mia.init;
 
 import com.altnoir.mia.network.client.CompassTargetPayload;
 import com.altnoir.mia.network.client.CurseCapabilityPayload;
-import com.altnoir.mia.network.server.PopHookPayload;
+import com.altnoir.mia.network.server.RetractHookPayload;
 import com.altnoir.mia.network.server.SkillCooldownPayload;
 import com.altnoir.mia.network.server.SkillPlayPayload;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -33,9 +33,9 @@ public class MiaNetworking {
                 SkillPlayPayload::handle
         );
         registrar.playToServer(
-                PopHookPayload.TYPE,
-                PopHookPayload.CODEC,
-                PopHookPayload::handle
+                RetractHookPayload.TYPE,
+                RetractHookPayload.CODEC,
+                RetractHookPayload::handle
         );
     }
 }

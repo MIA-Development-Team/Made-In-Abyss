@@ -1,7 +1,6 @@
 package com.altnoir.mia;
 
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 
@@ -19,7 +18,7 @@ public class MiaConfig {
 
     // ==================== 钩爪配置 ====================
     public static double hookMaxDistance;
-    public static double hookAutoRetractDistance;
+    public static double hookStopPullDistance;
     public static double hookRetractVelocity;
     public static double hookInstantRetractDistance;
     public static double hookPullVelocity;
@@ -44,16 +43,16 @@ public class MiaConfig {
             .comment("Hook shoot velocity (Default: 4.0) | 钩爪射击速度 (默认值: 4.0)")
             .defineInRange("shoot_velocity", 4.0, 0.5, 10.0);
 
-    private static final ModConfigSpec.DoubleValue HOOK_AUTO_RETRACT_DISTANCE = HOOK
-            .comment("Auto retract distance in blocks (Default: 1.0) | 自动回收距离 (默认值: 1.0)")
-            .defineInRange("auto_retract_distance", 1.0, 1.0, 10.0);
+    private static final ModConfigSpec.DoubleValue HOOK_STOP_DISTANCE = HOOK
+            .comment("Distance at which the hook stops pulling the player (Default: 1.0) | 钩爪停止拉取距离 (默认值: 1.0)")
+            .defineInRange("stop_distance", 1.0, 1.0, 10.0);
 
     private static final ModConfigSpec.DoubleValue HOOK_RETRACT_VELOCITY = HOOK
             .comment("Hook retract velocity (Default: 0.75) | 钩爪收回速度 (默认值: 0.75)")
             .defineInRange("retract_velocity", 0.75, 0.1, 5.0);
 
     private static final ModConfigSpec.DoubleValue HOOK_INSTANT_RETRACT_DISTANCE = HOOK
-            .comment("Instant retract distance in blocks (Default: 4.0) | 瞬间收回距离 (默认值: 4.0)")
+            .comment("Retract distance in blocks (Default: 4.0) | 回收距离 (默认值: 4.0)")
             .defineInRange("instant_retract_distance", 4.0, 1.0, 16.0);
 
     private static final ModConfigSpec.DoubleValue HOOK_PULL_VELOCITY = HOOK
@@ -98,7 +97,7 @@ public class MiaConfig {
 
             hookMaxDistance = HOOK_MAX_DISTANCE.get();
             hookShootVelocity = HOOK_SHOOT_VELOCITY.get();
-            hookAutoRetractDistance = HOOK_AUTO_RETRACT_DISTANCE.get();
+            hookStopPullDistance = HOOK_STOP_DISTANCE.get();
             hookRetractVelocity = HOOK_RETRACT_VELOCITY.get();
             hookInstantRetractDistance = HOOK_INSTANT_RETRACT_DISTANCE.get();
             hookPullVelocity = HOOK_PULL_VELOCITY.get();

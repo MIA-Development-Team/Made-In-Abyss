@@ -194,6 +194,24 @@
     "mia.configuration.abyss_radius": "深渊半径",
     "mia.configuration.abyss_radius.tooltip": "设置深渊半径\n§7(默认值: 640)",
 
+    "mia.configuration.hook": "钩爪",
+    "mia.configuration.hook.tooltip": "钩爪配置",
+
+    "mia.configuration.hook_max_distance": "最大钩爪距离",
+    "mia.configuration.hook_max_distance.tooltip": "最大钩爪距离",
+    "mia.configuration.hook_stop_distance": "钩爪停止拉取距离",
+    "mia.configuration.hook_stop_distance.tooltip": "钩爪停止拉取玩家的距离",
+    "mia.configuration.hook_shoot_velocity": "钩爪射击速度",
+    "mia.configuration.hook_shoot_velocity.tooltip": "钩爪射击速度",
+    "mia.configuration.hook_pull_velocity": "基础拉取速度",
+    "mia.configuration.hook_pull_velocity.tooltip": "基础拉取速度",
+    "mia.configuration.hook_retract_velocity": "钩爪收回速度",
+    "mia.configuration.hook_retract_velocity.tooltip": "钩爪收回速度",
+    "mia.configuration.hook_instant_retract_distance": "回收距离",
+    "mia.configuration.hook_instant_retract_distance.tooltip": "钩爪自动回收的距离",
+    "mia.configuration.hook_jump_boost": "跳跃增强倍数",
+    "mia.configuration.hook_jump_boost.tooltip": "使用钩爪时的跳跃增强倍数",
+
     "subtitle.mia.abyss_portal_ambient": "深渊传送门: 环境音",
     "subtitle.mia.abyss_portal_travel": "深渊传送门: 传送音效",
 

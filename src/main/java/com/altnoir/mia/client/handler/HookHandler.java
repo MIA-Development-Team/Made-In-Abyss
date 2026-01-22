@@ -4,7 +4,7 @@ import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.client.MiaClientConfig;
 import com.altnoir.mia.common.entity.projectile.HookEntity;
 import com.altnoir.mia.init.MiaItems;
-import com.altnoir.mia.network.server.PopHookPayload;
+import com.altnoir.mia.network.server.RetractHookPayload;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -45,17 +45,17 @@ public class HookHandler {
         double y = (player.getAttributeValue(Attributes.JUMP_STRENGTH) + player.getJumpBoostPower()) * MiaConfig.hookJumpBoost;
         Vec3 vec3 = player.getDeltaMovement();
         player.setDeltaMovement(vec3.x, y, vec3.z);
-        PacketDistributor.sendToServer(new PopHookPayload(hook.getId()));
+        PacketDistributor.sendToServer(new RetractHookPayload(hook.getId()));
     }
 
     /**
      * 处理拉取
      */
     private static void handlePull(LocalPlayer player, HookEntity hook) {
-        if (player.distanceToSqr(hook) < MiaConfig.hookAutoRetractDistance * MiaConfig.hookAutoRetractDistance) {
+        if (player.distanceToSqr(hook) < MiaConfig.hookStopPullDistance * MiaConfig.hookStopPullDistance) {
             // 自动回收
             if (MiaClientConfig.autoHook) {
-                PacketDistributor.sendToServer(new PopHookPayload(hook.getId()));
+                PacketDistributor.sendToServer(new RetractHookPayload(hook.getId()));
                 return;
             }
             Vec3 vec3 = player.getDeltaMovement().scale(0.01);
