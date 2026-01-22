@@ -173,8 +173,8 @@ public class MiaLangProvider extends LanguageProvider {
         add("mia.configuration.hook_pull_velocity.tooltip", "Base pull velocity");
         add("mia.configuration.hook_retract_velocity", "Hook Retract Velocity");
         add("mia.configuration.hook_retract_velocity.tooltip", "Hook retract velocity");
-        add("mia.configuration.hook_instant_retract_distance", "Hook Retract Distance");
-        add("mia.configuration.hook_instant_retract_distance.tooltip", "Distance at which the hook automatically retracts");
+        add("mia.configuration.hook_retract_distance", "Hook Retract Distance");
+        add("mia.configuration.hook_retract_distance.tooltip", "Distance at which the hook automatically retracts");
         add("mia.configuration.hook_jump_boost", "Jump Boost Multiplier");
         add("mia.configuration.hook_jump_boost.tooltip", "Jump boost multiplier when using hook");
 

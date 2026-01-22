@@ -25,7 +25,7 @@ public class HookItem extends Item {
         CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
         if (customData.contains("hook") && level.getEntity(customData.copyTag().getInt("hook")) instanceof HookEntity entity) {
             // 尝试优化手感，当距离小于回收距离时，删除原来抓钩，立即发射,不需收回
-            if (entity.distanceToSqr(player) > MiaConfig.hookInstantRetractDistance * MiaConfig.hookInstantRetractDistance) {
+            if (entity.distanceToSqr(player) > MiaConfig.hookRetractDistance * MiaConfig.hookRetractDistance) {
                 level.playSound(null, player.getX(), player.getY(), player.getZ(),
                         SoundEvents.FISHING_BOBBER_RETRIEVE, SoundSource.PLAYERS, 1.0F, 0.5F);
 

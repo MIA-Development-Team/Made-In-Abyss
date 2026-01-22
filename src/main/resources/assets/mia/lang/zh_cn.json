@@ -207,8 +207,8 @@
     "mia.configuration.hook_pull_velocity.tooltip": "基础拉取速度",
     "mia.configuration.hook_retract_velocity": "钩爪收回速度",
     "mia.configuration.hook_retract_velocity.tooltip": "钩爪收回速度",
-    "mia.configuration.hook_instant_retract_distance": "回收距离",
-    "mia.configuration.hook_instant_retract_distance.tooltip": "钩爪自动回收的距离",
+    "mia.configuration.hook_retract_distance": "回收距离",
+    "mia.configuration.hook_retract_distance.tooltip": "钩爪自动回收的距离",
     "mia.configuration.hook_jump_boost": "跳跃增强倍数",
     "mia.configuration.hook_jump_boost.tooltip": "使用钩爪时的跳跃增强倍数",
 

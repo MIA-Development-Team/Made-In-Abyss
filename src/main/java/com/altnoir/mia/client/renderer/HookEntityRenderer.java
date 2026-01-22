@@ -81,8 +81,8 @@ public class HookEntityRenderer extends EntityRenderer<HookEntity> {
             return player.getEyePosition(partialTick).add(vec3);
         } else {
             float f = Mth.lerp(partialTick, player.yBodyRotO, player.yBodyRot) * (float) (Math.PI / 180.0);
-            double d0 = (double)Mth.sin(f);
-            double d1 = (double)Mth.cos(f);
+            double d0 = Mth.sin(f);
+            double d1 = Mth.cos(f);
             float f1 = player.getScale();
             double d2 = (double)i * 0.35 * (double)f1;
             double d3 = 0.8 * (double)f1;
@@ -117,7 +117,7 @@ public class HookEntityRenderer extends EntityRenderer<HookEntity> {
         f3 /= f6;
         f4 /= f6;
         f5 /= f6;
-        consumer.addVertex(pose, f, f1, f2).setColor(-16777216).setNormal(pose, f3, f4, f5);
+        consumer.addVertex(pose, f, f1, f2).setColor(-8421505).setNormal(pose, f3, f4, f5);
     }
 
     public ResourceLocation getTextureLocation(HookEntity entity) {

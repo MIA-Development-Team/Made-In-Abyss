@@ -11,6 +11,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
@@ -32,6 +34,9 @@ public class HookEntity extends Projectile {
     // 钩住位置和方块状态
     public BlockPos hookedBlockPos;
     public BlockState hookedBlockState;
+    // 被钩住的实体
+    @Nullable
+    public Entity hookedIn;
 
     public HookEntity(EntityType<? extends HookEntity> entityType, Level level) {
         super(entityType, level);
@@ -83,6 +88,10 @@ public class HookEntity extends Projectile {
         return getHookState() == HookState.HOOKED;
     }
 
+    public void setHookedEntity(@Nullable Entity entity) {
+        this.hookedIn = entity;
+    }
+
     public InteractionHand getShootHand() {
         return entityData.get(DATA_SHOOT_HAND) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
     }
@@ -99,15 +108,18 @@ public class HookEntity extends Projectile {
             discard();
             return;
         }
+        player.resetFallDistance();
+        if (player.isPassenger()) {
+            player.getVehicle().resetFallDistance();
+        }
         switch (getHookState()) {
             // SHOOT：飞行中
             case SHOOT -> tickShoot(player);
             // BACK：收回中
-            case BACK -> tickHooked(player);
+            case BACK -> tickBack(player);
             // HOOKED：已钩住
-            case HOOKED -> tickBack(player);
+            case HOOKED -> tickHooked(player);
         }
-        ;
     }
 
     /**
@@ -128,10 +140,8 @@ public class HookEntity extends Projectile {
                 getY() + vec3.y,
                 getZ() + vec3.z
         );
-        player.resetFallDistance();
         // 检查是否超出最大距离
-        double distanceSqr = position().distanceToSqr(player.position());
-        if (distanceSqr > MiaConfig.hookMaxDistance * MiaConfig.hookMaxDistance) {
+        if (distanceToSqr(player) > MiaConfig.hookMaxDistance * MiaConfig.hookMaxDistance) {
             setHookState(HookState.BACK);
         }
     }
@@ -158,7 +168,7 @@ public class HookEntity extends Projectile {
                 getZ() + vec3.z
         );
         // 到达玩家后销毁
-        if (distanceToSqr(player) < MiaConfig.hookInstantRetractDistance * MiaConfig.hookInstantRetractDistance) {
+        if (distanceToSqr(player) < MiaConfig.hookRetractDistance * MiaConfig.hookRetractDistance) {
             discard();
         }
     }
@@ -167,6 +177,16 @@ public class HookEntity extends Projectile {
      * HOOKED 状态逻辑
      */
     private void tickHooked(Player player) {
+        if (hookedIn != null) {
+            if (!hookedIn.isRemoved() && hookedIn.level() == level()) {
+                setPos(hookedIn.getX(), hookedIn.getY(0.8), hookedIn.getZ());
+                pullEntity(hookedIn, player);
+            } else {
+                setHookedEntity(null);
+                setHookState(HookState.BACK);
+            }
+            return;
+        }
         if (!level().isClientSide()) {
             // 检查方块是否仍然存在
             if (hookedBlockPos == null || level().getBlockState(hookedBlockPos) != hookedBlockState) {
@@ -174,9 +194,50 @@ public class HookEntity extends Projectile {
                 return;
             }
             // 检查是否超出最大距离
-            if (distanceToSqr(player.position()) > MiaConfig.hookMaxDistance * MiaConfig.hookMaxDistance) {
+            if (distanceToSqr(player) > MiaConfig.hookMaxDistance * MiaConfig.hookMaxDistance) {
                 setHookState(HookState.BACK);
             }
+        }
+    }
+
+    /**
+     * 拉取实体朝向玩家
+     */
+    private void pullEntity(Entity entity, Player player) {
+        Vec3 target = player.position().add(0, player.getEyeHeight() - 0.1, 0);
+        // 这里把hookStopPullDistance乘了2，不然距离太近会一直吸附
+        if (entity.distanceToSqr(player) < (MiaConfig.hookStopPullDistance * MiaConfig.hookStopPullDistance) * 2) {
+            entity.setDeltaMovement(Vec3.ZERO);
+            discard();
+            return;
+        }
+        Vec3 direction = target
+                .subtract(entity.position())
+                .normalize()
+                .scale(MiaConfig.hookPullVelocity);
+        Vec3 velocity = entity.getDeltaMovement().add(direction);
+        entity.setDeltaMovement(velocity);
+    }
+
+    @Override
+    protected boolean canHitEntity(Entity target) {
+        // 不包括持有者
+        return super.canHitEntity(target) && target != getPlayer();
+    }
+
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        super.onHitEntity(result);
+        Player player = getPlayer();
+        if (player == null
+                || getHookState() != HookState.SHOOT
+                || distanceToSqr(player) > MiaConfig.hookMaxDistance * MiaConfig.hookMaxDistance) {
+            return;
+        }
+        Entity entity = result.getEntity();
+        if (entity != player && !(entity instanceof Player)) {
+            setHookedEntity(entity);
+            setHookState(HookState.HOOKED);
         }
     }
 
@@ -187,7 +248,12 @@ public class HookEntity extends Projectile {
         if (hookState == HookState.BACK) return;
         Vec3 vec3 = result.getLocation().subtract(position());
         setDeltaMovement(vec3);
-        if (hookState != HookState.SHOOT) return;
+        Player player = getPlayer();
+        if (player == null
+                || hookState != HookState.SHOOT
+                || distanceToSqr(player) > MiaConfig.hookMaxDistance * MiaConfig.hookMaxDistance) {
+            return;
+        }
         setHookState(HookState.HOOKED);
         hookedBlockPos = result.getBlockPos();
         hookedBlockState = level().getBlockState(hookedBlockPos);
