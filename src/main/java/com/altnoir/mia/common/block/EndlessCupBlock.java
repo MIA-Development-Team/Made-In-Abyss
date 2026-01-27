@@ -27,7 +27,9 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +37,24 @@ import org.jetbrains.annotations.Nullable;
 public class EndlessCupBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final MapCodec<EndlessCupBlock> CODEC = simpleCodec(EndlessCupBlock::new);
-    protected static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
+
+    protected static final VoxelShape ANGLES = Shapes.or(
+            box(1.0, 0.0, 1.0, 4.0, 4.0, 4.0),
+            box(1.0, 0.0, 12.0, 4.0, 4.0, 15.0),
+            box(12.0, 0.0, 1.0, 15.0, 4.0, 4.0),
+            box(12.0, 0.0, 12.0, 15.0, 4.0, 15.0)
+    );
+    protected static final VoxelShape TOP = Shapes.join(
+            box(1.0, 11.0, 1.0, 15.0, 16.0, 15.0),
+            box(3.0, 14.0, 3.0, 13.0, 16.0, 13.0),
+            BooleanOp.ONLY_FIRST
+    );
+    protected static final VoxelShape SHAPE = Shapes.or(
+            ANGLES,
+            box(2.0, 0.1, 2.0, 14.0, 3.1, 14.0),
+            box(5.0, 3.0, 5.0, 11.0, 11.0, 11.0),
+            TOP
+    );
 
     public EndlessCupBlock(Properties properties) {
         super(properties);

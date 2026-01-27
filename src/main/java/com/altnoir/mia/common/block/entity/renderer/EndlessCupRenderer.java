@@ -4,6 +4,7 @@ import com.altnoir.mia.common.block.EndlessCupBlock;
 import com.altnoir.mia.common.block.entity.EndlessCupBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -12,7 +13,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -26,15 +26,12 @@ public class EndlessCupRenderer implements BlockEntityRenderer<EndlessCupBlockEn
         if (blockEntity.getBlockState().getValue(EndlessCupBlock.WATERLOGGED)) return;
         // 获取水的渲染属性
         IClientFluidTypeExtensions water = IClientFluidTypeExtensions.of(Fluids.WATER);
-        ResourceLocation stillTexture = water.getStillTexture();
-        TextureAtlasSprite sprite = net.minecraft.client.Minecraft.getInstance()
-                .getTextureAtlas(TextureAtlas.LOCATION_BLOCKS)
-                .apply(stillTexture);
+        TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(water.getStillTexture());
 
-        float u0 = sprite.getU0();
-        float u1 = sprite.getU1();
-        float v0 = sprite.getV0();
-        float v1 = sprite.getV1();
+        float u0 = texture.getU0();
+        float u1 = texture.getU1();
+        float v0 = texture.getV0();
+        float v1 = texture.getV1();
 
         // 获取群系颜色
         BlockPos blockPos = blockEntity.getBlockPos();
@@ -50,7 +47,7 @@ public class EndlessCupRenderer implements BlockEntityRenderer<EndlessCupBlockEn
         poseStack.pushPose();
         poseStack.translate(0.0F, 1.00F, 0.0F);
 
-        float size1 = 0.85F;
+        float size1 = 0.875F;
         float size2 = 1.0F - size1;
 
         buffer.addVertex(poseStack.last().pose(), size2, -0.11F, size1)

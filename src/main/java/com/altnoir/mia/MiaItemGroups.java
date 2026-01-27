@@ -149,7 +149,7 @@ public class MiaItemGroups {
                         output.accept(MiaItems.HOOK_ITEM);
                         output.accept(MiaBlocks.CAVE_EXPLORER_BEACON);
 
-                        output.accept(MiaItems.ENDLESS_CUP);
+                        output.accept(MiaBlocks.ENDLESS_CUP);
                     }).build()
     );
 

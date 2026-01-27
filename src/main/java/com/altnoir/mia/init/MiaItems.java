@@ -71,9 +71,6 @@ public class MiaItems {
     );
 
     // Block Item
-    public static final DeferredItem<Item> ENDLESS_CUP = ITEMS.register("endless_cup", () ->
-            new EArtifactBlockItem(MiaBlocks.ENDLESS_CUP.get(), new Item.Properties().stacksTo(1), Grade.C, 1));
-
     public static final DeferredItem<Item> ROPE = ITEMS.register("rope", () ->
             new RopeItem(MiaBlocks.ROPE.get(), new Item.Properties()));
 

@@ -93,10 +93,9 @@ public class MiaModelProvider {
     }
 
     public void endlessCupBlockModel(BlockStateProvider p, Block block) {
-        p.models().withExistingParent(MiaUtil.getBlockPath(block), p.modLoc("block/template/endless_cup"))
-                .texture("top", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_top"))
-                .texture("side", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_side"))
-                .texture("bottom", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_bottom"));
+        p.models().withExistingParent(MiaUtil.getBlockPath(block), p.modLoc("block/template/endless_cup")).renderType("cutout")
+                .texture("all", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
+                .texture("particle", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_particle"));
     }
 
     public void abyssSpawnerBlockModel(BlockStateProvider p, Block block) {

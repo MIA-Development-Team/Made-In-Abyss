@@ -315,7 +315,7 @@ public class MiaBlocks {
                             .isViewBlocking(MiaBlocks::never)
                             .noOcclusion())
     );
-    public static final DeferredBlock<Block> CAVE_EXPLORER_BEACON = registerBlock("cave_explorer_beacon",() ->
+    public static final DeferredBlock<Block> CAVE_EXPLORER_BEACON = registerBlock("cave_explorer_beacon", () ->
             new CaveExplorerBeaconBlock(
                     BlockBehaviour.Properties.of()
                             .mapColor(MapColor.EMERALD)
@@ -341,7 +341,7 @@ public class MiaBlocks {
                     .strength(3.0F, 6.0F)
                     .sound(SoundType.NETHERITE_BLOCK))
     );
-    public static final DeferredBlock<Block> ENDLESS_CUP = BLOCKS.register("endless_cup", () ->
+    public static final DeferredBlock<Block> ENDLESS_CUP = registerBlock("endless_cup", 1, () ->
             new EndlessCupBlock(
                     BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get()))
     );
@@ -482,8 +482,18 @@ public class MiaBlocks {
         return toReturn;
     }
 
+    private static <T extends Block> DeferredBlock<T> registerBlock(String name, int stackSize, Supplier<T> block) {
+        DeferredBlock<T> toReturn = BLOCKS.register(name, block);
+        registerBlockItem(name, toReturn, stackSize);
+        return toReturn;
+    }
+
     private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {
         MiaItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    }
+
+    private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block, int stackSize) {
+        MiaItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().stacksTo(stackSize)));
     }
 
     public static void register(IEventBus eventBus) {

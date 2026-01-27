@@ -176,7 +176,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     private void ropeBlock() {
         modelP.ropeBlockModel(this, MiaBlocks.ROPE.get());
         stateP.baseBlockState(this, MiaBlocks.ROPE.get());
-        basicItem(MiaBlocks.ROPE);
+        aloneItem(MiaBlocks.ROPE);
     }
 
     private void lampTubeBlock(DeferredBlock<?> block, Block particle) {
@@ -226,7 +226,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     private void endlessCupBlock() {
         modelP.endlessCupBlockModel(this, MiaBlocks.ENDLESS_CUP.get());
         stateP.baseBlockState(this, MiaBlocks.ENDLESS_CUP.get());
-        basicItem(MiaBlocks.ENDLESS_CUP);
+        blockItem(MiaBlocks.ENDLESS_CUP);
     }
 
     private void clusterBlock(DeferredBlock<?> block) {
@@ -293,7 +293,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     protected void doorBlockWithItem(DeferredBlock<?> block, String renderType) {
         doorBlockWithRenderType((DoorBlock) block.get(), extend(blockTexture(block.get()), "_bottom"),
                 extend(blockTexture(block.get()), "_top"), renderType);
-        basicItem(block);
+        aloneItem(block);
     }
 
     protected void trapdoorBlockWithItem(DeferredBlock<?> block) {
@@ -417,7 +417,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         return itemModels().withExistingParent(MiaUtil.getBlockPath(block.get()), mcLoc("block/" + suffix));
     }
 
-    protected ItemModelBuilder basicItem(DeferredBlock<?> block) {
+    protected ItemModelBuilder aloneItem(DeferredBlock<?> block) {
         return itemModels().withExistingParent(block.getId().getPath(),
                 MiaUtil.id("item/generated")).texture("layer0",
                 MiaUtil.miaId("item/" + block.getId().getPath()));
