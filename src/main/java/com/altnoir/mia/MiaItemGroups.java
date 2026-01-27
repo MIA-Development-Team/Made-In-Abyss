@@ -120,9 +120,7 @@ public class MiaItemGroups {
                         // tools
                         output.accept(MiaItems.RED_WHISTLE);
                         output.accept(MiaItems.BLUE_WHISTLE);
-                        output.accept(MiaItems.MOON_WHISTLE);
-                        output.accept(MiaItems.BLACK_WHISTLE);
-                        output.accept(MiaItems.WHITE_WHISTLE);
+
                         output.accept(MiaItems.ROPE);
                         output.accept(MiaBlocks.PRASIOLITE_LAMPTUBE);
                         output.accept(MiaBlocks.AMETHYST_LAMPTUBE);

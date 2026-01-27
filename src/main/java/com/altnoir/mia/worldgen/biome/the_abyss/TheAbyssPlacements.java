@@ -146,7 +146,6 @@ public class TheAbyssPlacements {
 
         MiaPlacementUtils.register(
                 context, CAVE_VINES, cave_vine,
-                RarityFilter.onAverageOnceEvery(3),
                 CountPlacement.of(47),
                 InSquarePlacement.spread(),
                 ABYSS_BRINK_HEIGHT,

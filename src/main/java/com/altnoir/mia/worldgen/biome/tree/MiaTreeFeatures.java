@@ -49,7 +49,7 @@ public class MiaTreeFeatures {
         var bee1 = new BeehiveDecorator(1.0F);
 
         MiaFeatureUtils.register(context, SKYFOG_TREE, Feature.TREE, skyfog().build());
-        MiaFeatureUtils.register(context, SKYFOG_TREE_BEES, Feature.TREE, skyfog().decorators(List.of(bee002)).build());
+        MiaFeatureUtils.register(context, SKYFOG_TREE_BEES, Feature.TREE, skyfog().decorators(List.of(bee0002)).build());
         MiaFeatureUtils.register(context, FANCY_SKYFOG_TREE_BEES, Feature.TREE, fancySkyfog().build());
         MiaFeatureUtils.register(
                 context, MEGA_SKYFOG_TREE, Feature.TREE,
@@ -127,7 +127,7 @@ public class MiaTreeFeatures {
                 new TwoLayersFeatureSize(1, 0, 2)
         )
                 .dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT)).forceDirt()
-                .decorators(ImmutableList.of(new BeehiveDecorator(0.05F), TrunkVineDecorator.INSTANCE, new LeaveVineDecorator(0.05F)))
+                .decorators(ImmutableList.of(new BeehiveDecorator(0.002F), TrunkVineDecorator.INSTANCE, new LeaveVineDecorator(0.05F)))
                 .ignoreVines();
     }
 }

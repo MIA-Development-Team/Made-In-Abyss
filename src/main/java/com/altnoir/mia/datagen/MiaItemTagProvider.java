@@ -49,10 +49,7 @@ public class MiaItemTagProvider extends ItemTagsProvider {
 
         tag(CuriosTags.WHISTLE).replace(false)
                 .add(MiaItems.RED_WHISTLE.get())
-                .add(MiaItems.BLUE_WHISTLE.get())
-                .add(MiaItems.MOON_WHISTLE.get())
-                .add(MiaItems.BLACK_WHISTLE.get())
-                .add(MiaItems.WHITE_WHISTLE.get());
+                .add(MiaItems.BLUE_WHISTLE.get());
 
         tag(ItemTags.LOGS_THAT_BURN)
                 .add(MiaBlocks.SKYFOG_LOG.get().asItem())

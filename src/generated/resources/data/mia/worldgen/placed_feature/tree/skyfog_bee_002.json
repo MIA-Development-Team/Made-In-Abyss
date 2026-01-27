@@ -1,5 +1,5 @@
 {
-  "feature": "mia:tree/skyfog_tree_bees",
+  "feature": "mia:tree/skyfog_tree",
   "placement": [
     {
       "type": "minecraft:block_predicate_filter",

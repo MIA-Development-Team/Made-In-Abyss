@@ -117,7 +117,7 @@ public class HookEntityRenderer extends EntityRenderer<HookEntity> {
         f3 /= f6;
         f4 /= f6;
         f5 /= f6;
-        consumer.addVertex(pose, f, f1, f2).setColor(-8421505).setNormal(pose, f3, f4, f5);
+        consumer.addVertex(pose, f, f1, f2).setColor(0xFF29363D).setNormal(pose, f3, f4, f5);
     }
 
     public ResourceLocation getTextureLocation(HookEntity entity) {

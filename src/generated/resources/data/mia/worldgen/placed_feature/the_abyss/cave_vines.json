@@ -2,10 +2,6 @@
   "feature": "minecraft:cave_vine",
   "placement": [
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 3
-    },
-    {
       "type": "minecraft:count",
       "count": 47
     },

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:random_selector",
   "config": {
-    "default": "mia:tree/fancy_skyfog_bee_005",
+    "default": "mia:tree/fancy_skyfog_bee_002",
     "features": [
       {
         "chance": 0.3,

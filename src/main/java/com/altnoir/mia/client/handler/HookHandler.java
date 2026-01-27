@@ -60,7 +60,7 @@ public class HookHandler {
         if (entity.distanceToSqr(hook) < MiaConfig.hookStopPullDistance * MiaConfig.hookStopPullDistance) {
             // 自动回收
             if (MiaClientConfig.autoHook || hook.hookedIn != null) {
-                PacketDistributor.sendToServer(new RetractHookPayload(hook.getId()));
+                handleJump(player, hook);
                 return;
             }
             Vec3 vec3 = entity.getDeltaMovement().scale(0.05);

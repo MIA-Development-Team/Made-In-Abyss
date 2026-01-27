@@ -18,12 +18,12 @@ public class MiaConfig {
 
     // ==================== 钩爪配置 ====================
     public static double hookMaxDistance;
+    public static double hookShootVelocity;
+    public static double hookPullVelocity;
     public static double hookStopPullDistance;
     public static double hookRetractVelocity;
     public static double hookRetractDistance;
-    public static double hookPullVelocity;
     public static double hookJumpBoost;
-    public static double hookShootVelocity;
 
     private static final ModConfigSpec.IntValue ABYSS_RADIUS = COMMON_BUILDER
             .comment("The radius of the Abyss (Default: 160) | 深渊半径 (默认值: 160)")
@@ -43,9 +43,13 @@ public class MiaConfig {
             .comment("Hook shoot velocity (Default: 4.0) | 钩爪射击速度 (默认值: 4.0)")
             .defineInRange("hook_shoot_velocity", 4.0, 0.5, 4.0);
 
+    private static final ModConfigSpec.DoubleValue HOOK_PULL_VELOCITY = HOOK
+            .comment("Base pull velocity (Default: 0.3) | 基础拉取速度 (默认值: 0.2)")
+            .defineInRange("hook_pull_velocity", 0.2, 0.01, 2.0);
+
     private static final ModConfigSpec.DoubleValue HOOK_STOP_DISTANCE = HOOK
             .comment("Distance at which the hook stops pulling the player (Default: 1.0) | 钩爪停止拉取距离 (默认值: 1.0)")
-            .defineInRange("hook_stop_distance", 1.0, 1.0, 10.0);
+            .defineInRange("hook_stop_distance", 1.41421, 1.0, 10.0);
 
     private static final ModConfigSpec.DoubleValue HOOK_RETRACT_VELOCITY = HOOK
             .comment("Hook retract velocity (Default: 0.75) | 钩爪收回速度 (默认值: 0.75)")
@@ -54,10 +58,6 @@ public class MiaConfig {
     private static final ModConfigSpec.DoubleValue HOOK_RETRACT_DISTANCE = HOOK
             .comment("Retract distance in blocks (Default: 4.0) | 回收距离 (默认值: 4.0)")
             .defineInRange("hook_retract_distance", 4.0, 1.0, 16.0);
-
-    private static final ModConfigSpec.DoubleValue HOOK_PULL_VELOCITY = HOOK
-            .comment("Base pull velocity (Default: 0.3) | 基础拉取速度 (默认值: 0.3)")
-            .defineInRange("hook_pull_velocity", 0.3, 0.01, 2.0);
 
     private static final ModConfigSpec.DoubleValue HOOK_JUMP_BOOST = HOOK
             .comment("Jump boost multiplier (Default: 1.25) | 跳跃增强倍数 (默认值: 1.25)")
@@ -97,10 +97,10 @@ public class MiaConfig {
 
             hookMaxDistance = HOOK_MAX_DISTANCE.get();
             hookShootVelocity = HOOK_SHOOT_VELOCITY.get();
+            hookPullVelocity = HOOK_PULL_VELOCITY.get();
             hookStopPullDistance = HOOK_STOP_DISTANCE.get();
             hookRetractVelocity = HOOK_RETRACT_VELOCITY.get();
             hookRetractDistance = HOOK_RETRACT_DISTANCE.get();
-            hookPullVelocity = HOOK_PULL_VELOCITY.get();
             hookJumpBoost = HOOK_JUMP_BOOST.get();
         }
 
