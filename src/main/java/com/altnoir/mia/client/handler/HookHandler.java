@@ -32,7 +32,7 @@ public class HookHandler {
         if (hook == null || !hook.isHooked() || player.isCrouching()) return;
         if (isJump) {
             handleJump(player, hook);
-        } else if (hook.hookedIn == null) {
+        } else if (hook.isHookedBlock()) {
             handlePull(player, hook);
         }
     }
@@ -55,7 +55,8 @@ public class HookHandler {
      */
     private static void handlePull(Player player, HookEntity hook) {
         // TODO 如果玩家骑乘其他实体，拉取不会被处理，该不该影响坐骑
-        // TODO目前实现，但部分情况下不能使用，比如猪就不行
+        // TODO 目前实现，但部分情况下不能使用，比如玩家可以乘坐但不能操控的实体就不能拉取，比如猪、没有装鞍的马
+        // TODO 等一个有缘人在HookEntity里写实现，我就懒得写了
         Entity entity = player.isPassenger() ? player.getVehicle() : player;
         if (entity.distanceToSqr(hook) < MiaConfig.hookStopPullDistance * MiaConfig.hookStopPullDistance) {
             // 自动回收

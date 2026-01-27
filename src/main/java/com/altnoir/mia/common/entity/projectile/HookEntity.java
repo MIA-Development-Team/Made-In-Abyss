@@ -84,8 +84,24 @@ public class HookEntity extends Projectile {
         entityData.set(DATA_HOOK_STATE, hookState.id);
     }
 
+    public boolean isShoot() {
+        return getHookState() == HookState.SHOOT;
+    }
+
+    public boolean isBack() {
+        return getHookState() == HookState.BACK;
+    }
+
     public boolean isHooked() {
-        return getHookState() == HookState.HOOKED;
+        return isHookedBlock() || isHookedEntity();
+    }
+
+    public boolean isHookedBlock() {
+        return getHookState() == HookState.HOOKED_BLOCK;
+    }
+
+    public boolean isHookedEntity() {
+        return getHookState() == HookState.HOOKED_ENTITY;
     }
 
     public void setHookedEntity(@Nullable Entity entity) {
@@ -117,8 +133,10 @@ public class HookEntity extends Projectile {
             case SHOOT -> tickShoot(player);
             // BACK：收回中
             case BACK -> tickBack(player);
-            // HOOKED：已钩住
-            case HOOKED -> tickHooked(player);
+            // HOOKED_ENTITY：钩住实体
+            case HOOKED_ENTITY -> tickHookedEntity(player);
+            // HOOKED_BLOCK：钩住方块
+            case HOOKED_BLOCK -> tickHookedBlock(player);
         }
     }
 
@@ -174,19 +192,9 @@ public class HookEntity extends Projectile {
     }
 
     /**
-     * HOOKED 状态逻辑
+     * HOOKED_BLOCK 状态逻辑
      */
-    private void tickHooked(Player player) {
-        if (hookedIn != null) {
-            if (!hookedIn.isRemoved() && hookedIn.level() == level()) {
-                setPos(hookedIn.getX(), hookedIn.getY(0.8), hookedIn.getZ());
-                pullEntity(hookedIn, player);
-            } else {
-                setHookedEntity(null);
-                setHookState(HookState.BACK);
-            }
-            return;
-        }
+    private void tickHookedBlock(Player player) {
         if (!level().isClientSide()) {
             // 检查方块是否仍然存在
             if (hookedBlockPos == null || level().getBlockState(hookedBlockPos) != hookedBlockState) {
@@ -197,6 +205,23 @@ public class HookEntity extends Projectile {
             if (distanceToSqr(player) > MiaConfig.hookMaxDistance * MiaConfig.hookMaxDistance) {
                 setHookState(HookState.BACK);
             }
+        }
+    }
+
+    /**
+     * HOOKED_ENTITY 状态逻辑
+     */
+    private void tickHookedEntity(Player player) {
+        if (hookedIn == null) {
+            setHookState(HookState.BACK);
+            return;
+        }
+        if (!hookedIn.isRemoved() && hookedIn.level() == level()) {
+            setPos(hookedIn.getX(), hookedIn.getY(0.8), hookedIn.getZ());
+            pullEntity(hookedIn, player);
+        } else {
+            setHookedEntity(null);
+            setHookState(HookState.BACK);
         }
     }
 
@@ -225,44 +250,38 @@ public class HookEntity extends Projectile {
         return super.canHitEntity(target) && target != getPlayer();
     }
 
+    public boolean canHooked() {
+        Player player = getPlayer();
+        return player != null
+                && isShoot()
+                && !(distanceToSqr(player) > MiaConfig.hookMaxDistance * MiaConfig.hookMaxDistance);
+    }
+
     @Override
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
-        Player player = getPlayer();
-        if (player == null
-                || getHookState() != HookState.SHOOT
-                || distanceToSqr(player) > MiaConfig.hookMaxDistance * MiaConfig.hookMaxDistance) {
-            return;
-        }
-        Entity entity = result.getEntity();
-        if (entity != player && !(entity instanceof Player)) {
-            setHookedEntity(entity);
-            setHookState(HookState.HOOKED);
-        }
+        if (!canHooked()) return;
+        setHookedEntity(result.getEntity());
+        setHookState(HookState.HOOKED_ENTITY);
     }
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        HookState hookState = getHookState();
-        if (hookState == HookState.BACK) return;
+        if (isBack()) return;
         Vec3 vec3 = result.getLocation().subtract(position());
         setDeltaMovement(vec3);
-        Player player = getPlayer();
-        if (player == null
-                || hookState != HookState.SHOOT
-                || distanceToSqr(player) > MiaConfig.hookMaxDistance * MiaConfig.hookMaxDistance) {
-            return;
-        }
-        setHookState(HookState.HOOKED);
+        if (!canHooked()) return;
+        setHookState(HookState.HOOKED_BLOCK);
         hookedBlockPos = result.getBlockPos();
         hookedBlockState = level().getBlockState(hookedBlockPos);
     }
 
     public enum HookState implements StringRepresentable {
-        SHOOT(0, "shoot"),   // 发射
-        BACK(1, "back"),     // 收回
-        HOOKED(2, "hooked"); // 抓住
+        SHOOT(0, "shoot"),                 // 发射
+        BACK(1, "back"),                   // 收回
+        HOOKED_BLOCK(2, "hooked_block"),   // 抓住方块
+        HOOKED_ENTITY(3, "hooked_entity"); // 抓住实体
 
         public static final Codec<HookState> CODEC = StringRepresentable.fromEnum(HookState::values);
         private static final IntFunction<HookState> BY_ID = ByIdMap.continuous(HookState::getId, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
