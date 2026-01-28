@@ -139,7 +139,6 @@ public class MiaItemGroups {
                         output.accept(MiaItems.GRAY_ARTIFACT_BUNDLE);
                         output.accept(MiaItems.FANCY_ARTIFACT_BUNDLE);
 
-                        output.accept(MiaItems.GROW_SWORD);
 
                         output.accept(MiaItems.TEST_ARTIFACT_1);
                         output.accept(MiaItems.TEST_ARTIFACT_2);
@@ -150,6 +149,10 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.CAVE_EXPLORER_BEACON);
 
                         output.accept(MiaBlocks.ENDLESS_CUP);
+
+			// Weapons
+			output.accept(MiaItems.GROW_SWORD);
+			output.accept(MiaItems.BLAZE_LEAP);
                     }).build()
     );
 
