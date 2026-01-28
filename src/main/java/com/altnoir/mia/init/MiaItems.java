@@ -44,7 +44,7 @@ public class MiaItems {
 
     public static final DeferredItem<Item> ARTIFACT_HASTE = ITEMS.register("artifact_haste", () ->
             new HasteSkill(new Item.Properties()));
-
+    
     public static final DeferredItem<Item> PRASIOLITE_SHARD = ITEMS.register("prasiolite_shard", () ->
             new Item(new Item.Properties()));
     public static final DeferredItem<Item> GROW_SWORD = ITEMS.register("grow_sword", () ->
@@ -52,6 +52,12 @@ public class MiaItems {
                     MiaTiers.PRASIOLITE, new Item.Properties()
                     .attributes(SwordItem.createAttributes(MiaTiers.PRASIOLITE, 0.0F, -2.4F))
             ));
+    public static final DeferredItem<Item> BLAZE_LEAP = ITEMS.register("blaze_leap", () ->
+								       new BlazeLeapItem(
+											 new Item.Properties()
+											 .durability(500)
+)
+								       );
     public static final DeferredItem<Item> PRASIOLITE_PICKAXE = ITEMS.register("prasiolite_pickaxe", () ->
             new CompositeItem(
                     MiaTiers.PRASIOLITE, new Item.Properties()
