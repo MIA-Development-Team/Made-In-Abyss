@@ -81,6 +81,18 @@ public class MiaConfig {
     private static final ModConfigSpec.BooleanValue CURSE_GOD = SERVER_BUILDER
             .comment("Whether to Curse the Creative and Spectator(Default: false) | 是否诅咒创造模式和观察者模式 (默认值: false, 需要启用诅咒)")
             .define("curse_god", false);
+/**
+     * 无尽锤的配置
+     */
+    public static final ModConfigSpec.IntValue BLAZE_REAP_EXPLOSION_COUNT = 
+        COMMON_BUILDER
+        .comment("The Boom counts of the Blaze REAP (Default: 4)| Blaze REAP武器攻击时的爆炸次数 (默认值: 4)")
+        .defineInRange("blaze_reap.explosion_count", 3, 1, 64); 
+    
+    public static final ModConfigSpec.DoubleValue BLAZE_REAP_EXPLOSION_RADIUS = 
+        COMMON_BUILDER
+        .comment("The Boom radius of the Blaze REAP (Default: 2) | Blaze REAP武器爆炸范围 (默认值: 2)")
+        .defineInRange("blaze_reap.explosion_radius", 2.0, 0.1, 20.0);
     /**
      * 探窟者信标相关的配置
      */
