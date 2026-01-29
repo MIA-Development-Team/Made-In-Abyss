@@ -24,11 +24,13 @@ public class DataGenerators {
         ItemTagsProvider itemTagsProvider = new MiaItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper);
         generator.addProvider(includeServer, blockTagsProvider);
         generator.addProvider(includeServer, itemTagsProvider);
-        generator.addProvider(includeServer, new MiaDataMapProvider(packOutput, lookupProvider));
-        generator.addProvider(includeServer, new MiaWorldGenProvider(packOutput, lookupProvider));
 
-        var worldGenLookup = new MiaWorldGenProvider(packOutput, lookupProvider).getRegistryProvider();
-        generator.addProvider(includeServer, new MiaPaintingVariantTagsProvider(packOutput, worldGenLookup, existingFileHelper));
+        var worldGenProvider = new MiaWorldGenProvider(packOutput, lookupProvider);
+        generator.addProvider(includeServer, worldGenProvider);
+
+        generator.addProvider(includeServer, new MiaDataMapProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new MiaPaintingVariantTagsProvider(packOutput, worldGenProvider.getRegistryProvider(), existingFileHelper));
+        generator.addProvider(includeServer, new MiaBiomeTagsProvider(packOutput, worldGenProvider.getRegistryProvider(), existingFileHelper));
 
         generator.addProvider(includeServer, new MiaCuriosProvider(packOutput, existingFileHelper, lookupProvider));
         generator.addProvider(includeServer, new MiaCurseDataProvider(packOutput, lookupProvider));

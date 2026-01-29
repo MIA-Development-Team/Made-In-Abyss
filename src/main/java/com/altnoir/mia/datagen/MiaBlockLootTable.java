@@ -76,6 +76,12 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         dropSelf(MiaBlocks.STRIPPED_FOSSILIZED_LOG.get());
         dropSelf(MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get());
 
+        dropSelf(MiaBlocks.MOSSY_FOSSILIZED_LOG.get());
+        dropSelf(MiaBlocks.MOSSY_FOSSILIZED_WOOD.get());
+        dropSelf(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_LOG.get());
+        dropSelf(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD.get());
+
+
         dropSelf(MiaBlocks.POLISHED_FOSSILIZED_WOOD.get());
         dropSelf(MiaBlocks.POLISHED_FOSSILIZED_WOOD_STAIRS.get());
         add(MiaBlocks.POLISHED_FOSSILIZED_WOOD_SLAB.get(), this::createSlabItemTable);
@@ -126,7 +132,8 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         dropWhenSilkTouch(MiaBlocks.MEDIUM_PRASIOLITE_BUD.get());
         dropWhenSilkTouch(MiaBlocks.SMALL_PRASIOLITE_BUD.get());
 
-        dropSelf(MiaBlocks.FORTITUDE_FLOWER.get());
+        // 植物
+        add(MiaBlocks.FORTITUDE_FLOWER.get(), createPetalsDrops(MiaBlocks.FORTITUDE_FLOWER.get()));
         // 工作台
         dropSelf(MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
         // 设备

@@ -155,12 +155,14 @@ public class TheAbyssPlacements {
         );
 
 
-        MiaPlacementUtils.register(context, FLOWER_MEADOW, flower_meadow, CountOnEveryLayerPlacement.of(1), BiomeFilter.biome());
         MiaPlacementUtils.register(
-                context,
-                FOREST_FLOWERS,
-                forest_flowers,
-                RarityFilter.onAverageOnceEvery(5),
+                context, FLOWER_MEADOW, flower_meadow,
+                CountOnEveryLayerPlacement.of(1),
+                BiomeFilter.biome()
+        );
+        MiaPlacementUtils.register(
+                context, FOREST_FLOWERS, forest_flowers,
+                RarityFilter.onAverageOnceEvery(2),
                 CountOnEveryLayerPlacement.of(1),
                 CountPlacement.of(ClampedInt.of(UniformInt.of(-3, 1), 0, 1)),
                 BiomeFilter.biome()
@@ -173,13 +175,16 @@ public class TheAbyssPlacements {
         );
 
         MiaPlacementUtils.register(
-                context, ABYSS_TREES, skyfog_and_azalea, abyssTreePlace(8, 5)
+                context, ABYSS_TREES, skyfog_and_azalea,
+                abyssTreePlace(8, 5)
         );
         MiaPlacementUtils.register(
-                context, TREES_SKYFOG, skyfog, abyssTreePlace(1, 3)
+                context, TREES_SKYFOG, skyfog,
+                abyssTreePlace(1, 3)
         );
         MiaPlacementUtils.register(
-                context, TREES_SKYFOG_AND_AZALEA, skyfog_and_azalea, abyssTreePlace(8)
+                context, TREES_SKYFOG_AND_AZALEA, skyfog_and_azalea,
+                abyssTreePlace(8)
         );
 
         MiaPlacementUtils.register(

@@ -27,6 +27,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.MultifaceBlock;
+import net.minecraft.world.level.block.PinkPetalsBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.GeodeBlockSettings;
@@ -158,17 +159,25 @@ public class TheAbyssFeatures {
                         )
                 )
         );
+
+        SimpleWeightedRandomList.Builder<BlockState> builder = SimpleWeightedRandomList.builder();
+        for (int i = 1; i <= 4; i++) {
+            for (Direction direction : Direction.Plane.HORIZONTAL) {
+                builder.add(
+                        MiaBlocks.FORTITUDE_FLOWER.get().defaultBlockState().setValue(PinkPetalsBlock.AMOUNT, Integer.valueOf(i)).setValue(PinkPetalsBlock.FACING, direction), 1
+                );
+            }
+        }
         MiaFeatureUtils.register(
-                context, FOREST_FLOWERS, Feature.SIMPLE_RANDOM_SELECTOR,
-                new SimpleRandomFeatureConfiguration(
-                        HolderSet.direct(
-                                PlacementUtils.inlinePlaced(
-                                        Feature.NO_BONEMEAL_FLOWER,
-                                        FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(MiaBlocks.FORTITUDE_FLOWER.get())))
-                                )
+                context, FOREST_FLOWERS, Feature.FLOWER,
+                new RandomPatchConfiguration(
+                        96, 6, 2, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,
+                        new SimpleBlockConfiguration(
+                                new WeightedStateProvider(builder)
                         )
-                )
+                ))
         );
+
         MiaFeatureUtils.register(
                 context, RAW_IRON, Feature.BLOCK_PILE,
                 new BlockPileConfiguration(
@@ -182,7 +191,8 @@ public class TheAbyssFeatures {
                 )
         );
 
-        MiaFeatureUtils.register(context, TREES_SKYFOG, Feature.RANDOM_SELECTOR,
+        MiaFeatureUtils.register(
+                context, TREES_SKYFOG, Feature.RANDOM_SELECTOR,
                 new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(skyfog_bee, 0.3F)), fancy_skyfog_bee)
         );
         MiaFeatureUtils.register(

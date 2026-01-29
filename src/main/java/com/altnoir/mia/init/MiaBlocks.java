@@ -120,11 +120,19 @@ public class MiaBlocks {
                             .mapColor(MapColor.PODZOL)
                             .strength(3.0F, 4.2F))
     );
-
     public static final DeferredBlock<Block> STRIPPED_FOSSILIZED_LOG = registerBlock("stripped_fossilized_log", () ->
             new StrippedRotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(FOSSILIZED_LOG.get()).mapColor(MapColor.COLOR_BLACK)));
     public static final DeferredBlock<Block> STRIPPED_FOSSILIZED_WOOD = registerBlock("stripped_fossilized_wood", () ->
             new StrippedRotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(FOSSILIZED_WOOD.get()).mapColor(MapColor.COLOR_BLACK)));
+
+    public static final DeferredBlock<Block> MOSSY_FOSSILIZED_LOG = registerBlock("mossy_fossilized_log", () ->
+            new StrippedRotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(FOSSILIZED_LOG.get())));
+    public static final DeferredBlock<Block> MOSSY_FOSSILIZED_WOOD = registerBlock("mossy_fossilized_wood", () ->
+            new StrippedRotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(FOSSILIZED_WOOD.get())));
+    public static final DeferredBlock<Block> MOSSY_STRIPPED_FOSSILIZED_LOG = registerBlock("mossy_stripped_fossilized_log", () ->
+            new StrippedRotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(STRIPPED_FOSSILIZED_LOG.get())));
+    public static final DeferredBlock<Block> MOSSY_STRIPPED_FOSSILIZED_WOOD = registerBlock("mossy_stripped_fossilized_wood", () ->
+            new StrippedRotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(STRIPPED_FOSSILIZED_WOOD.get())));
     // 磨制
     public static final DeferredBlock<Block> POLISHED_FOSSILIZED_WOOD = registerBlock("polished_fossilized_wood", () ->
             new Block(BlockBehaviour.Properties.ofFullCopy(FOSSILIZED_WOOD.get())));
@@ -166,9 +174,8 @@ public class MiaBlocks {
     public static final DeferredBlock<Block> SKYFOG_TRAPDOOR = registerBlock("skyfog_trapdoor", () -> woodenTrapdoor(BlockSetType.OAK, MapColor.WOOD));
     public static final DeferredBlock<Block> SKYFOG_LEAVES = registerBlock("skyfog_leaves", () -> leaves(SoundType.CHERRY_LEAVES));
     public static final DeferredBlock<Block> SKYFOG_LEAVES_WITH_FRUITS = registerBlock("skyfog_leaves_with_fruits", () -> leaves(SoundType.CHERRY_LEAVES));
-    public static final DeferredBlock<Block> SKYFOG_SAPLING = registerBlock("skyfog_sapling", () -> new SaplingBlock(
-            MiaTreeGrowers.SKYFOG_TREE,
-            BlockBehaviour.Properties.of()
+    public static final DeferredBlock<Block> SKYFOG_SAPLING = registerBlock("skyfog_sapling", () ->
+            new SaplingBlock(MiaTreeGrowers.SKYFOG_TREE, BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .noCollission()
                     .randomTicks()
@@ -176,9 +183,8 @@ public class MiaBlocks {
                     .sound(SoundType.CHERRY_SAPLING)
                     .pushReaction(PushReaction.DESTROY)));
     //倒悬树
-    public static final DeferredBlock<Block> INVERTED_SAPLING = registerBlock("inverted_sapling", () -> new InvertedSaplingBlock(
-            MiaTreeGrowers.INVERTED_TREE,
-            BlockBehaviour.Properties.of()
+    public static final DeferredBlock<Block> INVERTED_SAPLING = registerBlock("inverted_sapling", () ->
+            new InvertedSaplingBlock(MiaTreeGrowers.INVERTED_TREE, BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .noCollission()
                     .randomTicks()
@@ -186,16 +192,14 @@ public class MiaBlocks {
                     .sound(SoundType.CHERRY_SAPLING)
                     .pushReaction(PushReaction.DESTROY)));
     // 植物
-    public static final DeferredBlock<Block> FORTITUDE_FLOWER = registerBlock("fortitude_flower", () -> new FlowerBlock(
-            MobEffects.WEAKNESS,
-            9.0F,
-            BlockBehaviour.Properties.of()
+    public static final DeferredBlock<Block> FORTITUDE_FLOWER = registerBlock("fortitude_flower", () ->
+            new PinkPetalsBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .noCollission()
-                    .instabreak()
-                    .sound(SoundType.GRASS)
-                    .offsetType(BlockBehaviour.OffsetType.XZ)
-                    .pushReaction(PushReaction.DESTROY)));
+                    .sound(SoundType.PINK_PETALS)
+                    .pushReaction(PushReaction.DESTROY)
+            )
+    );
 
     // 开关
     public static final DeferredBlock<Block> SKYFOG_PRESSURE_PLATE = registerBlock("skyfog_pressure_plate", () ->

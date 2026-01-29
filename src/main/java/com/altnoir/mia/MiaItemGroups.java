@@ -54,6 +54,10 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.FOSSILIZED_WOOD);
                         output.accept(MiaBlocks.STRIPPED_FOSSILIZED_LOG);
                         output.accept(MiaBlocks.STRIPPED_FOSSILIZED_WOOD);
+                        output.accept(MiaBlocks.MOSSY_FOSSILIZED_LOG);
+                        output.accept(MiaBlocks.MOSSY_FOSSILIZED_WOOD);
+                        output.accept(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_LOG);
+                        output.accept(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD);
                         output.accept(MiaBlocks.POLISHED_FOSSILIZED_WOOD);
                         output.accept(MiaBlocks.POLISHED_FOSSILIZED_WOOD_STAIRS);
                         output.accept(MiaBlocks.POLISHED_FOSSILIZED_WOOD_SLAB);
@@ -109,7 +113,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.SKYFOG_BUTTON);
 
                         // 设备
-                        //output.accept(MiaBlocks.ABYSS_PORTAL);
+                        output.accept(MiaBlocks.ABYSS_PORTAL);
                         output.accept(MiaItems.STAR_COMPASS);
                         output.accept(MiaBlocks.ABYSS_PORTAL_FRAME);
                         output.accept(MiaBlocks.ABYSS_SPAWNER);

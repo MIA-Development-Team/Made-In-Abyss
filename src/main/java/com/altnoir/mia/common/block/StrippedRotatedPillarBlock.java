@@ -21,13 +21,16 @@ public class StrippedRotatedPillarBlock extends RotatedPillarBlock {
             STRIPPABLES = () -> ImmutableMap.<Block, Block>builder()
                     .put(MiaBlocks.FOSSILIZED_LOG.get(), MiaBlocks.STRIPPED_FOSSILIZED_LOG.get())
                     .put(MiaBlocks.FOSSILIZED_WOOD.get(), MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get())
+                    .put(MiaBlocks.MOSSY_FOSSILIZED_LOG.get(), MiaBlocks.FOSSILIZED_LOG.get())
+                    .put(MiaBlocks.MOSSY_FOSSILIZED_WOOD.get(), MiaBlocks.FOSSILIZED_WOOD.get())
+                    .put(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_LOG.get(), MiaBlocks.STRIPPED_FOSSILIZED_LOG.get())
+                    .put(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD.get(), MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get())
                     .put(MiaBlocks.SKYFOG_LOG.get(), MiaBlocks.STRIPPED_SKYFOG_LOG.get())
                     .put(MiaBlocks.SKYFOG_WOOD.get(), MiaBlocks.STRIPPED_SKYFOG_WOOD.get())
                     .build();
         }
         return STRIPPABLES.get();
     }
-
 
     public StrippedRotatedPillarBlock(Properties properties) {
         super(properties);

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/flowerbed_2",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "flowerbed": "mia:block/fortitude_flower",
+    "stem": "mia:block/fortitude_flower_stem"
+  }
+}

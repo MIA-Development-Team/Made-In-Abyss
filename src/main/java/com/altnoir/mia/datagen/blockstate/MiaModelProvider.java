@@ -3,6 +3,7 @@ package com.altnoir.mia.datagen.blockstate;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -109,6 +110,18 @@ public class MiaModelProvider {
     public void crossModel(BlockStateProvider p, Block block) {
         p.models().withExistingParent(MiaUtil.getBlockPath(block), p.mcLoc("block/cross")).renderType("cutout")
                 .texture("cross", p.modLoc("block/" + MiaUtil.getBlockPath(block)));
+    }
+
+    public ResourceLocation[] flowerbedModels(BlockStateProvider p, Block block) {
+        ResourceLocation[] locations = new ResourceLocation[4];
+        for (int i = 1; i <= 4; i++) {
+            locations[i - 1] = p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_" + i);
+            p.models().withExistingParent(MiaUtil.getBlockPath(block) + "_" + i, p.mcLoc("block/flowerbed_" + i))
+                    .renderType("cutout")
+                    .texture("flowerbed", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
+                    .texture("stem", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_stem"));
+        }
+        return locations;
     }
 
     public void mirroredBlockModel(BlockStateProvider p, Block block) {

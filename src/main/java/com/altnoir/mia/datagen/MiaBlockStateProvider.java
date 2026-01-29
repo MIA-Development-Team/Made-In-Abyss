@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
@@ -88,6 +89,11 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         variantPillarBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_LOG, 5, new int[]{12, 1, 1, 1, 1});
         variantAxisBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD, MiaBlocks.STRIPPED_FOSSILIZED_LOG, 5, new int[]{12, 1, 1, 1, 1});
 
+        variantPillarBlockWithItem(MiaBlocks.MOSSY_FOSSILIZED_LOG, 4);
+        variantAxisBlockWithItem(MiaBlocks.MOSSY_FOSSILIZED_WOOD, MiaBlocks.MOSSY_FOSSILIZED_LOG, 4);
+        variantPillarBlockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_LOG, 5, new int[]{12, 1, 1, 1, 1});
+        variantAxisBlockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD, MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_LOG, 5, new int[]{12, 1, 1, 1, 1});
+
         blockWithItem(MiaBlocks.POLISHED_FOSSILIZED_WOOD);
         stairsBlockWithItem(MiaBlocks.POLISHED_FOSSILIZED_WOOD_STAIRS, MiaBlocks.POLISHED_FOSSILIZED_WOOD);
         slabBlockWithItem(MiaBlocks.POLISHED_FOSSILIZED_WOOD_SLAB, MiaBlocks.POLISHED_FOSSILIZED_WOOD);
@@ -132,7 +138,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         clusterBlock(MiaBlocks.SMALL_PRASIOLITE_BUD);
 
         // 植物
-        bushBlock(MiaBlocks.FORTITUDE_FLOWER);
+        createFlowerBed(MiaBlocks.FORTITUDE_FLOWER);
         //遗物
         blockWithItem(MiaBlocks.SUN_STONE);
 
@@ -399,6 +405,115 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         vanillaBlockItem(block, "button_inventory")
                 .texture("texture", modLoc("block/" + MiaUtil.getBlockPath(texture.get())));
     }
+
+    private void createFlowerBed(DeferredBlock<?> flowerBedBlock) {
+        ResourceLocation[] flowerbedModels = modelP.flowerbedModels(this, flowerBedBlock.get());
+
+        getMultipartBuilder(flowerBedBlock.get())
+                // FLOWER_AMOUNT = 1
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[0]))
+                .rotationY(0).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 1, 2, 3, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH)
+                .end()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[0]))
+                .rotationY(90).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 1, 2, 3, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST)
+                .end()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[0]))
+                .rotationY(180).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 1, 2, 3, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH)
+                .end()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[0]))
+                .rotationY(270).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 1, 2, 3, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST)
+                .end()
+                // FLOWER_AMOUNT = 2
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[1]))
+                .rotationY(0).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 2, 3, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH)
+                .end()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[1]))
+                .rotationY(90).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 2, 3, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST)
+                .end()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[1]))
+                .rotationY(180).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 2, 3, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH)
+                .end()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[1]))
+                .rotationY(270).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 2, 3, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST)
+                .end()
+                // FLOWER_AMOUNT = 3
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[2]))
+                .rotationY(0).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 3, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH)
+                .end()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[2]))
+                .rotationY(90).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 3, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST)
+                .end()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[2]))
+                .rotationY(180).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 3, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH)
+                .end()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[2]))
+                .rotationY(270).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 3, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST)
+                .end()
+                // FLOWER_AMOUNT = 4
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[3]))
+                .rotationY(0).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH)
+                .end()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[3]))
+                .rotationY(90).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST)
+                .end()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[3]))
+                .rotationY(180).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH)
+                .end()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[3]))
+                .rotationY(270).addModel()
+                .condition(BlockStateProperties.FLOWER_AMOUNT, 4)
+                .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST)
+                .end();
+
+        aloneItem(flowerBedBlock);
+    }
+
 
     protected void blockItem(DeferredBlock<?> block) {
         baseBlockItem(block, MiaUtil.getBlockPath(block.get()));

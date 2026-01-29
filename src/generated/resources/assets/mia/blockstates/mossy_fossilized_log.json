@@ -1,0 +1,58 @@
+{
+  "variants": {
+    "axis=x": [
+      {
+        "model": "mia:block/mossy_fossilized_log_horizontal0",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "mia:block/mossy_fossilized_log_horizontal1",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "mia:block/mossy_fossilized_log_horizontal2",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "mia:block/mossy_fossilized_log_horizontal3",
+        "x": 90,
+        "y": 90
+      }
+    ],
+    "axis=y": [
+      {
+        "model": "mia:block/mossy_fossilized_log0"
+      },
+      {
+        "model": "mia:block/mossy_fossilized_log1"
+      },
+      {
+        "model": "mia:block/mossy_fossilized_log2"
+      },
+      {
+        "model": "mia:block/mossy_fossilized_log3"
+      }
+    ],
+    "axis=z": [
+      {
+        "model": "mia:block/mossy_fossilized_log_horizontal0",
+        "x": 90
+      },
+      {
+        "model": "mia:block/mossy_fossilized_log_horizontal1",
+        "x": 90
+      },
+      {
+        "model": "mia:block/mossy_fossilized_log_horizontal2",
+        "x": 90
+      },
+      {
+        "model": "mia:block/mossy_fossilized_log_horizontal3",
+        "x": 90
+      }
+    ]
+  }
+}

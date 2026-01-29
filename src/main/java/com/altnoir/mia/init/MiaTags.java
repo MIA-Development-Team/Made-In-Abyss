@@ -4,6 +4,7 @@ import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
 public class MiaTags {
@@ -42,6 +43,15 @@ public class MiaTags {
 
         private static TagKey<Item> create(String name) {
             return TagKey.create(Registries.ITEM, MiaUtil.miaId(name));
+        }
+    }
+
+    public static class Biomes {
+        public static final TagKey<Biome> THE_ABYSS_CLEAR = create("the_abyss_clear");
+        public static final TagKey<Biome> THE_ABYSS_DENSE = create("the_abyss_dense");
+
+        private static TagKey<Biome> create(String name) {
+            return TagKey.create(Registries.BIOME, MiaUtil.miaId(name));
         }
     }
 
