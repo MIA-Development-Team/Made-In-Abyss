@@ -75,15 +75,15 @@ public class MiaConfig {
 /**
      * 无尽锤的配置
      */
-    public static final ModConfigSpec.IntValue BLAZE_LEAP_EXPLOSION_COUNT = 
+    public static final ModConfigSpec.IntValue BLAZE_REAP_EXPLOSION_COUNT = 
         COMMON_BUILDER
-        .comment("The Boom counts of the Blaze Leap (Default: 4)| Blaze Leap武器攻击时的爆炸次数 (默认值: 4)")
-        .defineInRange("blaze_leap.explosion_count", 3, 1, 64); 
+        .comment("The Boom counts of the Blaze REAP (Default: 4)| Blaze REAP武器攻击时的爆炸次数 (默认值: 4)")
+        .defineInRange("blaze_reap.explosion_count", 3, 1, 64); 
     
-    public static final ModConfigSpec.DoubleValue BLAZE_LEAP_EXPLOSION_RADIUS = 
+    public static final ModConfigSpec.DoubleValue BLAZE_REAP_EXPLOSION_RADIUS = 
         COMMON_BUILDER
-        .comment("The Boom radius of the Blaze Leap (Default: 2) | Blaze Leap武器爆炸范围 (默认值: 2)")
-        .defineInRange("blaze_leap.explosion_radius", 2.0, 0.1, 20.0);
+        .comment("The Boom radius of the Blaze REAP (Default: 2) | Blaze REAP武器爆炸范围 (默认值: 2)")
+        .defineInRange("blaze_reap.explosion_radius", 2.0, 0.1, 20.0);
     /**
      * 探窟者信标相关的配置
      */

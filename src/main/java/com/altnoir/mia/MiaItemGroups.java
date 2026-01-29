@@ -152,7 +152,10 @@ public class MiaItemGroups {
 
 			// Weapons
 			output.accept(MiaItems.GROW_SWORD);
-			output.accept(MiaItems.BLAZE_LEAP);
+			output.accept(MiaItems.BLAZE_REAP);
+
+			// Misc
+			output.accept(MiaItems.PEACE_PHOBIA);
                     }).build()
     );
 
