@@ -50,12 +50,16 @@ public class MiaItems {
                     MiaTiers.PRASIOLITE, new Item.Properties()
                     .attributes(SwordItem.createAttributes(MiaTiers.PRASIOLITE, 0.0F, -2.4F))
             ));
-    public static final DeferredItem<Item> BLAZE_LEAP = ITEMS.register("blaze_leap", () ->
-            new BlazeLeapItem(
-                    new Item.Properties().durability(500)
-                            .attributes(DiggerItem.createAttributes(Tiers.NETHERITE, 9.0F, -3.0F))
-            )
-    );
+    public static final DeferredItem<Item> BLAZE_REAP = ITEMS.register("blaze_reap", () ->
+								       new BlazeReapItem(
+											 new Item.Properties()
+											 )
+								       );
+    public static final DeferredItem<Item> PEACE_PHOBIA = ITEMS.register("peace_phobia", () ->
+								       new PeacePhobiaItem(
+											 new Item.Properties()
+											 )
+								       );
     public static final DeferredItem<Item> PRASIOLITE_PICKAXE = ITEMS.register("prasiolite_pickaxe", () ->
             new CompositeItem(
                     MiaTiers.PRASIOLITE, new Item.Properties()
