@@ -154,9 +154,9 @@ public class MiaItemGroups {
 
                         output.accept(MiaBlocks.ENDLESS_CUP);
 
-			// Weapons
-			output.accept(MiaItems.GROW_SWORD);
-			output.accept(MiaItems.BLAZE_LEAP);
+                        // Weapons
+                        output.accept(MiaItems.GROW_SWORD);
+                        output.accept(MiaItems.BLAZE_LEAP);
                     }).build()
     );
 

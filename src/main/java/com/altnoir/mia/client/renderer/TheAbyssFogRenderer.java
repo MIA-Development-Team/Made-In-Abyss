@@ -4,7 +4,6 @@ import com.altnoir.mia.init.MiaTags;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -12,6 +11,8 @@ import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.ClientHooks;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 public class TheAbyssFogRenderer {
     private static final Map<Long, Float> FOG_DENSITY_CACHE = new HashMap<>();
+    private static final Logger log = LoggerFactory.getLogger(TheAbyssFogRenderer.class);
     private static BiomeFogType biomeFogType = BiomeFogType.NORMAL;
 
     private enum BiomeFogType {
@@ -35,7 +37,7 @@ public class TheAbyssFogRenderer {
 
     // 性能保护变量
     private static int samplesThisFrame = 0;
-    private static int lastFrameTime = 0;
+    private static long lastFrameTime = 0;
     private static final int MAX_SAMPLES_PER_FRAME = 8;
 
     public static boolean renderFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, float partialTick) {
@@ -147,10 +149,10 @@ public class TheAbyssFogRenderer {
 
     private static float calculateBiomeBlendFactor(Level level, double x, double y, double z) {
         // 性能保护：每帧重置采样计数器
-        int fps = Minecraft.getInstance().getFps();
-        if (fps != lastFrameTime) {
+        long currentTime =System.currentTimeMillis();
+        if (currentTime != lastFrameTime) {
             samplesThisFrame = 0;
-            lastFrameTime = fps;
+            lastFrameTime = currentTime;
         }
         // 如果超过每帧最大采样次数，返回默认值
         if (samplesThisFrame >= MAX_SAMPLES_PER_FRAME) {

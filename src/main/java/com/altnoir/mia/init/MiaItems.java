@@ -5,9 +5,7 @@ import com.altnoir.mia.common.component.MiaFoods;
 import com.altnoir.mia.common.item.*;
 import com.altnoir.mia.common.item.abs.IArtifactItem.Grade;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.CustomData;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -44,7 +42,7 @@ public class MiaItems {
 
     public static final DeferredItem<Item> ARTIFACT_HASTE = ITEMS.register("artifact_haste", () ->
             new HasteSkill(new Item.Properties()));
-    
+
     public static final DeferredItem<Item> PRASIOLITE_SHARD = ITEMS.register("prasiolite_shard", () ->
             new Item(new Item.Properties()));
     public static final DeferredItem<Item> GROW_SWORD = ITEMS.register("grow_sword", () ->
@@ -53,11 +51,11 @@ public class MiaItems {
                     .attributes(SwordItem.createAttributes(MiaTiers.PRASIOLITE, 0.0F, -2.4F))
             ));
     public static final DeferredItem<Item> BLAZE_LEAP = ITEMS.register("blaze_leap", () ->
-								       new BlazeLeapItem(
-											 new Item.Properties()
-											 .durability(500)
-)
-								       );
+            new BlazeLeapItem(
+                    new Item.Properties().durability(500)
+                            .attributes(DiggerItem.createAttributes(Tiers.NETHERITE, 9.0F, -3.0F))
+            )
+    );
     public static final DeferredItem<Item> PRASIOLITE_PICKAXE = ITEMS.register("prasiolite_pickaxe", () ->
             new CompositeItem(
                     MiaTiers.PRASIOLITE, new Item.Properties()
