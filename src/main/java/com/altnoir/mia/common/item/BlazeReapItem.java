@@ -1,9 +1,11 @@
 package com.altnoir.mia.common.item;
 
 import com.altnoir.mia.MiaConfig;
+import com.altnoir.mia.init.MiaItems;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DiggerItem;
@@ -13,58 +15,50 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.tags.BlockTags;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
-import com.altnoir.mia.init.MiaItems;
 
 public class BlazeReapItem extends DiggerItem {
-
     private static final ScheduledExecutorService SCHEDULER = Executors.newSingleThreadScheduledExecutor();
-    
-    public static final Predicate<ItemStack> BLAZE_REAP_FUEL = (stack) -> 
-    stack.is(Items.GUNPOWDER) || stack.is(MiaItems.PEACE_PHOBIA.get());
+
+    public static final Predicate<ItemStack> BLAZE_REAP_FUEL = (stack) ->
+            stack.is(Items.GUNPOWDER) || stack.is(MiaItems.PEACE_PHOBIA.get());
 
     public BlazeReapItem(Properties properties) {
         super(Tiers.NETHERITE, BlockTags.MINEABLE_WITH_PICKAXE, properties);
     }
 
-    public static Properties createAttributes() {
-        return new Properties()
-                .attributes(DiggerItem.createAttributes(Tiers.NETHERITE, 9.0F, -3.0F));
-    }
-
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         Level level = attacker.level();
-        
+
         if (!level.isClientSide && attacker instanceof Player player) {
-            
+
             ItemStack ammoStack = player.getProjectile(stack);
-            
+
             if (ammoStack.isEmpty() || !BLAZE_REAP_FUEL.test(ammoStack)) {
                 ammoStack = findAmmoInInventory(player, BLAZE_REAP_FUEL);
             }
 
-            
+
             if (!ammoStack.isEmpty() || player.getAbilities().instabuild) {
-                
-            
-		if (!player.getAbilities().instabuild) {
-		    if (!ammoStack.is(MiaItems.PEACE_PHOBIA.get())) {
-			ammoStack.shrink(1);
-			if (ammoStack.isEmpty()) {
-			    player.getInventory().removeItem(ammoStack);
-			}
-		    }
-		}
+
+
+                if (!player.getAbilities().instabuild) {
+                    if (!ammoStack.is(MiaItems.PEACE_PHOBIA.get())) {
+                        ammoStack.shrink(1);
+                        if (ammoStack.isEmpty()) {
+                            player.getInventory().removeItem(ammoStack);
+                        }
+                    }
+                }
 
                 triggerExplosionSequence(level, player, target);
-                
-                
+
+
                 stack.hurtAndBreak(1, attacker, LivingEntity.getSlotForHand(attacker.getUsedItemHand()));
             }
         }
@@ -72,7 +66,7 @@ public class BlazeReapItem extends DiggerItem {
         return super.hurtEnemy(stack, target, attacker);
     }
 
-     
+
     private ItemStack findAmmoInInventory(Player player, Predicate<ItemStack> predicate) {
         if (predicate.test(player.getOffhandItem())) {
             return player.getOffhandItem();
@@ -87,8 +81,8 @@ public class BlazeReapItem extends DiggerItem {
     }
 
     private void triggerExplosionSequence(Level level, Player player, LivingEntity target) {
-        int explosionCount = MiaConfig.BLAZE_REAP_EXPLOSION_COUNT.get();
-        double explosionRadius = MiaConfig.BLAZE_REAP_EXPLOSION_RADIUS.get();
+        int explosionCount = MiaConfig.blazeReapExplosionCount;
+        double explosionRadius = MiaConfig.blazeReapExplosionRadius;
         MinecraftServer server = level.getServer();
 
         for (int i = 0; i < explosionCount; i++) {
@@ -98,7 +92,7 @@ public class BlazeReapItem extends DiggerItem {
                     server.execute(() -> {
                         if (target != null && target.isAlive() && !target.isRemoved()) {
                             Vec3 pos = target.position();
-                            
+
                             double x = pos.x + (Math.random() - 0.5) * explosionRadius;
                             double y = pos.y + Math.random() * target.getBbHeight();
                             double z = pos.z + (Math.random() - 0.5) * explosionRadius;
@@ -114,12 +108,12 @@ public class BlazeReapItem extends DiggerItem {
                                     x, y, z,
                                     2.0f,
                                     false,
-                                    ExplosionInteraction.NONE 
+                                    ExplosionInteraction.NONE
                             );
                         }
                     });
                 }
-            }, delay, TimeUnit.SECONDS); 
+            }, delay, TimeUnit.SECONDS);
         }
     }
 }
