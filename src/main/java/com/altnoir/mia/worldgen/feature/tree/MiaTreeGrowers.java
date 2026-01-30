@@ -1,4 +1,4 @@
-package com.altnoir.mia.worldgen.biome.tree;
+package com.altnoir.mia.worldgen.feature.tree;
 
 import com.altnoir.mia.MIA;
 import net.minecraft.world.level.block.grower.TreeGrower;

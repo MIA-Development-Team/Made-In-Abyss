@@ -106,11 +106,28 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS);
                         output.accept(MiaBlocks.SKYFOG_SAPLING);
                         output.accept(MiaBlocks.INVERTED_SAPLING);
+
+                        output.accept(MiaBlocks.INVERTED_LOG);
+                        output.accept(MiaBlocks.INVERTED_WOOD);
+                        output.accept(MiaBlocks.STRIPPED_INVERTED_LOG);
+                        output.accept(MiaBlocks.STRIPPED_INVERTED_WOOD);
+                        output.accept(MiaBlocks.INVERTED_PLANKS);
+                        output.accept(MiaBlocks.INVERTED_STAIRS);
+                        output.accept(MiaBlocks.INVERTED_SLAB);
+                        output.accept(MiaBlocks.INVERTED_FENCE);
+                        output.accept(MiaBlocks.INVERTED_FENCE_GATE);
+                        output.accept(MiaBlocks.INVERTED_DOOR);
+                        output.accept(MiaBlocks.INVERTED_TRAPDOOR);
+                        output.accept(MiaBlocks.INVERTED_LEAVES);
+                        output.accept(MiaBlocks.INVERTED_SAPLING);
+
                         // 植物
                         output.accept(MiaBlocks.FORTITUDE_FLOWER);
                         // 红石
                         output.accept(MiaBlocks.SKYFOG_PRESSURE_PLATE);
                         output.accept(MiaBlocks.SKYFOG_BUTTON);
+                        output.accept(MiaBlocks.INVERTED_PRESSURE_PLATE);
+                        output.accept(MiaBlocks.INVERTED_BUTTON);
 
                         // 设备
                         output.accept(MiaBlocks.ABYSS_PORTAL);

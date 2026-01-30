@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/door_top_left_open",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "mia:block/inverted_door_bottom",
+    "top": "mia:block/inverted_door_top"
+  }
+}

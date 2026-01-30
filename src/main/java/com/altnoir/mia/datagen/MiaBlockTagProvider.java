@@ -68,14 +68,21 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.SKYFOG_LOG.get())
                 .add(MiaBlocks.SKYFOG_WOOD.get())
                 .add(MiaBlocks.STRIPPED_SKYFOG_LOG.get())
-                .add(MiaBlocks.STRIPPED_SKYFOG_WOOD.get());
+                .add(MiaBlocks.STRIPPED_SKYFOG_WOOD.get())
+                .add(MiaBlocks.INVERTED_LOG.get())
+                .add(MiaBlocks.INVERTED_WOOD.get())
+                .add(MiaBlocks.STRIPPED_INVERTED_LOG.get())
+                .add(MiaBlocks.STRIPPED_INVERTED_WOOD.get());
         tag(BlockTags.LEAVES)
                 .add(MiaBlocks.SKYFOG_LEAVES.get())
-                .add(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get());
+                .add(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get())
+                .add(MiaBlocks.INVERTED_LEAVES.get());
         tag(BlockTags.PLANKS)
-                .add(MiaBlocks.SKYFOG_PLANKS.get());
-        tag(BlockTags.WOODEN_STAIRS) // 自动添加STAIRS标签
-                .add(MiaBlocks.SKYFOG_STAIRS.get());
+                .add(MiaBlocks.SKYFOG_PLANKS.get())
+                .add(MiaBlocks.INVERTED_PLANKS.get());
+        tag(BlockTags.WOODEN_STAIRS)
+                .add(MiaBlocks.SKYFOG_STAIRS.get())
+                .add(MiaBlocks.INVERTED_STAIRS.get());
 
         tag(BlockTags.STAIRS)
                 .add(MiaBlocks.ABYSS_ANDESITE_STAIRS.get())
@@ -91,7 +98,8 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.POLISHED_ABYSS_ANDESITE_SLAB.get())
                 .add(MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB.get())
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get())
-                .add(MiaBlocks.SKYFOG_SLAB.get());
+                .add(MiaBlocks.SKYFOG_SLAB.get())
+                .add(MiaBlocks.INVERTED_SLAB.get());
         tag(BlockTags.WALLS)
                 .add(MiaBlocks.ABYSS_ANDESITE_WALL.get())
                 .add(MiaBlocks.ABYSS_COBBLED_ANDESITE_WALL.get())
@@ -105,11 +113,14 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL.get());
 
         tag(BlockTags.FENCES)
-                .add(MiaBlocks.SKYFOG_FENCE.get());
+                .add(MiaBlocks.SKYFOG_FENCE.get())
+                .add(MiaBlocks.INVERTED_FENCE.get());
         tag(BlockTags.FENCE_GATES)
-                .add(MiaBlocks.SKYFOG_FENCE_GATE.get());
+                .add(MiaBlocks.SKYFOG_FENCE_GATE.get())
+                .add(MiaBlocks.INVERTED_FENCE_GATE.get());
         tag(BlockTags.SAPLINGS)
-                .add(MiaBlocks.SKYFOG_SAPLING.get());
+                .add(MiaBlocks.SKYFOG_SAPLING.get())
+                .add(MiaBlocks.INVERTED_SAPLING.get());
 
         tag(BlockTags.FLOWERS)
                 .add(MiaBlocks.FORTITUDE_FLOWER.get());

@@ -2,10 +2,9 @@ package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.common.block.*;
-import com.altnoir.mia.worldgen.biome.tree.MiaTreeGrowers;
+import com.altnoir.mia.worldgen.feature.tree.MiaTreeGrowers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
@@ -169,11 +168,11 @@ public class MiaBlocks {
     public static final DeferredBlock<Block> SKYFOG_STAIRS = registerBlock("skyfog_stairs", () -> stair(SKYFOG_PLANKS.get()));
     public static final DeferredBlock<Block> SKYFOG_SLAB = registerBlock("skyfog_slab", () -> slab(SKYFOG_PLANKS.get()));
     public static final DeferredBlock<Block> SKYFOG_FENCE = registerBlock("skyfog_fence", () -> fence(SKYFOG_PLANKS.get()));
-    public static final DeferredBlock<Block> SKYFOG_FENCE_GATE = registerBlock("skyfog_fence_gate", () -> fenceGate(WoodType.OAK, SKYFOG_PLANKS.get()));
-    public static final DeferredBlock<Block> SKYFOG_DOOR = registerBlock("skyfog_door", () -> woodenDoor(BlockSetType.OAK, SKYFOG_PLANKS.get().defaultMapColor()));
-    public static final DeferredBlock<Block> SKYFOG_TRAPDOOR = registerBlock("skyfog_trapdoor", () -> woodenTrapdoor(BlockSetType.OAK, MapColor.WOOD));
-    public static final DeferredBlock<Block> SKYFOG_LEAVES = registerBlock("skyfog_leaves", () -> leaves(SoundType.CHERRY_LEAVES));
-    public static final DeferredBlock<Block> SKYFOG_LEAVES_WITH_FRUITS = registerBlock("skyfog_leaves_with_fruits", () -> leaves(SoundType.CHERRY_LEAVES));
+    public static final DeferredBlock<Block> SKYFOG_FENCE_GATE = registerBlock("skyfog_fence_gate", () -> fenceGate(WoodType.BAMBOO, SKYFOG_PLANKS.get()));
+    public static final DeferredBlock<Block> SKYFOG_DOOR = registerBlock("skyfog_door", () -> woodenDoor(BlockSetType.BAMBOO, SKYFOG_PLANKS.get().defaultMapColor()));
+    public static final DeferredBlock<Block> SKYFOG_TRAPDOOR = registerBlock("skyfog_trapdoor", () -> woodenTrapdoor(BlockSetType.BAMBOO, MapColor.WOOD));
+    public static final DeferredBlock<Block> SKYFOG_LEAVES = registerBlock("skyfog_leaves", () -> leaves(SoundType.AZALEA_LEAVES));
+    public static final DeferredBlock<Block> SKYFOG_LEAVES_WITH_FRUITS = registerBlock("skyfog_leaves_with_fruits", () -> leaves(SoundType.AZALEA_LEAVES));
     public static final DeferredBlock<Block> SKYFOG_SAPLING = registerBlock("skyfog_sapling", () ->
             new SaplingBlock(MiaTreeGrowers.SKYFOG_TREE, BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
@@ -183,6 +182,18 @@ public class MiaBlocks {
                     .sound(SoundType.CHERRY_SAPLING)
                     .pushReaction(PushReaction.DESTROY)));
     //倒悬树
+    public static final DeferredBlock<Block> INVERTED_LOG = registerBlock("inverted_log", () -> log(MapColor.WOOD, MapColor.PODZOL));
+    public static final DeferredBlock<Block> INVERTED_WOOD = registerBlock("inverted_wood", () -> wood(MapColor.WOOD));
+    public static final DeferredBlock<Block> STRIPPED_INVERTED_LOG = registerBlock("stripped_inverted_log", () -> log(MapColor.WOOD, MapColor.WOOD));
+    public static final DeferredBlock<Block> STRIPPED_INVERTED_WOOD = registerBlock("stripped_inverted_wood", () -> wood(MapColor.WOOD));
+    public static final DeferredBlock<Block> INVERTED_PLANKS = registerBlock("inverted_planks", () -> planks(MapColor.COLOR_GREEN));
+    public static final DeferredBlock<Block> INVERTED_STAIRS = registerBlock("inverted_stairs", () -> stair(INVERTED_PLANKS.get()));
+    public static final DeferredBlock<Block> INVERTED_SLAB = registerBlock("inverted_slab", () -> slab(INVERTED_PLANKS.get()));
+    public static final DeferredBlock<Block> INVERTED_FENCE = registerBlock("inverted_fence", () -> fence(INVERTED_PLANKS.get()));
+    public static final DeferredBlock<Block> INVERTED_FENCE_GATE = registerBlock("inverted_fence_gate", () -> fenceGate(WoodType.CHERRY, INVERTED_PLANKS.get()));
+    public static final DeferredBlock<Block> INVERTED_DOOR = registerBlock("inverted_door", () -> woodenDoor(BlockSetType.CHERRY, INVERTED_PLANKS.get().defaultMapColor()));
+    public static final DeferredBlock<Block> INVERTED_TRAPDOOR = registerBlock("inverted_trapdoor", () -> woodenTrapdoor(BlockSetType.CHERRY, MapColor.WOOD));
+    public static final DeferredBlock<Block> INVERTED_LEAVES = registerBlock("inverted_leaves", () -> leaves(SoundType.CHERRY_LEAVES));
     public static final DeferredBlock<Block> INVERTED_SAPLING = registerBlock("inverted_sapling", () ->
             new InvertedSaplingBlock(MiaTreeGrowers.INVERTED_TREE, BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
@@ -203,9 +214,13 @@ public class MiaBlocks {
 
     // 开关
     public static final DeferredBlock<Block> SKYFOG_PRESSURE_PLATE = registerBlock("skyfog_pressure_plate", () ->
-            woodenPressurePlate(BlockSetType.OAK, SKYFOG_PLANKS.get().defaultMapColor()));
+            woodenPressurePlate(BlockSetType.BAMBOO, SKYFOG_PLANKS.get().defaultMapColor()));
     public static final DeferredBlock<Block> SKYFOG_BUTTON = registerBlock("skyfog_button", () ->
-            woodenButton(BlockSetType.OAK));
+            woodenButton(BlockSetType.BAMBOO));
+    public static final DeferredBlock<Block> INVERTED_PRESSURE_PLATE = registerBlock("inverted_pressure_plate", () ->
+            woodenPressurePlate(BlockSetType.CHERRY, INVERTED_PLANKS.get().defaultMapColor()));
+    public static final DeferredBlock<Block> INVERTED_BUTTON = registerBlock("inverted_button", () ->
+            woodenButton(BlockSetType.CHERRY));
 
     // 晶石
     public static final DeferredBlock<Block> PRASIOLITE_BLOCK = registerBlock("prasiolite_block", () ->
@@ -324,7 +339,7 @@ public class MiaBlocks {
                     BlockBehaviour.Properties.of()
                             .mapColor(MapColor.EMERALD)
                             .instrument(NoteBlockInstrument.HAT)
-                            .strength(3.0F)
+                            .strength(3.0F, 6.0F)
                             .lightLevel(state -> 15)
                             .noOcclusion()
                             .isRedstoneConductor(MiaBlocks::never)

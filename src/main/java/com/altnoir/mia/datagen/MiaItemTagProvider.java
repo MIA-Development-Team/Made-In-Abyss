@@ -55,11 +55,16 @@ public class MiaItemTagProvider extends ItemTagsProvider {
                 .add(MiaBlocks.SKYFOG_LOG.get().asItem())
                 .add(MiaBlocks.SKYFOG_WOOD.get().asItem())
                 .add(MiaBlocks.STRIPPED_SKYFOG_LOG.get().asItem())
-                .add(MiaBlocks.STRIPPED_SKYFOG_WOOD.get().asItem());
+                .add(MiaBlocks.STRIPPED_SKYFOG_WOOD.get().asItem())
+                .add(MiaBlocks.INVERTED_LOG.get().asItem())
+                .add(MiaBlocks.INVERTED_WOOD.get().asItem())
+                .add(MiaBlocks.STRIPPED_INVERTED_LOG.get().asItem())
+                .add(MiaBlocks.STRIPPED_INVERTED_WOOD.get().asItem());
 
         //合成标签
         tag(ItemTags.PLANKS)
-                .add(MiaBlocks.SKYFOG_PLANKS.get().asItem());
+                .add(MiaBlocks.SKYFOG_PLANKS.get().asItem())
+                .add(MiaBlocks.INVERTED_PLANKS.get().asItem());
 
         tag(MiaTags.Items.UNSTRIPPED_FOSSILIZED_LOGS)
                 .add(MiaBlocks.FOSSILIZED_LOG.get().asItem())
@@ -76,6 +81,11 @@ public class MiaItemTagProvider extends ItemTagsProvider {
                 .add(MiaBlocks.SKYFOG_WOOD.get().asItem())
                 .add(MiaBlocks.STRIPPED_SKYFOG_LOG.get().asItem())
                 .add(MiaBlocks.STRIPPED_SKYFOG_WOOD.get().asItem());
+        tag(MiaTags.Items.INVERTED_LOGS)
+                .add(MiaBlocks.INVERTED_LOG.get().asItem())
+                .add(MiaBlocks.INVERTED_WOOD.get().asItem())
+                .add(MiaBlocks.STRIPPED_INVERTED_LOG.get().asItem())
+                .add(MiaBlocks.STRIPPED_INVERTED_WOOD.get().asItem());
 
         // 工具TAG
         tag(ItemTags.SWORDS)

@@ -1,4 +1,4 @@
-package com.altnoir.mia.worldgen.biome.tree;
+package com.altnoir.mia.worldgen.feature.tree;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.worldgen.MiaPlacementUtils;

@@ -38,6 +38,7 @@ public class MiaTags {
         public static final TagKey<Item> UNSTRIPPED_FOSSILIZED_LOGS = create("unstripped_fossilized_logs");
         public static final TagKey<Item> STRIPPED_FOSSILIZED_LOGS = create("stripped_fossilized_logs");
         public static final TagKey<Item> SKYFOG_LOGS = create("skyfog_logs");
+        public static final TagKey<Item> INVERTED_LOGS = create("inverted_logs");
         // 用于tooltip
         public static final TagKey<Item> ARTIFACT_MODIFIERS_MATERIAL = create("artifact_modifiers_material");
 

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "mia:block/stripped_inverted_wood_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "mia:block/stripped_inverted_wood"
+    },
+    "axis=z": {
+      "model": "mia:block/stripped_inverted_wood_horizontal",
+      "x": 90
+    }
+  }
+}

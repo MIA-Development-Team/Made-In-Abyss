@@ -1,12 +1,12 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.init.MiaBlocks;
-import com.altnoir.mia.init.MiaItems;
-import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.common.recipe.ArtifactBundleUpgradeRecipeBuilder;
 import com.altnoir.mia.common.recipe.ArtifactSmithingRecipeBuilder;
 import com.altnoir.mia.common.recipe.LampTubeRecipeBuilder;
+import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.init.MiaItems;
+import com.altnoir.mia.init.MiaTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -107,6 +107,15 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
                 MiaBlocks.SKYFOG_STAIRS.get(), MiaBlocks.SKYFOG_SLAB.get(), MiaBlocks.SKYFOG_FENCE.get(), MiaBlocks.SKYFOG_FENCE_GATE.get(),
                 MiaBlocks.SKYFOG_DOOR.get(), MiaBlocks.SKYFOG_TRAPDOOR.get(), MiaBlocks.SKYFOG_PRESSURE_PLATE.get(), MiaBlocks.SKYFOG_BUTTON.get());
 
+        planksFromLog(recipeOutput, MiaBlocks.INVERTED_PLANKS.get(), MiaTags.Items.INVERTED_LOGS, 4);
+        twoByTwoPacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.INVERTED_WOOD.get(), MiaBlocks.INVERTED_LOG.get(), 3);
+        twoByTwoPacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.STRIPPED_INVERTED_WOOD.get(), MiaBlocks.STRIPPED_INVERTED_LOG.get(), 3);
+        woodBlocks(recipeOutput, MiaBlocks.INVERTED_PLANKS.get(),
+                MiaBlocks.INVERTED_STAIRS.get(), MiaBlocks.INVERTED_SLAB.get(), MiaBlocks.INVERTED_FENCE.get(), MiaBlocks.INVERTED_FENCE_GATE.get(),
+                MiaBlocks.INVERTED_DOOR.get(), MiaBlocks.INVERTED_TRAPDOOR.get(), MiaBlocks.INVERTED_PRESSURE_PLATE.get(), MiaBlocks.INVERTED_BUTTON.get());
+
+
+        // 模组工作台
         lampTube(recipeOutput, Items.STONE, 2, Items.DEEPSLATE);
         lampTube(recipeOutput, Items.ANDESITE, 2, MiaBlocks.ABYSS_ANDESITE);
         lampTube(recipeOutput, MiaTags.Items.FOSSILIZED_LOGS, Items.COAL, "fossilized_logs");

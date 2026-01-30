@@ -44,7 +44,8 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         // artifact
         artifactSmithingTableBlock();
         hopperFarmBlock();
-        endlessCupBlock();
+        templateAllBlock(MiaBlocks.CAVE_EXPLORER_BEACON, "abyss_beacon");
+        templateAllBlock(MiaBlocks.ENDLESS_CUP, "endless_cup");
 
         // decoration blocks
         coverGrassBlock(MiaBlocks.COVERGRASS_ABYSS_ANDESITE, MiaBlocks.ABYSS_ANDESITE);
@@ -128,6 +129,20 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         bushBlock(MiaBlocks.SKYFOG_SAPLING);
         leavesBlock(MiaBlocks.SKYFOG_LEAVES);
         leavesBlock(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS);
+        //倒悬树
+        logBlockWithItem(MiaBlocks.INVERTED_LOG);
+        woodBlockWithItem(MiaBlocks.INVERTED_WOOD, MiaBlocks.INVERTED_LOG);
+        logBlockWithItem(MiaBlocks.STRIPPED_INVERTED_LOG);
+        woodBlockWithItem(MiaBlocks.STRIPPED_INVERTED_WOOD, MiaBlocks.STRIPPED_INVERTED_LOG);
+        blockWithItem(MiaBlocks.INVERTED_PLANKS);
+        stairsBlockWithItem(MiaBlocks.INVERTED_STAIRS, MiaBlocks.INVERTED_PLANKS);
+        slabBlockWithItem(MiaBlocks.INVERTED_SLAB, MiaBlocks.INVERTED_PLANKS);
+        fenceBlockWithItem(MiaBlocks.INVERTED_FENCE, MiaBlocks.INVERTED_PLANKS);
+        doorBlockWithItem(MiaBlocks.INVERTED_DOOR);
+        trapdoorBlockWithItem(MiaBlocks.INVERTED_TRAPDOOR);
+        fenceGateBlockWithItem(MiaBlocks.INVERTED_FENCE_GATE, MiaBlocks.INVERTED_PLANKS);
+        bushBlock(MiaBlocks.INVERTED_SAPLING);
+        leavesBlock(MiaBlocks.INVERTED_LEAVES);
 
         // 晶石
         blockWithItem(MiaBlocks.PRASIOLITE_BLOCK);
@@ -145,6 +160,8 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         // 红石
         pressurePlateBlockWithItem(MiaBlocks.SKYFOG_PRESSURE_PLATE, MiaBlocks.SKYFOG_PLANKS);
         buttonBlockWithItem(MiaBlocks.SKYFOG_BUTTON, MiaBlocks.SKYFOG_PLANKS);
+        pressurePlateBlockWithItem(MiaBlocks.INVERTED_PRESSURE_PLATE, MiaBlocks.INVERTED_PLANKS);
+        buttonBlockWithItem(MiaBlocks.INVERTED_BUTTON, MiaBlocks.INVERTED_PLANKS);
 
 
     }
@@ -229,10 +246,10 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         blockItem(MiaBlocks.ARTIFACT_SMITHING_TABLE);
     }
 
-    private void endlessCupBlock() {
-        modelP.endlessCupBlockModel(this, MiaBlocks.ENDLESS_CUP.get());
-        stateP.baseBlockState(this, MiaBlocks.ENDLESS_CUP.get());
-        blockItem(MiaBlocks.ENDLESS_CUP);
+    private void templateAllBlock(DeferredBlock<?> block, String templateName) {
+        modelP.templateAllBlockModel(this, block.get(), templateName);
+        stateP.baseBlockState(this, block.get());
+        blockItem(block);
     }
 
     private void clusterBlock(DeferredBlock<?> block) {

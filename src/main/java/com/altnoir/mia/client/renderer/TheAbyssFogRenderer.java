@@ -11,8 +11,6 @@ import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.ClientHooks;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,14 +18,6 @@ import java.util.Map;
 
 public class TheAbyssFogRenderer {
     private static final Map<Long, Float> FOG_DENSITY_CACHE = new HashMap<>();
-    private static final Logger log = LoggerFactory.getLogger(TheAbyssFogRenderer.class);
-    private static BiomeFogType biomeFogType = BiomeFogType.NORMAL;
-
-    private enum BiomeFogType {
-        NORMAL,
-        CLEAR,
-        DENSE
-    }
 
     // 过渡控制变量
     private static final int TRANSITION_RANGE = 16; // 过渡范围
@@ -59,8 +49,14 @@ public class TheAbyssFogRenderer {
         float maxEnd = Math.min(farPlaneDistance, 192.0F) * 0.5F;
 
         boolean fogSky = level.isRaining() || level.isThundering();
+        var biome = level.getBiome(new BlockPos(BlockPos.containing(entityX, entityY, entityZ)));
         if (fogSky) {
             baseStart = 0.0F;
+        } else if (biome.is(MiaTags.Biomes.THE_ABYSS_DENSE)) {
+            baseStart = farPlaneDistance * 0.025F;
+            baseEnd = farPlaneDistance * 0.25F;
+            maxStart = farPlaneDistance * 0.0025F;
+            maxEnd = Math.min(farPlaneDistance, 192.0F) * 0.125F;
         }
 
         // 根据高度计算雾强度
@@ -68,12 +64,7 @@ public class TheAbyssFogRenderer {
 
         // 获取平滑后的群系混合因子
         float biomeFactor = getSmoothedBiomeFactor(level, entityX, entityY, entityZ);
-        // 计算群系的雾值
         float biomeFogStart = baseStart, biomeFogEnd = baseEnd;
-        if (biomeFogType == BiomeFogType.DENSE) {
-            biomeFogStart = farPlaneDistance * 0.0025F;
-            biomeFogEnd = Math.min(farPlaneDistance, 192.0F) * 0.125F;
-        }
 
         float mainStart = Mth.lerp(fogIntensity, baseStart, maxStart);     // 其他群系：根据高度变化的起始
         float mainEnd = Mth.lerp(fogIntensity, farPlaneDistance, maxEnd);   // 其他群系：根据高度变化的结束
@@ -120,7 +111,6 @@ public class TheAbyssFogRenderer {
 
         public FogData(FogRenderer.FogMode mode) {
             this.mode = mode;
-            ;
         }
     }
 
@@ -149,7 +139,7 @@ public class TheAbyssFogRenderer {
 
     private static float calculateBiomeBlendFactor(Level level, double x, double y, double z) {
         // 性能保护：每帧重置采样计数器
-        long currentTime =System.currentTimeMillis();
+        long currentTime = System.currentTimeMillis();
         if (currentTime != lastFrameTime) {
             samplesThisFrame = 0;
             lastFrameTime = currentTime;
@@ -184,13 +174,7 @@ public class TheAbyssFogRenderer {
                 var biome = level.getBiome(pos);
 
                 if (biome.is(MiaTags.Biomes.THE_ABYSS_CLEAR)) {
-                    biomeFogType = BiomeFogType.CLEAR;
                     biomeFogCount++;
-                } else if (biome.is(MiaTags.Biomes.THE_ABYSS_DENSE)) {
-                    biomeFogType = BiomeFogType.DENSE;
-                    biomeFogCount++;
-                } else {
-                    biomeFogType = BiomeFogType.NORMAL;
                 }
                 totalSamples++;
             }

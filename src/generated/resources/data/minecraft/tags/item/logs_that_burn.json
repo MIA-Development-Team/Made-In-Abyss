@@ -3,6 +3,10 @@
     "mia:skyfog_log",
     "mia:skyfog_wood",
     "mia:stripped_skyfog_log",
-    "mia:stripped_skyfog_wood"
+    "mia:stripped_skyfog_wood",
+    "mia:inverted_log",
+    "mia:inverted_wood",
+    "mia:stripped_inverted_log",
+    "mia:stripped_inverted_wood"
   ]
 }

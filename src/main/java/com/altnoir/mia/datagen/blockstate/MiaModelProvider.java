@@ -93,8 +93,8 @@ public class MiaModelProvider {
                 .texture("particle", p.modLoc("block/" + MiaUtil.getBlockPath(MiaBlocks.ABYSS_ANDESITE.get())));
     }
 
-    public void endlessCupBlockModel(BlockStateProvider p, Block block) {
-        p.models().withExistingParent(MiaUtil.getBlockPath(block), p.modLoc("block/template/endless_cup")).renderType("cutout")
+    public void templateAllBlockModel(BlockStateProvider p, Block block, String templateName) {
+        p.models().withExistingParent(MiaUtil.getBlockPath(block), p.modLoc("block/template/" + templateName)).renderType("cutout")
                 .texture("all", p.modLoc("block/" + MiaUtil.getBlockPath(block)))
                 .texture("particle", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_particle"));
     }

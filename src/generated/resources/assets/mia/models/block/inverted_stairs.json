@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "mia:block/inverted_planks",
+    "side": "mia:block/inverted_planks",
+    "top": "mia:block/inverted_planks"
+  }
+}

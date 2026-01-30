@@ -3,7 +3,7 @@ package com.altnoir.mia.worldgen.biome.the_abyss;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.worldgen.MiaFeature;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;
-import com.altnoir.mia.worldgen.biome.tree.MiaTreePlacements;
+import com.altnoir.mia.worldgen.feature.tree.MiaTreePlacements;
 import com.altnoir.mia.worldgen.feature.LakeFeature;
 import com.altnoir.mia.worldgen.feature.configurations.ClusterConfiguration;
 import com.altnoir.mia.worldgen.feature.configurations.MiaCavePillarConfiguration;

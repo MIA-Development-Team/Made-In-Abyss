@@ -3,7 +3,7 @@ package com.altnoir.mia.worldgen;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.worldgen.biome.the_abyss.TheAbyssPlacements;
-import com.altnoir.mia.worldgen.biome.tree.MiaTreePlacements;
+import com.altnoir.mia.worldgen.feature.tree.MiaTreePlacements;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;

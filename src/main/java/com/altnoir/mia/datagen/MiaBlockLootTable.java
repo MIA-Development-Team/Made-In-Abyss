@@ -122,7 +122,22 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         dropSelf(MiaBlocks.SKYFOG_BUTTON.get());
 
         //倒悬树
+        dropSelf(MiaBlocks.INVERTED_LOG.get());
+        dropSelf(MiaBlocks.INVERTED_WOOD.get());
+        dropSelf(MiaBlocks.STRIPPED_INVERTED_LOG.get());
+        dropSelf(MiaBlocks.STRIPPED_INVERTED_WOOD.get());
+        dropSelf(MiaBlocks.INVERTED_PLANKS.get());
+        dropSelf(MiaBlocks.INVERTED_STAIRS.get());
+        add(MiaBlocks.INVERTED_SLAB.get(), this::createSlabItemTable);
+        dropSelf(MiaBlocks.INVERTED_FENCE.get());
+        dropSelf(MiaBlocks.INVERTED_FENCE_GATE.get());
+        add(MiaBlocks.INVERTED_DOOR.get(), this::createDoorTable);
+        dropSelf(MiaBlocks.INVERTED_TRAPDOOR.get());
         dropSelf(MiaBlocks.INVERTED_SAPLING.get());
+        dropSelf(MiaBlocks.INVERTED_LEAVES.get());
+        dropSelf(MiaBlocks.INVERTED_PRESSURE_PLATE.get());
+        dropSelf(MiaBlocks.INVERTED_BUTTON.get());
+
 
         // 晶石
         dropSelf(MiaBlocks.PRASIOLITE_BLOCK.get());

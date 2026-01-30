@@ -27,6 +27,8 @@ public class StrippedRotatedPillarBlock extends RotatedPillarBlock {
                     .put(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD.get(), MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get())
                     .put(MiaBlocks.SKYFOG_LOG.get(), MiaBlocks.STRIPPED_SKYFOG_LOG.get())
                     .put(MiaBlocks.SKYFOG_WOOD.get(), MiaBlocks.STRIPPED_SKYFOG_WOOD.get())
+                    .put(MiaBlocks.INVERTED_LOG.get(), MiaBlocks.STRIPPED_INVERTED_LOG.get())
+                    .put(MiaBlocks.INVERTED_WOOD.get(), MiaBlocks.STRIPPED_INVERTED_WOOD.get())
                     .build();
         }
         return STRIPPABLES.get();
