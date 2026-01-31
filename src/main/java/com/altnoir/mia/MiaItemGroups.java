@@ -143,10 +143,6 @@ public class MiaItemGroups {
                         output.accept(MiaItems.BLUE_WHISTLE);
 
                         output.accept(MiaItems.ROPE);
-                        output.accept(MiaBlocks.PRASIOLITE_LAMPTUBE);
-                        output.accept(MiaBlocks.AMETHYST_LAMPTUBE);
-                        output.accept(MiaBlocks.PEDESTAL);
-                        output.accept(MiaBlocks.ARTIFACT_SMITHING_TABLE);
                     })
                     .build());
 
@@ -157,26 +153,27 @@ public class MiaItemGroups {
                     .displayItems((parameters, output) -> {
                         // artifacts
                         output.accept(MiaBlocks.ARTIFACT_SMITHING_TABLE);
+                        output.accept(MiaBlocks.PRASIOLITE_LAMPTUBE);
+                        output.accept(MiaBlocks.AMETHYST_LAMPTUBE);
+                        output.accept(MiaBlocks.PEDESTAL);
+                        output.accept(MiaBlocks.CAVE_EXPLORER_BEACON);
+                        output.accept(MiaBlocks.ENDLESS_CUP);
+
                         output.accept(MiaItems.GRAY_ARTIFACT_BUNDLE);
                         output.accept(MiaItems.FANCY_ARTIFACT_BUNDLE);
-
-
                         output.accept(MiaItems.TEST_ARTIFACT_1);
                         output.accept(MiaItems.TEST_ARTIFACT_2);
                         output.accept(MiaItems.TEST_ARTIFACT_3);
                         output.accept(MiaItems.HEALTH_JUNKIE);
                         output.accept(MiaItems.ARTIFACT_HASTE);
                         output.accept(MiaItems.HOOK_ITEM);
-                        output.accept(MiaBlocks.CAVE_EXPLORER_BEACON);
 
-                        output.accept(MiaBlocks.ENDLESS_CUP);
+                        // Weapons
+                        output.accept(MiaItems.GROW_SWORD);
+                        output.accept(MiaItems.BLAZE_REAP);
 
-			// Weapons
-			output.accept(MiaItems.GROW_SWORD);
-			output.accept(MiaItems.BLAZE_REAP);
-
-			// Misc
-			output.accept(MiaItems.PEACE_PHOBIA);
+                        // Misc
+                        output.accept(MiaItems.PEACE_PHOBIA);
                     }).build()
     );
 

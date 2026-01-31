@@ -3,7 +3,6 @@ package com.altnoir.mia.datagen;
 import com.altnoir.mia.init.MiaParticles;
 import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.ParticleDescriptionProvider;
 

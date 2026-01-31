@@ -1,6 +1,6 @@
 {
-    "itemgroup.mia": "来自深渊",
-    "itemgroup.mia_artifact": "来自深渊: 遗物",
+    "itemgroup.mia": "深渊遗忆",
+    "itemgroup.mia_artifact": "深渊遗忆: 遗物",
 
     "item.mia.red_whistle": "赤笛",
     "item.mia.blue_whistle": "§b苍笛",
@@ -54,12 +54,16 @@
 
     "block.mia.fossilized_log": "化石原木",
     "block.mia.fossilized_wood": "化石木",
+    "block.mia.mossy_fossilized_log": "覆苔化石原木",
+    "block.mia.mossy_fossilized_wood": "覆苔化石木",
     "block.mia.fossilized_wood_bricks": "化石木砖",
     "block.mia.fossilized_wood_bricks_slab": "化石木砖台阶",
     "block.mia.fossilized_wood_bricks_stairs": "化石木砖楼梯",
     "block.mia.fossilized_wood_bricks_wall": "化石木砖砖墙",
     "block.mia.stripped_fossilized_log": "去皮化石木原木",
     "block.mia.stripped_fossilized_wood": "去皮化石木",
+    "block.mia.mossy_stripped_fossilized_log": "覆苔去皮化石木原木",
+    "block.mia.mossy_stripped_fossilized_wood": "覆苔去皮化石木",
     "block.mia.stripped_fossilized_wood_bricks": "去皮化石木砖",
     "block.mia.stripped_fossilized_wood_bricks_slab": "去皮化石木砖台阶",
     "block.mia.stripped_fossilized_wood_bricks_stairs": "去皮化石木砖楼梯",
@@ -83,14 +87,28 @@
     "block.mia.skyfog_slab": "天雾木台阶",
     "block.mia.skyfog_fence": "天雾木栅栏",
     "block.mia.skyfog_fence_gate": "天雾木栅栏门",
-    "block.mia.skyfog_pressure_plate": "天雾木压力板",
-    "block.mia.skyfog_button": "天雾木按钮",
     "block.mia.skyfog_door": "天雾木门",
     "block.mia.skyfog_trapdoor": "天雾木活板门",
     "block.mia.skyfog_leaves": "天雾树叶",
     "block.mia.skyfog_leaves_with_fruits": "结果的天雾树叶",
+    "block.mia.skyfog_pressure_plate": "天雾木压力板",
+    "block.mia.skyfog_button": "天雾木按钮",
     "block.mia.skyfog_sapling": "天雾树苗",
 
+    "block.mia.inverted_wood": "倒悬木",
+    "block.mia.inverted_log": "倒悬原木",
+    "block.mia.stripped_inverted_wood": "去皮倒悬木",
+    "block.mia.stripped_inverted_log": "去皮倒悬原木",
+    "block.mia.inverted_planks": "倒悬木板",
+    "block.mia.inverted_slab": "倒悬木台阶",
+    "block.mia.inverted_stairs": "倒悬木楼梯",
+    "block.mia.inverted_trapdoor": "倒悬木活板门",
+    "block.mia.inverted_door": "倒悬木门",
+    "block.mia.inverted_fence": "倒悬木栅栏",
+    "block.mia.inverted_fence_gate": "倒悬木栅栏门",
+    "block.mia.inverted_leaves": "倒悬树叶",
+    "block.mia.inverted_pressure_plate": "倒悬木压力板",
+    "block.mia.inverted_button": "倒悬木按钮",
     "block.mia.inverted_sapling": "倒悬树苗",
 
     "block.mia.rope": "绳索",
@@ -116,9 +134,13 @@
 
     "container.mia.artifact.smithing.title": "遗物锻造台",
 
+    "biome.mia.the_abyss/the_abyss": "阿比斯深渊",
     "biome.mia.the_abyss/abyss_plains": "深渊平原",
     "biome.mia.the_abyss/skyfog_forest": "天雾森林",
-    "biome.mia.the_abyss/the_abyss": "阿比斯深渊",
+    "biome.mia.the_abyss/abyss_dripstone_caves": "深渊溶洞",
+    "biome.mia.the_abyss/abyss_lush_caves": "深渊繁茂洞穴",
+    "biome.mia.the_abyss/prasiolite_caves": "翡翠洞穴",
+    "biome.mia.the_abyss/temptation_forest": "诱惑森林",
 
     "painting.mia.the_abyss.author": "Made In Abyss",
     "painting.mia.the_abyss.title": "The Abyss",
@@ -160,13 +182,13 @@
     "tooltip.mia.description.test_artifact_3": "这是一个测试遗物3。",
     "tooltip.mia.description.gray_artifact_bundle": "这是一个放遗物的包。",
 
-    "key.categories.mia": "来自深渊",
+    "key.categories.mia": "深渊遗忆",
     "key.mia.skill_dial": "技能表",
     "gui.mia.disconnect": "退出游戏？",
 
     "stat.mia.interact_with_artifact_smithing_table": "与遗物锻造台交互次数",
 
-    "mia.configuration.title": "来自深渊配置",
+    "mia.configuration.title": "深渊遗忆配置",
     "mia.configuration.curse": "启用诅咒",
     "mia.configuration.curse.tooltip": "是否启用上升诅咒\n§7(默认值: true)",
     "mia.configuration.curse_god": "诅咒创造模式和观察者模式",
@@ -227,5 +249,4 @@
     "tag.item.mia.skyfog_logs": "天雾木",
     "tag.item.mia.stripped_fossilized_logs": "去皮化石木",
     "emi.category.mia.lamp_tube": "镭射催化"
-
 }

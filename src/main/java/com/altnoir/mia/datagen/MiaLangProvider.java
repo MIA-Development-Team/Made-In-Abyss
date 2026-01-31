@@ -30,8 +30,8 @@ public class MiaLangProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        add("itemgroup.mia", "Made In Abyss");
-        add("itemgroup.mia_artifact", "Made In Abyss: Artifact");
+        add("itemgroup.mia", "Memento In Abyss");
+        add("itemgroup.mia_artifact", "Memento In Abyss: Artifact");
 
         //Tooltip start
         add(ClientTooltipEvent.TOOLTIP_HOLD_SHIFT, "Hold [%s] to show details");
@@ -79,7 +79,7 @@ public class MiaLangProvider extends LanguageProvider {
         // Skill end
 
         // kEY start
-        add(MiaKeyBinding.KEY_CATEGORIES_MIA, "Made In Abyss");
+        add(MiaKeyBinding.KEY_CATEGORIES_MIA, "Memento In Abyss");
         add(MiaKeyBinding.KEY_SKILL_DIAL, "Skill Dial");
         // KEY end
 
@@ -127,7 +127,7 @@ public class MiaLangProvider extends LanguageProvider {
         // Sounds end
 
         //Config start
-        add("mia.configuration.title", "Made In Abyss Configuration");
+        add("mia.configuration.title", "Memento In Abyss Configuration");
 
         // 通用配置
         add("mia.configuration.abyss_radius", "Abyss Radius Value");
@@ -189,7 +189,7 @@ public class MiaLangProvider extends LanguageProvider {
         add("tag.item.mia.skyfog_logs", "Skyfog Logs");
         // Tags end
 
-        add("pack.mia.music_pack.name", "Made In Abyss: Music Pack");
+        add("pack.mia.music_pack.name", "Memento In Abyss: Music Pack");
 
         //Compat start
         add("curios.identifier.whistle", "Whistle");
@@ -200,7 +200,7 @@ public class MiaLangProvider extends LanguageProvider {
 
     private void addPainting(ResourceKey<PaintingVariant> key) {
         add("painting.mia." + key.location().getPath() + ".title", formatName(key.location().getPath()));
-        add("painting.mia." + key.location().getPath() + ".author", "Made In Abyss");
+        add("painting.mia." + key.location().getPath() + ".author", "Memento In Abyss");
     }
 
     private void addBiome(ResourceKey<Biome> biome, String name) {
