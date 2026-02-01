@@ -1,9 +1,12 @@
 package com.altnoir.mia.worldgen.feature.tree;
 
 import com.altnoir.mia.init.MiaBlocks;
-import com.altnoir.mia.init.worldgen.MiaFeature;
+import com.altnoir.mia.init.worldgen.MiaFeatures;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;
-import com.altnoir.mia.worldgen.feature.trunk.InvertedStraightTrunkPlacer;
+import com.altnoir.mia.worldgen.feature.foliage.InvertedFoliagePlacer;
+import com.altnoir.mia.worldgen.feature.foliage.MegaInvertedFoliagePlacer;
+import com.altnoir.mia.worldgen.feature.trunk.InvertedForkingTrunkPlacer;
+import com.altnoir.mia.worldgen.feature.trunk.InvertedGiantTrunkPlacer;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -21,7 +24,6 @@ import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSi
 import net.minecraft.world.level.levelgen.feature.foliageplacers.CherryFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.AlterGroundDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.BeehiveDecorator;
@@ -40,6 +42,7 @@ public class MiaTreeFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_SKYFOG_TREE = MiaFeatureUtils.treeKey("mega_skyfog_tree");
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> INVERTED_TREE = MiaFeatureUtils.treeKey("inverted_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_INVERTED_TREE = MiaFeatureUtils.treeKey("mega_inverted_tree");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
 
@@ -72,14 +75,27 @@ public class MiaTreeFeatures {
         );
 
         MiaFeatureUtils.register(
-                context, INVERTED_TREE, MiaFeature.INVERTED_TREE.get(),
+                context, INVERTED_TREE, MiaFeatures.INVERTED_TREE.get(),
                 new TreeConfiguration.TreeConfigurationBuilder(
                         BlockStateProvider.simple(MiaBlocks.INVERTED_LOG.get()),
-                        new InvertedStraightTrunkPlacer(5, 2, 10),
+                        new InvertedForkingTrunkPlacer(7, 2, 3),
 
                         BlockStateProvider.simple(MiaBlocks.INVERTED_LEAVES.get()),
-                        new FancyFoliagePlacer(ConstantInt.of(3), ConstantInt.of(3), 4),
+                        new InvertedFoliagePlacer(ConstantInt.of(2), ConstantInt.of(1)),
                         new TwoLayersFeatureSize(1, 0, 1)
+                ).decorators(ImmutableList.of(new LeaveVineDecorator(0.05F))
+                ).ignoreVines().build()
+        );
+
+        MiaFeatureUtils.register(
+                context, MEGA_INVERTED_TREE, MiaFeatures.INVERTED_TREE.get(),
+                new TreeConfiguration.TreeConfigurationBuilder(
+                        BlockStateProvider.simple(MiaBlocks.INVERTED_LOG.get()),
+                        new InvertedGiantTrunkPlacer(12, 2, 19),
+
+                        BlockStateProvider.simple(MiaBlocks.INVERTED_LEAVES.get()),
+                        new MegaInvertedFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 2),
+                        new TwoLayersFeatureSize(1, 1, 2)
                 ).decorators(ImmutableList.of(new LeaveVineDecorator(0.05F))
                 ).ignoreVines().build()
         );

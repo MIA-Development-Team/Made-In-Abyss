@@ -1,0 +1,12 @@
+{
+  "feature": "mia:the_abyss/trees_inverted",
+  "placement": [
+    {
+      "type": "mia:inverted_count_on_every_layer",
+      "count": 8
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -146,7 +146,7 @@ public class TheAbyssFogRenderer {
         }
         // 如果超过每帧最大采样次数，返回默认值
         if (samplesThisFrame >= MAX_SAMPLES_PER_FRAME) {
-            return 0.5f; // 默认值，表示混合状态
+            return 0.5f; // 默认值
         }
 
         // 将世界坐标转换为区块坐标
@@ -161,10 +161,9 @@ public class TheAbyssFogRenderer {
         if (FOG_DENSITY_CACHE.containsKey(key)) {
             return FOG_DENSITY_CACHE.get(key);
         }
-
         samplesThisFrame++; // 增加采样计数
 
-        // 采样3x3区块区域
+        // 采样3x3区块段
         int biomeFogCount = 0;
         int totalSamples = 0;
 
@@ -179,18 +178,18 @@ public class TheAbyssFogRenderer {
                 totalSamples++;
             }
         }
-
-        // 计算比例
         float blendFactor = (float) biomeFogCount / totalSamples;
 
         // 存入缓存
         FOG_DENSITY_CACHE.put(key, blendFactor);
-
         // 限制缓存大小，避免内存泄漏
-        if (FOG_DENSITY_CACHE.size() > 256) {
-            Iterator<Map.Entry<Long, Float>> it = FOG_DENSITY_CACHE.entrySet().iterator();
-            if (it.hasNext()) {
-                it.remove();
+        synchronized (FOG_DENSITY_CACHE) {
+            if (FOG_DENSITY_CACHE.size() > 256) {
+                Iterator<Map.Entry<Long, Float>> it = FOG_DENSITY_CACHE.entrySet().iterator();
+                if (it.hasNext()) {
+                    it.next(); // 不加这行会崩溃（我试过了）
+                    it.remove();
+                }
             }
         }
 

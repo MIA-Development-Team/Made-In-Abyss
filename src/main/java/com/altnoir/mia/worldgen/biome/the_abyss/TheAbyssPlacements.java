@@ -1,6 +1,7 @@
 package com.altnoir.mia.worldgen.biome.the_abyss;
 
 import com.altnoir.mia.worldgen.MiaPlacementUtils;
+import com.altnoir.mia.worldgen.place.InvertedCountOnEveryLayerPlacement;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -38,6 +39,7 @@ public class TheAbyssPlacements {
     public static final ResourceKey<PlacedFeature> ABYSS_TREES = theAbyssKey("abyss_trees");
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG = theAbyssKey("trees_skyfog");
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG_AND_AZALEA = theAbyssKey("trees_skyfog_and_azalea");
+    public static final ResourceKey<PlacedFeature> TREES_INVERTED = theAbyssKey("trees_inverted");
     public static final ResourceKey<PlacedFeature> PRASIOLITE_CLUSTER = theAbyssKey("prasiolite_cluster");
     public static final ResourceKey<PlacedFeature> BIG_PRASIOLITE_CLUSTER = theAbyssKey("big_prasiolite_cluster");
     public static final ResourceKey<PlacedFeature> PRASIOLITE_GEODE = theAbyssKey("prasiolite_geode");
@@ -65,6 +67,7 @@ public class TheAbyssPlacements {
         Holder<ConfiguredFeature<?, ?>> forest_flowers = holdergetter.getOrThrow(TheAbyssFeatures.FOREST_FLOWERS);
         Holder<ConfiguredFeature<?, ?>> skyfog = holdergetter.getOrThrow(TheAbyssFeatures.TREES_SKYFOG);
         Holder<ConfiguredFeature<?, ?>> skyfog_and_azalea = holdergetter.getOrThrow(TheAbyssFeatures.TREES_SKYFOG_AND_AZALEA);
+        Holder<ConfiguredFeature<?, ?>> inverted = holdergetter.getOrThrow(TheAbyssFeatures.TREES_INVERTED);
         Holder<ConfiguredFeature<?, ?>> prasiolite_cluster = holdergetter.getOrThrow(TheAbyssFeatures.PRASIOLITE_CLUSTER);
         Holder<ConfiguredFeature<?, ?>> big_prasiolite_cluster = holdergetter.getOrThrow(TheAbyssFeatures.BIG_PRASIOLITE_CLUSTER);
         Holder<ConfiguredFeature<?, ?>> prasiolite_geode = holdergetter.getOrThrow(TheAbyssFeatures.PRASIOLITE_GEODE);
@@ -185,6 +188,11 @@ public class TheAbyssPlacements {
         MiaPlacementUtils.register(
                 context, TREES_SKYFOG_AND_AZALEA, skyfog_and_azalea,
                 abyssTreePlace(8)
+        );
+        MiaPlacementUtils.register(
+                context, TREES_INVERTED, inverted,
+                InvertedCountOnEveryLayerPlacement.of(8),
+                BiomeFilter.biome()
         );
 
         MiaPlacementUtils.register(

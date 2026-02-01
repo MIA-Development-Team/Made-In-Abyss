@@ -91,9 +91,15 @@ public class MiaDimensions {
                                 // 第二层洞穴
                                 biomePair(
                                         Climate.Parameter.span(-0.5F, 0.5F),
-                                        Climate.Parameter.point(2.0F),
+                                        Climate.Parameter.point(1.9F),
                                         Climate.Parameter.point(0.0F),
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.TEMPTATION_FOREST)
+                                ),
+                                biomePair(
+                                        Climate.Parameter.span(-0.5F, 0.5F),
+                                        Climate.Parameter.point(2.0F),
+                                        Climate.Parameter.point(0.0F),
+                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.INVERTED_FOREST)
                                 )
                         )),
                         biomeRegistry.getOrThrow(MiaBiomes.THE_ABYSS)

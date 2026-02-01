@@ -16,7 +16,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-public class MiaFeature {
+public class MiaFeatures {
     public static final DeferredRegister<Feature<?>> FEATURE = DeferredRegister.create(Registries.FEATURE, MIA.MOD_ID);
 
     public static final DeferredHolder<Feature<?>, BigClusterFeature> BIG_CLUSTER = FEATURE.register(

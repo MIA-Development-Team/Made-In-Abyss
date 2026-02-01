@@ -154,6 +154,21 @@
           "biome": "mia:the_abyss/temptation_forest",
           "parameters": {
             "continentalness": 0.0,
+            "depth": 1.9,
+            "erosion": 0.0,
+            "humidity": [
+              -0.5,
+              0.5
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": 0.0
+          }
+        },
+        {
+          "biome": "mia:the_abyss/inverted_forest",
+          "parameters": {
+            "continentalness": 0.0,
             "depth": 2.0,
             "erosion": 0.0,
             "humidity": [

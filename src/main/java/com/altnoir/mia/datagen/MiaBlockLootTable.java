@@ -134,7 +134,8 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         add(MiaBlocks.INVERTED_DOOR.get(), this::createDoorTable);
         dropSelf(MiaBlocks.INVERTED_TRAPDOOR.get());
         dropSelf(MiaBlocks.INVERTED_SAPLING.get());
-        dropSelf(MiaBlocks.INVERTED_LEAVES.get());
+        add(MiaBlocks.INVERTED_LEAVES.get(),
+                block -> createLeavesDrops(block, MiaBlocks.INVERTED_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
         dropSelf(MiaBlocks.INVERTED_PRESSURE_PLATE.get());
         dropSelf(MiaBlocks.INVERTED_BUTTON.get());
 

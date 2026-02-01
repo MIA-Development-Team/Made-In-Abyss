@@ -1,8 +1,7 @@
 package com.altnoir.mia.worldgen.feature;
 
 import com.altnoir.mia.datagen.loottable.MiaArchaeologyLoot;
-import com.altnoir.mia.datagen.loottable.MiaCheatLootTable;
-import com.altnoir.mia.init.worldgen.MiaFeature;
+import com.altnoir.mia.init.worldgen.MiaFeatures;
 import com.altnoir.mia.worldgen.feature.configurations.SlabRuinsConfiguration;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -33,7 +32,7 @@ public class SlabRuinsFeature extends Feature<SlabRuinsConfiguration> {
         for (src = context.config(); blockpos.getY() > worldgenlevel.getMinBuildHeight() + 3; blockpos = blockpos.below()) {
             if (worldgenlevel.isEmptyBlock(blockpos)) {
                 BlockState blockstate = worldgenlevel.getBlockState(blockpos.below());
-                if (isDirt(blockstate) || MiaFeature.isStone(blockstate)) {
+                if (isDirt(blockstate) || MiaFeatures.isStone(blockstate)) {
                     break;
                 }
             }

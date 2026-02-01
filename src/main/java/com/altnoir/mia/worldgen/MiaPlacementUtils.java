@@ -32,7 +32,7 @@ public class MiaPlacementUtils {
         return resourceKey("tree/" + name);
     }
 
-    public static ResourceKey<PlacedFeature> abyssEdgeKey(String name) {
+    public static ResourceKey<PlacedFeature> theAbyssKey(String name) {
         return resourceKey("the_abyss/" + name);
     }
 

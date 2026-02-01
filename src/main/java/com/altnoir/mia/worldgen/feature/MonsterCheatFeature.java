@@ -2,7 +2,7 @@ package com.altnoir.mia.worldgen.feature;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.datagen.loottable.MiaCheatLootTable;
-import com.altnoir.mia.init.worldgen.MiaFeature;
+import com.altnoir.mia.init.worldgen.MiaFeatures;
 import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -47,7 +47,7 @@ public class MonsterCheatFeature extends Feature<MonsterCheatConfiguration> {
         for (bsc = context.config(); blockpos.getY() > worldgenlevel.getMinBuildHeight() + 5; blockpos = blockpos.below()) {
             if (worldgenlevel.isEmptyBlock(blockpos)) {
                 BlockState blockstate = worldgenlevel.getBlockState(blockpos.below());
-                if (isDirt(blockstate) || MiaFeature.isStone(blockstate)) {
+                if (isDirt(blockstate) || MiaFeatures.isStone(blockstate)) {
                     break;
                 }
             }

@@ -4,10 +4,7 @@ import com.altnoir.mia.common.core.curse.CurseManager;
 import com.altnoir.mia.common.core.spawner.AbyssTrialSpawnerManager;
 import com.altnoir.mia.init.*;
 import com.altnoir.mia.event.EventHandle;
-import com.altnoir.mia.init.worldgen.MiaBiomeSources;
-import com.altnoir.mia.init.worldgen.MiaDensityFunctionTypes;
-import com.altnoir.mia.init.worldgen.MiaFeature;
-import com.altnoir.mia.init.worldgen.MiaTrunkPlacerTypes;
+import com.altnoir.mia.init.worldgen.*;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -43,7 +40,9 @@ public class MIA {
 
         MiaBiomeSources.register(modEventBus);
         MiaDensityFunctionTypes.register(modEventBus);
-        MiaFeature.register(modEventBus);
+        MiaFeatures.register(modEventBus);
+        MiaPlacements.register(modEventBus);
+        MiaFoliagePlacerTypes.register(modEventBus);
         MiaTrunkPlacerTypes.register(modEventBus);
 
         MiaRecipes.register(modEventBus);

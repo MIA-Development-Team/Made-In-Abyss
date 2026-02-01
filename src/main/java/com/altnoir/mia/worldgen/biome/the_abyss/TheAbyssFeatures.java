@@ -1,14 +1,14 @@
 package com.altnoir.mia.worldgen.biome.the_abyss;
 
 import com.altnoir.mia.init.MiaBlocks;
-import com.altnoir.mia.init.worldgen.MiaFeature;
+import com.altnoir.mia.init.worldgen.MiaFeatures;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;
-import com.altnoir.mia.worldgen.feature.tree.MiaTreePlacements;
 import com.altnoir.mia.worldgen.feature.LakeFeature;
 import com.altnoir.mia.worldgen.feature.configurations.ClusterConfiguration;
 import com.altnoir.mia.worldgen.feature.configurations.MiaCavePillarConfiguration;
 import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
 import com.altnoir.mia.worldgen.feature.configurations.SlabRuinsConfiguration;
+import com.altnoir.mia.worldgen.feature.tree.MiaTreePlacements;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -60,6 +60,7 @@ public class TheAbyssFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_FLOWERS = theAbyssKey("forest_flowers");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_SKYFOG = theAbyssKey("trees_skyfog");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_SKYFOG_AND_AZALEA = theAbyssKey("trees_skyfog_and_azalea");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_INVERTED = theAbyssKey("trees_inverted");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_CLUSTER = theAbyssKey("prasiolite_cluster");
     public static final ResourceKey<ConfiguredFeature<?, ?>> BIG_PRASIOLITE_CLUSTER = theAbyssKey("big_prasiolite_cluster");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_GEODE = theAbyssKey("prasiolite_geode");
@@ -72,15 +73,17 @@ public class TheAbyssFeatures {
         Holder<PlacedFeature> skyfog_bee = holdergetter1.getOrThrow(MiaTreePlacements.SKYFOG_BEES);
         Holder<PlacedFeature> fancy_skyfog_bee = holdergetter1.getOrThrow(MiaTreePlacements.FANCY_SKYFOG_BEES_002);
         Holder<PlacedFeature> maga_skyfog = holdergetter1.getOrThrow(MiaTreePlacements.MEGA_SKYFOG);
+        Holder<PlacedFeature> inverted = holdergetter1.getOrThrow(MiaTreePlacements.INVERTED);
+        Holder<PlacedFeature> maga_inverted = holdergetter1.getOrThrow(MiaTreePlacements.MAGA_INVERTED);
 
         FeatureUtils.register(
-                context, MONSTER_CHEAT, MiaFeature.MONSTER_CHEAT.get(),
+                context, MONSTER_CHEAT, MiaFeatures.MONSTER_CHEAT.get(),
                 new MonsterCheatConfiguration(
                         BlockStateProvider.simple(MiaBlocks.SKYFOG_LOG.get().defaultBlockState()),
                         BlockStateProvider.simple(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get().defaultBlockState().setValue(BlockStateProperties.DISTANCE, 1)))
         );
         FeatureUtils.register(
-                context, SLAB_RUINS, MiaFeature.SLAB_RUINS.get(),
+                context, SLAB_RUINS, MiaFeatures.SLAB_RUINS.get(),
                 new SlabRuinsConfiguration(
                         new WeightedStateProvider(
                                 SimpleWeightedRandomList.<BlockState>builder()
@@ -106,7 +109,7 @@ public class TheAbyssFeatures {
                 )
         );
         MiaFeatureUtils.register(
-                context, LAKE_WATER, MiaFeature.LAKE.get(),
+                context, LAKE_WATER, MiaFeatures.LAKE.get(),
                 new LakeFeature.Configuration(
                         BlockStateProvider.simple(Blocks.WATER.defaultBlockState()), BlockStateProvider.simple(Blocks.SAND.defaultBlockState())
                 )
@@ -200,9 +203,13 @@ public class TheAbyssFeatures {
                 new RandomFeatureConfiguration(List.of(
                         new WeightedPlacedFeature(maga_skyfog, 0.075F),
                         new WeightedPlacedFeature(azalea, 0.1F),
-                        new WeightedPlacedFeature(skyfog_bee, 0.5F)),
-                        fancy_skyfog_bee
+                        new WeightedPlacedFeature(skyfog_bee, 0.5F)
+                ), fancy_skyfog_bee
                 )
+        );
+        MiaFeatureUtils.register(
+                context, TREES_INVERTED, Feature.RANDOM_SELECTOR,
+                new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(maga_inverted, 0.2F)), inverted)
         );
 
         WeightedStateProvider prasiolite1 = new WeightedStateProvider(createPrasioliteStates(false).build());
@@ -212,7 +219,7 @@ public class TheAbyssFeatures {
                 new SimpleRandomFeatureConfiguration(
                         HolderSet.direct(
                                 PlacementUtils.inlinePlaced(
-                                        MiaFeature.CLUSTER.get(),
+                                        MiaFeatures.CLUSTER.get(),
                                         new ClusterConfiguration(
                                                 BlockStateProvider.simple(MiaBlocks.PRASIOLITE_BLOCK.get().defaultBlockState()),
                                                 prasiolite1, prasiolite2,
@@ -222,7 +229,7 @@ public class TheAbyssFeatures {
                                         RandomOffsetPlacement.vertical(ConstantInt.of(1))
                                 ),
                                 PlacementUtils.inlinePlaced(
-                                        MiaFeature.CLUSTER.get(),
+                                        MiaFeatures.CLUSTER.get(),
                                         new ClusterConfiguration(
                                                 BlockStateProvider.simple(MiaBlocks.PRASIOLITE_BLOCK.get().defaultBlockState()),
                                                 prasiolite1, prasiolite2,
@@ -235,7 +242,7 @@ public class TheAbyssFeatures {
                 )
         );
         MiaFeatureUtils.register(
-                context, BIG_PRASIOLITE_CLUSTER, MiaFeature.BIG_CLUSTER.get(),
+                context, BIG_PRASIOLITE_CLUSTER, MiaFeatures.BIG_CLUSTER.get(),
                 new ClusterConfiguration(
                         BlockStateProvider.simple(MiaBlocks.PRASIOLITE_BLOCK.get().defaultBlockState()),
                         prasiolite1, prasiolite2,
@@ -276,7 +283,7 @@ public class TheAbyssFeatures {
         );
 
         MiaFeatureUtils.register(
-                context, CAVE_PILLAR, MiaFeature.ABYSS_CAVE_PILLAR.get(),
+                context, CAVE_PILLAR, MiaFeatures.ABYSS_CAVE_PILLAR.get(),
                 new MiaCavePillarConfiguration(
                         188,
                         UniformInt.of(3, 15),

@@ -17,6 +17,7 @@ public class MiaBiomes {
     public static final ResourceKey<Biome> ABYSS_DRIPSTONE_CAVES = abyssEdgeKey("abyss_dripstone_caves");
     // Layer 2
     public static final ResourceKey<Biome> TEMPTATION_FOREST = abyssEdgeKey("temptation_forest");
+    public static final ResourceKey<Biome> INVERTED_FOREST = abyssEdgeKey("inverted_forest");
 
     public static void boostrap(BootstrapContext<Biome> context) {
         // Layer 1
@@ -28,6 +29,7 @@ public class MiaBiomes {
         context.register(ABYSS_DRIPSTONE_CAVES, TheAbyssBiomes.abyssDripstoneCaves(context));
         // Layer 2
         context.register(TEMPTATION_FOREST, TheAbyssBiomes.temptationForest(context));
+        context.register(INVERTED_FOREST, TheAbyssBiomes.invertedForest(context));
     }
 
     private static ResourceKey<Biome> register(String path) {

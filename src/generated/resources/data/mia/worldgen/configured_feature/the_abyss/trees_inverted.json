@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "mia:tree/inverted",
+    "features": [
+      {
+        "chance": 0.2,
+        "feature": "mia:tree/maga_inverted"
+      }
+    ]
+  }
+}

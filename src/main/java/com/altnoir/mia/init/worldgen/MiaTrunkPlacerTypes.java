@@ -1,6 +1,8 @@
 package com.altnoir.mia.init.worldgen;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.worldgen.feature.trunk.InvertedForkingTrunkPlacer;
+import com.altnoir.mia.worldgen.feature.trunk.InvertedGiantTrunkPlacer;
 import com.altnoir.mia.worldgen.feature.trunk.InvertedStraightTrunkPlacer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
@@ -9,14 +11,14 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class MiaTrunkPlacerTypes {
-    public static final DeferredRegister<TrunkPlacerType<?>> TRUNK_PLACER_TYPES = DeferredRegister.create(BuiltInRegistries.TRUNK_PLACER_TYPE, MIA.MOD_ID);
+    public static final DeferredRegister<TrunkPlacerType<?>> TRUNK_PLACER_TYPE = DeferredRegister.create(BuiltInRegistries.TRUNK_PLACER_TYPE, MIA.MOD_ID);
 
     public static final DeferredHolder<TrunkPlacerType<?>, TrunkPlacerType<InvertedStraightTrunkPlacer>> STRAIGHT_TRUNK_PLACER =
-            TRUNK_PLACER_TYPES.register("inverted_straight_trunk_placer", () -> new TrunkPlacerType<>(InvertedStraightTrunkPlacer.CODEC));
-//    public static final DeferredHolder<TrunkPlacerType<?>, TrunkPlacerType<ForkingTrunkPlacer>> FORKING_TRUNK_PLACER =
-//            TRUNK_PLACER_TYPES.register("inverted_forking_trunk_placer", () -> new TrunkPlacerType<>(ForkingTrunkPlacer.CODEC));
-//    public static final DeferredHolder<TrunkPlacerType<?>, TrunkPlacerType<GiantTrunkPlacer>> GIANT_TRUNK_PLACER =
-//            TRUNK_PLACER_TYPES.register("inverted_giant_trunk_placer", () -> new TrunkPlacerType<>(GiantTrunkPlacer.CODEC));
+            TRUNK_PLACER_TYPE.register("inverted_straight_trunk_placer", () -> new TrunkPlacerType<>(InvertedStraightTrunkPlacer.CODEC));
+    public static final DeferredHolder<TrunkPlacerType<?>, TrunkPlacerType<InvertedForkingTrunkPlacer>> FORKING_TRUNK_PLACER =
+            TRUNK_PLACER_TYPE.register("inverted_forking_trunk_placer", () -> new TrunkPlacerType<>(InvertedForkingTrunkPlacer.CODEC));
+    public static final DeferredHolder<TrunkPlacerType<?>, TrunkPlacerType<InvertedGiantTrunkPlacer>> GIANT_TRUNK_PLACER =
+            TRUNK_PLACER_TYPE.register("inverted_giant_trunk_placer", () -> new TrunkPlacerType<>(InvertedGiantTrunkPlacer.CODEC));
 //    public static final DeferredHolder<TrunkPlacerType<?>, TrunkPlacerType<MegaJungleTrunkPlacer>> MEGA_JUNGLE_TRUNK_PLACER =
 //            TRUNK_PLACER_TYPES.register("inverted_mega_jungle_trunk_placer", () -> new TrunkPlacerType<>(MegaJungleTrunkPlacer.CODEC));
 //    public static final DeferredHolder<TrunkPlacerType<?>, TrunkPlacerType<DarkOakTrunkPlacer>> DARK_OAK_TRUNK_PLACER =
@@ -31,6 +33,6 @@ public class MiaTrunkPlacerTypes {
 //            TRUNK_PLACER_TYPES.register("inverted_cherry_trunk_placer", () -> new TrunkPlacerType<>(CherryTrunkPlacer.CODEC));
 
     public static void register(IEventBus eventBus) {
-        TRUNK_PLACER_TYPES.register(eventBus);
+        TRUNK_PLACER_TYPE.register(eventBus);
     }
 }

@@ -157,6 +157,23 @@ public class TheAbyssBiomes {
 
         return baseTheAbyss(generationBuilder, spawnBuilder).build();
     }
+    public static Biome invertedForest(BootstrapContext<Biome> context) {
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        TheAbyssUtils.farmAnimals(spawnBuilder);
+        TheAbyssUtils.commonSpawns(spawnBuilder);
+
+        BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
+
+        TheAbyssUtils.globalAbyssGeneration(generationBuilder);
+
+        TheAbyssUtils.addMeadowVegetation(generationBuilder);
+        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_INVERTED)
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
+        BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
+        BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
+
+        return baseTheAbyss(generationBuilder, spawnBuilder).build();
+    }
 
     public static Biome.BiomeBuilder baseTheAbyss(BiomeGenerationSettings.Builder generationBuilder, MobSpawnSettings.Builder spawnBuilder) {
         return new Biome.BiomeBuilder().hasPrecipitation(true).downfall(0.8F).temperature(0.8F)
