@@ -1,6 +1,6 @@
 package com.altnoir.mia.worldgen.feature;
 
-import com.altnoir.mia.datagen.loottable.MiaArchaeologyLoot;
+import com.altnoir.mia.datagen.MiaArchaeologyLoot;
 import com.altnoir.mia.init.worldgen.MiaFeatures;
 import com.altnoir.mia.worldgen.feature.configurations.SlabRuinsConfiguration;
 import com.mojang.serialization.Codec;

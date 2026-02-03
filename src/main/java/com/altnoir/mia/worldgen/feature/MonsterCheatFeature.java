@@ -1,7 +1,7 @@
 package com.altnoir.mia.worldgen.feature;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.datagen.loottable.MiaCheatLootTable;
+import com.altnoir.mia.datagen.MiaCheatLootTable;
 import com.altnoir.mia.init.worldgen.MiaFeatures;
 import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
 import com.mojang.serialization.Codec;

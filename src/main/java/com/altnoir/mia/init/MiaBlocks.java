@@ -211,6 +211,17 @@ public class MiaBlocks {
                     .pushReaction(PushReaction.DESTROY)
             )
     );
+    public static final DeferredBlock<Block> REED = registerBlock("reed", () ->
+            new WaterTallFlowerBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
+                    .noCollission()
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY)
+            )
+    );
 
     // 开关
     public static final DeferredBlock<Block> SKYFOG_PRESSURE_PLATE = registerBlock("skyfog_pressure_plate", () ->

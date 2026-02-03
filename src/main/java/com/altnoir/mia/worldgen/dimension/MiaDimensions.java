@@ -102,7 +102,18 @@ public class MiaDimensions {
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.INVERTED_FOREST)
                                 )
                         )),
-                        biomeRegistry.getOrThrow(MiaBiomes.THE_ABYSS)
+                        new Climate.ParameterList<>(List.of(
+                                biomePair(
+                                        Climate.Parameter.span(-1.0F, 1.0F),
+                                        Climate.Parameter.span(0.0F, 1.9F),
+                                        biomeRegistry.getOrThrow(MiaBiomes.THE_ABYSS)
+                                ),
+                                biomePair(
+                                        Climate.Parameter.span(-1.0F, 1.0F),
+                                        Climate.Parameter.point(2.0F),
+                                        biomeRegistry.getOrThrow(MiaBiomes.INVERTED_FOREST)
+                                )
+                        ))
                 ),
                 noiseGenSettings.getOrThrow(MiaNoiseGeneratorSettings.THE_ABYSS)
         );
@@ -122,5 +133,18 @@ public class MiaDimensions {
                 depth,
                 weirdness,
                 offset), biome);
+    }
+
+    private static Pair<Climate.ParameterPoint, Holder<Biome>> biomePair(
+            Climate.Parameter humidity, Climate.Parameter depth, Holder<Biome> biome) {
+
+        return Pair.of(Climate.parameters(
+                Climate.Parameter.point(0.8F),
+                humidity,
+                Climate.Parameter.point(0.0F),
+                Climate.Parameter.point(0.0F),
+                depth,
+                Climate.Parameter.point(0.0F),
+                0.0F), biome);
     }
 }

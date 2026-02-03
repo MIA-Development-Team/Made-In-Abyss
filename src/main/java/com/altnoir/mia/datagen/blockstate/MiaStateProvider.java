@@ -1,12 +1,10 @@
 package com.altnoir.mia.datagen.blockstate;
 
 import com.altnoir.mia.util.MiaUtil;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.trialspawner.TrialSpawnerState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
@@ -52,24 +50,6 @@ public class MiaStateProvider {
         builder.partialState()
                 .with(moisture, 7)
                 .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_moist")));
-    }
-
-    public void ColumnWithFacingState(BlockStateProvider p, Block block) {
-        VariantBlockStateBuilder builder = p.getVariantBuilder(block);
-        DirectionProperty facing = BlockStateProperties.FACING;
-
-        builder.partialState().with(facing, Direction.DOWN)
-                .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block)), 180, 0));
-        builder.partialState().with(facing, Direction.UP)
-                .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block))));
-        builder.partialState().with(facing, Direction.NORTH)
-                .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block)), 90, 0));
-        builder.partialState().with(facing, Direction.SOUTH)
-                .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block)), 90, 180));
-        builder.partialState().with(facing, Direction.WEST)
-                .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block)), 90, 270));
-        builder.partialState().with(facing, Direction.EAST)
-                .addModels(getVariantBuilder(p, p.modLoc("block/" + MiaUtil.getBlockPath(block)), 90, 90));
     }
 
     public void abyssSpawnerBlockState(BlockStateProvider p, Block block) {

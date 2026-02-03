@@ -51,7 +51,7 @@ public class EndlessCupBlock extends BaseEntityBlock implements SimpleWaterlogge
     );
     protected static final VoxelShape SHAPE = Shapes.or(
             ANGLES,
-            box(2.0, 0.1, 2.0, 14.0, 3.1, 14.0),
+            box(2.0, 0.0, 2.0, 14.0, 3.0, 14.0),
             box(5.0, 3.0, 5.0, 11.0, 11.0, 11.0),
             TOP
     );
@@ -87,11 +87,11 @@ public class EndlessCupBlock extends BaseEntityBlock implements SimpleWaterlogge
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         if (state.getValue(WATERLOGGED)) {
-            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override

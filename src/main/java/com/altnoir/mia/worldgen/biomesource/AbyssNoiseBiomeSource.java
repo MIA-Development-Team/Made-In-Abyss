@@ -17,33 +17,71 @@ import net.minecraft.world.level.levelgen.NoiseRouterData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class AbyssNoiseBiomeSource extends BiomeSource {
-    private static final MapCodec<Holder<Biome>> ABYSS_CODEC = Biome.CODEC.fieldOf("abyss_biome");
     private static final MapCodec<Holder<Biome>> ENTRY_CODEC = Biome.CODEC.fieldOf("biome");
-    public static final MapCodec<Climate.ParameterList<Holder<Biome>>> DIRECT_CODEC = Climate.ParameterList.codec(ENTRY_CODEC).fieldOf("biomes");
-
+    private static final MapCodec<Climate.ParameterList<Holder<Biome>>> DIRECT_CODEC = Climate.ParameterList.codec(ENTRY_CODEC).fieldOf("biomes");
+    private static final MapCodec<Optional<Climate.ParameterList<Holder<Biome>>>> ABYSS_DIRECT_CODEC = Climate.ParameterList.codec(ENTRY_CODEC).optionalFieldOf("abyss_biomes");
+    private static final MapCodec<Optional<Holder<Biome>>> ABYSS_CODEC = Biome.CODEC.optionalFieldOf("abyss_biome");
 
     public static final MapCodec<AbyssNoiseBiomeSource> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     DIRECT_CODEC.forGetter(AbyssNoiseBiomeSource::parameters),
-                    ABYSS_CODEC.forGetter(source -> source.abyss)
-            ).apply(instance, AbyssNoiseBiomeSource::new)
+                    ABYSS_DIRECT_CODEC.forGetter(source -> Optional.ofNullable(source.abyssParameters)),
+                    ABYSS_CODEC.forGetter(source -> Optional.ofNullable(source.abyss))
+            ).apply(instance, (parameters, abyssParameters, abyss) -> {
+                if (abyssParameters.isPresent() && abyss.isPresent()) {
+                    throw new IllegalStateException("Cannot specify both 'abyss_biomes' and 'abyss_biome' at the same time");
+                }
+                if (abyssParameters.isPresent()) {
+                    return new AbyssNoiseBiomeSource(parameters, abyssParameters.get(), null);
+                } else if (abyss.isPresent()) {
+                    return new AbyssNoiseBiomeSource(parameters, null, abyss.get());
+                } else {
+                    throw new IllegalStateException("Must specify either 'abyss_biomes' or 'abyss_biome'");
+                }
+            })
     );
 
     private final Climate.ParameterList<Holder<Biome>> parameters;
+    private final Climate.ParameterList<Holder<Biome>> abyssParameters;
     private final Holder<Biome> abyss;
 
+    private AbyssNoiseBiomeSource(Climate.ParameterList<Holder<Biome>> parameters, Climate.ParameterList<Holder<Biome>> abyssParameters, Holder<Biome> abyss) {
+        if (abyssParameters != null && abyss != null) {
+            throw new IllegalArgumentException("Cannot specify both abyssParameters and abyss");
+        }
+        if (abyssParameters == null && abyss == null) {
+            throw new IllegalArgumentException("Must specify either abyssParameters or abyss");
+        }
+        this.parameters = parameters;
+        this.abyssParameters = abyssParameters;
+        this.abyss = abyss;
+    }
 
     public AbyssNoiseBiomeSource(Climate.ParameterList<Holder<Biome>> parameters, Holder<Biome> abyss) {
-        this.parameters = parameters;
-        this.abyss = abyss;
+        this(parameters, null, abyss);
+    }
+
+    public AbyssNoiseBiomeSource(Climate.ParameterList<Holder<Biome>> parameters, Climate.ParameterList<Holder<Biome>> abyssParameters) {
+        this(parameters, abyssParameters, null);
     }
 
     @Override
     protected Stream<Holder<Biome>> collectPossibleBiomes() {
-        return Stream.concat(Stream.of(abyss), this.parameters().values().stream().map(Pair::getSecond));
+        Stream<Holder<Biome>> abyssStream;
+
+        if (abyss != null) {
+            abyssStream = Stream.of(abyss);
+        } else if (abyssParameters != null) {
+            abyssStream = this.abyssParameters().values().stream().map(Pair::getSecond);
+        } else {
+            throw new IllegalStateException("Both abyss and abyssParameters are null");
+        }
+
+        return Stream.concat(abyssStream, this.parameters().values().stream().map(Pair::getSecond));
     }
 
     @Override
@@ -51,12 +89,20 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
         return CODEC;
     }
 
-    public static AbyssNoiseBiomeSource createFromList(Climate.ParameterList<Holder<Biome>> parameters, Holder<Biome> fixedBiome) {
-        return new AbyssNoiseBiomeSource(parameters, fixedBiome);
+    public static AbyssNoiseBiomeSource createFromList(Climate.ParameterList<Holder<Biome>> parameters, Holder<Biome> abyss) {
+        return new AbyssNoiseBiomeSource(parameters, abyss);
+    }
+
+    public static AbyssNoiseBiomeSource createFromList(Climate.ParameterList<Holder<Biome>> parameters, Climate.ParameterList<Holder<Biome>> abyssParameters) {
+        return new AbyssNoiseBiomeSource(parameters, abyssParameters);
     }
 
     private Climate.ParameterList<Holder<Biome>> parameters() {
         return this.parameters;
+    }
+
+    private Climate.ParameterList<Holder<Biome>> abyssParameters() {
+        return this.abyssParameters;
     }
 
     @Override
@@ -68,7 +114,11 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
         int sectionZ = SectionPos.blockToSectionCoord(blockZ);
 
         if ((long) sectionX * sectionX + (long) sectionZ * sectionZ <= (long) HopperAbyssHole.getAbyssRadius()) {
-            return abyss;
+            if (abyssParameters != null) {
+                return this.getAbyssNoiseBiome(sampler.sample(x, y, z));
+            } else {
+                return abyss;
+            }
         } else {
             return this.getNoiseBiome(sampler.sample(x, y, z));
         }
@@ -77,6 +127,11 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
     @VisibleForDebug
     public Holder<Biome> getNoiseBiome(Climate.TargetPoint targetPoint) {
         return this.parameters().findValue(targetPoint);
+    }
+
+    @VisibleForDebug
+    public Holder<Biome> getAbyssNoiseBiome(Climate.TargetPoint targetPoint) {
+        return this.abyssParameters().findValue(targetPoint);
     }
 
     @Override

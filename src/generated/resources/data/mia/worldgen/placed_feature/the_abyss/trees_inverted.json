@@ -3,7 +3,7 @@
   "placement": [
     {
       "type": "mia:inverted_count_on_every_layer",
-      "count": 8
+      "count": 6
     },
     {
       "type": "minecraft:biome"

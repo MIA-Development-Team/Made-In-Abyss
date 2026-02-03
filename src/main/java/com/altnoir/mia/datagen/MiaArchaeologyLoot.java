@@ -1,6 +1,5 @@
-package com.altnoir.mia.datagen.loottable;
+package com.altnoir.mia.datagen;
 
-import com.altnoir.mia.datagen.MiaLootTableProvider;
 import com.altnoir.mia.init.MiaItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.LootTableSubProvider;

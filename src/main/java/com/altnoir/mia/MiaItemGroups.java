@@ -102,10 +102,6 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.SKYFOG_FENCE_GATE);
                         output.accept(MiaBlocks.SKYFOG_DOOR);
                         output.accept(MiaBlocks.SKYFOG_TRAPDOOR);
-                        output.accept(MiaBlocks.SKYFOG_LEAVES);
-                        output.accept(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS);
-                        output.accept(MiaBlocks.SKYFOG_SAPLING);
-                        output.accept(MiaBlocks.INVERTED_SAPLING);
 
                         output.accept(MiaBlocks.INVERTED_LOG);
                         output.accept(MiaBlocks.INVERTED_WOOD);
@@ -118,7 +114,11 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.INVERTED_FENCE_GATE);
                         output.accept(MiaBlocks.INVERTED_DOOR);
                         output.accept(MiaBlocks.INVERTED_TRAPDOOR);
+
+                        output.accept(MiaBlocks.SKYFOG_LEAVES);
+                        output.accept(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS);
                         output.accept(MiaBlocks.INVERTED_LEAVES);
+                        output.accept(MiaBlocks.SKYFOG_SAPLING);
                         output.accept(MiaBlocks.INVERTED_SAPLING);
 
                         // 植物

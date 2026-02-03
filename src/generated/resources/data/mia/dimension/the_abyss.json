@@ -4,7 +4,41 @@
     "type": "minecraft:noise",
     "biome_source": {
       "type": "mia:the_abyss",
-      "abyss_biome": "mia:the_abyss/the_abyss",
+      "abyss_biomes": [
+        {
+          "biome": "mia:the_abyss/the_abyss",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              0.0,
+              1.9
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": 0.0
+          }
+        },
+        {
+          "biome": "mia:the_abyss/inverted_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 2.0,
+            "erosion": 0.0,
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": 0.0
+          }
+        }
+      ],
       "biomes": [
         {
           "biome": "mia:the_abyss/skyfog_forest",

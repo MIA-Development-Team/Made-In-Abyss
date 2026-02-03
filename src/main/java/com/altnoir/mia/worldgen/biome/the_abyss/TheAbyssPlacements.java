@@ -191,7 +191,7 @@ public class TheAbyssPlacements {
         );
         MiaPlacementUtils.register(
                 context, TREES_INVERTED, inverted,
-                InvertedCountOnEveryLayerPlacement.of(8),
+                InvertedCountOnEveryLayerPlacement.of(6),
                 BiomeFilter.biome()
         );
 

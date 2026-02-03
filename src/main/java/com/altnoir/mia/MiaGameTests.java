@@ -1,6 +1,5 @@
-package com.altnoir.mia.gametest;
+package com.altnoir.mia;
 
-import com.altnoir.mia.MIA;
 import net.minecraft.gametest.framework.*;
 import net.neoforged.neoforge.event.RegisterGameTestsEvent;
 import net.neoforged.neoforge.gametest.GameTestHolder;
