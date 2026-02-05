@@ -1,11 +1,13 @@
 package com.altnoir.mia.client;
 
+import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.client.gui.screens.ArtifactSmithingTableScreen;
 import com.altnoir.mia.client.gui.screens.inventory.tooltip.ClientArtifactBundleTooltip;
 import com.altnoir.mia.client.handler.HookHandler;
 import com.altnoir.mia.client.renderer.TheAbyssDimEffects;
 import com.altnoir.mia.common.component.ArtifactBundleInventoryComponent;
 import com.altnoir.mia.event.client.*;
+import com.altnoir.mia.event.common.AbyssMobEvent;
 import com.altnoir.mia.init.MiaKeyBinding;
 import com.altnoir.mia.init.MiaMenus;
 import net.minecraft.client.Minecraft;
@@ -67,6 +69,20 @@ public class MiaClientEvents {
 
     public static void onTooltip(ItemTooltipEvent event) {
         ClientTooltipEvent.onTooltip(event.getItemStack(), event.getToolTip());
+    }
+
+    public static void onRenderNameTag(RenderNameTagEvent event) {
+        if (!MiaConfig.abyssMobLevelSwitch) return;
+        var result = AbyssMobEvent.onRenderMobLevel(event.getEntity());
+        if (result != null) {
+            event.setCanRender(result);
+        }
+    }
+
+    public static void onCameraAngles(ViewportEvent.ComputeCameraAngles event) {
+        event.setYaw(-event.getYaw());
+        event.setPitch(-event.getPitch());
+        event.setRoll(event.getRoll() + 180.0F);
     }
 }
 

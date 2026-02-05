@@ -32,11 +32,9 @@ public class MiaClientConfig {
                     "HIDDEN: Hide the disconnect button | 隐藏退出按钮")
             .defineEnum("disconnect_button_state", DisconnectButtonState.DEFAULT);
 
-    private static final ModConfigSpec.Builder HOOK = BUILDER.push("hook")
-            .comment("Hook Configuration | 钩爪配置");
-    public static final ModConfigSpec.BooleanValue AUTO_HOOK = HOOK
+    public static final ModConfigSpec.BooleanValue AUTO_HOOK = BUILDER
             .comment("Enable auto hook | 启用自动回收")
-            .define("auto_hook", false);
+            .define("hook.auto", false);
 
     public static final ModConfigSpec CLIENT_SPEC = BUILDER.build();
 

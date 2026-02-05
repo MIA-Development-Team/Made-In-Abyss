@@ -10,7 +10,9 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
+import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.player.BonemealEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -53,15 +55,25 @@ public class MiaEvents {
         BonemealUseEvent.onBonemealUse(event.getState(), event.getPos(), event.getStack(), event.getLevel(), event.getPlayer());
     }
 
-    public static void onLivingDeath(LivingDeathEvent event) {
-        KillCountEvent.onLivingDeath(event.getEntity(), event.getSource());
-    }
-
     public static void onBrewingRecipe(RegisterBrewingRecipesEvent event) {
         BrewingRecipesEvent.onBrewingRecipe(event.getBuilder());
     }
 
     public static void onRegisterCommands(RegisterCommandsEvent event) {
         MiaCommandsEvent.onRegisterCommands(event.getDispatcher());
+    }
+
+    // 实体事件
+    public static void onLivingDeath(LivingDeathEvent event) {
+        KillCountEvent.onLivingDeath(event.getEntity(), event.getSource());
+    }
+
+    public static void onFinalizeSpawn(FinalizeSpawnEvent event) {
+        if (event.getLevel().isClientSide()) return;
+        AbyssMobEvent.onCheckSpawn(event.getEntity(), event.getLevel(), event.getSpawnType());
+    }
+
+    public static void onLivingDrops(LivingDropsEvent event) {
+        AbyssMobEvent.onLivingDrops(event.getEntity(), event.getDrops(), event.getSource());
     }
 }

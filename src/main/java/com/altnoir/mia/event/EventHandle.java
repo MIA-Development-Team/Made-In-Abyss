@@ -27,5 +27,7 @@ public class EventHandle {
         gameEventBus.addListener(MiaEvents::onLivingDeath);
         gameEventBus.addListener(MiaEvents::onBrewingRecipe);
         gameEventBus.addListener(MiaEvents::onRegisterCommands);
+        gameEventBus.addListener(MiaEvents::onFinalizeSpawn);
+        gameEventBus.addListener(MiaEvents::onLivingDrops);
     }
 }

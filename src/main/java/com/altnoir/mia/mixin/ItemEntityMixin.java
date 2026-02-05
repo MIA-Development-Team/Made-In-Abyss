@@ -14,8 +14,10 @@ public class ItemEntityMixin {
     private void injectGravity(CallbackInfoReturnable<Double> cir) {
         Entity entity = (Entity) (Object) this;
 
-        if (AbyssGravity.isTheAbyssGravity(entity) || AbyssGravity.isInvertedForest(entity)) {
+        if (AbyssGravity.isTheAbyssGravity(entity)) {
             cir.setReturnValue(-cir.getReturnValue());
+        } else if (AbyssGravity.isInvertedForest(entity)) {
+            cir.setReturnValue(-cir.getReturnValue() * 0.1);
         }
     }
 }

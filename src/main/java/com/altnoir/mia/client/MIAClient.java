@@ -36,5 +36,7 @@ public class MIAClient {
         gameEventBus.addListener(MiaClientEvents::onRenderOverlay);
         gameEventBus.addListener(MiaClientEvents::onScreenInitPost);
         gameEventBus.addListener(MiaClientEvents::onTooltip);
+        gameEventBus.addListener(MiaClientEvents::onRenderNameTag);
+        //gameEventBus.addListener(MiaClientEvents::onCameraAngles);
     }
 }

@@ -90,7 +90,6 @@ public class MonsterCheatFeature extends Feature<MonsterCheatConfiguration> {
                 }
             }
         }
-
         return true;
     }
 

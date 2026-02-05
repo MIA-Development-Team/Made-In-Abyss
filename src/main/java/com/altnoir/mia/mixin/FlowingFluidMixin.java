@@ -17,7 +17,7 @@ public class FlowingFluidMixin {
             target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z", ordinal = 5,
             shift = At.Shift.AFTER),
             cancellable = true)
-    private void injectAfterNetherPortalCheck(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
+    private void injectAfterPortalCheck(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
         if (state.is(MiaBlocks.ABYSS_PORTAL.get())) {
             cir.setReturnValue(false);
         }
