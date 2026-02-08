@@ -20,11 +20,15 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.util.TriState;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 public class AbyssMobEvent {
     private static final short CHUNK_RADIUS = 28;
+    private static final List<EntityType<? extends Mob>> riderTypes = List.of(
+            EntityType.SKELETON,
+            EntityType.BOGGED
+    );
 
     public static void onCheckSpawn(Mob mob, ServerLevelAccessor level, MobSpawnType type) {
         if (!MiaConfig.abyssMobLevelSwitch) return;
@@ -115,21 +119,13 @@ public class AbyssMobEvent {
     }
 
     private static void createRidingSkeleton(ServerLevel serverLevel, Mob mob) {
-        EntityType<?>[] riderTypes = {EntityType.SKELETON, EntityType.BOGGED};
-        var random = serverLevel.getRandom().nextInt(riderTypes.length);
+        var type = riderTypes.get(serverLevel.getRandom().nextInt(riderTypes.size()));
+        var rider = type.create(serverLevel, null, mob.blockPosition(), MobSpawnType.EVENT, false, false);
 
-        EntityType<?> riders = riderTypes[random];
-        var rider = riders.create(serverLevel);
+        if (!(rider instanceof LivingEntity entity))
+            return;
 
-        if (rider != null) {
-            rider.setUUID(UUID.randomUUID());
-            rider.moveTo(mob.position());
-            serverLevel.addFreshEntityWithPassengers(rider);
-
-            if (rider instanceof LivingEntity entity) {
-                entity.setItemSlot(EquipmentSlot.MAINHAND, Items.BOW.getDefaultInstance());
-            }
-            rider.startRiding(mob);
-        }
+        entity.setItemSlot(EquipmentSlot.MAINHAND, Items.BOW.getDefaultInstance());
+        rider.startRiding(mob, true);
     }
 }
