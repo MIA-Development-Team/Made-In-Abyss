@@ -1,8 +1,8 @@
 package com.altnoir.mia.common.block.entity;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.common.core.spawner.AbyssTrialSpawner;
-import com.altnoir.mia.common.core.spawner.records.AbyssTrialSpawnerPattern;
+import com.altnoir.mia.core.spawner.AbyssTrialSpawner;
+import com.altnoir.mia.core.spawner.records.AbyssTrialSpawnerPattern;
 import com.altnoir.mia.init.MiaBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;

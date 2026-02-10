@@ -3,7 +3,7 @@ package com.altnoir.mia.init;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.datagen.DataGenerators;
-import com.altnoir.mia.event.common.*;
+import com.altnoir.mia.core.event.common.*;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent;

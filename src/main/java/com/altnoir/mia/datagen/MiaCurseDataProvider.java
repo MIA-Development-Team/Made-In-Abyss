@@ -1,8 +1,8 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.common.core.curse.CurseDataProvider;
-import com.altnoir.mia.common.core.curse.records.CurseEffect;
+import com.altnoir.mia.core.curse.CurseDataProvider;
+import com.altnoir.mia.core.curse.records.CurseEffect;
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;

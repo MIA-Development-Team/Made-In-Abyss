@@ -1,7 +1,7 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.common.core.spawner.AbyssTrialSpawnerDataProvider;
+import com.altnoir.mia.core.spawner.AbyssTrialSpawnerDataProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;

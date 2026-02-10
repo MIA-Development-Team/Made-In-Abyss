@@ -2,9 +2,9 @@ package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.common.block.ArtifactSmithingTableBlock;
-import com.altnoir.mia.event.client.ClientCurseEvent;
-import com.altnoir.mia.event.client.ClientTooltipEvent;
-import com.altnoir.mia.event.client.KeyArrowEvent;
+import com.altnoir.mia.core.event.client.ClientCurseEvent;
+import com.altnoir.mia.core.event.client.ClientTooltipEvent;
+import com.altnoir.mia.core.event.client.KeyArrowEvent;
 import com.altnoir.mia.init.*;
 import com.altnoir.mia.common.item.abs.AbsArtifactBundle;
 import com.altnoir.mia.common.item.abs.IArtifactItem;

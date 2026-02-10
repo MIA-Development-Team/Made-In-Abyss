@@ -1,6 +1,6 @@
 package com.altnoir.mia.common.attachments;
 
-import com.altnoir.mia.common.core.curse.ICurse;
+import com.altnoir.mia.core.curse.ICurse;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.neoforged.neoforge.common.util.INBTSerializable;

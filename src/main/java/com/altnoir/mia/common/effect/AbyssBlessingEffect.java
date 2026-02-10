@@ -1,6 +1,6 @@
 package com.altnoir.mia.common.effect;
 
-import com.altnoir.mia.event.common.CurseEvent;
+import com.altnoir.mia.core.event.common.CurseEvent;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;

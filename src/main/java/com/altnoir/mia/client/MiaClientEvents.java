@@ -6,8 +6,8 @@ import com.altnoir.mia.client.gui.screens.inventory.tooltip.ClientArtifactBundle
 import com.altnoir.mia.client.handler.HookHandler;
 import com.altnoir.mia.client.renderer.TheAbyssDimEffects;
 import com.altnoir.mia.common.component.ArtifactBundleInventoryComponent;
-import com.altnoir.mia.event.client.*;
-import com.altnoir.mia.event.common.AbyssMobEvent;
+import com.altnoir.mia.core.event.client.*;
+import com.altnoir.mia.core.event.common.AbyssMobEvent;
 import com.altnoir.mia.init.MiaKeyBinding;
 import com.altnoir.mia.init.MiaMenus;
 import net.minecraft.client.Minecraft;

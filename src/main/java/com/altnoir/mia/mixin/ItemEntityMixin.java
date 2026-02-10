@@ -1,6 +1,6 @@
 package com.altnoir.mia.mixin;
 
-import com.altnoir.mia.common.gravity.AbyssGravity;
+import com.altnoir.mia.core.gravity.AbyssGravity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,7 +17,7 @@ public class ItemEntityMixin {
         if (AbyssGravity.isTheAbyssGravity(entity)) {
             cir.setReturnValue(-cir.getReturnValue());
         } else if (AbyssGravity.isInvertedForest(entity)) {
-            cir.setReturnValue(-cir.getReturnValue() * 0.1);
+            cir.setReturnValue(0.0);
         }
     }
 }

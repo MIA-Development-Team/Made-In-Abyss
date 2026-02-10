@@ -62,6 +62,9 @@ repositories {
             includeGroup "com.github.rtyley"
         }
     }
+    // Create
+    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
+    maven { url = "https://maven.createmod.net" }
 }
 
 base {
@@ -155,6 +158,10 @@ dependencies {
 
     // KubeJS
     api("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
+    // Ponder
+    implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
+    // Flywheel
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
