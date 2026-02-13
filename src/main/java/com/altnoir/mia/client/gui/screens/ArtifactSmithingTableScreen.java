@@ -1,9 +1,8 @@
 package com.altnoir.mia.client.gui.screens;
 
-import com.altnoir.mia.MIA;
-import com.altnoir.mia.core.event.client.ClientTooltipEvent;
 import com.altnoir.mia.common.inventory.ArtifactSmithingTableMenu;
 import com.altnoir.mia.common.recipe.ArtifactSmithingRecipe;
+import com.altnoir.mia.core.event.client.ClientTooltipEvent;
 import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,6 +12,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -92,11 +93,14 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
         // render recipes
         this.renderRecipes(guiGraphics, l, i1, j1);
         // render text
-        var recipeSelected = ((ArtifactSmithingTableMenu) this.menu).getSelectedRecipe();
-        if (recipeSelected != null) {
-            Component text = ClientTooltipEvent.formatAttributeModifier(recipeSelected.value().getAttribute().value(),
-                    recipeSelected.value().getAttributeAmount(),
-                    recipeSelected.value().getAttributeOperation());
+        var recipe = ((ArtifactSmithingTableMenu) this.menu).getSelectedRecipe();
+        if (recipe != null) {
+            double min = recipe.value().getMinAttributeValue();
+            double max = recipe.value().getMaxAttributeValue();
+            var attribute = recipe.value().getAttribute();
+            AttributeModifier.Operation operation = recipe.value().getAttributeOperation();
+
+            Component text = ClientTooltipEvent.formatAttributeModifier(attribute, min, max, operation);
 
             guiGraphics.drawString(this.font, text, this.leftPos + RECIPES_X, this.topPos + RECIPES_Y - 10, 0x000000,
                     false);
@@ -116,7 +120,7 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
             ResourceLocation resourcelocation;
 
             if (i == ((ArtifactSmithingTableMenu) this.menu).getSelectedRecipeIndex()) {
-                MIA.LOGGER.debug("selected " + i);
+                //MIA.LOGGER.debug("selected " + i);
 
                 resourcelocation = RECIPE_SELECTED_SPRITE;
             } else if (i < availableRecipeCount) {
@@ -179,7 +183,19 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
                 int j1 = i + i1 % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
                 int k1 = j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT + 2;
                 if (x >= j1 && x < j1 + RECIPES_IMAGE_SIZE_WIDTH && y >= k1 && y < k1 + RECIPES_IMAGE_SIZE_HEIGHT) {
-                    guiGraphics.renderTooltip(this.font, list.get(l).value().getMaterial(), x, y);
+                    // 显示材料信息和属性范围
+                    RecipeHolder<ArtifactSmithingRecipe> recipe = list.get(l);
+                    List<Component> tooltip = new ArrayList<>();
+                    tooltip.add(recipe.value().getMaterial().getHoverName());
+
+                    double min = recipe.value().getMinAttributeValue();
+                    double max = recipe.value().getMaxAttributeValue();
+                    var attribute = recipe.value().getAttribute();
+                    AttributeModifier.Operation operation = recipe.value().getAttributeOperation();
+
+                    tooltip.add(ClientTooltipEvent.formatAttributeModifier(attribute, min, max, operation));
+
+                    guiGraphics.renderComponentTooltip(this.font, tooltip, x, y);
                 }
             }
         }

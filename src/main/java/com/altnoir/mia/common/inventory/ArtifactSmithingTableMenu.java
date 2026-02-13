@@ -2,13 +2,13 @@ package com.altnoir.mia.common.inventory;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.common.component.ArtifactEnhancementComponent;
+import com.altnoir.mia.common.item.abs.IEArtifact;
+import com.altnoir.mia.common.recipe.ArtifactSmithingRecipe;
+import com.altnoir.mia.common.recipe.ArtifactSmithingRecipeInput;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.init.MiaMenus;
 import com.altnoir.mia.init.MiaRecipes;
-import com.altnoir.mia.common.item.abs.IEArtifact;
-import com.altnoir.mia.common.recipe.ArtifactSmithingRecipe;
-import com.altnoir.mia.common.recipe.ArtifactSmithingRecipeInput;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -45,7 +45,6 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
     private final List<RecipeHolder<ArtifactSmithingRecipe>> availableRecipes;
     private final List<RecipeHolder<ArtifactSmithingRecipe>> unavailableRecipes;
 
-    private final List<RecipeHolder<ArtifactSmithingRecipe>> allRecipes;
     public int inventoryTimesChanged = 0;
     Runnable slotUpdateListener;
 
@@ -63,7 +62,6 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
         this.unavailableRecipes = new ArrayList<>();
         this.selectedRecipeIndex = DataSlot.standalone();
         this.selectedRecipeIndex.set(-1);
-        this.allRecipes = this.level.getRecipeManager().getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get());
         this.slotUpdateListener = () -> {
         };
         this.artifactContainer = new TransientCraftingContainer(this, 1, 1);
@@ -72,7 +70,9 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
         this.artifactSlot = this.addSlot(new Slot(this.artifactContainer, 0, 20, 33) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return allRecipes.stream().anyMatch(recipe -> recipe.value().isArtifactIngredient(stack));
+                // 动态检查配方
+                var recipes = level.getRecipeManager().getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get());
+                return recipes.stream().anyMatch(recipe -> recipe.value().isArtifactIngredient(stack));
             }
 
             @Override
@@ -99,7 +99,6 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
                 if (!materialStack.isEmpty() && recipe != null) {
                     int recipeCount = recipe.value().getMaterial().getCount();
                     materialStack.shrink(recipeCount);
-
                 }
                 artifactSlot.set(ItemStack.EMPTY);
             }
@@ -120,10 +119,8 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
         for (k = 0; k < 9; ++k) {
             this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 160));
         }
-
     }
 
-    // select the recipe
     @Override
     public boolean clickMenuButton(Player player, int recipeIndex) {
         if (recipeIndex >= 0 && recipeIndex < this.availableRecipes.size()
@@ -141,35 +138,27 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
 
     @Override
     public void slotsChanged(Container inventory) {
-        // if input slot changes, reset the recipe list and the result slot
         if (inventory == this.artifactContainer) {
-            // clear result slot
             this.resultSlot.set(ItemStack.EMPTY);
-            // fetch artifact recipes
             fetchRecipesForArtifact();
             tryMatchRecipe();
         } else if (inventory == this.materialContainer) {
             tryMatchRecipe();
         }
-        // else if (inventory == this.inventory) {
-        // tryMatchRecipe();
-        // }
         this.slotUpdateListener.run();
     }
 
     public void fetchRecipesForArtifact() {
-        // clear avaliable recipes and selected recipes
         this.availableRecipes.clear();
         this.unavailableRecipes.clear();
         this.selectedRecipeIndex.set(-1);
-        // clear material slot
-        // this.clearMaterialSlot();
-        // add all possible enhancement recipe
+
         ItemStack artifact = this.artifactSlot.getItem();
         MIA.LOGGER.debug("fetch");
 
         if (!artifact.isEmpty() && inputHasSmithingRecipe()) {
-            for (RecipeHolder<ArtifactSmithingRecipe> recipe : allRecipes) {
+            var recipes = this.level.getRecipeManager().getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get());
+            for (RecipeHolder<ArtifactSmithingRecipe> recipe : recipes) {
                 if (recipe.value().isArtifactIngredient(artifact)) {
                     if (playerHasMaterial(recipe.value())) {
                         this.availableRecipes.add(recipe);
@@ -232,7 +221,7 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
             ItemStack selectedStack = slot.getItem();
             Item item = selectedStack.getItem();
             returnStack = selectedStack.copy();
-            //
+
             if (index == RESULT_SLOT_INDEX) {
                 item.onCraftedBy(selectedStack, player.level(), player);
                 if (!this.moveItemStackTo(selectedStack, INV_SLOT_START, USE_ROW_SLOT_END, true)) {
@@ -281,8 +270,8 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
     }
 
     public boolean canMoveIntoArtifactSlots(ItemStack stack) {
-        return this.allRecipes.stream()
-                .map(RecipeHolder::value).anyMatch(recipe -> recipe.isArtifactIngredient(stack));
+        var recipes = this.level.getRecipeManager().getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get());
+        return recipes.stream().map(RecipeHolder::value).anyMatch(recipe -> recipe.isArtifactIngredient(stack));
     }
 
     public boolean canMoveIntoMaterialSlot(ItemStack stack) {
@@ -296,7 +285,7 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
     }
 
     private ArtifactSmithingRecipeInput createRecipeInput() {
-        return new ArtifactSmithingRecipeInput(this.artifactSlot.getItem(), this.materialSlot.getItem());
+        return new ArtifactSmithingRecipeInput(this.artifactSlot.getItem(), this.materialSlot.getItem(), this.level.random);
     }
 
     public void registerUpdateListener(Runnable listener) {
@@ -332,7 +321,8 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
             return false;
         }
         if (artifactSlotItem.getItem() instanceof IEArtifact artifactType) {
-            if (!allRecipes.stream().anyMatch(recipe -> recipe.value().isArtifactIngredient(artifactSlotItem))) {
+            var recipes = this.level.getRecipeManager().getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get());
+            if (!recipes.stream().anyMatch(recipe -> recipe.value().isArtifactIngredient(artifactSlotItem))) {
                 return false;
             }
             if (artifactSlotItem
@@ -378,10 +368,7 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
         return false;
     }
 
-    // try to take as much item possible from the player to fulfill the recipe
-    // requirement
     private void takeMaterialFromPlayer(ArtifactSmithingRecipe recipe) {
-
         ItemStack required = recipe.getMaterial();
         int toTake = required.getCount();
 
@@ -398,7 +385,6 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
     }
 
     private void clearMaterialSlot() {
-        // clear material slot
         ItemStack material = materialSlot.getItem();
         if (!material.isEmpty()) {
             player.getInventory().placeItemBackInInventory(material);

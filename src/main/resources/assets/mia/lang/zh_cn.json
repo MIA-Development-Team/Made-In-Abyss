@@ -182,6 +182,9 @@
     "tooltip.mia.description.test_artifact_3": "这是一个测试遗物3。",
     "tooltip.mia.description.gray_artifact_bundle": "这是一个放遗物的包。",
 
+    "attribute.name.generic.critical_hit": "暴击",
+    "attribute.name.generic.critical_hit_damage": "暴击伤害",
+
     "key.categories.mia": "深渊遗忆",
     "key.mia.skill_dial": "技能表",
     "gui.mia.disconnect": "退出游戏？",

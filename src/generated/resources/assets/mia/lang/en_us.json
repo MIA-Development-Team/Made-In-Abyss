@@ -1,4 +1,6 @@
 {
+  "attribute.name.generic.critical_hit": "Critical Hit",
+  "attribute.name.generic.critical_hit_damage": "Critical Hit Damage",
   "biome.mia.the_abyss/abyss_dripstone_caves": "Abyss Dripstone Caves",
   "biome.mia.the_abyss/abyss_lush_caves": "Abyss Lush Caves",
   "biome.mia.the_abyss/abyss_plains": "Abyss Plains",
@@ -119,6 +121,7 @@
   "item.mia.artifact_haste": "Artifact Haste",
   "item.mia.blaze_reap": "Blaze Reap",
   "item.mia.blue_whistle": "Blue Whistle",
+  "item.mia.debug_attribute_tool": "Debug Attribute Tool",
   "item.mia.fancy_artifact_bundle": "Fancy Artifact Bundle",
   "item.mia.gray_artifact_bundle": "Gray Artifact Bundle",
   "item.mia.grow_sword": "Grow Sword",

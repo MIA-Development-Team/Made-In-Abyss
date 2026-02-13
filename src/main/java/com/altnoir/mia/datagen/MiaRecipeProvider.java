@@ -3,7 +3,9 @@ package com.altnoir.mia.datagen;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.common.recipe.ArtifactBundleUpgradeRecipeBuilder;
 import com.altnoir.mia.common.recipe.ArtifactSmithingRecipeBuilder;
+import com.altnoir.mia.common.recipe.DoubleRange;
 import com.altnoir.mia.common.recipe.LampTubeRecipeBuilder;
+import com.altnoir.mia.init.MiaAttributes;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaItems;
 import com.altnoir.mia.init.MiaTags;
@@ -136,61 +138,75 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
 
     private static void ArtifactEnhancement(RecipeOutput recipeOutput) {
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(MiaItems.HEALTH_JUNKIE.get(), 1),
-                        Attributes.KNOCKBACK_RESISTANCE, 1.1, Operation.ADD_MULTIPLIED_BASE)
-                .unlockedByMaterial().save(recipeOutput);
+                new ItemStack(MiaItems.HEALTH_JUNKIE.get(), 1),
+                Attributes.KNOCKBACK_RESISTANCE, DoubleRange.between(0.5, 1.0),
+                Operation.ADD_MULTIPLIED_BASE
+        ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(Items.IRON_INGOT, 1),
-                        Attributes.ARMOR, 0.3, Operation.ADD_MULTIPLIED_BASE)
-                .unlockedByMaterial().save(recipeOutput);
+                new ItemStack(Items.IRON_INGOT, 1),
+                Attributes.ARMOR, DoubleRange.between(0.2, 0.4),
+                Operation.ADD_MULTIPLIED_BASE
+        ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(Items.EMERALD, 1),
-                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_TOTAL)
-                .unlockedByMaterial().save(recipeOutput);
+                new ItemStack(Items.STONE, 1),
+                Attributes.ATTACK_DAMAGE, DoubleRange.between(0.3, 0.7),
+                Operation.ADD_VALUE
+        ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(Items.STONE, 1),
-                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
-                .unlockedByMaterial().save(recipeOutput);
+                new ItemStack(Items.FIRE_CHARGE, 2),
+                Attributes.ATTACK_DAMAGE, DoubleRange.between(0.4, 0.8),
+                Operation.ADD_VALUE
+        ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(Items.FIRE_CHARGE, 2),
-                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
-                .unlockedByMaterial().save(recipeOutput);
+                new ItemStack(Items.WATER_BUCKET, 3),
+                Attributes.ATTACK_DAMAGE, DoubleRange.between(0.3, 0.6),
+                Operation.ADD_VALUE
+        ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(Items.WATER_BUCKET, 3),
-                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
-                .unlockedByMaterial().save(recipeOutput);
+                new ItemStack(Items.BAMBOO, 1),
+                Attributes.ATTACK_DAMAGE, DoubleRange.between(0.2, 0.5),
+                Operation.ADD_VALUE
+        ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(Items.BAMBOO, 1),
-                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
-                .unlockedByMaterial().save(recipeOutput);
+                new ItemStack(Items.COBBLED_DEEPSLATE, 1),
+                Attributes.ATTACK_DAMAGE, DoubleRange.between(0.4, 0.6),
+                Operation.ADD_VALUE
+        ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(Items.COBBLED_DEEPSLATE, 1),
-                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
-                .unlockedByMaterial().save(recipeOutput);
+                new ItemStack(Items.OAK_LEAVES, 1),
+                Attributes.ATTACK_DAMAGE, DoubleRange.between(0.1, 0.3),
+                Operation.ADD_VALUE
+        ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(Items.OAK_LEAVES, 1),
-                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
-                .unlockedByMaterial().save(recipeOutput);
+                new ItemStack(Items.OAK_PLANKS, 1),
+                Attributes.ATTACK_DAMAGE, DoubleRange.between(0.2, 0.4),
+                Operation.ADD_VALUE
+        ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(Items.OAK_PLANKS, 1),
-                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
-                .unlockedByMaterial().save(recipeOutput);
+                new ItemStack(Items.OAK_SAPLING, 1),
+                Attributes.ATTACK_DAMAGE, DoubleRange.between(0.1, 0.3),
+                Operation.ADD_VALUE
+        ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(Items.OAK_SAPLING, 1),
-                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_VALUE)
-                .unlockedByMaterial().save(recipeOutput);
+                new ItemStack(MiaItems.PRASIOLITE_SHARD.get(), 8),
+                Attributes.BLOCK_BREAK_SPEED, DoubleRange.between(0.1, 0.3),
+                Operation.ADD_MULTIPLIED_TOTAL
+        ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(MiaItems.PRASIOLITE_SHARD.get(), 8),
-                        Attributes.BLOCK_BREAK_SPEED, 0.2, Operation.ADD_MULTIPLIED_TOTAL)
-                .unlockedByMaterial().save(recipeOutput);
+                new ItemStack(Items.STICK, 1),
+                Attributes.ATTACK_DAMAGE, DoubleRange.between(0.3, 0.6),
+                Operation.ADD_MULTIPLIED_BASE
+        ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(Items.STICK, 1),
-                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_BASE)
-                .unlockedByMaterial().save(recipeOutput);
+                new ItemStack(Items.DIAMOND, 1),
+                MiaAttributes.CRITICAL_HIT_DAMAGE, DoubleRange.between(0.2, 1.0),
+                Operation.ADD_VALUE
+        ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                        new ItemStack(Items.DIAMOND, 1),
-                        Attributes.ATTACK_DAMAGE, 0.5, Operation.ADD_MULTIPLIED_BASE)
-                .unlockedByMaterial().save(recipeOutput);
+                new ItemStack(Items.EMERALD, 1),
+                MiaAttributes.CRITICAL_HIT, DoubleRange.between(0.5, 0.9),
+                Operation.ADD_VALUE
+        ).unlockedByMaterial().save(recipeOutput);
     }
 
     private static void lampTube(RecipeOutput recipeOutput, ItemLike input, Integer count, ItemLike output) {

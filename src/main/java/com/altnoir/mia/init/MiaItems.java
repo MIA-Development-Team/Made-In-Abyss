@@ -73,6 +73,10 @@ public class MiaItems {
             "hook_item",
             () -> new HookItem(new Item.Properties().component(DataComponents.CUSTOM_DATA, CustomData.EMPTY).stacksTo(1))
     );
+    public static final DeferredItem<Item> DEBUG_ATTRIBUTE_TOOL = ITEMS.register(
+            "debug_attribute_tool",
+            () -> new DebugAttributeTool(new Item.Properties().stacksTo(1))
+    );
 
     // Block Item
     public static final DeferredItem<Item> ROPE = ITEMS.register("rope", () ->

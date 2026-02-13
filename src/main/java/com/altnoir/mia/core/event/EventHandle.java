@@ -14,7 +14,6 @@ public class EventHandle {
         modEventBus.addListener(MiaEvents::modLoad);
         modEventBus.addListener(MiaEvents::registerCapabilities);
         modEventBus.addListener(MiaEvents::registerPayloadHandlers);
-
         modEventBus.addListener(MiaEvents::gatherData);
         modEventBus.addListener(MiaEvents::addPackFinders);
     }
@@ -29,5 +28,6 @@ public class EventHandle {
         gameEventBus.addListener(MiaEvents::onRegisterCommands);
         gameEventBus.addListener(MiaEvents::onFinalizeSpawn);
         gameEventBus.addListener(MiaEvents::onLivingDrops);
+        gameEventBus.addListener(MiaEvents::onLivingDamagePost);
     }
 }

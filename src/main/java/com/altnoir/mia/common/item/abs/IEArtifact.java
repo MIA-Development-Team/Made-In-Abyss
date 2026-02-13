@@ -25,7 +25,7 @@ public interface IEArtifact extends IArtifactItem, IBundleable {
             case Grade.C -> 1;
             case Grade.B -> 2;
             case Grade.A -> 4;
-            case Grade.S -> 8;
+            case Grade.S -> 5;
             default -> 0;
         };
     }
@@ -58,9 +58,7 @@ public interface IEArtifact extends IArtifactItem, IBundleable {
         IArtifactItem.super.appendTooltip(stack, tooltip);
     }
 
-    default Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(
-            SlotContext slotContext, ResourceLocation id, ItemStack stack) {
-        return stack.getOrDefault(MiaComponents.ARTIFACT_ENHANCEMENT,
-                ArtifactEnhancementComponent.EMPTY).getAttributeModifiers();
+    default Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
+        return stack.getOrDefault(MiaComponents.ARTIFACT_ENHANCEMENT, ArtifactEnhancementComponent.EMPTY).getAttributeModifiers();
     }
 }

@@ -1,6 +1,5 @@
 {
   "type": "mia:artifact_smithing",
-  "amount": 0.5,
   "artifact": {
     "tag": "mia:smithing_artifact"
   },
@@ -9,5 +8,9 @@
     "count": 1,
     "id": "minecraft:stone"
   },
-  "operation": "add_value"
+  "operation": "add_value",
+  "value": {
+    "max": 0.7,
+    "min": 0.3
+  }
 }

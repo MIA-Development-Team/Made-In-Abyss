@@ -11,8 +11,10 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class MiaAttributes {
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(BuiltInRegistries.ATTRIBUTE, MIA.MOD_ID);
 
-//    public static final Holder<Attribute> BLOCK_HARDNESS = ATTRIBUTES.register("generic.block_hardness", () ->
-//            new RangedAttribute("attribute.name.generic.block_hardness", 1.0, 0.0, 1.0));
+    public static final Holder<Attribute> CRITICAL_HIT = ATTRIBUTES.register("generic.critical_hit", () ->
+            new RangedAttribute("attribute.name.generic.critical_hit", 0.0, 0.0, 1024.0));
+    public static final Holder<Attribute> CRITICAL_HIT_DAMAGE = ATTRIBUTES.register("generic.critical_hit_damage", () ->
+            new RangedAttribute("attribute.name.generic.critical_hit_damage", 1.5, 0.0, 1024.0));
 
     public static void register(IEventBus bus) {
         ATTRIBUTES.register(bus);

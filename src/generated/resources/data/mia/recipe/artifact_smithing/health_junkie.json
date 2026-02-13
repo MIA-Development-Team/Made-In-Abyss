@@ -1,6 +1,5 @@
 {
   "type": "mia:artifact_smithing",
-  "amount": 1.1,
   "artifact": {
     "tag": "mia:smithing_artifact"
   },
@@ -9,5 +8,9 @@
     "count": 1,
     "id": "mia:health_junkie"
   },
-  "operation": "add_multiplied_base"
+  "operation": "add_multiplied_base",
+  "value": {
+    "max": 1.0,
+    "min": 0.5
+  }
 }
