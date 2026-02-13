@@ -167,6 +167,7 @@ public class MiaItemGroups {
                         output.accept(MiaItems.HEALTH_JUNKIE);
                         output.accept(MiaItems.ARTIFACT_HASTE);
                         output.accept(MiaItems.HOOK_ITEM);
+                        output.accept(MiaItems.DEBUG_ATTRIBUTE_TOOL);
 
                         // Weapons
                         output.accept(MiaItems.GROW_SWORD);

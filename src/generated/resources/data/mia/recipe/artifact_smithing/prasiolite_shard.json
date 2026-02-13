@@ -1,6 +1,5 @@
 {
   "type": "mia:artifact_smithing",
-  "amount": 0.2,
   "artifact": {
     "tag": "mia:smithing_artifact"
   },
@@ -9,5 +8,9 @@
     "count": 8,
     "id": "mia:prasiolite_shard"
   },
-  "operation": "add_multiplied_total"
+  "operation": "add_multiplied_total",
+  "value": {
+    "max": 0.3,
+    "min": 0.1
+  }
 }

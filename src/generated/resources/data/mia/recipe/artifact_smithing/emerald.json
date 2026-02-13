@@ -1,13 +1,16 @@
 {
   "type": "mia:artifact_smithing",
-  "amount": 0.5,
   "artifact": {
     "tag": "mia:smithing_artifact"
   },
-  "attribute": "minecraft:generic.attack_damage",
+  "attribute": "mia:generic.critical_hit",
   "material": {
     "count": 1,
     "id": "minecraft:emerald"
   },
-  "operation": "add_multiplied_total"
+  "operation": "add_value",
+  "value": {
+    "max": 0.9,
+    "min": 0.5
+  }
 }

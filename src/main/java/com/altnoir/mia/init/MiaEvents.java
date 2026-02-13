@@ -2,8 +2,10 @@ package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.MiaConfig;
-import com.altnoir.mia.datagen.DataGenerators;
 import com.altnoir.mia.core.event.common.*;
+import com.altnoir.mia.datagen.DataGenerators;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -11,6 +13,7 @@ import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.player.BonemealEvent;
@@ -75,5 +78,16 @@ public class MiaEvents {
 
     public static void onLivingDrops(LivingDropsEvent event) {
         AbyssMobEvent.onLivingDrops(event.getEntity(), event.getDrops(), event.getSource());
+    }
+
+    public static void onLivingDamagePre(LivingDamageEvent.Pre event) {
+        float damage = CriticalDamageEvent.onLivingCriticalDamage(event.getEntity(), event.getSource(), event.getOriginalDamage());
+        event.setNewDamage(damage);
+    }
+
+    public static void onLivingDamagePost(LivingDamageEvent.Post event) {
+        if (event.getSource().getEntity() instanceof Player player) {
+            player.sendSystemMessage(Component.literal(event.getNewDamage() + "点伤害"));
+        }
     }
 }

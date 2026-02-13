@@ -1,13 +1,15 @@
 package com.altnoir.mia.core.event.client;
 
+import com.altnoir.mia.common.item.abs.IMiaTooltip;
+import com.altnoir.mia.common.recipe.ArtifactSmithingRecipe;
+import com.altnoir.mia.init.MiaAttributes;
 import com.altnoir.mia.init.MiaColors;
 import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.init.MiaTags;
-import com.altnoir.mia.common.item.abs.IMiaTooltip;
-import com.altnoir.mia.common.recipe.ArtifactSmithingRecipe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -63,33 +65,36 @@ public class ClientTooltipEvent {
         return recipes.stream().map(RecipeHolder::value)
                 .filter(recipe -> recipe.getMaterial().getItem() == material.getItem())
                 .map(recipe -> {
-                    Attribute attribute = recipe.getAttribute().value();
-                    double amount = recipe.getAttributeAmount();
+                    var attribute = recipe.getAttribute();
+
+                    double minValue = recipe.getMinAttributeValue();
+                    double maxValue = recipe.getMaxAttributeValue();
                     AttributeModifier.Operation operation = recipe.getAttributeOperation();
-                    return formatAttributeModifier(attribute, amount, operation);
+                    return formatAttributeModifier(attribute, minValue, maxValue, operation);
                 })
                 .toList();
     }
 
-    public static Component formatAttributeModifier(Attribute attribute, double amount,
+    public static Component formatAttributeModifier(Holder<Attribute> attribute, double minValue, double maxValue,
                                                     AttributeModifier.Operation op) {
         boolean isPercent = op == AttributeModifier.Operation.ADD_MULTIPLIED_BASE
                 || op == AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
 
         // 4) Format the numeric text
         String valueText;
-        if (isPercent) {
+        if (isPercent || attribute.is(MiaAttributes.CRITICAL_HIT) || attribute.is(MiaAttributes.CRITICAL_HIT_DAMAGE)) {
             // convert to integer percent
-            int pct = (int) Math.round(amount * 100);
-            valueText = (amount > 0 ? "+" : "") + pct + "%";
+            int min = (int) Math.round(minValue * 100);
+            int max = (int) Math.round(maxValue * 100);
+            valueText = (minValue > 0 ? "+" : "") + min + "%-" + max + "%";
         } else {
             // flat number with two decimals
-            valueText = String.format("%s%s", amount > 0 ? "+" : "", BigDecimal.valueOf(amount)
-                    .setScale(2, RoundingMode.HALF_UP)
-                    .stripTrailingZeros().toPlainString());
+            String min = BigDecimal.valueOf(minValue).setScale(2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();
+            String max = BigDecimal.valueOf(maxValue).setScale(2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();
+            valueText = String.format("%s%s", minValue > 0 ? "+" : "", min + "-" + max);
         }
 
-        Component attributeName = Component.translatable(attribute.getDescriptionId());
+        Component attributeName = Component.translatable(attribute.value().getDescriptionId());
         return Component.translatable(TOOLTIP_ATTRIBUTE_MODIFIER, valueText, attributeName)
                 .withStyle(ChatFormatting.BLUE);
     }

@@ -23,24 +23,43 @@ public class ArtifactSmithingRecipeBuilder {
     private final Ingredient whistle;
     private final ItemStack material;
     private final Holder<Attribute> attribute;
-    private final double amount;
+    private final DoubleRange value;
     private final AttributeModifier.Operation operation;
 
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap();
 
-    private ArtifactSmithingRecipeBuilder(Ingredient whistle, ItemStack addition, Holder<Attribute> attribute,
-                                          double amount, AttributeModifier.Operation operation) {
+    private ArtifactSmithingRecipeBuilder(
+            Ingredient whistle,
+            ItemStack addition,
+            Holder<Attribute> attribute,
+            DoubleRange value,
+            AttributeModifier.Operation operation
+    ) {
         this.whistle = whistle;
         this.material = addition;
         this.attribute = attribute;
-        this.amount = amount;
+        this.value = value;
         this.operation = operation;
     }
 
-    public static ArtifactSmithingRecipeBuilder create(Ingredient base, ItemStack addition,
-                                                       Holder<Attribute> attribute,
-                                                       double amount, AttributeModifier.Operation operation) {
-        return new ArtifactSmithingRecipeBuilder(base, addition, attribute, amount, operation);
+    public static ArtifactSmithingRecipeBuilder create(
+            Ingredient base,
+            ItemStack addition,
+            Holder<Attribute> attribute,
+            double value,
+            AttributeModifier.Operation operation
+    ) {
+        return new ArtifactSmithingRecipeBuilder(base, addition, attribute, DoubleRange.between(value, value), operation);
+    }
+
+    public static ArtifactSmithingRecipeBuilder create(
+            Ingredient base,
+            ItemStack addition,
+            Holder<Attribute> attribute,
+            DoubleRange value,
+            AttributeModifier.Operation operation
+    ) {
+        return new ArtifactSmithingRecipeBuilder(base, addition, attribute, value, operation);
     }
 
     public ArtifactSmithingRecipeBuilder unlockedBy(String key, Criterion<?> criterion) {
@@ -65,29 +84,6 @@ public class ArtifactSmithingRecipeBuilder {
                         List.of(predicates)));
     }
 
-    // protected static Criterion<InventoryChangeTrigger.TriggerInstance>
-    // has(ItemLike itemLike) {
-    // return inventoryTrigger(ItemPredicate.Builder.item().of(new ItemLike[] {
-    // itemLike }));
-    // }
-
-    // protected static Criterion<InventoryChangeTrigger.TriggerInstance>
-    // inventoryTrigger(ItemPredicate... predicates) {
-    // return CriteriaTriggers.INVENTORY_CHANGED.createCriterion(
-    // new InventoryChangeTrigger.TriggerInstance(Optional.empty(), Slots.ANY,
-    // List.of(predicates)));
-    // }
-
-    // protected static Criterion<InventoryChangeTrigger.TriggerInstance>
-    // inventoryTrigger(
-    // ItemPredicate.Builder... items) {
-    // return inventoryTrigger(
-    // (ItemPredicate[])
-    // Arrays.stream(items).map(ItemPredicate.Builder::build).toArray((x$0) -> {
-    // return new ItemPredicate[x$0];
-    // }));
-    // }
-
     public void save(RecipeOutput recipeOutput) {
         String name = BuiltInRegistries.ITEM.getKey(material.getItem()).getPath();
         this.save(recipeOutput,
@@ -105,7 +101,7 @@ public class ArtifactSmithingRecipeBuilder {
         criteria.forEach(advancementBuilder::addCriterion);
 
         ArtifactSmithingRecipe recipe = new ArtifactSmithingRecipe(this.whistle, this.material, this.attribute,
-                this.amount, this.operation);
+                this.value, this.operation);
         ResourceLocation advancementId = MiaUtil.miaId(id.getPath());
         recipeOutput.accept(id, recipe,
                 advancementBuilder.build(advancementId.withPrefix("recipes/")));

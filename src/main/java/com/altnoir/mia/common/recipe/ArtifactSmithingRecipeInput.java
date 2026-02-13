@@ -1,38 +1,30 @@
 package com.altnoir.mia.common.recipe;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;
 
-public record ArtifactSmithingRecipeInput(ItemStack base, ItemStack material)
-        implements RecipeInput {
-    public ItemStack getItem(int slot) {
-        ItemStack rv;
-        switch (slot) {
-            case 0:
-                rv = this.base;
-                break;
-            case 1:
-                rv = this.material;
-                break;
-            default:
-                throw new IllegalArgumentException("Recipe does not contain slot " + slot);
-        }
-        return rv;
+public record ArtifactSmithingRecipeInput(ItemStack base, ItemStack material,
+                                          RandomSource random) implements RecipeInput {
+    public ArtifactSmithingRecipeInput(ItemStack base, ItemStack material) {
+        this(base, material, null);
     }
 
+    public RandomSource getRandom() {
+        return this.random;
+    }
+
+    @Override
+    public ItemStack getItem(int index) {
+        return switch (index) {
+            case 0 -> this.base;
+            case 1 -> this.material;
+            default -> ItemStack.EMPTY;
+        };
+    }
+
+    @Override
     public int size() {
         return 2;
-    }
-
-    public boolean isEmpty() {
-        return this.base.isEmpty() && this.material.isEmpty();
-    }
-
-    public ItemStack base() {
-        return this.base;
-    }
-
-    public ItemStack material() {
-        return this.material;
     }
 }

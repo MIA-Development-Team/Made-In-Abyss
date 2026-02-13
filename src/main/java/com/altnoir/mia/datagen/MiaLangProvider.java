@@ -1,6 +1,7 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.client.gui.screens.ArtifactSmithingTableScreen;
 import com.altnoir.mia.common.block.ArtifactSmithingTableBlock;
 import com.altnoir.mia.core.event.client.ClientCurseEvent;
 import com.altnoir.mia.core.event.client.ClientTooltipEvent;
@@ -59,12 +60,9 @@ public class MiaLangProvider extends LanguageProvider {
         add("tooltip.mia.description.abyss_compass", "It will point the way toward the abyss.");
         //Tooltip end
 
-        // Painting Variant
-        addPainting(MiaPaintingVariants.ABYSS_MAP);
-        addPainting(MiaPaintingVariants.THE_ABYSS);
-        addPainting(MiaPaintingVariants.THE_ABYSS_2);
-        addPainting(MiaPaintingVariants.FOSSIL_TREE);
-        addPainting(MiaPaintingVariants.FORTITUDE_FLOWER);
+        // Attributes
+        add("attribute.name.generic.critical_hit", "Critical Hit");
+        add("attribute.name.generic.critical_hit_damage", "Critical Hit Damage");
 
         // Container
         add(ArtifactSmithingTableBlock.TITLE, "Artifact Smithing Table");
@@ -120,6 +118,12 @@ public class MiaLangProvider extends LanguageProvider {
             String name = holder.getId().getPath();
             add("stat.mia.interact_with_" + name, "Interactions with " + formatName(name));
         });
+        // Painting Variant
+        addPainting(MiaPaintingVariants.ABYSS_MAP);
+        addPainting(MiaPaintingVariants.THE_ABYSS);
+        addPainting(MiaPaintingVariants.THE_ABYSS_2);
+        addPainting(MiaPaintingVariants.FOSSIL_TREE);
+        addPainting(MiaPaintingVariants.FORTITUDE_FLOWER);
 
         // Sounds start
         add(MiaSoundsProvider.ABYSS_PORTAL_AMBIENT, "Abyss Portal: Ambient");
