@@ -6,12 +6,15 @@ import com.altnoir.mia.client.gui.screens.inventory.tooltip.ClientArtifactBundle
 import com.altnoir.mia.client.handler.HookHandler;
 import com.altnoir.mia.client.renderer.TheAbyssDimEffects;
 import com.altnoir.mia.common.component.ArtifactBundleInventoryComponent;
+import com.altnoir.mia.compat.ponder.TestPonder;
 import com.altnoir.mia.core.event.client.*;
 import com.altnoir.mia.core.event.common.AbyssMobEvent;
 import com.altnoir.mia.init.MiaKeyBinding;
 import com.altnoir.mia.init.MiaMenus;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.client.Minecraft;
 import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
@@ -83,6 +86,10 @@ public class MiaClientEvents {
         event.setYaw(-event.getYaw());
         event.setPitch(-event.getPitch());
         event.setRoll(event.getRoll() + 180.0F);
+    }
+
+    public static void onClientSetup(final FMLClientSetupEvent event) {
+        PonderIndex.addPlugin(new TestPonder());
     }
 }
 

@@ -1,15 +1,11 @@
 package com.altnoir.mia.client;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.compat.ponder.TestPonder;
-import net.createmod.ponder.foundation.PonderIndex;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
@@ -32,6 +28,7 @@ public class MIAClient {
         modEventBus.addListener(MiaClientEvents::registerEntityRenderers);
         modEventBus.addListener(MiaClientEvents::registerScreens);
         modEventBus.addListener(MiaClientEvents::registerKeyBindings);
+        modEventBus.addListener(MiaClientEvents::onClientSetup);
     }
 
     public static void addGameEventBus(IEventBus gameEventBus) {
@@ -42,10 +39,5 @@ public class MIAClient {
         gameEventBus.addListener(MiaClientEvents::onTooltip);
         gameEventBus.addListener(MiaClientEvents::onRenderNameTag);
         //gameEventBus.addListener(MiaClientEvents::onCameraAngles);
-    }
-
-    @SubscribeEvent
-    static void onClientSetup(FMLClientSetupEvent event) {
-        PonderIndex.addPlugin(new TestPonder());
     }
 }
