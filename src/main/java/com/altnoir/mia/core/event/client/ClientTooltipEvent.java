@@ -3,7 +3,7 @@ package com.altnoir.mia.core.event.client;
 import com.altnoir.mia.common.item.abs.IMiaTooltip;
 import com.altnoir.mia.common.recipe.ArtifactSmithingRecipe;
 import com.altnoir.mia.init.MiaAttributes;
-import com.altnoir.mia.init.MiaColors;
+import com.altnoir.mia.core.MiaColors;
 import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.init.MiaTags;
 import net.minecraft.ChatFormatting;
@@ -58,7 +58,7 @@ public class ClientTooltipEvent {
         tooltip.add(1, Component.translatable(
                 TOOLTIP_HOLD_SHIFT,
                 Component.literal("Shift").withStyle(ChatFormatting.GRAY)
-        ).withColor(MiaColors.ABYSS_GREEN));
+        ).withColor(MiaColors.GREEN.getColor()));
     }
 
     private static List<Component> materialModifiers(ItemStack material, List<RecipeHolder<ArtifactSmithingRecipe>> recipes) {

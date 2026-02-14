@@ -6,7 +6,7 @@ import com.altnoir.mia.client.gui.screens.inventory.tooltip.ClientArtifactBundle
 import com.altnoir.mia.client.handler.HookHandler;
 import com.altnoir.mia.client.renderer.TheAbyssDimEffects;
 import com.altnoir.mia.common.component.ArtifactBundleInventoryComponent;
-import com.altnoir.mia.compat.ponder.TestPonder;
+import com.altnoir.mia.compat.ponder.MiaPonder;
 import com.altnoir.mia.core.event.client.*;
 import com.altnoir.mia.core.event.common.AbyssMobEvent;
 import com.altnoir.mia.init.MiaKeyBinding;
@@ -22,6 +22,10 @@ public class MiaClientEvents {
     // 模组事件-注册事件
     public static void modLoad(final ModConfigEvent event) {
         MiaClientConfig.onLoad(event.getConfig());
+    }
+
+    public static void onClientSetup(final FMLClientSetupEvent event) {
+        PonderIndex.addPlugin(new MiaPonder());
     }
 
     public static void registerParticles(RegisterParticleProvidersEvent event) {
@@ -86,10 +90,6 @@ public class MiaClientEvents {
         event.setYaw(-event.getYaw());
         event.setPitch(-event.getPitch());
         event.setRoll(event.getRoll() + 180.0F);
-    }
-
-    public static void onClientSetup(final FMLClientSetupEvent event) {
-        PonderIndex.addPlugin(new TestPonder());
     }
 }
 

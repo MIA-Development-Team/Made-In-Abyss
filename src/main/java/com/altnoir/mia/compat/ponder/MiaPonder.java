@@ -5,7 +5,7 @@ import net.createmod.ponder.api.registration.PonderPlugin;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.minecraft.resources.ResourceLocation;
 
-public class TestPonder implements PonderPlugin {
+public class MiaPonder implements PonderPlugin {
     @Override
     public String getModId() {
         return MIA.MOD_ID;
@@ -13,6 +13,6 @@ public class TestPonder implements PonderPlugin {
 
     @Override
     public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
-        TestPonderScenes.registerScenes(helper);
+        MiaPonderScenes.registerScenes(helper);
     }
 }

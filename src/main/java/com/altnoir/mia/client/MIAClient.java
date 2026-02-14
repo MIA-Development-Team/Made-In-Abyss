@@ -22,13 +22,13 @@ public class MIAClient {
     }
     public static void addModEventBus(IEventBus modEventBus) {
         modEventBus.addListener(MiaClientEvents::modLoad);
+        modEventBus.addListener(MiaClientEvents::onClientSetup);
         modEventBus.addListener(MiaClientEvents::registerDimensionEffects);
         modEventBus.addListener(MiaClientEvents::registerParticles);
         modEventBus.addListener(MiaClientEvents::registerTooltipComponentFactories);
         modEventBus.addListener(MiaClientEvents::registerEntityRenderers);
         modEventBus.addListener(MiaClientEvents::registerScreens);
         modEventBus.addListener(MiaClientEvents::registerKeyBindings);
-        modEventBus.addListener(MiaClientEvents::onClientSetup);
     }
 
     public static void addGameEventBus(IEventBus gameEventBus) {
