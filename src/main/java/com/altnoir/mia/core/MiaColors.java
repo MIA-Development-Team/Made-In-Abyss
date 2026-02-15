@@ -1,7 +1,5 @@
 package com.altnoir.mia.core;
 
-import net.createmod.catnip.theme.Color;
-
 public enum MiaColors {
     WHITE(0xeeeeee),
     BLACK(0x221111),
@@ -18,17 +16,15 @@ public enum MiaColors {
 
     OUTPUT(0xddc166),
     ;
-    private final Color color;
+
+
+    private final int color;
 
     MiaColors(int color) {
-        this.color = new Color(color, false).setImmutable();
+        this.color = color;
     }
 
     public int getColor() {
-        return color.getRGB();
-    }
-
-    public Color getColorObject() {
         return color;
     }
 }

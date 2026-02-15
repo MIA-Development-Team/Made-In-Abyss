@@ -23,9 +23,9 @@ public class EventHandle {
         gameEventBus.addListener(MiaEvents::onPlayerDimensionChange);
         gameEventBus.addListener(MiaEvents::onPlayerTick);
         gameEventBus.addListener(MiaEvents::onBonemealUse);
-        gameEventBus.addListener(MiaEvents::onLivingDeath);
         gameEventBus.addListener(MiaEvents::onBrewingRecipe);
         gameEventBus.addListener(MiaEvents::onRegisterCommands);
+        gameEventBus.addListener(MiaEvents::onLivingDeath);
         gameEventBus.addListener(MiaEvents::onFinalizeSpawn);
         gameEventBus.addListener(MiaEvents::onLivingDrops);
         gameEventBus.addListener(MiaEvents::onLivingDamagePost);

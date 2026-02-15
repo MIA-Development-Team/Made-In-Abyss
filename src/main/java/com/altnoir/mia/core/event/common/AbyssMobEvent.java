@@ -1,9 +1,9 @@
 package com.altnoir.mia.core.event.common;
 
 import com.altnoir.mia.MiaConfig;
+import com.altnoir.mia.core.MiaColors;
 import com.altnoir.mia.init.MiaAttachments;
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class AbyssMobEvent {
-    private static final short CHUNK_RADIUS = 28;
+    private static final short CHUNK_RADIUS = 28;        // 从半径28个区块开始计算
     private static final List<EntityType<? extends Mob>> riderTypes = List.of(
             EntityType.SKELETON,
             EntityType.BOGGED
@@ -43,21 +43,27 @@ public class AbyssMobEvent {
 
         if (level instanceof ServerLevel serverLevel && serverLevel.dimension() == MiaDimensions.THE_ABYSS_LEVEL) {
             if (mob instanceof Enemy || mob instanceof Llama || mob instanceof SkeletonHorse) {
+                if (riderTypes.contains(mob.getType())) return;
+
                 double maxHealth = mob.getMaxHealth();
+                double damage = mob.getAttributeValue(Attributes.ATTACK_DAMAGE);
 
                 boolean reverse = MiaConfig.abyssMobLevelIncreasingCurve != MiaConfig.AbyssMobLevelIncreasingCurve.FROM_FAST_TO_SLOW;
                 int mobLevel = calculateMobLevel(euclideanDistance, reverse);
 
                 if (mobLevel <= 0) return;
 
-                // 从半径28个区块开始计算
+                damage += Math.floor(mobLevel / (maxHealth / 2));
+                damage = Math.min(damage, 2048.0);
+                Objects.requireNonNull(mob.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(damage);
+
                 maxHealth += mobLevel;
-                maxHealth = Math.min(maxHealth, 2048.0);
+                maxHealth = Math.min(maxHealth, 1024.0);
                 Objects.requireNonNull(mob.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(maxHealth);
                 mob.setHealth((float) maxHealth);
 
                 mob.setData(MiaAttachments.ABYSS_MOB_LEVEL.get(), mobLevel);
-                mob.setCustomName(Component.literal("Lv: " + mobLevel).withStyle(ChatFormatting.GREEN));
+                mob.setCustomName(Component.literal("Lv: " + mobLevel).withColor(MiaColors.GREEN.getColor()));
 
                 if (serverLevel.getRandom().nextBoolean()) {
                     createRidingSkeleton(serverLevel, mob);
@@ -76,7 +82,6 @@ public class AbyssMobEvent {
                 var originalStack = item.getItem();
                 int amount = originalStack.getCount() * mobLevel;
 
-                // 拆分物品堆叠，确保每个堆叠不超过最大限制
                 while (amount > 0) {
                     int stackSize = Math.min(amount, originalStack.getMaxStackSize());
                     amount -= stackSize;
