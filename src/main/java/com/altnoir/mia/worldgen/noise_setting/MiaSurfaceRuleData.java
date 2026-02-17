@@ -27,10 +27,10 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
     }
 
     public static SurfaceRules.RuleSource theAbyss() {
-        SurfaceRules.ConditionSource surfacerules$waterBlockCheck = SurfaceRules.waterBlockCheck(0, 0);
+        SurfaceRules.ConditionSource waterBlockCheck = SurfaceRules.waterBlockCheck(0, 0);
         // Layer 1
-        SurfaceRules.RuleSource coverGrass_andesite = SurfaceRules.ifTrue(surfacerules$waterBlockCheck, COVERGRASS_ABYSS_ANDESITE);
-        SurfaceRules.RuleSource coverGrass_tuff = SurfaceRules.ifTrue(surfacerules$waterBlockCheck, COVERGRASS_TUFF);
+        SurfaceRules.RuleSource coverGrass_andesite = SurfaceRules.ifTrue(waterBlockCheck, COVERGRASS_ABYSS_ANDESITE);
+        SurfaceRules.RuleSource coverGrass_tuff = SurfaceRules.ifTrue(waterBlockCheck, COVERGRASS_TUFF);
         // Layer 2
 
         SurfaceRules.RuleSource sequence = SurfaceRules.sequence(
@@ -39,6 +39,8 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
                         SurfaceRules.isBiome(
                                 MiaBiomes.THE_ABYSS,
                                 MiaBiomes.SKYFOG_FOREST,
+                                MiaBiomes.FOSSILIZED_FOREST,
+                                MiaBiomes.UNDER_FOSSILIZED_FOREST,
                                 MiaBiomes.ABYSS_PLAINS,
                                 MiaBiomes.PRASIOLITE_CAVES,
                                 MiaBiomes.ABYSS_LUSH_CAVES

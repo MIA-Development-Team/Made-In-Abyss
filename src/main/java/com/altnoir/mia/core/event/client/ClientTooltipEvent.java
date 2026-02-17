@@ -2,8 +2,8 @@ package com.altnoir.mia.core.event.client;
 
 import com.altnoir.mia.common.item.abs.IMiaTooltip;
 import com.altnoir.mia.common.recipe.ArtifactSmithingRecipe;
-import com.altnoir.mia.init.MiaAttributes;
 import com.altnoir.mia.core.MiaColors;
+import com.altnoir.mia.init.MiaAttributes;
 import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.init.MiaTags;
 import net.minecraft.ChatFormatting;
@@ -32,24 +32,20 @@ public class ClientTooltipEvent {
     public static void onTooltip(ItemStack stack, List<Component> tooltip) {
         var item = stack.getItem();
 
-        if (item instanceof IMiaTooltip tooltipProvider) {
-            if (Screen.hasShiftDown()) {
-                tooltipProvider.appendTooltip(stack, tooltip);
+        if (item instanceof IMiaTooltip tip) {
+            if (Screen.hasShiftDown() || !tip.hasShiftDown()) {
+                tip.appendTooltip(stack, tooltip);
             } else {
                 holdShiftTooltip(tooltip);
             }
         }
         if (stack.is(MiaTags.Items.ARTIFACT_MODIFIERS_MATERIAL)) {
-            if (Screen.hasShiftDown()) {
-                RecipeManager recipeManager = Minecraft.getInstance().getConnection().getRecipeManager();
-                if (recipeManager != null) {
-                    tooltip.add(1, Component.translatable(TOOLTIP_MODIFIERS_ARTIFACT_MATERIAL)
-                            .withStyle(ChatFormatting.GOLD));
-                    tooltip.addAll(2, materialModifiers(stack,
-                            recipeManager.getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get())));
-                }
-            } else {
-                holdShiftTooltip(tooltip);
+            RecipeManager recipeManager = Minecraft.getInstance().getConnection().getRecipeManager();
+            if (recipeManager != null) {
+                tooltip.add(1, Component.translatable(TOOLTIP_MODIFIERS_ARTIFACT_MATERIAL)
+                        .withStyle(ChatFormatting.GOLD));
+                tooltip.addAll(2, materialModifiers(stack,
+                        recipeManager.getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get())));
             }
         }
     }

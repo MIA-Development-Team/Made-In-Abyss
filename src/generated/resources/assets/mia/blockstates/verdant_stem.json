@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "mia:block/verdant_stem_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "mia:block/verdant_stem"
+    },
+    "axis=z": {
+      "model": "mia:block/verdant_stem_horizontal",
+      "x": 90
+    }
+  }
+}

@@ -1,8 +1,6 @@
 {
   "values": [
-    "mia:mistfuzz_peach",
     "minecraft:iron_ingot",
-    "minecraft:emerald",
     "minecraft:stone",
     "minecraft:fire_charge",
     "minecraft:water_bucket",
@@ -13,6 +11,7 @@
     "minecraft:oak_sapling",
     "mia:prasiolite_shard",
     "minecraft:stick",
+    "minecraft:emerald",
     "minecraft:diamond"
   ]
 }

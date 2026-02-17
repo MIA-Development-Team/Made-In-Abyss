@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "mia:block/verdant_stem",
+    "side": "mia:block/verdant_stem"
+  }
+}

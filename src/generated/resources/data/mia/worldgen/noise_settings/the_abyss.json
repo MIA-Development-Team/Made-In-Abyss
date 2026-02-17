@@ -356,6 +356,8 @@
               "biome_is": [
                 "mia:the_abyss/the_abyss",
                 "mia:the_abyss/skyfog_forest",
+                "mia:the_abyss/fossilized_forest",
+                "mia:the_abyss/under_fossilized_forest",
                 "mia:the_abyss/abyss_plains",
                 "mia:the_abyss/prasiolite_caves",
                 "mia:the_abyss/abyss_lush_caves"

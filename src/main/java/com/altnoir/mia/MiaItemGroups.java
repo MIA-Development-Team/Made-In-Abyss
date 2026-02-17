@@ -103,6 +103,18 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.SKYFOG_DOOR);
                         output.accept(MiaBlocks.SKYFOG_TRAPDOOR);
 
+                        output.accept(MiaBlocks.VERDANT_STEM);
+                        output.accept(MiaBlocks.VERDANT_HYPHAE);
+                        output.accept(MiaBlocks.STRIPPED_VERDANT_STEM);
+                        output.accept(MiaBlocks.STRIPPED_VERDANT_HYPHAE);
+                        output.accept(MiaBlocks.VERDANT_PLANKS);
+                        output.accept(MiaBlocks.VERDANT_STAIRS);
+                        output.accept(MiaBlocks.VERDANT_SLAB);
+                        output.accept(MiaBlocks.VERDANT_FENCE);
+                        output.accept(MiaBlocks.VERDANT_FENCE_GATE);
+                        output.accept(MiaBlocks.VERDANT_DOOR);
+                        output.accept(MiaBlocks.VERDANT_TRAPDOOR);
+
                         output.accept(MiaBlocks.INVERTED_LOG);
                         output.accept(MiaBlocks.INVERTED_WOOD);
                         output.accept(MiaBlocks.STRIPPED_INVERTED_LOG);
@@ -117,8 +129,10 @@ public class MiaItemGroups {
 
                         output.accept(MiaBlocks.SKYFOG_LEAVES);
                         output.accept(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS);
+                        output.accept(MiaBlocks.VERDANT_LEAVES);
                         output.accept(MiaBlocks.INVERTED_LEAVES);
                         output.accept(MiaBlocks.SKYFOG_SAPLING);
+                        output.accept(MiaBlocks.VERDANT_FUNGUS);
                         output.accept(MiaBlocks.INVERTED_SAPLING);
 
                         // 植物
@@ -126,6 +140,8 @@ public class MiaItemGroups {
                         // 红石
                         output.accept(MiaBlocks.SKYFOG_PRESSURE_PLATE);
                         output.accept(MiaBlocks.SKYFOG_BUTTON);
+                        output.accept(MiaBlocks.VERDANT_PRESSURE_PLATE);
+                        output.accept(MiaBlocks.VERDANT_BUTTON);
                         output.accept(MiaBlocks.INVERTED_PRESSURE_PLATE);
                         output.accept(MiaBlocks.INVERTED_BUTTON);
 

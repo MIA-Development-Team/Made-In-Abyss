@@ -124,13 +124,27 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         stairsBlockWithItem(MiaBlocks.SKYFOG_STAIRS, MiaBlocks.SKYFOG_PLANKS);
         slabBlockWithItem(MiaBlocks.SKYFOG_SLAB, MiaBlocks.SKYFOG_PLANKS);
         fenceBlockWithItem(MiaBlocks.SKYFOG_FENCE, MiaBlocks.SKYFOG_PLANKS);
+        fenceGateBlockWithItem(MiaBlocks.SKYFOG_FENCE_GATE, MiaBlocks.SKYFOG_PLANKS);
         doorBlockWithItem(MiaBlocks.SKYFOG_DOOR);
         trapdoorBlockWithItem(MiaBlocks.SKYFOG_TRAPDOOR);
-        fenceGateBlockWithItem(MiaBlocks.SKYFOG_FENCE_GATE, MiaBlocks.SKYFOG_PLANKS);
         bushBlock(MiaBlocks.SKYFOG_SAPLING);
         leavesBlock(MiaBlocks.SKYFOG_LEAVES);
         leavesBlock(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS);
-        //倒悬树
+        // 翠寂菌
+        logBlockWithItem(MiaBlocks.VERDANT_STEM);
+        woodBlockWithItem(MiaBlocks.VERDANT_HYPHAE, MiaBlocks.VERDANT_STEM);
+        logBlockWithItem(MiaBlocks.STRIPPED_VERDANT_STEM);
+        woodBlockWithItem(MiaBlocks.STRIPPED_VERDANT_HYPHAE, MiaBlocks.STRIPPED_VERDANT_STEM);
+        blockWithItem(MiaBlocks.VERDANT_PLANKS);
+        stairsBlockWithItem(MiaBlocks.VERDANT_STAIRS, MiaBlocks.VERDANT_PLANKS);
+        slabBlockWithItem(MiaBlocks.VERDANT_SLAB, MiaBlocks.VERDANT_PLANKS);
+        fenceBlockWithItem(MiaBlocks.VERDANT_FENCE, MiaBlocks.VERDANT_PLANKS);
+        fenceGateBlockWithItem(MiaBlocks.VERDANT_FENCE_GATE, MiaBlocks.VERDANT_PLANKS);
+        doorBlockWithItem(MiaBlocks.VERDANT_DOOR);
+        trapdoorBlockWithItem(MiaBlocks.VERDANT_TRAPDOOR);
+        bushBlock(MiaBlocks.VERDANT_FUNGUS);
+        leavesBlock(MiaBlocks.VERDANT_LEAVES, "translucent");
+        // 倒悬树
         logBlockWithItem(MiaBlocks.INVERTED_LOG);
         woodBlockWithItem(MiaBlocks.INVERTED_WOOD, MiaBlocks.INVERTED_LOG);
         logBlockWithItem(MiaBlocks.STRIPPED_INVERTED_LOG);
@@ -139,9 +153,9 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         stairsBlockWithItem(MiaBlocks.INVERTED_STAIRS, MiaBlocks.INVERTED_PLANKS);
         slabBlockWithItem(MiaBlocks.INVERTED_SLAB, MiaBlocks.INVERTED_PLANKS);
         fenceBlockWithItem(MiaBlocks.INVERTED_FENCE, MiaBlocks.INVERTED_PLANKS);
+        fenceGateBlockWithItem(MiaBlocks.INVERTED_FENCE_GATE, MiaBlocks.INVERTED_PLANKS);
         doorBlockWithItem(MiaBlocks.INVERTED_DOOR);
         trapdoorBlockWithItem(MiaBlocks.INVERTED_TRAPDOOR);
-        fenceGateBlockWithItem(MiaBlocks.INVERTED_FENCE_GATE, MiaBlocks.INVERTED_PLANKS);
         bushBlock(MiaBlocks.INVERTED_SAPLING);
         leavesBlock(MiaBlocks.INVERTED_LEAVES);
 
@@ -163,6 +177,8 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         // 红石
         pressurePlateBlockWithItem(MiaBlocks.SKYFOG_PRESSURE_PLATE, MiaBlocks.SKYFOG_PLANKS);
         buttonBlockWithItem(MiaBlocks.SKYFOG_BUTTON, MiaBlocks.SKYFOG_PLANKS);
+        pressurePlateBlockWithItem(MiaBlocks.VERDANT_PRESSURE_PLATE, MiaBlocks.VERDANT_PLANKS);
+        buttonBlockWithItem(MiaBlocks.VERDANT_BUTTON, MiaBlocks.VERDANT_PLANKS);
         pressurePlateBlockWithItem(MiaBlocks.INVERTED_PRESSURE_PLATE, MiaBlocks.INVERTED_PLANKS);
         buttonBlockWithItem(MiaBlocks.INVERTED_BUTTON, MiaBlocks.INVERTED_PLANKS);
 
@@ -268,9 +284,13 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     protected void leavesBlock(DeferredBlock<?> block) {
+        leavesBlock(block, "cutout");
+    }
+
+    protected void leavesBlock(DeferredBlock<?> block, String renderType) {
         simpleBlockWithItem(block.get(),
                 models().singleTexture(MiaUtil.getBlockPath(block.get()), mcLoc("block/leaves"),
-                        "all", blockTexture(block.get())).renderType("cutout"));
+                        "all", blockTexture(block.get())).renderType(renderType));
     }
 
     protected void logBlockWithItem(DeferredBlock<?> block) {

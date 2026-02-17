@@ -2,6 +2,7 @@ package com.altnoir.mia.init;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.common.block.*;
+import com.altnoir.mia.worldgen.feature.tree.MiaTreeFeatures;
 import com.altnoir.mia.worldgen.feature.tree.MiaTreeGrowers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -181,6 +182,36 @@ public class MiaBlocks {
                     .instabreak()
                     .sound(SoundType.CHERRY_SAPLING)
                     .pushReaction(PushReaction.DESTROY)));
+    //翠寂菌
+    public static final DeferredBlock<Block> VERDANT_STEM = registerBlock("verdant_stem", () -> log(MapColor.WOOD, MapColor.TERRACOTTA_YELLOW));
+    public static final DeferredBlock<Block> VERDANT_HYPHAE = registerBlock("verdant_hyphae", () -> wood(MapColor.WOOD));
+    public static final DeferredBlock<Block> STRIPPED_VERDANT_STEM = registerBlock("stripped_verdant_stem", () -> log(MapColor.WOOD, MapColor.TERRACOTTA_RED));
+    public static final DeferredBlock<Block> STRIPPED_VERDANT_HYPHAE = registerBlock("stripped_verdant_hyphae", () -> wood(MapColor.TERRACOTTA_RED));
+    public static final DeferredBlock<Block> VERDANT_PLANKS = registerBlock("verdant_planks", () -> planks(MapColor.TERRACOTTA_YELLOW));
+    public static final DeferredBlock<Block> VERDANT_STAIRS = registerBlock("verdant_stairs", () -> stair(VERDANT_PLANKS.get()));
+    public static final DeferredBlock<Block> VERDANT_SLAB = registerBlock("verdant_slab", () -> slab(VERDANT_PLANKS.get()));
+    public static final DeferredBlock<Block> VERDANT_FENCE = registerBlock("verdant_fence", () -> fence(VERDANT_PLANKS.get()));
+    public static final DeferredBlock<Block> VERDANT_FENCE_GATE = registerBlock("verdant_fence_gate", () -> fenceGate(WoodType.BAMBOO, VERDANT_PLANKS.get()));
+    public static final DeferredBlock<Block> VERDANT_DOOR = registerBlock("verdant_door", () -> woodenDoor(BlockSetType.BAMBOO, VERDANT_PLANKS.get().defaultMapColor()));
+    public static final DeferredBlock<Block> VERDANT_TRAPDOOR = registerBlock("verdant_trapdoor", () -> woodenTrapdoor(BlockSetType.BAMBOO, MapColor.TERRACOTTA_YELLOW));
+    public static final DeferredBlock<Block> VERDANT_LEAVES = registerBlock("verdant_leaves", () ->
+            new SlimeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WART_BLOCK).noOcclusion()
+                    .lightLevel(state -> 15)
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(MiaBlocks::never)
+                    .isSuffocating(MiaBlocks::never)
+                    .isViewBlocking(MiaBlocks::never)
+            ));
+    public static final DeferredBlock<Block> VERDANT_FUNGUS = registerBlock("verdant_fungus", () ->
+            new MiaFungusBlock(
+                    MiaTreeFeatures.VERDANT_FUNGUS,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_CYAN)
+                            .instabreak()
+                            .noCollission()
+                            .sound(SoundType.CHERRY_SAPLING)
+                            .pushReaction(PushReaction.DESTROY)
+            ));
     //倒悬树
     public static final DeferredBlock<Block> INVERTED_LOG = registerBlock("inverted_log", () -> log(MapColor.WOOD, MapColor.PODZOL));
     public static final DeferredBlock<Block> INVERTED_WOOD = registerBlock("inverted_wood", () -> wood(MapColor.WOOD));
@@ -202,6 +233,20 @@ public class MiaBlocks {
                     .instabreak()
                     .sound(SoundType.CHERRY_SAPLING)
                     .pushReaction(PushReaction.DESTROY)));
+
+    // 开关
+    public static final DeferredBlock<Block> SKYFOG_PRESSURE_PLATE = registerBlock("skyfog_pressure_plate", () ->
+            woodenPressurePlate(BlockSetType.BAMBOO, SKYFOG_PLANKS.get().defaultMapColor()));
+    public static final DeferredBlock<Block> SKYFOG_BUTTON = registerBlock("skyfog_button", () ->
+            woodenButton(BlockSetType.BAMBOO));
+    public static final DeferredBlock<Block> VERDANT_PRESSURE_PLATE = registerBlock("verdant_pressure_plate", () ->
+            woodenPressurePlate(BlockSetType.BAMBOO, VERDANT_PLANKS.get().defaultMapColor()));
+    public static final DeferredBlock<Block> VERDANT_BUTTON = registerBlock("verdant_button", () ->
+            woodenButton(BlockSetType.BAMBOO));
+    public static final DeferredBlock<Block> INVERTED_PRESSURE_PLATE = registerBlock("inverted_pressure_plate", () ->
+            woodenPressurePlate(BlockSetType.CHERRY, INVERTED_PLANKS.get().defaultMapColor()));
+    public static final DeferredBlock<Block> INVERTED_BUTTON = registerBlock("inverted_button", () ->
+            woodenButton(BlockSetType.CHERRY));
     // 植物
     public static final DeferredBlock<Block> FORTITUDE_FLOWER = registerBlock("fortitude_flower", () ->
             new PinkPetalsBlock(BlockBehaviour.Properties.of()
@@ -222,17 +267,6 @@ public class MiaBlocks {
                     .pushReaction(PushReaction.DESTROY)
             )
     );
-
-    // 开关
-    public static final DeferredBlock<Block> SKYFOG_PRESSURE_PLATE = registerBlock("skyfog_pressure_plate", () ->
-            woodenPressurePlate(BlockSetType.BAMBOO, SKYFOG_PLANKS.get().defaultMapColor()));
-    public static final DeferredBlock<Block> SKYFOG_BUTTON = registerBlock("skyfog_button", () ->
-            woodenButton(BlockSetType.BAMBOO));
-    public static final DeferredBlock<Block> INVERTED_PRESSURE_PLATE = registerBlock("inverted_pressure_plate", () ->
-            woodenPressurePlate(BlockSetType.CHERRY, INVERTED_PLANKS.get().defaultMapColor()));
-    public static final DeferredBlock<Block> INVERTED_BUTTON = registerBlock("inverted_button", () ->
-            woodenButton(BlockSetType.CHERRY));
-
     // 晶石
     public static final DeferredBlock<Block> PRASIOLITE_BLOCK = registerBlock("prasiolite_block", () ->
             new PrasioliteBlock(

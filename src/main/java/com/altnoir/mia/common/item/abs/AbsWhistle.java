@@ -49,6 +49,11 @@ public abstract class AbsWhistle extends Item implements ICurioItem, IMiaTooltip
     }
 
     @Override
+    public boolean hasShiftDown() {
+        return true;
+    }
+
+    @Override
     public void appendTooltip(ItemStack stack, List<Component> tooltip) {
         IMiaTooltip.super.appendTooltip(stack, tooltip);
     }

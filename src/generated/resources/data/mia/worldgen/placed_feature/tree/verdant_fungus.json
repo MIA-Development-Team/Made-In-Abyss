@@ -1,0 +1,14 @@
+{
+  "feature": "mia:tree/verdant_fungus",
+  "placement": [
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:would_survive",
+        "state": {
+          "Name": "mia:verdant_fungus"
+        }
+      }
+    }
+  ]
+}

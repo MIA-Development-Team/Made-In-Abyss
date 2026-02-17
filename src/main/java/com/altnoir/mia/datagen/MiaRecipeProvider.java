@@ -143,6 +143,11 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
                 Operation.ADD_MULTIPLIED_BASE
         ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
+                new ItemStack(MiaItems.PRASIOLITE_SHARD.get(), 8),
+                Attributes.BLOCK_BREAK_SPEED, DoubleRange.between(0.1, 0.3),
+                Operation.ADD_MULTIPLIED_TOTAL
+        ).unlockedByMaterial().save(recipeOutput);
+        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                 new ItemStack(Items.IRON_INGOT, 1),
                 Attributes.ARMOR, DoubleRange.between(0.2, 0.4),
                 Operation.ADD_MULTIPLIED_BASE
@@ -186,11 +191,6 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
                 new ItemStack(Items.OAK_SAPLING, 1),
                 Attributes.ATTACK_DAMAGE, DoubleRange.between(0.1, 0.3),
                 Operation.ADD_VALUE
-        ).unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                new ItemStack(MiaItems.PRASIOLITE_SHARD.get(), 8),
-                Attributes.BLOCK_BREAK_SPEED, DoubleRange.between(0.1, 0.3),
-                Operation.ADD_MULTIPLIED_TOTAL
         ).unlockedByMaterial().save(recipeOutput);
         ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
                 new ItemStack(Items.STICK, 1),

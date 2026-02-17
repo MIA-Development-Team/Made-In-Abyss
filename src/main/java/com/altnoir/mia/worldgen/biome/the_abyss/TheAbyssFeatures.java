@@ -4,10 +4,7 @@ import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.worldgen.MiaFeatures;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;
 import com.altnoir.mia.worldgen.feature.LakeFeature;
-import com.altnoir.mia.worldgen.feature.configurations.ClusterConfiguration;
-import com.altnoir.mia.worldgen.feature.configurations.MiaCavePillarConfiguration;
-import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
-import com.altnoir.mia.worldgen.feature.configurations.SlabRuinsConfiguration;
+import com.altnoir.mia.worldgen.feature.configurations.*;
 import com.altnoir.mia.worldgen.feature.tree.MiaTreePlacements;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -21,9 +18,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.util.random.SimpleWeightedRandomList;
-import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.util.valueproviders.UniformFloat;
-import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.util.valueproviders.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.MultifaceBlock;
@@ -60,6 +55,9 @@ public class TheAbyssFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_FLOWERS = theAbyssKey("forest_flowers");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_SKYFOG = theAbyssKey("trees_skyfog");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_SKYFOG_AND_AZALEA = theAbyssKey("trees_skyfog_and_azalea");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED = theAbyssKey("trees_fossilized");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED_UNDER = theAbyssKey("trees_fossilized_under");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_VERDANT_FUNGUS = theAbyssKey("trees_verdant_fungus");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_INVERTED = theAbyssKey("trees_inverted");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_CLUSTER = theAbyssKey("prasiolite_cluster");
     public static final ResourceKey<ConfiguredFeature<?, ?>> BIG_PRASIOLITE_CLUSTER = theAbyssKey("big_prasiolite_cluster");
@@ -73,6 +71,7 @@ public class TheAbyssFeatures {
         Holder<PlacedFeature> skyfog_bee = holdergetter1.getOrThrow(MiaTreePlacements.SKYFOG_BEES);
         Holder<PlacedFeature> fancy_skyfog_bee = holdergetter1.getOrThrow(MiaTreePlacements.FANCY_SKYFOG_BEES_002);
         Holder<PlacedFeature> maga_skyfog = holdergetter1.getOrThrow(MiaTreePlacements.MEGA_SKYFOG);
+        Holder<PlacedFeature> verdant_fungus = holdergetter1.getOrThrow(MiaTreePlacements.VERDANT_FUNGUS);
         Holder<PlacedFeature> inverted = holdergetter1.getOrThrow(MiaTreePlacements.INVERTED);
         Holder<PlacedFeature> maga_inverted = holdergetter1.getOrThrow(MiaTreePlacements.MAGA_INVERTED);
 
@@ -204,9 +203,27 @@ public class TheAbyssFeatures {
                         new WeightedPlacedFeature(maga_skyfog, 0.075F),
                         new WeightedPlacedFeature(azalea, 0.1F),
                         new WeightedPlacedFeature(skyfog_bee, 0.5F)
-                ), fancy_skyfog_bee
+                ), fancy_skyfog_bee)
+        );
+        MiaFeatureUtils.register(context, TREES_FOSSILIZED, Feature.SIMPLE_RANDOM_SELECTOR,
+                new SimpleRandomFeatureConfiguration(
+                        HolderSet.direct(
+                                makeSmallPillar(MiaBlocks.FOSSILIZED_LOG.get(), MiaBlocks.MOSSY_FOSSILIZED_LOG.get(), Blocks.MOSS_CARPET, 2)
+                        )
                 )
         );
+        MiaFeatureUtils.register(context, TREES_FOSSILIZED_UNDER, Feature.SIMPLE_RANDOM_SELECTOR,
+                new SimpleRandomFeatureConfiguration(
+                        HolderSet.direct(
+                                makeSmallPillar(MiaBlocks.FOSSILIZED_LOG.get(), MiaBlocks.MOSSY_FOSSILIZED_LOG.get(), Blocks.MOSS_CARPET, 8)
+                        )
+                )
+        );
+        MiaFeatureUtils.register(
+                context, TREES_VERDANT_FUNGUS, Feature.RANDOM_SELECTOR,
+                new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(fancy_skyfog_bee, 0.1F)), verdant_fungus)
+        );
+
         MiaFeatureUtils.register(
                 context, TREES_INVERTED, Feature.RANDOM_SELECTOR,
                 new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(maga_inverted, 0.2F)), inverted)
@@ -308,6 +325,51 @@ public class TheAbyssFeatures {
         );
     }
 
+    private static Holder<PlacedFeature> makeSmallPillar(Block block1, Block block2, Block blockTop, int l) {
+        return PlacementUtils.inlinePlaced(
+                MiaFeatures.BLOCK_TRUNK.get(),
+                new BlockTrunkConfiguration(
+                        List.of(
+                                BlockTrunkConfiguration.layer(
+                                        new WeightedListInt(
+                                                SimpleWeightedRandomList.<IntProvider>builder()
+                                                        .add(UniformInt.of(10, 14), 3)
+                                                        .add(ConstantInt.of(8), 1)
+                                                        .build()
+                                        ),
+                                        new WeightedStateProvider(
+                                                SimpleWeightedRandomList.<BlockState>builder()
+                                                        .add(block1.defaultBlockState(), 1)
+                                                        .add(block2.defaultBlockState(), 3)
+                                                        .build()
+                                        )
+                                ),
+                                BlockTrunkConfiguration.layer(
+                                        ConstantInt.of(1),
+                                        BlockStateProvider.simple(blockTop.defaultBlockState())
+                                )
+                        ),
+                        BlockTrunkConfiguration.layer(
+                                new WeightedListInt(
+                                        SimpleWeightedRandomList.<IntProvider>builder()
+                                                .add(UniformInt.of(1, l), 1)
+                                                .add(ConstantInt.of(1), 3)
+                                                .build()
+                                ),
+                                new WeightedStateProvider(
+                                        SimpleWeightedRandomList.<BlockState>builder()
+                                                .add(block1.defaultBlockState(), 1)
+                                                .add(block2.defaultBlockState(), 3)
+                                                .build()
+                                )
+                        ),
+                        BlockTrunkConfiguration.layer(BlockStateProvider.simple(blockTop.defaultBlockState())), 0.15F,
+                        Direction.UP,
+                        BlockPredicate.ONLY_IN_AIR_OR_WATER_PREDICATE,
+                        true
+                )
+        );
+    }
 
     private static SimpleWeightedRandomList.Builder<BlockState> createPrasioliteStates(boolean facingDown) {
         SimpleWeightedRandomList.Builder<BlockState> builder = SimpleWeightedRandomList.builder();

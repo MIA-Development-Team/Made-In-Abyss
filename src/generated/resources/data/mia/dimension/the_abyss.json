@@ -59,14 +59,14 @@
           }
         },
         {
-          "biome": "mia:the_abyss/skyfog_forest",
+          "biome": "mia:the_abyss/fossilized_forest",
           "parameters": {
             "continentalness": 0.0,
             "depth": 0.0,
             "erosion": 0.0,
             "humidity": [
-              -0.8,
-              0.2
+              -1.0,
+              0.0
             ],
             "offset": 0.0,
             "temperature": 0.8,
@@ -96,7 +96,7 @@
           "parameters": {
             "continentalness": 0.0,
             "depth": [
-              0.0,
+              0.2,
               0.8
             ],
             "erosion": 0.0,
@@ -109,6 +109,27 @@
             "weirdness": [
               0.3,
               0.5
+            ]
+          }
+        },
+        {
+          "biome": "mia:the_abyss/under_fossilized_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              0.2,
+              0.8
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -0.5,
+              0.5
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              -0.5,
+              -0.3
             ]
           }
         },

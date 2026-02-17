@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "mia:block/verdant_planks",
+    "side": "mia:block/verdant_planks",
+    "top": "mia:block/verdant_planks"
+  }
+}

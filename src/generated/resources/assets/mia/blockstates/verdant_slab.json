@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "mia:block/verdant_slab"
+    },
+    "type=double": {
+      "model": "mia:block/verdant_planks"
+    },
+    "type=top": {
+      "model": "mia:block/verdant_slab_top"
+    }
+  }
+}

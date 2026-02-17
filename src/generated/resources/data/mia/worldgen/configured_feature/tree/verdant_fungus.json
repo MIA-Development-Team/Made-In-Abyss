@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:huge_brown_mushroom",
+  "config": {
+    "cap_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "mia:verdant_leaves"
+      }
+    },
+    "foliage_radius": 3,
+    "stem_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "mia:verdant_stem",
+        "Properties": {
+          "axis": "y"
+        }
+      }
+    }
+  }
+}

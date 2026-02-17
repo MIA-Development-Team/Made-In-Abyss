@@ -1,0 +1,12 @@
+{
+  "feature": "mia:the_abyss/trees_fossilized_under",
+  "placement": [
+    {
+      "type": "minecraft:count_on_every_layer",
+      "count": 12
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

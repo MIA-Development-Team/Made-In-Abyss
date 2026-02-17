@@ -3,13 +3,11 @@ package com.altnoir.mia.init.worldgen;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.worldgen.feature.*;
-import com.altnoir.mia.worldgen.feature.configurations.ClusterConfiguration;
-import com.altnoir.mia.worldgen.feature.configurations.MiaCavePillarConfiguration;
-import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
-import com.altnoir.mia.worldgen.feature.configurations.SlabRuinsConfiguration;
+import com.altnoir.mia.worldgen.feature.configurations.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockColumnConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.neoforged.bus.api.IEventBus;
@@ -39,6 +37,9 @@ public class MiaFeatures {
     );
     public static final DeferredHolder<Feature<?>, SlabRuinsFeature> SLAB_RUINS = FEATURE.register(
             "slab_ruins", () -> new SlabRuinsFeature(SlabRuinsConfiguration.CODEC)
+    );
+    public static final DeferredHolder<Feature<?>, BlockTrunkFeature> BLOCK_TRUNK = FEATURE.register(
+            "block_trunk", () -> new BlockTrunkFeature(BlockTrunkConfiguration.CODEC)
     );
 
     public static final DeferredHolder<Feature<?>, AbyssPortalFeature> ABYSS_PORTAL = FEATURE.register(

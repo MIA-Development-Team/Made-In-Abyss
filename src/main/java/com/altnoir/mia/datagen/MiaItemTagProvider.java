@@ -32,9 +32,7 @@ public class MiaItemTagProvider extends ItemTagsProvider {
         tagArtifacts(provider);
 
         tag(MiaTags.Items.ARTIFACT_MODIFIERS_MATERIAL).replace(false)
-                .add(MiaItems.MISTFUZZ_PEACH.get())
                 .add(Items.IRON_INGOT)
-                .add(Items.EMERALD)
                 .add(Items.STONE)
                 .add(Items.FIRE_CHARGE)
                 .add(Items.WATER_BUCKET)
@@ -45,6 +43,7 @@ public class MiaItemTagProvider extends ItemTagsProvider {
                 .add(Items.OAK_SAPLING)
                 .add(MiaItems.PRASIOLITE_SHARD.get())
                 .add(Items.STICK)
+                .add(Items.EMERALD)
                 .add(Items.DIAMOND);
 
         tag(CuriosTags.WHISTLE).replace(false)

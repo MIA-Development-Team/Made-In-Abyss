@@ -9,6 +9,10 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public interface IMiaTooltip {
+    default boolean hasShiftDown() {
+        return false;
+    }
+
     default void appendTooltip(ItemStack stack, List<Component> tooltip) {
         var rl = BuiltInRegistries.ITEM.getKey(stack.getItem());
         var description = String.format("tooltip.mia.description.%s", rl.getPath());

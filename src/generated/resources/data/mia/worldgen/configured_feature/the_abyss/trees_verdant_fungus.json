@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "mia:tree/verdant_fungus",
+    "features": [
+      {
+        "chance": 0.1,
+        "feature": "mia:tree/fancy_skyfog_bee_002"
+      }
+    ]
+  }
+}

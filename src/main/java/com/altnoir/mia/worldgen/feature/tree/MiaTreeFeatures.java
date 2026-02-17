@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.CherryFoliagePlacer;
@@ -41,6 +42,7 @@ public class MiaTreeFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> FANCY_SKYFOG_TREE_BEES = MiaFeatureUtils.treeKey("fancy_skyfog_tree_bees");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_SKYFOG_TREE = MiaFeatureUtils.treeKey("mega_skyfog_tree");
 
+    public static final ResourceKey<ConfiguredFeature<?, ?>> VERDANT_FUNGUS = MiaFeatureUtils.treeKey("verdant_fungus");
     public static final ResourceKey<ConfiguredFeature<?, ?>> INVERTED_TREE = MiaFeatureUtils.treeKey("inverted_tree");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_INVERTED_TREE = MiaFeatureUtils.treeKey("mega_inverted_tree");
 
@@ -74,6 +76,17 @@ public class MiaTreeFeatures {
                 ).ignoreVines().build()
         );
 
+        MiaFeatureUtils.register(context, VERDANT_FUNGUS, Feature.HUGE_BROWN_MUSHROOM,
+                new HugeMushroomFeatureConfiguration(
+                        BlockStateProvider.simple(
+                                MiaBlocks.VERDANT_LEAVES.get().defaultBlockState()
+                        ),
+                        BlockStateProvider.simple(
+                                MiaBlocks.VERDANT_STEM.get().defaultBlockState()
+                        ),
+                        3
+                )
+        );
         MiaFeatureUtils.register(
                 context, INVERTED_TREE, MiaFeatures.INVERTED_TREE.get(),
                 new TreeConfiguration.TreeConfigurationBuilder(

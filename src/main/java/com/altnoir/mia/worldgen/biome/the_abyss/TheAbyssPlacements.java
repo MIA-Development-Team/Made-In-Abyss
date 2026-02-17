@@ -39,6 +39,9 @@ public class TheAbyssPlacements {
     public static final ResourceKey<PlacedFeature> ABYSS_TREES = theAbyssKey("abyss_trees");
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG = theAbyssKey("trees_skyfog");
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG_AND_AZALEA = theAbyssKey("trees_skyfog_and_azalea");
+    public static final ResourceKey<PlacedFeature> TREES_FOSSILIZED = theAbyssKey("trees_fossilized");
+    public static final ResourceKey<PlacedFeature> TREES_FOSSILIZED_UNDER = theAbyssKey("trees_fossilized_under");
+    public static final ResourceKey<PlacedFeature> TREES_VERDANT_FUNGUS = theAbyssKey("trees_verdant_fungus");
     public static final ResourceKey<PlacedFeature> TREES_INVERTED = theAbyssKey("trees_inverted");
     public static final ResourceKey<PlacedFeature> PRASIOLITE_CLUSTER = theAbyssKey("prasiolite_cluster");
     public static final ResourceKey<PlacedFeature> BIG_PRASIOLITE_CLUSTER = theAbyssKey("big_prasiolite_cluster");
@@ -67,6 +70,9 @@ public class TheAbyssPlacements {
         Holder<ConfiguredFeature<?, ?>> forest_flowers = holdergetter.getOrThrow(TheAbyssFeatures.FOREST_FLOWERS);
         Holder<ConfiguredFeature<?, ?>> skyfog = holdergetter.getOrThrow(TheAbyssFeatures.TREES_SKYFOG);
         Holder<ConfiguredFeature<?, ?>> skyfog_and_azalea = holdergetter.getOrThrow(TheAbyssFeatures.TREES_SKYFOG_AND_AZALEA);
+        Holder<ConfiguredFeature<?, ?>> fossilized_tree = holdergetter.getOrThrow(TheAbyssFeatures.TREES_FOSSILIZED);
+        Holder<ConfiguredFeature<?, ?>> fossilized_tree_under = holdergetter.getOrThrow(TheAbyssFeatures.TREES_FOSSILIZED_UNDER);
+        Holder<ConfiguredFeature<?, ?>> verdant_fungus = holdergetter.getOrThrow(TheAbyssFeatures.TREES_VERDANT_FUNGUS);
         Holder<ConfiguredFeature<?, ?>> inverted = holdergetter.getOrThrow(TheAbyssFeatures.TREES_INVERTED);
         Holder<ConfiguredFeature<?, ?>> prasiolite_cluster = holdergetter.getOrThrow(TheAbyssFeatures.PRASIOLITE_CLUSTER);
         Holder<ConfiguredFeature<?, ?>> big_prasiolite_cluster = holdergetter.getOrThrow(TheAbyssFeatures.BIG_PRASIOLITE_CLUSTER);
@@ -187,6 +193,20 @@ public class TheAbyssPlacements {
         );
         MiaPlacementUtils.register(
                 context, TREES_SKYFOG_AND_AZALEA, skyfog_and_azalea,
+                abyssTreePlace(8)
+        );
+        MiaPlacementUtils.register(
+                context, TREES_FOSSILIZED, fossilized_tree,
+                abyssTreePlace(9)
+        );
+
+        MiaPlacementUtils.register(
+                context, TREES_FOSSILIZED_UNDER, fossilized_tree_under,
+                abyssTreePlace(12)
+        );
+
+        MiaPlacementUtils.register(
+                context, TREES_VERDANT_FUNGUS, verdant_fungus,
                 abyssTreePlace(8)
         );
         MiaPlacementUtils.register(

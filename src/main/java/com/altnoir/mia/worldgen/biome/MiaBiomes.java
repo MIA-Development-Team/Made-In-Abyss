@@ -11,6 +11,8 @@ public class MiaBiomes {
     // Layer 1
     public static final ResourceKey<Biome> THE_ABYSS = abyssEdgeKey("the_abyss");
     public static final ResourceKey<Biome> SKYFOG_FOREST = abyssEdgeKey("skyfog_forest");
+    public static final ResourceKey<Biome> FOSSILIZED_FOREST = abyssEdgeKey("fossilized_forest");
+    public static final ResourceKey<Biome> UNDER_FOSSILIZED_FOREST = abyssEdgeKey("under_fossilized_forest");
     public static final ResourceKey<Biome> ABYSS_PLAINS = abyssEdgeKey("abyss_plains");
     public static final ResourceKey<Biome> PRASIOLITE_CAVES = abyssEdgeKey("prasiolite_caves");
     public static final ResourceKey<Biome> ABYSS_LUSH_CAVES = abyssEdgeKey("abyss_lush_caves");
@@ -23,6 +25,8 @@ public class MiaBiomes {
         // Layer 1
         context.register(THE_ABYSS, TheAbyssBiomes.theAbyss(context));
         context.register(SKYFOG_FOREST, TheAbyssBiomes.skyfogForest(context));
+        context.register(FOSSILIZED_FOREST, TheAbyssBiomes.fossilizedForest(context));
+        context.register(UNDER_FOSSILIZED_FOREST, TheAbyssBiomes.UnderfossilizedForest(context));
         context.register(ABYSS_PLAINS, TheAbyssBiomes.abyssPlains(context));
         context.register(PRASIOLITE_CAVES, TheAbyssBiomes.prasioliteCaves(context));
         context.register(ABYSS_LUSH_CAVES, TheAbyssBiomes.abyssLushCaves(context));
