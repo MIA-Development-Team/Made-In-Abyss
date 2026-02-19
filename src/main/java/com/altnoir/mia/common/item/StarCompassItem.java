@@ -2,7 +2,7 @@ package com.altnoir.mia.common.item;
 
 import com.altnoir.mia.common.block.AbyssPortalFrameBlock;
 import com.altnoir.mia.common.item.abs.IMiaTooltip;
-import com.altnoir.mia.network.client.CompassTargetPayload;
+import com.altnoir.mia.client.network.CompassTargetPayload;
 import com.altnoir.mia.worldgen.structure.MiaStructures;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;

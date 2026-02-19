@@ -1,5 +1,6 @@
 package com.altnoir.mia.worldgen.feature;
 
+import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.worldgen.feature.configurations.BlockTrunkConfiguration;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -39,7 +40,8 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
         } else {
             BlockPos.MutableBlockPos blockpos$mutableblockpos1 = context.origin().mutable();
             BlockPos.MutableBlockPos blockpos$mutableblockpos = blockpos$mutableblockpos1.mutable().move(blockConfiguration.direction());
-            if (worldgenlevel.getBlockState(context.origin().relative(blockConfiguration.direction().getOpposite())).is(BlockTags.LEAVES)) {
+            BlockState directionState = worldgenlevel.getBlockState(context.origin().relative(blockConfiguration.direction().getOpposite()));
+            if (!directionState.is(BlockTags.DIRT) && !directionState.is(MiaTags.Blocks.BASE_STONE_ABYSS)) {
                 return false;
             }
             for (int l = 0; l < j; l++) {

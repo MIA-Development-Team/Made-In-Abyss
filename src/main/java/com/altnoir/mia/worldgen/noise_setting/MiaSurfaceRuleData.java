@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.placement.CaveSurface;
 public class MiaSurfaceRuleData extends SurfaceRuleData {
     private static final SurfaceRules.RuleSource DEEPSLATE = makeStateRule(Blocks.DEEPSLATE);
     private static final SurfaceRules.RuleSource ROOTED_DIRT = makeStateRule(Blocks.ROOTED_DIRT);
+    private static final SurfaceRules.RuleSource COARSE_DIRT = makeStateRule(Blocks.COARSE_DIRT);
     private static final SurfaceRules.RuleSource BEDROCK = makeStateRule(Blocks.BEDROCK);
     // Layer 1
     private static final SurfaceRules.RuleSource ABYSS_ANDESITE = makeStateRule(MiaBlocks.ABYSS_ANDESITE.get());
@@ -30,6 +31,7 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
         SurfaceRules.ConditionSource waterBlockCheck = SurfaceRules.waterBlockCheck(0, 0);
         // Layer 1
         SurfaceRules.RuleSource coverGrass_andesite = SurfaceRules.ifTrue(waterBlockCheck, COVERGRASS_ABYSS_ANDESITE);
+        SurfaceRules.RuleSource coarse_dirt = SurfaceRules.ifTrue(waterBlockCheck, COARSE_DIRT);
         SurfaceRules.RuleSource coverGrass_tuff = SurfaceRules.ifTrue(waterBlockCheck, COVERGRASS_TUFF);
         // Layer 2
 
@@ -40,6 +42,7 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
                                 MiaBiomes.THE_ABYSS,
                                 MiaBiomes.SKYFOG_FOREST,
                                 MiaBiomes.FOSSILIZED_FOREST,
+                                MiaBiomes.RICH_FOSSILIZED_FOREST,
                                 MiaBiomes.UNDER_FOSSILIZED_FOREST,
                                 MiaBiomes.ABYSS_PLAINS,
                                 MiaBiomes.PRASIOLITE_CAVES,
@@ -53,6 +56,19 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
                                                 coverGrass_andesite
                                         ),
                                         ABYSS_ANDESITE
+                                )
+                        )
+                ),
+                SurfaceRules.ifTrue(
+                        SurfaceRules.isBiome(MiaBiomes.DENSE_SKYFOG_FOREST),
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR),
+                                SurfaceRules.sequence(
+                                        SurfaceRules.ifTrue(
+                                                SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
+                                                coarse_dirt
+                                        ),
+                                        makeStateRule(Blocks.DIRT)
                                 )
                         )
                 ),
@@ -78,11 +94,11 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
                 ),
                 SurfaceRules.sequence(
                         addCalciteRule(320, 2),
-                        addCalciteRule(288,3),
+                        addCalciteRule(288, 3),
                         addCalciteRule(256, 5),
                         addCalciteRule(192),
                         addCalciteRule(128, 5),
-                        addCalciteRule(64,3),
+                        addCalciteRule(64, 3),
                         addCalciteRule(48, 2)
                 )
         );

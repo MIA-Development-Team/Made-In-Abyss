@@ -1,0 +1,16 @@
+{
+  "type": "mia:artifact_smithing",
+  "artifact": {
+    "tag": "mia:smithing_artifact"
+  },
+  "attribute": "minecraft:generic.attack_damage",
+  "material": {
+    "count": 2,
+    "id": "minecraft:gold_ingot"
+  },
+  "operation": "add_value",
+  "value": {
+    "max": 5.0,
+    "min": 0.1
+  }
+}

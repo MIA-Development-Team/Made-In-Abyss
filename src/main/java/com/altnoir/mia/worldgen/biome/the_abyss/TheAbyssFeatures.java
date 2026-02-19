@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.PinkPetalsBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.levelgen.GeodeBlockSettings;
 import net.minecraft.world.level.levelgen.GeodeCrackSettings;
 import net.minecraft.world.level.levelgen.GeodeLayerSettings;
@@ -36,6 +37,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.DualNoiseProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import net.minecraft.world.level.levelgen.placement.CaveSurface;
 import net.minecraft.world.level.levelgen.placement.EnvironmentScanPlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.RandomOffsetPlacement;
@@ -53,10 +55,14 @@ public class TheAbyssFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLOW_LICHEN = theAbyssKey("glow_lichen");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW = theAbyssKey("flower_meadow");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_FLOWERS = theAbyssKey("forest_flowers");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_WATERLILY = theAbyssKey("patch_waterlily");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_SKYFOG = theAbyssKey("trees_skyfog");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_SKYFOG_AND_AZALEA = theAbyssKey("trees_skyfog_and_azalea");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> DENSE_TREES_SKYFOG = theAbyssKey("dense_trees_skyfog");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED = theAbyssKey("trees_fossilized");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED_UNDER = theAbyssKey("trees_fossilized_under");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> REED = theAbyssKey("reed");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> POOL_WITH_REED = theAbyssKey("pool_with_reed");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_VERDANT_FUNGUS = theAbyssKey("trees_verdant_fungus");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_INVERTED = theAbyssKey("trees_inverted");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_CLUSTER = theAbyssKey("prasiolite_cluster");
@@ -66,11 +72,14 @@ public class TheAbyssFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAW_IRON = theAbyssKey("raw_iron");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+        HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
         HolderGetter<PlacedFeature> holdergetter1 = context.lookup(Registries.PLACED_FEATURE);
+
         Holder<PlacedFeature> azalea = holdergetter1.getOrThrow(MiaTreePlacements.AZALEA_CHECKED);
         Holder<PlacedFeature> skyfog_bee = holdergetter1.getOrThrow(MiaTreePlacements.SKYFOG_BEES);
         Holder<PlacedFeature> fancy_skyfog_bee = holdergetter1.getOrThrow(MiaTreePlacements.FANCY_SKYFOG_BEES_002);
         Holder<PlacedFeature> maga_skyfog = holdergetter1.getOrThrow(MiaTreePlacements.MEGA_SKYFOG);
+        Holder<PlacedFeature> skyfog_bush = holdergetter1.getOrThrow(MiaTreePlacements.SKYFOG_BUSH);
         Holder<PlacedFeature> verdant_fungus = holdergetter1.getOrThrow(MiaTreePlacements.VERDANT_FUNGUS);
         Holder<PlacedFeature> inverted = holdergetter1.getOrThrow(MiaTreePlacements.INVERTED);
         Holder<PlacedFeature> maga_inverted = holdergetter1.getOrThrow(MiaTreePlacements.MAGA_INVERTED);
@@ -173,11 +182,16 @@ public class TheAbyssFeatures {
         MiaFeatureUtils.register(
                 context, FOREST_FLOWERS, Feature.FLOWER,
                 new RandomPatchConfiguration(
-                        96, 6, 2, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,
-                        new SimpleBlockConfiguration(
-                                new WeightedStateProvider(builder)
-                        )
-                ))
+                        96, 6, 2,
+                        PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(new WeightedStateProvider(builder)))
+                )
+        );
+        MiaFeatureUtils.register(
+                context, PATCH_WATERLILY, Feature.RANDOM_PATCH,
+                new RandomPatchConfiguration(
+                        96, 7, 3,
+                        PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.LILY_PAD)))
+                )
         );
 
         MiaFeatureUtils.register(
@@ -205,6 +219,14 @@ public class TheAbyssFeatures {
                         new WeightedPlacedFeature(skyfog_bee, 0.5F)
                 ), fancy_skyfog_bee)
         );
+        MiaFeatureUtils.register(
+                context, DENSE_TREES_SKYFOG, Feature.RANDOM_SELECTOR,
+                new RandomFeatureConfiguration(List.of(
+                        new WeightedPlacedFeature(maga_skyfog, 0.33333334F),
+                        new WeightedPlacedFeature(skyfog_bush, 0.5F),
+                        new WeightedPlacedFeature(fancy_skyfog_bee, 0.1F)
+                ), skyfog_bee)
+        );
         MiaFeatureUtils.register(context, TREES_FOSSILIZED, Feature.SIMPLE_RANDOM_SELECTOR,
                 new SimpleRandomFeatureConfiguration(
                         HolderSet.direct(
@@ -217,6 +239,44 @@ public class TheAbyssFeatures {
                         HolderSet.direct(
                                 makeSmallPillar(MiaBlocks.FOSSILIZED_LOG.get(), MiaBlocks.MOSSY_FOSSILIZED_LOG.get(), Blocks.MOSS_CARPET, 8)
                         )
+                )
+        );
+        MiaFeatureUtils.register(context, REED, Feature.SIMPLE_RANDOM_SELECTOR,
+                new SimpleRandomFeatureConfiguration(
+                        HolderSet.direct(
+                                PlacementUtils.inlinePlaced(
+                                        Feature.BLOCK_COLUMN,
+                                        new BlockColumnConfiguration(
+                                                List.of(
+                                                        BlockColumnConfiguration.layer(
+                                                                ConstantInt.of(1),
+                                                                BlockStateProvider.simple(MiaBlocks.REED.get().defaultBlockState().setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER))
+                                                        ),
+                                                        BlockColumnConfiguration.layer(
+                                                                ConstantInt.of(1),
+                                                                BlockStateProvider.simple(MiaBlocks.REED.get().defaultBlockState().setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER))
+                                                        )
+                                                ),
+                                                Direction.UP,
+                                                BlockPredicate.ONLY_IN_AIR_OR_WATER_PREDICATE,
+                                                true
+                                        )
+                                )
+                        )
+                )
+        );
+        MiaFeatureUtils.register(context, POOL_WITH_REED, Feature.WATERLOGGED_VEGETATION_PATCH,
+                new VegetationPatchConfiguration(
+                        BlockTags.MOSS_REPLACEABLE,
+                        BlockStateProvider.simple(Blocks.MOSS_BLOCK),
+                        PlacementUtils.inlinePlaced(holdergetter.getOrThrow(REED)),
+                        CaveSurface.FLOOR,
+                        ConstantInt.of(3),
+                        1.0F,
+                        5,
+                        0.5F,
+                        UniformInt.of(4, 9),
+                        0.1F
                 )
         );
         MiaFeatureUtils.register(

@@ -22,6 +22,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.BushFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.CherryFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -33,6 +34,7 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TrunkVineDecora
 import net.minecraft.world.level.levelgen.feature.trunkplacers.CherryTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.ForkingTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.MegaJungleTrunkPlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 
 import java.util.List;
 
@@ -41,6 +43,7 @@ public class MiaTreeFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE_BEES = MiaFeatureUtils.treeKey("skyfog_tree_bees");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FANCY_SKYFOG_TREE_BEES = MiaFeatureUtils.treeKey("fancy_skyfog_tree_bees");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_SKYFOG_TREE = MiaFeatureUtils.treeKey("mega_skyfog_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_BUSH = MiaFeatureUtils.treeKey("short_skyfog_tree");
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> VERDANT_FUNGUS = MiaFeatureUtils.treeKey("verdant_fungus");
     public static final ResourceKey<ConfiguredFeature<?, ?>> INVERTED_TREE = MiaFeatureUtils.treeKey("inverted_tree");
@@ -70,10 +73,27 @@ public class MiaTreeFeatures {
                         ),
                         new FancyFoliagePlacer(ConstantInt.of(3), ConstantInt.of(1), 4),
                         new TwoLayersFeatureSize(1, 1, 2)
-                ).decorators(ImmutableList.of(
-                        new AlterGroundDecorator(BlockStateProvider.simple(Blocks.ROOTED_DIRT)), TrunkVineDecorator.INSTANCE,
-                        new LeaveVineDecorator(0.075F))
+                ).decorators(
+                        ImmutableList.of(
+                                new AlterGroundDecorator(BlockStateProvider.simple(Blocks.ROOTED_DIRT)), TrunkVineDecorator.INSTANCE,
+                                new LeaveVineDecorator(0.075F)
+                        )
                 ).ignoreVines().build()
+        );
+        MiaFeatureUtils.register(
+                context, SKYFOG_BUSH, Feature.TREE,
+                new TreeConfiguration.TreeConfigurationBuilder(
+                        BlockStateProvider.simple(MiaBlocks.SKYFOG_LOG.get()),
+                        new StraightTrunkPlacer(1, 0, 0),
+
+                        new WeightedStateProvider(
+                                SimpleWeightedRandomList.<BlockState>builder()
+                                        .add(MiaBlocks.SKYFOG_LEAVES.get().defaultBlockState(), 9)
+                                        .add(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get().defaultBlockState(), 1)
+                        ),
+                        new BushFoliagePlacer(ConstantInt.of(2), ConstantInt.of(1), 2),
+                        new TwoLayersFeatureSize(0, 0, 0)
+                ).dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT)).forceDirt().build()
         );
 
         MiaFeatureUtils.register(context, VERDANT_FUNGUS, Feature.HUGE_BROWN_MUSHROOM,
@@ -127,7 +147,7 @@ public class MiaTreeFeatures {
                 new CherryFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), ConstantInt.of(4), 0.25F, 0.5F, 0.16666667F, 0.33333334F),
 
                 new TwoLayersFeatureSize(1, 0, 1)
-        ).dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT)).forceDirt().ignoreVines();
+        ).dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT)).forceDirt();
     }
 
     private static TreeConfiguration.TreeConfigurationBuilder fancySkyfog() {

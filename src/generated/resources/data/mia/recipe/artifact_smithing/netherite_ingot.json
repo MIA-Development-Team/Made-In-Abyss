@@ -1,0 +1,16 @@
+{
+  "type": "mia:artifact_smithing",
+  "artifact": {
+    "tag": "mia:smithing_artifact"
+  },
+  "attribute": "minecraft:generic.gravity",
+  "material": {
+    "count": 1,
+    "id": "minecraft:netherite_ingot"
+  },
+  "operation": "add_value",
+  "value": {
+    "max": 0.5,
+    "min": -0.5
+  }
+}

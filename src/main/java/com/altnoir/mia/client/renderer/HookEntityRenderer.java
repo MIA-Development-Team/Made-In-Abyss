@@ -65,7 +65,7 @@ public class HookEntityRenderer extends EntityRenderer<HookEntity> {
     private Vec3 getPlayerHandPos(Player player, float p_340872_, float partialTick) {
         int i = player.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
         ItemStack itemstack = player.getMainHandItem();
-        if (!itemstack.is(MiaItems.HOOK_ITEM)) {
+        if (!itemstack.is(MiaItems.HOOK)) {
             i = -i;
         }
 

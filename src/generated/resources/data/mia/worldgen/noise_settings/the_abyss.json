@@ -167,7 +167,7 @@
         "type": "minecraft:range_choice",
         "input": "minecraft:y",
         "max_exclusive": 384.0,
-        "min_inclusive": 0.0,
+        "min_inclusive": 5.0,
         "when_in_range": {
           "type": "minecraft:noise",
           "noise": "minecraft:aquifer_fluid_level_floodedness",
@@ -192,7 +192,7 @@
         "type": "minecraft:range_choice",
         "input": "minecraft:y",
         "max_exclusive": 384.0,
-        "min_inclusive": 0.0,
+        "min_inclusive": 5.0,
         "when_in_range": {
           "type": "minecraft:noise",
           "noise": "minecraft:aquifer_fluid_level_spread",
@@ -225,9 +225,9 @@
               "argument1": {
                 "type": "minecraft:y_clamped_gradient",
                 "from_value": 1.0,
-                "from_y": 186,
+                "from_y": 248,
                 "to_value": 0.0,
-                "to_y": 256
+                "to_y": 320
               },
               "argument2": {
                 "type": "minecraft:add",
@@ -245,7 +245,7 @@
                         "argument1": {
                           "type": "minecraft:range_choice",
                           "input": "minecraft:y",
-                          "max_exclusive": 0.0,
+                          "max_exclusive": 5.0,
                           "min_inclusive": -128.0,
                           "when_in_range": {
                             "type": "mia:general_abyss_hole",
@@ -357,6 +357,7 @@
                 "mia:the_abyss/the_abyss",
                 "mia:the_abyss/skyfog_forest",
                 "mia:the_abyss/fossilized_forest",
+                "mia:the_abyss/rich_fossilized_forest",
                 "mia:the_abyss/under_fossilized_forest",
                 "mia:the_abyss/abyss_plains",
                 "mia:the_abyss/prasiolite_caves",
@@ -404,6 +405,61 @@
                     "type": "minecraft:block",
                     "result_state": {
                       "Name": "mia:abyss_andesite"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "minecraft:condition",
+            "if_true": {
+              "type": "minecraft:biome",
+              "biome_is": [
+                "mia:the_abyss/dense_skyfog_forest"
+              ]
+            },
+            "then_run": {
+              "type": "minecraft:condition",
+              "if_true": {
+                "type": "minecraft:stone_depth",
+                "add_surface_depth": true,
+                "offset": 0,
+                "secondary_depth_range": 0,
+                "surface_type": "floor"
+              },
+              "then_run": {
+                "type": "minecraft:sequence",
+                "sequence": [
+                  {
+                    "type": "minecraft:condition",
+                    "if_true": {
+                      "type": "minecraft:stone_depth",
+                      "add_surface_depth": false,
+                      "offset": 0,
+                      "secondary_depth_range": 0,
+                      "surface_type": "floor"
+                    },
+                    "then_run": {
+                      "type": "minecraft:condition",
+                      "if_true": {
+                        "type": "minecraft:water",
+                        "add_stone_depth": false,
+                        "offset": 0,
+                        "surface_depth_multiplier": 0
+                      },
+                      "then_run": {
+                        "type": "minecraft:block",
+                        "result_state": {
+                          "Name": "minecraft:coarse_dirt"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "minecraft:block",
+                    "result_state": {
+                      "Name": "minecraft:dirt"
                     }
                   }
                 ]

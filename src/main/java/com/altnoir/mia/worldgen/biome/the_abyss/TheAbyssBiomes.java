@@ -46,8 +46,27 @@ public class TheAbyssBiomes {
         generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.RAW_IRON);
 
         TheAbyssUtils.addMeadowVegetation(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_FOSSILIZED)
+        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_SKYFOG_AND_AZALEA)
                 .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_LARGE_FERN)
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
+        BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
+        BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
+
+        return baseTheAbyss(generationBuilder, spawnBuilder).build();
+    }
+
+    public static Biome denseSkyfogForest(BootstrapContext<Biome> context) {
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+
+        TheAbyssUtils.farmAnimals(spawnBuilder);
+        TheAbyssUtils.commonSpawns(spawnBuilder);
+
+        BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
+
+        TheAbyssUtils.globalAbyssGeneration(generationBuilder);
+        TheAbyssUtils.addDenseMeadowVegetation(generationBuilder);
+        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.DENSE_TREES_SKYFOG)
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_DENSE_LARGE_FERN)
                 .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
@@ -74,6 +93,25 @@ public class TheAbyssBiomes {
 
         return baseTheAbyss(generationBuilder, spawnBuilder).build();
     }
+
+    public static Biome richFossilizedForest(BootstrapContext<Biome> context) {
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        TheAbyssUtils.farmAnimals(spawnBuilder);
+        TheAbyssUtils.commonSpawns(spawnBuilder);
+
+        BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
+
+        TheAbyssUtils.globalAbyssGeneration(generationBuilder);
+        TheAbyssUtils.addMeadowVegetation(generationBuilder);
+        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.POOL_WITH_REED)
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_FOSSILIZED)
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
+        BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
+        BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
+
+        return baseTheAbyss(generationBuilder, spawnBuilder).build();
+    }
+
     public static Biome UnderfossilizedForest(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
         TheAbyssUtils.farmAnimals(spawnBuilder);

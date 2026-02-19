@@ -1,0 +1,12 @@
+{
+  "feature": "mia:the_abyss/patch_waterlily",
+  "placement": [
+    {
+      "type": "mia:water_on_every_layer",
+      "count": 4
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

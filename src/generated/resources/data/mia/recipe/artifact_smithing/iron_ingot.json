@@ -3,9 +3,9 @@
   "artifact": {
     "tag": "mia:smithing_artifact"
   },
-  "attribute": "minecraft:generic.armor",
+  "attribute": "minecraft:generic.knockback_resistance",
   "material": {
-    "count": 1,
+    "count": 2,
     "id": "minecraft:iron_ingot"
   },
   "operation": "add_multiplied_base",

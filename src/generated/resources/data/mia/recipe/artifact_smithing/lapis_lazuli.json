@@ -1,0 +1,16 @@
+{
+  "type": "mia:artifact_smithing",
+  "artifact": {
+    "tag": "mia:smithing_artifact"
+  },
+  "attribute": "minecraft:generic.attack_speed",
+  "material": {
+    "count": 1,
+    "id": "minecraft:lapis_lazuli"
+  },
+  "operation": "add_multiplied_base",
+  "value": {
+    "max": 1.5,
+    "min": 0.5
+  }
+}

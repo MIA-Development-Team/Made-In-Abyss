@@ -1,10 +1,10 @@
 package com.altnoir.mia.init;
 
-import com.altnoir.mia.network.client.CompassTargetPayload;
-import com.altnoir.mia.network.client.CurseCapabilityPayload;
-import com.altnoir.mia.network.server.RetractHookPayload;
-import com.altnoir.mia.network.server.SkillCooldownPayload;
-import com.altnoir.mia.network.server.SkillPlayPayload;
+import com.altnoir.mia.client.network.CompassTargetPayload;
+import com.altnoir.mia.client.network.CurseCapabilityPayload;
+import com.altnoir.mia.common.network.RetractHookPayload;
+import com.altnoir.mia.common.network.SkillCooldownPayload;
+import com.altnoir.mia.common.network.SkillPlayPayload;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 public class MiaNetworking {

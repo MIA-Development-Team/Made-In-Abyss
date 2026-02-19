@@ -12,14 +12,10 @@
     "when_out_of_range": 1.9
   },
   "when_out_of_range": {
-    "type": "minecraft:add",
-    "argument1": {
-      "type": "minecraft:y_clamped_gradient",
-      "from_value": 1.5,
-      "from_y": 5,
-      "to_value": -2.5,
-      "to_y": 1200
-    },
-    "argument2": "minecraft:overworld/offset"
+    "type": "minecraft:y_clamped_gradient",
+    "from_value": 1.5,
+    "from_y": 5,
+    "to_value": -2.5,
+    "to_y": 832
   }
 }

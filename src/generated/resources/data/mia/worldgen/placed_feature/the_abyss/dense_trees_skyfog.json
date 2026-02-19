@@ -1,0 +1,12 @@
+{
+  "feature": "mia:the_abyss/dense_trees_skyfog",
+  "placement": [
+    {
+      "type": "mia:tree_on_every_layer",
+      "count": 16
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

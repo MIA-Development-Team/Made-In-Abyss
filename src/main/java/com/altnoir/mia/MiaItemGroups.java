@@ -137,6 +137,7 @@ public class MiaItemGroups {
 
                         // 植物
                         output.accept(MiaBlocks.FORTITUDE_FLOWER);
+                        output.accept(MiaBlocks.REED);
                         // 红石
                         output.accept(MiaBlocks.SKYFOG_PRESSURE_PLATE);
                         output.accept(MiaBlocks.SKYFOG_BUTTON);
@@ -182,7 +183,7 @@ public class MiaItemGroups {
                         output.accept(MiaItems.TEST_ARTIFACT_3);
                         output.accept(MiaItems.HEALTH_JUNKIE);
                         output.accept(MiaItems.ARTIFACT_HASTE);
-                        output.accept(MiaItems.HOOK_ITEM);
+                        output.accept(MiaItems.HOOK);
                         output.accept(MiaItems.DEBUG_ATTRIBUTE_TOOL);
 
                         // Weapons

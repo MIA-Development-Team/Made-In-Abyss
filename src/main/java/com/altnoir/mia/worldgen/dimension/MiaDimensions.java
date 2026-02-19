@@ -46,10 +46,22 @@ public class MiaDimensions {
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
                                 ),
                                 biomePair(
+                                        Climate.Parameter.span(-0.5F, 0.5F),
+                                        Climate.Parameter.point(0.0F),
+                                        Climate.Parameter.span(0.5F, 0.8F),
+                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.DENSE_SKYFOG_FOREST)
+                                ),
+                                biomePair(
                                         Climate.Parameter.span(-1.0F, 0.0F),
                                         Climate.Parameter.point(0.0F),
-                                        Climate.Parameter.span(-0.5F, -0.3F),
+                                        Climate.Parameter.span(-0.6F, -0.4F),
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.FOSSILIZED_FOREST)
+                                ),
+                                biomePair(
+                                        Climate.Parameter.span(-1.0F, 0.0F),
+                                        Climate.Parameter.point(0.0F),
+                                        Climate.Parameter.span(-0.9F, -0.6F),
+                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.RICH_FOSSILIZED_FOREST)
                                 ),
                                 biomePair(
                                         Climate.Parameter.span(-1.0F, 0.5F),
@@ -66,10 +78,22 @@ public class MiaDimensions {
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
                                 ),
                                 biomePair(
+                                        Climate.Parameter.span(-0.5F, 0.0F),
+                                        Climate.Parameter.span(0.2F, 0.8F),
+                                        Climate.Parameter.span(0.5F, 0.8F),
+                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.DENSE_SKYFOG_FOREST)
+                                ),
+                                biomePair(
                                         Climate.Parameter.span(-0.5F, 0.5F),
                                         Climate.Parameter.span(0.2F, 0.8F),
-                                        Climate.Parameter.span(-0.5F, -0.3F),
+                                        Climate.Parameter.span(-0.6F, -0.4F),
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.UNDER_FOSSILIZED_FOREST)
+                                ),
+                                biomePair(
+                                        Climate.Parameter.span(-0.5F, 0.5F),
+                                        Climate.Parameter.span(0.2F, 0.8F),
+                                        Climate.Parameter.span(-0.9F, -0.6F),
+                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.RICH_FOSSILIZED_FOREST)
                                 ),
                                 biomePair(
                                         Climate.Parameter.span(0.0F, 0.5F),

@@ -120,7 +120,7 @@ public class HookEntity extends Projectile {
     public void tick() {
         super.tick();
         Player player = getPlayer();
-        if (player == null || player.isRemoved() || !player.isAlive() || !player.getItemInHand(getShootHand()).is(MiaItems.HOOK_ITEM)) {
+        if (player == null || player.isRemoved() || !player.isAlive() || !player.getItemInHand(getShootHand()).is(MiaItems.HOOK)) {
             discard();
             return;
         }

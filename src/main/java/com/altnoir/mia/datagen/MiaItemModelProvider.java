@@ -36,6 +36,7 @@ public class MiaItemModelProvider extends ItemModelProvider {
 
         skillItem(MiaItems.ARTIFACT_HASTE.get());
 
+        hookItem(MiaItems.HOOK.get());
         handheldItem(MiaItems.GROW_SWORD.get());
         handheldItem(MiaItems.PRASIOLITE_PICKAXE.get());
         handheldItem(MiaItems.PRASIOLITE_HOE.get());
@@ -46,5 +47,11 @@ public class MiaItemModelProvider extends ItemModelProvider {
         return getBuilder(MiaUtil.getItemKey(item).toString())
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
                 .texture("layer0", MiaUtil.id(MiaUtil.getItemKey(item).getNamespace(), "item/skill/" + MiaUtil.getItemKey(item).getPath()));
+    }
+
+    public ItemModelBuilder hookItem(Item item) {
+        return getBuilder(MiaUtil.getItemKey(item).toString())
+                .parent(new ModelFile.UncheckedModelFile(modLoc("item/template/hook")))
+                .texture("layer0", MiaUtil.id(MiaUtil.getItemNamespace(item), "item/" + MiaUtil.getItemPath(item)));
     }
 }

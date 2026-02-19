@@ -58,6 +58,7 @@ public class TheAbyssUtils {
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TheAbyssPlacements.SLAB_RUINS);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TheAbyssPlacements.SUN_STONE);
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.VINES);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_WATERLILY);
         addDefaultUndergroundVariety(builder);
 
         addDefaultSprings(builder);
@@ -68,6 +69,11 @@ public class TheAbyssUtils {
     public static void addMeadowVegetation(BiomeGenerationSettings.Builder builder) {
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_PLAIN);
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FLOWER_MEADOW);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
+    }
+
+    public static void addDenseMeadowVegetation(BiomeGenerationSettings.Builder builder) {
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_FERN);
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
     }
 

@@ -4,7 +4,13 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.common.component.MiaFoods;
 import com.altnoir.mia.common.item.*;
 import com.altnoir.mia.common.item.abs.IArtifactItem.Grade;
+import com.altnoir.mia.util.MiaUtil;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.CustomData;
 import net.neoforged.bus.api.IEventBus;
@@ -31,14 +37,14 @@ public class MiaItems {
             new ArtifactBundle(new Item.Properties(), Grade.B, 6));
 
     public static final DeferredItem<Item> TEST_ARTIFACT_1 = ITEMS.register("test_artifact_1", () ->
-            new EArtifact(new Item.Properties(), Grade.D, 1));
+            new ArtifactItem(new Item.Properties(), Grade.D, 1));
     public static final DeferredItem<Item> TEST_ARTIFACT_2 = ITEMS.register("test_artifact_2", () ->
-            new EArtifact(new Item.Properties(), Grade.C, 2));
+            new ArtifactItem(new Item.Properties(), Grade.C, 2));
     public static final DeferredItem<Item> TEST_ARTIFACT_3 = ITEMS.register("test_artifact_3", () ->
-            new EArtifact(new Item.Properties(), Grade.S, 4));
+            new ArtifactItem(new Item.Properties(), Grade.S, 4));
 
     public static final DeferredItem<Item> HEALTH_JUNKIE = ITEMS.register("health_junkie", () ->
-            new EArtifact(new Item.Properties(), Grade.D, 1));
+            new ArtifactItem(new Item.Properties(), Grade.C, 1));
 
     public static final DeferredItem<Item> ARTIFACT_HASTE = ITEMS.register("artifact_haste", () ->
             new HasteSkill(new Item.Properties()));
@@ -69,8 +75,8 @@ public class MiaItems {
     public static final DeferredItem<Item> MISTFUZZ_PEACH = ITEMS.register("mistfuzz_peach", () ->
             new Item(new Item.Properties().food(MiaFoods.MISTFUZZ_PEACH)));
 
-    public static final DeferredItem<Item> HOOK_ITEM = ITEMS.register(
-            "hook_item",
+    public static final DeferredItem<Item> HOOK = ITEMS.register(
+            "hook",
             () -> new HookItem(new Item.Properties().component(DataComponents.CUSTOM_DATA, CustomData.EMPTY).stacksTo(1))
     );
     public static final DeferredItem<Item> DEBUG_ATTRIBUTE_TOOL = ITEMS.register(

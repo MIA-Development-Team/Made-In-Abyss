@@ -4,7 +4,7 @@ import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.client.MiaClientConfig;
 import com.altnoir.mia.common.entity.projectile.HookEntity;
 import com.altnoir.mia.init.MiaItems;
-import com.altnoir.mia.network.server.RetractHookPayload;
+import com.altnoir.mia.common.network.RetractHookPayload;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -81,9 +81,9 @@ public class HookHandler {
     private static ItemStack findHookItem(Player player) {
         ItemStack mainHand = player.getMainHandItem();
         ItemStack offhand = player.getOffhandItem();
-        if (mainHand.is(MiaItems.HOOK_ITEM)) {
+        if (mainHand.is(MiaItems.HOOK)) {
             return mainHand;
-        } else if (offhand.is(MiaItems.HOOK_ITEM)) {
+        } else if (offhand.is(MiaItems.HOOK)) {
             return offhand;
         }
         return null;

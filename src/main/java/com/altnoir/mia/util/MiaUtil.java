@@ -157,6 +157,14 @@ public class MiaUtil {
         return Objects.requireNonNull(getItemRegistry().getKey(item));
     }
 
+    public static String getItemPath(Item item) {
+        return getItemKey(item).getPath();
+    }
+
+    public static String getItemNamespace(Item item) {
+        return getItemKey(item).getNamespace();
+    }
+
     public static ResourceLocation getBlockKey(Block block) {
         return Objects.requireNonNull(getBlockRegistry().getKey(block));
     }

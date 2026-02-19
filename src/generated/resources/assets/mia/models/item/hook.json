@@ -1,0 +1,6 @@
+{
+  "parent": "mia:item/template/hook",
+  "textures": {
+    "layer0": "mia:item/hook"
+  }
+}

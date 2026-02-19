@@ -110,10 +110,10 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         DensityFunction vegetation = DensityFunctions.shiftedNoise2d(shiftX, shiftZ, 0.25, noiseParameters.getOrThrow(Noises.VEGETATION));
 
         DensityFunction idwj0 = getFunction(densityFunctions, FACTOR);
-        DensityFunction idwj1 = DensityFunctions.rangeChoice(yFunction, -128, 0, MiaDensityFunctionTypes.generalAbyssHole(0.0F, 0.25F), MiaDensityFunctionTypes.hopperAbyssHole());
+        DensityFunction idwj1 = DensityFunctions.rangeChoice(yFunction, -128, 5, MiaDensityFunctionTypes.generalAbyssHole(0.0F, 0.25F), MiaDensityFunctionTypes.hopperAbyssHole());
         DensityFunction idwj2 = noiseGradientDensity(DensityFunctions.cache2d(idwj0), idwj1);
         DensityFunction idwj3 = DensityFunctions.add(idwj2, DensityFunctions.constant(-0.703125));
-        DensityFunction idwj4 = slide(idwj3, -64, MiaHeight.THE_ABYSS.maxY() - 64, 70, 0, -0.078125, 0, 24, 0.1171875);
+        DensityFunction idwj4 = slide(idwj3, -64, MiaHeight.THE_ABYSS.maxY(), 72, 0, -0.078125, 0, 24, 0.1171875);
 
         DensityFunction greatCaveNoodle = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_GREAT_CAVE_NOODLE);
         DensityFunction noodle = DensityFunctions.add(DensityFunctions.yClampedGradient(-16, 16, -1.5, 0.0),
@@ -133,9 +133,9 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 getFunction(densityFunctions, RIDGES), // ridges 生物群系奇异度函数。
                 idwj4, // initial_density_without_jaggedness// 预处理地表高度，影响表面规则的含水层的放置。游戏会从世界顶部以4*整型noise.size_vertical的精度向下查找，将首个大于25/64的值的高度作为预处理地表高度。
                 finalDensity, // final_density 最终密度。大于0的区域将放置默认方块并被表面规则替换，小于0的区域将放置空气并被含水层替换。
-                DensityFunctions.zero(),
-                DensityFunctions.zero(),
-                DensityFunctions.zero()
+                DensityFunctions.zero(), // vein_toggle
+                DensityFunctions.zero(), // vein_ridged
+                DensityFunctions.zero() // vein_gap
                 // 最后三个参数是矿脉生成相关的，因为是硬编码就不用它的
         );
     }
@@ -172,7 +172,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         return DensityFunctions.rangeChoice(
                 yFunction, -120, -64, noise,
                 DensityFunctions.rangeChoice(
-                        yFunction, 0, MiaHeight.THE_ABYSS.maxY(), noise, DensityFunctions.constant(1)
+                        yFunction, 5, MiaHeight.THE_ABYSS.maxY(), noise, DensityFunctions.constant(1)
                 )
         );
     }

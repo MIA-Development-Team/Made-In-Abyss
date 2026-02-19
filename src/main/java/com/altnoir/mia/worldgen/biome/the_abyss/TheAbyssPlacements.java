@@ -2,6 +2,8 @@ package com.altnoir.mia.worldgen.biome.the_abyss;
 
 import com.altnoir.mia.worldgen.MiaPlacementUtils;
 import com.altnoir.mia.worldgen.place.InvertedCountOnEveryLayerPlacement;
+import com.altnoir.mia.worldgen.place.TreeOnEveryLayerPlacement;
+import com.altnoir.mia.worldgen.place.WaterOnEveryLayerPlacement;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -31,16 +33,21 @@ public class TheAbyssPlacements {
     public static final ResourceKey<PlacedFeature> VINES = theAbyssKey("vines");
     public static final ResourceKey<PlacedFeature> GLOW_LICHEN = theAbyssKey("glow_lichen");
     public static final ResourceKey<PlacedFeature> PATCH_GRASS_PLAIN = theAbyssKey("patch_grass_plain");
+    public static final ResourceKey<PlacedFeature> PATCH_GRASS_FERN = theAbyssKey("patch_grass_fern");
     public static final ResourceKey<PlacedFeature> PATCH_LARGE_FERN = theAbyssKey("patch_large_fern");
+    public static final ResourceKey<PlacedFeature> PATCH_DENSE_LARGE_FERN = theAbyssKey("patch_dense_large_fern");
     public static final ResourceKey<PlacedFeature> PATCH_SUNFLOWER = theAbyssKey("patch_sunflower");
     public static final ResourceKey<PlacedFeature> CAVE_VINES = theAbyssKey("cave_vines");
+    public static final ResourceKey<PlacedFeature> PATCH_WATERLILY = theAbyssKey("patch_waterlily");
     public static final ResourceKey<PlacedFeature> FLOWER_MEADOW = theAbyssKey("flower_meadow");
     public static final ResourceKey<PlacedFeature> FOREST_FLOWERS = theAbyssKey("forest_flowers");
     public static final ResourceKey<PlacedFeature> ABYSS_TREES = theAbyssKey("abyss_trees");
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG = theAbyssKey("trees_skyfog");
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG_AND_AZALEA = theAbyssKey("trees_skyfog_and_azalea");
+    public static final ResourceKey<PlacedFeature> DENSE_TREES_SKYFOG = theAbyssKey("dense_trees_skyfog");
     public static final ResourceKey<PlacedFeature> TREES_FOSSILIZED = theAbyssKey("trees_fossilized");
     public static final ResourceKey<PlacedFeature> TREES_FOSSILIZED_UNDER = theAbyssKey("trees_fossilized_under");
+    public static final ResourceKey<PlacedFeature> POOL_WITH_REED = theAbyssKey("pool_with_reed");
     public static final ResourceKey<PlacedFeature> TREES_VERDANT_FUNGUS = theAbyssKey("trees_verdant_fungus");
     public static final ResourceKey<PlacedFeature> TREES_INVERTED = theAbyssKey("trees_inverted");
     public static final ResourceKey<PlacedFeature> PRASIOLITE_CLUSTER = theAbyssKey("prasiolite_cluster");
@@ -63,15 +70,19 @@ public class TheAbyssPlacements {
         Holder<ConfiguredFeature<?, ?>> vines = holdergetter.getOrThrow(VegetationFeatures.VINES);
         Holder<ConfiguredFeature<?, ?>> glow_lichen = holdergetter.getOrThrow(TheAbyssFeatures.GLOW_LICHEN);
         Holder<ConfiguredFeature<?, ?>> grass = holdergetter.getOrThrow(VegetationFeatures.PATCH_GRASS);
+        Holder<ConfiguredFeature<?, ?>> fern = holdergetter.getOrThrow(VegetationFeatures.PATCH_TAIGA_GRASS);
         Holder<ConfiguredFeature<?, ?>> large_fern = holdergetter.getOrThrow(VegetationFeatures.PATCH_LARGE_FERN);
         Holder<ConfiguredFeature<?, ?>> cave_vine = holdergetter.getOrThrow(CaveFeatures.CAVE_VINE);
+        Holder<ConfiguredFeature<?, ?>> waterlily = holdergetter.getOrThrow(TheAbyssFeatures.PATCH_WATERLILY);
         Holder<ConfiguredFeature<?, ?>> sunflower = holdergetter.getOrThrow(VegetationFeatures.PATCH_SUNFLOWER);
         Holder<ConfiguredFeature<?, ?>> flower_meadow = holdergetter.getOrThrow(TheAbyssFeatures.FLOWER_MEADOW);
         Holder<ConfiguredFeature<?, ?>> forest_flowers = holdergetter.getOrThrow(TheAbyssFeatures.FOREST_FLOWERS);
         Holder<ConfiguredFeature<?, ?>> skyfog = holdergetter.getOrThrow(TheAbyssFeatures.TREES_SKYFOG);
         Holder<ConfiguredFeature<?, ?>> skyfog_and_azalea = holdergetter.getOrThrow(TheAbyssFeatures.TREES_SKYFOG_AND_AZALEA);
+        Holder<ConfiguredFeature<?, ?>> dense_skyfog = holdergetter.getOrThrow(TheAbyssFeatures.DENSE_TREES_SKYFOG);
         Holder<ConfiguredFeature<?, ?>> fossilized_tree = holdergetter.getOrThrow(TheAbyssFeatures.TREES_FOSSILIZED);
         Holder<ConfiguredFeature<?, ?>> fossilized_tree_under = holdergetter.getOrThrow(TheAbyssFeatures.TREES_FOSSILIZED_UNDER);
+        Holder<ConfiguredFeature<?, ?>> pool_with_reed = holdergetter.getOrThrow(TheAbyssFeatures.POOL_WITH_REED);
         Holder<ConfiguredFeature<?, ?>> verdant_fungus = holdergetter.getOrThrow(TheAbyssFeatures.TREES_VERDANT_FUNGUS);
         Holder<ConfiguredFeature<?, ?>> inverted = holdergetter.getOrThrow(TheAbyssFeatures.TREES_INVERTED);
         Holder<ConfiguredFeature<?, ?>> prasiolite_cluster = holdergetter.getOrThrow(TheAbyssFeatures.PRASIOLITE_CLUSTER);
@@ -140,9 +151,20 @@ public class TheAbyssPlacements {
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(
+                context, PATCH_GRASS_FERN, fern,
+                NoiseThresholdCountPlacement.of(-0.8, 5, 10),
+                CountOnEveryLayerPlacement.of(1),
+                BiomeFilter.biome()
+        );
+        MiaPlacementUtils.register(
                 context, PATCH_LARGE_FERN, large_fern,
                 RarityFilter.onAverageOnceEvery(5),
                 CountOnEveryLayerPlacement.of(1),
+                BiomeFilter.biome()
+        );
+        MiaPlacementUtils.register(
+                context, PATCH_DENSE_LARGE_FERN, large_fern,
+                CountOnEveryLayerPlacement.of(2),
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(
@@ -162,7 +184,9 @@ public class TheAbyssPlacements {
                 RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
                 BiomeFilter.biome()
         );
-
+        PlacementUtils.register(context, PATCH_WATERLILY, waterlily,
+                WaterOnEveryLayerPlacement.of(4),
+                BiomeFilter.biome());
 
         MiaPlacementUtils.register(
                 context, FLOWER_MEADOW, flower_meadow,
@@ -196,15 +220,26 @@ public class TheAbyssPlacements {
                 abyssTreePlace(8)
         );
         MiaPlacementUtils.register(
+                context, DENSE_TREES_SKYFOG, dense_skyfog,
+                abyssTreePlace(16)
+        );
+        MiaPlacementUtils.register(
                 context, TREES_FOSSILIZED, fossilized_tree,
-                abyssTreePlace(9)
+                abyssTreePlace(8)
         );
 
         MiaPlacementUtils.register(
                 context, TREES_FOSSILIZED_UNDER, fossilized_tree_under,
                 abyssTreePlace(12)
         );
-
+        MiaPlacementUtils.register(context, POOL_WITH_REED, pool_with_reed,
+                CountPlacement.of(62),
+                InSquarePlacement.spread(),
+                ABYSS_BRINK_HEIGHT,
+                EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.ONLY_IN_AIR_PREDICATE, 12),
+                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                BiomeFilter.biome()
+        );
         MiaPlacementUtils.register(
                 context, TREES_VERDANT_FUNGUS, verdant_fungus,
                 abyssTreePlace(8)
@@ -249,17 +284,15 @@ public class TheAbyssPlacements {
 
     private static ImmutableList.Builder<PlacementModifier> abyssTreePlacementBase(int count) {
         return ImmutableList.<PlacementModifier>builder()
-                .add(CountOnEveryLayerPlacement.of(count))
+                .add(TreeOnEveryLayerPlacement.of(count))
                 .add(BiomeFilter.biome());
-
     }
 
     private static ImmutableList.Builder<PlacementModifier> abyssTreePlacementBase(int count, int rarity) {
         return ImmutableList.<PlacementModifier>builder()
-                .add(CountOnEveryLayerPlacement.of(count))
+                .add(TreeOnEveryLayerPlacement.of(count))
                 .add(RarityFilter.onAverageOnceEvery(rarity))
                 .add(BiomeFilter.biome());
-
     }
 
     public static List<PlacementModifier> abyssTreePlace(int count) {
