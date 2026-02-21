@@ -72,7 +72,7 @@ public class TheAbyssPlacements {
         Holder<ConfiguredFeature<?, ?>> spring_water = holdergetter.getOrThrow(TheAbyssFeatures.SPRING_WATER);
         Holder<ConfiguredFeature<?, ?>> lake_water = holdergetter.getOrThrow(TheAbyssFeatures.LAKE_WATER);
         Holder<ConfiguredFeature<?, ?>> sun_stone = holdergetter.getOrThrow(TheAbyssFeatures.SUN_STONE);
-        Holder<ConfiguredFeature<?, ?>> vines = holdergetter.getOrThrow(VegetationFeatures.VINES);
+        Holder<ConfiguredFeature<?, ?>> vines = holdergetter.getOrThrow(TheAbyssFeatures.VINES);
         Holder<ConfiguredFeature<?, ?>> glow_lichen = holdergetter.getOrThrow(TheAbyssFeatures.GLOW_LICHEN);
         Holder<ConfiguredFeature<?, ?>> grass = holdergetter.getOrThrow(VegetationFeatures.PATCH_GRASS);
         Holder<ConfiguredFeature<?, ?>> fern = holdergetter.getOrThrow(VegetationFeatures.PATCH_TAIGA_GRASS);
@@ -103,7 +103,7 @@ public class TheAbyssPlacements {
 
         MiaPlacementUtils.register(
                 context, MONSTER_CHEAT, monster_cheat,
-                RarityFilter.onAverageOnceEvery(3),
+                RarityFilter.onAverageOnceEvery(2),
                 InSquarePlacement.spread(),
                 ABYSS_BRINK_CAVE_HEIGHT,
                 BiomeFilter.biome()
@@ -141,6 +141,7 @@ public class TheAbyssPlacements {
         PlacementUtils.register(
                 context, VINES, vines,
                 CountPlacement.of(127),
+                CountPlacement.of(5),
                 InSquarePlacement.spread(),
                 ABYSS_BRINK_HEIGHT,
                 BiomeFilter.biome()

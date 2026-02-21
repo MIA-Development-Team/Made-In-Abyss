@@ -52,6 +52,7 @@ public class TheAbyssFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> SPRING_WATER = theAbyssKey("spring_water");
     public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_WATER = theAbyssKey("lake_water");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SUN_STONE = theAbyssKey("sun_stone");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> VINES = theAbyssKey("vines");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLOW_LICHEN = theAbyssKey("glow_lichen");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW = theAbyssKey("flower_meadow_layer1");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW2 = theAbyssKey("flower_meadow_layer2");
@@ -129,6 +130,8 @@ public class TheAbyssFeatures {
                 context, SUN_STONE, Feature.SIMPLE_BLOCK,
                 new SimpleBlockConfiguration(BlockStateProvider.simple(MiaBlocks.SUN_STONE.get().defaultBlockState()))
         );
+        MiaFeatureUtils.register(context, VINES, MiaFeatures.LONG_VINES.get(), new LongVinesConfiguration(UniformInt.of(4, 16)));
+
         MultifaceBlock multifaceblock = (MultifaceBlock) Blocks.GLOW_LICHEN;
         MiaFeatureUtils.register(
                 context, GLOW_LICHEN, Feature.MULTIFACE_GROWTH,
@@ -431,8 +434,9 @@ public class TheAbyssFeatures {
                         BlockTrunkConfiguration.layer(
                                 new WeightedListInt(
                                         SimpleWeightedRandomList.<IntProvider>builder()
-                                                .add(UniformInt.of(10, 14), 3)
-                                                .add(ConstantInt.of(8), 1)
+                                                .add(UniformInt.of(10, 14), 7)
+                                                .add(ConstantInt.of(8), 2)
+                                                .add(UniformInt.of(16, 24), 1)
                                                 .build()
                                 ),
                                 new WeightedStateProvider(

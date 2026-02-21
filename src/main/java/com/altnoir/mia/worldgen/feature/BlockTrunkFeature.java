@@ -64,7 +64,7 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
                             worldgenlevel.setBlock(
                                     blockpos$mutableblockpos1, targetState, 2
                             );
-                            if (posHeight < j - 1 && targetState.isSolidRender(worldgenlevel, blockpos$mutableblockpos1) && randomsource.nextFloat() < context.config().decChance()) {
+                            if (posHeight < j - 2 && targetState.isSolidRender(worldgenlevel, blockpos$mutableblockpos1) && randomsource.nextFloat() < context.config().decChance()) {
                                 setDecoration(worldgenlevel, blockpos$mutableblockpos1, blockConfiguration, randomsource);
                             }
                         }

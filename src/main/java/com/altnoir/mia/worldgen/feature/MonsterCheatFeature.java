@@ -48,7 +48,17 @@ public class MonsterCheatFeature extends Feature<MonsterCheatConfiguration> {
             if (worldgenlevel.isEmptyBlock(blockpos)) {
                 BlockState blockstate = worldgenlevel.getBlockState(blockpos.below());
                 if (isDirt(blockstate) || MiaFeatures.isStone(blockstate)) {
-                    break;
+                    boolean all = true;
+                    for (Direction dir : Direction.Plane.HORIZONTAL) {
+                        BlockState dirState = worldgenlevel.getBlockState(blockpos.below().relative(dir));
+                        if (!(isDirt(dirState) || MiaFeatures.isStone(dirState))) {
+                            all = false;
+                            break;
+                        }
+                    }
+                    if (all) {
+                        break;
+                    }
                 }
             }
         }
@@ -78,12 +88,8 @@ public class MonsterCheatFeature extends Feature<MonsterCheatConfiguration> {
 
                         if (direction != Direction.UP) {
                             BlockPos statePos2 = statePos.below();
-                            BlockPos statePos3 = statePos2.below();
                             if (worldgenlevel.getBlockState(statePos2).canBeReplaced()) {
                                 this.safeSetBlock(worldgenlevel, statePos2, bsc.outerStateProvider.getState(randomsource, statePos2), predicate);
-                            }
-                            if (worldgenlevel.getBlockState(statePos3).canBeReplaced()) {
-                                this.safeSetBlock(worldgenlevel, statePos3, bsc.outerStateProvider.getState(randomsource, statePos3), predicate);
                             }
                         }
                     }

@@ -8,8 +8,8 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class MiaDripstoneUtils {
-    protected static double getDripstoneHeight(double radius, double maxRadius, double scale, double minRadius) {
+public class MaCavePillarUtils {
+    protected static double getPillarHeight(double radius, double maxRadius, double scale, double minRadius) {
         if (radius < minRadius) {
             radius = minRadius;
         }
@@ -44,18 +44,18 @@ public class MiaDripstoneUtils {
     }
 
     protected static boolean isEmptyOrWater(LevelAccessor level, BlockPos pos) {
-        return level.isStateAtPosition(pos, MiaDripstoneUtils::isEmptyOrWater);
+        return level.isStateAtPosition(pos, MaCavePillarUtils::isEmptyOrWater);
     }
 
     protected static boolean isEmptyOrWaterOrLava(LevelAccessor level, BlockPos pos) {
-        return level.isStateAtPosition(pos, MiaDripstoneUtils::isEmptyOrWaterOrLava);
+        return level.isStateAtPosition(pos, MaCavePillarUtils::isEmptyOrWaterOrLava);
     }
 
-    public static boolean isDripstoneBaseOrLava(BlockState state) {
-        return isDripstoneBase(state) || state.is(Blocks.LAVA);
+    public static boolean isPillarBaseOrLava(BlockState state) {
+        return isPillarBase(state) || state.is(Blocks.LAVA);
     }
 
-    public static boolean isDripstoneBase(BlockState state) {
+    public static boolean isPillarBase(BlockState state) {
         return !state.is(MiaTags.Blocks.ABYSS_DRIPSTONE_UNREPLACEABLE);
     }
 

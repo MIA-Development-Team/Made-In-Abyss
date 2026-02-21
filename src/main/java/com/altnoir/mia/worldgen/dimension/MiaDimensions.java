@@ -73,25 +73,25 @@ public class MiaDimensions {
                                 // 第一层洞穴
                                 biomePair(
                                         Climate.Parameter.span(-0.5F, 0.0F),
-                                        Climate.Parameter.span(0.2F, 0.8F),
+                                        Climate.Parameter.span(0.2F, 1.5F),
                                         Climate.Parameter.span(0.3F, 0.5F),
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
                                 ),
                                 biomePair(
                                         Climate.Parameter.span(-0.5F, 0.0F),
-                                        Climate.Parameter.span(0.2F, 0.8F),
+                                        Climate.Parameter.span(0.2F, 1.5F),
                                         Climate.Parameter.span(0.5F, 0.8F),
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.DENSE_SKYFOG_FOREST)
                                 ),
                                 biomePair(
                                         Climate.Parameter.span(-0.5F, 0.5F),
-                                        Climate.Parameter.span(0.2F, 0.8F),
+                                        Climate.Parameter.span(0.2F, 1.5F),
                                         Climate.Parameter.span(-0.6F, -0.4F),
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.UNDER_FOSSILIZED_FOREST)
                                 ),
                                 biomePair(
                                         Climate.Parameter.span(-0.5F, 0.5F),
-                                        Climate.Parameter.span(0.2F, 0.8F),
+                                        Climate.Parameter.span(0.2F, 1.5F),
                                         Climate.Parameter.span(-0.9F, -0.6F),
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.RICH_FOSSILIZED_FOREST)
                                 ),
@@ -103,19 +103,19 @@ public class MiaDimensions {
                                 ),
                                 biomePair(
                                         Climate.Parameter.span(-0.5F, 0.5F),
-                                        Climate.Parameter.span(0.1F, 0.4F),
+                                        Climate.Parameter.span(0.1F, 0.7F),
                                         Climate.Parameter.point(0.0F),
                                         0.175F, biomeRegistry.getOrThrow(MiaBiomes.ABYSS_LUSH_CAVES)
                                 ),
                                 biomePair(
                                         Climate.Parameter.span(-0.5F, 0.0F),
-                                        Climate.Parameter.span(0.4F, 0.7F),
+                                        Climate.Parameter.span(0.4F, 1.0F),
                                         Climate.Parameter.point(0.0F),
                                         0.25F, biomeRegistry.getOrThrow(MiaBiomes.ABYSS_DRIPSTONE_CAVES)
                                 ),
                                 biomePair(
                                         Climate.Parameter.span(-0.3F, 0.5F),
-                                        Climate.Parameter.span(0.7F, 1.0F),
+                                        Climate.Parameter.span(0.7F, 1.5F),
                                         Climate.Parameter.point(0.0F),
                                         0.375F, biomeRegistry.getOrThrow(MiaBiomes.PRASIOLITE_CAVES)
                                 ),
@@ -124,13 +124,13 @@ public class MiaDimensions {
                                 biomePair(
                                         Climate.Parameter.span(-0.5F, 0.5F),
                                         Climate.Parameter.point(1.9F),
-                                        Climate.Parameter.point(0.0F),
+                                        Climate.Parameter.span(-0.5F, 0.5F),
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.TEMPTATION_FOREST)
                                 ),
                                 biomePair(
                                         Climate.Parameter.span(-0.5F, 0.5F),
                                         Climate.Parameter.point(2.0F),
-                                        Climate.Parameter.point(0.0F),
+                                        Climate.Parameter.span(-0.5F, 0.5F),
                                         0.0F, biomeRegistry.getOrThrow(MiaBiomes.INVERTED_FOREST)
                                 )
                         )),

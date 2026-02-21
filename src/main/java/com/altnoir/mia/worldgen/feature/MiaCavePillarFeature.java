@@ -32,15 +32,15 @@ public class MiaCavePillarFeature extends Feature<MiaCavePillarConfiguration> {
         BlockPos blockpos = context.origin();
         MiaCavePillarConfiguration ldg = context.config();
         RandomSource randomsource = context.random();
-        if (!MiaDripstoneUtils.isEmptyOrWater(worldgenlevel, blockpos)) {
+        if (!MaCavePillarUtils.isEmptyOrWater(worldgenlevel, blockpos)) {
             return false;
         } else {
             Optional<Column> optional = Column.scan(
                     worldgenlevel,
                     blockpos,
                     ldg.floorToCeilingSearchRange,
-                    MiaDripstoneUtils::isEmptyOrWater,
-                    MiaDripstoneUtils::isDripstoneBaseOrLava
+                    MaCavePillarUtils::isEmptyOrWater,
+                    MaCavePillarUtils::isPillarBaseOrLava
             );
             if (optional.isPresent() && optional.get() instanceof Column.Range column$range) {
                 if (column$range.height() < 4) {
@@ -142,7 +142,7 @@ public class MiaCavePillarFeature extends Feature<MiaCavePillarConfiguration> {
                         return false;
                     }
 
-                    if (MiaDripstoneUtils.isCircleMostlyEmbeddedInStone(level, windOffsetter.offset(blockpos$mutableblockpos), this.radius)) {
+                    if (MaCavePillarUtils.isCircleMostlyEmbeddedInStone(level, windOffsetter.offset(blockpos$mutableblockpos), this.radius)) {
                         this.root = blockpos$mutableblockpos;
                         return true;
                     }
@@ -157,7 +157,7 @@ public class MiaCavePillarFeature extends Feature<MiaCavePillarConfiguration> {
         }
 
         private int getHeightAtRadius(float radius) {
-            return (int) MiaDripstoneUtils.getDripstoneHeight((double) radius, (double) this.radius, this.scale, this.bluntness);
+            return (int) MaCavePillarUtils.getPillarHeight((double) radius, (double) this.radius, this.scale, this.bluntness);
         }
 
         void placeBlocks(WorldGenLevel level, RandomSource random, MiaCavePillarFeature.WindOffsetter windOffsetter, BlockPos origin) {
@@ -180,7 +180,7 @@ public class MiaCavePillarFeature extends Feature<MiaCavePillarConfiguration> {
                             for (int i1 = 0; i1 < k && blockpos$mutableblockpos.getY() < l; i1++) {
                                 BlockPos blockpos = windOffsetter.offset(blockpos$mutableblockpos);
 
-                                if (level.isStateAtPosition(blockpos, MiaDripstoneUtils::isDripstoneBase)) {
+                                if (level.isStateAtPosition(blockpos, MaCavePillarUtils::isPillarBase)) {
                                     flag = true;
                                     Block block = MiaBlocks.FOSSILIZED_LOG.get();
                                     level.setBlock(blockpos, block.defaultBlockState(), 2);

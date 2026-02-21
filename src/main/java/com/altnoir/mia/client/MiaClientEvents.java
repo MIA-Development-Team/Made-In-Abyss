@@ -6,6 +6,7 @@ import com.altnoir.mia.client.gui.screens.inventory.tooltip.ClientArtifactBundle
 import com.altnoir.mia.client.handler.HookHandler;
 import com.altnoir.mia.client.renderer.TheAbyssDimEffects;
 import com.altnoir.mia.common.component.ArtifactBundleInventoryComponent;
+import com.altnoir.mia.compat.Mods;
 import com.altnoir.mia.compat.ponder.MiaPonder;
 import com.altnoir.mia.core.event.client.*;
 import com.altnoir.mia.core.event.common.AbyssMobEvent;
@@ -25,11 +26,7 @@ public class MiaClientEvents {
     }
 
     public static void onClientSetup(final FMLClientSetupEvent event) {
-        try {
-            Class.forName("net.createmod.ponder.foundation.PonderIndex");
-            PonderIndex.addPlugin(new MiaPonder());
-        } catch (ClassNotFoundException ignored) {
-        }
+        Mods.PONDER.executeIfInstalled(() -> () -> PonderIndex.addPlugin(new MiaPonder()));
     }
 
     public static void registerParticles(RegisterParticleProvidersEvent event) {

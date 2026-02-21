@@ -7,7 +7,6 @@ import com.altnoir.mia.worldgen.feature.configurations.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockColumnConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.neoforged.bus.api.IEventBus;
@@ -22,6 +21,9 @@ public class MiaFeatures {
     );
     public static final DeferredHolder<Feature<?>, ClusterFeature> CLUSTER = FEATURE.register(
             "cluster", () -> new ClusterFeature(ClusterConfiguration.CODEC)
+    );
+    public static final DeferredHolder<Feature<?>, LongVinesFeature> LONG_VINES = FEATURE.register(
+            "long_vines", () -> new LongVinesFeature(LongVinesConfiguration.CODEC)
     );
     public static final DeferredHolder<Feature<?>, InvertedTreeFeature> INVERTED_TREE = FEATURE.register(
             "inverted_tree", () -> new InvertedTreeFeature(TreeConfiguration.CODEC)
