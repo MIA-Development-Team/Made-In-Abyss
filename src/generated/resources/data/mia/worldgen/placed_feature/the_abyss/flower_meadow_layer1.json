@@ -1,5 +1,5 @@
 {
-  "feature": "mia:the_abyss/flower_meadow",
+  "feature": "mia:the_abyss/flower_meadow_layer1",
   "placement": [
     {
       "type": "minecraft:count_on_every_layer",

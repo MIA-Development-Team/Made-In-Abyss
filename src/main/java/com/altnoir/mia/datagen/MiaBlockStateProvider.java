@@ -168,8 +168,16 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         clusterBlock(MiaBlocks.SMALL_PRASIOLITE_BUD);
 
         // 植物
+        bushBlock(MiaBlocks.MARGINAL_WEED);
+        bushBlock(MiaBlocks.CRIMSON_VEILGRASS);
+        bushBlock(MiaBlocks.SCORCHLEAF);
         createFlowerBed(MiaBlocks.FORTITUDE_FLOWER);
         createDoublePlant(MiaBlocks.REED);
+        bushBlock(MiaBlocks.BALLOON_PLANT);
+        bushBlock(MiaBlocks.GREEN_PERILLA);
+        bushBlock(MiaBlocks.KONJAC_ROOT);
+        bushBlock(MiaBlocks.SILVEAF_FUNGUS);
+
 
         //遗物
         blockWithItem(MiaBlocks.SUN_STONE);

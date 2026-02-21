@@ -83,7 +83,6 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
         var dec = bc.dec().state();
         int length = bc.dec().height().sample(random);
         var decFace = bc.decFace().state();
-        var face = bc.direction();
 
         Direction[] directions = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
         Direction dir = directions[random.nextInt(directions.length)];
@@ -100,8 +99,8 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
                 }
 
                 worldGenLevel.setBlock(newPos, state, 2);
-                if (worldGenLevel.getBlockState(newPos.mutable().move(face)).isEmpty()) {
-                    worldGenLevel.setBlock(newPos.mutable().move(face), decFace.getState(random, newPos.mutable().move(face)), 2);
+                if (worldGenLevel.getBlockState(newPos.mutable().move(Direction.UP)).isEmpty()) {
+                    worldGenLevel.setBlock(newPos.mutable().move(Direction.UP), decFace.getState(random, newPos.mutable().move(Direction.UP)), 2);
                 }
             } else {
                 break;

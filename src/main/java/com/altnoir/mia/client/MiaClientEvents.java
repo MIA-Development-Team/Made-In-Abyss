@@ -25,7 +25,11 @@ public class MiaClientEvents {
     }
 
     public static void onClientSetup(final FMLClientSetupEvent event) {
-        PonderIndex.addPlugin(new MiaPonder());
+        try {
+            Class.forName("net.createmod.ponder.foundation.PonderIndex");
+            PonderIndex.addPlugin(new MiaPonder());
+        } catch (ClassNotFoundException ignored) {
+        }
     }
 
     public static void registerParticles(RegisterParticleProvidersEvent event) {

@@ -46,6 +46,22 @@ public class TheAbyssUtils {
         globalAbyssGenerationNotGeode(builder);
     }
 
+    public static void addMeadowVegetation(BiomeGenerationSettings.Builder builder) {
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_PLAIN);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FLOWER_MEADOW);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
+    }
+
+    public static void addMeadow2Vegetation(BiomeGenerationSettings.Builder builder) {
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_PLAIN);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FLOWER_MEADOW2);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
+    }
+
+    public static void addDenseMeadowVegetation(BiomeGenerationSettings.Builder builder) {
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_FERN);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
+    }
 
     public static void globalAbyssGeneration(BiomeGenerationSettings.Builder builder) {
         builder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.PRASIOLITE_GEODE);
@@ -64,17 +80,6 @@ public class TheAbyssUtils {
         addDefaultSprings(builder);
         addDefaultOres(builder);
         addDefaultSoftDisks(builder);
-    }
-
-    public static void addMeadowVegetation(BiomeGenerationSettings.Builder builder) {
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_PLAIN);
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FLOWER_MEADOW);
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
-    }
-
-    public static void addDenseMeadowVegetation(BiomeGenerationSettings.Builder builder) {
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_FERN);
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
     }
 
     public static void addDefaultOres(BiomeGenerationSettings.Builder builder) {

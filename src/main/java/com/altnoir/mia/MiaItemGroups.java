@@ -136,8 +136,16 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.INVERTED_SAPLING);
 
                         // 植物
+                        output.accept(MiaBlocks.MARGINAL_WEED);
+                        output.accept(MiaBlocks.CRIMSON_VEILGRASS);
+                        output.accept(MiaBlocks.SCORCHLEAF);
                         output.accept(MiaBlocks.FORTITUDE_FLOWER);
                         output.accept(MiaBlocks.REED);
+                        output.accept(MiaBlocks.BALLOON_PLANT);
+                        output.accept(MiaBlocks.GREEN_PERILLA);
+                        output.accept(MiaBlocks.KONJAC_ROOT);
+                        output.accept(MiaBlocks.SILVEAF_FUNGUS);
+
                         // 红石
                         output.accept(MiaBlocks.SKYFOG_PRESSURE_PLATE);
                         output.accept(MiaBlocks.SKYFOG_BUTTON);

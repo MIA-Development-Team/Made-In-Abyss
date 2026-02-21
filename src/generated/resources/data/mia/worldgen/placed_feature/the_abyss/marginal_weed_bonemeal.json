@@ -1,0 +1,12 @@
+{
+  "feature": "mia:the_abyss/single_piece_of_marginal_weed",
+  "placement": [
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:matching_blocks",
+        "blocks": "minecraft:air"
+      }
+    }
+  ]
+}

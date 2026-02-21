@@ -29,10 +29,10 @@ public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity
 
         var inputStack = blockEntity.extractInput(1, true);
         if (!inputStack.isEmpty()) {
-            var yOffset = (float)Math.sin(time * 0.1F) * 0.05F;
+            var yOffset = (float) Math.sin(time * 0.1F) * 0.05F;
 
             poseStack.pushPose();
-            poseStack.translate(0.5F, 0.65F + yOffset, 0.5F);
+            poseStack.translate(0.5F, 1.05F + yOffset, 0.5F);
             poseStack.scale(0.5F, 0.5F, 0.5F);
 
             var inputAngle = time * 4 % 360;
@@ -61,13 +61,13 @@ public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity
             var stack = nonEmptyStacks.get(i);
             poseStack.pushPose();
 
-            if (count == 1) {
-                var yOffset = (float)Math.sin(time * 0.1F) * 0.05F;
+            if (count < 1) {
+                var yOffset = (float) Math.sin(time * 0.1F) * 0.05F;
                 poseStack.translate(0.5F, yBase + yOffset, 0.5F);
             } else {
                 var angle = ((2 * Math.PI / count) * i) + Math.toRadians(time * rotationSpeed);
-                var x = 0.5F + (float)Math.cos(angle) * radius;
-                var z = 0.5F + (float)Math.sin(angle) * radius;
+                var x = 0.5F + (float) Math.cos(angle) * radius;
+                var z = 0.5F + (float) Math.sin(angle) * radius;
                 poseStack.translate(x, yBase, z);
             }
 

@@ -12,6 +12,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
@@ -22,10 +23,12 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -172,8 +175,16 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         dropWhenSilkTouch(MiaBlocks.SMALL_PRASIOLITE_BUD.get());
 
         // 植物
+        add(MiaBlocks.MARGINAL_WEED.get(), this::createAbyssGrassDrops);
+        add(MiaBlocks.CRIMSON_VEILGRASS.get(), this::createAbyssGrassDrops);
+        add(MiaBlocks.SCORCHLEAF.get(), this::createAbyssGrassDrops);
         add(MiaBlocks.FORTITUDE_FLOWER.get(), this::createPetalsDrops);
         add(MiaBlocks.REED.get(), block -> createSinglePropConditionTable(block, DoublePlantBlock.HALF, DoubleBlockHalf.LOWER));
+        dropSelf(MiaBlocks.BALLOON_PLANT.get());
+        dropSelf(MiaBlocks.GREEN_PERILLA.get());
+        dropSelf(MiaBlocks.KONJAC_ROOT.get());
+        dropSelf(MiaBlocks.SILVEAF_FUNGUS.get());
+
         // 工作台
         dropSelf(MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
         // 设备
@@ -200,6 +211,19 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
                                         block, LootItem.lootTableItem(other).apply(SetItemCountFunction.setCount(ConstantValue.exactly(count / 2)))
                                 )
                         )
+        );
+    }
+
+    protected LootTable.Builder createAbyssGrassDrops(Block block) {
+        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+        return this.createShearsDispatchTable(
+                block,
+                (LootPoolEntryContainer.Builder<?>) this.applyExplosionDecay(
+                        block,
+                        LootItem.lootTableItem(Items.WHEAT_SEEDS)
+                                .when(LootItemRandomChanceCondition.randomChance(0.125F))
+                                .apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE), 2))
+                )
         );
     }
 

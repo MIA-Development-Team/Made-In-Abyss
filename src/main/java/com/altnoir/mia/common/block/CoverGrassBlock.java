@@ -1,18 +1,18 @@
 package com.altnoir.mia.common.block;
 
 import com.altnoir.mia.common.block.abs.AbsCoverGrassBlock;
+import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.worldgen.biome.the_abyss.TheAbyssPlacements;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -53,10 +53,10 @@ public class CoverGrassBlock extends AbsCoverGrassBlock implements BonemealableB
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         BlockPos blockpos = pos.above();
-        BlockState blockstate = Blocks.SHORT_GRASS.defaultBlockState();
+        BlockState blockstate = MiaBlocks.MARGINAL_WEED.get().defaultBlockState();
         Optional<Holder.Reference<PlacedFeature>> optional = level.registryAccess()
                 .registryOrThrow(Registries.PLACED_FEATURE)
-                .getHolder(VegetationPlacements.GRASS_BONEMEAL);
+                .getHolder(TheAbyssPlacements.MARGINAL_WEED_BONEMEAL);
 
         label49:
         for (int i = 0; i < 128; i++) {

@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class PedestalBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 9, 14);
+    public static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 16, 15);
     public static final MapCodec<PedestalBlock> CODEC = simpleCodec(PedestalBlock::new);
 
     public PedestalBlock(Properties properties) {

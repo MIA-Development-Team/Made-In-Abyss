@@ -53,14 +53,17 @@ public class TheAbyssFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_WATER = theAbyssKey("lake_water");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SUN_STONE = theAbyssKey("sun_stone");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLOW_LICHEN = theAbyssKey("glow_lichen");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW = theAbyssKey("flower_meadow");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW = theAbyssKey("flower_meadow_layer1");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW2 = theAbyssKey("flower_meadow_layer2");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_FLOWERS = theAbyssKey("forest_flowers");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_WATERLILY = theAbyssKey("patch_waterlily");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SINGLE_PIECE_OF_MARGINAL_WEED = theAbyssKey("single_piece_of_marginal_weed");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_SKYFOG = theAbyssKey("trees_skyfog");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_SKYFOG_AND_AZALEA = theAbyssKey("trees_skyfog_and_azalea");
     public static final ResourceKey<ConfiguredFeature<?, ?>> DENSE_TREES_SKYFOG = theAbyssKey("dense_trees_skyfog");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED = theAbyssKey("trees_fossilized");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED_UNDER = theAbyssKey("trees_fossilized_under");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED_UNDER2 = theAbyssKey("trees_fossilized_under2");
     public static final ResourceKey<ConfiguredFeature<?, ?>> REED = theAbyssKey("reed");
     public static final ResourceKey<ConfiguredFeature<?, ?>> POOL_WITH_REED = theAbyssKey("pool_with_reed");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_VERDANT_FUNGUS = theAbyssKey("trees_verdant_fungus");
@@ -131,12 +134,12 @@ public class TheAbyssFeatures {
                 context, GLOW_LICHEN, Feature.MULTIFACE_GROWTH,
                 new MultifaceGrowthConfiguration(
                         multifaceblock,
-                        20,
+                        32,
                         false,
                         true,
                         true,
-                        0.5F,
-                        abyssEdgeStone()
+                        0.8F,
+                        abyssEdgeStone(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(), MiaBlocks.COVERGRASS_TUFF.get())
                 )
         );
 
@@ -151,19 +154,46 @@ public class TheAbyssFeatures {
                                 new SimpleBlockConfiguration(
                                         new DualNoiseProvider(
                                                 new InclusiveRange<>(1, 3),
-                                                new NormalNoise.NoiseParameters(-10, 1.0),
+                                                new NormalNoise.NoiseParameters(-5, 1.0),
                                                 1.0F,
                                                 2345L,
                                                 new NormalNoise.NoiseParameters(-3, 1.0),
                                                 1.0F,
                                                 List.of(
-                                                        Blocks.TALL_GRASS.defaultBlockState(),
-                                                        Blocks.AZURE_BLUET.defaultBlockState(),
-                                                        Blocks.OXEYE_DAISY.defaultBlockState(),
-                                                        Blocks.WHITE_TULIP.defaultBlockState(),
-                                                        Blocks.LILY_OF_THE_VALLEY.defaultBlockState(),
+                                                        Blocks.BIG_DRIPLEAF.defaultBlockState(),
+                                                        MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
+                                                        MiaBlocks.GREEN_PERILLA.get().defaultBlockState(),
+                                                        MiaBlocks.SCORCHLEAF.get().defaultBlockState(),
                                                         Blocks.TORCHFLOWER.defaultBlockState(),
-                                                        Blocks.SHORT_GRASS.defaultBlockState()
+                                                        MiaBlocks.MARGINAL_WEED.get().defaultBlockState()
+                                                )
+                                        )
+                                )
+                        )
+                )
+        );
+        MiaFeatureUtils.register(
+                context, FLOWER_MEADOW2, Feature.FLOWER,
+                new RandomPatchConfiguration(
+                        96,
+                        6,
+                        2,
+                        PlacementUtils.onlyWhenEmpty(
+                                Feature.SIMPLE_BLOCK,
+                                new SimpleBlockConfiguration(
+                                        new DualNoiseProvider(
+                                                new InclusiveRange<>(1, 3),
+                                                new NormalNoise.NoiseParameters(-5, 1.0),
+                                                1.0F,
+                                                2345L,
+                                                new NormalNoise.NoiseParameters(-3, 1.0),
+                                                1.0F,
+                                                List.of(
+                                                        Blocks.BIG_DRIPLEAF.defaultBlockState(),
+                                                        MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
+                                                        MiaBlocks.SILVEAF_FUNGUS.get().defaultBlockState(),
+                                                        MiaBlocks.KONJAC_ROOT.get().defaultBlockState(),
+                                                        MiaBlocks.CRIMSON_VEILGRASS.get().defaultBlockState()
                                                 )
                                         )
                                 )
@@ -192,6 +222,9 @@ public class TheAbyssFeatures {
                         96, 7, 3,
                         PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.LILY_PAD)))
                 )
+        );
+        MiaFeatureUtils.register(context, SINGLE_PIECE_OF_MARGINAL_WEED, Feature.SIMPLE_BLOCK,
+                new SimpleBlockConfiguration(BlockStateProvider.simple(MiaBlocks.MARGINAL_WEED.get().defaultBlockState()))
         );
 
         MiaFeatureUtils.register(
@@ -230,14 +263,21 @@ public class TheAbyssFeatures {
         MiaFeatureUtils.register(context, TREES_FOSSILIZED, Feature.SIMPLE_RANDOM_SELECTOR,
                 new SimpleRandomFeatureConfiguration(
                         HolderSet.direct(
-                                makeSmallPillar(MiaBlocks.FOSSILIZED_LOG.get(), MiaBlocks.MOSSY_FOSSILIZED_LOG.get(), Blocks.MOSS_CARPET, 2)
+                                makeSmallPillar(MiaBlocks.FOSSILIZED_LOG.get(), MiaBlocks.MOSSY_FOSSILIZED_LOG.get(), Blocks.MOSS_CARPET, 2, Direction.UP)
                         )
                 )
         );
         MiaFeatureUtils.register(context, TREES_FOSSILIZED_UNDER, Feature.SIMPLE_RANDOM_SELECTOR,
                 new SimpleRandomFeatureConfiguration(
                         HolderSet.direct(
-                                makeSmallPillar(MiaBlocks.FOSSILIZED_LOG.get(), MiaBlocks.MOSSY_FOSSILIZED_LOG.get(), Blocks.MOSS_CARPET, 8)
+                                makeSmallPillar(MiaBlocks.FOSSILIZED_LOG.get(), MiaBlocks.MOSSY_FOSSILIZED_LOG.get(), Blocks.MOSS_CARPET, 8, Direction.UP)
+                        )
+                )
+        );
+        MiaFeatureUtils.register(context, TREES_FOSSILIZED_UNDER2, Feature.SIMPLE_RANDOM_SELECTOR,
+                new SimpleRandomFeatureConfiguration(
+                        HolderSet.direct(
+                                makeSmallPillar(MiaBlocks.FOSSILIZED_LOG.get(), MiaBlocks.MOSSY_FOSSILIZED_LOG.get(), Blocks.MOSS_CARPET, 8, Direction.DOWN)
                         )
                 )
         );
@@ -385,30 +425,48 @@ public class TheAbyssFeatures {
         );
     }
 
-    private static Holder<PlacedFeature> makeSmallPillar(Block block1, Block block2, Block blockTop, int l) {
-        return PlacementUtils.inlinePlaced(
-                MiaFeatures.BLOCK_TRUNK.get(),
-                new BlockTrunkConfiguration(
-                        List.of(
-                                BlockTrunkConfiguration.layer(
-                                        new WeightedListInt(
-                                                SimpleWeightedRandomList.<IntProvider>builder()
-                                                        .add(UniformInt.of(10, 14), 3)
-                                                        .add(ConstantInt.of(8), 1)
-                                                        .build()
-                                        ),
-                                        new WeightedStateProvider(
-                                                SimpleWeightedRandomList.<BlockState>builder()
-                                                        .add(block1.defaultBlockState(), 1)
-                                                        .add(block2.defaultBlockState(), 3)
-                                                        .build()
-                                        )
+    private static Holder<PlacedFeature> makeSmallPillar(Block block1, Block block2, Block blockTop, int l, Direction direction) {
+        var list = direction == Direction.UP ?
+                List.of(
+                        BlockTrunkConfiguration.layer(
+                                new WeightedListInt(
+                                        SimpleWeightedRandomList.<IntProvider>builder()
+                                                .add(UniformInt.of(10, 14), 3)
+                                                .add(ConstantInt.of(8), 1)
+                                                .build()
                                 ),
-                                BlockTrunkConfiguration.layer(
-                                        ConstantInt.of(1),
-                                        BlockStateProvider.simple(blockTop.defaultBlockState())
+                                new WeightedStateProvider(
+                                        SimpleWeightedRandomList.<BlockState>builder()
+                                                .add(block1.defaultBlockState(), 1)
+                                                .add(block2.defaultBlockState(), 3)
+                                                .build()
                                 )
                         ),
+                        BlockTrunkConfiguration.layer(
+                                ConstantInt.of(1),
+                                BlockStateProvider.simple(blockTop.defaultBlockState())
+                        )
+                ) :
+                List.of(
+                        BlockTrunkConfiguration.layer(
+                                new WeightedListInt(
+                                        SimpleWeightedRandomList.<IntProvider>builder()
+                                                .add(UniformInt.of(8, 12), 3)
+                                                .add(ConstantInt.of(6), 1)
+                                                .build()
+                                ),
+                                new WeightedStateProvider(
+                                        SimpleWeightedRandomList.<BlockState>builder()
+                                                .add(block1.defaultBlockState(), 1)
+                                                .add(block2.defaultBlockState(), 3)
+                                                .build()
+                                )
+                        )
+                );
+
+        return PlacementUtils.inlinePlaced(
+                MiaFeatures.BLOCK_TRUNK.get(),
+                new BlockTrunkConfiguration(list,
                         BlockTrunkConfiguration.layer(
                                 new WeightedListInt(
                                         SimpleWeightedRandomList.<IntProvider>builder()
@@ -423,8 +481,7 @@ public class TheAbyssFeatures {
                                                 .build()
                                 )
                         ),
-                        BlockTrunkConfiguration.layer(BlockStateProvider.simple(blockTop.defaultBlockState())), 0.15F,
-                        Direction.UP,
+                        BlockTrunkConfiguration.layer(BlockStateProvider.simple(blockTop.defaultBlockState())), 0.15F, direction,
                         BlockPredicate.ONLY_IN_AIR_OR_WATER_PREDICATE,
                         true
                 )

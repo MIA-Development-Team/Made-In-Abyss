@@ -19,33 +19,29 @@
               "amplitudes": [
                 1.0
               ],
-              "firstOctave": -10
+              "firstOctave": -5
             },
             "slow_scale": 1.0,
             "states": [
               {
-                "Name": "minecraft:tall_grass",
+                "Name": "minecraft:big_dripleaf",
                 "Properties": {
-                  "half": "lower"
+                  "facing": "north",
+                  "tilt": "none",
+                  "waterlogged": "false"
                 }
               },
               {
-                "Name": "minecraft:azure_bluet"
+                "Name": "mia:balloon_plant"
               },
               {
-                "Name": "minecraft:oxeye_daisy"
+                "Name": "mia:silveaf_fungus"
               },
               {
-                "Name": "minecraft:white_tulip"
+                "Name": "mia:konjac_root"
               },
               {
-                "Name": "minecraft:lily_of_the_valley"
-              },
-              {
-                "Name": "minecraft:torchflower"
-              },
-              {
-                "Name": "minecraft:short_grass"
+                "Name": "mia:crimson_veilgrass"
               }
             ],
             "variety": [

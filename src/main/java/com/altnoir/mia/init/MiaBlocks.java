@@ -6,6 +6,9 @@ import com.altnoir.mia.worldgen.feature.tree.MiaTreeFeatures;
 import com.altnoir.mia.worldgen.feature.tree.MiaTreeGrowers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
@@ -248,6 +251,24 @@ public class MiaBlocks {
     public static final DeferredBlock<Block> INVERTED_BUTTON = registerBlock("inverted_button", () ->
             woodenButton(BlockSetType.CHERRY));
     // 植物
+    public static final DeferredBlock<Block> MARGINAL_WEED = registerBlock("marginal_weed", () ->
+            tallGrass(MapColor.PLANT, SoundType.GRASS)
+    );
+    public static final DeferredBlock<Block> CRIMSON_VEILGRASS = registerBlock("crimson_veilgrass", () ->
+            tallGrass(MapColor.NETHER, SoundType.ROOTS)
+    );
+    public static final DeferredBlock<Block> SCORCHLEAF = registerBlock("scorchleaf", () ->
+            new NetherSproutsBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_CYAN)
+                            .replaceable()
+                            .noCollission()
+                            .instabreak()
+                            .sound(SoundType.NETHER_SPROUTS)
+                            .offsetType(BlockBehaviour.OffsetType.XZ)
+                            .pushReaction(PushReaction.DESTROY)
+            )
+    );
     public static final DeferredBlock<Block> FORTITUDE_FLOWER = registerBlock("fortitude_flower", () ->
             new PinkPetalsBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
@@ -266,6 +287,18 @@ public class MiaBlocks {
                     .ignitedByLava()
                     .pushReaction(PushReaction.DESTROY)
             )
+    );
+    public static final DeferredBlock<Block> BALLOON_PLANT = registerBlock("balloon_plant", () ->
+            flower(MobEffects.NIGHT_VISION, 5.0F, MapColor.PLANT, SoundType.GRASS)
+    );
+    public static final DeferredBlock<Block> GREEN_PERILLA = registerBlock("green_perilla", () ->
+            flower(MobEffects.DIG_SPEED, 5.0F, MapColor.PLANT, SoundType.GRASS)
+    );
+    public static final DeferredBlock<Block> KONJAC_ROOT = registerBlock("konjac_root", () ->
+            flower(MobEffects.HEAL, 5.0F, MapColor.PLANT, SoundType.ROOTS)
+    );
+    public static final DeferredBlock<Block> SILVEAF_FUNGUS = registerBlock("silveaf_fungus", () ->
+            flower(MobEffects.HEAL, 5.0F, MapColor.PLANT, SoundType.ROOTS)
     );
     // 晶石
     public static final DeferredBlock<Block> PRASIOLITE_BLOCK = registerBlock("prasiolite_block", () ->
@@ -534,6 +567,32 @@ public class MiaBlocks {
                         .strength(1.5F)
                         .lightLevel(state -> lightValue)
                         .pushReaction(PushReaction.DESTROY));
+    }
+
+    private static Block tallGrass(MapColor mapColor, SoundType soundType) {
+        return new TallGrassBlock(
+                BlockBehaviour.Properties.of()
+                        .mapColor(mapColor)
+                        .replaceable()
+                        .noCollission()
+                        .instabreak()
+                        .sound(soundType)
+                        .offsetType(BlockBehaviour.OffsetType.XYZ)
+                        .ignitedByLava()
+                        .pushReaction(PushReaction.DESTROY)
+        );
+    }
+
+    private static Block flower(Holder<MobEffect> effects, float duration, MapColor mapColor, SoundType soundType) {
+        return new FlowerBlock(effects, duration,
+                BlockBehaviour.Properties.of()
+                        .mapColor(mapColor)
+                        .noCollission()
+                        .instabreak()
+                        .sound(soundType)
+                        .offsetType(BlockBehaviour.OffsetType.XZ)
+                        .pushReaction(PushReaction.DESTROY)
+        );
     }
 
     private static ToIntFunction<BlockState> litBlockEmission(BooleanProperty property, int lightValue) {

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "mia:silveaf_fungus"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "mia:blocks/silveaf_fungus"
+}

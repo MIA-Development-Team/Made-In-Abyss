@@ -39,7 +39,9 @@ public class TheAbyssPlacements {
     public static final ResourceKey<PlacedFeature> PATCH_SUNFLOWER = theAbyssKey("patch_sunflower");
     public static final ResourceKey<PlacedFeature> CAVE_VINES = theAbyssKey("cave_vines");
     public static final ResourceKey<PlacedFeature> PATCH_WATERLILY = theAbyssKey("patch_waterlily");
-    public static final ResourceKey<PlacedFeature> FLOWER_MEADOW = theAbyssKey("flower_meadow");
+    public static final ResourceKey<PlacedFeature> MARGINAL_WEED_BONEMEAL = theAbyssKey("marginal_weed_bonemeal");
+    public static final ResourceKey<PlacedFeature> FLOWER_MEADOW = theAbyssKey("flower_meadow_layer1");
+    public static final ResourceKey<PlacedFeature> FLOWER_MEADOW2 = theAbyssKey("flower_meadow_layer2");
     public static final ResourceKey<PlacedFeature> FOREST_FLOWERS = theAbyssKey("forest_flowers");
     public static final ResourceKey<PlacedFeature> ABYSS_TREES = theAbyssKey("abyss_trees");
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG = theAbyssKey("trees_skyfog");
@@ -47,6 +49,9 @@ public class TheAbyssPlacements {
     public static final ResourceKey<PlacedFeature> DENSE_TREES_SKYFOG = theAbyssKey("dense_trees_skyfog");
     public static final ResourceKey<PlacedFeature> TREES_FOSSILIZED = theAbyssKey("trees_fossilized");
     public static final ResourceKey<PlacedFeature> TREES_FOSSILIZED_UNDER = theAbyssKey("trees_fossilized_under");
+    public static final ResourceKey<PlacedFeature> TREES_FOSSILIZED_UNDER2 = theAbyssKey("trees_fossilized_under2");
+    public static final ResourceKey<PlacedFeature> CAVES_CEILING_VEGETATION = theAbyssKey("caves_ceiling_vegetation");
+    public static final ResourceKey<PlacedFeature> SPORE_BLOSSOM = theAbyssKey("spore_blossom");
     public static final ResourceKey<PlacedFeature> POOL_WITH_REED = theAbyssKey("pool_with_reed");
     public static final ResourceKey<PlacedFeature> TREES_VERDANT_FUNGUS = theAbyssKey("trees_verdant_fungus");
     public static final ResourceKey<PlacedFeature> TREES_INVERTED = theAbyssKey("trees_inverted");
@@ -74,14 +79,19 @@ public class TheAbyssPlacements {
         Holder<ConfiguredFeature<?, ?>> large_fern = holdergetter.getOrThrow(VegetationFeatures.PATCH_LARGE_FERN);
         Holder<ConfiguredFeature<?, ?>> cave_vine = holdergetter.getOrThrow(CaveFeatures.CAVE_VINE);
         Holder<ConfiguredFeature<?, ?>> waterlily = holdergetter.getOrThrow(TheAbyssFeatures.PATCH_WATERLILY);
+        Holder<ConfiguredFeature<?, ?>> single_piece_of_marginal_weed = holdergetter.getOrThrow(TheAbyssFeatures.SINGLE_PIECE_OF_MARGINAL_WEED);
         Holder<ConfiguredFeature<?, ?>> sunflower = holdergetter.getOrThrow(VegetationFeatures.PATCH_SUNFLOWER);
         Holder<ConfiguredFeature<?, ?>> flower_meadow = holdergetter.getOrThrow(TheAbyssFeatures.FLOWER_MEADOW);
+        Holder<ConfiguredFeature<?, ?>> flower_meadow2 = holdergetter.getOrThrow(TheAbyssFeatures.FLOWER_MEADOW2);
         Holder<ConfiguredFeature<?, ?>> forest_flowers = holdergetter.getOrThrow(TheAbyssFeatures.FOREST_FLOWERS);
         Holder<ConfiguredFeature<?, ?>> skyfog = holdergetter.getOrThrow(TheAbyssFeatures.TREES_SKYFOG);
         Holder<ConfiguredFeature<?, ?>> skyfog_and_azalea = holdergetter.getOrThrow(TheAbyssFeatures.TREES_SKYFOG_AND_AZALEA);
         Holder<ConfiguredFeature<?, ?>> dense_skyfog = holdergetter.getOrThrow(TheAbyssFeatures.DENSE_TREES_SKYFOG);
         Holder<ConfiguredFeature<?, ?>> fossilized_tree = holdergetter.getOrThrow(TheAbyssFeatures.TREES_FOSSILIZED);
         Holder<ConfiguredFeature<?, ?>> fossilized_tree_under = holdergetter.getOrThrow(TheAbyssFeatures.TREES_FOSSILIZED_UNDER);
+        Holder<ConfiguredFeature<?, ?>> fossilized_tree_under2 = holdergetter.getOrThrow(TheAbyssFeatures.TREES_FOSSILIZED_UNDER2);
+        Holder<ConfiguredFeature<?, ?>> cave_vine_ceiling = holdergetter.getOrThrow(CaveFeatures.MOSS_PATCH_CEILING);
+        Holder<ConfiguredFeature<?, ?>> spore_blossom = holdergetter.getOrThrow(CaveFeatures.SPORE_BLOSSOM);
         Holder<ConfiguredFeature<?, ?>> pool_with_reed = holdergetter.getOrThrow(TheAbyssFeatures.POOL_WITH_REED);
         Holder<ConfiguredFeature<?, ?>> verdant_fungus = holdergetter.getOrThrow(TheAbyssFeatures.TREES_VERDANT_FUNGUS);
         Holder<ConfiguredFeature<?, ?>> inverted = holdergetter.getOrThrow(TheAbyssFeatures.TREES_INVERTED);
@@ -137,8 +147,8 @@ public class TheAbyssPlacements {
         );
         MiaPlacementUtils.register(
                 context, GLOW_LICHEN, glow_lichen,
-                CountPlacement.of(UniformInt.of(104, 157)),
-                ABYSS_BRINK_HEIGHT,
+                CountPlacement.of(UniformInt.of(157, 250)),
+                ABYSS_BRINK_CAVE_HEIGHT,
                 InSquarePlacement.spread(),
                 //SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -13),
                 BiomeFilter.biome()
@@ -184,12 +194,17 @@ public class TheAbyssPlacements {
                 RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
                 BiomeFilter.biome()
         );
-        PlacementUtils.register(context, PATCH_WATERLILY, waterlily,
-                WaterOnEveryLayerPlacement.of(4),
+        MiaPlacementUtils.register(context, PATCH_WATERLILY, waterlily,
+                WaterOnEveryLayerPlacement.of(2),
                 BiomeFilter.biome());
-
+        MiaPlacementUtils.register(context, MARGINAL_WEED_BONEMEAL, single_piece_of_marginal_weed, PlacementUtils.isEmpty());
         MiaPlacementUtils.register(
                 context, FLOWER_MEADOW, flower_meadow,
+                CountOnEveryLayerPlacement.of(1),
+                BiomeFilter.biome()
+        );
+        MiaPlacementUtils.register(
+                context, FLOWER_MEADOW2, flower_meadow2,
                 CountOnEveryLayerPlacement.of(1),
                 BiomeFilter.biome()
         );
@@ -232,6 +247,26 @@ public class TheAbyssPlacements {
                 context, TREES_FOSSILIZED_UNDER, fossilized_tree_under,
                 abyssTreePlace(12)
         );
+        MiaPlacementUtils.register(
+                context, TREES_FOSSILIZED_UNDER2, fossilized_tree_under2,
+                abyssInvertedTreePlace(6)
+        );
+        MiaPlacementUtils.register(context, CAVES_CEILING_VEGETATION, cave_vine_ceiling,
+                CountPlacement.of(125),
+                InSquarePlacement.spread(),
+                ABYSS_BRINK_CAVE_HEIGHT,
+                EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.solid(), BlockPredicate.ONLY_IN_AIR_PREDICATE, 12),
+                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                BiomeFilter.biome()
+        );
+        MiaPlacementUtils.register(context, SPORE_BLOSSOM, spore_blossom,
+                CountPlacement.of(25),
+                InSquarePlacement.spread(),
+                ABYSS_BRINK_CAVE_HEIGHT,
+                EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.solid(), BlockPredicate.ONLY_IN_AIR_PREDICATE, 12),
+                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                BiomeFilter.biome()
+        );
         MiaPlacementUtils.register(context, POOL_WITH_REED, pool_with_reed,
                 CountPlacement.of(62),
                 InSquarePlacement.spread(),
@@ -246,8 +281,7 @@ public class TheAbyssPlacements {
         );
         MiaPlacementUtils.register(
                 context, TREES_INVERTED, inverted,
-                InvertedCountOnEveryLayerPlacement.of(6),
-                BiomeFilter.biome()
+                abyssInvertedTreePlace(6)
         );
 
         MiaPlacementUtils.register(
@@ -295,12 +329,23 @@ public class TheAbyssPlacements {
                 .add(BiomeFilter.biome());
     }
 
+    private static ImmutableList.Builder<PlacementModifier> abyssInvertedTreePlacementBase(int count) {
+        return ImmutableList.<PlacementModifier>builder()
+                .add(InvertedCountOnEveryLayerPlacement.of(count))
+                .add(BiomeFilter.biome());
+    }
+
+
     public static List<PlacementModifier> abyssTreePlace(int count) {
         return abyssTreePlacementBase(count).build();
     }
 
     public static List<PlacementModifier> abyssTreePlace(int count, int rarity) {
         return abyssTreePlacementBase(count, rarity).build();
+    }
+
+    public static List<PlacementModifier> abyssInvertedTreePlace(int count) {
+        return abyssInvertedTreePlacementBase(count).build();
     }
 
     private static ResourceKey<PlacedFeature> theAbyssKey(String name) {
