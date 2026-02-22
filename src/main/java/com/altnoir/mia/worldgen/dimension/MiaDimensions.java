@@ -38,7 +38,7 @@ public class MiaDimensions {
         HolderGetter<NoiseGeneratorSettings> noiseGenSettings = context.lookup(Registries.NOISE_SETTINGS);
 
         NoiseBasedChunkGenerator the_abyss = new NoiseBasedChunkGenerator(
-                AbyssNoiseBiomeSource.createFromList(
+                AbyssNoiseBiomeSource.createFromList(272,
                         new Climate.ParameterList<>(List.of(
                                 // 地表
                                 biomePair(
@@ -152,7 +152,7 @@ public class MiaDimensions {
                 noiseGenSettings.getOrThrow(MiaNoiseGeneratorSettings.THE_ABYSS)
         );
         NoiseBasedChunkGenerator great_fault = new NoiseBasedChunkGenerator(
-                AbyssNoiseBiomeSource.createFromList(
+                AbyssNoiseBiomeSource.createFromList(112,
                         new Climate.ParameterList<>(List.of(
                                 biomePair(
                                         Climate.Parameter.span(-1.0F, 1.0F),
@@ -160,13 +160,7 @@ public class MiaDimensions {
                                         biomeRegistry.getOrThrow(MiaBiomes.GREAT_FAULT)
                                 )
                         )),
-                        new Climate.ParameterList<>(List.of(
-                                biomePair(
-                                        Climate.Parameter.span(-1.0F, 1.0F),
-                                        Climate.Parameter.point(0.0F),
-                                        biomeRegistry.getOrThrow(MiaBiomes.GREAT_FAULT)
-                                )
-                        ))
+                        biomeRegistry.getOrThrow(MiaBiomes.THE_GREAT_FAULT)
                 ),
                 noiseGenSettings.getOrThrow(MiaNoiseGeneratorSettings.GREAT_FAULT)
         );

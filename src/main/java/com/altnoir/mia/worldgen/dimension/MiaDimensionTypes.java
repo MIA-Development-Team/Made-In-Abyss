@@ -49,7 +49,7 @@ public class MiaDimensionTypes {
                         MiaHeight.GREAT_FAULT.allY(),
                         BlockTags.INFINIBURN_OVERWORLD,
                         ClientDimEffects.THE_ABYSS_EFFECTS,
-                        0.1F,
+                        0.025F,
                         new DimensionType.MonsterSettings(false, true, UniformInt.of(0, 7), 0)
                 )
         );

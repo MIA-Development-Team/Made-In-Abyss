@@ -170,7 +170,7 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
                 SurfaceRules.ifTrue(
                         SurfaceRules.not(
                                 SurfaceRules.yBlockCheck(VerticalAnchor.absolute(y + offset), 0)
-                        ), makeStateRule(Blocks.LIGHT))
+                        ), makeStateRule(Blocks.CALCITE))
         );
     }
 

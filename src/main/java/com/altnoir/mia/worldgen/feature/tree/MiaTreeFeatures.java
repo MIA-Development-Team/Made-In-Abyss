@@ -39,15 +39,15 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlac
 import java.util.List;
 
 public class MiaTreeFeatures {
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE = MiaFeatureUtils.treeKey("skyfog_tree");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE_BEES = MiaFeatureUtils.treeKey("skyfog_tree_bees");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> FANCY_SKYFOG_TREE_BEES = MiaFeatureUtils.treeKey("fancy_skyfog_tree_bees");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_SKYFOG_TREE = MiaFeatureUtils.treeKey("mega_skyfog_tree");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_BUSH = MiaFeatureUtils.treeKey("short_skyfog_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE = treeKey("skyfog_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE_BEES = treeKey("skyfog_tree_bees");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FANCY_SKYFOG_TREE_BEES = treeKey("fancy_skyfog_tree_bees");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_SKYFOG_TREE = treeKey("mega_skyfog_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_BUSH = treeKey("short_skyfog_tree");
 
-    public static final ResourceKey<ConfiguredFeature<?, ?>> VERDANT_FUNGUS = MiaFeatureUtils.treeKey("verdant_fungus");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> INVERTED_TREE = MiaFeatureUtils.treeKey("inverted_tree");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_INVERTED_TREE = MiaFeatureUtils.treeKey("mega_inverted_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> VERDANT_FUNGUS = treeKey("verdant_fungus");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> INVERTED_TREE = treeKey("inverted_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_INVERTED_TREE = treeKey("mega_inverted_tree");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
 
@@ -171,5 +171,9 @@ public class MiaTreeFeatures {
                 .dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT)).forceDirt()
                 .decorators(ImmutableList.of(new BeehiveDecorator(0.002F), TrunkVineDecorator.INSTANCE, new LeaveVineDecorator(0.05F)))
                 .ignoreVines();
+    }
+
+    public static ResourceKey<ConfiguredFeature<?, ?>> treeKey(String name) {
+        return MiaFeatureUtils.resourceKey("tree/" + name);
     }
 }

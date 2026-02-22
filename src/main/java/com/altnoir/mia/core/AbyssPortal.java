@@ -19,6 +19,7 @@ public class AbyssPortal {
                     Vec3 pos = new Vec3(entity.getX() + 0.5, level3.getMaxBuildHeight(), entity.getZ() + 0.5);
                     DimensionTransition transition = dimTransition(level3, entity, pos);
                     entity.changeDimension(transition);
+                    return true;
                 }
             }
         }

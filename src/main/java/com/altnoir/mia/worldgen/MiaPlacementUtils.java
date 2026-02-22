@@ -2,6 +2,7 @@ package com.altnoir.mia.worldgen;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.util.MiaUtil;
+import com.altnoir.mia.worldgen.biome.great_fault.GreatFaultPlacements;
 import com.altnoir.mia.worldgen.biome.the_abyss.TheAbyssPlacements;
 import com.altnoir.mia.worldgen.feature.tree.MiaTreePlacements;
 import net.minecraft.core.BlockPos;
@@ -22,18 +23,11 @@ public class MiaPlacementUtils {
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         MiaTreePlacements.bootstrap(context);
         TheAbyssPlacements.bootstrap(context);
+        GreatFaultPlacements.bootstrap(context);
     }
 
     public static ResourceKey<PlacedFeature> resourceKey(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, MiaUtil.id(MIA.MOD_ID, name));
-    }
-
-    public static ResourceKey<PlacedFeature> treeKey(String name) {
-        return resourceKey("tree/" + name);
-    }
-
-    public static ResourceKey<PlacedFeature> theAbyssKey(String name) {
-        return resourceKey("the_abyss/" + name);
     }
 
     public static void register(

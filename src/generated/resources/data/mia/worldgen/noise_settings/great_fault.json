@@ -261,11 +261,7 @@
                   "then_run": {
                     "type": "minecraft:block",
                     "result_state": {
-                      "Name": "minecraft:light",
-                      "Properties": {
-                        "level": "15",
-                        "waterlogged": "false"
-                      }
+                      "Name": "minecraft:calcite"
                     }
                   }
                 }
@@ -296,11 +292,7 @@
                   "then_run": {
                     "type": "minecraft:block",
                     "result_state": {
-                      "Name": "minecraft:light",
-                      "Properties": {
-                        "level": "15",
-                        "waterlogged": "false"
-                      }
+                      "Name": "minecraft:calcite"
                     }
                   }
                 }
@@ -331,11 +323,7 @@
                   "then_run": {
                     "type": "minecraft:block",
                     "result_state": {
-                      "Name": "minecraft:light",
-                      "Properties": {
-                        "level": "15",
-                        "waterlogged": "false"
-                      }
+                      "Name": "minecraft:calcite"
                     }
                   }
                 }
@@ -366,11 +354,7 @@
                   "then_run": {
                     "type": "minecraft:block",
                     "result_state": {
-                      "Name": "minecraft:light",
-                      "Properties": {
-                        "level": "15",
-                        "waterlogged": "false"
-                      }
+                      "Name": "minecraft:calcite"
                     }
                   }
                 }
@@ -401,11 +385,7 @@
                   "then_run": {
                     "type": "minecraft:block",
                     "result_state": {
-                      "Name": "minecraft:light",
-                      "Properties": {
-                        "level": "15",
-                        "waterlogged": "false"
-                      }
+                      "Name": "minecraft:calcite"
                     }
                   }
                 }
@@ -436,11 +416,7 @@
                   "then_run": {
                     "type": "minecraft:block",
                     "result_state": {
-                      "Name": "minecraft:light",
-                      "Properties": {
-                        "level": "15",
-                        "waterlogged": "false"
-                      }
+                      "Name": "minecraft:calcite"
                     }
                   }
                 }

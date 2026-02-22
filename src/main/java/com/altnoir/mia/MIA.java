@@ -1,9 +1,9 @@
 package com.altnoir.mia;
 
 import com.altnoir.mia.core.curse.CurseManager;
+import com.altnoir.mia.core.event.EventHandle;
 import com.altnoir.mia.core.spawner.AbyssTrialSpawnerManager;
 import com.altnoir.mia.init.*;
-import com.altnoir.mia.core.event.EventHandle;
 import com.altnoir.mia.init.worldgen.*;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;

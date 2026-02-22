@@ -39,6 +39,7 @@
           }
         }
       ],
+      "abyss_radius": 272,
       "biomes": [
         {
           "biome": "mia:the_abyss/skyfog_forest",

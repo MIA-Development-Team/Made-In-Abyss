@@ -25,6 +25,9 @@ public class MiaFeatures {
     public static final DeferredHolder<Feature<?>, LongVinesFeature> LONG_VINES = FEATURE.register(
             "long_vines", () -> new LongVinesFeature(LongVinesConfiguration.CODEC)
     );
+    public static final DeferredHolder<Feature<?>, LightFeature> LIGHT = FEATURE.register(
+            "light", () -> new LightFeature(NoneFeatureConfiguration.CODEC)
+    );
     public static final DeferredHolder<Feature<?>, InvertedTreeFeature> INVERTED_TREE = FEATURE.register(
             "inverted_tree", () -> new InvertedTreeFeature(TreeConfiguration.CODEC)
     );

@@ -2,6 +2,7 @@ package com.altnoir.mia.worldgen.biomesource;
 
 import com.altnoir.mia.worldgen.noise_setting.densityfunction.HopperAbyssHole;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -21,6 +22,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class AbyssNoiseBiomeSource extends BiomeSource {
+    private static final MapCodec<Long> RADIUS_CODEC = Codec.LONG.fieldOf("abyss_radius");
     private static final MapCodec<Holder<Biome>> ENTRY_CODEC = Biome.CODEC.fieldOf("biome");
     private static final MapCodec<Climate.ParameterList<Holder<Biome>>> DIRECT_CODEC = Climate.ParameterList.codec(ENTRY_CODEC).fieldOf("biomes");
     private static final MapCodec<Optional<Climate.ParameterList<Holder<Biome>>>> ABYSS_DIRECT_CODEC = Climate.ParameterList.codec(ENTRY_CODEC).optionalFieldOf("abyss_biomes");
@@ -28,45 +30,48 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
 
     public static final MapCodec<AbyssNoiseBiomeSource> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
+                    RADIUS_CODEC.forGetter(AbyssNoiseBiomeSource::radius),
                     DIRECT_CODEC.forGetter(AbyssNoiseBiomeSource::parameters),
                     ABYSS_DIRECT_CODEC.forGetter(source -> Optional.ofNullable(source.abyssParameters)),
                     ABYSS_CODEC.forGetter(source -> Optional.ofNullable(source.abyss))
-            ).apply(instance, (parameters, abyssParameters, abyss) -> {
+            ).apply(instance, (radius, parameters, abyssParameters, abyss) -> {
                 if (abyssParameters.isPresent() && abyss.isPresent()) {
                     throw new IllegalStateException("Cannot specify both 'abyss_biomes' and 'abyss_biome' at the same time");
                 }
                 if (abyssParameters.isPresent()) {
-                    return new AbyssNoiseBiomeSource(parameters, abyssParameters.get(), null);
+                    return new AbyssNoiseBiomeSource(radius, parameters, abyssParameters.get(), null);
                 } else if (abyss.isPresent()) {
-                    return new AbyssNoiseBiomeSource(parameters, null, abyss.get());
+                    return new AbyssNoiseBiomeSource(radius, parameters, null, abyss.get());
                 } else {
                     throw new IllegalStateException("Must specify either 'abyss_biomes' or 'abyss_biome'");
                 }
             })
     );
 
+    private final long radius;
     private final Climate.ParameterList<Holder<Biome>> parameters;
     private final Climate.ParameterList<Holder<Biome>> abyssParameters;
     private final Holder<Biome> abyss;
 
-    private AbyssNoiseBiomeSource(Climate.ParameterList<Holder<Biome>> parameters, Climate.ParameterList<Holder<Biome>> abyssParameters, Holder<Biome> abyss) {
+    private AbyssNoiseBiomeSource(long radius, Climate.ParameterList<Holder<Biome>> parameters, Climate.ParameterList<Holder<Biome>> abyssParameters, Holder<Biome> abyss) {
         if (abyssParameters != null && abyss != null) {
             throw new IllegalArgumentException("Cannot specify both abyssParameters and abyss");
         }
         if (abyssParameters == null && abyss == null) {
             throw new IllegalArgumentException("Must specify either abyssParameters or abyss");
         }
+        this.radius = radius;
         this.parameters = parameters;
         this.abyssParameters = abyssParameters;
         this.abyss = abyss;
     }
 
-    public AbyssNoiseBiomeSource(Climate.ParameterList<Holder<Biome>> parameters, Holder<Biome> abyss) {
-        this(parameters, null, abyss);
+    public AbyssNoiseBiomeSource(long radius, Climate.ParameterList<Holder<Biome>> parameters, Holder<Biome> abyss) {
+        this(radius, parameters, null, abyss);
     }
 
-    public AbyssNoiseBiomeSource(Climate.ParameterList<Holder<Biome>> parameters, Climate.ParameterList<Holder<Biome>> abyssParameters) {
-        this(parameters, abyssParameters, null);
+    public AbyssNoiseBiomeSource(long radius, Climate.ParameterList<Holder<Biome>> parameters, Climate.ParameterList<Holder<Biome>> abyssParameters) {
+        this(radius, parameters, abyssParameters, null);
     }
 
     @Override
@@ -89,12 +94,16 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
         return CODEC;
     }
 
-    public static AbyssNoiseBiomeSource createFromList(Climate.ParameterList<Holder<Biome>> parameters, Holder<Biome> abyss) {
-        return new AbyssNoiseBiomeSource(parameters, abyss);
+    public static AbyssNoiseBiomeSource createFromList(long radius, Climate.ParameterList<Holder<Biome>> parameters, Holder<Biome> abyss) {
+        return new AbyssNoiseBiomeSource(radius, parameters, abyss);
     }
 
-    public static AbyssNoiseBiomeSource createFromList(Climate.ParameterList<Holder<Biome>> parameters, Climate.ParameterList<Holder<Biome>> abyssParameters) {
-        return new AbyssNoiseBiomeSource(parameters, abyssParameters);
+    public static AbyssNoiseBiomeSource createFromList(long radius, Climate.ParameterList<Holder<Biome>> parameters, Climate.ParameterList<Holder<Biome>> abyssParameters) {
+        return new AbyssNoiseBiomeSource(radius, parameters, abyssParameters);
+    }
+
+    public long radius() {
+        return this.radius;
     }
 
     private Climate.ParameterList<Holder<Biome>> parameters() {
@@ -113,7 +122,7 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
         int sectionX = SectionPos.blockToSectionCoord(blockX);
         int sectionZ = SectionPos.blockToSectionCoord(blockZ);
 
-        if ((long) sectionX * sectionX + (long) sectionZ * sectionZ <= (long) HopperAbyssHole.getAbyssRadius()) {
+        if ((long) sectionX * sectionX + (long) sectionZ * sectionZ <= radius()) {
             if (abyssParameters != null) {
                 return this.getAbyssNoiseBiome(sampler.sample(x, y, z));
             } else {

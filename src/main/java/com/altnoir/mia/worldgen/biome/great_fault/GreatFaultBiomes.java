@@ -12,6 +12,18 @@ import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
 public class GreatFaultBiomes {
+    public static Biome theGreatFault(BootstrapContext<Biome> context) {
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+
+        BiomesUtils.farmAnimals(spawnBuilder);
+
+        BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
+
+        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GreatFaultPlacements.ABYSS_LIGHT);
+
+        return baseBiome(generationBuilder, spawnBuilder).build();
+    }
+
     public static Biome greatFault(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
 

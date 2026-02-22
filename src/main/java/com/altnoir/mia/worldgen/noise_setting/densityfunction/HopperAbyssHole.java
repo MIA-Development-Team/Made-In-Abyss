@@ -23,7 +23,6 @@ public class HopperAbyssHole extends AbstractAbyssHole {
         super(radius, mul);
     }
 
-    // 256 = √256 = 16区块.
     public static float getAbyssRadius() {
         return MiaConfig.abyssRadius * 2.0F;
     } // 深渊半径

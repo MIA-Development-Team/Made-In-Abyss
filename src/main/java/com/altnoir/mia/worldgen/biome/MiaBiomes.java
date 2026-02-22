@@ -24,6 +24,7 @@ public class MiaBiomes {
     public static final ResourceKey<Biome> TEMPTATION_FOREST = abyssEdgeKey("temptation_forest");
     public static final ResourceKey<Biome> INVERTED_FOREST = abyssEdgeKey("inverted_forest");
     // Layer 3
+    public static final ResourceKey<Biome> THE_GREAT_FAULT = greatFaultKey("the_great_fault");
     public static final ResourceKey<Biome> GREAT_FAULT = greatFaultKey("great_fault");
 
     public static void boostrap(BootstrapContext<Biome> context) {
@@ -42,6 +43,7 @@ public class MiaBiomes {
         context.register(TEMPTATION_FOREST, TheAbyssBiomes.temptationForest(context));
         context.register(INVERTED_FOREST, TheAbyssBiomes.invertedForest(context));
         // Layer 3
+        context.register(THE_GREAT_FAULT, GreatFaultBiomes.theGreatFault(context));
         context.register(GREAT_FAULT, GreatFaultBiomes.greatFault(context));
     }
 

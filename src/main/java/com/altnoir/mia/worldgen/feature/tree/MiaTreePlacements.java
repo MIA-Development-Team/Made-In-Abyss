@@ -13,15 +13,15 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class MiaTreePlacements {
-    public static final ResourceKey<PlacedFeature> AZALEA_CHECKED = MiaPlacementUtils.treeKey("azalea_checked");
-    public static final ResourceKey<PlacedFeature> SKYFOG_BEES = MiaPlacementUtils.treeKey("skyfog_bee_002");
-    public static final ResourceKey<PlacedFeature> FANCY_SKYFOG_BEES_002 = MiaPlacementUtils.treeKey("fancy_skyfog_bee_002");
-    public static final ResourceKey<PlacedFeature> MEGA_SKYFOG = MiaPlacementUtils.treeKey("maga_skyfog");
-    public static final ResourceKey<PlacedFeature> SKYFOG_BUSH = MiaPlacementUtils.treeKey("skyfog_bush");
+    public static final ResourceKey<PlacedFeature> AZALEA_CHECKED = treeKey("azalea_checked");
+    public static final ResourceKey<PlacedFeature> SKYFOG_BEES = treeKey("skyfog_bee_002");
+    public static final ResourceKey<PlacedFeature> FANCY_SKYFOG_BEES_002 = treeKey("fancy_skyfog_bee_002");
+    public static final ResourceKey<PlacedFeature> MEGA_SKYFOG = treeKey("maga_skyfog");
+    public static final ResourceKey<PlacedFeature> SKYFOG_BUSH = treeKey("skyfog_bush");
 
-    public static final ResourceKey<PlacedFeature> VERDANT_FUNGUS = MiaPlacementUtils.treeKey("verdant_fungus");
-    public static final ResourceKey<PlacedFeature> INVERTED = MiaPlacementUtils.treeKey("inverted");
-    public static final ResourceKey<PlacedFeature> MAGA_INVERTED = MiaPlacementUtils.treeKey("maga_inverted");
+    public static final ResourceKey<PlacedFeature> VERDANT_FUNGUS = treeKey("verdant_fungus");
+    public static final ResourceKey<PlacedFeature> INVERTED = treeKey("inverted");
+    public static final ResourceKey<PlacedFeature> MAGA_INVERTED = treeKey("maga_inverted");
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
@@ -45,6 +45,9 @@ public class MiaTreePlacements {
         MiaPlacementUtils.register(context, VERDANT_FUNGUS, verdant_fungus, MiaPlacementUtils.filteredByBlockSurvival(MiaBlocks.VERDANT_FUNGUS.get()));
         MiaPlacementUtils.register(context, INVERTED, inverted, MiaPlacementUtils.filteredByBlockSurvival(MiaBlocks.INVERTED_SAPLING.get()));
         MiaPlacementUtils.register(context, MAGA_INVERTED, maga_inverted, MiaPlacementUtils.filteredByBlockSurvival(MiaBlocks.INVERTED_SAPLING.get()));
+    }
 
+    public static ResourceKey<PlacedFeature> treeKey(String name) {
+        return MiaPlacementUtils.resourceKey("tree/" + name);
     }
 }

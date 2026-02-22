@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 public class WaterOnEveryLayerPlacement extends PlacementModifier {
     public static final MapCodec<WaterOnEveryLayerPlacement> CODEC = IntProvider.codec(0, 256)
             .fieldOf("count")
-            .xmap(WaterOnEveryLayerPlacement::new, p_191611_ -> p_191611_.count);
+            .xmap(WaterOnEveryLayerPlacement::new, placement -> placement.count);
     private final IntProvider count;
 
     private WaterOnEveryLayerPlacement(IntProvider count) {
