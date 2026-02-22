@@ -46,9 +46,9 @@ public class CurseEvent {
         var dimensionIds = MIA.CURSE_MANAGER.getDimensionIds();
 
         if (dimensionIds.contains(dim)) {
-            cap.setCurse((int) Math.floor(delta));
+            cap.setCurseByYDelta(delta);
 
-            if (delta > cap.getMaxCurse()) {
+            if (cap.isCurseOverflow()) {
                 var curseEffects = MIA.CURSE_MANAGER.getEffects(dim);
 
                 for (var curseEffect : curseEffects) {
