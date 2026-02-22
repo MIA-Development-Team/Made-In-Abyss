@@ -38,6 +38,10 @@ public class MiaDensityFunctions {
     public static final ResourceKey<DensityFunction> THE_ABYSS_PILLARS = theAbyssKey("caves/pillars");
     public static final ResourceKey<DensityFunction> THE_ABYSS_NOODLE = theAbyssKey("caves/noodle");
 
+    public static final ResourceKey<DensityFunction> GREAT_FAULT_HOLE = greatFaultKey("great_fault_hole");
+    public static final ResourceKey<DensityFunction> GREAT_FAULT_NOODLE = greatFaultKey("caves/noodle");
+
+
     private static ResourceKey<DensityFunction> createKey(String location) {
         return ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, location));
     }
@@ -50,7 +54,11 @@ public class MiaDensityFunctions {
         return createKey("the_abyss/" + location);
     }
 
-    public static Holder<? extends DensityFunction> bootstrap(BootstrapContext<DensityFunction> context) {
+    private static ResourceKey<DensityFunction> greatFaultKey(String location) {
+        return createKey("great_fault/" + location);
+    }
+
+    public static void bootstrap(BootstrapContext<DensityFunction> context) {
         HolderGetter<NormalNoise.NoiseParameters> holdergetter = context.lookup(Registries.NOISE);
         HolderGetter<DensityFunction> holdergetter1 = context.lookup(Registries.DENSITY_FUNCTION);
 
@@ -73,6 +81,7 @@ public class MiaDensityFunctions {
                 DensityFunctions.flatCache(DensityFunctions.shiftedNoise2d(densityfunction, densityfunction1, 0.25, holdergetter.getOrThrow(Noises.EROSION)))
         );
 
+        // Layer 1-2
         context.register(BASE_3D_NOISE_THE_ABYSS, BlendedNoise.createUnseeded(0.25, 0.25, 160.0, 160.0, 8.0));
 
         context.register(THE_ABYSS_BASE_PILLARS, pillars(holdergetter));
@@ -110,8 +119,11 @@ public class MiaDensityFunctions {
                 -1000000, 0.05, DensityFunctions.constant(-1000000),
                 getFunction(holdergetter1, THE_ABYSS_BASE_GREAT_CAVE_NOODLE)
         ));
+        context.register(THE_ABYSS_NOODLE, theAbyssNoodle(holdergetter1, holdergetter));
 
-        return context.register(THE_ABYSS_NOODLE, theAbyssNoodle(holdergetter1, holdergetter));
+        // Layer 3
+        context.register(GREAT_FAULT_HOLE, MiaDensityFunctionTypes.generalAbyssHole(0.0F, 0.5F));
+        context.register(GREAT_FAULT_NOODLE, greatFaultNoodle(holdergetter1, holdergetter));
     }
 
     private static DensityFunction theAbyssGreatCaveNoodle(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
@@ -122,10 +134,15 @@ public class MiaDensityFunctions {
         return theAbyssNoodle(MiaHeight.THE_ABYSS.minY() + 128, MiaHeight.THE_ABYSS.maxY(), densityFunctions, noiseParameters, -40, 40, true);
     }
 
+    private static DensityFunction greatFaultNoodle(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
+        return theAbyssNoodle(MiaHeight.GREAT_FAULT.minY(), MiaHeight.GREAT_FAULT.maxY(), densityFunctions, noiseParameters, 0, 0, true);
+    }
+
     private static DensityFunction noodle(
             int minY, int maxY,
             HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters,
-            int minYOffset, int maxYOffset, boolean ridgeB, boolean inverse, boolean full) {
+            int minYOffset, int maxYOffset, boolean ridgeB, boolean inverse, boolean full
+    ) {
         DensityFunction yFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
 
         int FMinY = minY + minYOffset;

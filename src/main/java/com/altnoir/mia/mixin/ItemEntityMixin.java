@@ -1,6 +1,6 @@
 package com.altnoir.mia.mixin;
 
-import com.altnoir.mia.core.gravity.AbyssGravity;
+import com.altnoir.mia.core.AbyssGravity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import org.spongepowered.asm.mixin.Mixin;

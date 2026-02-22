@@ -14,6 +14,7 @@ import java.util.OptionalLong;
 
 public class MiaDimensionTypes {
     public static final ResourceKey<DimensionType> THE_ABYSS_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE, MiaUtil.miaId("the_abyss_type"));
+    public static final ResourceKey<DimensionType> GREAT_FAULT_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE, MiaUtil.miaId("great_fault_type"));
 
     public static void bootstrapType(BootstrapContext<DimensionType> context) {
         context.register(THE_ABYSS_TYPE, new DimensionType(
@@ -31,6 +32,24 @@ public class MiaDimensionTypes {
                         BlockTags.INFINIBURN_OVERWORLD, // 火能在哪些方块上永久燃烧
                         ClientDimEffects.THE_ABYSS_EFFECTS, // 天空效果
                         0.12F, // 环境光
+                        new DimensionType.MonsterSettings(false, true, UniformInt.of(0, 7), 0)
+                )
+        );
+        context.register(GREAT_FAULT_TYPE, new DimensionType(
+                        OptionalLong.of(18000L),
+                        false,
+                        true,
+                        false,
+                        true,
+                        2.0,
+                        true,
+                        false,
+                        MiaHeight.GREAT_FAULT.minY(),
+                        MiaHeight.GREAT_FAULT.allY(),
+                        MiaHeight.GREAT_FAULT.allY(),
+                        BlockTags.INFINIBURN_OVERWORLD,
+                        ClientDimEffects.THE_ABYSS_EFFECTS,
+                        0.1F,
                         new DimensionType.MonsterSettings(false, true, UniformInt.of(0, 7), 0)
                 )
         );

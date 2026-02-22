@@ -1,4 +1,4 @@
-package com.altnoir.mia.core.gravity;
+package com.altnoir.mia.core;
 
 import com.altnoir.mia.worldgen.MiaHeight;
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;

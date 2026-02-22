@@ -1,0 +1,44 @@
+{
+  "type": "mia:great_fault_type",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "mia:the_abyss",
+      "abyss_biomes": [
+        {
+          "biome": "mia:great_fault/great_fault",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 0.0,
+            "erosion": 0.0,
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": 0.0
+          }
+        }
+      ],
+      "biomes": [
+        {
+          "biome": "mia:great_fault/great_fault",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 0.0,
+            "erosion": 0.0,
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": 0.0
+          }
+        }
+      ]
+    },
+    "settings": "mia:great_fault"
+  }
+}

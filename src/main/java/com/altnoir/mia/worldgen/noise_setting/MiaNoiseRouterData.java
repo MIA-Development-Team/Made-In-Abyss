@@ -99,6 +99,30 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         return postProcess(add4);
     }
 
+    private static DensityFunction greatFaultDensity(HolderGetter<DensityFunction> densityFunctions) {
+        DensityFunction yFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
+
+        DensityFunction abyssHole = getFunction(densityFunctions, MiaDensityFunctions.GREAT_FAULT_HOLE);
+
+        DensityFunction abyss = DensityFunctions.min(abyssHole,
+                DensityFunctions.add(getFunction(densityFunctions, SPAGHETTI_2D), getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION))
+        );
+
+        DensityFunction yc1 = DensityFunctions.yClampedGradient(MiaHeight.GREAT_FAULT.maxY() - 32, MiaHeight.GREAT_FAULT.maxY(), 1, 0);
+        DensityFunction add1 = DensityFunctions.add(DensityFunctions.constant(1.025), abyss);
+
+        DensityFunction mul1 = DensityFunctions.mul(yc1, add1);
+        DensityFunction add2 = DensityFunctions.add(DensityFunctions.constant(-0.8975), mul1);
+
+        DensityFunction yc2 = DensityFunctions.yClampedGradient(MiaHeight.GREAT_FAULT.minY(), MiaHeight.GREAT_FAULT.minY() + 32, 0, 1);
+        DensityFunction add3 = DensityFunctions.add(DensityFunctions.constant(0.4), add2);
+
+        DensityFunction mul2 = DensityFunctions.mul(yc2, add3);
+        DensityFunction add4 = DensityFunctions.add(DensityFunctions.constant(-0.4), mul2);
+
+        return postProcess(add4);
+    }
+
     private static NoiseRouter theAbyssRouter(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
         DensityFunction yFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
         DensityFunction fluidLevelFloodedness = theAbyssFluidLevel(noiseParameters, Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS, 0.335, 0.5, yFunction);
@@ -140,26 +164,40 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         );
     }
 
+    private static NoiseRouter greatFaultRouter(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
+        DensityFunction yFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
+        DensityFunction fluidLevelFloodedness = theAbyssFluidLevel(noiseParameters, Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS, 0.335, 0.5, yFunction);
+        DensityFunction fluidLevelSpread = theAbyssFluidLevel(noiseParameters, Noises.AQUIFER_FLUID_LEVEL_SPREAD, 0.357142857, 0.5, yFunction);
 
-    private static DensityFunction underground(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters, DensityFunction p_256658_) {
-        DensityFunction densityfunction = getFunction(densityFunctions, SPAGHETTI_2D);
-        DensityFunction densityfunction1 = getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION);
-        DensityFunction densityfunction2 = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.CAVE_LAYER), 8.0);
-        DensityFunction densityfunction3 = DensityFunctions.mul(DensityFunctions.constant(4.0), densityfunction2.square());
-        DensityFunction densityfunction4 = DensityFunctions.noise(noiseParameters.getOrThrow(Noises.CAVE_CHEESE), 0.6666666666666666);
-        DensityFunction densityfunction5 = DensityFunctions.add(
-                DensityFunctions.add(DensityFunctions.constant(0.27), densityfunction4).clamp(-1.0, 1.0),
-                DensityFunctions.add(DensityFunctions.constant(1.5), DensityFunctions.mul(DensityFunctions.constant(-0.64), p_256658_)).clamp(0.0, 0.5)
+        DensityFunction shiftX = getFunction(densityFunctions, SHIFT_X);
+        DensityFunction shiftZ = getFunction(densityFunctions, SHIFT_Z);
+
+        DensityFunction noodle = DensityFunctions.add(
+                DensityFunctions.yClampedGradient(-16, 16, -1.5, 0.0),
+                DensityFunctions.add(
+                        DensityFunctions.yClampedGradient(0, 32, 1.5, 0.0),
+                        getFunction(densityFunctions, MiaDensityFunctions.GREAT_FAULT_NOODLE)
+                )
         );
-        DensityFunction densityfunction6 = DensityFunctions.add(densityfunction3, densityfunction5);
-        DensityFunction densityfunction7 = DensityFunctions.min(
-                DensityFunctions.min(densityfunction6, getFunction(densityFunctions, ENTRANCES)), DensityFunctions.add(densityfunction, densityfunction1)
+        DensityFunction finalDensity = DensityFunctions.min(greatFaultDensity(densityFunctions), noodle);
+
+        return new NoiseRouter(
+                DensityFunctions.zero(),
+                fluidLevelFloodedness,
+                fluidLevelSpread,
+                DensityFunctions.zero(),
+                DensityFunctions.shiftedNoise2d(shiftX, shiftZ, 0.25, noiseParameters.getOrThrow(Noises.TEMPERATURE)),
+                DensityFunctions.shiftedNoise2d(shiftX, shiftZ, 0.25, noiseParameters.getOrThrow(Noises.VEGETATION)),
+                DensityFunctions.zero(),
+                DensityFunctions.zero(),
+                getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_DEPTH),
+                getFunction(densityFunctions, RIDGES),
+                DensityFunctions.zero(),
+                finalDensity,
+                DensityFunctions.zero(),
+                DensityFunctions.zero(),
+                DensityFunctions.zero()
         );
-        DensityFunction densityfunction8 = getFunction(densityFunctions, PILLARS);
-        DensityFunction densityfunction9 = DensityFunctions.rangeChoice(
-                densityfunction8, -1000000.0, 0.03, DensityFunctions.constant(-1000000.0), densityfunction8
-        );
-        return DensityFunctions.max(densityfunction7, densityfunction9);
     }
 
     private static DensityFunction noiseGradientDensity(DensityFunction minFunction, DensityFunction maxFunction) {
@@ -187,5 +225,9 @@ public class MiaNoiseRouterData extends NoiseRouterData {
 
     public static NoiseRouter theAbyss(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
         return theAbyssRouter(densityFunctions, noiseParameters);
+    }
+
+    public static NoiseRouter greatFault(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
+        return greatFaultRouter(densityFunctions, noiseParameters);
     }
 }

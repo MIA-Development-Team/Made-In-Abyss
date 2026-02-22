@@ -19,7 +19,6 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
     private static final SurfaceRules.RuleSource ABYSS_ANDESITE = makeStateRule(MiaBlocks.ABYSS_ANDESITE.get());
     private static final SurfaceRules.RuleSource COVERGRASS_ABYSS_ANDESITE = makeStateRule(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
     private static final SurfaceRules.RuleSource COVERGRASS_TUFF = makeStateRule(MiaBlocks.COVERGRASS_TUFF.get());
-    private static final SurfaceRules.RuleSource CALCITE = makeStateRule(Blocks.CALCITE);
     // Layer 2
     private static final SurfaceRules.RuleSource MUD = makeStateRule(Blocks.MUD);
 
@@ -27,6 +26,7 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
         return SurfaceRules.state(block.defaultBlockState());
     }
 
+    // Layer 1-2
     public static SurfaceRules.RuleSource theAbyss() {
         SurfaceRules.ConditionSource waterBlockCheck = SurfaceRules.waterBlockCheck(0, 0);
         // Layer 1
@@ -113,6 +113,35 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
         return SurfaceRules.sequence(builder.build().toArray(SurfaceRules.RuleSource[]::new));
     }
 
+    // Layer 3
+    public static SurfaceRules.RuleSource greatFault() {
+        SurfaceRules.RuleSource sequence = SurfaceRules.sequence(
+                SurfaceRules.ifTrue(
+                        SurfaceRules.isBiome(
+                                MiaBiomes.TEMPTATION_FOREST
+                        ),
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
+                                MUD
+                        )
+                ),
+                SurfaceRules.sequence(
+                        addLightRule(320, 2,false),
+                        addLightRule(288, 3,false),
+                        addLightRule(256, 5,false),
+                        addLightRule(128, 5,false),
+                        addLightRule(64, 3,false),
+                        addLightRule(48, 2,false)
+                )
+        );
+        ImmutableList.Builder<SurfaceRules.RuleSource> builder = ImmutableList.builder();
+
+        builder.add(SurfaceRules.ifTrue(SurfaceRules.verticalGradient("bedrock_floor", VerticalAnchor.aboveBottom(128), VerticalAnchor.aboveBottom(133)), ROOTED_DIRT));
+
+        builder.add(sequence);
+        return SurfaceRules.sequence(builder.build().toArray(SurfaceRules.RuleSource[]::new));
+    }
+
     private static SurfaceRules.RuleSource addCalciteRule(int y) {
         return addCalciteRule(y, 0, true);
     }
@@ -129,7 +158,19 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
                 SurfaceRules.ifTrue(
                         SurfaceRules.not(
                                 SurfaceRules.yBlockCheck(VerticalAnchor.absolute(y + offset), 0)
-                        ), CALCITE)
+                        ), makeStateRule(Blocks.CALCITE))
+        );
+    }
+
+    private static SurfaceRules.RuleSource addLightRule(int y, int offset, boolean extend) {
+        var conditionSource = extend
+                ? SurfaceRules.yStartCheck(VerticalAnchor.absolute(y), -1)
+                : SurfaceRules.yBlockCheck(VerticalAnchor.absolute(y), 0);
+        return SurfaceRules.ifTrue(conditionSource,
+                SurfaceRules.ifTrue(
+                        SurfaceRules.not(
+                                SurfaceRules.yBlockCheck(VerticalAnchor.absolute(y + offset), 0)
+                        ), makeStateRule(Blocks.LIGHT))
         );
     }
 

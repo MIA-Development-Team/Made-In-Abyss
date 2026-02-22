@@ -1,5 +1,6 @@
-package com.altnoir.mia.worldgen.biome.the_abyss;
+package com.altnoir.mia.worldgen.biome;
 
+import com.altnoir.mia.worldgen.biome.the_abyss.TheAbyssPlacements;
 import net.minecraft.data.worldgen.placement.CavePlacements;
 import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.data.worldgen.placement.OrePlacements;
@@ -9,7 +10,7 @@ import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
-public class TheAbyssUtils {
+public class BiomesUtils {
     public static void commonSpawns(MobSpawnSettings.Builder builder) {
         waterAmbient(builder);
         undergroundWaterCreatures(builder);
@@ -41,11 +42,6 @@ public class TheAbyssUtils {
         builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.WITCH, 5, 1, 1));
     }
 
-    public static void abyssGeneration(BiomeGenerationSettings.Builder builder) {
-        builder.addFeature(GenerationStep.Decoration.LAKES, TheAbyssPlacements.LAKE_WATER);
-        globalAbyssGenerationNotGeode(builder);
-    }
-
     public static void addMeadowVegetation(BiomeGenerationSettings.Builder builder) {
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_PLAIN);
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FLOWER_MEADOW);
@@ -61,6 +57,11 @@ public class TheAbyssUtils {
     public static void addDenseMeadowVegetation(BiomeGenerationSettings.Builder builder) {
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_FERN);
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
+    }
+
+    public static void abyssGeneration(BiomeGenerationSettings.Builder builder) {
+        builder.addFeature(GenerationStep.Decoration.LAKES, TheAbyssPlacements.LAKE_WATER);
+        globalAbyssGenerationNotGeode(builder);
     }
 
     public static void globalAbyssGeneration(BiomeGenerationSettings.Builder builder) {

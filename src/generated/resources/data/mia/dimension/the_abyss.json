@@ -295,7 +295,10 @@
             ],
             "offset": 0.0,
             "temperature": 0.8,
-            "weirdness": 0.0
+            "weirdness": [
+              -0.5,
+              0.5
+            ]
           }
         },
         {
@@ -310,7 +313,10 @@
             ],
             "offset": 0.0,
             "temperature": 0.8,
-            "weirdness": 0.0
+            "weirdness": [
+              -0.5,
+              0.5
+            ]
           }
         }
       ]

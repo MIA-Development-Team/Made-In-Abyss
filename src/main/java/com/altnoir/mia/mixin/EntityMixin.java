@@ -1,5 +1,6 @@
 package com.altnoir.mia.mixin;
 
+import com.altnoir.mia.core.AbyssPortal;
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -20,10 +21,13 @@ public abstract class EntityMixin {
     @Shadow
     protected abstract void onBelowWorld();
 
-    @Inject(method = "checkBelowWorld", at = @At("HEAD"))
+    @Inject(method = "checkBelowWorld", at = @At("HEAD"), cancellable = true)
     private void checkBelowWorld(CallbackInfo ci) {
         if (this.level().dimension() == MiaDimensions.THE_ABYSS_LEVEL && this.getY() > (double) (this.level().getMaxBuildHeight() + 64)) {
             this.onBelowWorld();
+        } else if (AbyssPortal.abyssPortal(this.level(), (Entity) (Object) this)) {
+            ci.cancel();
         }
+
     }
 }

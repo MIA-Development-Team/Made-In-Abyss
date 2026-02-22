@@ -22,13 +22,15 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import java.util.List;
 
 public class MiaDimensions {
-    public static final ResourceKey<LevelStem> ABYSS_EDGE = ResourceKey.create(Registries.LEVEL_STEM,
-            MiaUtil.id(MIA.MOD_ID, "abyss_edge"));
-
     public static final ResourceKey<LevelStem> THE_ABYSS = ResourceKey.create(Registries.LEVEL_STEM,
             MiaUtil.id(MIA.MOD_ID, "the_abyss"));
     public static final ResourceKey<Level> THE_ABYSS_LEVEL = ResourceKey.create(Registries.DIMENSION,
             MiaUtil.id(MIA.MOD_ID, "the_abyss"));
+
+    public static final ResourceKey<LevelStem> GREAT_FAULT = ResourceKey.create(Registries.LEVEL_STEM,
+            MiaUtil.id(MIA.MOD_ID, "great_fault"));
+    public static final ResourceKey<Level> GREAT_FAULT_LEVEL = ResourceKey.create(Registries.DIMENSION,
+            MiaUtil.id(MIA.MOD_ID, "great_fault"));
 
     public static void bootstrapStem(BootstrapContext<LevelStem> context) {
         HolderGetter<Biome> biomeRegistry = context.lookup(Registries.BIOME);
@@ -149,9 +151,31 @@ public class MiaDimensions {
                 ),
                 noiseGenSettings.getOrThrow(MiaNoiseGeneratorSettings.THE_ABYSS)
         );
+        NoiseBasedChunkGenerator great_fault = new NoiseBasedChunkGenerator(
+                AbyssNoiseBiomeSource.createFromList(
+                        new Climate.ParameterList<>(List.of(
+                                biomePair(
+                                        Climate.Parameter.span(-1.0F, 1.0F),
+                                        Climate.Parameter.point(0.0F),
+                                        biomeRegistry.getOrThrow(MiaBiomes.GREAT_FAULT)
+                                )
+                        )),
+                        new Climate.ParameterList<>(List.of(
+                                biomePair(
+                                        Climate.Parameter.span(-1.0F, 1.0F),
+                                        Climate.Parameter.point(0.0F),
+                                        biomeRegistry.getOrThrow(MiaBiomes.GREAT_FAULT)
+                                )
+                        ))
+                ),
+                noiseGenSettings.getOrThrow(MiaNoiseGeneratorSettings.GREAT_FAULT)
+        );
 
         LevelStem the_abyss_stem = new LevelStem(dimensionTypes.getOrThrow(MiaDimensionTypes.THE_ABYSS_TYPE), the_abyss);
+        LevelStem great_fault_stem = new LevelStem(dimensionTypes.getOrThrow(MiaDimensionTypes.GREAT_FAULT_TYPE), great_fault);
+
         context.register(THE_ABYSS, the_abyss_stem);
+        context.register(GREAT_FAULT, great_fault_stem);
     }
 
     private static Pair<Climate.ParameterPoint, Holder<Biome>> biomePair(

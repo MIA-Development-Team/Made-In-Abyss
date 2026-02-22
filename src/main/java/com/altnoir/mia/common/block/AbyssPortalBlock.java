@@ -75,14 +75,12 @@ public class AbyssPortalBlock extends Block implements Portal {
             boolean flag = resourcekey == MiaDimensions.THE_ABYSS_LEVEL;
             BlockPos blockpos;
             Vec3 vec3;
-            float f = entity.getYRot();
             if (flag) {
                 //AbyssPortalFeature.createAbyssBrinkPlatform(serverlevel, BlockPos.containing(vec3).below(), true);
                 blockpos = nearestAbyssPosition(entity.getX(), entity.getZ());
                 BlockPos suitablePos = findSuitablePosition(serverlevel, blockpos);
 
                 vec3 = suitablePos.getBottomCenter();
-                f = Direction.WEST.toYRot();
                 if (entity instanceof ServerPlayer) {
                     vec3 = vec3.subtract(0.0, 0.0, 0.0);
                 }
@@ -104,7 +102,7 @@ public class AbyssPortalBlock extends Block implements Portal {
                     serverlevel,
                     vec3,
                     entity.getDeltaMovement(),
-                    f,
+                    entity.getYRot(),
                     entity.getXRot(),
                     portalSound.then(DimensionTransition.PLACE_PORTAL_TICKET)
             );

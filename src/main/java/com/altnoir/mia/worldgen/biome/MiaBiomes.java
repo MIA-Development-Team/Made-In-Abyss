@@ -1,6 +1,7 @@
 package com.altnoir.mia.worldgen.biome;
 
 import com.altnoir.mia.util.MiaUtil;
+import com.altnoir.mia.worldgen.biome.great_fault.GreatFaultBiomes;
 import com.altnoir.mia.worldgen.biome.the_abyss.TheAbyssBiomes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -22,6 +23,8 @@ public class MiaBiomes {
     // Layer 2
     public static final ResourceKey<Biome> TEMPTATION_FOREST = abyssEdgeKey("temptation_forest");
     public static final ResourceKey<Biome> INVERTED_FOREST = abyssEdgeKey("inverted_forest");
+    // Layer 3
+    public static final ResourceKey<Biome> GREAT_FAULT = greatFaultKey("great_fault");
 
     public static void boostrap(BootstrapContext<Biome> context) {
         // Layer 1
@@ -38,6 +41,8 @@ public class MiaBiomes {
         // Layer 2
         context.register(TEMPTATION_FOREST, TheAbyssBiomes.temptationForest(context));
         context.register(INVERTED_FOREST, TheAbyssBiomes.invertedForest(context));
+        // Layer 3
+        context.register(GREAT_FAULT, GreatFaultBiomes.greatFault(context));
     }
 
     private static ResourceKey<Biome> register(String path) {
@@ -46,5 +51,9 @@ public class MiaBiomes {
 
     private static ResourceKey<Biome> abyssEdgeKey(String path) {
         return register("the_abyss/" + path);
+    }
+
+    private static ResourceKey<Biome> greatFaultKey(String path) {
+        return register("great_fault/" + path);
     }
 }
