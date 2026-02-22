@@ -8,6 +8,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 public class Curse implements INBTSerializable<CompoundTag>, ICurse {
     private int curse = 0;
     private int maxCurse = 10;
+    private int curseGradient = 1;
 
     public Curse() {}
 
@@ -18,6 +19,11 @@ public class Curse implements INBTSerializable<CompoundTag>, ICurse {
         if (val < 0) val = 0;
         curse = val;
     }
+    
+    @Override
+    public void setCurseByYDelta(double delta) {
+        this.curse = Math.max(0, (int) Math.floor(delta) * curseGradient);
+    }
 
     @Override public int getMaxCurse() { return maxCurse; }
 
@@ -25,21 +31,30 @@ public class Curse implements INBTSerializable<CompoundTag>, ICurse {
         if (val < 0) val = 1;
         maxCurse = val;
     }
-
+    
+    @Override
+    public boolean isCurseOverflow() {
+        return this.curse >= this.maxCurse;
+    }
+    
+    @Override
+    public int getCurseGradient() {
+        return curseGradient;
+    }
+    
+    @Override
+    public void setCurseGradient(int val) {
+        this.curseGradient = Math.max(val, 1);
+    }
+    
     @Override
     public void addCurse(int delta) {
-        if (this.curse < this.maxCurse) {
-            this.curse += delta;
-        }
+        this.curse = Math.min(this.maxCurse, this.curse + delta * this.curseGradient);
     }
-
+    
     @Override
     public void minusCurse(int delta) {
-        if (this.curse > delta) {
-            this.curse -= delta;
-        } else {
-            this.curse = 0;
-        }
+        this.curse = Math.max(0, this.curse - delta * curseGradient);
     }
 
     @Override
@@ -47,6 +62,7 @@ public class Curse implements INBTSerializable<CompoundTag>, ICurse {
         var tag = new CompoundTag();
         tag.putInt("curse", curse);
         tag.putInt("maxCurse", maxCurse);
+        tag.putInt("curseGradient", curseGradient);
         return tag;
     }
 
@@ -54,5 +70,6 @@ public class Curse implements INBTSerializable<CompoundTag>, ICurse {
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compoundTag) {
         curse = compoundTag.getInt("curse");
         maxCurse = compoundTag.getInt("maxCurse");
+        curseGradient = compoundTag.getInt("curseGradient");
     }
 }
