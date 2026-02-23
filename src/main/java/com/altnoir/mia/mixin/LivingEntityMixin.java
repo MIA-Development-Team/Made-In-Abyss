@@ -1,7 +1,10 @@
 package com.altnoir.mia.mixin;
 
+import com.altnoir.mia.MIA;
 import com.altnoir.mia.core.AbyssGravity;
 import com.altnoir.mia.init.MiaAttributes;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -17,7 +20,9 @@ public class LivingEntityMixin {
         Entity entity = (Entity) (Object) this;
 
         if (AbyssGravity.isTheAbyssGravity(entity)) {
-            cir.setReturnValue(-cir.getReturnValue());
+            double value = cir.getReturnValue();
+            double gravity = AbyssGravity.getAbyssGravity(entity, value);
+            cir.setReturnValue(gravity);
         } else if (AbyssGravity.isInvertedForest(entity)) {
             cir.setReturnValue(cir.getReturnValue() * 0.5);
         }

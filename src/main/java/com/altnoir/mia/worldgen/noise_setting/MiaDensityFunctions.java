@@ -127,29 +127,45 @@ public class MiaDensityFunctions {
     }
 
     private static DensityFunction theAbyssGreatCaveNoodle(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        return noodle(MiaHeight.THE_ABYSS.minY() + 64, 5, densityFunctions, noiseParameters, 0, 0, true, true, false);
+        return noodle(MiaHeight.THE_ABYSS.minY() + 64, 5, densityFunctions, noiseParameters, 0.5, true);
     }
 
     private static DensityFunction theAbyssNoodle(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        return theAbyssNoodle(MiaHeight.THE_ABYSS.minY() + 128, MiaHeight.THE_ABYSS.maxY(), densityFunctions, noiseParameters, -40, 40, true);
+        return theAbyssNoodle(MiaHeight.THE_ABYSS.minY() + 128, MiaHeight.THE_ABYSS.maxY(), densityFunctions, noiseParameters, 1.5, -0.5, -0.3, 40, true);
     }
 
     private static DensityFunction greatFaultNoodle(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        return theAbyssNoodle(MiaHeight.GREAT_FAULT.minY(), MiaHeight.GREAT_FAULT.maxY(), densityFunctions, noiseParameters, 0, 0, true);
+        return theAbyssNoodle(MiaHeight.GREAT_FAULT.minY(), MiaHeight.GREAT_FAULT.maxY(), densityFunctions, noiseParameters, 1.0, -0.05, -0.1, 0, true);
     }
 
     private static DensityFunction noodle(
             int minY, int maxY,
             HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters,
-            int minYOffset, int maxYOffset, boolean ridgeB, boolean inverse, boolean full
+            double noiseScale, boolean ridgeB
+    ) {
+        return noodle(minY, maxY, densityFunctions, noiseParameters, noiseScale, 0, ridgeB, true);
+    }
+
+    private static DensityFunction noodle(
+            int minY, int maxY,
+            HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters,
+            double noiseScale, int YOffset, boolean ridgeB, boolean inverse
+    ) {
+        return noodleBase(minY, maxY, densityFunctions, noiseParameters, noiseScale, YOffset, ridgeB, inverse, false);
+    }
+
+    private static DensityFunction noodleBase(
+            int minY, int maxY,
+            HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters,
+            double noiseScale, int YOffset, boolean ridgeB, boolean inverse, boolean full
     ) {
         DensityFunction yFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
 
-        int FMinY = minY + minYOffset;
-        int FMaxY = maxY + maxYOffset;
+        int FMinY = minY - YOffset;
+        int FMaxY = maxY + YOffset;
 
         DensityFunction densityFunction1 = yLimitedInterpolatable(
-                yFunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE), 0.5, 0.5), FMinY, FMaxY, -1
+                yFunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE), noiseScale, noiseScale), FMinY, FMaxY, -1
         );
 
         DensityFunction densityFunction2 = yLimitedInterpolatable(
@@ -185,25 +201,23 @@ public class MiaDensityFunctions {
     private static DensityFunction theAbyssNoodle(
             int minY, int maxY,
             HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters,
-            int minYOffset, int maxYOffset, boolean ridgeB) {
+            double noiseScale, double fromY, double toY, int YOffset, boolean ridgeB) {
         DensityFunction yFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
 
-        int FMinY = minY + minYOffset;
-        int FMaxY = maxY + maxYOffset;
+        int FMinY = minY - YOffset;
+        int FMaxY = maxY + YOffset;
 
         DensityFunction densityFunction0 = yLimitedInterpolatable(
-                yFunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE), 1.5, 1.5), FMinY, FMaxY, -2
+                yFunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE), noiseScale, noiseScale), FMinY, FMaxY, -1
         );
 
         DensityFunction densityFunction1 = DensityFunctions.add(
-                DensityFunctions.rangeChoice(yFunction, minY + 16, maxY - 64,
-                        DensityFunctions.constant(0), DensityFunctions.constant(1)),
-                densityFunction0
+                DensityFunctions.rangeChoice(
+                        yFunction, minY + 16, maxY - 64, DensityFunctions.constant(0), DensityFunctions.constant(1)
+                ), densityFunction0
         );
-
         DensityFunction densityFunction2 = yLimitedInterpolatable(
-                yFunction, DensityFunctions.mappedNoise(noiseParameters.getOrThrow(Noises.NOODLE_THICKNESS), 1.0, 1.0,
-                        -0.5, -0.3),
+                yFunction, DensityFunctions.mappedNoise(noiseParameters.getOrThrow(Noises.NOODLE_THICKNESS), 1.0, 1.0, fromY, toY),
                 FMinY, FMaxY, 0
         );
 
@@ -216,15 +230,11 @@ public class MiaDensityFunctions {
                 yFunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_B), d0, d0), minY, maxY, 0
         );
 
-        DensityFunction densityFunction5 = DensityFunctions.mul(
-                DensityFunctions.constant(1.5), densityFunction3.abs()
-        );
-        DensityFunction densityFunction6 = DensityFunctions.mul(
-                DensityFunctions.constant(1.5), DensityFunctions.max(densityFunction3.abs(), densityFunction4.abs())
-        );
+        DensityFunction densityFunction5 = DensityFunctions.mul(DensityFunctions.constant(1.5), densityFunction3.abs());
+        DensityFunction densityFunction6 = DensityFunctions.mul(DensityFunctions.constant(1.5), DensityFunctions.max(densityFunction3.abs(), densityFunction4.abs()));
 
         return DensityFunctions.rangeChoice(
-                densityFunction1, -1000000.0, 0.0,
+                densityFunction0, -1000000.0, 0.0,
                 DensityFunctions.constant(64.0),
                 DensityFunctions.add(densityFunction2, ridgeB ? densityFunction6 : densityFunction5)
         );
