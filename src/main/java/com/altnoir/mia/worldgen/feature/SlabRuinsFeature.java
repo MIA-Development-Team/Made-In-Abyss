@@ -1,6 +1,8 @@
 package com.altnoir.mia.worldgen.feature;
 
 import com.altnoir.mia.datagen.MiaArchaeologyLoot;
+import com.altnoir.mia.init.MiaBlockEntities;
+import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.worldgen.MiaFeatures;
 import com.altnoir.mia.worldgen.feature.configurations.SlabRuinsConfiguration;
 import com.mojang.serialization.Codec;
@@ -8,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -74,8 +75,8 @@ public class SlabRuinsFeature extends Feature<SlabRuinsConfiguration> {
             int chestZ = randomsource.nextInt(2);
 
             BlockPos chestPos = new BlockPos(blockpos.getX() + chestX, blockpos.getY() - 1, blockpos.getZ() + chestZ);
-            this.safeSetBlock(worldgenlevel, chestPos, Blocks.SUSPICIOUS_GRAVEL.defaultBlockState(), predicate);
-            worldgenlevel.getBlockEntity(chestPos, BlockEntityType.BRUSHABLE_BLOCK)
+            this.safeSetBlock(worldgenlevel, chestPos, MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE.get().defaultBlockState(), predicate);
+            worldgenlevel.getBlockEntity(chestPos, MiaBlockEntities.BRUSHABLE_ENTITY.get())
                     .ifPresent(blockEntity -> blockEntity.setLootTable(MiaArchaeologyLoot.ABYSS_RUINS, chestPos.asLong()));
         }
         return true;

@@ -1,6 +1,7 @@
 package com.altnoir.mia.worldgen.biome.the_abyss;
 
 import com.altnoir.mia.init.MiaBlocks;
+import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.init.worldgen.MiaFeatures;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;
 import com.altnoir.mia.worldgen.feature.LakeFeature;
@@ -41,6 +42,8 @@ import net.minecraft.world.level.levelgen.placement.CaveSurface;
 import net.minecraft.world.level.levelgen.placement.EnvironmentScanPlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.RandomOffsetPlacement;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.material.Fluids;
 
@@ -74,6 +77,16 @@ public class TheAbyssFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_GEODE = theAbyssKey("prasiolite_geode");
     public static final ResourceKey<ConfiguredFeature<?, ?>> CAVE_PILLAR = theAbyssKey("cave_pillar");
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAW_IRON = theAbyssKey("raw_iron");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_DIRT = theAbyssKey("ore_dirt");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_GRAVEL = theAbyssKey("ore_gravel");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_IRON = theAbyssKey("ore_iron");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_COPPER = theAbyssKey("ore_copper");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_GOLD = theAbyssKey("ore_gold");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_LAPIS = theAbyssKey("ore_lapis");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_REDSTONE = theAbyssKey("ore_redstone");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_DIAMOND = theAbyssKey("ore_diamond");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_EMERALD = theAbyssKey("ore_emerald");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_QUARTZ = theAbyssKey("ore_quartz");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
@@ -242,6 +255,17 @@ public class TheAbyssFeatures {
                         )
                 )
         );
+        RuleTest oreRule = new TagMatchTest(MiaTags.Blocks.ABYSS_ANDESITE_ORE_REPLACEABLES);
+        MiaFeatureUtils.register(context, ORE_DIRT, Feature.ORE, new OreConfiguration(oreRule, Blocks.DIRT.defaultBlockState(), 33, 1.0F));
+        MiaFeatureUtils.register(context, ORE_GRAVEL, Feature.ORE, new OreConfiguration(oreRule, Blocks.GRAVEL.defaultBlockState(), 33));
+        MiaFeatureUtils.register(context, ORE_IRON, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_IRON_ORE.get().defaultBlockState(), 4));
+        MiaFeatureUtils.register(context, ORE_COPPER, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_COPPER_ORE.get().defaultBlockState(), 6));
+        MiaFeatureUtils.register(context, ORE_GOLD, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_GOLD_ORE.get().defaultBlockState(), 9, 0.5F));
+        MiaFeatureUtils.register(context, ORE_LAPIS, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_LAPIS_ORE.get().defaultBlockState(), 10, 1.0F));
+        MiaFeatureUtils.register(context, ORE_REDSTONE, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_REDSTONE_ORE.get().defaultBlockState(), 12, 1.0F));
+        MiaFeatureUtils.register(context, ORE_DIAMOND, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_DIAMOND_ORE.get().defaultBlockState(), 12));
+        MiaFeatureUtils.register(context, ORE_EMERALD, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_EMERALD_ORE.get().defaultBlockState(), 4));
+        MiaFeatureUtils.register(context, ORE_QUARTZ, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_QUARTZ_ORE.get().defaultBlockState(), 12));
 
         MiaFeatureUtils.register(
                 context, TREES_SKYFOG, Feature.RANDOM_SELECTOR,

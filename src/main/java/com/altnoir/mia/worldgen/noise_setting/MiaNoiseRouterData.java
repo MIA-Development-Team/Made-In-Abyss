@@ -73,12 +73,12 @@ public class MiaNoiseRouterData extends NoiseRouterData {
 
         DensityFunction layer2 = DensityFunctions.add(DensityFunctions.constant(0.2), abyssGreatCave);
         DensityFunction layer = DensityFunctions.rangeChoice(
-                yFunction, -128.0, MiaHeight.THE_ABYSS.midY(), layer2,
+                yFunction, -128.0, MiaHeight.THE_ABYSS.middleY(), layer2,
                 DensityFunctions.max(rangeChoice2, abyssPillars)
         );
 
         DensityFunction rangeChoice1 = DensityFunctions.rangeChoice(
-                yFunction, MiaHeight.THE_ABYSS.minY(), MiaHeight.THE_ABYSS.midY(), insideAbyssHoleB, insideAbyssHoleA
+                yFunction, MiaHeight.THE_ABYSS.minY(), MiaHeight.THE_ABYSS.middleY(), insideAbyssHoleB, insideAbyssHoleA
         );
         DensityFunction rangeChoice = DensityFunctions.rangeChoice(
                 abyssHole, -1000000.0, 0.025, rangeChoice1, layer

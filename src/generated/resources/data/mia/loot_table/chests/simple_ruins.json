@@ -26,17 +26,17 @@
         },
         {
           "type": "minecraft:item",
-          "name": "mia:mistfuzz_peach",
-          "weight": 15
-        },
-        {
-          "type": "minecraft:item",
           "name": "mia:prasiolite_shard",
           "weight": 15
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:name_tag",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:skeleton_skull",
           "weight": 20
         },
         {
@@ -114,24 +114,13 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:wheat",
-          "weight": 20
+          "name": "minecraft:bucket",
+          "weight": 10
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:bucket",
-          "weight": 10
+          "name": "minecraft:skeleton_skull",
+          "weight": 20
         },
         {
           "type": "minecraft:item",

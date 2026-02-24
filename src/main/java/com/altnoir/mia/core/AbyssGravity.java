@@ -22,7 +22,7 @@ public class AbyssGravity {
 
     public static double getAbyssGravity(Entity entity, double value) {
         double entityY = entity.getY();
-        double midY = MiaHeight.THE_ABYSS.midY();
+        double midY = MiaHeight.THE_ABYSS.middleY();
 
         final double RANGE = 8.0;
         double finalGravity;

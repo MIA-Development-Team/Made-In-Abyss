@@ -16,7 +16,7 @@ public class AbyssPortal {
             if (level instanceof ServerLevel serverLevel) {
                 ServerLevel level3 = serverLevel.getServer().getLevel(MiaDimensions.GREAT_FAULT_LEVEL);
                 if (level3 != null) {
-                    Vec3 pos = new Vec3(entity.getX() + 0.5, level3.getMaxBuildHeight(), entity.getZ() + 0.5);
+                    Vec3 pos = new Vec3(entity.getX() + 0.5, level3.getMaxBuildHeight() + 128, entity.getZ() + 0.5);
                     DimensionTransition transition = dimTransition(level3, entity, pos);
                     entity.changeDimension(transition);
                     return true;

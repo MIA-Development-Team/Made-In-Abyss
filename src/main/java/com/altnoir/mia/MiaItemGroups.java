@@ -78,6 +78,17 @@ public class MiaItemGroups {
 
                         output.accept(MiaBlocks.HOPPER_FARMLAND);
                         output.accept(MiaBlocks.SUN_STONE);
+
+                        // 矿物
+                        output.accept(MiaBlocks.ABYSS_IRON_ORE);
+                        output.accept(MiaBlocks.ABYSS_COPPER_ORE);
+                        output.accept(MiaBlocks.ABYSS_GOLD_ORE);
+                        output.accept(MiaBlocks.ABYSS_LAPIS_ORE);
+                        output.accept(MiaBlocks.ABYSS_REDSTONE_ORE);
+                        output.accept(MiaBlocks.ABYSS_DIAMOND_ORE);
+                        output.accept(MiaBlocks.ABYSS_EMERALD_ORE);
+                        output.accept(MiaBlocks.ABYSS_QUARTZ_ORE);
+                        output.accept(MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE);
                         // 翡翠
                         output.accept(MiaBlocks.PRASIOLITE_BLOCK);
                         output.accept(MiaBlocks.BUDDING_PRASIOLITE);

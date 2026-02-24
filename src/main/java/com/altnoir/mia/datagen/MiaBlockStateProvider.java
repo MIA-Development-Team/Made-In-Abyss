@@ -159,6 +159,16 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         bushBlock(MiaBlocks.INVERTED_SAPLING);
         leavesBlock(MiaBlocks.INVERTED_LEAVES);
 
+        // 矿物
+        blockWithItem(MiaBlocks.ABYSS_IRON_ORE);
+        blockWithItem(MiaBlocks.ABYSS_COPPER_ORE);
+        blockWithItem(MiaBlocks.ABYSS_GOLD_ORE);
+        blockWithItem(MiaBlocks.ABYSS_LAPIS_ORE);
+        blockWithItem(MiaBlocks.ABYSS_REDSTONE_ORE);
+        blockWithItem(MiaBlocks.ABYSS_DIAMOND_ORE);
+        blockWithItem(MiaBlocks.ABYSS_EMERALD_ORE);
+        blockWithItem(MiaBlocks.ABYSS_QUARTZ_ORE);
+        createBrushableBlock(MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE);
         // 晶石
         blockWithItem(MiaBlocks.PRASIOLITE_BLOCK);
         blockWithItem(MiaBlocks.BUDDING_PRASIOLITE);
@@ -557,6 +567,23 @@ public class MiaBlockStateProvider extends BlockStateProvider {
                 .end();
 
         aloneItem(flowerBedBlock);
+    }
+
+    private void createBrushableBlock(DeferredBlock<?> block) {
+        getVariantBuilder(block.get())
+                .forAllStates(state -> {
+                    String suffix = "_" + state.getValue(BlockStateProperties.DUSTED);
+
+                    ModelFile model = models().cubeAll(
+                            MiaUtil.getBlockPath(block.get()) + suffix,
+                            modLoc("block/" + MiaUtil.getBlockPath(block.get()) + suffix)
+                    );
+
+                    return ConfiguredModel.builder().modelFile(model).build();
+                });
+
+        // 创建物品模型
+        blockItem(block, "_0");
     }
 
     private void buildFacingBlockState(DeferredBlock<?> block, ResourceLocation model) {

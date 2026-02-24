@@ -69,6 +69,10 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.SKYFOG_WOOD.get())
                 .add(MiaBlocks.STRIPPED_SKYFOG_LOG.get())
                 .add(MiaBlocks.STRIPPED_SKYFOG_WOOD.get())
+                .add(MiaBlocks.VERDANT_STEM.get())
+                .add(MiaBlocks.VERDANT_HYPHAE.get())
+                .add(MiaBlocks.STRIPPED_VERDANT_STEM.get())
+                .add(MiaBlocks.STRIPPED_VERDANT_HYPHAE.get())
                 .add(MiaBlocks.INVERTED_LOG.get())
                 .add(MiaBlocks.INVERTED_WOOD.get())
                 .add(MiaBlocks.STRIPPED_INVERTED_LOG.get())
@@ -79,9 +83,11 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.INVERTED_LEAVES.get());
         tag(BlockTags.PLANKS)
                 .add(MiaBlocks.SKYFOG_PLANKS.get())
+                .add(MiaBlocks.VERDANT_PLANKS.get())
                 .add(MiaBlocks.INVERTED_PLANKS.get());
         tag(BlockTags.WOODEN_STAIRS)
                 .add(MiaBlocks.SKYFOG_STAIRS.get())
+                .add(MiaBlocks.VERDANT_STAIRS.get())
                 .add(MiaBlocks.INVERTED_STAIRS.get());
 
         tag(BlockTags.STAIRS)
@@ -99,6 +105,7 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB.get())
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get())
                 .add(MiaBlocks.SKYFOG_SLAB.get())
+                .add(MiaBlocks.VERDANT_SLAB.get())
                 .add(MiaBlocks.INVERTED_SLAB.get());
         tag(BlockTags.WALLS)
                 .add(MiaBlocks.ABYSS_ANDESITE_WALL.get())
@@ -114,9 +121,11 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
 
         tag(BlockTags.FENCES)
                 .add(MiaBlocks.SKYFOG_FENCE.get())
+                .add(MiaBlocks.VERDANT_FENCE.get())
                 .add(MiaBlocks.INVERTED_FENCE.get());
         tag(BlockTags.FENCE_GATES)
                 .add(MiaBlocks.SKYFOG_FENCE_GATE.get())
+                .add(MiaBlocks.VERDANT_FENCE_GATE.get())
                 .add(MiaBlocks.INVERTED_FENCE_GATE.get());
         tag(BlockTags.SAPLINGS)
                 .add(MiaBlocks.SKYFOG_SAPLING.get())
@@ -128,11 +137,31 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
         tag(BlockTags.CLIMBABLE)
                 .add(MiaBlocks.ROPE.get());
 
+        // 矿物标签
+        tag(Tags.Blocks.ORES_IRON)
+                .add(MiaBlocks.ABYSS_IRON_ORE.get());
+        tag(Tags.Blocks.ORES_COPPER)
+                .add(MiaBlocks.ABYSS_COPPER_ORE.get());
+        tag(Tags.Blocks.ORES_GOLD)
+                .add(MiaBlocks.ABYSS_GOLD_ORE.get());
+        tag(Tags.Blocks.ORES_LAPIS)
+                .add(MiaBlocks.ABYSS_LAPIS_ORE.get());
+        tag(Tags.Blocks.ORES_REDSTONE)
+                .add(MiaBlocks.ABYSS_REDSTONE_ORE.get());
+        tag(Tags.Blocks.ORES_DIAMOND)
+                .add(MiaBlocks.ABYSS_DIAMOND_ORE.get());
+        tag(Tags.Blocks.ORES_EMERALD)
+                .add(MiaBlocks.ABYSS_EMERALD_ORE.get());
+        tag(Tags.Blocks.ORES_QUARTZ)
+                .add(MiaBlocks.ABYSS_QUARTZ_ORE.get());
+
         //NeoForge标签
         tag(Tags.Blocks.VILLAGER_FARMLANDS)
                 .add(MiaBlocks.HOPPER_FARMLAND.get());
 
-        // 工具标签
+        // 原版工具标签
+        tag(BlockTags.MINEABLE_WITH_HOE)
+                .add(MiaBlocks.VERDANT_LEAVES.get());
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
                 .add(MiaBlocks.COVERGRASS_TUFF.get())
@@ -187,6 +216,16 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB.get())
                 .add(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL.get())
 
+                .add(MiaBlocks.ABYSS_IRON_ORE.get())
+                .add(MiaBlocks.ABYSS_COPPER_ORE.get())
+                .add(MiaBlocks.ABYSS_GOLD_ORE.get())
+                .add(MiaBlocks.ABYSS_LAPIS_ORE.get())
+                .add(MiaBlocks.ABYSS_REDSTONE_ORE.get())
+                .add(MiaBlocks.ABYSS_DIAMOND_ORE.get())
+                .add(MiaBlocks.ABYSS_EMERALD_ORE.get())
+                .add(MiaBlocks.ABYSS_QUARTZ_ORE.get())
+                .add(MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE.get())
+
                 .add(MiaBlocks.PRASIOLITE_BLOCK.get())
                 .add(MiaBlocks.BUDDING_PRASIOLITE.get())
                 .add(MiaBlocks.PRASIOLITE_CLUSTER.get())
@@ -203,6 +242,17 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
 
 //        tag(BlockTags.MINEABLE_WITH_SHOVEL)
 //                .add(MiaBlocks.HOPPER_FARMLAND.get());
+
+        tag(BlockTags.NEEDS_IRON_TOOL)
+                .add(MiaBlocks.ABYSS_GOLD_ORE.get())
+                .add(MiaBlocks.ABYSS_REDSTONE_ORE.get())
+                .add(MiaBlocks.ABYSS_DIAMOND_ORE.get())
+                .add(MiaBlocks.ABYSS_EMERALD_ORE.get());
+        tag(BlockTags.NEEDS_STONE_TOOL)
+                .add(MiaBlocks.ABYSS_IRON_ORE.get())
+                .add(MiaBlocks.ABYSS_COPPER_ORE.get())
+                .add(MiaBlocks.ABYSS_LAPIS_ORE.get())
+                .add(MiaBlocks.ABYSS_QUARTZ_ORE.get());
 
         // 标签嵌套
         tag(BlockTags.SCULK_REPLACEABLE)

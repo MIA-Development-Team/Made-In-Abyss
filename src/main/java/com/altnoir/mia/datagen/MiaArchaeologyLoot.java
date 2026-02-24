@@ -26,6 +26,7 @@ public record MiaArchaeologyLoot(HolderLookup.Provider registries) implements Lo
                                 .setRolls(ConstantValue.exactly(1.0F))
                                 .add(LootItem.lootTableItem(Items.ARMS_UP_POTTERY_SHERD).setWeight(2))
                                 .add(LootItem.lootTableItem(Items.BREWER_POTTERY_SHERD).setWeight(2))
+                                .add(LootItem.lootTableItem(Items.SKELETON_SKULL).setWeight(3))
                                 .add(LootItem.lootTableItem(MiaItems.PRASIOLITE_SHARD.get()))
                                 .add(LootItem.lootTableItem(MiaItems.TEST_ARTIFACT_1.get()))
                                 .add(LootItem.lootTableItem(MiaItems.TEST_ARTIFACT_2.get()))

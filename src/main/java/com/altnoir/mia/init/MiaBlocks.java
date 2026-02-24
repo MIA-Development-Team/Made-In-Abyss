@@ -7,6 +7,9 @@ import com.altnoir.mia.worldgen.feature.tree.MiaTreeGrowers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
@@ -15,10 +18,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.bus.api.IEventBus;
@@ -300,6 +300,77 @@ public class MiaBlocks {
     public static final DeferredBlock<Block> SILVEAF_FUNGUS = registerBlock("silveaf_fungus", () ->
             flower(MobEffects.HEAL, 5.0F, MapColor.PLANT, SoundType.ROOTS)
     );
+    // 矿物
+    public static final DeferredBlock<Block> ABYSS_IRON_ORE = registerBlock("abyss_iron_ore", () ->
+            new DropExperienceBlock(
+                    ConstantInt.of(0),
+                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
+                            .strength(4.5F, 3.0F)
+            )
+    );
+    public static final DeferredBlock<Block> ABYSS_COPPER_ORE = registerBlock("abyss_copper_ore", () ->
+            new DropExperienceBlock(
+                    ConstantInt.of(0),
+                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
+                            .strength(4.5F, 3.0F)
+            )
+    );
+    public static final DeferredBlock<Block> ABYSS_GOLD_ORE = registerBlock("abyss_gold_ore", () ->
+            new DropExperienceBlock(
+                    ConstantInt.of(0),
+                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
+                            .strength(4.5F, 3.0F)
+            )
+    );
+    public static final DeferredBlock<Block> ABYSS_LAPIS_ORE = registerBlock("abyss_lapis_ore", () ->
+            new DropExperienceBlock(
+                    UniformInt.of(2, 5),
+                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
+                            .strength(4.5F, 3.0F)
+            )
+    );
+    public static final DeferredBlock<Block> ABYSS_REDSTONE_ORE = registerBlock("abyss_redstone_ore", () ->
+            new RedStoneOreBlock(
+                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
+                            .randomTicks()
+                            .lightLevel(litBlockEmission(BlockStateProperties.LIT, 9))
+                            .strength(4.5F, 3.0F)
+            )
+    );
+    public static final DeferredBlock<Block> ABYSS_DIAMOND_ORE = registerBlock("abyss_diamond_ore", () ->
+            new DropExperienceBlock(
+                    UniformInt.of(3, 7),
+                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
+                            .strength(4.5F, 3.0F)
+            )
+    );
+    public static final DeferredBlock<Block> ABYSS_EMERALD_ORE = registerBlock("abyss_emerald_ore", () ->
+            new DropExperienceBlock(
+                    UniformInt.of(3, 7),
+                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
+                            .strength(4.5F, 3.0F)
+            )
+    );
+    public static final DeferredBlock<Block> ABYSS_QUARTZ_ORE = registerBlock("abyss_quartz_ore", () ->
+            new DropExperienceBlock(
+                    UniformInt.of(2, 5),
+                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get())
+                            .strength(4.5F, 3.0F)
+            )
+    );
+    public static final DeferredBlock<Block> SUSPICIOUS_ABYSS_ANDESITE = registerBlock("suspicious_abyss_andesite", () ->
+            new MiaBrushableBlock(
+                    ABYSS_ANDESITE.get(),
+                    SoundEvents.BRUSH_SAND,
+                    SoundEvents.BRUSH_SAND_COMPLETED,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.STONE)
+                            .instrument(NoteBlockInstrument.SNARE)
+                            .strength(3.0F, 6.0F)
+                            .sound(SoundType.SUSPICIOUS_GRAVEL)
+                            .pushReaction(PushReaction.DESTROY)
+            )
+    );
     // 晶石
     public static final DeferredBlock<Block> PRASIOLITE_BLOCK = registerBlock("prasiolite_block", () ->
             new PrasioliteBlock(
@@ -418,10 +489,14 @@ public class MiaBlocks {
                             .mapColor(MapColor.EMERALD)
                             .instrument(NoteBlockInstrument.HAT)
                             .strength(3.0F, 6.0F)
-                            .lightLevel(state -> 15)
+                            .lightLevel(litBlockEmission(BlockStateProperties.LIT, 15))
                             .noOcclusion()
                             .isRedstoneConductor(MiaBlocks::never)
             )
+    );
+    public static final DeferredBlock<Block> ENDLESS_CUP = registerBlock("endless_cup", 1, () ->
+            new EndlessCupBlock(
+                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get()).sound(SoundType.STONE))
     );
 
     @SuppressWarnings("deprecation")
@@ -437,10 +512,6 @@ public class MiaBlocks {
                     .requiresCorrectToolForDrops()
                     .strength(3.0F, 6.0F)
                     .sound(SoundType.NETHERITE_BLOCK))
-    );
-    public static final DeferredBlock<Block> ENDLESS_CUP = registerBlock("endless_cup", 1, () ->
-            new EndlessCupBlock(
-                    BlockBehaviour.Properties.ofFullCopy(ABYSS_ANDESITE.get()))
     );
 
     private static boolean never(BlockState state, BlockGetter blockGetter, BlockPos pos) {

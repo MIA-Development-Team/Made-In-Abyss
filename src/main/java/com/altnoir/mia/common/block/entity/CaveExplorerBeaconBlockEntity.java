@@ -1,6 +1,7 @@
 package com.altnoir.mia.common.block.entity;
 
 import com.altnoir.mia.MiaConfig;
+import com.altnoir.mia.common.block.CaveExplorerBeaconBlock;
 import com.altnoir.mia.init.MiaBlockEntities;
 import com.altnoir.mia.init.MiaEffects;
 import net.minecraft.core.BlockPos;
@@ -31,19 +32,21 @@ public class CaveExplorerBeaconBlockEntity extends BlockEntity {
             blockEntity.levels = updateBase(level, pos.getX(), pos.getY(), pos.getZ());
 
             boolean hasLevel = blockEntity.levels > 0;
-            if (hasLevel) {
+            boolean lit = state.getValue(CaveExplorerBeaconBlock.LIT);
+            boolean ll = lit && hasLevel;
+            if (ll) {
                 applyEffects(level, pos, blockEntity.levels);
                 playSound(level, pos, SoundEvents.BEACON_AMBIENT);
             }
 
             boolean hasActive = blockEntity.hasActive;
-            if (!hasActive && hasLevel) {
+            if (!hasActive && ll) {
                 playSound(level, pos, SoundEvents.BEACON_ACTIVATE);
-            } else if (hasActive && !hasLevel) {
+            } else if (hasActive && !ll) {
                 playSound(level, pos, SoundEvents.BEACON_DEACTIVATE);
             }
 
-            blockEntity.hasActive = hasLevel;
+            blockEntity.hasActive = ll;
         }
     }
 
@@ -78,7 +81,7 @@ public class CaveExplorerBeaconBlockEntity extends BlockEntity {
 
     @Override
     public void setRemoved() {
-        playSound(this.level, this.worldPosition, SoundEvents.BEACON_DEACTIVATE);
+        //playSound(this.level, this.worldPosition, SoundEvents.BEACON_DEACTIVATE);
         super.setRemoved();
     }
 

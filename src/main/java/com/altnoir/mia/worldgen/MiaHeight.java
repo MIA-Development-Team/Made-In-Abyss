@@ -12,7 +12,7 @@ public record MiaHeight(int minY, int allY, int maxY) {
         return new MiaHeight(minY, allY, minY + allY);
     }
 
-    public int midY() {
+    public int middleY() {
         return 5;
     }
 }

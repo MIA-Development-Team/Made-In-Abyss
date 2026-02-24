@@ -1,6 +1,7 @@
 package com.altnoir.mia.common.block.entity.renderer;
 
-import com.altnoir.mia.common.block.entity.SunStoneBlockEntity;
+import com.altnoir.mia.common.block.CaveExplorerBeaconBlock;
+import com.altnoir.mia.common.block.entity.CaveExplorerBeaconBlockEntity;
 import com.mojang.blaze3d.Blaze3D;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -13,21 +14,23 @@ import net.minecraft.util.RandomSource;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class SunStoneRenderer implements BlockEntityRenderer<SunStoneBlockEntity> {
-    public SunStoneRenderer(BlockEntityRendererProvider.Context context) {
+public class CaveExplorerBeaconRenerer implements BlockEntityRenderer<CaveExplorerBeaconBlockEntity> {
+    public CaveExplorerBeaconRenerer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(SunStoneBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        poseStack.pushPose();
-        poseStack.translate(0.5D, 0.5D, 0.5D);
-        poseStack.scale(0.25F, 0.25F, 0.25F);
-        renderRays(poseStack, bufferSource.getBuffer(RenderType.dragonRays()));
-        renderRays(poseStack, bufferSource.getBuffer(RenderType.dragonRaysDepth()));
-        poseStack.popPose();
+    public void render(CaveExplorerBeaconBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+        if (blockEntity.getBlockState().getValue(CaveExplorerBeaconBlock.LIT)) {
+            poseStack.pushPose();
+            poseStack.translate(0.5D, 0.5D, 0.5D);
+            poseStack.scale(0.25F, 0.25F, 0.25F);
+            renderRays(poseStack, bufferSource.getBuffer(RenderType.dragonRays()));
+            renderRays(poseStack, bufferSource.getBuffer(RenderType.dragonRaysDepth()));
+            poseStack.popPose();
+        }
     }
 
-    private static void renderRays(PoseStack poseStack, VertexConsumer buffer) {
+    public static void renderRays(PoseStack poseStack, VertexConsumer buffer) {
         float timeConstant = (float) (Blaze3D.getTime() * (double) 20.0F) / 200f; //Controls how fast the rays move.
         poseStack.pushPose();
         float rotationControl = Math.min(timeConstant > 0.8F ? (timeConstant - 0.8F) / 0.2F : 0.0F, 1.0F);
@@ -79,7 +82,7 @@ public class SunStoneRenderer implements BlockEntityRenderer<SunStoneBlockEntity
     }
 
     @Override
-    public boolean shouldRenderOffScreen(SunStoneBlockEntity blockEntity) {
+    public boolean shouldRenderOffScreen(CaveExplorerBeaconBlockEntity blockEntity) {
         return true;
     }
 }

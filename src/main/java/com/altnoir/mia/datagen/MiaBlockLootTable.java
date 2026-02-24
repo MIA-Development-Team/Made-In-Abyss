@@ -164,8 +164,16 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
                 block -> createLeavesDrops(block, MiaBlocks.INVERTED_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
         dropSelf(MiaBlocks.INVERTED_PRESSURE_PLATE.get());
         dropSelf(MiaBlocks.INVERTED_BUTTON.get());
-
-
+        // 矿物
+        add(MiaBlocks.ABYSS_IRON_ORE.get(), block -> createOreDrop(block, Items.RAW_IRON));
+        add(MiaBlocks.ABYSS_COPPER_ORE.get(), this::createCopperOreDrops);
+        add(MiaBlocks.ABYSS_GOLD_ORE.get(), block -> createOreDrop(block, Items.RAW_GOLD));
+        add(MiaBlocks.ABYSS_LAPIS_ORE.get(), this::createLapisOreDrops);
+        add(MiaBlocks.ABYSS_REDSTONE_ORE.get(), this::createRedstoneOreDrops);
+        add(MiaBlocks.ABYSS_DIAMOND_ORE.get(), block -> createOreDrop(block, Items.DIAMOND));
+        add(MiaBlocks.ABYSS_EMERALD_ORE.get(), block -> createOreDrop(block, Items.EMERALD));
+        add(MiaBlocks.ABYSS_QUARTZ_ORE.get(), block -> createOreDrop(block, Items.QUARTZ));
+        add(MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE.get(), noDrop());
         // 晶石
         dropSelf(MiaBlocks.PRASIOLITE_BLOCK.get());
         add(MiaBlocks.BUDDING_PRASIOLITE.get(), noDrop());

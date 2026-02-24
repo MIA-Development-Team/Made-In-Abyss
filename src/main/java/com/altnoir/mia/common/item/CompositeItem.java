@@ -1,5 +1,7 @@
 package com.altnoir.mia.common.item;
 
+import com.altnoir.mia.common.block.MiaBrushableBlock;
+import com.altnoir.mia.common.block.entity.MiaBrushableBlockEntity;
 import com.altnoir.mia.init.MiaTags;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
@@ -19,9 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BrushableBlock;
 import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.entity.BrushableBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -63,15 +63,15 @@ public class CompositeItem extends DiggerItem {
                 }
 
                 SoundEvent soundevent;
-                if (blockstate.getBlock() instanceof BrushableBlock brushableblock) {
-                    soundevent = brushableblock.getBrushSound();
+                if (blockstate.getBlock() instanceof MiaBrushableBlock brushable) {
+                    soundevent = brushable.getBrushSound();
                 } else {
-                    soundevent = SoundEvents.AMETHYST_BLOCK_HIT;
+                    soundevent = SoundEvents.BRUSH_GENERIC;
                 }
 
                 player.level().playSound(player, blockpos, soundevent, SoundSource.BLOCKS);
-                if (!player.level().isClientSide() && player.level().getBlockEntity(blockpos) instanceof BrushableBlockEntity brushableblockentity) {
-                    boolean success = brushableblockentity.brush(player.level().getGameTime(), player, direction);
+                if (!player.level().isClientSide() && player.level().getBlockEntity(blockpos) instanceof MiaBrushableBlockEntity brushable) {
+                    boolean success = brushable.brush(player.level().getGameTime(), player, direction);
                     if (success) {
                         EquipmentSlot equipmentslot = context.getItemInHand().equals(player.getItemBySlot(EquipmentSlot.OFFHAND))
                                 ? EquipmentSlot.OFFHAND

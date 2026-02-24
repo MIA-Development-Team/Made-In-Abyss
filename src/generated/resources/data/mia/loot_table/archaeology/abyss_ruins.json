@@ -16,6 +16,11 @@
         },
         {
           "type": "minecraft:item",
+          "name": "minecraft:skeleton_skull",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
           "name": "mia:prasiolite_shard"
         },
         {

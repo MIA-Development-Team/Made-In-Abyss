@@ -19,6 +19,9 @@ public class MiaBlockEntities {
     public static final Supplier<BlockEntityType<AbyssSpawnerBlockEntity>> ABYSS_SPAWNER_ENTITY = BLOCK_ENTITY_TYPES.register("abyss_spawner_entity", () ->
             BlockEntityType.Builder.of(AbyssSpawnerBlockEntity::new, MiaBlocks.ABYSS_SPAWNER.get()).build(null)
     );
+    public static final Supplier<BlockEntityType<MiaBrushableBlockEntity>> BRUSHABLE_ENTITY = BLOCK_ENTITY_TYPES.register("brushable_entity", () ->
+            BlockEntityType.Builder.of(MiaBrushableBlockEntity::new, MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE.get()).build(null)
+    );
 
     public static final Supplier<BlockEntityType<EndlessCupBlockEntity>> ENDLESS_CUP_ENTITY = BLOCK_ENTITY_TYPES.register("endless_cup_entity", () ->
             BlockEntityType.Builder.of(EndlessCupBlockEntity::new, MiaBlocks.ENDLESS_CUP.get()).build(null)
