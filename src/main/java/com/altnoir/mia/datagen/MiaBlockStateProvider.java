@@ -2,6 +2,8 @@ package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.common.block.AbyssPortalFrameBlock;
+import com.altnoir.mia.common.block.ColumnBlock;
+import com.altnoir.mia.common.block.properties.ColumnSide;
 import com.altnoir.mia.datagen.blockstate.MiaModelProvider;
 import com.altnoir.mia.datagen.blockstate.MiaStateProvider;
 import com.altnoir.mia.init.MiaBlocks;
@@ -72,6 +74,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         slabBlockWithItem(MiaBlocks.POLISHED_ABYSS_ANDESITE_SLAB, MiaBlocks.POLISHED_ABYSS_ANDESITE);
         wallBlockWithItem(MiaBlocks.POLISHED_ABYSS_ANDESITE_WALL, MiaBlocks.POLISHED_ABYSS_ANDESITE);
         pillarBlockWithItem(MiaBlocks.ABYSS_ANDESITE_PILLAR);
+        columnBlockWithItem(MiaBlocks.ABYSS_ANDESITE_COLUMN, MiaBlocks.ABYSS_ANDESITE_PILLAR, MiaBlocks.ABYSS_ANDESITE_BRICKS);
         // 石砖
         blockWithItem(MiaBlocks.ABYSS_ANDESITE_BRICKS);
         blockWithItem(MiaBlocks.CHISLED_ABYSS_ANDESITE);
@@ -187,7 +190,6 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         bushBlock(MiaBlocks.GREEN_PERILLA);
         bushBlock(MiaBlocks.KONJAC_ROOT);
         bushBlock(MiaBlocks.SILVEAF_FUNGUS);
-
 
         //遗物
         blockWithItem(MiaBlocks.SUN_STONE);
@@ -384,8 +386,39 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         blockItem(block);
     }
 
+    protected void columnBlockWithItem(DeferredBlock<?> block, DeferredBlock<?> pillarBlock, DeferredBlock<?> decBlock) {
+        columnBlock(block, pillarBlock, decBlock);
+        blockItem(block);
+    }
+
     private ResourceLocation extend(ResourceLocation rl, String suffix) {
         return MiaUtil.id(rl.getNamespace(), rl.getPath() + suffix);
+    }
+
+    protected void columnBlock(DeferredBlock<?> block, DeferredBlock<?> pillarBlock, DeferredBlock<?> decBlock) {
+        MiaModelProvider modelP = new MiaModelProvider();
+        modelP.columnBlockModel(this, block.get(),pillarBlock.get(), decBlock.get());
+
+        getVariantBuilder(block.get())
+                .forAllStates(state -> {
+                    ColumnSide side = state.getValue(ColumnBlock.COLUMN);
+                    String blockPath = MiaUtil.getBlockPath(block.get());
+
+                    return switch (side) {
+                        case NONE -> ConfiguredModel.builder()
+                                .modelFile(models().getExistingFile(modLoc("block/" + blockPath)))
+                                .build();
+                        case TOP -> ConfiguredModel.builder()
+                                .modelFile(models().getExistingFile(modLoc("block/" + blockPath + "_top")))
+                                .build();
+                        case BOTTOM -> ConfiguredModel.builder()
+                                .modelFile(models().getExistingFile(modLoc("block/" + blockPath + "_bottom")))
+                                .build();
+                        case MIDDLE -> ConfiguredModel.builder()
+                                .modelFile(models().getExistingFile(modLoc("block/" + blockPath + "_middle")))
+                                .build();
+                    };
+                });
     }
 
     protected void pillarBlock(DeferredBlock<?> block) {

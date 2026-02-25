@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "column=bottom": {
+      "model": "mia:block/abyss_andesite_column_bottom"
+    },
+    "column=middle": {
+      "model": "mia:block/abyss_andesite_column_middle"
+    },
+    "column=none": {
+      "model": "mia:block/abyss_andesite_column"
+    },
+    "column=top": {
+      "model": "mia:block/abyss_andesite_column_top"
+    }
+  }
+}

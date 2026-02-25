@@ -68,6 +68,8 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         add(MiaBlocks.POLISHED_ABYSS_ANDESITE_SLAB.get(), this::createSlabItemTable);
         dropSelf(MiaBlocks.POLISHED_ABYSS_ANDESITE_WALL.get());
         dropSelf(MiaBlocks.ABYSS_ANDESITE_PILLAR.get());
+        dropSelf(MiaBlocks.ABYSS_ANDESITE_COLUMN.get());
+
         dropSelf(MiaBlocks.ABYSS_ANDESITE_BRICKS.get());
         dropSelf(MiaBlocks.CHISLED_ABYSS_ANDESITE.get());
         dropSelf(MiaBlocks.ABYSS_ANDESITE_BRICKS_STAIRS.get());

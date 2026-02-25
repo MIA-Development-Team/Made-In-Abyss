@@ -102,6 +102,32 @@ public class MiaModelProvider {
                 .texture("particle", p.modLoc("block/" + MiaUtil.getBlockPath(MiaBlocks.ABYSS_ANDESITE.get())));
     }
 
+    public void columnBlockModel(BlockStateProvider p, Block block, Block pillarBlock, Block decBlock) {
+
+        String blockPath = MiaUtil.getBlockPath(block);
+        String pillarPath = MiaUtil.getBlockPath(pillarBlock);
+        String decPath = MiaUtil.getBlockPath(decBlock);
+
+        // 创建 none 模型
+        p.models().withExistingParent(blockPath, p.modLoc("block/template/column"))
+                .texture("top", p.modLoc("block/" + pillarPath + "_top"))
+                .texture("side", p.modLoc("block/" + pillarPath))
+                .texture("dec", p.modLoc("block/" + decPath));
+        // 创建 top 模型
+        p.models().withExistingParent(blockPath + "_top", p.modLoc("block/template/column_top"))
+                .texture("top", p.modLoc("block/" + pillarPath + "_top"))
+                .texture("side", p.modLoc("block/" + pillarPath))
+                .texture("dec", p.modLoc("block/" + decPath));
+        // 创建 middle 模型
+        p.models().withExistingParent(blockPath + "_middle", p.modLoc("block/template/column_middle"))
+                .texture("side", p.modLoc("block/" + pillarPath));
+        // 创建 bottom 模型
+        p.models().withExistingParent(blockPath + "_bottom", p.modLoc("block/template/column_bottom"))
+                .texture("top", p.modLoc("block/" + pillarPath + "_top"))
+                .texture("side", p.modLoc("block/" + pillarPath))
+                .texture("dec", p.modLoc("block/" + decPath));
+    }
+
     public void templateAllBlockModel(BlockStateProvider p, Block block, String templateName) {
         String blockPath = MiaUtil.getBlockPath(block);
         p.models().withExistingParent(blockPath, p.modLoc("block/template/" + templateName)).renderType("cutout")

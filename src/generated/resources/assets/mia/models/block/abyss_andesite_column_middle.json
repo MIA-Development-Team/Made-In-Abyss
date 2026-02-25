@@ -1,0 +1,6 @@
+{
+  "parent": "mia:block/template/column_middle",
+  "textures": {
+    "side": "mia:block/abyss_andesite_pillar"
+  }
+}

@@ -39,6 +39,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.POLISHED_ABYSS_ANDESITE_SLAB);
                         output.accept(MiaBlocks.POLISHED_ABYSS_ANDESITE_WALL);
                         output.accept(MiaBlocks.ABYSS_ANDESITE_PILLAR);
+                        output.accept(MiaBlocks.ABYSS_ANDESITE_COLUMN);
                         output.accept(MiaBlocks.ABYSS_ANDESITE_BRICKS);
                         output.accept(MiaBlocks.CRACKED_ABYSS_ANDESITE_BRICKS);
                         output.accept(MiaBlocks.ABYSS_ANDESITE_BRICKS_STAIRS);

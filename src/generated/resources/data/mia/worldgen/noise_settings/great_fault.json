@@ -208,60 +208,29 @@
         "type": "minecraft:sequence",
         "sequence": [
           {
-            "type": "minecraft:condition",
-            "if_true": {
-              "type": "minecraft:biome",
-              "biome_is": [
-                "mia:the_abyss/temptation_forest"
-              ]
-            },
-            "then_run": {
-              "type": "minecraft:condition",
-              "if_true": {
-                "type": "minecraft:stone_depth",
-                "add_surface_depth": true,
-                "offset": 0,
-                "secondary_depth_range": 1,
-                "surface_type": "floor"
-              },
-              "then_run": {
-                "type": "minecraft:block",
-                "result_state": {
-                  "Name": "minecraft:mud"
-                }
-              }
-            }
-          },
-          {
             "type": "minecraft:sequence",
             "sequence": [
               {
                 "type": "minecraft:condition",
                 "if_true": {
-                  "type": "minecraft:y_above",
-                  "add_stone_depth": false,
-                  "anchor": {
-                    "absolute": 320
-                  },
-                  "surface_depth_multiplier": 0
+                  "type": "minecraft:stone_depth",
+                  "add_surface_depth": false,
+                  "offset": 0,
+                  "secondary_depth_range": 1,
+                  "surface_type": "floor"
                 },
                 "then_run": {
                   "type": "minecraft:condition",
                   "if_true": {
-                    "type": "minecraft:not",
-                    "invert": {
-                      "type": "minecraft:y_above",
-                      "add_stone_depth": false,
-                      "anchor": {
-                        "absolute": 322
-                      },
-                      "surface_depth_multiplier": 0
-                    }
+                    "type": "minecraft:noise_threshold",
+                    "max_threshold": 0.06,
+                    "min_threshold": -0.06,
+                    "noise": "mia:stripey"
                   },
                   "then_run": {
                     "type": "minecraft:block",
                     "result_state": {
-                      "Name": "minecraft:calcite"
+                      "Name": "minecraft:quartz_block"
                     }
                   }
                 }
@@ -269,149 +238,19 @@
               {
                 "type": "minecraft:condition",
                 "if_true": {
-                  "type": "minecraft:y_above",
-                  "add_stone_depth": false,
-                  "anchor": {
-                    "absolute": 288
-                  },
-                  "surface_depth_multiplier": 0
+                  "type": "minecraft:stone_depth",
+                  "add_surface_depth": true,
+                  "offset": 0,
+                  "secondary_depth_range": 1,
+                  "surface_type": "floor"
                 },
                 "then_run": {
                   "type": "minecraft:condition",
                   "if_true": {
-                    "type": "minecraft:not",
-                    "invert": {
-                      "type": "minecraft:y_above",
-                      "add_stone_depth": false,
-                      "anchor": {
-                        "absolute": 291
-                      },
-                      "surface_depth_multiplier": 0
-                    }
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": {
-                      "Name": "minecraft:calcite"
-                    }
-                  }
-                }
-              },
-              {
-                "type": "minecraft:condition",
-                "if_true": {
-                  "type": "minecraft:y_above",
-                  "add_stone_depth": false,
-                  "anchor": {
-                    "absolute": 256
-                  },
-                  "surface_depth_multiplier": 0
-                },
-                "then_run": {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:not",
-                    "invert": {
-                      "type": "minecraft:y_above",
-                      "add_stone_depth": false,
-                      "anchor": {
-                        "absolute": 261
-                      },
-                      "surface_depth_multiplier": 0
-                    }
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": {
-                      "Name": "minecraft:calcite"
-                    }
-                  }
-                }
-              },
-              {
-                "type": "minecraft:condition",
-                "if_true": {
-                  "type": "minecraft:y_above",
-                  "add_stone_depth": false,
-                  "anchor": {
-                    "absolute": 128
-                  },
-                  "surface_depth_multiplier": 0
-                },
-                "then_run": {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:not",
-                    "invert": {
-                      "type": "minecraft:y_above",
-                      "add_stone_depth": false,
-                      "anchor": {
-                        "absolute": 133
-                      },
-                      "surface_depth_multiplier": 0
-                    }
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": {
-                      "Name": "minecraft:calcite"
-                    }
-                  }
-                }
-              },
-              {
-                "type": "minecraft:condition",
-                "if_true": {
-                  "type": "minecraft:y_above",
-                  "add_stone_depth": false,
-                  "anchor": {
-                    "absolute": 64
-                  },
-                  "surface_depth_multiplier": 0
-                },
-                "then_run": {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:not",
-                    "invert": {
-                      "type": "minecraft:y_above",
-                      "add_stone_depth": false,
-                      "anchor": {
-                        "absolute": 67
-                      },
-                      "surface_depth_multiplier": 0
-                    }
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": {
-                      "Name": "minecraft:calcite"
-                    }
-                  }
-                }
-              },
-              {
-                "type": "minecraft:condition",
-                "if_true": {
-                  "type": "minecraft:y_above",
-                  "add_stone_depth": false,
-                  "anchor": {
-                    "absolute": 48
-                  },
-                  "surface_depth_multiplier": 0
-                },
-                "then_run": {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:not",
-                    "invert": {
-                      "type": "minecraft:y_above",
-                      "add_stone_depth": false,
-                      "anchor": {
-                        "absolute": 50
-                      },
-                      "surface_depth_multiplier": 0
-                    }
+                    "type": "minecraft:noise_threshold",
+                    "max_threshold": 0.136,
+                    "min_threshold": -0.136,
+                    "noise": "mia:stripey"
                   },
                   "then_run": {
                     "type": "minecraft:block",

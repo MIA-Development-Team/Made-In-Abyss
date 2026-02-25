@@ -89,6 +89,9 @@ public class MiaBlocks {
     // 柱
     public static final DeferredBlock<Block> ABYSS_ANDESITE_PILLAR = registerBlock("abyss_andesite_pillar", () ->
             new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_ABYSS_ANDESITE.get())));
+    public static final DeferredBlock<Block> ABYSS_ANDESITE_COLUMN = registerBlock("abyss_andesite_column", () ->
+            new ColumnBlock(BlockBehaviour.Properties.ofFullCopy(POLISHED_ABYSS_ANDESITE.get())));
+
     // 切
     public static final DeferredBlock<Block> CHISLED_ABYSS_ANDESITE = registerBlock("chiseled_abyss_andesite", () ->
             new Block(BlockBehaviour.Properties.ofFullCopy(POLISHED_ABYSS_ANDESITE.get())));

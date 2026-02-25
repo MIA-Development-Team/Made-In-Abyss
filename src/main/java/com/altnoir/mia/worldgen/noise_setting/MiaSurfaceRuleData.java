@@ -2,6 +2,7 @@ package com.altnoir.mia.worldgen.noise_setting;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.worldgen.biome.MiaBiomes;
+import com.altnoir.mia.worldgen.noise.MiaNoiseData;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.data.worldgen.SurfaceRuleData;
 import net.minecraft.world.level.block.Block;
@@ -116,22 +117,21 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
     // Layer 3
     public static SurfaceRules.RuleSource greatFault() {
         SurfaceRules.RuleSource sequence = SurfaceRules.sequence(
-                SurfaceRules.ifTrue(
-                        SurfaceRules.isBiome(
-                                MiaBiomes.TEMPTATION_FOREST
+                SurfaceRules.sequence(
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.stoneDepthCheck(0, false, 1, CaveSurface.FLOOR),
+                                SurfaceRules.ifTrue(
+                                        SurfaceRules.noiseCondition(MiaNoiseData.STRIPEY, -0.06, 0.06),
+                                        makeStateRule(Blocks.QUARTZ_BLOCK)
+                                )
                         ),
                         SurfaceRules.ifTrue(
                                 SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
-                                MUD
+                                SurfaceRules.ifTrue(
+                                        SurfaceRules.noiseCondition(MiaNoiseData.STRIPEY, -0.136, 0.136),
+                                        makeStateRule(Blocks.CALCITE)
+                                )
                         )
-                ),
-                SurfaceRules.sequence(
-                        addLightRule(320, 2,false),
-                        addLightRule(288, 3,false),
-                        addLightRule(256, 5,false),
-                        addLightRule(128, 5,false),
-                        addLightRule(64, 3,false),
-                        addLightRule(48, 2,false)
                 )
         );
         ImmutableList.Builder<SurfaceRules.RuleSource> builder = ImmutableList.builder();
@@ -161,17 +161,4 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
                         ), makeStateRule(Blocks.CALCITE))
         );
     }
-
-    private static SurfaceRules.RuleSource addLightRule(int y, int offset, boolean extend) {
-        var conditionSource = extend
-                ? SurfaceRules.yStartCheck(VerticalAnchor.absolute(y), -1)
-                : SurfaceRules.yBlockCheck(VerticalAnchor.absolute(y), 0);
-        return SurfaceRules.ifTrue(conditionSource,
-                SurfaceRules.ifTrue(
-                        SurfaceRules.not(
-                                SurfaceRules.yBlockCheck(VerticalAnchor.absolute(y + offset), 0)
-                        ), makeStateRule(Blocks.CALCITE))
-        );
-    }
-
 }
