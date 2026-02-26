@@ -12,8 +12,8 @@
   "disable_mob_generation": false,
   "legacy_random_source": false,
   "noise": {
-    "height": 1024,
-    "min_y": -512,
+    "height": 768,
+    "min_y": -384,
     "size_horizontal": 2,
     "size_vertical": 1
   },
@@ -41,9 +41,9 @@
                   "argument1": {
                     "type": "minecraft:y_clamped_gradient",
                     "from_value": 0.0,
-                    "from_y": -512,
+                    "from_y": -384,
                     "to_value": 1.0,
-                    "to_y": -480
+                    "to_y": -320
                   },
                   "argument2": {
                     "type": "minecraft:add",
@@ -56,9 +56,9 @@
                         "argument1": {
                           "type": "minecraft:y_clamped_gradient",
                           "from_value": 1.0,
-                          "from_y": 480,
+                          "from_y": 320,
                           "to_value": 0.0,
-                          "to_y": 512
+                          "to_y": 384
                         },
                         "argument2": {
                           "type": "minecraft:add",
@@ -83,24 +83,15 @@
         }
       },
       "argument2": {
-        "type": "minecraft:add",
-        "argument1": {
-          "type": "minecraft:y_clamped_gradient",
-          "from_value": -1.5,
-          "from_y": -16,
-          "to_value": 0.0,
-          "to_y": 16
-        },
+        "type": "minecraft:min",
+        "argument1": "mia:great_fault/caves/noodle",
         "argument2": {
           "type": "minecraft:add",
-          "argument1": {
-            "type": "minecraft:y_clamped_gradient",
-            "from_value": 1.5,
-            "from_y": 0,
-            "to_value": 0.0,
-            "to_y": 32
-          },
-          "argument2": "mia:great_fault/caves/noodle"
+          "argument1": -0.15,
+          "argument2": {
+            "type": "minecraft:interpolated",
+            "argument": "mia:great_fault/caves/big_cave"
+          }
         }
       }
     },
@@ -180,7 +171,7 @@
     "vein_toggle": 0.0
   },
   "ore_veins_enabled": false,
-  "sea_level": -512,
+  "sea_level": -384,
   "spawn_target": [],
   "surface_rule": {
     "type": "minecraft:sequence",

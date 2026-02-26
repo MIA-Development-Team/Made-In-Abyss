@@ -64,7 +64,7 @@ public class AbyssPortalFeature extends Feature<NoneFeatureConfiguration> {
                         }
                     }
                 } else if (isCenterColumn) {
-                    blockState = Blocks.CHISELED_TUFF.defaultBlockState();
+                    blockState = MiaBlocks.FOSSILIZED_WOOD.get().defaultBlockState();
                 } else if (shouldPlaceWall) {
                     var random = level.getRandom().nextInt(3);
                     blockState = switch (random) {

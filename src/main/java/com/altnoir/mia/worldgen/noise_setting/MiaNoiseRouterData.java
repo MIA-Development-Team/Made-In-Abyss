@@ -108,13 +108,13 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 DensityFunctions.add(getFunction(densityFunctions, SPAGHETTI_2D), getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION))
         );
 
-        DensityFunction yc1 = DensityFunctions.yClampedGradient(MiaHeight.GREAT_FAULT.maxY() - 32, MiaHeight.GREAT_FAULT.maxY(), 1, 0);
+        DensityFunction yc1 = DensityFunctions.yClampedGradient(MiaHeight.GREAT_FAULT.maxY() - 64, MiaHeight.GREAT_FAULT.maxY(), 1, 0);
         DensityFunction add1 = DensityFunctions.add(DensityFunctions.constant(1.025), abyss);
 
         DensityFunction mul1 = DensityFunctions.mul(yc1, add1);
         DensityFunction add2 = DensityFunctions.add(DensityFunctions.constant(-0.8975), mul1);
 
-        DensityFunction yc2 = DensityFunctions.yClampedGradient(MiaHeight.GREAT_FAULT.minY(), MiaHeight.GREAT_FAULT.minY() + 32, 0, 1);
+        DensityFunction yc2 = DensityFunctions.yClampedGradient(MiaHeight.GREAT_FAULT.minY(), MiaHeight.GREAT_FAULT.minY() + 64, 0, 1);
         DensityFunction add3 = DensityFunctions.add(DensityFunctions.constant(0.4), add2);
 
         DensityFunction mul2 = DensityFunctions.mul(yc2, add3);
@@ -172,11 +172,11 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         DensityFunction shiftX = getFunction(densityFunctions, SHIFT_X);
         DensityFunction shiftZ = getFunction(densityFunctions, SHIFT_Z);
 
-        DensityFunction noodle = DensityFunctions.add(
-                DensityFunctions.yClampedGradient(-16, 16, -1.5, 0.0),
+        DensityFunction noodle = DensityFunctions.min(
+                getFunction(densityFunctions, MiaDensityFunctions.GREAT_FAULT_NOODLE),
                 DensityFunctions.add(
-                        DensityFunctions.yClampedGradient(0, 32, 1.5, 0.0),
-                        getFunction(densityFunctions, MiaDensityFunctions.GREAT_FAULT_NOODLE)
+                        DensityFunctions.interpolated(getFunction(densityFunctions, MiaDensityFunctions.GREAT_FAULT_BIG_CAVE)),
+                        DensityFunctions.constant(-0.15)
                 )
         );
         DensityFunction finalDensity = DensityFunctions.min(greatFaultDensity(densityFunctions), noodle);

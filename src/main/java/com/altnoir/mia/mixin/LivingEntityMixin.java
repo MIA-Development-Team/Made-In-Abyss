@@ -1,10 +1,8 @@
 package com.altnoir.mia.mixin;
 
-import com.altnoir.mia.MIA;
 import com.altnoir.mia.core.AbyssGravity;
 import com.altnoir.mia.init.MiaAttributes;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;

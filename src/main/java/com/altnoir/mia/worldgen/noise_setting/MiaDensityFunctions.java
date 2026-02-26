@@ -40,6 +40,8 @@ public class MiaDensityFunctions {
 
     public static final ResourceKey<DensityFunction> GREAT_FAULT_HOLE = greatFaultKey("great_fault_hole");
     public static final ResourceKey<DensityFunction> GREAT_FAULT_NOODLE = greatFaultKey("caves/noodle");
+    public static final ResourceKey<DensityFunction> GREAT_FAULT_BIG_CAVE = greatFaultKey("caves/big_cave");
+    public static final ResourceKey<DensityFunction> GREAT_FAULT_LONG_CAVE = greatFaultKey("caves/long_cave");
 
 
     private static ResourceKey<DensityFunction> createKey(String location) {
@@ -122,8 +124,9 @@ public class MiaDensityFunctions {
         context.register(THE_ABYSS_NOODLE, abyssNoodle(holdergetter1, holdergetter));
 
         // Layer 3
-        context.register(GREAT_FAULT_HOLE, MiaDensityFunctionTypes.generalAbyssHole(0.0F, 0.5F));
+        context.register(GREAT_FAULT_HOLE, DensityFunctions.add(MiaDensityFunctionTypes.generalAbyssHole(0.0F, 0.5F), getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
         context.register(GREAT_FAULT_NOODLE, greatFaultNoodle(holdergetter1, holdergetter));
+        context.register(GREAT_FAULT_BIG_CAVE, bigCaves(holdergetter));
     }
 
     private static DensityFunction theAbyssGreatCaveNoodle(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
@@ -135,7 +138,7 @@ public class MiaDensityFunctions {
     }
 
     private static DensityFunction greatFaultNoodle(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        return abyssNoodle(MiaHeight.GREAT_FAULT.minY(), MiaHeight.GREAT_FAULT.maxY(), densityFunctions, noiseParameters, 1.0, -0.05, -0.1, false);
+        return abyssNoodle(MiaHeight.GREAT_FAULT.minY(), MiaHeight.GREAT_FAULT.maxY(), densityFunctions, noiseParameters, 2.0, 1.0, -0.1, -0.15, false);
     }
 
     private static DensityFunction abyssNoodle(
@@ -147,13 +150,19 @@ public class MiaDensityFunctions {
     private static DensityFunction abyssNoodle(
             int minY, int maxY, HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters, double noiseScale, double fromY, double toY, int YOffset, boolean inverse
     ) {
-        return abyssNoodle(minY, maxY, densityFunctions, noiseParameters, noiseScale, fromY, toY, YOffset, true, inverse, false);
+        return abyssNoodleBase(minY, maxY, densityFunctions, noiseParameters, noiseScale, noiseScale, 2.6666666666666665, fromY, toY, YOffset, true, inverse, false);
     }
 
     private static DensityFunction abyssNoodle(
+            int minY, int maxY, HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters, double noiseScaleX, double noiseScaleY, double fromY, double toY, boolean inverse
+    ) {
+        return abyssNoodleBase(minY, maxY, densityFunctions, noiseParameters, noiseScaleX, noiseScaleY, 0.5, fromY, toY, 0, true, inverse, true);
+    }
+
+    private static DensityFunction abyssNoodleBase(
             int minY, int maxY,
             HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters,
-            double noiseScale, double fromY, double toY, int YOffset, boolean ridgeB, boolean inverse, boolean full
+            double noiseScaleX, double noiseScaleY, double d0, double fromY, double toY, int YOffset, boolean ridgeB, boolean inverse, boolean full
     ) {
         DensityFunction yFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
 
@@ -161,7 +170,7 @@ public class MiaDensityFunctions {
         int FMaxY = maxY + YOffset;
 
         DensityFunction densityFunction0 = yLimitedInterpolatable(
-                yFunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE), noiseScale, noiseScale), FMinY, FMaxY, -1
+                yFunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE), noiseScaleX, noiseScaleY), FMinY, FMaxY, -1
         );
         // 剃头（看情况再添加）
         DensityFunction densityFunction1 = DensityFunctions.add(
@@ -174,13 +183,19 @@ public class MiaDensityFunctions {
                 FMinY, FMaxY, 0
         );
 
-        double d0 = 2.6666666666666665;
+        double d1;
+        if (d0 != 2.6666666666666665) {
+            d1 = d0 * 7.5;
+        } else {
+            d1 = d0;
+        }
+
         DensityFunction densityFunction3 = yLimitedInterpolatable(
-                yFunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_A), d0, d0), minY, maxY, inverse ? -1 : 0
+                yFunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_A), d1, d0), minY, maxY, inverse ? -1 : 0
         );
 
         DensityFunction densityFunction4 = yLimitedInterpolatable(
-                yFunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_B), d0, d0), minY, maxY, inverse ? -1 : 0
+                yFunction, DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_B), d1, d0), minY, maxY, inverse ? -1 : 0
         );
 
         DensityFunction densityFunction5 = DensityFunctions.mul(DensityFunctions.constant(inverse ? -1.5 : 1.5), densityFunction3.abs());
@@ -202,6 +217,18 @@ public class MiaDensityFunctions {
         return DensityFunctions.cacheOnce(DensityFunctions.mul(densityFunction3, densityFunction2.cube()));
     }
 
+    private static DensityFunction bigCaves(HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
+        DensityFunction densityfunction = DensityFunctions.yClampedGradient(MiaHeight.GREAT_FAULT.minY(), 0, 1.5, 0.1);
+        DensityFunction densityfunction1 = DensityFunctions.add(
+                DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_THICKNESS), 1.0, 7.5),
+                DensityFunctions.mul(
+                        DensityFunctions.noise(noiseParameters.getOrThrow(Noises.PATCH), 0.0, 1.0),
+                        DensityFunctions.constant(0.5).cube()
+                )
+        );
+        DensityFunction densityfunction2 = DensityFunctions.cacheOnce(DensityFunctions.add(densityfunction, densityfunction1));
+        return DensityFunctions.add(densityfunction2, DensityFunctions.constant(0.3));
+    }
 
     private static DensityFunction abyssDensityFunction(HolderGetter<DensityFunction> densityFunctions, ResourceKey<DensityFunction> mainFunctionKey) {
         DensityFunction entranceFactor = DensityFunctions.mul(
