@@ -2,7 +2,7 @@ package com.altnoir.mia.client.renderer;
 
 import com.altnoir.mia.client.render.MiaRenderType;
 import com.altnoir.mia.util.MiaUtil;
-import com.altnoir.mia.worldgen.MiaHeight;
+import com.altnoir.mia.core.MiaHeight;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Camera;

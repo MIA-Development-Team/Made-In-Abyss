@@ -2,11 +2,10 @@ package com.altnoir.mia.common.block;
 
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.init.MiaSounds;
-import com.altnoir.mia.worldgen.MiaHeight;
+import com.altnoir.mia.core.MiaHeight;
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;

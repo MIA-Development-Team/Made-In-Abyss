@@ -1,4 +1,4 @@
-package com.altnoir.mia.worldgen;
+package com.altnoir.mia.core;
 
 public record MiaHeight(int minY, int allY, int maxY) {
     public static final MiaHeight THE_ABYSS = create(-256, 640);
@@ -13,6 +13,10 @@ public record MiaHeight(int minY, int allY, int maxY) {
     }
 
     public int middleY() {
-        return 5;
+        if (this == THE_ABYSS) {
+            return 5;
+        } else {
+            return (maxY - minY) / 2;
+        }
     }
 }

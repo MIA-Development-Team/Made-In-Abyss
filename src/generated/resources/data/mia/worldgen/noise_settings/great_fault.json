@@ -64,13 +64,20 @@
                           "type": "minecraft:add",
                           "argument1": 1.025,
                           "argument2": {
-                            "type": "minecraft:min",
-                            "argument1": "mia:great_fault/great_fault_hole",
-                            "argument2": {
-                              "type": "minecraft:add",
-                              "argument1": "minecraft:overworld/caves/spaghetti_2d",
-                              "argument2": "minecraft:overworld/caves/spaghetti_roughness_function"
-                            }
+                            "type": "minecraft:range_choice",
+                            "input": "minecraft:y",
+                            "max_exclusive": 320.0,
+                            "min_inclusive": -384.0,
+                            "when_in_range": {
+                              "type": "minecraft:min",
+                              "argument1": "mia:great_fault/great_fault_hole_below",
+                              "argument2": {
+                                "type": "minecraft:add",
+                                "argument1": "minecraft:overworld/caves/spaghetti_2d",
+                                "argument2": "minecraft:overworld/caves/spaghetti_roughness_function"
+                              }
+                            },
+                            "when_out_of_range": "mia:great_fault/great_fault_hole_above"
                           }
                         }
                       }
