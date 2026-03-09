@@ -51,7 +51,7 @@ public interface IArtifactSkill extends IArtifactItem {
         if (cooldownValue != null) {
             Minecraft minecraft = Minecraft.getInstance();
             if (minecraft.options.advancedItemTooltips) {
-                tooltip.add(2, Component.translatable(TOOLTIP_SKILL_COOLDOWN_VALUE, cooldownValue).withStyle(ChatFormatting.DARK_GRAY));
+                tooltip.add(Component.translatable(TOOLTIP_SKILL_COOLDOWN_VALUE, cooldownValue).withStyle(ChatFormatting.DARK_GRAY));
             }
         }
         IArtifactItem.super.appendTooltip(stack, tooltip);
