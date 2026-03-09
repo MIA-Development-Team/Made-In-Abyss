@@ -28,12 +28,17 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class PedestalBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 16, 15);
+    public static final VoxelShape SHAPE = Shapes.or(
+            Block.box(4.0, 6.0, 4.0, 12.0, 9.0, 12.0),
+            Block.box(5, 2, 5, 11, 6, 11),
+            Block.box(2, 0, 2, 14, 2, 14)
+    );
     public static final MapCodec<PedestalBlock> CODEC = simpleCodec(PedestalBlock::new);
 
     public PedestalBlock(Properties properties) {
@@ -102,7 +107,7 @@ public class PedestalBlock extends BaseEntityBlock implements SimpleWaterloggedB
                 level.playSound(player, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.5F, 1.0F);
                 return ItemInteractionResult.SUCCESS;
             }
-            if (blockEntity.tryInsertItem(stack.copy(), false)){
+            if (blockEntity.tryInsertItem(stack.copy(), false)) {
                 stack.setCount(0);
                 level.playSound(player, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.5F, 1.0F);
                 return ItemInteractionResult.SUCCESS;

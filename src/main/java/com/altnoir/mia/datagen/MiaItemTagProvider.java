@@ -32,17 +32,12 @@ public class MiaItemTagProvider extends ItemTagsProvider {
         tagArtifacts(provider);
 
         tag(MiaTags.Items.ARTIFACT_MODIFIERS_MATERIAL).replace(false)
-                .add(Items.IRON_INGOT)
-                .add(Items.STONE)
-                .add(Items.FIRE_CHARGE)
-                .add(Items.WATER_BUCKET)
-                .add(Items.BAMBOO)
-                .add(Items.COBBLED_DEEPSLATE)
-                .add(Items.OAK_LEAVES)
-                .add(Items.OAK_PLANKS)
-                .add(Items.OAK_SAPLING)
                 .add(MiaItems.PRASIOLITE_SHARD.get())
-                .add(Items.STICK)
+                .add(Items.IRON_INGOT)
+                .add(Items.COPPER_INGOT)
+                .add(Items.GOLD_INGOT)
+                .add(Items.LAPIS_LAZULI)
+                .add(Items.NETHERITE_INGOT)
                 .add(Items.EMERALD)
                 .add(Items.DIAMOND);
 

@@ -33,14 +33,17 @@ public class MiaItemModelProvider extends ItemModelProvider {
         basicItem(MiaItems.HEALTH_JUNKIE.get());
 
         basicItem(MiaItems.STAR_COMPASS.get());
-
+        basicItem(MiaItems.PEACE_PHOBIA.get());
         skillItem(MiaItems.ARTIFACT_HASTE.get());
 
         hookItem(MiaItems.HOOK.get());
         handheldItem(MiaItems.GROW_SWORD.get());
+        handheldItem(MiaItems.BLAZE_REAP.get());
         handheldItem(MiaItems.PRASIOLITE_PICKAXE.get());
         handheldItem(MiaItems.PRASIOLITE_HOE.get());
 
+
+        handheldItem(MiaItems.DEBUG_ATTRIBUTE_TOOL.get());
     }
 
     public ItemModelBuilder skillItem(Item item) {

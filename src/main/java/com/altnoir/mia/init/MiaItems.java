@@ -60,7 +60,7 @@ public class MiaItems {
             new BlazeReapItem(new Item.Properties().attributes(DiggerItem.createAttributes(Tiers.NETHERITE, 9.0F, -3.0F)))
     );
     public static final DeferredItem<Item> PEACE_PHOBIA = ITEMS.register("peace_phobia", () ->
-            new PeacePhobiaItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1))
+            new FoilItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1))
     );
     public static final DeferredItem<Item> PRASIOLITE_PICKAXE = ITEMS.register("prasiolite_pickaxe", () ->
             new CompositeItem(

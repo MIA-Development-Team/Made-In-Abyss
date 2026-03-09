@@ -77,4 +77,9 @@ public class DebugAttributeTool extends Item {
         }
         return 0.0;
     }
+
+    @Override
+    public boolean isFoil(ItemStack stack) {
+        return true;
+    }
 }

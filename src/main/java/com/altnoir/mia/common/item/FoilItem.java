@@ -2,10 +2,9 @@ package com.altnoir.mia.common.item;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 
-public class PeacePhobiaItem extends Item {
-    public PeacePhobiaItem(Properties properties) {
+public class FoilItem extends Item {
+    public FoilItem(Properties properties) {
         super(properties);
     }
 

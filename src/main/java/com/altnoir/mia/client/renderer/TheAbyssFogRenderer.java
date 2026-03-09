@@ -14,11 +14,17 @@ import net.neoforged.neoforge.client.ClientHooks;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class TheAbyssFogRenderer {
-    private static final Map<Long, Float> FOG_DENSITY_CACHE = new HashMap<>();
-
+    // 使用 LinkedHashMap 实现 LRU 缓存，自动移除最旧的条目
+    private static final Map<Long, Float> FOG_DENSITY_CACHE = new LinkedHashMap<Long, Float>(256, 0.75f, true) {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<Long, Float> eldest) {
+            return size() > 1024; // 增加缓存大小以减少频繁清理
+        }
+    };
     // 过渡控制变量
     private static final int TRANSITION_RANGE = 16; // 过渡范围
     private static float lastFogStart = 0;
@@ -26,9 +32,9 @@ public class TheAbyssFogRenderer {
     private static long lastUpdateTime = 0;
 
     // 性能保护变量
-    private static int samplesThisFrame = 0;
-    private static long lastFrameTime = 0;
-    private static final int MAX_SAMPLES_PER_FRAME = 8;
+    private static final ThreadLocal<Integer> samplesThisFrame = ThreadLocal.withInitial(() -> 0);
+    private static final ThreadLocal<Long> lastFrameTime = ThreadLocal.withInitial(() -> 0L);
+    private static final int MAX_SAMPLES_PER_FRAME = 16;
 
     public static boolean renderFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, float partialTick) {
         var player = camera.getEntity();
@@ -140,13 +146,15 @@ public class TheAbyssFogRenderer {
     private static float calculateBiomeBlendFactor(Level level, double x, double y, double z) {
         // 性能保护：每帧重置采样计数器
         long currentTime = System.currentTimeMillis();
-        if (currentTime != lastFrameTime) {
-            samplesThisFrame = 0;
-            lastFrameTime = currentTime;
+        if (currentTime != lastFrameTime.get()) {
+            samplesThisFrame.set(0);
+            lastFrameTime.set(currentTime);
         }
-        // 如果超过每帧最大采样次数，返回默认值
-        if (samplesThisFrame >= MAX_SAMPLES_PER_FRAME) {
-            return 0.5f; // 默认值
+        // 如果超过每帧最大采样次数，返回基于位置的默认值，而不是固定的0.5
+        if (samplesThisFrame.get() >= MAX_SAMPLES_PER_FRAME) {
+            // 基于位置计算一个伪随机但稳定的值，避免所有位置都返回相同值
+            long seed = (long) (x * 3129871) ^ (long) (z * 116129781L) ^ (long) y;
+            return 0.3f + (Math.abs(seed % 40) / 100.0f);
         }
 
         // 将世界坐标转换为区块坐标
@@ -161,7 +169,7 @@ public class TheAbyssFogRenderer {
         if (FOG_DENSITY_CACHE.containsKey(key)) {
             return FOG_DENSITY_CACHE.get(key);
         }
-        samplesThisFrame++; // 增加采样计数
+        samplesThisFrame.set(samplesThisFrame.get() + 1); // 增加采样计数
 
         // 采样3x3区块段
         int biomeFogCount = 0;
@@ -194,5 +202,10 @@ public class TheAbyssFogRenderer {
         }
 
         return blendFactor;
+    }
+
+    // 提供一个方法来清除缓存，可在游戏退出时调用
+    public static void clearCache() {
+        FOG_DENSITY_CACHE.clear();
     }
 }

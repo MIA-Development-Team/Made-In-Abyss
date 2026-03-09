@@ -5,6 +5,7 @@ import com.altnoir.mia.client.gui.screens.ArtifactSmithingTableScreen;
 import com.altnoir.mia.client.gui.screens.inventory.tooltip.ClientArtifactBundleTooltip;
 import com.altnoir.mia.client.handler.HookHandler;
 import com.altnoir.mia.client.renderer.TheAbyssDimEffects;
+import com.altnoir.mia.client.renderer.TheAbyssFogRenderer;
 import com.altnoir.mia.common.component.ArtifactBundleInventoryComponent;
 import com.altnoir.mia.compat.Mods;
 import com.altnoir.mia.compat.ponder.MiaPonder;
@@ -56,6 +57,9 @@ public class MiaClientEvents {
     // 游戏事件-持续事件
     public static void onClientTick(ClientTickEvent.Post event) {
         final Minecraft MC = Minecraft.getInstance();
+        if (MC.level == null && MC.player == null) {
+            TheAbyssFogRenderer.clearCache();
+        }
         if (MC.level == null || MC.player == null) return;
 
         KeyArrowEvent.onClientTick();
