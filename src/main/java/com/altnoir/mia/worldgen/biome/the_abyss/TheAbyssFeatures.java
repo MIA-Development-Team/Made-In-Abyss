@@ -87,6 +87,7 @@ public class TheAbyssFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_DIAMOND = theAbyssKey("ore_diamond");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_EMERALD = theAbyssKey("ore_emerald");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_QUARTZ = theAbyssKey("ore_quartz");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_CHLOROPHYTE = theAbyssKey("ore_chlorophyte");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
@@ -266,6 +267,8 @@ public class TheAbyssFeatures {
         MiaFeatureUtils.register(context, ORE_DIAMOND, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_DIAMOND_ORE.get().defaultBlockState(), 12));
         MiaFeatureUtils.register(context, ORE_EMERALD, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_EMERALD_ORE.get().defaultBlockState(), 4));
         MiaFeatureUtils.register(context, ORE_QUARTZ, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_QUARTZ_ORE.get().defaultBlockState(), 12));
+        RuleTest mudOreRule = new TagMatchTest(MiaTags.Blocks.ABYSS_MUD_ORE_REPLACEABLES);
+        MiaFeatureUtils.register(context, ORE_CHLOROPHYTE, Feature.ORE, new OreConfiguration(mudOreRule, MiaBlocks.ABYSS_CHLOROPHYTE_ORE.get().defaultBlockState(), 6));
 
         MiaFeatureUtils.register(
                 context, TREES_SKYFOG, Feature.RANDOM_SELECTOR,

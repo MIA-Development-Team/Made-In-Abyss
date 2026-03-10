@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "mia:block/mossy_stripped_fossilized_wood_bricks",
+    "side": "mia:block/mossy_stripped_fossilized_wood_bricks",
+    "top": "mia:block/mossy_stripped_fossilized_wood_bricks"
+  }
+}

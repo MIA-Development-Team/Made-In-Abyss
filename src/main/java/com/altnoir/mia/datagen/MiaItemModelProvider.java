@@ -25,6 +25,9 @@ public class MiaItemModelProvider extends ItemModelProvider {
 
         basicItem(MiaItems.MISTFUZZ_PEACH.get());
         basicItem(MiaItems.PRASIOLITE_SHARD.get());
+        basicItem(MiaItems.RAW_CHLOROPHYTE.get());
+        basicItem(MiaItems.CHLOROPHYTE_NUGGET.get());
+        basicItem(MiaItems.CHLOROPHYTE_INGOT.get());
         basicItem(MiaItems.GRAY_ARTIFACT_BUNDLE.get());
         basicItem(MiaItems.FANCY_ARTIFACT_BUNDLE.get());
         basicItem(MiaItems.TEST_ARTIFACT_1.get());

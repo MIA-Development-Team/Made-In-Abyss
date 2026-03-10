@@ -118,6 +118,15 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         slabBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
         wallBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
 
+        blockWithItem(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
+        stairsBlockWithItem(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_STAIRS, MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
+        slabBlockWithItem(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_SLAB, MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
+        wallBlockWithItem(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_WALL, MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
+        blockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        stairsBlockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS, MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        slabBlockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB, MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        wallBlockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL, MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+
         // 天雾树
         logBlockWithItem(MiaBlocks.SKYFOG_LOG);
         woodBlockWithItem(MiaBlocks.SKYFOG_WOOD, MiaBlocks.SKYFOG_LOG);
@@ -171,7 +180,11 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         blockWithItem(MiaBlocks.ABYSS_DIAMOND_ORE);
         blockWithItem(MiaBlocks.ABYSS_EMERALD_ORE);
         blockWithItem(MiaBlocks.ABYSS_QUARTZ_ORE);
+        blockWithItem(MiaBlocks.ABYSS_CHLOROPHYTE_ORE);
         createBrushableBlock(MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE);
+
+        blockWithItem(MiaBlocks.CHLOROPHYTE_BLOCK);
+        blockWithItem(MiaBlocks.RAW_CHLOROPHYTE_BLOCK);
         // 晶石
         blockWithItem(MiaBlocks.PRASIOLITE_BLOCK);
         blockWithItem(MiaBlocks.BUDDING_PRASIOLITE);
@@ -637,17 +650,16 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
 
     protected void blockItem(DeferredBlock<?> block) {
-        baseBlockItem(block, MiaUtil.getBlockPath(block.get()));
+        modBlockItem(block, MiaUtil.getBlockPath(block.get()));
     }
 
     protected void blockItem(DeferredBlock<?> block, String suffix) {
-        baseBlockItem(block, MiaUtil.getBlockPath(block.get()) + suffix);
+        modBlockItem(block, MiaUtil.getBlockPath(block.get()) + suffix);
     }
 
-    protected ItemModelBuilder baseBlockItem(DeferredBlock<?> block, String suffix) {
+    protected ItemModelBuilder modBlockItem(DeferredBlock<?> block, String suffix) {
         return itemModels().withExistingParent(MiaUtil.getBlockPath(block.get()), modLoc("block/" + suffix));
     }
-
 
     protected ItemModelBuilder vanillaBlockItem(DeferredBlock<?> block, String suffix) {
         return itemModels().withExistingParent(MiaUtil.getBlockPath(block.get()), mcLoc("block/" + suffix));

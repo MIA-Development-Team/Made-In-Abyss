@@ -4,13 +4,7 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.common.component.MiaFoods;
 import com.altnoir.mia.common.item.*;
 import com.altnoir.mia.common.item.abs.IArtifactItem.Grade;
-import com.altnoir.mia.util.MiaUtil;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.CustomData;
 import net.neoforged.bus.api.IEventBus;
@@ -50,6 +44,12 @@ public class MiaItems {
             new HasteSkill(new Item.Properties()));
 
     public static final DeferredItem<Item> PRASIOLITE_SHARD = ITEMS.register("prasiolite_shard", () ->
+            new Item(new Item.Properties()));
+    public static final DeferredItem<Item> RAW_CHLOROPHYTE = ITEMS.register("raw_chlorophyte", () ->
+            new Item(new Item.Properties()));
+    public static final DeferredItem<Item> CHLOROPHYTE_NUGGET = ITEMS.register("chlorophyte_nugget", () ->
+            new Item(new Item.Properties()));
+    public static final DeferredItem<Item> CHLOROPHYTE_INGOT = ITEMS.register("chlorophyte_ingot", () ->
             new Item(new Item.Properties()));
     public static final DeferredItem<Item> GROW_SWORD = ITEMS.register("grow_sword", () ->
             new GrowSwordItem(

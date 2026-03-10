@@ -91,6 +91,7 @@ public class BiomesUtils {
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_DIAMOND);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_EMERALD);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_QUARTZ);
+        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_CHLOROPHYTE);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, CavePlacements.UNDERWATER_MAGMA);
     }
 

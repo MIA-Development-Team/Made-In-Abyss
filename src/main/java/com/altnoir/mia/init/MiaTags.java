@@ -12,6 +12,7 @@ public class MiaTags {
         // 新增多个自定义方块标签定义
         public static final TagKey<Block> BASE_STONE_ABYSS = create("base_stone_abyss");
         public static final TagKey<Block> ABYSS_ANDESITE_ORE_REPLACEABLES = create("abyss_andesite_ore_replaceables");
+        public static final TagKey<Block> ABYSS_MUD_ORE_REPLACEABLES = create("abyss_mud_ore_replaceables");
         public static final TagKey<Block> COVERGRASS = create("covergrass");
         public static final TagKey<Block> ABYSS_DRIPSTONE_UNREPLACEABLE = create("abyss_dripstone_replaceable");
         // 用于tooltip

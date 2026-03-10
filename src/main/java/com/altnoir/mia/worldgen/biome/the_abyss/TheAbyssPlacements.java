@@ -70,6 +70,7 @@ public class TheAbyssPlacements {
     public static final ResourceKey<PlacedFeature> ORE_DIAMOND = theAbyssKey("ore_diamond");
     public static final ResourceKey<PlacedFeature> ORE_EMERALD = theAbyssKey("ore_emerald");
     public static final ResourceKey<PlacedFeature> ORE_QUARTZ = theAbyssKey("ore_quartz");
+    public static final ResourceKey<PlacedFeature> ORE_CHLOROPHYTE = theAbyssKey("ore_chlorophyte");
 
     private static final PlacementModifier ABYSS_BRINK_HEIGHT = HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(128), VerticalAnchor.belowTop(8));
     private static final PlacementModifier ABYSS_BRINK_CAVE_HEIGHT = HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(128), VerticalAnchor.belowTop(64));
@@ -120,7 +121,7 @@ public class TheAbyssPlacements {
         Holder<ConfiguredFeature<?, ?>> ore_diamond = holdergetter.getOrThrow(TheAbyssFeatures.ORE_DIAMOND);
         Holder<ConfiguredFeature<?, ?>> ore_emerald = holdergetter.getOrThrow(TheAbyssFeatures.ORE_EMERALD);
         Holder<ConfiguredFeature<?, ?>> ore_quartz = holdergetter.getOrThrow(TheAbyssFeatures.ORE_QUARTZ);
-
+        Holder<ConfiguredFeature<?, ?>> ore_chlorophyte = holdergetter.getOrThrow(TheAbyssFeatures.ORE_CHLOROPHYTE);
 
         MiaPlacementUtils.register(
                 context, MONSTER_CHEAT, monster_cheat,
@@ -283,7 +284,10 @@ public class TheAbyssPlacements {
                 context, ORE_QUARTZ, ore_quartz,
                 commonOrePlacement(16, ABYSS_BRINK_HEIGHT)
         );
-
+        MiaPlacementUtils.register(
+                context, ORE_CHLOROPHYTE, ore_chlorophyte,
+                commonOrePlacement(21, ABYSS_BRINK_HEIGHT)
+        );
 
         MiaPlacementUtils.register(
                 context, ABYSS_TREES, skyfog_and_azalea,

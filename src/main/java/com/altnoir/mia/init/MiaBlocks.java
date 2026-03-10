@@ -165,6 +165,18 @@ public class MiaBlocks {
     public static final DeferredBlock<Block> STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS = registerBlock("stripped_fossilized_wood_bricks_stairs", () -> stair(STRIPPED_FOSSILIZED_WOOD_BRICKS.get()));
     public static final DeferredBlock<Block> STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB = registerBlock("stripped_fossilized_wood_bricks_slab", () -> slab(STRIPPED_FOSSILIZED_WOOD_BRICKS.get()));
     public static final DeferredBlock<Block> STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL = registerBlock("stripped_fossilized_wood_bricks_wall", () -> wall(STRIPPED_FOSSILIZED_WOOD_BRICKS.get()));
+    // 苔藓砖
+    public static final DeferredBlock<Block> MOSSY_FOSSILIZED_WOOD_BRICKS = registerBlock("mossy_fossilized_wood_bricks", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(FOSSILIZED_WOOD.get())));
+    public static final DeferredBlock<Block> MOSSY_FOSSILIZED_WOOD_BRICKS_STAIRS = registerBlock("mossy_fossilized_wood_bricks_stairs", () -> stair(MOSSY_FOSSILIZED_WOOD_BRICKS.get()));
+    public static final DeferredBlock<Block> MOSSY_FOSSILIZED_WOOD_BRICKS_SLAB = registerBlock("mossy_fossilized_wood_bricks_slab", () -> slab(MOSSY_FOSSILIZED_WOOD_BRICKS.get()));
+    public static final DeferredBlock<Block> MOSSY_FOSSILIZED_WOOD_BRICKS_WALL = registerBlock("mossy_fossilized_wood_bricks_wall", () -> wall(MOSSY_FOSSILIZED_WOOD_BRICKS.get()));
+
+    public static final DeferredBlock<Block> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS = registerBlock("mossy_stripped_fossilized_wood_bricks", () ->
+            new Block(BlockBehaviour.Properties.ofFullCopy(STRIPPED_FOSSILIZED_WOOD.get())));
+    public static final DeferredBlock<Block> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS = registerBlock("mossy_stripped_fossilized_wood_bricks_stairs", () -> stair(MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS.get()));
+    public static final DeferredBlock<Block> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB = registerBlock("mossy_stripped_fossilized_wood_bricks_slab", () -> slab(MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS.get()));
+    public static final DeferredBlock<Block> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL = registerBlock("mossy_stripped_fossilized_wood_bricks_wall", () -> wall(MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS.get()));
 
     // 天雾树
     public static final DeferredBlock<Block> SKYFOG_LOG = registerBlock("skyfog_log", () -> log(MapColor.WOOD, MapColor.PODZOL));
@@ -361,6 +373,13 @@ public class MiaBlocks {
                             .strength(4.5F, 3.0F)
             )
     );
+    public static final DeferredBlock<Block> ABYSS_CHLOROPHYTE_ORE = registerBlock("abyss_chlorophyte_ore", () ->
+            new ChlorophyteOreBlock(
+                    UniformInt.of(2, 5), Blocks.MUD,
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.MUD_BRICKS).mapColor(MapColor.TERRACOTTA_GREEN).randomTicks()
+                            .strength(1.5F, 3.0F)
+            )
+    );
     public static final DeferredBlock<Block> SUSPICIOUS_ABYSS_ANDESITE = registerBlock("suspicious_abyss_andesite", () ->
             new MiaBrushableBlock(
                     ABYSS_ANDESITE.get(),
@@ -372,6 +391,26 @@ public class MiaBlocks {
                             .strength(3.0F, 6.0F)
                             .sound(SoundType.SUSPICIOUS_GRAVEL)
                             .pushReaction(PushReaction.DESTROY)
+            )
+    );
+    // 矿块
+    public static final DeferredBlock<Block> RAW_CHLOROPHYTE_BLOCK = registerBlock("raw_chlorophyte_block", () ->
+            new Block(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_LIGHT_GREEN)
+                            .instrument(NoteBlockInstrument.BASEDRUM)
+                            .requiresCorrectToolForDrops()
+                            .strength(5.0F, 6.0F)
+            )
+    );
+    public static final DeferredBlock<Block> CHLOROPHYTE_BLOCK = registerBlock("chlorophyte_block", () ->
+            new Block(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.METAL)
+                            .instrument(NoteBlockInstrument.BELL)
+                            .requiresCorrectToolForDrops()
+                            .strength(5.0F, 6.0F)
+                            .sound(SoundType.METAL)
             )
     );
     // 晶石

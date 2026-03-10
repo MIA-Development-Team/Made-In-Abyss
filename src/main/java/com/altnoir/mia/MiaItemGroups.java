@@ -76,6 +76,14 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS);
                         output.accept(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB);
                         output.accept(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL);
+                        output.accept(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
+                        output.accept(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_STAIRS);
+                        output.accept(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_SLAB);
+                        output.accept(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_WALL);
+                        output.accept(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+                        output.accept(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS);
+                        output.accept(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB);
+                        output.accept(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL);
 
                         output.accept(MiaBlocks.HOPPER_FARMLAND);
                         output.accept(MiaBlocks.SUN_STONE);
@@ -89,7 +97,14 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.ABYSS_DIAMOND_ORE);
                         output.accept(MiaBlocks.ABYSS_EMERALD_ORE);
                         output.accept(MiaBlocks.ABYSS_QUARTZ_ORE);
+                        output.accept(MiaBlocks.ABYSS_CHLOROPHYTE_ORE);
                         output.accept(MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE);
+
+                        output.accept(MiaBlocks.CHLOROPHYTE_BLOCK);
+                        output.accept(MiaBlocks.RAW_CHLOROPHYTE_BLOCK);
+                        output.accept(MiaItems.RAW_CHLOROPHYTE);
+                        output.accept(MiaItems.CHLOROPHYTE_NUGGET);
+                        output.accept(MiaItems.CHLOROPHYTE_INGOT);
                         // 翡翠
                         output.accept(MiaBlocks.PRASIOLITE_BLOCK);
                         output.accept(MiaBlocks.BUDDING_PRASIOLITE);
@@ -166,12 +181,6 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.INVERTED_PRESSURE_PLATE);
                         output.accept(MiaBlocks.INVERTED_BUTTON);
 
-                        // 设备
-                        output.accept(MiaBlocks.ABYSS_PORTAL);
-                        output.accept(MiaItems.STAR_COMPASS);
-                        output.accept(MiaBlocks.ABYSS_PORTAL_FRAME);
-                        output.accept(MiaBlocks.ABYSS_SPAWNER);
-
                         // foods
                         output.accept(MiaItems.MISTFUZZ_PEACH);
 
@@ -196,6 +205,10 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.CAVE_EXPLORER_BEACON);
                         output.accept(MiaBlocks.ENDLESS_CUP);
 
+                        output.accept(MiaItems.STAR_COMPASS);
+                        output.accept(MiaBlocks.ABYSS_PORTAL_FRAME);
+                        output.accept(MiaBlocks.ABYSS_SPAWNER);
+                        // item
                         output.accept(MiaItems.GRAY_ARTIFACT_BUNDLE);
                         output.accept(MiaItems.FANCY_ARTIFACT_BUNDLE);
                         output.accept(MiaItems.TEST_ARTIFACT_1);
@@ -214,6 +227,7 @@ public class MiaItemGroups {
 
                         // DEV
                         output.accept(MiaItems.DEBUG_ATTRIBUTE_TOOL);
+                        output.accept(MiaBlocks.ABYSS_PORTAL);
                     }).build()
     );
 

@@ -1,17 +1,12 @@
 {
   "values": [
-    "minecraft:iron_ingot",
-    "minecraft:stone",
-    "minecraft:fire_charge",
-    "minecraft:water_bucket",
-    "minecraft:bamboo",
-    "minecraft:cobbled_deepslate",
-    "minecraft:oak_leaves",
-    "minecraft:oak_planks",
-    "minecraft:oak_sapling",
+    "minecraft:gold_ingot",
     "mia:prasiolite_shard",
-    "minecraft:stick",
+    "minecraft:netherite_ingot",
+    "minecraft:iron_ingot",
+    "minecraft:copper_ingot",
+    "minecraft:diamond",
     "minecraft:emerald",
-    "minecraft:diamond"
+    "minecraft:lapis_lazuli"
   ]
 }

@@ -112,6 +112,15 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         add(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB.get(), this::createSlabItemTable);
         dropSelf(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL.get());
 
+        dropSelf(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS.get());
+        dropSelf(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_STAIRS.get());
+        add(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_SLAB.get(), this::createSlabItemTable);
+        dropSelf(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_WALL.get());
+        dropSelf(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS.get());
+        dropSelf(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS.get());
+        add(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB.get(), this::createSlabItemTable);
+        dropSelf(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL.get());
+
         // 天雾树
         dropSelf(MiaBlocks.SKYFOG_LOG.get());
         dropSelf(MiaBlocks.SKYFOG_WOOD.get());
@@ -175,7 +184,11 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         add(MiaBlocks.ABYSS_DIAMOND_ORE.get(), block -> createOreDrop(block, Items.DIAMOND));
         add(MiaBlocks.ABYSS_EMERALD_ORE.get(), block -> createOreDrop(block, Items.EMERALD));
         add(MiaBlocks.ABYSS_QUARTZ_ORE.get(), block -> createOreDrop(block, Items.QUARTZ));
+        add(MiaBlocks.ABYSS_CHLOROPHYTE_ORE.get(), block -> createOreDrop(block, MiaItems.RAW_CHLOROPHYTE.get()));
         add(MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE.get(), noDrop());
+
+        dropSelf(MiaBlocks.CHLOROPHYTE_BLOCK.get());
+        dropSelf(MiaBlocks.RAW_CHLOROPHYTE_BLOCK.get());
         // 晶石
         dropSelf(MiaBlocks.PRASIOLITE_BLOCK.get());
         add(MiaBlocks.BUDDING_PRASIOLITE.get(), noDrop());
