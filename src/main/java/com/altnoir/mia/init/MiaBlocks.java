@@ -304,10 +304,13 @@ public class MiaBlocks {
             )
     );
     public static final DeferredBlock<Block> BALLOON_PLANT = registerBlock("balloon_plant", () ->
-            flower(MobEffects.NIGHT_VISION, 5.0F, MapColor.PLANT, SoundType.GRASS)
+            flower(MobEffects.HEAL, 5.0F, MapColor.PLANT, SoundType.GRASS)
+    );
+    public static final DeferredBlock<Block> LANTERN_PLANT = registerBlock("lantern_plant", () ->
+            flower(MobEffects.NIGHT_VISION, 5.0F, MapColor.PLANT, SoundType.GRASS, 10)
     );
     public static final DeferredBlock<Block> GREEN_PERILLA = registerBlock("green_perilla", () ->
-            flower(MobEffects.DIG_SPEED, 5.0F, MapColor.PLANT, SoundType.GRASS)
+            flower(MobEffects.HEAL, 5.0F, MapColor.PLANT, SoundType.GRASS)
     );
     public static final DeferredBlock<Block> KONJAC_ROOT = registerBlock("konjac_root", () ->
             flower(MobEffects.HEAL, 5.0F, MapColor.PLANT, SoundType.ROOTS)
@@ -413,38 +416,88 @@ public class MiaBlocks {
                             .sound(SoundType.METAL)
             )
     );
-    // 晶石
+    // 翡翠
     public static final DeferredBlock<Block> PRASIOLITE_BLOCK = registerBlock("prasiolite_block", () ->
-            new PrasioliteBlock(
+            new CrystalBlock(
                     BlockBehaviour.Properties.of()
                             .mapColor(MapColor.COLOR_GREEN)
                             .strength(1.5F)
                             .sound(SoundType.AMETHYST)
                             .requiresCorrectToolForDrops()
-            ));
+            )
+    );
     public static final DeferredBlock<Block> BUDDING_PRASIOLITE = registerBlock("budding_prasiolite", () ->
             new BuddingPrasioliteBlock(
+                    BlockBehaviour.Properties.ofFullCopy(PRASIOLITE_BLOCK.get()).randomTicks().pushReaction(PushReaction.DESTROY))
+    );
+    public static final DeferredBlock<Block> PRASIOLITE_CLUSTER = registerBlock("prasiolite_cluster", () ->
+            cluster(7, 3, MapColor.COLOR_GREEN, SoundType.AMETHYST_CLUSTER, 5)
+    );
+    public static final DeferredBlock<Block> LARGE_PRASIOLITE_BUD = registerBlock("large_prasiolite_bud", () ->
+            cluster(5, 3, MapColor.COLOR_GREEN, SoundType.AMETHYST_CLUSTER, 4)
+    );
+    public static final DeferredBlock<Block> MEDIUM_PRASIOLITE_BUD = registerBlock("medium_prasiolite_bud", () ->
+            cluster(4, 3, MapColor.COLOR_GREEN, SoundType.AMETHYST_CLUSTER, 2)
+    );
+    public static final DeferredBlock<Block> SMALL_PRASIOLITE_BUD = registerBlock("small_prasiolite_bud", () ->
+            cluster(3, 3, MapColor.COLOR_GREEN, SoundType.AMETHYST_CLUSTER, 1)
+    );
+    // 苍璃
+    public static final DeferredBlock<Block> CAERULITE_BLOCK = registerBlock("caerulite_block", () ->
+            new CrystalBlock(
                     BlockBehaviour.Properties.of()
-                            .mapColor(MapColor.COLOR_GREEN)
-                            .randomTicks()
+                            .mapColor(MapColor.COLOR_BLUE)
                             .strength(1.5F)
                             .sound(SoundType.AMETHYST)
                             .requiresCorrectToolForDrops()
-                            .pushReaction(PushReaction.DESTROY)
-            ));
-    public static final DeferredBlock<Block> PRASIOLITE_CLUSTER = registerBlock("prasiolite_cluster", () ->
-            cluster(7, 3, SoundType.AMETHYST_CLUSTER, 5)
+            )
     );
-    public static final DeferredBlock<Block> LARGE_PRASIOLITE_BUD = registerBlock("large_prasiolite_bud", () ->
-            cluster(5, 3, SoundType.AMETHYST_CLUSTER, 4)
+    public static final DeferredBlock<Block> BUDDING_CAERULITE = registerBlock("budding_caerulite", () ->
+            new BuddingCaeruliteBlock(
+                    BlockBehaviour.Properties.ofFullCopy(CAERULITE_BLOCK.get()).randomTicks().pushReaction(PushReaction.DESTROY))
     );
-    public static final DeferredBlock<Block> MEDIUM_PRASIOLITE_BUD = registerBlock("medium_prasiolite_bud", () ->
-            cluster(4, 3, SoundType.AMETHYST_CLUSTER, 2)
+    public static final DeferredBlock<Block> CAERULITE_CLUSTER = registerBlock("caerulite_cluster", () ->
+            cluster(7, 3, MapColor.COLOR_BLUE, SoundType.AMETHYST_CLUSTER, 5)
     );
-    public static final DeferredBlock<Block> SMALL_PRASIOLITE_BUD = registerBlock("small_prasiolite_bud", () ->
-            cluster(3, 3, SoundType.AMETHYST_CLUSTER, 1)
+    public static final DeferredBlock<Block> LARGE_CAERULITE_BUD = registerBlock("large_caerulite_bud", () ->
+            cluster(5, 3, MapColor.COLOR_BLUE, SoundType.AMETHYST_CLUSTER, 4)
     );
-
+    public static final DeferredBlock<Block> MEDIUM_CAERULITE_BUD = registerBlock("medium_caerulite_bud", () ->
+            cluster(4, 3, MapColor.COLOR_BLUE, SoundType.AMETHYST_CLUSTER, 2)
+    );
+    public static final DeferredBlock<Block> SMALL_CAERULITE_BUD = registerBlock("small_caerulite_bud", () ->
+            cluster(3, 3, MapColor.COLOR_BLUE, SoundType.AMETHYST_CLUSTER, 1)
+    );
+    /* // 梦霓
+     public static final DeferredBlock<Block> SOMNITE_BLOCK = registerBlock("somnite_block", () ->
+             new PrasioliteBlock(
+                     BlockBehaviour.Properties.of()
+                             .mapColor(MapColor.COLOR_PINK)
+                             .strength(1.5F)
+                             .sound(SoundType.AMETHYST)
+                             .requiresCorrectToolForDrops()
+             )
+     );
+     // 炽琰
+     public static final DeferredBlock<Block> IGNILITE_BLOCK = registerBlock("ignilite_block", () ->
+             new PrasioliteBlock(
+                     BlockBehaviour.Properties.of()
+                             .mapColor(MapColor.COLOR_RED)
+                             .strength(1.5F)
+                             .sound(SoundType.AMETHYST)
+                             .requiresCorrectToolForDrops()
+             )
+     );
+     // 阳髓
+     public static final DeferredBlock<Block> SOLSTICEITE_BLOCK = registerBlock("orichalcite_block", () ->
+             new PrasioliteBlock(
+                     BlockBehaviour.Properties.of()
+                             .mapColor(MapColor.COLOR_YELLOW)
+                             .strength(1.5F)
+                             .sound(SoundType.AMETHYST)
+                             .requiresCorrectToolForDrops()
+             )
+     );*/
     // 设备
     public static final DeferredBlock<Block> HOPPER_FARMLAND = registerBlock("hopper_farmland", () ->
             new HopperFarmBlock(
@@ -670,10 +723,10 @@ public class MiaBlocks {
                         .ignitedByLava());
     }
 
-    private static Block cluster(float height, float aabbOffset, SoundType soundType, int lightValue) {
-        return new PrasioliteClusterBlock(height, aabbOffset,
+    private static Block cluster(float height, float aabbOffset, MapColor mapColor, SoundType soundType, int lightValue) {
+        return new AbyssCrystalBlock(height, aabbOffset,
                 BlockBehaviour.Properties.of()
-                        .mapColor(MapColor.COLOR_GREEN)
+                        .mapColor(mapColor)
                         .forceSolidOn()
                         .noOcclusion()
                         .sound(soundType)
@@ -703,6 +756,19 @@ public class MiaBlocks {
                         .noCollission()
                         .instabreak()
                         .sound(soundType)
+                        .offsetType(BlockBehaviour.OffsetType.XZ)
+                        .pushReaction(PushReaction.DESTROY)
+        );
+    }
+
+    private static Block flower(Holder<MobEffect> effects, float duration, MapColor mapColor, SoundType soundType, int lightValue) {
+        return new FlowerBlock(effects, duration,
+                BlockBehaviour.Properties.of()
+                        .mapColor(mapColor)
+                        .noCollission()
+                        .instabreak()
+                        .sound(soundType)
+                        .lightLevel(state -> lightValue)
                         .offsetType(BlockBehaviour.OffsetType.XZ)
                         .pushReaction(PushReaction.DESTROY)
         );

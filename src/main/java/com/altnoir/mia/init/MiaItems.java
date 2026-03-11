@@ -42,9 +42,12 @@ public class MiaItems {
 
     public static final DeferredItem<Item> ARTIFACT_HASTE = ITEMS.register("artifact_haste", () ->
             new HasteSkill(new Item.Properties()));
-
+    // 水晶碎片
     public static final DeferredItem<Item> PRASIOLITE_SHARD = ITEMS.register("prasiolite_shard", () ->
             new Item(new Item.Properties()));
+    public static final DeferredItem<Item> CAERULITE_SHARD = ITEMS.register("caerulite_shard", () ->
+            new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> RAW_CHLOROPHYTE = ITEMS.register("raw_chlorophyte", () ->
             new Item(new Item.Properties()));
     public static final DeferredItem<Item> CHLOROPHYTE_NUGGET = ITEMS.register("chlorophyte_nugget", () ->

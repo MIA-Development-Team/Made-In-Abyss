@@ -19,10 +19,10 @@ import java.util.Map;
 
 public class TheAbyssFogRenderer {
     // 使用 LinkedHashMap 实现 LRU 缓存，自动移除最旧的条目
-    private static final Map<Long, Float> FOG_DENSITY_CACHE = new LinkedHashMap<Long, Float>(256, 0.75f, true) {
+    private static final Map<Long, Float> FOG_DENSITY_CACHE = new LinkedHashMap<>(256, 0.75f, true) {
         @Override
         protected boolean removeEldestEntry(Map.Entry<Long, Float> eldest) {
-            return size() > 1024; // 增加缓存大小以减少频繁清理
+            return size() > 1024;
         }
     };
     // 过渡控制变量

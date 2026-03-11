@@ -197,6 +197,13 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         dropWhenSilkTouch(MiaBlocks.MEDIUM_PRASIOLITE_BUD.get());
         dropWhenSilkTouch(MiaBlocks.SMALL_PRASIOLITE_BUD.get());
 
+        dropSelf(MiaBlocks.CAERULITE_BLOCK.get());
+        dropSelf(MiaBlocks.BUDDING_CAERULITE.get());
+        add(MiaBlocks.CAERULITE_CLUSTER.get(), block -> createClusterDrops(block, MiaItems.CAERULITE_SHARD.get(), 4.0f));
+        dropWhenSilkTouch(MiaBlocks.LARGE_CAERULITE_BUD.get());
+        dropWhenSilkTouch(MiaBlocks.MEDIUM_CAERULITE_BUD.get());
+        dropWhenSilkTouch(MiaBlocks.SMALL_CAERULITE_BUD.get());
+
         // 植物
         add(MiaBlocks.MARGINAL_WEED.get(), this::createAbyssGrassDrops);
         add(MiaBlocks.CRIMSON_VEILGRASS.get(), this::createAbyssGrassDrops);
@@ -204,6 +211,7 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         add(MiaBlocks.FORTITUDE_FLOWER.get(), this::createPetalsDrops);
         add(MiaBlocks.REED.get(), block -> createSinglePropConditionTable(block, DoublePlantBlock.HALF, DoubleBlockHalf.LOWER));
         dropSelf(MiaBlocks.BALLOON_PLANT.get());
+        dropSelf(MiaBlocks.LANTERN_PLANT.get());
         dropSelf(MiaBlocks.GREEN_PERILLA.get());
         dropSelf(MiaBlocks.KONJAC_ROOT.get());
         dropSelf(MiaBlocks.SILVEAF_FUNGUS.get());

@@ -179,6 +179,7 @@ public class TheAbyssFeatures {
                                                 List.of(
                                                         Blocks.BIG_DRIPLEAF.defaultBlockState(),
                                                         MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
+                                                        MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
                                                         MiaBlocks.GREEN_PERILLA.get().defaultBlockState(),
                                                         MiaBlocks.SCORCHLEAF.get().defaultBlockState(),
                                                         Blocks.TORCHFLOWER.defaultBlockState(),
@@ -208,6 +209,7 @@ public class TheAbyssFeatures {
                                                 List.of(
                                                         Blocks.BIG_DRIPLEAF.defaultBlockState(),
                                                         MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
+                                                        MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
                                                         MiaBlocks.SILVEAF_FUNGUS.get().defaultBlockState(),
                                                         MiaBlocks.KONJAC_ROOT.get().defaultBlockState(),
                                                         MiaBlocks.CRIMSON_VEILGRASS.get().defaultBlockState()
@@ -428,7 +430,6 @@ public class TheAbyssFeatures {
                         1
                 )
         );
-
         MiaFeatureUtils.register(
                 context, CAVE_PILLAR, MiaFeatures.ABYSS_CAVE_PILLAR.get(),
                 new MiaCavePillarConfiguration(

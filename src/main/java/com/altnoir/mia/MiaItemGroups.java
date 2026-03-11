@@ -112,7 +112,14 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.MEDIUM_PRASIOLITE_BUD);
                         output.accept(MiaBlocks.LARGE_PRASIOLITE_BUD);
                         output.accept(MiaBlocks.PRASIOLITE_CLUSTER);
+                        output.accept(MiaBlocks.CAERULITE_BLOCK);
+                        output.accept(MiaBlocks.BUDDING_CAERULITE);
+                        output.accept(MiaBlocks.SMALL_CAERULITE_BUD);
+                        output.accept(MiaBlocks.MEDIUM_CAERULITE_BUD);
+                        output.accept(MiaBlocks.LARGE_CAERULITE_BUD);
+                        output.accept(MiaBlocks.CAERULITE_CLUSTER);
                         output.accept(MiaItems.PRASIOLITE_SHARD);
+                        output.accept(MiaItems.CAERULITE_SHARD);
                         output.accept(MiaItems.PRASIOLITE_PICKAXE);
                         output.accept(MiaItems.PRASIOLITE_HOE);
 
@@ -169,6 +176,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.FORTITUDE_FLOWER);
                         output.accept(MiaBlocks.REED);
                         output.accept(MiaBlocks.BALLOON_PLANT);
+                        output.accept(MiaBlocks.LANTERN_PLANT);
                         output.accept(MiaBlocks.GREEN_PERILLA);
                         output.accept(MiaBlocks.KONJAC_ROOT);
                         output.accept(MiaBlocks.SILVEAF_FUNGUS);

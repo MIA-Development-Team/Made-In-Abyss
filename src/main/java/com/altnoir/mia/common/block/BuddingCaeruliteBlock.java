@@ -1,0 +1,46 @@
+package com.altnoir.mia.common.block;
+
+import com.altnoir.mia.init.MiaBlocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.AmethystClusterBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
+
+public class BuddingCaeruliteBlock extends CrystalBlock {
+    private static final Direction[] DIRECTIONS = Direction.values();
+    public static final int GROWTH_CHANCE = 4;
+
+    public BuddingCaeruliteBlock(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (random.nextInt(GROWTH_CHANCE) == 0) {
+            Direction direction = DIRECTIONS[random.nextInt(DIRECTIONS.length)];
+            BlockPos blockpos = pos.relative(direction);
+            BlockState blockstate = level.getBlockState(blockpos);
+            Block block = null;
+            if (canClusterGrowAtState(blockstate)) {
+                block = MiaBlocks.SMALL_CAERULITE_BUD.get();
+            } else if (blockstate.is(MiaBlocks.SMALL_CAERULITE_BUD.get()) && blockstate.getValue(AbyssCrystalBlock.FACING) == direction) {
+                block = MiaBlocks.MEDIUM_CAERULITE_BUD.get();
+            } else if (blockstate.is(MiaBlocks.MEDIUM_CAERULITE_BUD.get()) && blockstate.getValue(AbyssCrystalBlock.FACING) == direction) {
+                block = MiaBlocks.LARGE_CAERULITE_BUD.get();
+            } else if (blockstate.is(MiaBlocks.LARGE_CAERULITE_BUD.get()) && blockstate.getValue(AbyssCrystalBlock.FACING) == direction) {
+                block = MiaBlocks.CAERULITE_CLUSTER.get();
+            }
+
+            if (block != null) {
+                BlockState blockstate1 = block.defaultBlockState()
+                        .setValue(AbyssCrystalBlock.FACING, direction)
+                        .setValue(AbyssCrystalBlock.WATERLOGGED, Boolean.valueOf(blockstate.getFluidState().getType() == Fluids.WATER));
+                level.setBlockAndUpdate(blockpos, blockstate1);
+            }
+        }
+    }
+}

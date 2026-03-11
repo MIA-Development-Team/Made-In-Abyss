@@ -193,6 +193,13 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         clusterBlock(MiaBlocks.MEDIUM_PRASIOLITE_BUD);
         clusterBlock(MiaBlocks.SMALL_PRASIOLITE_BUD);
 
+        blockWithItem(MiaBlocks.CAERULITE_BLOCK);
+        blockWithItem(MiaBlocks.BUDDING_CAERULITE);
+        clusterBlock(MiaBlocks.CAERULITE_CLUSTER);
+        clusterBlock(MiaBlocks.LARGE_CAERULITE_BUD);
+        clusterBlock(MiaBlocks.MEDIUM_CAERULITE_BUD);
+        clusterBlock(MiaBlocks.SMALL_CAERULITE_BUD);
+
         // 植物
         bushBlock(MiaBlocks.MARGINAL_WEED);
         bushBlock(MiaBlocks.CRIMSON_VEILGRASS);
@@ -200,6 +207,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         createFlowerBed(MiaBlocks.FORTITUDE_FLOWER);
         createDoublePlant(MiaBlocks.REED);
         bushBlock(MiaBlocks.BALLOON_PLANT);
+        bushBlock(MiaBlocks.LANTERN_PLANT);
         bushBlock(MiaBlocks.GREEN_PERILLA);
         bushBlock(MiaBlocks.KONJAC_ROOT);
         bushBlock(MiaBlocks.SILVEAF_FUNGUS);
@@ -410,7 +418,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
     protected void columnBlock(DeferredBlock<?> block, DeferredBlock<?> pillarBlock, DeferredBlock<?> decBlock) {
         MiaModelProvider modelP = new MiaModelProvider();
-        modelP.columnBlockModel(this, block.get(),pillarBlock.get(), decBlock.get());
+        modelP.columnBlockModel(this, block.get(), pillarBlock.get(), decBlock.get());
 
         getVariantBuilder(block.get())
                 .forAllStates(state -> {

@@ -23,14 +23,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class PrasioliteClusterBlock extends PrasioliteBlock implements SimpleWaterloggedBlock {
-    public static final MapCodec<PrasioliteClusterBlock> CODEC = RecordCodecBuilder.mapCodec(
+public class AbyssCrystalBlock extends CrystalBlock implements SimpleWaterloggedBlock {
+    public static final MapCodec<AbyssCrystalBlock> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                             Codec.FLOAT.fieldOf("height").forGetter(p -> p.height),
                             Codec.FLOAT.fieldOf("aabb_offset").forGetter(p -> p.aabbOffset),
                             propertiesCodec()
                     )
-                    .apply(instance, PrasioliteClusterBlock::new)
+                    .apply(instance, AbyssCrystalBlock::new)
     );
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -46,11 +46,11 @@ public class PrasioliteClusterBlock extends PrasioliteBlock implements SimpleWat
     protected final VoxelShape downAabb;
 
     @Override
-    protected MapCodec<? extends PrasioliteClusterBlock> codec() {
+    protected MapCodec<? extends AbyssCrystalBlock> codec() {
         return CODEC;
     }
 
-    public PrasioliteClusterBlock(float height, float aabbOffset, BlockBehaviour.Properties properties) {
+    public AbyssCrystalBlock(float height, float aabbOffset, BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false).setValue(FACING, Direction.UP));
 

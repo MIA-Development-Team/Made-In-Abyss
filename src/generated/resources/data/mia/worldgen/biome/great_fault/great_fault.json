@@ -28,7 +28,9 @@
   "features": [
     [],
     [],
-    [],
+    [
+      "mia:great_fault/caerulite_geode"
+    ],
     [],
     [],
     [],

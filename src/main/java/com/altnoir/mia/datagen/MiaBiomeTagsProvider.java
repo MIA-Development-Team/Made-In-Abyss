@@ -20,7 +20,7 @@ public class MiaBiomeTagsProvider extends BiomeTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         tag(MiaTags.Biomes.THE_ABYSS_CLEAR)
                 .add(MiaBiomes.TEMPTATION_FOREST);
-        tag(MiaTags.Biomes.THE_ABYSS_DENSE)
-                .add(MiaBiomes.ABYSS_DRIPSTONE_CAVES);
+//        tag(MiaTags.Biomes.THE_ABYSS_DENSE)
+//                .add(MiaBiomes.ABYSS_DRIPSTONE_CAVES);
     }
 }
