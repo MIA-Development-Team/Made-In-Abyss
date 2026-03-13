@@ -35,7 +35,8 @@ public class MiaWorldGenProvider extends DatapackBuiltinEntriesProvider {
             .add(Registries.NOISE, MiaNoiseData::bootstrap)
             .add(Registries.DENSITY_FUNCTION, MiaDensityFunctions::bootstrap)
             .add(Registries.NOISE_SETTINGS, MiaNoiseGeneratorSettings::bootstrap)
-            .add(Registries.PAINTING_VARIANT, MiaPaintingVariants::bootstrap);
+            .add(Registries.PAINTING_VARIANT, MiaPaintingVariants::bootstrap)
+            .add(Registries.DAMAGE_TYPE, MiaDamageTypes::bootstrap);
 
     public MiaWorldGenProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of(MIA.MOD_ID));

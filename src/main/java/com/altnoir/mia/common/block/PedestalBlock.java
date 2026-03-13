@@ -126,6 +126,4 @@ public class PedestalBlock extends BaseEntityBlock implements SimpleWaterloggedB
         }
         super.onRemove(state, level, pos, newState, movedByPiston);
     }
-
-
 }

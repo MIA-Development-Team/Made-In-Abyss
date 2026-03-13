@@ -1,12 +1,12 @@
 {
   "values": [
-    "minecraft:gold_ingot",
-    "minecraft:netherite_ingot",
-    "minecraft:iron_ingot",
     "minecraft:copper_ingot",
-    "minecraft:diamond",
-    "mia:prasiolite_shard",
     "minecraft:emerald",
-    "minecraft:lapis_lazuli"
+    "mia:prasiolite_shard",
+    "minecraft:diamond",
+    "minecraft:gold_ingot",
+    "minecraft:iron_ingot",
+    "minecraft:lapis_lazuli",
+    "minecraft:netherite_ingot"
   ]
 }

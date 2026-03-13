@@ -50,7 +50,7 @@ public class MiaNoiseGeneratorSettings {
     public static NoiseGeneratorSettings greatFault(BootstrapContext<?> context) {
         return new NoiseGeneratorSettings(
                 GREAT_FAULT_NOISE_SETTINGS,
-                Blocks.DIORITE.defaultBlockState(),
+                MiaBlocks.MARLITH.get().defaultBlockState(),
                 Blocks.WATER.defaultBlockState(),
                 MiaNoiseRouterData.greatFault(context.lookup(Registries.DENSITY_FUNCTION), context.lookup(Registries.NOISE)),
                 MiaSurfaceRuleData.greatFault(),

@@ -30,6 +30,7 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
 
         tag(MiaTags.Blocks.BASE_STONE_ABYSS)
                 .add(MiaBlocks.ABYSS_ANDESITE.get())
+                .add(MiaBlocks.MARLITH.get())
                 .addTag(BlockTags.BASE_STONE_OVERWORLD);
 
         tag(MiaTags.Blocks.COVERGRASS)
@@ -64,7 +65,8 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
         tag(BlockTags.MOSS_REPLACEABLE)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
                 .add(MiaBlocks.COVERGRASS_TUFF.get())
-                .add(MiaBlocks.ABYSS_ANDESITE.get());
+                .add(MiaBlocks.ABYSS_ANDESITE.get())
+                .add(MiaBlocks.MARLITH.get());
 
         tag(BlockTags.LOGS_THAT_BURN) // 自动添加LOGS标签
                 .add(MiaBlocks.SKYFOG_LOG.get())
@@ -195,6 +197,7 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS.get())
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get())
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL.get())
+                .add(MiaBlocks.MARLITH.get())
 
                 .add(MiaBlocks.FOSSILIZED_LOG.get())
                 .add(MiaBlocks.FOSSILIZED_WOOD.get())

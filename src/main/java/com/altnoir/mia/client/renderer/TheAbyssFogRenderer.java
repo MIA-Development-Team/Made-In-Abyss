@@ -12,13 +12,11 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.ClientHooks;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class TheAbyssFogRenderer {
-    // 使用 LinkedHashMap 实现 LRU 缓存，自动移除最旧的条目
     private static final Map<Long, Float> FOG_DENSITY_CACHE = new LinkedHashMap<>(256, 0.75f, true) {
         @Override
         protected boolean removeEldestEntry(Map.Entry<Long, Float> eldest) {
@@ -55,15 +53,16 @@ public class TheAbyssFogRenderer {
         float maxEnd = Math.min(farPlaneDistance, 192.0F) * 0.5F;
 
         boolean fogSky = level.isRaining() || level.isThundering();
-        var biome = level.getBiome(new BlockPos(BlockPos.containing(entityX, entityY, entityZ)));
+
         if (fogSky) {
             baseStart = 0.0F;
-        } else if (biome.is(MiaTags.Biomes.THE_ABYSS_DENSE)) {
+        }
+       /* if (biome.is(MiaTags.Biomes.THE_ABYSS_DENSE)) {
             baseStart = farPlaneDistance * 0.025F;
             baseEnd = farPlaneDistance * 0.25F;
             maxStart = farPlaneDistance * 0.0025F;
             maxEnd = Math.min(farPlaneDistance, 192.0F) * 0.125F;
-        }
+        }*/
 
         // 根据高度计算雾强度
         float fogIntensity = Mth.clamp(1.0F - (entityY - minY) / (maxY - minY), 0.0F, 1.0F);

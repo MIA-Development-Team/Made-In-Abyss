@@ -2,7 +2,7 @@
   "parent": "mia:block/template/lamp_tube",
   "render_type": "minecraft:cutout",
   "textures": {
-    "lamp_tube": "mia:block/tube/prasiolite_lamptube",
+    "lamp_tube": "mia:block/model/prasiolite_lamptube",
     "particle": "mia:block/prasiolite_block"
   }
 }

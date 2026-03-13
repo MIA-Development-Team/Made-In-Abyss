@@ -1,7 +1,7 @@
 {
   "aquifers_enabled": false,
   "default_block": {
-    "Name": "minecraft:diorite"
+    "Name": "mia:marlith"
   },
   "default_fluid": {
     "Name": "minecraft:water",

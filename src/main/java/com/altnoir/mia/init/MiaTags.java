@@ -50,7 +50,7 @@ public class MiaTags {
 
     public static class Biomes {
         public static final TagKey<Biome> THE_ABYSS_CLEAR = create("the_abyss_clear");
-        public static final TagKey<Biome> THE_ABYSS_DENSE = create("the_abyss_dense");
+        public static final TagKey<Biome> HAS_STAR_COMPASS_TEMPLE = create("has_star_compass_temple");
 
         private static TagKey<Biome> create(String name) {
             return TagKey.create(Registries.BIOME, MiaUtil.miaId(name));

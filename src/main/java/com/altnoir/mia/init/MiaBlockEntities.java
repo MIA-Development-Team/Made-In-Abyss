@@ -19,6 +19,9 @@ public class MiaBlockEntities {
     public static final Supplier<BlockEntityType<AbyssSpawnerBlockEntity>> ABYSS_SPAWNER_ENTITY = BLOCK_ENTITY_TYPES.register("abyss_spawner_entity", () ->
             BlockEntityType.Builder.of(AbyssSpawnerBlockEntity::new, MiaBlocks.ABYSS_SPAWNER.get()).build(null)
     );
+    public static final Supplier<BlockEntityType<AbyssPortalCoreBlockEntity>> ABYSS_PORTAL_CORE_ENTITY = BLOCK_ENTITY_TYPES.register("abyss_portal_core_entity", () ->
+            BlockEntityType.Builder.of(AbyssPortalCoreBlockEntity::new, MiaBlocks.ABYSS_PORTAL_CORE.get()).build(null)
+    );
     public static final Supplier<BlockEntityType<MiaBrushableBlockEntity>> BRUSHABLE_ENTITY = BLOCK_ENTITY_TYPES.register("brushable_entity", () ->
             BlockEntityType.Builder.of(MiaBrushableBlockEntity::new, MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE.get()).build(null)
     );

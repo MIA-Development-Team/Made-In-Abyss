@@ -77,6 +77,10 @@ public class MiaItems {
 
     public static final DeferredItem<Item> MISTFUZZ_PEACH = ITEMS.register("mistfuzz_peach", () ->
             new Item(new Item.Properties().food(MiaFoods.MISTFUZZ_PEACH)));
+    public static final DeferredItem<Item> GLOOM_BERRY = ITEMS.register("gloom_berry", () ->
+            new ItemNameBlockItem(MiaBlocks.GLOOM_BERRY_PLANT.get(), new Item.Properties().food(MiaFoods.GLOOM_BERRY)));
+    public static final DeferredItem<Item> DREAM_LICHEE = ITEMS.register("dream_lichee", () ->
+            new ItemNameBlockItem(MiaBlocks.DREAM_LICHEE_PLANT.get(), new Item.Properties().food(MiaFoods.DREAM_LICHEE)));
 
     public static final DeferredItem<Item> HOOK = ITEMS.register(
             "hook",

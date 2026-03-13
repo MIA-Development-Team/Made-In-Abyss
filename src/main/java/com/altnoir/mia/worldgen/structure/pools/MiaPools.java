@@ -24,6 +24,7 @@ public class MiaPools {
         HolderGetter<StructureTemplatePool> holdergetter = context.lookup(Registries.TEMPLATE_POOL);
         Holder<StructureTemplatePool> holder = holdergetter.getOrThrow(EMPTY);
         context.register(EMPTY, new StructureTemplatePool(holder, ImmutableList.of(), StructureTemplatePool.Projection.RIGID));
+        StarCompassRuinsPools.bootstrap(context);
         AbyssStrongholdPools.bootstrap(context);
     }
 }

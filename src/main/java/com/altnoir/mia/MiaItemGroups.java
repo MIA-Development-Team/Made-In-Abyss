@@ -23,6 +23,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
                         output.accept(MiaBlocks.COVERGRASS_TUFF);
                         output.accept(MiaBlocks.ABYSS_ANDESITE);
+                        output.accept(MiaBlocks.MARLITH);
                         output.accept(MiaBlocks.ABYSS_ANDESITE_STAIRS);
                         output.accept(MiaBlocks.ABYSS_ANDESITE_SLAB);
                         output.accept(MiaBlocks.ABYSS_ANDESITE_WALL);
@@ -191,6 +192,8 @@ public class MiaItemGroups {
 
                         // foods
                         output.accept(MiaItems.MISTFUZZ_PEACH);
+                        output.accept(MiaItems.GLOOM_BERRY);
+                        output.accept(MiaItems.DREAM_LICHEE);
 
                         // tools
                         output.accept(MiaItems.RED_WHISTLE);
@@ -214,6 +217,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.ENDLESS_CUP);
 
                         output.accept(MiaItems.STAR_COMPASS);
+                        output.accept(MiaBlocks.ABYSS_PORTAL_CORE);
                         output.accept(MiaBlocks.ABYSS_PORTAL_FRAME);
                         output.accept(MiaBlocks.ABYSS_SPAWNER);
                         // item

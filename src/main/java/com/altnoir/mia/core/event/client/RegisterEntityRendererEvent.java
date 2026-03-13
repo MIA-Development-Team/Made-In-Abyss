@@ -9,6 +9,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 public class RegisterEntityRendererEvent {
     public static void register(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(MiaBlockEntities.PEDESTAL_ENTITY.get(), PedestalRenderer::new);
+        event.registerBlockEntityRenderer(MiaBlockEntities.ABYSS_PORTAL_CORE_ENTITY.get(), AbyssPortalCoreRenderer::new);
         event.registerBlockEntityRenderer(MiaBlockEntities.ABYSS_SPAWNER_ENTITY.get(), AbyssSpawnerRenderer::new);
         event.registerBlockEntityRenderer(MiaBlockEntities.BRUSHABLE_ENTITY.get(), MiaBrushableRenderer::new);
         event.registerBlockEntityRenderer(MiaBlockEntities.ENDLESS_CUP_ENTITY.get(), EndlessCupRenderer::new);

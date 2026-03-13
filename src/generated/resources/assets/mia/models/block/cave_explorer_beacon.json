@@ -2,7 +2,7 @@
   "parent": "mia:block/template/abyss_beacon",
   "render_type": "minecraft:cutout",
   "textures": {
-    "all": "mia:block/cave_explorer_beacon",
+    "all": "mia:block/model/cave_explorer_beacon",
     "particle": "mia:block/cave_explorer_beacon_particle"
   }
 }

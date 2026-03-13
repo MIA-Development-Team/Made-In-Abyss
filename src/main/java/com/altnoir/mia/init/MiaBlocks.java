@@ -30,7 +30,7 @@ import java.util.function.ToIntFunction;
 
 public class MiaBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MIA.MOD_ID);
-
+    // 深层安山岩
     public static final DeferredBlock<Block> ABYSS_ANDESITE = registerBlock("abyss_andesite", () ->
             new AbyssAndesiteBlock(
                     BlockBehaviour.Properties.of()
@@ -39,6 +39,15 @@ public class MiaBlocks {
                             .requiresCorrectToolForDrops()
                             .strength(3.0F, 6.0F)
                             .sound(SoundType.DEEPSLATE)));
+    // 古理石
+    public static final DeferredBlock<Block> MARLITH = registerBlock("marlith", () ->
+            new AbyssAndesiteBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.TERRACOTTA_WHITE)
+                            .instrument(NoteBlockInstrument.BASEDRUM)
+                            .requiresCorrectToolForDrops()
+                            .strength(3.5F, 8.0F)
+                            .sound(SoundType.CALCITE)));
     // 草方块
     public static final DeferredBlock<Block> COVERGRASS_ABYSS_ANDESITE = registerBlock("covergrass_abyss_andesite", () ->
             new CoverGrassBlock(
@@ -303,6 +312,31 @@ public class MiaBlocks {
                     .pushReaction(PushReaction.DESTROY)
             )
     );
+    public static final DeferredBlock<Block> GLOOM_BERRY_PLANT = registerBlock("gloom_berry_plant", () ->
+            new GloomBerryBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
+                    .noCollission()
+                    .instabreak()
+                    .randomTicks()
+                    .lightLevel(GloomBerryBlock::getLightLevel)
+                    .sound(SoundType.GRASS)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY)
+            )
+    );
+    public static final DeferredBlock<Block> DREAM_LICHEE_PLANT = registerBlock("dream_lichee_plant", () ->
+            new DreamLicheeBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
+                    .noCollission()
+                    .instabreak()
+                    .randomTicks()
+                    .sound(SoundType.GRASS)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY)
+            )
+    );
     public static final DeferredBlock<Block> BALLOON_PLANT = registerBlock("balloon_plant", () ->
             flower(MobEffects.HEAL, 5.0F, MapColor.PLANT, SoundType.GRASS)
     );
@@ -556,8 +590,8 @@ public class MiaBlocks {
                             .noLootTable()
                             .pushReaction(PushReaction.BLOCK))
     );
-    public static final DeferredBlock<Block> ABYSS_PORTAL_FRAME = registerBlock("abyss_portal_frame", () ->
-            new AbyssPortalFrameBlock(
+    public static final DeferredBlock<Block> ABYSS_PORTAL_CORE = registerBlock("abyss_portal_core", () ->
+            new AbyssPortalCoreBlock(
                     BlockBehaviour.Properties.of()
                             .mapColor(MapColor.COLOR_YELLOW)
                             .instrument(NoteBlockInstrument.BASEDRUM)
@@ -566,7 +600,16 @@ public class MiaBlocks {
                             .strength(-1.0F, 3600000.0F)
                             .noLootTable())
     );
-
+    public static final DeferredBlock<Block> ABYSS_PORTAL_FRAME = registerBlock("abyss_portal_frame", () ->
+            new Block(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_BLACK)
+                            .instrument(NoteBlockInstrument.BASEDRUM)
+                            .sound(SoundType.NETHERITE_BLOCK)
+                            .requiresCorrectToolForDrops()
+                            .strength(50.0F, 1200.0F)
+            )
+    );
     public static final DeferredBlock<Block> ABYSS_SPAWNER = registerBlock("abyss_spawner", () ->
             new AbyssSpawnerBlock(
                     BlockBehaviour.Properties.of()

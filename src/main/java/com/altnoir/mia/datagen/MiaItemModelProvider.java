@@ -23,7 +23,6 @@ public class MiaItemModelProvider extends ItemModelProvider {
 //        basicItem(MiaItems.BLACK_WHISTLE.get());
 //        basicItem(MiaItems.WHITE_WHISTLE.get());
 
-        basicItem(MiaItems.MISTFUZZ_PEACH.get());
         basicItem(MiaItems.PRASIOLITE_SHARD.get());
         basicItem(MiaItems.CAERULITE_SHARD.get());
         basicItem(MiaItems.RAW_CHLOROPHYTE.get());
@@ -35,6 +34,11 @@ public class MiaItemModelProvider extends ItemModelProvider {
         basicItem(MiaItems.TEST_ARTIFACT_2.get());
         basicItem(MiaItems.TEST_ARTIFACT_3.get());
         basicItem(MiaItems.HEALTH_JUNKIE.get());
+
+        // foods
+        basicItem(MiaItems.MISTFUZZ_PEACH.get());
+        basicItem(MiaItems.GLOOM_BERRY.get());
+        basicItem(MiaItems.DREAM_LICHEE.get());
 
         basicItem(MiaItems.STAR_COMPASS.get());
         basicItem(MiaItems.PEACE_PHOBIA.get());
