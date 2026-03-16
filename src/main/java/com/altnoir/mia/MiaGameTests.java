@@ -9,7 +9,7 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @GameTestHolder(MIA.MOD_ID)
 public class MiaGameTests {
     @PrefixGameTestTemplate(false)
-    @GameTest(template = "test_template")
+    @GameTest(template = "gametest/amethyst_lamptube")
     public static void exampleTest(GameTestHelper helper) {
         helper.succeedWhen(() -> {
 
