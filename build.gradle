@@ -158,10 +158,11 @@ dependencies {
 
     // KubeJS
     api("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
+
     // Ponder
-    implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
-    // Flywheel
+    implementation("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
     compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
