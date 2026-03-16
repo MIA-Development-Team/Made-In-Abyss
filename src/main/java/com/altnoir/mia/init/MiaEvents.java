@@ -84,10 +84,4 @@ public class MiaEvents {
         float damage = CriticalDamageEvent.onLivingCriticalDamage(event.getEntity(), event.getSource(), event.getOriginalDamage());
         event.setNewDamage(damage);
     }
-
-    public static void onLivingDamagePost(LivingDamageEvent.Post event) {
-        if (event.getSource().getEntity() instanceof Player player) {
-            player.sendSystemMessage(Component.literal(event.getNewDamage() + "点伤害"));
-        }
-    }
 }
