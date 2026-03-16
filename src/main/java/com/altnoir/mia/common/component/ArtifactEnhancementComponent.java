@@ -49,9 +49,21 @@ public class ArtifactEnhancementComponent {
     }
 
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers() {
+        return getAttributeModifiers(null);
+    }
+
+    public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(ResourceLocation curiosId) {
         ImmutableMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableMultimap.builder();
         for (ArtifactStat modifier : modifiers) {
-            builder.put(modifier.attribute(), modifier.modifier());
+            AttributeModifier newModifier = modifier.modifier();
+            if (curiosId != null) {
+                newModifier = new AttributeModifier(
+                        ResourceLocation.fromNamespaceAndPath(curiosId.getNamespace(), curiosId.getPath() + "_" + newModifier.id().getPath()),
+                        newModifier.amount(),
+                        newModifier.operation()
+                );
+            }
+            builder.put(modifier.attribute(), newModifier);
         }
         return builder.build();
     }
@@ -90,7 +102,7 @@ public class ArtifactEnhancementComponent {
                 .map(key -> key.location().getPath())
                 .orElse("unknown");
         String op = operation.name().toLowerCase();
-        return String.format("%s.%s", attr, op);
+        return String.format("artifact_enhancement.%s.%s", attr, op);
     }
 
     @Override

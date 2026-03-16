@@ -59,6 +59,6 @@ public interface IEArtifact extends IArtifactItem, IBundleable {
     }
 
     default Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
-        return stack.getOrDefault(MiaComponents.ARTIFACT_ENHANCEMENT, ArtifactEnhancementComponent.EMPTY).getAttributeModifiers();
+        return stack.getOrDefault(MiaComponents.ARTIFACT_ENHANCEMENT, ArtifactEnhancementComponent.EMPTY).getAttributeModifiers(id);
     }
 }
