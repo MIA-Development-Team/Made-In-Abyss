@@ -75,9 +75,9 @@ public class GloomBerryBlock extends DoubleBerryblock {
         }
         int age = state.getValue(AGE);
         if (age == 3) {
-            return 12;
+            return 15;
         } else if (age == 2) {
-            return 7;
+            return 12;
         }
         return 0;
     }

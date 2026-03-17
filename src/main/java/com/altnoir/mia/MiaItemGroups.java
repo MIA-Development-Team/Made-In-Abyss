@@ -86,9 +86,6 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB);
                         output.accept(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL);
 
-                        output.accept(MiaBlocks.HOPPER_FARMLAND);
-                        output.accept(MiaBlocks.SUN_STONE);
-
                         // 矿物
                         output.accept(MiaBlocks.ABYSS_IRON_ORE);
                         output.accept(MiaBlocks.ABYSS_COPPER_ORE);
@@ -213,6 +210,8 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.PRASIOLITE_LAMPTUBE);
                         output.accept(MiaBlocks.AMETHYST_LAMPTUBE);
                         output.accept(MiaBlocks.PEDESTAL);
+                        output.accept(MiaBlocks.HOPPER_FARMLAND);
+                        output.accept(MiaBlocks.SUN_STONE);
                         output.accept(MiaBlocks.CAVE_EXPLORER_BEACON);
                         output.accept(MiaBlocks.ENDLESS_CUP);
 
@@ -220,6 +219,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.ABYSS_PORTAL_CORE);
                         output.accept(MiaBlocks.ABYSS_PORTAL_FRAME);
                         output.accept(MiaBlocks.ABYSS_SPAWNER);
+
                         // item
                         output.accept(MiaItems.GRAY_ARTIFACT_BUNDLE);
                         output.accept(MiaItems.FANCY_ARTIFACT_BUNDLE);

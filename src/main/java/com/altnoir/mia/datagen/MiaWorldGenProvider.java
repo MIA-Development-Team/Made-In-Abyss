@@ -10,6 +10,7 @@ import com.altnoir.mia.worldgen.dimension.MiaDimensions;
 import com.altnoir.mia.worldgen.noise.MiaNoiseData;
 import com.altnoir.mia.worldgen.noise_setting.MiaDensityFunctions;
 import com.altnoir.mia.worldgen.noise_setting.MiaNoiseGeneratorSettings;
+import com.altnoir.mia.worldgen.processor_list.MiaProcessorLists;
 import com.altnoir.mia.worldgen.structure.MiaStructureSets;
 import com.altnoir.mia.worldgen.structure.MiaStructures;
 import com.altnoir.mia.worldgen.structure.pools.MiaPools;
@@ -29,6 +30,7 @@ public class MiaWorldGenProvider extends DatapackBuiltinEntriesProvider {
             .add(Registries.PLACED_FEATURE, MiaPlacementUtils::bootstrap)
             .add(Registries.STRUCTURE, MiaStructures::bootstrap)
             .add(Registries.STRUCTURE_SET, MiaStructureSets::bootstrap)
+            .add(Registries.PROCESSOR_LIST, MiaProcessorLists::bootstrap)
             .add(Registries.TEMPLATE_POOL, MiaPools::bootstrap)
             .add(Registries.BIOME, MiaBiomes::boostrap)
             .add(Registries.LEVEL_STEM, MiaDimensions::bootstrapStem)

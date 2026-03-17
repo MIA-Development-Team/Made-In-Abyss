@@ -1,0 +1,73 @@
+{
+  "type": "minecraft:random_patch",
+  "config": {
+    "feature": {
+      "feature": {
+        "type": "minecraft:block_column",
+        "config": {
+          "allowed_placement": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:air"
+          },
+          "direction": "up",
+          "layers": [
+            {
+              "height": 1,
+              "provider": {
+                "type": "minecraft:simple_state_provider",
+                "state": {
+                  "Name": "mia:gloom_berry_plant",
+                  "Properties": {
+                    "age": "3",
+                    "half": "lower"
+                  }
+                }
+              }
+            },
+            {
+              "height": 1,
+              "provider": {
+                "type": "minecraft:simple_state_provider",
+                "state": {
+                  "Name": "mia:gloom_berry_plant",
+                  "Properties": {
+                    "age": "3",
+                    "half": "upper"
+                  }
+                }
+              }
+            }
+          ],
+          "prioritize_tip": true
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:all_of",
+            "predicates": [
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": "minecraft:air"
+              },
+              {
+                "type": "minecraft:would_survive",
+                "state": {
+                  "Name": "mia:gloom_berry_plant",
+                  "Properties": {
+                    "age": "0",
+                    "half": "lower"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "tries": 5,
+    "xz_spread": 7,
+    "y_spread": 3
+  }
+}

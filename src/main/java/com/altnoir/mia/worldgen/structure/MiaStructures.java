@@ -76,15 +76,14 @@ public class MiaStructures {
                                                 .collect(
                                                         Collectors.toMap(
                                                                 mobCategory -> mobCategory,
-                                                                mobCategory -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create())
+                                                                mobCategory -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.PIECE, WeightedRandomList.create())
                                                         )
                                                 )
-                                )
-                                .build(),
+                                ).build(),
                         templatePool.getOrThrow(AbyssStrongholdPools.START),
                         Optional.empty(),
-                        7,
-                        ConstantHeight.of(VerticalAnchor.absolute(-57)),
+                        14,
+                        ConstantHeight.of(VerticalAnchor.absolute(-50)),
                         false,
                         Optional.empty(),
                         116,

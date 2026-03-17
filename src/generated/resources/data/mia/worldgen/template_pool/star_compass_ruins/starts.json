@@ -23,5 +23,5 @@
       "weight": 1
     }
   ],
-  "fallback": "mia:empty"
+  "fallback": "minecraft:empty"
 }

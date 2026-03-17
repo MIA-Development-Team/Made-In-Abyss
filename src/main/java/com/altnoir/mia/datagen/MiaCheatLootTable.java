@@ -21,6 +21,8 @@ public record MiaCheatLootTable(HolderLookup.Provider registries) implements Loo
     public static final ResourceKey<LootTable> SIMPLE_RUINS = MiaLootTableProvider.register("chests/simple_ruins");
     public static final ResourceKey<LootTable> STAR_COMPASS_RUINS = MiaLootTableProvider.register("chests/star_compass_ruins");
     public static final ResourceKey<LootTable> STAR_COMPASS_RUINS_FINAL = MiaLootTableProvider.register("chests/star_compass_ruins_final");
+    public static final ResourceKey<LootTable> ABYSS_STRONGHOLD_FIGHTING_ROOM = MiaLootTableProvider.register("chests/abyss_stronghold/fighting_room");
+    public static final ResourceKey<LootTable> ABYSS_STRONGHOLD_FIGHTING_ROOM_FINAL = MiaLootTableProvider.register("chests/abyss_stronghold/fighting_room_final");
 
     // /give @p minecraft:chest[container_loot={loot_table:"mia:chests/star_compass_ruins"}]
     @Override
@@ -99,6 +101,36 @@ public record MiaCheatLootTable(HolderLookup.Provider registries) implements Loo
                                 .add(LootItem.lootTableItem(Items.ENDER_PEARL).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))))
                                 .add(LootItem.lootTableItem(Items.QUARTZ).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))))
                                 .add(LootItem.lootTableItem(Items.REDSTONE).setWeight(5).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 16.0F))))
+                )
+        );
+
+        output.accept(ABYSS_STRONGHOLD_FIGHTING_ROOM, LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(5.0F))
+                                .setBonusRolls(ConstantValue.exactly(1.0F))
+                                .add(LootItem.lootTableItem(Items.BONE).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 8.0F))))
+                                .add(LootItem.lootTableItem(Items.GUNPOWDER).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 8.0F))))
+                                .add(LootItem.lootTableItem(Items.ROTTEN_FLESH).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 8.0F))))
+                                .add(LootItem.lootTableItem(Items.STRING).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 8.0F))))
+                                .add(LootItem.lootTableItem(Items.GLOW_BERRIES).setWeight(15).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 10.0F))))
+                                .add(LootItem.lootTableItem(Items.MELON_SEEDS).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))))
+                                .add(LootItem.lootTableItem(Items.PUMPKIN_SEEDS).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))))
+                                .add(LootItem.lootTableItem(Items.BEETROOT_SEEDS).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))))
+                )
+        ); output.accept(ABYSS_STRONGHOLD_FIGHTING_ROOM_FINAL, LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(5.0F))
+                                .setBonusRolls(ConstantValue.exactly(1.0F))
+                                .add(LootItem.lootTableItem(Items.BONE).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 8.0F))))
+                                .add(LootItem.lootTableItem(Items.GUNPOWDER).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 8.0F))))
+                                .add(LootItem.lootTableItem(Items.ROTTEN_FLESH).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 8.0F))))
+                                .add(LootItem.lootTableItem(Items.STRING).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 8.0F))))
+                                .add(LootItem.lootTableItem(Items.GLOW_BERRIES).setWeight(15).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 10.0F))))
+                                .add(LootItem.lootTableItem(Items.MELON_SEEDS).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))))
+                                .add(LootItem.lootTableItem(Items.PUMPKIN_SEEDS).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))))
+                                .add(LootItem.lootTableItem(Items.BEETROOT_SEEDS).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))))
                 )
         );
     }

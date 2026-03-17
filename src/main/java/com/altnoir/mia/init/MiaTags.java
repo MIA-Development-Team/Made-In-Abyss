@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block;
 
 public class MiaTags {
     public static class Blocks {
-        // 新增多个自定义方块标签定义
+        // 用于worldgen
         public static final TagKey<Block> BASE_STONE_ABYSS = create("base_stone_abyss");
         public static final TagKey<Block> ABYSS_ANDESITE_ORE_REPLACEABLES = create("abyss_andesite_ore_replaceables");
         public static final TagKey<Block> ABYSS_MUD_ORE_REPLACEABLES = create("abyss_mud_ore_replaceables");

@@ -27,7 +27,7 @@ public interface MiaStructureSets {
                 STAR_COMPASS_RUINS,
                 new StructureSet(
                         structure.getOrThrow(MiaStructures.STAR_COMPASS_RUINS),
-                        new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 70387312)
+                        new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 70387317)
                 )
         );
         context.register(

@@ -33,7 +33,8 @@ import org.jetbrains.annotations.Nullable;
 public class AbyssPortalCoreBlock extends BaseEntityBlock {
     public static final MapCodec<AbyssPortalCoreBlock> CODEC = simpleCodec(AbyssPortalCoreBlock::new);
     public static final BooleanProperty COMPASS = BooleanProperty.create("compass");
-    public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 5);
+    public static final int MAX_STAGE = 12;
+    public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, MAX_STAGE);
     public static final VoxelShape SHAPE = Shapes.or(
             Block.box(2.0, 10.0, 2.0, 14.0, 15.0, 14.0),
             Block.box(3, 3, 3, 13, 10, 13),
@@ -78,16 +79,16 @@ public class AbyssPortalCoreBlock extends BaseEntityBlock {
 
         int newStage = state.getValue(STAGE) + 1;
 
-        if (newStage > 5 || newStage < 1) {
+        if (newStage > MAX_STAGE || newStage < 1) {
             return;
         }
         level.setBlock(pos, state.setValue(STAGE, newStage), 3);
 
         ServerLevel serverLevel = level.getServer().getLevel(Level.OVERWORLD);
-        BlockPos targetPos = pos.below(7);
+        BlockPos targetPos = pos.below(15);
 
-        if (newStage < 5) {
-            int height = 5 - newStage;
+        if (newStage < MAX_STAGE) {
+            int height = MAX_STAGE - newStage;
             AbyssPortalFeature.createPortalStructure(serverLevel, targetPos, height);
         } else {
             AbyssPortalFeature.createPortalStructure(serverLevel, targetPos, MiaBlocks.ABYSS_PORTAL.get(), 0);
@@ -99,7 +100,7 @@ public class AbyssPortalCoreBlock extends BaseEntityBlock {
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        int stage = state.getValue(STAGE) + 1;
+        int stage = MAX_STAGE - state.getValue(STAGE) + 1;
 
         if (state.getValue(COMPASS) && random.nextInt(2) == 0) {
             double yOffset = stage * 0.05;

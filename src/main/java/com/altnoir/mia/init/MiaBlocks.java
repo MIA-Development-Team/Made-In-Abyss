@@ -341,7 +341,7 @@ public class MiaBlocks {
             flower(MobEffects.HEAL, 5.0F, MapColor.PLANT, SoundType.GRASS)
     );
     public static final DeferredBlock<Block> LANTERN_PLANT = registerBlock("lantern_plant", () ->
-            flower(MobEffects.NIGHT_VISION, 5.0F, MapColor.PLANT, SoundType.GRASS, 10)
+            flower(MobEffects.NIGHT_VISION, 5.0F, MapColor.PLANT, SoundType.GRASS, 9)
     );
     public static final DeferredBlock<Block> GREEN_PERILLA = registerBlock("green_perilla", () ->
             flower(MobEffects.HEAL, 5.0F, MapColor.PLANT, SoundType.GRASS)
@@ -607,7 +607,7 @@ public class MiaBlocks {
                             .instrument(NoteBlockInstrument.BASEDRUM)
                             .sound(SoundType.NETHERITE_BLOCK)
                             .requiresCorrectToolForDrops()
-                            .strength(50.0F, 1200.0F)
+                            .strength(100.0F, 1200.0F)
             )
     );
     public static final DeferredBlock<Block> ABYSS_SPAWNER = registerBlock("abyss_spawner", () ->

@@ -43,6 +43,7 @@ public class BiomesUtils {
 
     public static void addMeadowVegetation(BiomeGenerationSettings.Builder builder) {
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_PLAIN);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GLOOM_BERRY_PLANT);
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FLOWER_MEADOW);
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
     }
@@ -55,6 +56,8 @@ public class BiomesUtils {
 
     public static void addDenseMeadowVegetation(BiomeGenerationSettings.Builder builder) {
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_FERN);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_DENSE_LARGE_FERN);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GLOOM_BERRY_PLANT);
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
     }
 
