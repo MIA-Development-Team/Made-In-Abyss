@@ -1,5 +1,6 @@
 package com.altnoir.mia.worldgen.structure;
 
+import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.worldgen.structure.pools.AbyssStrongholdPools;
@@ -67,8 +68,8 @@ public class MiaStructures {
         );
         context.register(
                 ABYSS_STRONGHOLD,
-                new JigsawStructure(
-                        new Structure.StructureSettings.Builder(biome.getOrThrow(BiomeTags.IS_OVERWORLD))
+                new MiaJigsawStructure(
+                        new Structure.StructureSettings.Builder(biome.getOrThrow(MiaTags.Biomes.HAS_ISLAND))
                                 .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
                                 .terrainAdapation(TerrainAdjustment.ENCAPSULATE)
                                 .spawnOverrides(
@@ -86,7 +87,7 @@ public class MiaStructures {
                         ConstantHeight.of(VerticalAnchor.absolute(-50)),
                         false,
                         Optional.empty(),
-                        116,
+                        230,
                         List.of(),
                         new DimensionPadding(10),
                         LiquidSettings.IGNORE_WATERLOGGING

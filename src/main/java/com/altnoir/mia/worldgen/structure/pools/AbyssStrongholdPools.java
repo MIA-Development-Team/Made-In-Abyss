@@ -65,18 +65,8 @@ public class AbyssStrongholdPools {
                         List.of(
                                 Pair.of(MiaSructurePoolUtils.single("abyss_stronghold/main_hall/hall", polished_tuff), 1),
                                 Pair.of(MiaSructurePoolUtils.single("abyss_stronghold/main_hall/fighting_room", polished_tuff), 1),
+                                Pair.of(MiaSructurePoolUtils.single("abyss_stronghold/main_hall/jumping_room", polished_tuff), 1),
                                 Pair.of(MiaSructurePoolUtils.single("abyss_stronghold/main_hall/decryption_room", polished_tuff), 1)
-                        ),
-                        StructureTemplatePool.Projection.RIGID
-                )
-        );
-        MiaPools.register(
-                context,
-                "abyss_stronghold/main_hall/jumping_room",
-                new StructureTemplatePool(
-                        holder,
-                        List.of(
-                                Pair.of(MiaSructurePoolUtils.single("abyss_stronghold/main_hall/jumping_room", polished_tuff), 1)
                         ),
                         StructureTemplatePool.Projection.RIGID
                 )

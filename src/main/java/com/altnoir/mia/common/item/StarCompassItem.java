@@ -26,7 +26,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import java.util.List;
 
 public class StarCompassItem extends Item implements IMiaTooltip {
-    private static final int SEARCH_RADIUS = 6400;
+    private static final int SEARCH_RADIUS = 12800;
     private static final ResourceKey<Structure> ABYSS_STRONGHOLD = MiaStructures.ABYSS_STRONGHOLD;
 
     public StarCompassItem(Properties properties) {

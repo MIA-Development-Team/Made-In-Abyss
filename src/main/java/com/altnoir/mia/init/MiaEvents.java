@@ -5,6 +5,8 @@ import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.core.event.common.*;
 import com.altnoir.mia.datagen.DataGenerators;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -81,7 +83,18 @@ public class MiaEvents {
     }
 
     public static void onLivingDamagePre(LivingDamageEvent.Pre event) {
-        float damage = CriticalDamageEvent.onLivingCriticalDamage(event.getEntity(), event.getSource(), event.getOriginalDamage());
-        event.setNewDamage(damage);
+        LivingEntity entity = event.getEntity();
+        DamageSource source = event.getSource();
+        float damage = event.getOriginalDamage();
+
+        if (source.getEntity() instanceof Player player) {
+            var chance = player.getAttributeValue(MiaAttributes.CRITICAL_HIT);
+            var baseDamage = player.getAttributeValue(MiaAttributes.CRITICAL_HIT_DAMAGE);
+
+            if (chance > 0 && entity.getRandom().nextDouble() < chance) {
+                damage = damage * (float) (baseDamage + Math.max(0, chance - 1.0));
+                event.setNewDamage(damage);
+            }
+        }
     }
 }

@@ -2,11 +2,11 @@
   "values": [
     "mia:prasiolite_shard",
     "minecraft:copper_ingot",
-    "minecraft:emerald",
     "minecraft:diamond",
+    "minecraft:netherite_ingot",
     "minecraft:gold_ingot",
-    "minecraft:iron_ingot",
     "minecraft:lapis_lazuli",
-    "minecraft:netherite_ingot"
+    "minecraft:iron_ingot",
+    "minecraft:emerald"
   ]
 }

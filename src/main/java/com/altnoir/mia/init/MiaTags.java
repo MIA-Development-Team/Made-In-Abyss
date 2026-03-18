@@ -49,6 +49,7 @@ public class MiaTags {
     }
 
     public static class Biomes {
+        public static final TagKey<Biome> HAS_ISLAND = create("has_island");
         public static final TagKey<Biome> THE_ABYSS_CLEAR = create("the_abyss_clear");
         public static final TagKey<Biome> HAS_STAR_COMPASS_TEMPLE = create("has_star_compass_temple");
 
