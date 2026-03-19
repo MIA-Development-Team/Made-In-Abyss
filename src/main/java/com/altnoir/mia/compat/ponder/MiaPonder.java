@@ -15,4 +15,8 @@ public class MiaPonder implements PonderPlugin {
     public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
         MiaPonderScenes.registerScenes(helper);
     }
+
+    public static void register() {
+        PonderIndex.addPlugin(new MiaPonder());
+    }
 }
