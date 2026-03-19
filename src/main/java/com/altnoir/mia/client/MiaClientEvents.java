@@ -8,12 +8,11 @@ import com.altnoir.mia.client.renderer.TheAbyssDimEffects;
 import com.altnoir.mia.client.renderer.TheAbyssFogRenderer;
 import com.altnoir.mia.common.component.ArtifactBundleInventoryComponent;
 import com.altnoir.mia.compat.Mods;
-import com.altnoir.mia.compat.ponder.MiaPonder;
+import com.altnoir.mia.compat.ponder.MiaPonderRegistry;
 import com.altnoir.mia.core.event.client.*;
 import com.altnoir.mia.core.event.common.AbyssMobEvent;
 import com.altnoir.mia.init.MiaKeyBinding;
 import com.altnoir.mia.init.MiaMenus;
-import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.client.Minecraft;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -27,7 +26,7 @@ public class MiaClientEvents {
     }
 
     public static void onClientSetup(final FMLClientSetupEvent event) {
-        Mods.PONDER.executeIfInstalled(() -> () -> PonderIndex.addPlugin(new MiaPonder()));
+        Mods.PONDER.executeIfInstalled(() -> () -> MiaPonderRegistry.register());
     }
 
     public static void registerParticles(RegisterParticleProvidersEvent event) {
