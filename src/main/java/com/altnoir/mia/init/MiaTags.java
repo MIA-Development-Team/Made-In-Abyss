@@ -9,9 +9,10 @@ import net.minecraft.world.level.block.Block;
 
 public class MiaTags {
     public static class Blocks {
-        // 新增多个自定义方块标签定义
+        // 用于worldgen
         public static final TagKey<Block> BASE_STONE_ABYSS = create("base_stone_abyss");
         public static final TagKey<Block> ABYSS_ANDESITE_ORE_REPLACEABLES = create("abyss_andesite_ore_replaceables");
+        public static final TagKey<Block> ABYSS_MUD_ORE_REPLACEABLES = create("abyss_mud_ore_replaceables");
         public static final TagKey<Block> COVERGRASS = create("covergrass");
         public static final TagKey<Block> ABYSS_DRIPSTONE_UNREPLACEABLE = create("abyss_dripstone_replaceable");
         // 用于tooltip
@@ -48,8 +49,9 @@ public class MiaTags {
     }
 
     public static class Biomes {
+        public static final TagKey<Biome> HAS_ISLAND = create("has_island");
         public static final TagKey<Biome> THE_ABYSS_CLEAR = create("the_abyss_clear");
-        public static final TagKey<Biome> THE_ABYSS_DENSE = create("the_abyss_dense");
+        public static final TagKey<Biome> HAS_STAR_COMPASS_TEMPLE = create("has_star_compass_temple");
 
         private static TagKey<Biome> create(String name) {
             return TagKey.create(Registries.BIOME, MiaUtil.miaId(name));

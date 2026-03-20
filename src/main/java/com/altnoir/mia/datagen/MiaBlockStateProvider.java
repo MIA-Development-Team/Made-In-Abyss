@@ -1,25 +1,27 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.common.block.AbyssPortalFrameBlock;
 import com.altnoir.mia.common.block.ColumnBlock;
+import com.altnoir.mia.common.block.DoubleBerryblock;
 import com.altnoir.mia.common.block.properties.ColumnSide;
 import com.altnoir.mia.datagen.blockstate.MiaModelProvider;
-import com.altnoir.mia.datagen.blockstate.MiaStateProvider;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.trialspawner.TrialSpawnerState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.neoforged.neoforge.client.model.generators.*;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
+
+import java.util.Map;
+import java.util.function.Function;
 
 public class MiaBlockStateProvider extends BlockStateProvider {
     public MiaBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -27,7 +29,6 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     private static final MiaModelProvider modelP = new MiaModelProvider();
-    private static final MiaStateProvider stateP = new MiaStateProvider();
 
     @Override
     protected void registerStatesAndModels() {
@@ -42,18 +43,20 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         pedestalBlock();
         abyssSpawnerBlock();
         abyssPortalBlock();
-        abyssPortalFrameBlock();
+        abyssPortalCoreBlock();
+        blockWithItem(MiaBlocks.ABYSS_PORTAL_FRAME);
 
         // artifact
         artifactSmithingTableBlock();
         hopperFarmBlock();
         templateAllBlock(MiaBlocks.CAVE_EXPLORER_BEACON, "abyss_beacon");
-        templateAllBlock(MiaBlocks.ENDLESS_CUP, "endless_cup");
+        templateAllBlock(MiaBlocks.ENDLESS_CUP);
 
         // decoration blocks
         coverGrassBlock(MiaBlocks.COVERGRASS_ABYSS_ANDESITE, MiaBlocks.ABYSS_ANDESITE);
         coverGrassBlock(MiaBlocks.COVERGRASS_TUFF, Blocks.TUFF);
         mirroredBlock(MiaBlocks.ABYSS_ANDESITE);
+        blockWithItem(MiaBlocks.MARLITH);
         // 深界安山岩
         stairsBlockWithItem(MiaBlocks.ABYSS_ANDESITE_STAIRS, MiaBlocks.ABYSS_ANDESITE);
         slabBlockWithItem(MiaBlocks.ABYSS_ANDESITE_SLAB, MiaBlocks.ABYSS_ANDESITE);
@@ -118,6 +121,15 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         slabBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
         wallBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
 
+        blockWithItem(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
+        stairsBlockWithItem(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_STAIRS, MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
+        slabBlockWithItem(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_SLAB, MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
+        wallBlockWithItem(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_WALL, MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
+        blockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        stairsBlockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS, MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        slabBlockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB, MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        wallBlockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL, MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+
         // 天雾树
         logBlockWithItem(MiaBlocks.SKYFOG_LOG);
         woodBlockWithItem(MiaBlocks.SKYFOG_WOOD, MiaBlocks.SKYFOG_LOG);
@@ -171,7 +183,11 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         blockWithItem(MiaBlocks.ABYSS_DIAMOND_ORE);
         blockWithItem(MiaBlocks.ABYSS_EMERALD_ORE);
         blockWithItem(MiaBlocks.ABYSS_QUARTZ_ORE);
+        blockWithItem(MiaBlocks.ABYSS_CHLOROPHYTE_ORE);
         createBrushableBlock(MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE);
+
+        blockWithItem(MiaBlocks.CHLOROPHYTE_BLOCK);
+        blockWithItem(MiaBlocks.RAW_CHLOROPHYTE_BLOCK);
         // 晶石
         blockWithItem(MiaBlocks.PRASIOLITE_BLOCK);
         blockWithItem(MiaBlocks.BUDDING_PRASIOLITE);
@@ -180,13 +196,23 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         clusterBlock(MiaBlocks.MEDIUM_PRASIOLITE_BUD);
         clusterBlock(MiaBlocks.SMALL_PRASIOLITE_BUD);
 
+        blockWithItem(MiaBlocks.CAERULITE_BLOCK);
+        blockWithItem(MiaBlocks.BUDDING_CAERULITE);
+        clusterBlock(MiaBlocks.CAERULITE_CLUSTER);
+        clusterBlock(MiaBlocks.LARGE_CAERULITE_BUD);
+        clusterBlock(MiaBlocks.MEDIUM_CAERULITE_BUD);
+        clusterBlock(MiaBlocks.SMALL_CAERULITE_BUD);
+
         // 植物
         bushBlock(MiaBlocks.MARGINAL_WEED);
         bushBlock(MiaBlocks.CRIMSON_VEILGRASS);
         bushBlock(MiaBlocks.SCORCHLEAF);
         createFlowerBed(MiaBlocks.FORTITUDE_FLOWER);
         createDoublePlant(MiaBlocks.REED);
+        createDoubleBerry(MiaBlocks.GLOOM_BERRY_PLANT, DoubleBerryblock.MAX_AGE);
+        createDoubleBerry(MiaBlocks.DREAM_LICHEE_PLANT, DoubleBerryblock.MAX_AGE);
         bushBlock(MiaBlocks.BALLOON_PLANT);
+        bushBlock(MiaBlocks.LANTERN_PLANT);
         bushBlock(MiaBlocks.GREEN_PERILLA);
         bushBlock(MiaBlocks.KONJAC_ROOT);
         bushBlock(MiaBlocks.SILVEAF_FUNGUS);
@@ -210,7 +236,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
                 .texture("top", this.modLoc("block/abyss_grass_block_top"))
                 .texture("side", this.modLoc("block/" + MiaUtil.getBlockPath(modelBlock.get()) + "_side"))
                 .texture("bottom", this.modLoc("block/" + MiaUtil.getBlockPath(block.get())));
-        stateP.rotationYBlockState(this, modelBlock.get());
+        rotationYBlockState(modelBlock.get());
         blockItem(modelBlock);
     }
 
@@ -219,25 +245,25 @@ public class MiaBlockStateProvider extends BlockStateProvider {
                 .texture("top", this.modLoc("block/abyss_grass_block_top"))
                 .texture("side", this.modLoc("block/" + MiaUtil.getBlockPath(modelBlock.get()) + "_side"))
                 .texture("bottom", this.mcLoc("block/" + MiaUtil.getBlockPath(block)));
-        stateP.rotationYBlockState(this, modelBlock.get());
+        rotationYBlockState(modelBlock.get());
         blockItem(modelBlock);
     }
 
     private void mirroredBlock(DeferredBlock<?> block) {
         modelP.mirroredBlockModel(this, block.get());
-        stateP.mirroredBlockState(this, block.get());
+        mirroredBlockState(block.get());
         blockItem(block);
     }
 
     private void hopperFarmBlock() {
         modelP.hopperFarmBlockModel(this, MiaBlocks.HOPPER_FARMLAND.get());
-        stateP.moistureBlockState(this, MiaBlocks.HOPPER_FARMLAND.get());
+        moistureBlockState(MiaBlocks.HOPPER_FARMLAND.get());
         blockItem(MiaBlocks.HOPPER_FARMLAND);
     }
 
     private void ropeBlock() {
         modelP.ropeBlockModel(this, MiaBlocks.ROPE.get());
-        stateP.baseBlockState(this, MiaBlocks.ROPE.get());
+        baseBlockState(MiaBlocks.ROPE.get());
         aloneItem(MiaBlocks.ROPE);
     }
 
@@ -249,45 +275,44 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
     private void pedestalBlock() {
         modelP.pedestalBlockModel(this, MiaBlocks.PEDESTAL.get());
-        stateP.baseBlockState(this, MiaBlocks.PEDESTAL.get());
+        baseBlockState(MiaBlocks.PEDESTAL.get());
         blockItem(MiaBlocks.PEDESTAL);
     }
 
 
     private void abyssSpawnerBlock() {
         modelP.abyssSpawnerBlockModel(this, MiaBlocks.ABYSS_SPAWNER.get());
-        stateP.abyssSpawnerBlockState(this, MiaBlocks.ABYSS_SPAWNER.get());
+        abyssSpawnerBlockState(MiaBlocks.ABYSS_SPAWNER.get());
         blockItem(MiaBlocks.ABYSS_SPAWNER);
     }
 
     private void abyssPortalBlock() {
         modelP.abyssPortalBlockModel(this, MiaBlocks.ABYSS_PORTAL.get());
-        stateP.baseBlockState(this, MiaBlocks.ABYSS_PORTAL.get());
+        baseBlockState(MiaBlocks.ABYSS_PORTAL.get());
         bushItem(MiaBlocks.ABYSS_PORTAL);
     }
 
-    private void abyssPortalFrameBlock() {
-        ModelFile defaultModel = modelP.abyssPortalFrameModel(this, MiaBlocks.ABYSS_PORTAL_FRAME.get(), false);
-        ModelFile openModel = modelP.abyssPortalFrameModel(this, MiaBlocks.ABYSS_PORTAL_FRAME.get(), true);
-
-        getVariantBuilder(MiaBlocks.ABYSS_PORTAL_FRAME.get())
-                .partialState().with(AbyssPortalFrameBlock.COMPASS, false)
-                .modelForState().modelFile(defaultModel).addModel()
-                .partialState().with(AbyssPortalFrameBlock.COMPASS, true)
-                .modelForState().modelFile(openModel).addModel();
-
-        blockItem(MiaBlocks.ABYSS_PORTAL_FRAME);
+    private void abyssPortalCoreBlock() {
+        modelP.abyssPortalCoreModel(this, MiaBlocks.ABYSS_PORTAL_CORE.get(), MiaBlocks.ABYSS_PORTAL_FRAME.get());
+        baseBlockState(MiaBlocks.ABYSS_PORTAL_CORE.get());
+        blockItem(MiaBlocks.ABYSS_PORTAL_CORE);
     }
 
     private void artifactSmithingTableBlock() {
         modelP.artifactSmithingTableBlockModel(this, MiaBlocks.ARTIFACT_SMITHING_TABLE.get(), MiaBlocks.CHISLED_ABYSS_ANDESITE.get());
-        stateP.baseBlockState(this, MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
+        baseBlockState(MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
         blockItem(MiaBlocks.ARTIFACT_SMITHING_TABLE);
     }
 
-    private void templateAllBlock(DeferredBlock<?> block, String templateName) {
-        modelP.templateAllBlockModel(this, block.get(), templateName);
-        stateP.baseBlockState(this, block.get());
+    private void templateAllBlock(DeferredBlock<?> block) {
+        modelP.customBlockModel(this, block.get(), MiaUtil.getBlockPath(block.get()));
+        baseBlockState(block.get());
+        blockItem(block);
+    }
+
+    private void templateAllBlock(DeferredBlock<?> block, String templateModel) {
+        modelP.customBlockModel(this, block.get(), templateModel);
+        baseBlockState(block.get());
         blockItem(block);
     }
 
@@ -397,7 +422,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
     protected void columnBlock(DeferredBlock<?> block, DeferredBlock<?> pillarBlock, DeferredBlock<?> decBlock) {
         MiaModelProvider modelP = new MiaModelProvider();
-        modelP.columnBlockModel(this, block.get(),pillarBlock.get(), decBlock.get());
+        modelP.columnBlockModel(this, block.get(), pillarBlock.get(), decBlock.get());
 
         getVariantBuilder(block.get())
                 .forAllStates(state -> {
@@ -508,6 +533,45 @@ public class MiaBlockStateProvider extends BlockStateProvider {
                 .modelForState().modelFile(models().getExistingFile(topModel)).addModel();
 
         bushItem(block, "_top");
+    }
+
+    private void createDoubleBerry(DeferredBlock<?> block, int maxAge) {
+        for (int age = 0; age <= maxAge; age++) {
+            modelP.crossModel(this, block.get(), "_bottom" + age);
+        }
+        for (int age = 2; age <= maxAge; age++) {
+            modelP.crossModel(this, block.get(), "_top" + age);
+        }
+        getVariantBuilder(block.get())
+                .forAllStates(state -> {
+                    DoubleBlockHalf half = state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF);
+                    int age = state.getValue(DoubleBerryblock.AGE);
+
+                    String modelName;
+                    if (half == DoubleBlockHalf.UPPER && age >= 2) {
+                        modelName = MiaUtil.getBlockPath(block.get()) + "_top" + age;
+                    } else {
+                        modelName = MiaUtil.getBlockPath(block.get()) + "_bottom" + age;
+                    }
+                    ModelFile model = models().getExistingFile(modLoc("block/" + modelName));
+
+                    return new ConfiguredModel[]{new ConfiguredModel(model)};
+                });
+
+        bushItem(block, "_top" + maxAge);
+    }
+
+    private void makeCropBlock(CropBlock cropBlock, String model, String texture) {
+        Function<BlockState, ConfiguredModel[]> function = (state -> states(state, cropBlock, model, texture));
+
+        getVariantBuilder(cropBlock).forAllStates(function);
+    }
+
+    private ConfiguredModel[] states(BlockState state, CropBlock cropBlock, String model, String texture) {
+        ConfiguredModel[] models = new ConfiguredModel[1];
+        models[0] = new ConfiguredModel(models().crop(model + state.getValue(CropBlock.AGE),
+                MiaUtil.miaId("block/" + texture + state.getValue(CropBlock.AGE))).renderType("cutout"));
+        return models;
     }
 
     private void createFlowerBed(DeferredBlock<?> flowerBedBlock) {
@@ -635,19 +699,17 @@ public class MiaBlockStateProvider extends BlockStateProvider {
                 .modelForState().modelFile(models().getExistingFile(model)).rotationX(90).rotationY(90).addModel();
     }
 
-
     protected void blockItem(DeferredBlock<?> block) {
-        baseBlockItem(block, MiaUtil.getBlockPath(block.get()));
+        modBlockItem(block, MiaUtil.getBlockPath(block.get()));
     }
 
     protected void blockItem(DeferredBlock<?> block, String suffix) {
-        baseBlockItem(block, MiaUtil.getBlockPath(block.get()) + suffix);
+        modBlockItem(block, MiaUtil.getBlockPath(block.get()) + suffix);
     }
 
-    protected ItemModelBuilder baseBlockItem(DeferredBlock<?> block, String suffix) {
+    protected ItemModelBuilder modBlockItem(DeferredBlock<?> block, String suffix) {
         return itemModels().withExistingParent(MiaUtil.getBlockPath(block.get()), modLoc("block/" + suffix));
     }
-
 
     protected ItemModelBuilder vanillaBlockItem(DeferredBlock<?> block, String suffix) {
         return itemModels().withExistingParent(MiaUtil.getBlockPath(block.get()), mcLoc("block/" + suffix));
@@ -673,5 +735,86 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
     protected void blockWithItem(DeferredBlock<?> block) {
         simpleBlockWithItem(block.get(), cubeAll(block.get()));
+    }
+
+
+    public void baseBlockState(Block block) {
+        getVariantBuilder(block).partialState().addModels(getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block))));
+    }
+
+    public void rotationYBlockState(Block block) {
+        getVariantBuilder(block)
+                .partialState().addModels(
+                        getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block))),
+                        getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block)), 90),
+                        getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block)), 180),
+                        getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block)), 270)
+                );
+    }
+
+    public void mirroredBlockState(Block block) {
+        getVariantBuilder(block)
+                .partialState().addModels(
+                        getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block))),
+                        getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block) + "_mirrored")),
+                        getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block)), 180),
+                        getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block) + "_mirrored"), 180)
+                );
+    }
+
+    public void moistureBlockState(Block block) {
+        VariantBlockStateBuilder builder = getVariantBuilder(block);
+        IntegerProperty moisture = BlockStateProperties.MOISTURE;
+
+        for (int i = 0; i < 7; i++) {
+            builder.partialState()
+                    .with(moisture, i)
+                    .addModels(getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block))));
+        }
+
+        builder.partialState()
+                .with(moisture, 7)
+                .addModels(getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block) + "_moist")));
+    }
+
+    public void abyssSpawnerBlockState(Block block) {
+        VariantBlockStateBuilder builder = getVariantBuilder(block);
+        String blockPath = MiaUtil.getBlockPath(block);
+
+        Map<TrialSpawnerState, String> stateSuffixMap = Map.of(
+                TrialSpawnerState.ACTIVE, "_active",
+                TrialSpawnerState.COOLDOWN, "",
+                TrialSpawnerState.EJECTING_REWARD, "_ejecting_reward",
+                TrialSpawnerState.INACTIVE, "",
+                TrialSpawnerState.WAITING_FOR_PLAYERS, "_active",
+                TrialSpawnerState.WAITING_FOR_REWARD_EJECTION, "_ejecting_reward"
+        );
+
+        for (TrialSpawnerState state : stateSuffixMap.keySet()) {
+            String suffix = stateSuffixMap.get(state);
+            String modelName = blockPath + suffix;
+
+            builder.partialState()
+                    .with(BlockStateProperties.TRIAL_SPAWNER_STATE, state)
+                    .modelForState()
+                    .modelFile(models().getExistingFile(modLoc("block/" + modelName)))
+                    .addModel();
+        }
+    }
+
+    private ConfiguredModel getVariantBuilder(ResourceLocation state) {
+        return getVariantBuilder(state, 0);
+    }
+
+    private ConfiguredModel getVariantBuilder(ResourceLocation state, int rotationY) {
+        return getVariantBuilder(state, 0, rotationY);
+    }
+
+    private ConfiguredModel getVariantBuilder(ResourceLocation state, int rotationX, int rotationY) {
+        return getVariantBuilder(state, rotationX, rotationY, false);
+    }
+
+    private ConfiguredModel getVariantBuilder(ResourceLocation state, int rotationX, int rotationY, boolean uvLock) {
+        return new ConfiguredModel(models().getExistingFile(state), rotationX, rotationY, uvLock);
     }
 }

@@ -12,8 +12,8 @@ public class MiaTreeGrowers {
             Optional.of(MiaTreeFeatures.SKYFOG_TREE_BEES)
     );
     public static final TreeGrower INVERTED_TREE = new TreeGrower(MIA.MOD_ID + ":inverted_tree",
-            Optional.empty(),
             Optional.of(MiaTreeFeatures.MEGA_INVERTED_TREE),
-            Optional.of(MiaTreeFeatures.MEGA_INVERTED_TREE)
+            Optional.of(MiaTreeFeatures.INVERTED_TREE),
+            Optional.empty()
     );
 }

@@ -3,6 +3,7 @@ package com.altnoir.mia.compat.ponder;
 import com.altnoir.mia.MIA;
 import net.createmod.ponder.api.registration.PonderPlugin;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.resources.ResourceLocation;
 
 public class MiaPonder implements PonderPlugin {
@@ -14,5 +15,9 @@ public class MiaPonder implements PonderPlugin {
     @Override
     public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
         MiaPonderScenes.registerScenes(helper);
+    }
+
+    public static void register() {
+        PonderIndex.addPlugin(new MiaPonder());
     }
 }

@@ -28,6 +28,6 @@ public class EventHandle {
         gameEventBus.addListener(MiaEvents::onLivingDeath);
         gameEventBus.addListener(MiaEvents::onFinalizeSpawn);
         gameEventBus.addListener(MiaEvents::onLivingDrops);
-        gameEventBus.addListener(MiaEvents::onLivingDamagePost);
+        gameEventBus.addListener(MiaEvents::onLivingDamagePre);
     }
 }

@@ -2,7 +2,7 @@ package com.altnoir.mia.worldgen.noise_setting;
 
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.worldgen.MiaDensityFunctionTypes;
-import com.altnoir.mia.worldgen.MiaHeight;
+import com.altnoir.mia.core.MiaHeight;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -38,10 +38,10 @@ public class MiaDensityFunctions {
     public static final ResourceKey<DensityFunction> THE_ABYSS_PILLARS = theAbyssKey("caves/pillars");
     public static final ResourceKey<DensityFunction> THE_ABYSS_NOODLE = theAbyssKey("caves/noodle");
 
-    public static final ResourceKey<DensityFunction> GREAT_FAULT_HOLE = greatFaultKey("great_fault_hole");
+    public static final ResourceKey<DensityFunction> GREAT_FAULT_HOLE_ABOVE = greatFaultKey("great_fault_hole_above");
+    public static final ResourceKey<DensityFunction> GREAT_FAULT_HOLE_BELOW = greatFaultKey("great_fault_hole_below");
     public static final ResourceKey<DensityFunction> GREAT_FAULT_NOODLE = greatFaultKey("caves/noodle");
     public static final ResourceKey<DensityFunction> GREAT_FAULT_BIG_CAVE = greatFaultKey("caves/big_cave");
-    public static final ResourceKey<DensityFunction> GREAT_FAULT_LONG_CAVE = greatFaultKey("caves/long_cave");
 
 
     private static ResourceKey<DensityFunction> createKey(String location) {
@@ -124,7 +124,8 @@ public class MiaDensityFunctions {
         context.register(THE_ABYSS_NOODLE, abyssNoodle(holdergetter1, holdergetter));
 
         // Layer 3
-        context.register(GREAT_FAULT_HOLE, DensityFunctions.add(MiaDensityFunctionTypes.generalAbyssHole(0.0F, 0.5F), getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
+        context.register(GREAT_FAULT_HOLE_ABOVE, DensityFunctions.add(MiaDensityFunctionTypes.hopperAbyssHole(0.0F, 0.6F, 16.0F), getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
+        context.register(GREAT_FAULT_HOLE_BELOW, DensityFunctions.add(MiaDensityFunctionTypes.generalAbyssHole(0.0F, 0.5F), getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
         context.register(GREAT_FAULT_NOODLE, greatFaultNoodle(holdergetter1, holdergetter));
         context.register(GREAT_FAULT_BIG_CAVE, bigCaves(holdergetter));
     }
@@ -218,7 +219,7 @@ public class MiaDensityFunctions {
     }
 
     private static DensityFunction bigCaves(HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
-        DensityFunction densityfunction = DensityFunctions.yClampedGradient(MiaHeight.GREAT_FAULT.minY(), 0, 1.5, 0.1);
+        DensityFunction densityfunction = DensityFunctions.yClampedGradient(MiaHeight.GREAT_FAULT.maxY(), MiaHeight.GREAT_FAULT.maxY() - 64, 1.5, 0.1);
         DensityFunction densityfunction1 = DensityFunctions.add(
                 DensityFunctions.noise(noiseParameters.getOrThrow(Noises.NOODLE_THICKNESS), 1.0, 7.5),
                 DensityFunctions.mul(

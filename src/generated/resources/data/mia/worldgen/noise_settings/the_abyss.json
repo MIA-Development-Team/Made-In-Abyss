@@ -255,7 +255,8 @@
                           "when_out_of_range": {
                             "type": "mia:abyss_hole",
                             "mul": 1.0,
-                            "radius": 0.0
+                            "radius": 0.0,
+                            "slope": 64.0
                           }
                         },
                         "argument2": {

@@ -23,6 +23,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.COVERGRASS_ABYSS_ANDESITE);
                         output.accept(MiaBlocks.COVERGRASS_TUFF);
                         output.accept(MiaBlocks.ABYSS_ANDESITE);
+                        output.accept(MiaBlocks.MARLITH);
                         output.accept(MiaBlocks.ABYSS_ANDESITE_STAIRS);
                         output.accept(MiaBlocks.ABYSS_ANDESITE_SLAB);
                         output.accept(MiaBlocks.ABYSS_ANDESITE_WALL);
@@ -76,9 +77,14 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS);
                         output.accept(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB);
                         output.accept(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL);
-
-                        output.accept(MiaBlocks.HOPPER_FARMLAND);
-                        output.accept(MiaBlocks.SUN_STONE);
+                        output.accept(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
+                        output.accept(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_STAIRS);
+                        output.accept(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_SLAB);
+                        output.accept(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_WALL);
+                        output.accept(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+                        output.accept(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS);
+                        output.accept(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB);
+                        output.accept(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL);
 
                         // 矿物
                         output.accept(MiaBlocks.ABYSS_IRON_ORE);
@@ -89,7 +95,14 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.ABYSS_DIAMOND_ORE);
                         output.accept(MiaBlocks.ABYSS_EMERALD_ORE);
                         output.accept(MiaBlocks.ABYSS_QUARTZ_ORE);
+                        output.accept(MiaBlocks.ABYSS_CHLOROPHYTE_ORE);
                         output.accept(MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE);
+
+                        output.accept(MiaBlocks.CHLOROPHYTE_BLOCK);
+                        output.accept(MiaBlocks.RAW_CHLOROPHYTE_BLOCK);
+                        output.accept(MiaItems.RAW_CHLOROPHYTE);
+                        output.accept(MiaItems.CHLOROPHYTE_NUGGET);
+                        output.accept(MiaItems.CHLOROPHYTE_INGOT);
                         // 翡翠
                         output.accept(MiaBlocks.PRASIOLITE_BLOCK);
                         output.accept(MiaBlocks.BUDDING_PRASIOLITE);
@@ -97,7 +110,14 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.MEDIUM_PRASIOLITE_BUD);
                         output.accept(MiaBlocks.LARGE_PRASIOLITE_BUD);
                         output.accept(MiaBlocks.PRASIOLITE_CLUSTER);
+                        output.accept(MiaBlocks.CAERULITE_BLOCK);
+                        output.accept(MiaBlocks.BUDDING_CAERULITE);
+                        output.accept(MiaBlocks.SMALL_CAERULITE_BUD);
+                        output.accept(MiaBlocks.MEDIUM_CAERULITE_BUD);
+                        output.accept(MiaBlocks.LARGE_CAERULITE_BUD);
+                        output.accept(MiaBlocks.CAERULITE_CLUSTER);
                         output.accept(MiaItems.PRASIOLITE_SHARD);
+                        output.accept(MiaItems.CAERULITE_SHARD);
                         output.accept(MiaItems.PRASIOLITE_PICKAXE);
                         output.accept(MiaItems.PRASIOLITE_HOE);
 
@@ -154,6 +174,7 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.FORTITUDE_FLOWER);
                         output.accept(MiaBlocks.REED);
                         output.accept(MiaBlocks.BALLOON_PLANT);
+                        output.accept(MiaBlocks.LANTERN_PLANT);
                         output.accept(MiaBlocks.GREEN_PERILLA);
                         output.accept(MiaBlocks.KONJAC_ROOT);
                         output.accept(MiaBlocks.SILVEAF_FUNGUS);
@@ -166,14 +187,10 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.INVERTED_PRESSURE_PLATE);
                         output.accept(MiaBlocks.INVERTED_BUTTON);
 
-                        // 设备
-                        output.accept(MiaBlocks.ABYSS_PORTAL);
-                        output.accept(MiaItems.STAR_COMPASS);
-                        output.accept(MiaBlocks.ABYSS_PORTAL_FRAME);
-                        output.accept(MiaBlocks.ABYSS_SPAWNER);
-
                         // foods
                         output.accept(MiaItems.MISTFUZZ_PEACH);
+                        output.accept(MiaItems.GLOOM_BERRY);
+                        output.accept(MiaItems.DREAM_LICHEE);
 
                         // tools
                         output.accept(MiaItems.RED_WHISTLE);
@@ -193,9 +210,17 @@ public class MiaItemGroups {
                         output.accept(MiaBlocks.PRASIOLITE_LAMPTUBE);
                         output.accept(MiaBlocks.AMETHYST_LAMPTUBE);
                         output.accept(MiaBlocks.PEDESTAL);
+                        output.accept(MiaBlocks.HOPPER_FARMLAND);
+                        output.accept(MiaBlocks.SUN_STONE);
                         output.accept(MiaBlocks.CAVE_EXPLORER_BEACON);
                         output.accept(MiaBlocks.ENDLESS_CUP);
 
+                        output.accept(MiaItems.STAR_COMPASS);
+                        output.accept(MiaBlocks.ABYSS_PORTAL_CORE);
+                        output.accept(MiaBlocks.ABYSS_PORTAL_FRAME);
+                        output.accept(MiaBlocks.ABYSS_SPAWNER);
+
+                        // item
                         output.accept(MiaItems.GRAY_ARTIFACT_BUNDLE);
                         output.accept(MiaItems.FANCY_ARTIFACT_BUNDLE);
                         output.accept(MiaItems.TEST_ARTIFACT_1);
@@ -204,7 +229,6 @@ public class MiaItemGroups {
                         output.accept(MiaItems.HEALTH_JUNKIE);
                         output.accept(MiaItems.ARTIFACT_HASTE);
                         output.accept(MiaItems.HOOK);
-                        output.accept(MiaItems.DEBUG_ATTRIBUTE_TOOL);
 
                         // Weapons
                         output.accept(MiaItems.GROW_SWORD);
@@ -212,6 +236,10 @@ public class MiaItemGroups {
 
                         // Misc
                         output.accept(MiaItems.PEACE_PHOBIA);
+
+                        // DEV
+                        output.accept(MiaItems.DEBUG_ATTRIBUTE_TOOL);
+                        output.accept(MiaBlocks.ABYSS_PORTAL);
                     }).build()
     );
 

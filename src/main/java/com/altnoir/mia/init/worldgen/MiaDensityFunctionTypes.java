@@ -30,7 +30,10 @@ public class MiaDensityFunctionTypes {
     }
 
     public static DensityFunction hopperAbyssHole(float radius, float mul) {
-        return new HopperAbyssHole(radius, mul);
+        return new HopperAbyssHole(radius, mul,64.0F);
+    }
+    public static DensityFunction hopperAbyssHole(float radius, float mul, float slope) {
+        return new HopperAbyssHole(radius, mul, slope);
     }
 
 

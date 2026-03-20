@@ -1,46 +1,46 @@
 {
-  "type": "minecraft:jigsaw",
-  "biomes": "#minecraft:is_overworld",
+  "type": "mia:jigsaw",
+  "biomes": "#mia:has_island",
   "dimension_padding": 10,
   "liquid_settings": "ignore_waterlogging",
-  "max_distance_from_center": 116,
-  "size": 7,
+  "max_distance_from_center": 230,
+  "size": 14,
   "spawn_overrides": {
     "ambient": {
-      "bounding_box": "full",
+      "bounding_box": "piece",
       "spawns": []
     },
     "axolotls": {
-      "bounding_box": "full",
+      "bounding_box": "piece",
       "spawns": []
     },
     "creature": {
-      "bounding_box": "full",
+      "bounding_box": "piece",
       "spawns": []
     },
     "misc": {
-      "bounding_box": "full",
+      "bounding_box": "piece",
       "spawns": []
     },
     "monster": {
-      "bounding_box": "full",
+      "bounding_box": "piece",
       "spawns": []
     },
     "underground_water_creature": {
-      "bounding_box": "full",
+      "bounding_box": "piece",
       "spawns": []
     },
     "water_ambient": {
-      "bounding_box": "full",
+      "bounding_box": "piece",
       "spawns": []
     },
     "water_creature": {
-      "bounding_box": "full",
+      "bounding_box": "piece",
       "spawns": []
     }
   },
   "start_height": {
-    "absolute": -57
+    "absolute": -50
   },
   "start_pool": "mia:abyss_stronghold/portal_center",
   "step": "underground_structures",

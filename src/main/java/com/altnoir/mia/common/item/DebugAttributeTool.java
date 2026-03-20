@@ -62,10 +62,7 @@ public class DebugAttributeTool extends Item {
      * 获取属性的最终值（包含所有修饰符）
      */
     private double getFinalAttributeValue(Player player, Holder<Attribute> attribute) {
-        if (player.getAttribute(attribute) != null) {
-            return player.getAttribute(attribute).getValue();
-        }
-        return 0.0;
+        return player.getAttributeValue(attribute);
     }
 
     /**
@@ -76,5 +73,10 @@ public class DebugAttributeTool extends Item {
             return player.getAttribute(attribute).getBaseValue();
         }
         return 0.0;
+    }
+
+    @Override
+    public boolean isFoil(ItemStack stack) {
+        return true;
     }
 }

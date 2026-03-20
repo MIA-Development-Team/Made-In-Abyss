@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 
-public class BuddingPrasioliteBlock extends PrasioliteBlock {
+public class BuddingPrasioliteBlock extends CrystalBlock {
     private static final Direction[] DIRECTIONS = Direction.values();
     public static final int GROWTH_CHANCE = 4;
 
@@ -28,24 +28,20 @@ public class BuddingPrasioliteBlock extends PrasioliteBlock {
             Block block = null;
             if (canClusterGrowAtState(blockstate)) {
                 block = MiaBlocks.SMALL_PRASIOLITE_BUD.get();
-            } else if (blockstate.is(MiaBlocks.SMALL_PRASIOLITE_BUD.get()) && blockstate.getValue(AmethystClusterBlock.FACING) == direction) {
+            } else if (blockstate.is(MiaBlocks.SMALL_PRASIOLITE_BUD.get()) && blockstate.getValue(AbyssCrystalBlock.FACING) == direction) {
                 block = MiaBlocks.MEDIUM_PRASIOLITE_BUD.get();
-            } else if (blockstate.is(MiaBlocks.MEDIUM_PRASIOLITE_BUD.get()) && blockstate.getValue(AmethystClusterBlock.FACING) == direction) {
+            } else if (blockstate.is(MiaBlocks.MEDIUM_PRASIOLITE_BUD.get()) && blockstate.getValue(AbyssCrystalBlock.FACING) == direction) {
                 block = MiaBlocks.LARGE_PRASIOLITE_BUD.get();
-            } else if (blockstate.is(MiaBlocks.LARGE_PRASIOLITE_BUD.get()) && blockstate.getValue(AmethystClusterBlock.FACING) == direction) {
+            } else if (blockstate.is(MiaBlocks.LARGE_PRASIOLITE_BUD.get()) && blockstate.getValue(AbyssCrystalBlock.FACING) == direction) {
                 block = MiaBlocks.PRASIOLITE_CLUSTER.get();
             }
 
             if (block != null) {
                 BlockState blockstate1 = block.defaultBlockState()
-                        .setValue(AmethystClusterBlock.FACING, direction)
-                        .setValue(AmethystClusterBlock.WATERLOGGED, Boolean.valueOf(blockstate.getFluidState().getType() == Fluids.WATER));
+                        .setValue(AbyssCrystalBlock.FACING, direction)
+                        .setValue(AbyssCrystalBlock.WATERLOGGED, Boolean.valueOf(blockstate.getFluidState().getType() == Fluids.WATER));
                 level.setBlockAndUpdate(blockpos, blockstate1);
             }
         }
-    }
-
-    public static boolean canClusterGrowAtState(BlockState state) {
-        return state.isAir() || state.is(Blocks.WATER) && state.getFluidState().getAmount() == 8;
     }
 }

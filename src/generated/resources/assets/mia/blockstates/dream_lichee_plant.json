@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "age=0,half=lower": {
+      "model": "mia:block/dream_lichee_plant_bottom0"
+    },
+    "age=0,half=upper": {
+      "model": "mia:block/dream_lichee_plant_bottom0"
+    },
+    "age=1,half=lower": {
+      "model": "mia:block/dream_lichee_plant_bottom1"
+    },
+    "age=1,half=upper": {
+      "model": "mia:block/dream_lichee_plant_bottom1"
+    },
+    "age=2,half=lower": {
+      "model": "mia:block/dream_lichee_plant_bottom2"
+    },
+    "age=2,half=upper": {
+      "model": "mia:block/dream_lichee_plant_top2"
+    },
+    "age=3,half=lower": {
+      "model": "mia:block/dream_lichee_plant_bottom3"
+    },
+    "age=3,half=upper": {
+      "model": "mia:block/dream_lichee_plant_top3"
+    }
+  }
+}

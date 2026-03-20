@@ -9,10 +9,12 @@ import com.altnoir.mia.init.MiaAttributes;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaItems;
 import com.altnoir.mia.init.MiaTags;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
@@ -84,6 +86,11 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
         stoneBlocks(recipeOutput, MiaBlocks.FOSSILIZED_WOOD_BRICKS.get(),
                 MiaBlocks.FOSSILIZED_WOOD_BRICKS_STAIRS.get(), MiaBlocks.FOSSILIZED_WOOD_BRICKS_SLAB.get(), MiaBlocks.FOSSILIZED_WOOD_BRICKS_WALL.get());
 
+        shapeless2B1(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS.get(), MiaBlocks.FOSSILIZED_WOOD_BRICKS.get(), Blocks.MOSS_BLOCK);
+        shapeless2B1(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS.get(), MiaBlocks.FOSSILIZED_WOOD_BRICKS.get(), Blocks.VINE);
+        stoneBlocks(recipeOutput, MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS.get(),
+                MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_STAIRS.get(), MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_SLAB.get(), MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_WALL.get());
+
         stoneFromLog(recipeOutput, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get(), MiaTags.Items.STRIPPED_FOSSILIZED_LOGS);
         stoneCutter(recipeOutput, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get(), Arrays.asList(MiaBlocks.STRIPPED_FOSSILIZED_WOOD.get(), MiaBlocks.STRIPPED_FOSSILIZED_LOG.get()));
         stoneBlocks(recipeOutput, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD.get(),
@@ -95,6 +102,10 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
         stoneBlocks(recipeOutput, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS.get(),
                 MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS.get(), MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB.get(), MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL.get());
 
+        shapeless2B1(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS.get(), MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS.get(), Blocks.MOSS_BLOCK);
+        shapeless2B1(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS.get(), MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS.get(), Blocks.VINE);
+        stoneBlocks(recipeOutput, MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS.get(),
+                MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS.get(), MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB.get(), MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL.get());
 
         // 工具
         pickaxe(recipeOutput, MiaItems.PRASIOLITE_PICKAXE.get(), MiaItems.PRASIOLITE_SHARD.get());
@@ -137,46 +148,26 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     private static void ArtifactEnhancement(RecipeOutput recipeOutput) {
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                new ItemStack(MiaItems.PRASIOLITE_SHARD.get(), 8),
-                Attributes.BLOCK_BREAK_SPEED, DoubleRange.between(0.1, 0.3),
-                Operation.ADD_MULTIPLIED_TOTAL
-        ).unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                new ItemStack(Items.IRON_INGOT, 2),
-                Attributes.KNOCKBACK_RESISTANCE, DoubleRange.between(0.2, 0.4),
-                Operation.ADD_MULTIPLIED_BASE
-        ).unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                new ItemStack(Items.COPPER_INGOT, 3),
-                Attributes.ARMOR, DoubleRange.between(0.5, 1.0),
-                Operation.ADD_VALUE
-        ).unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                new ItemStack(Items.GOLD_INGOT, 2),
-                Attributes.ATTACK_DAMAGE, DoubleRange.between(0.1, 5.0),
-                Operation.ADD_VALUE
-        ).unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                new ItemStack(Items.LAPIS_LAZULI, 1),
-                Attributes.ATTACK_SPEED, DoubleRange.between(0.5, 1.5),
-                Operation.ADD_MULTIPLIED_BASE
-        ).unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                new ItemStack(Items.NETHERITE_INGOT, 1),
-                Attributes.GRAVITY, DoubleRange.between(-0.5, 0.5),
-                Operation.ADD_VALUE
-        ).unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                new ItemStack(Items.DIAMOND, 1),
-                MiaAttributes.CRITICAL_HIT_DAMAGE, DoubleRange.between(0.2, 1.0),
-                Operation.ADD_VALUE
-        ).unlockedByMaterial().save(recipeOutput);
-        ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
-                new ItemStack(Items.EMERALD, 1),
-                MiaAttributes.CRITICAL_HIT, DoubleRange.between(0.5, 0.9),
-                Operation.ADD_VALUE
-        ).unlockedByMaterial().save(recipeOutput);
+        artifactSmithing(MiaItems.PRASIOLITE_SHARD.get(), 8, Attributes.BLOCK_BREAK_SPEED, DoubleRange.between(0.1, 0.3), Operation.ADD_MULTIPLIED_TOTAL).unlockedByMaterial().save(recipeOutput);
+        artifactSmithing(Items.IRON_INGOT, 2, Attributes.KNOCKBACK_RESISTANCE, DoubleRange.between(0.2, 0.4), Operation.ADD_MULTIPLIED_BASE).unlockedByMaterial().save(recipeOutput);
+        artifactSmithing(Items.COPPER_INGOT, 3, Attributes.ARMOR, DoubleRange.between(0.5, 1.0), Operation.ADD_VALUE).unlockedByMaterial().save(recipeOutput);
+        artifactSmithing(Items.GOLD_INGOT, 2, Attributes.ATTACK_DAMAGE, DoubleRange.between(0.1, 5.0), Operation.ADD_VALUE).unlockedByMaterial().save(recipeOutput);
+        artifactSmithing(Items.LAPIS_LAZULI, Attributes.ATTACK_SPEED, DoubleRange.between(0.5, 1.5), Operation.ADD_MULTIPLIED_BASE).unlockedByMaterial().save(recipeOutput);
+        artifactSmithing(Items.DIAMOND, Attributes.SCALE, DoubleRange.between(-0.5, 1.5), Operation.ADD_VALUE).unlockedByMaterial().save(recipeOutput);
+        artifactSmithing(Items.EMERALD, MiaAttributes.CRITICAL_HIT, DoubleRange.between(0.5, 0.9), Operation.ADD_VALUE).unlockedByMaterial().save(recipeOutput);
+        artifactSmithing(Items.NETHERITE_INGOT, Attributes.GRAVITY, DoubleRange.between(-0.5, 0.5), Operation.ADD_MULTIPLIED_BASE).unlockedByMaterial().save(recipeOutput);
+    }
+
+    private static ArtifactSmithingRecipeBuilder artifactSmithing(ItemLike input, Holder<Attribute> attribute, DoubleRange value, Operation operation) {
+        return ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
+                new ItemStack(input, 1), attribute, value, operation
+        );
+    }
+
+    private static ArtifactSmithingRecipeBuilder artifactSmithing(ItemLike input, Integer count, Holder<Attribute> attribute, DoubleRange value, Operation operation) {
+        return ArtifactSmithingRecipeBuilder.create(Ingredient.of(MiaTags.Items.SMITHING_ARTIFACT),
+                new ItemStack(input, count), attribute, value, operation
+        );
     }
 
     private static void lampTube(RecipeOutput recipeOutput, ItemLike input, Integer count, ItemLike output) {

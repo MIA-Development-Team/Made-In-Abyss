@@ -1,0 +1,9 @@
+{
+  "parent": "mia:block/template/abyss_portal_core",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "all": "mia:block/model/abyss_portal_core",
+    "bottom": "mia:block/abyss_portal_frame",
+    "particle": "mia:block/abyss_portal_frame"
+  }
+}

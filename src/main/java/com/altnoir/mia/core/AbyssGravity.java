@@ -1,7 +1,6 @@
 package com.altnoir.mia.core;
 
 import com.altnoir.mia.compat.curios.CuriosTags;
-import com.altnoir.mia.worldgen.MiaHeight;
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;
 import com.altnoir.mia.worldgen.noise_setting.densityfunction.HopperAbyssHole;
 import net.minecraft.util.Mth;

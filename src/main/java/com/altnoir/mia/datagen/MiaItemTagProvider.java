@@ -1,20 +1,20 @@
 package com.altnoir.mia.datagen;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.common.item.abs.IArtifactItem;
+import com.altnoir.mia.common.item.abs.IArtifactItem.Grade;
+import com.altnoir.mia.common.item.abs.IEArtifact;
+import com.altnoir.mia.common.recipe.ArtifactSmithingRecipeBuilder;
 import com.altnoir.mia.compat.curios.CuriosTags;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaItems;
 import com.altnoir.mia.init.MiaTags;
-import com.altnoir.mia.common.item.abs.IArtifactItem;
-import com.altnoir.mia.common.item.abs.IArtifactItem.Grade;
-import com.altnoir.mia.common.item.abs.IEArtifact;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
@@ -30,21 +30,6 @@ public class MiaItemTagProvider extends ItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tagArtifacts(provider);
-
-        tag(MiaTags.Items.ARTIFACT_MODIFIERS_MATERIAL).replace(false)
-                .add(Items.IRON_INGOT)
-                .add(Items.STONE)
-                .add(Items.FIRE_CHARGE)
-                .add(Items.WATER_BUCKET)
-                .add(Items.BAMBOO)
-                .add(Items.COBBLED_DEEPSLATE)
-                .add(Items.OAK_LEAVES)
-                .add(Items.OAK_PLANKS)
-                .add(Items.OAK_SAPLING)
-                .add(MiaItems.PRASIOLITE_SHARD.get())
-                .add(Items.STICK)
-                .add(Items.EMERALD)
-                .add(Items.DIAMOND);
 
         tag(CuriosTags.WHISTLE).replace(false)
                 .add(MiaItems.RED_WHISTLE.get())
@@ -104,12 +89,12 @@ public class MiaItemTagProvider extends ItemTagsProvider {
         var allArtifactTag = tag(CuriosTags.ARTIFACT).replace(false);
         var enhanceableArtifactTag = tag(MiaTags.Items.SMITHING_ARTIFACT).replace(false);
 
-        var grade4ArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_D).replace(false);
-        var grade3ArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_C).replace(false);
-        var grade2ArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_B).replace(false);
-        var grade1ArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_A).replace(false);
-        var gradeSArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_S).replace(false);
-        var gradeUArtifactTag = tag(MiaTags.Items.ARTIFACT_GRADE_U).replace(false);
+        var gradeD = tag(MiaTags.Items.ARTIFACT_GRADE_D).replace(false);
+        var gradeC = tag(MiaTags.Items.ARTIFACT_GRADE_C).replace(false);
+        var gradeB = tag(MiaTags.Items.ARTIFACT_GRADE_B).replace(false);
+        var gradeA = tag(MiaTags.Items.ARTIFACT_GRADE_A).replace(false);
+        var gradeS = tag(MiaTags.Items.ARTIFACT_GRADE_S).replace(false);
+        var gradeU = tag(MiaTags.Items.ARTIFACT_GRADE_U).replace(false);
 
         items.listElements().forEach(ref -> {
             Item item = ref.value();
@@ -124,25 +109,27 @@ public class MiaItemTagProvider extends ItemTagsProvider {
                 Grade grade = artifact.getGrade();
                 switch (grade) {
                     case Grade.D:
-                        grade4ArtifactTag.add(item);
+                        gradeD.add(item);
                         break;
                     case Grade.C:
-                        grade3ArtifactTag.add(item);
+                        gradeC.add(item);
                         break;
                     case Grade.B:
-                        grade2ArtifactTag.add(item);
+                        gradeB.add(item);
                         break;
                     case Grade.A:
-                        grade1ArtifactTag.add(item);
+                        gradeA.add(item);
                         break;
                     case Grade.S:
-                        gradeSArtifactTag.add(item);
+                        gradeS.add(item);
                         break;
                     case Grade.UNKNOWN:
-                        gradeUArtifactTag.add(item);
+                        gradeU.add(item);
                         break;
                 }
             }
         });
+        tag(MiaTags.Items.ARTIFACT_MODIFIERS_MATERIAL).replace(false)
+                .add(ArtifactSmithingRecipeBuilder.getMaterialTags().toArray(new Item[0]));
     }
 }
