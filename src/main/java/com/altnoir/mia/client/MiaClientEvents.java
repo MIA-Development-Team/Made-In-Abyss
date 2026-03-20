@@ -26,7 +26,7 @@ public class MiaClientEvents {
     }
 
     public static void onClientSetup(final FMLClientSetupEvent event) {
-        Mods.PONDER.executeIfInstalled(() -> () -> MiaPonderRegistry.register());
+        Mods.PONDER.executeIfInstalled(() -> MiaPonderRegistry::register);
     }
 
     public static void registerParticles(RegisterParticleProvidersEvent event) {

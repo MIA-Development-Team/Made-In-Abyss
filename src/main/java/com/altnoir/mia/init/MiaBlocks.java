@@ -450,7 +450,7 @@ public class MiaBlocks {
                             .sound(SoundType.METAL)
             )
     );
-    // 翡翠
+    // 翠水晶（翡翠）
     public static final DeferredBlock<Block> PRASIOLITE_BLOCK = registerBlock("prasiolite_block", () ->
             new CrystalBlock(
                     BlockBehaviour.Properties.of()
@@ -476,7 +476,7 @@ public class MiaBlocks {
     public static final DeferredBlock<Block> SMALL_PRASIOLITE_BUD = registerBlock("small_prasiolite_bud", () ->
             cluster(3, 3, MapColor.COLOR_GREEN, SoundType.AMETHYST_CLUSTER, 1)
     );
-    // 苍璃
+    // 苍水晶（苍璃）
     public static final DeferredBlock<Block> CAERULITE_BLOCK = registerBlock("caerulite_block", () ->
             new CrystalBlock(
                     BlockBehaviour.Properties.of()
@@ -512,7 +512,7 @@ public class MiaBlocks {
                              .requiresCorrectToolForDrops()
              )
      );
-     // 炽琰
+     // 炽水晶（炽琰）
      public static final DeferredBlock<Block> IGNILITE_BLOCK = registerBlock("ignilite_block", () ->
              new PrasioliteBlock(
                      BlockBehaviour.Properties.of()

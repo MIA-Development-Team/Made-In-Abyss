@@ -33,11 +33,12 @@ public class MinecraftMixin {
         }
     }
 
-    // 禁用创造背景音乐
+    // 禁用创造背景音乐的维度
     @Unique
     private Set<ResourceKey<Level>> mia$getExcludedDimensions() {
         return Set.of(
-                MiaDimensions.THE_ABYSS_LEVEL
+                MiaDimensions.THE_ABYSS_LEVEL,
+                MiaDimensions.GREAT_FAULT_LEVEL
         );
     }
 }

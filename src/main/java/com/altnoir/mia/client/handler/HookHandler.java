@@ -81,9 +81,9 @@ public class HookHandler {
     private static ItemStack findHookItem(Player player) {
         ItemStack mainHand = player.getMainHandItem();
         ItemStack offhand = player.getOffhandItem();
-        if (mainHand.is(MiaItems.HOOK)) {
+        if (mainHand.is(MiaItems.GRAPPLING_HOOK)) {
             return mainHand;
-        } else if (offhand.is(MiaItems.HOOK)) {
+        } else if (offhand.is(MiaItems.GRAPPLING_HOOK)) {
             return offhand;
         }
         return null;

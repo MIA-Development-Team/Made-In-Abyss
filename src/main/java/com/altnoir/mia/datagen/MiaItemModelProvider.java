@@ -44,7 +44,7 @@ public class MiaItemModelProvider extends ItemModelProvider {
         basicItem(MiaItems.PEACE_PHOBIA.get());
         skillItem(MiaItems.ARTIFACT_HASTE.get());
 
-        hookItem(MiaItems.HOOK.get());
+        hookItem(MiaItems.GRAPPLING_HOOK.get());
         handheldItem(MiaItems.GROW_SWORD.get());
         handheldItem(MiaItems.BLAZE_REAP.get());
         handheldItem(MiaItems.PRASIOLITE_PICKAXE.get());
@@ -62,7 +62,7 @@ public class MiaItemModelProvider extends ItemModelProvider {
 
     public ItemModelBuilder hookItem(Item item) {
         return getBuilder(MiaUtil.getItemKey(item).toString())
-                .parent(new ModelFile.UncheckedModelFile(modLoc("item/template/hook")))
+                .parent(new ModelFile.UncheckedModelFile(modLoc("item/template/grappling_hook")))
                 .texture("layer0", MiaUtil.id(MiaUtil.getItemNamespace(item), "item/" + MiaUtil.getItemPath(item)));
     }
 }

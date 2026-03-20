@@ -82,8 +82,8 @@ public class MiaItems {
     public static final DeferredItem<Item> DREAM_LICHEE = ITEMS.register("dream_lichee", () ->
             new ItemNameBlockItem(MiaBlocks.DREAM_LICHEE_PLANT.get(), new Item.Properties().food(MiaFoods.DREAM_LICHEE)));
 
-    public static final DeferredItem<Item> HOOK = ITEMS.register(
-            "hook",
+    public static final DeferredItem<Item> GRAPPLING_HOOK = ITEMS.register(
+            "grappling_hook",
             () -> new HookItem(new Item.Properties().component(DataComponents.CUSTOM_DATA, CustomData.EMPTY).stacksTo(1))
     );
     public static final DeferredItem<Item> DEBUG_ATTRIBUTE_TOOL = ITEMS.register(
