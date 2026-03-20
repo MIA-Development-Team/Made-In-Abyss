@@ -6,6 +6,8 @@ import com.altnoir.mia.worldgen.biome.MiaBiomes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.level.biome.Biomes;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,9 +20,15 @@ public class MiaBiomeTagsProvider extends BiomeTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        tag(MiaTags.Biomes.HAS_ISLAND)
+                .add(Biomes.MUSHROOM_FIELDS)
+                .addTags(BiomeTags.IS_OVERWORLD);
         tag(MiaTags.Biomes.THE_ABYSS_CLEAR)
                 .add(MiaBiomes.TEMPTATION_FOREST);
-        tag(MiaTags.Biomes.THE_ABYSS_DENSE)
-                .add(MiaBiomes.ABYSS_DRIPSTONE_CAVES);
+        tag(MiaTags.Biomes.HAS_STAR_COMPASS_TEMPLE)
+                .add(Biomes.JUNGLE)
+                .add(Biomes.SPARSE_JUNGLE)
+                .add(Biomes.BAMBOO_JUNGLE)
+                .add(Biomes.MANGROVE_SWAMP);
     }
 }

@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 
 public class MiaModelProvider {
@@ -56,11 +57,12 @@ public class MiaModelProvider {
                 .face(Direction.DOWN).uvs(0, 0, 16, 16).texture("#portal2").end();
     }
 
-    public ModelFile abyssPortalFrameModel(BlockStateProvider p, Block block, boolean isOpen) {
-        String suffix = isOpen ? "_open" : "";
-        String blockPath = MiaUtil.getBlockPath(block);
+    public void abyssPortalCoreModel(BlockStateProvider p, Block block, Block bottomBlock) {
+        String blockPath = MiaUtil.getBlockPath(bottomBlock);
 
-        return createTSBModel(p, blockPath, suffix, "_top" + suffix, "_side", "_bottom");
+        baseCustomBlockModel(p, block, "abyss_portal_core")
+                .texture("bottom", p.modLoc("block/" + blockPath))
+                .texture("particle", p.modLoc("block/" + blockPath));
     }
 
     public void artifactSmithingTableBlockModel(BlockStateProvider p, Block block, Block bottom) {
@@ -88,7 +90,7 @@ public class MiaModelProvider {
         ResourceLocation modelPath = p.modLoc("block/" + blockPath);
 
         p.models().withExistingParent(blockPath, p.modLoc("block/template/lamp_tube")).renderType("cutout")
-                .texture("lamp_tube", p.modLoc("block/tube/" + blockPath))
+                .texture("lamp_tube", p.modLoc("block/model/" + blockPath))
                 .texture("particle", MiaUtil.getBlockLoc("block/", particle));
 
         return modelPath;
@@ -98,7 +100,7 @@ public class MiaModelProvider {
         String blockPath = MiaUtil.getBlockPath(block);
         p.models().withExistingParent(blockPath, p.modLoc("block/template/pedestal"))
                 .renderType("cutout")
-                .texture("pedestal", p.modLoc("block/tube/" + blockPath))
+                .texture("pedestal", p.modLoc("block/model/" + blockPath))
                 .texture("particle", p.modLoc("block/" + MiaUtil.getBlockPath(MiaBlocks.ABYSS_ANDESITE.get())));
     }
 
@@ -128,13 +130,6 @@ public class MiaModelProvider {
                 .texture("dec", p.modLoc("block/" + decPath));
     }
 
-    public void templateAllBlockModel(BlockStateProvider p, Block block, String templateName) {
-        String blockPath = MiaUtil.getBlockPath(block);
-        p.models().withExistingParent(blockPath, p.modLoc("block/template/" + templateName)).renderType("cutout")
-                .texture("all", p.modLoc("block/" + blockPath))
-                .texture("particle", p.modLoc("block/" + blockPath + "_particle"));
-    }
-
     public void abyssSpawnerBlockModel(BlockStateProvider p, Block block) {
         String blockPath = MiaUtil.getBlockPath(block);
 
@@ -157,6 +152,13 @@ public class MiaModelProvider {
         return p.modLoc("block/" + blockPath + suffix);
     }
 
+    public ResourceLocation cropModel(BlockStateProvider p, Block block, String suffix) {
+        String blockPath = MiaUtil.getBlockPath(block);
+        p.models().withExistingParent(blockPath + suffix, p.mcLoc("block/crop")).renderType("cutout")
+                .texture("crop", p.modLoc("block/" + blockPath + suffix));
+        return p.modLoc("block/" + blockPath + suffix);
+    }
+
     public ResourceLocation[] flowerbedModels(BlockStateProvider p, Block block) {
         String blockPath = MiaUtil.getBlockPath(block);
         ResourceLocation[] locations = new ResourceLocation[4];
@@ -176,6 +178,16 @@ public class MiaModelProvider {
                 .texture("all", p.modLoc("block/" + blockPath));
         p.models().withExistingParent(blockPath + "_mirrored", p.mcLoc("block/cube_mirrored_all"))
                 .texture("all", p.modLoc("block/" + blockPath));
+    }
+
+    public void customBlockModel(BlockStateProvider p, Block block, String templateModel) {
+        baseCustomBlockModel(p, block, templateModel).texture("particle", p.modLoc("block/" + MiaUtil.getBlockPath(block) + "_particle"));
+    }
+
+    public ModelBuilder<? extends ModelFile> baseCustomBlockModel(BlockStateProvider p, Block block, String templateModel) {
+        String blockPath = MiaUtil.getBlockPath(block);
+        return p.models().withExistingParent(blockPath, p.modLoc("block/template/" + templateModel)).renderType("cutout")
+                .texture("all", p.modLoc("block/model/" + blockPath));
     }
 
     // Template models

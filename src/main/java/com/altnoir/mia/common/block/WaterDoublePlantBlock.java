@@ -31,7 +31,6 @@ public class WaterDoublePlantBlock extends BushBlock implements SimpleWaterlogge
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-
     @Override
     public MapCodec<? extends WaterDoublePlantBlock> codec() {
         return CODEC;

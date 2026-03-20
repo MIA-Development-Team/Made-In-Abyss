@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "mia:block/mossy_fossilized_wood_bricks_slab"
+    },
+    "type=double": {
+      "model": "mia:block/mossy_fossilized_wood_bricks"
+    },
+    "type=top": {
+      "model": "mia:block/mossy_fossilized_wood_bricks_slab_top"
+    }
+  }
+}

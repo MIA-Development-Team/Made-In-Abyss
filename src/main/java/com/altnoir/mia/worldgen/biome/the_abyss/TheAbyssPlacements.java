@@ -36,6 +36,7 @@ public class TheAbyssPlacements {
     public static final ResourceKey<PlacedFeature> PATCH_GRASS_FERN = theAbyssKey("patch_grass_fern");
     public static final ResourceKey<PlacedFeature> PATCH_LARGE_FERN = theAbyssKey("patch_large_fern");
     public static final ResourceKey<PlacedFeature> PATCH_DENSE_LARGE_FERN = theAbyssKey("patch_dense_large_fern");
+    public static final ResourceKey<PlacedFeature> PATCH_GLOOM_BERRY_PLANT = theAbyssKey("patch_gloom_berry_plant");
     public static final ResourceKey<PlacedFeature> PATCH_SUNFLOWER = theAbyssKey("patch_sunflower");
     public static final ResourceKey<PlacedFeature> CAVE_VINES = theAbyssKey("cave_vines");
     public static final ResourceKey<PlacedFeature> PATCH_WATERLILY = theAbyssKey("patch_waterlily");
@@ -70,6 +71,7 @@ public class TheAbyssPlacements {
     public static final ResourceKey<PlacedFeature> ORE_DIAMOND = theAbyssKey("ore_diamond");
     public static final ResourceKey<PlacedFeature> ORE_EMERALD = theAbyssKey("ore_emerald");
     public static final ResourceKey<PlacedFeature> ORE_QUARTZ = theAbyssKey("ore_quartz");
+    public static final ResourceKey<PlacedFeature> ORE_CHLOROPHYTE = theAbyssKey("ore_chlorophyte");
 
     private static final PlacementModifier ABYSS_BRINK_HEIGHT = HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(128), VerticalAnchor.belowTop(8));
     private static final PlacementModifier ABYSS_BRINK_CAVE_HEIGHT = HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(128), VerticalAnchor.belowTop(64));
@@ -90,6 +92,7 @@ public class TheAbyssPlacements {
         Holder<ConfiguredFeature<?, ?>> cave_vine = holdergetter.getOrThrow(CaveFeatures.CAVE_VINE);
         Holder<ConfiguredFeature<?, ?>> waterlily = holdergetter.getOrThrow(TheAbyssFeatures.PATCH_WATERLILY);
         Holder<ConfiguredFeature<?, ?>> single_piece_of_marginal_weed = holdergetter.getOrThrow(TheAbyssFeatures.SINGLE_PIECE_OF_MARGINAL_WEED);
+        Holder<ConfiguredFeature<?, ?>> gloom_berry_plant = holdergetter.getOrThrow(TheAbyssFeatures.PATCH_GLOOM_BERRY_PLANT);
         Holder<ConfiguredFeature<?, ?>> sunflower = holdergetter.getOrThrow(VegetationFeatures.PATCH_SUNFLOWER);
         Holder<ConfiguredFeature<?, ?>> flower_meadow = holdergetter.getOrThrow(TheAbyssFeatures.FLOWER_MEADOW);
         Holder<ConfiguredFeature<?, ?>> flower_meadow2 = holdergetter.getOrThrow(TheAbyssFeatures.FLOWER_MEADOW2);
@@ -120,7 +123,7 @@ public class TheAbyssPlacements {
         Holder<ConfiguredFeature<?, ?>> ore_diamond = holdergetter.getOrThrow(TheAbyssFeatures.ORE_DIAMOND);
         Holder<ConfiguredFeature<?, ?>> ore_emerald = holdergetter.getOrThrow(TheAbyssFeatures.ORE_EMERALD);
         Holder<ConfiguredFeature<?, ?>> ore_quartz = holdergetter.getOrThrow(TheAbyssFeatures.ORE_QUARTZ);
-
+        Holder<ConfiguredFeature<?, ?>> ore_chlorophyte = holdergetter.getOrThrow(TheAbyssFeatures.ORE_CHLOROPHYTE);
 
         MiaPlacementUtils.register(
                 context, MONSTER_CHEAT, monster_cheat,
@@ -197,6 +200,13 @@ public class TheAbyssPlacements {
         MiaPlacementUtils.register(
                 context, PATCH_DENSE_LARGE_FERN, large_fern,
                 CountOnEveryLayerPlacement.of(2),
+                BiomeFilter.biome()
+        );
+        MiaPlacementUtils.register(
+                context, PATCH_GLOOM_BERRY_PLANT, gloom_berry_plant,
+                NoiseThresholdCountPlacement.of(-0.8, 1, 5),
+                RarityFilter.onAverageOnceEvery(2),
+                CountOnEveryLayerPlacement.of(1),
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(
@@ -283,7 +293,10 @@ public class TheAbyssPlacements {
                 context, ORE_QUARTZ, ore_quartz,
                 commonOrePlacement(16, ABYSS_BRINK_HEIGHT)
         );
-
+        MiaPlacementUtils.register(
+                context, ORE_CHLOROPHYTE, ore_chlorophyte,
+                commonOrePlacement(21, ABYSS_BRINK_HEIGHT)
+        );
 
         MiaPlacementUtils.register(
                 context, ABYSS_TREES, skyfog_and_azalea,

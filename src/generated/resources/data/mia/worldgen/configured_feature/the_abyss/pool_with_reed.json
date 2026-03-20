@@ -14,7 +14,7 @@
     "surface": "floor",
     "vegetation_chance": 0.5,
     "vegetation_feature": {
-      "feature": "mia:the_abyss/reed",
+      "feature": "mia:the_abyss/patch_reed",
       "placement": []
     },
     "vertical_range": 5,

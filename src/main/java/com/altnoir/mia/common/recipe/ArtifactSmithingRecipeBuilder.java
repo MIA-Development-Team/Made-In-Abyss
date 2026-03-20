@@ -12,6 +12,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -19,14 +20,14 @@ import net.minecraft.world.level.ItemLike;
 import java.util.*;
 
 public class ArtifactSmithingRecipeBuilder {
-
     private final Ingredient whistle;
     private final ItemStack material;
     private final Holder<Attribute> attribute;
     private final DoubleRange value;
     private final AttributeModifier.Operation operation;
 
-    private final Map<String, Criterion<?>> criteria = new LinkedHashMap();
+    private static final Set<Item> materialTags = new HashSet<>();
+    private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
     private ArtifactSmithingRecipeBuilder(
             Ingredient whistle,
@@ -49,6 +50,7 @@ public class ArtifactSmithingRecipeBuilder {
             double value,
             AttributeModifier.Operation operation
     ) {
+        materialTags.add(addition.getItem());
         return new ArtifactSmithingRecipeBuilder(base, addition, attribute, DoubleRange.between(value, value), operation);
     }
 
@@ -59,7 +61,16 @@ public class ArtifactSmithingRecipeBuilder {
             DoubleRange value,
             AttributeModifier.Operation operation
     ) {
+        materialTags.add(addition.getItem());
         return new ArtifactSmithingRecipeBuilder(base, addition, attribute, value, operation);
+    }
+
+    public static Set<Item> getMaterialTags() {
+        return Collections.unmodifiableSet(materialTags);
+    }
+
+    public static void clearMaterialTags() {
+        materialTags.clear();
     }
 
     public ArtifactSmithingRecipeBuilder unlockedBy(String key, Criterion<?> criterion) {

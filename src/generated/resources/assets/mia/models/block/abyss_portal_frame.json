@@ -1,8 +1,6 @@
 {
-  "parent": "mia:block/template/cube_tsb",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "bottom": "mia:block/abyss_portal_frame_bottom",
-    "side": "mia:block/abyss_portal_frame_side",
-    "top": "mia:block/abyss_portal_frame_top"
+    "all": "mia:block/abyss_portal_frame"
   }
 }

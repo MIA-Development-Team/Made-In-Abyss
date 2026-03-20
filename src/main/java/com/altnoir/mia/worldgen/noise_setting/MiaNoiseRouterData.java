@@ -1,7 +1,7 @@
 package com.altnoir.mia.worldgen.noise_setting;
 
+import com.altnoir.mia.core.MiaHeight;
 import com.altnoir.mia.init.worldgen.MiaDensityFunctionTypes;
-import com.altnoir.mia.worldgen.MiaHeight;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -102,14 +102,19 @@ public class MiaNoiseRouterData extends NoiseRouterData {
     private static DensityFunction greatFaultDensity(HolderGetter<DensityFunction> densityFunctions) {
         DensityFunction yFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
 
-        DensityFunction abyssHole = getFunction(densityFunctions, MiaDensityFunctions.GREAT_FAULT_HOLE);
+        DensityFunction abyssHoleAbove = getFunction(densityFunctions, MiaDensityFunctions.GREAT_FAULT_HOLE_ABOVE);
+        DensityFunction abyssHoleBelow = getFunction(densityFunctions, MiaDensityFunctions.GREAT_FAULT_HOLE_BELOW);
 
-        DensityFunction abyss = DensityFunctions.min(abyssHole,
+        DensityFunction abyss = DensityFunctions.min(abyssHoleBelow,
                 DensityFunctions.add(getFunction(densityFunctions, SPAGHETTI_2D), getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION))
         );
 
+        DensityFunction rangeChoice = DensityFunctions.rangeChoice(
+                yFunction, MiaHeight.GREAT_FAULT.minY(), MiaHeight.GREAT_FAULT.maxY() - 64, abyss, abyssHoleAbove
+        );
+
         DensityFunction yc1 = DensityFunctions.yClampedGradient(MiaHeight.GREAT_FAULT.maxY() - 64, MiaHeight.GREAT_FAULT.maxY(), 1, 0);
-        DensityFunction add1 = DensityFunctions.add(DensityFunctions.constant(1.025), abyss);
+        DensityFunction add1 = DensityFunctions.add(DensityFunctions.constant(1.025), rangeChoice);
 
         DensityFunction mul1 = DensityFunctions.mul(yc1, add1);
         DensityFunction add2 = DensityFunctions.add(DensityFunctions.constant(-0.8975), mul1);

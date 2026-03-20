@@ -1,10 +1,9 @@
 package com.altnoir.mia.worldgen.biome.great_fault;
 
 import com.altnoir.mia.init.MiaSounds;
-import com.altnoir.mia.worldgen.biome.the_abyss.TheAbyssPlacements;
 import com.altnoir.mia.worldgen.biome.BiomesUtils;
+import com.altnoir.mia.worldgen.biome.the_abyss.TheAbyssPlacements;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.sounds.Musics;
 import net.minecraft.sounds.SoundEvents;
@@ -31,6 +30,7 @@ public class GreatFaultBiomes {
 
         BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
 
+        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, GreatFaultPlacements.CAERULITE_GEODE);
         generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_LARGE_FERN);
 
         return baseBiome(generationBuilder, spawnBuilder).build();

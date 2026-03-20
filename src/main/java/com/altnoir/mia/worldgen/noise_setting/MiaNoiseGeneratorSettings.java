@@ -2,7 +2,7 @@ package com.altnoir.mia.worldgen.noise_setting;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.util.MiaUtil;
-import com.altnoir.mia.worldgen.MiaHeight;
+import com.altnoir.mia.core.MiaHeight;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -50,7 +50,7 @@ public class MiaNoiseGeneratorSettings {
     public static NoiseGeneratorSettings greatFault(BootstrapContext<?> context) {
         return new NoiseGeneratorSettings(
                 GREAT_FAULT_NOISE_SETTINGS,
-                Blocks.DIORITE.defaultBlockState(),
+                MiaBlocks.MARLITH.get().defaultBlockState(),
                 Blocks.WATER.defaultBlockState(),
                 MiaNoiseRouterData.greatFault(context.lookup(Registries.DENSITY_FUNCTION), context.lookup(Registries.NOISE)),
                 MiaSurfaceRuleData.greatFault(),

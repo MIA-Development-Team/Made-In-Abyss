@@ -18,6 +18,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.SweetBerryBushBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -80,6 +81,8 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         dropSelf(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS.get());
         add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get(), this::createSlabItemTable);
         dropSelf(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL.get());
+        // 古理石
+        dropSelf(MiaBlocks.MARLITH.get());
 
         // 化石树
         dropSelf(MiaBlocks.FOSSILIZED_LOG.get());
@@ -111,6 +114,15 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         dropSelf(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS.get());
         add(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB.get(), this::createSlabItemTable);
         dropSelf(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL.get());
+
+        dropSelf(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS.get());
+        dropSelf(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_STAIRS.get());
+        add(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_SLAB.get(), this::createSlabItemTable);
+        dropSelf(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_WALL.get());
+        dropSelf(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS.get());
+        dropSelf(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS.get());
+        add(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB.get(), this::createSlabItemTable);
+        dropSelf(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL.get());
 
         // 天雾树
         dropSelf(MiaBlocks.SKYFOG_LOG.get());
@@ -175,7 +187,11 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         add(MiaBlocks.ABYSS_DIAMOND_ORE.get(), block -> createOreDrop(block, Items.DIAMOND));
         add(MiaBlocks.ABYSS_EMERALD_ORE.get(), block -> createOreDrop(block, Items.EMERALD));
         add(MiaBlocks.ABYSS_QUARTZ_ORE.get(), block -> createOreDrop(block, Items.QUARTZ));
+        add(MiaBlocks.ABYSS_CHLOROPHYTE_ORE.get(), block -> createOreDrop(block, MiaItems.RAW_CHLOROPHYTE.get()));
         add(MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE.get(), noDrop());
+
+        dropSelf(MiaBlocks.CHLOROPHYTE_BLOCK.get());
+        dropSelf(MiaBlocks.RAW_CHLOROPHYTE_BLOCK.get());
         // 晶石
         dropSelf(MiaBlocks.PRASIOLITE_BLOCK.get());
         add(MiaBlocks.BUDDING_PRASIOLITE.get(), noDrop());
@@ -184,13 +200,23 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         dropWhenSilkTouch(MiaBlocks.MEDIUM_PRASIOLITE_BUD.get());
         dropWhenSilkTouch(MiaBlocks.SMALL_PRASIOLITE_BUD.get());
 
+        dropSelf(MiaBlocks.CAERULITE_BLOCK.get());
+        dropSelf(MiaBlocks.BUDDING_CAERULITE.get());
+        add(MiaBlocks.CAERULITE_CLUSTER.get(), block -> createClusterDrops(block, MiaItems.CAERULITE_SHARD.get(), 4.0f));
+        dropWhenSilkTouch(MiaBlocks.LARGE_CAERULITE_BUD.get());
+        dropWhenSilkTouch(MiaBlocks.MEDIUM_CAERULITE_BUD.get());
+        dropWhenSilkTouch(MiaBlocks.SMALL_CAERULITE_BUD.get());
+
         // 植物
         add(MiaBlocks.MARGINAL_WEED.get(), this::createAbyssGrassDrops);
         add(MiaBlocks.CRIMSON_VEILGRASS.get(), this::createAbyssGrassDrops);
         add(MiaBlocks.SCORCHLEAF.get(), this::createAbyssGrassDrops);
         add(MiaBlocks.FORTITUDE_FLOWER.get(), this::createPetalsDrops);
         add(MiaBlocks.REED.get(), block -> createSinglePropConditionTable(block, DoublePlantBlock.HALF, DoubleBlockHalf.LOWER));
+        add(MiaBlocks.GLOOM_BERRY_PLANT.get(), block -> createSingleCropConditionTable(block, MiaItems.GLOOM_BERRY.get(), DoublePlantBlock.HALF, DoubleBlockHalf.LOWER));
+        add(MiaBlocks.DREAM_LICHEE_PLANT.get(), block -> createSingleCropConditionTable(block, MiaItems.DREAM_LICHEE.get(), DoublePlantBlock.HALF, DoubleBlockHalf.LOWER));
         dropSelf(MiaBlocks.BALLOON_PLANT.get());
+        dropSelf(MiaBlocks.LANTERN_PLANT.get());
         dropSelf(MiaBlocks.GREEN_PERILLA.get());
         dropSelf(MiaBlocks.KONJAC_ROOT.get());
         dropSelf(MiaBlocks.SILVEAF_FUNGUS.get());
@@ -204,6 +230,7 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         dropSelf(MiaBlocks.AMETHYST_LAMPTUBE.get());
         dropSelf(MiaBlocks.PRASIOLITE_LAMPTUBE.get());
         dropSelf(MiaBlocks.PEDESTAL.get());
+        dropSelf(MiaBlocks.ABYSS_PORTAL_FRAME.get());
         dropWhenSilkTouch(MiaBlocks.ABYSS_SPAWNER.get());
         dropSelf(MiaBlocks.ENDLESS_CUP.get());
         dropSelf(MiaBlocks.ROPE.get());
@@ -269,7 +296,7 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
         return HAS_SHEARS.or(this.hasSilkTouch());
     }
 
-    protected <T extends Comparable<T> & StringRepresentable> LootTable.Builder createSinglePropConditionTable(
+    protected <T extends Comparable<T> & StringRepresentable> LootTable.@NotNull Builder createSinglePropConditionTable(
             Block block, Property<T> property, T value
     ) {
         return LootTable.lootTable()
@@ -286,6 +313,36 @@ public class MiaBlockLootTable extends BlockLootSubProvider {
                                                         )
                                         )
                         )
+                );
+    }
+
+    protected <T extends Comparable<T> & StringRepresentable> LootTable.@NotNull Builder createSingleCropConditionTable(
+            Block block, Item other, Property<T> property, T value
+    ) {
+        return LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
+                                .when(
+                                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                                .setProperties(
+                                                        StatePropertiesPredicate.Builder.properties().hasProperty(SweetBerryBushBlock.AGE, 3).hasProperty(property, value)
+                                                )
+                                )
+                                .add(LootItem.lootTableItem(other))
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F)))
+                                .apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))
+                )
+                .withPool(
+                        LootPool.lootPool()
+                                .when(
+                                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                                .setProperties(
+                                                        StatePropertiesPredicate.Builder.properties().hasProperty(SweetBerryBushBlock.AGE, 2).hasProperty(property, value)
+                                                )
+                                )
+                                .add(LootItem.lootTableItem(other))
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
+                                .apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))
                 );
     }
 

@@ -67,7 +67,6 @@ public class TheAbyssBiomes {
         BiomesUtils.globalAbyssGeneration(generationBuilder);
         BiomesUtils.addDenseMeadowVegetation(generationBuilder);
         generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.DENSE_TREES_SKYFOG)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_DENSE_LARGE_FERN)
                 .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);

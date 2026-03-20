@@ -25,9 +25,12 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
         // 深渊标签
         tag(MiaTags.Blocks.ABYSS_ANDESITE_ORE_REPLACEABLES)
                 .add(MiaBlocks.ABYSS_ANDESITE.get());
+        tag(MiaTags.Blocks.ABYSS_MUD_ORE_REPLACEABLES)
+                .add(Blocks.MUD);
 
         tag(MiaTags.Blocks.BASE_STONE_ABYSS)
                 .add(MiaBlocks.ABYSS_ANDESITE.get())
+                .add(MiaBlocks.MARLITH.get())
                 .addTag(BlockTags.BASE_STONE_OVERWORLD);
 
         tag(MiaTags.Blocks.COVERGRASS)
@@ -62,7 +65,8 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
         tag(BlockTags.MOSS_REPLACEABLE)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
                 .add(MiaBlocks.COVERGRASS_TUFF.get())
-                .add(MiaBlocks.ABYSS_ANDESITE.get());
+                .add(MiaBlocks.ABYSS_ANDESITE.get())
+                .add(MiaBlocks.MARLITH.get());
 
         tag(BlockTags.LOGS_THAT_BURN) // 自动添加LOGS标签
                 .add(MiaBlocks.SKYFOG_LOG.get())
@@ -117,7 +121,9 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.POLISHED_FOSSILIZED_WOOD_WALL.get())
                 .add(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_WALL.get())
                 .add(MiaBlocks.FOSSILIZED_WOOD_BRICKS_WALL.get())
-                .add(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL.get());
+                .add(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL.get())
+                .add(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_WALL.get())
+                .add(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL.get());
 
         tag(BlockTags.FENCES)
                 .add(MiaBlocks.SKYFOG_FENCE.get())
@@ -154,6 +160,8 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.ABYSS_EMERALD_ORE.get());
         tag(Tags.Blocks.ORES_QUARTZ)
                 .add(MiaBlocks.ABYSS_QUARTZ_ORE.get());
+        tag(Tags.Blocks.ORES)
+                .add(MiaBlocks.ABYSS_CHLOROPHYTE_ORE.get());
 
         //NeoForge标签
         tag(Tags.Blocks.VILLAGER_FARMLANDS)
@@ -189,6 +197,7 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS.get())
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get())
                 .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL.get())
+                .add(MiaBlocks.MARLITH.get())
 
                 .add(MiaBlocks.FOSSILIZED_LOG.get())
                 .add(MiaBlocks.FOSSILIZED_WOOD.get())
@@ -224,6 +233,7 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.ABYSS_DIAMOND_ORE.get())
                 .add(MiaBlocks.ABYSS_EMERALD_ORE.get())
                 .add(MiaBlocks.ABYSS_QUARTZ_ORE.get())
+                .add(MiaBlocks.ABYSS_CHLOROPHYTE_ORE.get())
                 .add(MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE.get())
 
                 .add(MiaBlocks.PRASIOLITE_BLOCK.get())
@@ -232,6 +242,12 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.LARGE_PRASIOLITE_BUD.get())
                 .add(MiaBlocks.MEDIUM_PRASIOLITE_BUD.get())
                 .add(MiaBlocks.SMALL_PRASIOLITE_BUD.get())
+                .add(MiaBlocks.CAERULITE_BLOCK.get())
+                .add(MiaBlocks.BUDDING_CAERULITE.get())
+                .add(MiaBlocks.CAERULITE_CLUSTER.get())
+                .add(MiaBlocks.LARGE_CAERULITE_BUD.get())
+                .add(MiaBlocks.MEDIUM_CAERULITE_BUD.get())
+                .add(MiaBlocks.SMALL_CAERULITE_BUD.get())
                 .add(MiaBlocks.HOPPER_FARMLAND.get())
                 .add(MiaBlocks.AMETHYST_LAMPTUBE.get())
                 .add(MiaBlocks.PRASIOLITE_LAMPTUBE.get())
@@ -252,7 +268,8 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.ABYSS_IRON_ORE.get())
                 .add(MiaBlocks.ABYSS_COPPER_ORE.get())
                 .add(MiaBlocks.ABYSS_LAPIS_ORE.get())
-                .add(MiaBlocks.ABYSS_QUARTZ_ORE.get());
+                .add(MiaBlocks.ABYSS_QUARTZ_ORE.get())
+                .add(MiaBlocks.ABYSS_CHLOROPHYTE_ORE.get());
 
         // 标签嵌套
         tag(BlockTags.SCULK_REPLACEABLE)

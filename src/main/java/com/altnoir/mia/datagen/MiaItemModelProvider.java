@@ -23,8 +23,11 @@ public class MiaItemModelProvider extends ItemModelProvider {
 //        basicItem(MiaItems.BLACK_WHISTLE.get());
 //        basicItem(MiaItems.WHITE_WHISTLE.get());
 
-        basicItem(MiaItems.MISTFUZZ_PEACH.get());
         basicItem(MiaItems.PRASIOLITE_SHARD.get());
+        basicItem(MiaItems.CAERULITE_SHARD.get());
+        basicItem(MiaItems.RAW_CHLOROPHYTE.get());
+        basicItem(MiaItems.CHLOROPHYTE_NUGGET.get());
+        basicItem(MiaItems.CHLOROPHYTE_INGOT.get());
         basicItem(MiaItems.GRAY_ARTIFACT_BUNDLE.get());
         basicItem(MiaItems.FANCY_ARTIFACT_BUNDLE.get());
         basicItem(MiaItems.TEST_ARTIFACT_1.get());
@@ -32,15 +35,23 @@ public class MiaItemModelProvider extends ItemModelProvider {
         basicItem(MiaItems.TEST_ARTIFACT_3.get());
         basicItem(MiaItems.HEALTH_JUNKIE.get());
 
-        basicItem(MiaItems.STAR_COMPASS.get());
+        // foods
+        basicItem(MiaItems.MISTFUZZ_PEACH.get());
+        basicItem(MiaItems.GLOOM_BERRY.get());
+        basicItem(MiaItems.DREAM_LICHEE.get());
 
+        basicItem(MiaItems.STAR_COMPASS.get());
+        basicItem(MiaItems.PEACE_PHOBIA.get());
         skillItem(MiaItems.ARTIFACT_HASTE.get());
 
         hookItem(MiaItems.HOOK.get());
         handheldItem(MiaItems.GROW_SWORD.get());
+        handheldItem(MiaItems.BLAZE_REAP.get());
         handheldItem(MiaItems.PRASIOLITE_PICKAXE.get());
         handheldItem(MiaItems.PRASIOLITE_HOE.get());
 
+
+        handheldItem(MiaItems.DEBUG_ATTRIBUTE_TOOL.get());
     }
 
     public ItemModelBuilder skillItem(Item item) {

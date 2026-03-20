@@ -32,7 +32,7 @@ public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity
             var yOffset = (float) Math.sin(time * 0.1F) * 0.05F;
 
             poseStack.pushPose();
-            poseStack.translate(0.5F, 1.05F + yOffset, 0.5F);
+            poseStack.translate(0.5F, 0.875F + yOffset, 0.5F);
             poseStack.scale(0.5F, 0.5F, 0.5F);
 
             var inputAngle = time * 4 % 360;
@@ -53,7 +53,7 @@ public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity
         int count = nonEmptyStacks.size();
         if (count == 0) return;
 
-        var radius = 0.35F;
+        var radius = 0.45F;
         var yBase = 0.3F;
         var rotationSpeed = 2F;
 

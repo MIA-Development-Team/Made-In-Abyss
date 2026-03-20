@@ -1,0 +1,41 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "mia:abyss_stronghold/main_hall/hall",
+        "processors": "mia:abyss_stronghold_generic_degradation",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "mia:abyss_stronghold/main_hall/fighting_room",
+        "processors": "mia:abyss_stronghold_generic_degradation",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "mia:abyss_stronghold/main_hall/jumping_room",
+        "processors": "mia:abyss_stronghold_generic_degradation",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "mia:abyss_stronghold/main_hall/decryption_room",
+        "processors": "mia:abyss_stronghold_generic_degradation",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

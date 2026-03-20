@@ -13,22 +13,25 @@ public class HopperAbyssHole extends AbstractAbyssHole {
     public static final KeyDispatchDataCodec<HopperAbyssHole> CODEC = KeyDispatchDataCodec.of(
             RecordCodecBuilder.mapCodec(instance -> instance.group(
                     Codec.FLOAT.fieldOf("radius").forGetter(g -> g.radius),
-                    Codec.FLOAT.fieldOf("mul").forGetter(g -> g.mul)
+                    Codec.FLOAT.fieldOf("mul").forGetter(g -> g.mul),
+                    Codec.FLOAT.fieldOf("slope").forGetter(g -> g.slope)
 
             ).apply(instance, HopperAbyssHole::new))
     );
 
+    private final float slope;
 
-    public HopperAbyssHole(float radius, float mul) {
+    public HopperAbyssHole(float radius, float mul, float slope) {
         super(radius, mul);
+        this.slope = slope;
     }
 
     public static float getAbyssRadius() {
         return MiaConfig.abyssRadius * 2.0F;
     } // 深渊半径
 
-    private static float getHeightValue(int x, int y, int z, float r, float m) {
-        float v = 64.0F;// 数越大，坡越陡
+    private static float getHeightValue(int x, int y, int z, float r, float m, float slope) {
+        float v = slope;// 数越大，坡越陡 （默认64.0F）
 
         float max = 2.0F;
         float yr = Mth.clamp(1.0F + (float) y / v, 1.0F, max);
@@ -42,7 +45,7 @@ public class HopperAbyssHole extends AbstractAbyssHole {
 
     @Override
     public double compute(DensityFunction.FunctionContext context) {
-        return (double) getHeightValue(context.blockX() / 8, context.blockY() / 8, context.blockZ() / 8, this.radius, this.mul) / 64; // 最终除的数越小，洞越平滑
+        return (double) getHeightValue(context.blockX() / 8, context.blockY() / 8, context.blockZ() / 8, this.radius, this.mul, this.slope) / 64; // 最终除的数越小，洞越平滑
     }
 
     @Override

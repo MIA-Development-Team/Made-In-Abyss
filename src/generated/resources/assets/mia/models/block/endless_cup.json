@@ -2,7 +2,7 @@
   "parent": "mia:block/template/endless_cup",
   "render_type": "minecraft:cutout",
   "textures": {
-    "all": "mia:block/endless_cup",
+    "all": "mia:block/model/endless_cup",
     "particle": "mia:block/endless_cup_particle"
   }
 }

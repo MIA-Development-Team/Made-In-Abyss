@@ -1,6 +1,6 @@
 package com.altnoir.mia.common.item;
 
-import com.altnoir.mia.common.block.AbyssPortalFrameBlock;
+import com.altnoir.mia.common.block.AbyssPortalCoreBlock;
 import com.altnoir.mia.common.item.abs.IMiaTooltip;
 import com.altnoir.mia.client.network.CompassTargetPayload;
 import com.altnoir.mia.worldgen.structure.MiaStructures;
@@ -26,7 +26,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import java.util.List;
 
 public class StarCompassItem extends Item implements IMiaTooltip {
-    private static final int SEARCH_RADIUS = 6400;
+    private static final int SEARCH_RADIUS = 12800;
     private static final ResourceKey<Structure> ABYSS_STRONGHOLD = MiaStructures.ABYSS_STRONGHOLD;
 
     public StarCompassItem(Properties properties) {
@@ -48,7 +48,7 @@ public class StarCompassItem extends Item implements IMiaTooltip {
                 var blockPos = ((BlockHitResult) hitResult).getBlockPos();
                 var blockState = level.getBlockState(blockPos);
 
-                if (blockState.getBlock() instanceof AbyssPortalFrameBlock) {
+                if (blockState.getBlock() instanceof AbyssPortalCoreBlock) {
                     return InteractionResultHolder.success(stack);
                 }
             }
