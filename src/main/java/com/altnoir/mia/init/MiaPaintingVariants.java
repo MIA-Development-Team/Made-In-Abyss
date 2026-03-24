@@ -6,7 +6,12 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.decoration.PaintingVariant;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MiaPaintingVariants {
+    public static final List<ResourceKey<PaintingVariant>> PAINTING_VARIANTS = new ArrayList<>();
+
     public static final ResourceKey<PaintingVariant> ABYSS_MAP = create("abyss_map");
     public static final ResourceKey<PaintingVariant> THE_ABYSS = create("the_abyss");
     public static final ResourceKey<PaintingVariant> THE_ABYSS_2 = create("the_abyss2");
@@ -22,6 +27,7 @@ public class MiaPaintingVariants {
     }
 
     private static void register(BootstrapContext<PaintingVariant> context, ResourceKey<PaintingVariant> key, int width, int height) {
+        PAINTING_VARIANTS.add(key);
         context.register(key, new PaintingVariant(width, height, key.location()));
     }
 

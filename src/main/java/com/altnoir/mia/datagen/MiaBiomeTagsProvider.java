@@ -9,6 +9,7 @@ import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biomes;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -18,8 +19,9 @@ public class MiaBiomeTagsProvider extends BiomeTagsProvider {
         super(output, provider, MIA.MOD_ID, existingFileHelper);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    protected void addTags(HolderLookup.Provider provider) {
+    protected void addTags(@NotNull HolderLookup.Provider provider) {
         tag(MiaTags.Biomes.HAS_ISLAND)
                 .add(Biomes.MUSHROOM_FIELDS)
                 .addTags(BiomeTags.IS_OVERWORLD);
