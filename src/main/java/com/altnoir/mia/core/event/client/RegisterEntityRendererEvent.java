@@ -13,7 +13,7 @@ public class RegisterEntityRendererEvent {
         event.registerBlockEntityRenderer(MiaBlockEntities.ABYSS_SPAWNER_ENTITY.get(), AbyssSpawnerRenderer::new);
         event.registerBlockEntityRenderer(MiaBlockEntities.BRUSHABLE_ENTITY.get(), MiaBrushableRenderer::new);
         event.registerBlockEntityRenderer(MiaBlockEntities.ENDLESS_CUP_ENTITY.get(), EndlessCupRenderer::new);
-        event.registerBlockEntityRenderer(MiaBlockEntities.CAVE_EXPLORER_BEACON_ENTITY.get(), CaveExplorerBeaconRenerer::new);
+        event.registerBlockEntityRenderer(MiaBlockEntities.CAVE_EXPLORER_BEACON_ENTITY.get(), CaveExplorerBeaconRenderer::new);
         event.registerEntityRenderer(MiaEntities.HOOK.get(), HookEntityRenderer::new);
     }
 }
