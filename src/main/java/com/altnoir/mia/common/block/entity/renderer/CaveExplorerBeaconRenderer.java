@@ -14,8 +14,8 @@ import net.minecraft.util.RandomSource;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class CaveExplorerBeaconRenerer implements BlockEntityRenderer<CaveExplorerBeaconBlockEntity> {
-    public CaveExplorerBeaconRenerer(BlockEntityRendererProvider.Context context) {
+public class CaveExplorerBeaconRenderer implements BlockEntityRenderer<CaveExplorerBeaconBlockEntity> {
+    public CaveExplorerBeaconRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
