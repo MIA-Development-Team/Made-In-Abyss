@@ -8,7 +8,12 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MiaBiomes {
+    public static final List<ResourceKey<Biome>> BIOMES = new ArrayList<>();
+
     // Layer 1
     public static final ResourceKey<Biome> THE_ABYSS = abyssEdgeKey("the_abyss");
     public static final ResourceKey<Biome> SKYFOG_FOREST = abyssEdgeKey("skyfog_forest");
@@ -29,33 +34,38 @@ public class MiaBiomes {
 
     public static void boostrap(BootstrapContext<Biome> context) {
         // Layer 1
-        context.register(THE_ABYSS, TheAbyssBiomes.theAbyss(context));
-        context.register(SKYFOG_FOREST, TheAbyssBiomes.skyfogForest(context));
-        context.register(DENSE_SKYFOG_FOREST, TheAbyssBiomes.denseSkyfogForest(context));
-        context.register(FOSSILIZED_FOREST, TheAbyssBiomes.fossilizedForest(context));
-        context.register(RICH_FOSSILIZED_FOREST, TheAbyssBiomes.richFossilizedForest(context));
-        context.register(UNDER_FOSSILIZED_FOREST, TheAbyssBiomes.UnderfossilizedForest(context));
-        context.register(ABYSS_PLAINS, TheAbyssBiomes.abyssPlains(context));
-        context.register(PRASIOLITE_CAVES, TheAbyssBiomes.prasioliteCaves(context));
-        context.register(ABYSS_LUSH_CAVES, TheAbyssBiomes.abyssLushCaves(context));
-        context.register(ABYSS_DRIPSTONE_CAVES, TheAbyssBiomes.abyssDripstoneCaves(context));
+        register(THE_ABYSS, TheAbyssBiomes.theAbyss(context), context);
+        register(SKYFOG_FOREST, TheAbyssBiomes.skyfogForest(context), context);
+        register(DENSE_SKYFOG_FOREST, TheAbyssBiomes.denseSkyfogForest(context), context);
+        register(FOSSILIZED_FOREST, TheAbyssBiomes.fossilizedForest(context), context);
+        register(RICH_FOSSILIZED_FOREST, TheAbyssBiomes.richFossilizedForest(context), context);
+        register(UNDER_FOSSILIZED_FOREST, TheAbyssBiomes.UnderfossilizedForest(context), context);
+        register(ABYSS_PLAINS, TheAbyssBiomes.abyssPlains(context), context);
+        register(PRASIOLITE_CAVES, TheAbyssBiomes.prasioliteCaves(context), context);
+        register(ABYSS_LUSH_CAVES, TheAbyssBiomes.abyssLushCaves(context), context);
+        register(ABYSS_DRIPSTONE_CAVES, TheAbyssBiomes.abyssDripstoneCaves(context), context);
         // Layer 2
-        context.register(TEMPTATION_FOREST, TheAbyssBiomes.temptationForest(context));
-        context.register(INVERTED_FOREST, TheAbyssBiomes.invertedForest(context));
+        register(TEMPTATION_FOREST, TheAbyssBiomes.temptationForest(context), context);
+        register(INVERTED_FOREST, TheAbyssBiomes.invertedForest(context), context);
         // Layer 3
-        context.register(THE_GREAT_FAULT, GreatFaultBiomes.theGreatFault(context));
-        context.register(GREAT_FAULT, GreatFaultBiomes.greatFault(context));
+        register(THE_GREAT_FAULT, GreatFaultBiomes.theGreatFault(context), context);
+        register(GREAT_FAULT, GreatFaultBiomes.greatFault(context), context);
     }
 
-    private static ResourceKey<Biome> register(String path) {
+    private static void register(ResourceKey<Biome> key, Biome biome, BootstrapContext<Biome> context) {
+        BIOMES.add(key);
+        context.register(key, biome);
+    }
+
+    private static ResourceKey<Biome> getResourceKey(String path) {
         return ResourceKey.create(Registries.BIOME, MiaUtil.miaId(path));
     }
 
     private static ResourceKey<Biome> abyssEdgeKey(String path) {
-        return register("the_abyss/" + path);
+        return getResourceKey("the_abyss/" + path);
     }
 
     private static ResourceKey<Biome> greatFaultKey(String path) {
-        return register("great_fault/" + path);
+        return getResourceKey("great_fault/" + path);
     }
 }

@@ -1,0 +1,26 @@
+{
+    "tooltip.mia.hold_shift": "Hold [%s] to show details",
+
+    "tooltip.mia.attribute_modifier": "%s %s",
+    "tooltip.mia.modifiers.artifact_material": "When Applying Artifact: ",
+
+    "tooltip.mia.whistle.level": "Whistle Level: %s",
+    "tooltip.mia.whistle.capacity": "Capacity: %s",
+
+    "tooltip.mia.skill.cooldown_value": "Cooldown: %s",
+    "tooltip.mia.artifact.weight": "Weight: %s",
+    "tooltip.mia.artifact.grade.s": "S",
+    "tooltip.mia.artifact.grade.a": "A",
+    "tooltip.mia.artifact.grade.b": "B",
+    "tooltip.mia.artifact.grade.c": "C",
+    "tooltip.mia.artifact.grade.d": "D",
+    "tooltip.mia.artifact.grade.unknown": "Unknown",
+
+    "tooltip.mia.artifact.level": "Echo: %s/%s",
+    "tooltip.mia.artifact.max": "Echo: MAX",
+
+    "tooltip.mia.artifact_bundle.capacity": "Artifact Capacity: %s",
+
+    "tooltip.mia.description.red_whistle": "Red Whistles are novice cave raiders allowed only in the Abyss’s first layer.",
+    "tooltip.mia.description.abyss_compass": "It will point the way toward the abyss."
+}
