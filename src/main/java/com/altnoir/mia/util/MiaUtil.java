@@ -36,6 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -246,5 +247,13 @@ public class MiaUtil {
         }
 
         return trimmedPath.split("/");
+    }
+
+    public static String formatTickToTime(long ticks) {
+        var duration = Duration.ofMillis(ticks * 50L);
+        var minutes = duration.toMinutes();
+        var seconds = duration.getSeconds() % 60;
+
+        return String.format("%02d:%02d", minutes, seconds);
     }
 }
