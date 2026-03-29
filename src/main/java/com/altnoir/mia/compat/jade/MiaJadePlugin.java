@@ -10,7 +10,7 @@ import snownee.jade.api.WailaPlugin;
 
 @WailaPlugin
 public class MiaJadePlugin implements IWailaPlugin {
-    public static final ResourceLocation SPAWNER_COOLDOWN = ResourceLocation.parse("debug:spawner_cooldown");
+    public static final ResourceLocation SPAWNER_COOLDOWN = ResourceLocation.parse("mia:spawner_cooldown");
 
     @Override
     public void register(IWailaCommonRegistration registration) {
