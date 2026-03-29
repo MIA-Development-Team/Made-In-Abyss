@@ -1,6 +1,6 @@
 {
   "attribute.name.generic.critical_hit": "Critical Hit Chance",
-  "attribute.name.generic.critical_hit_damage": "Critical Hit  Damage",
+  "attribute.name.generic.critical_hit_damage": "Critical Hit Damage",
   "biome.mia.great_fault/great_fault": "Great Fault",
   "biome.mia.great_fault/the_great_fault": "The Great Fault",
   "biome.mia.the_abyss/abyss_dripstone_caves": "Abyss Dripstone Caves",
@@ -282,6 +282,7 @@
   "tag.item.mia.fossilized_logs": "Fossilized Logs",
   "tag.item.mia.skyfog_logs": "Skyfog Logs",
   "tag.item.mia.stripped_fossilized_logs": "Stripped Fossilized Logs",
+  "tooltip.mia.abyss_spawner.cooldown": "Cooldown: %s",
   "tooltip.mia.artifact.grade.a": "A",
   "tooltip.mia.artifact.grade.b": "B",
   "tooltip.mia.artifact.grade.c": "C",

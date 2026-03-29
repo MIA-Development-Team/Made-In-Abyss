@@ -7,6 +7,8 @@
     "tooltip.mia.whistle.level": "Whistle Level: %s",
     "tooltip.mia.whistle.capacity": "Capacity: %s",
 
+    "tooltip.mia.abyss_spawner.cooldown": "Cooldown: %s",
+
     "tooltip.mia.skill.cooldown_value": "Cooldown: %s",
     "tooltip.mia.artifact.weight": "Weight: %s",
     "tooltip.mia.artifact.grade.s": "S",

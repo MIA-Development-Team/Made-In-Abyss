@@ -58,9 +58,14 @@ public class AbyssTrialSpawner {
     private Entity displayEntity;
     private double spin;
     private double oSpin;
+    private int remainingCooldown;
 
     public AbyssTrialSpawner(StateAccessor stateAccessor) {
         this.stateAccessor = stateAccessor;
+    }
+
+    public int getRemainingCooldown() {
+        return remainingCooldown;
     }
     
     public void tickServer(ServerLevel level, BlockPos pos, boolean ominous) {
@@ -79,6 +84,8 @@ public class AbyssTrialSpawner {
             case EJECTING_REWARD -> tickEjectingReward(level, pos, ominous);
             case COOLDOWN -> tickCooldown(level, pos);
         }
+
+        this.remainingCooldown = this.cooldownEndsAt - level.getServer().getTickCount();
     }
     
     private void tickInactive(ServerLevel level, BlockPos pos) {
