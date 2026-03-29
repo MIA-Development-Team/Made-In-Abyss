@@ -9,6 +9,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.level.biome.Biome;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -38,7 +39,12 @@ public class MiaLangProvider extends LanguageProvider {
 
         MiaItems.ITEMS.getEntries().stream()
                 .map(DeferredHolder::get)
-                .filter(item -> !(item instanceof BlockItem))
+                .filter(item -> {
+                    if (item instanceof BlockItem) {
+                        return item instanceof ItemNameBlockItem;
+                    }
+                    return true;
+                })
                 .forEach(item -> add(item, formatName(BuiltInRegistries.ITEM.getKey(item).getPath())));
 
         MiaBlocks.BLOCKS.getEntries().stream()
