@@ -19,12 +19,15 @@ import org.slf4j.Logger;
 @Mod(MIA.MOD_ID)
 public class MIA {
     public static final String MOD_ID = "mia";
+    public static final String MOD_NAME = "Memento In Abyss";
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final CurseManager CURSE_MANAGER = new CurseManager();
     public static final AbyssTrialSpawnerManager SPAWNER_MANAGER = new AbyssTrialSpawnerManager();
 
     public MIA(IEventBus modEventBus, ModContainer modContainer) {
+        LOGGER.info("{} {}+{} initializing...", MOD_NAME, MiaBuildInfo.VERSION, MiaBuildInfo.GIT_COMMIT);
+
         modEventBus.addListener(this::commonSetup);
 
         MiaItems.register(modEventBus);
