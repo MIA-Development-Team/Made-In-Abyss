@@ -184,6 +184,20 @@ publishing {
     }
 }
 
+publishMods {
+    file = jar.archiveFile
+    type = ALPHA
+    version = "$mod_version+mc$minecraft_version"
+    displayName = "$mod_name $mod_version for mc$minecraft_version"
+    modLoaders.add("neoforge")
+
+    github {
+        repository = "MIA-Development-Team/Made-In-Abyss"
+        accessToken = providers.environmentVariable("GITHUB_TOKEN")
+        commitish = gitHash
+    }
+}
+
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
