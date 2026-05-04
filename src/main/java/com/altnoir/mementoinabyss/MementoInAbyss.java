@@ -25,6 +25,8 @@ public class MementoInAbyss {
     public static final CurseManager CURSE_MANAGER = new CurseManager();
 
     public MementoInAbyss(IEventBus modEventBus, ModContainer modContainer) {
+        LOGGER.info("{} {}+{} initializing...", NAME, MiaBuildInfo.VERSION, MiaBuildInfo.GIT_COMMIT);
+
         REGISTRATE.registerEventListeners(modEventBus);
 
         MiaItemGroups.register();

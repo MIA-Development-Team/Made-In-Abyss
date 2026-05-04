@@ -3,19 +3,35 @@ plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.141'
     id 'idea'
+    id 'net.kyori.blossom' version '2.2.0'
+    id 'me.modmuss50.mod-publish-plugin' version '1.1.0'
+    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.4.1'
 }
 
 tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
+def release = providers.environmentVariable("RELEASE")
+boolean dev = !release.map { it.toBoolean() }.getOrElse(false)
+
+def gitHash = providers.exec {
+    commandLine 'git', 'rev-parse', '--short', 'HEAD'
+}.standardOutput.asText.map { it.trim() }.getOrElse("dev")
+
 version = mod_version
 group = mod_group_id
 
-sourceSets.main.resources {
-    srcDir('src/generated/resources')
-    exclude("**/*.bbmodel") // BlockBench project files
-    exclude("**/.cache") // datagen cache files
+sourceSets.main {
+    resources {
+        srcDir('src/generated/resources')
+        exclude("**/*.bbmodel") // BlockBench project files
+        exclude("**/.cache") // datagen cache files
+    }
+    blossom.javaSources {
+        property 'version', mod_version
+        property 'gitCommit', gitHash
+    }
 }
 
 repositories {
@@ -30,6 +46,8 @@ base {
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+java.withSourcesJar()
+java.withJavadocJar()
 
 neoForge {
     version = project.neo_version
@@ -68,6 +86,35 @@ neoForge {
     }
 }
 
+jar {
+    manifest {
+        attributes([
+                'Specification-Title'     : mod_name,
+                'Specification-Vendor'    : mod_authors,
+                'Specification-Version'   : project.jar.archiveVersion,
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : mod_authors,
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'Timestampe'              : System.currentTimeMillis(),
+                'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                'Built-On-Minecraft'      : minecraft_version,
+                "MixinConfigs"            : "mia.mixins.json",
+                "Git-Hash"                : gitHash
+        ])
+    }
+}
+
+javadoc {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+tasks.named("sourcesJar", Jar) {
+    manifest.attributes([
+            "Git-Hash": gitHash
+    ])
+}
+
 configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
@@ -91,6 +138,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             neo_version            : neo_version,
             mod_id                 : mod_id,
             mod_name               : mod_name,
+            mod_authors            : mod_authors,
             mod_license            : mod_license,
             mod_version            : mod_version,
     ]
@@ -112,6 +160,20 @@ publishing {
         maven {
             url "file://${project.projectDir}/repo"
         }
+    }
+}
+
+publishMods {
+    file = jar.archiveFile
+    type = ALPHA
+    version = "$mod_version+mc$minecraft_version"
+    displayName = "$mod_name $mod_version for mc$minecraft_version"
+    modLoaders.add("neoforge")
+
+    github {
+        repository = "MIA-Development-Team/Made-In-Abyss"
+        accessToken = providers.environmentVariable("GITHUB_TOKEN")
+        commitish = gitHash
     }
 }
 

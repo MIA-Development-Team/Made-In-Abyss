@@ -1,0 +1,47 @@
+name: CI (Build)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - name: Make gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
+
+      - name: Get version
+        id: jars
+        run: |
+          MOD_ID=$(grep '^mod_id=' gradle.properties | cut -d= -f2)
+          MOD_VERSION=$(grep '^mod_version=' gradle.properties | cut -d= -f2)
+          SHORT_HASH=$(git rev-parse --short HEAD)
+            
+          echo "mod_id=$MOD_ID" >> $GITHUB_OUTPUT
+          echo "mod_version=$MOD_VERSION" >> $GITHUB_OUTPUT
+          echo "short_hash=$SHORT_HASH" >> $GITHUB_OUTPUT
+
+      - name: Upload Mod JAR
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.jars.outputs.mod_id }}-${{ steps.jars.outputs.mod_version }}+${{ steps.jars.outputs.short_hash }}
+          path: build/libs/*.jar

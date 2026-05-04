@@ -1,0 +1,45 @@
+name: CI (Publish)
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: 'Publish'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE: ${{ inputs.release }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - name: Make gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
+
+      - name: Run game tests
+        id: game_test
+        run: ./gradlew runGameTestServer --no-daemon
+
+      #TODO: Modrinth and CurseForge
+      - name: Publish
+        if: ${{ inputs.release }}
+        env:
+          # MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          # CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew publishMods

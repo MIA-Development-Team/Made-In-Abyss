@@ -8,7 +8,7 @@ displayName="${mod_name}"
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/"
 #logoFile="examplemod.png"
 #credits=""
-authors="Altnoir, RingLo_, zljtt, zhaijineet"
+authors="${mod_authors}"
 description='''
 Memento In Abyss.
 '''
