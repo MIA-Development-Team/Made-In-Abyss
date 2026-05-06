@@ -1,0 +1,11 @@
+{
+  "effects": [
+    {
+      "amplifier": 1,
+      "duration": 200,
+      "effect": "minecraft:hunger"
+    }
+  ],
+  "id": "minecraft:overworld",
+  "level": 1
+}

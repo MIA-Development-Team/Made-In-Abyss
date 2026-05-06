@@ -9,11 +9,11 @@ public class MiaItemGroups {
     private static final MiaRegistrate REGISTRATE = MementoInAbyss.registrate();
 
     public static final RegistryEntry<CreativeModeTab, CreativeModeTab> BASE = REGISTRATE.object("base")
-            .creativeTab(tab -> {})
+            .creativeTab(_ -> {})
             .register();
 
     public static final RegistryEntry<CreativeModeTab, CreativeModeTab> ARTIFACT = REGISTRATE.object("artifact")
-            .creativeTab(tab -> {})
+            .creativeTab(_ -> {})
             .register();
 
     public static void register() {}

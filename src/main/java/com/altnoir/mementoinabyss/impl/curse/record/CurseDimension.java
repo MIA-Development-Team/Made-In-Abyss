@@ -16,11 +16,9 @@ public record CurseDimension(
                     instance.group(
                             Identifier.CODEC.fieldOf("id")
                                     .forGetter(CurseDimension::id),
-
                             CurseEffect.CODEC.listOf()
                                     .fieldOf("effects")
                                     .forGetter(CurseDimension::effects),
-
                             Codec.INT.fieldOf("level")
                                     .forGetter(CurseDimension::level)
                     ).apply(instance, CurseDimension::new)

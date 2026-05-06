@@ -1,15 +1,14 @@
-package com.altnoir.mementoinabyss.impl.curse;
+package com.altnoir.mementoinabyss.impl.curse.data;
 
 import com.altnoir.mementoinabyss.impl.curse.record.CurseDimension;
-import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.packs.VanillaRecipeProvider;
 import net.minecraft.resources.Identifier;
 
-import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -36,6 +35,10 @@ public abstract class CurseDataProvider implements DataProvider {
 
     protected CurseBuilder curse(String path) {
         var id = Identifier.fromNamespaceAndPath(modId, path);
+        return entries.computeIfAbsent(id, CurseBuilder::new);
+    }
+
+    protected CurseBuilder curse(Identifier id) {
         return entries.computeIfAbsent(id, CurseBuilder::new);
     }
 

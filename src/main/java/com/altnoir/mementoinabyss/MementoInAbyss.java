@@ -1,11 +1,14 @@
 package com.altnoir.mementoinabyss;
 
+import com.altnoir.mementoinabyss.data.MiaDataGen;
 import com.altnoir.mementoinabyss.impl.curse.CurseManager;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
+import com.altnoir.mementoinabyss.init.MiaDataAttachments;
 import com.altnoir.mementoinabyss.init.MiaItemGroups;
 import com.altnoir.mementoinabyss.init.MiaItems;
 import net.minecraft.resources.Identifier;
+import net.neoforged.bus.api.EventPriority;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -22,16 +25,18 @@ public class MementoInAbyss {
 
     private static final MiaRegistrate REGISTRATE = MiaRegistrate.create(ID);
 
-    public static final CurseManager CURSE_MANAGER = new CurseManager();
-
     public MementoInAbyss(IEventBus modEventBus, ModContainer modContainer) {
         LOGGER.info("{} {}+{} initializing...", NAME, MiaBuildInfo.VERSION, MiaBuildInfo.GIT_COMMIT);
 
         REGISTRATE.registerEventListeners(modEventBus);
 
+        MiaDataAttachments.register(modEventBus);
+
         MiaItemGroups.register();
         MiaBlocks.register();
         MiaItems.register();
+
+        modEventBus.addListener(EventPriority.LOWEST, MiaDataGen::gatherData);
     }
 
     public static Identifier asResource(String string) {

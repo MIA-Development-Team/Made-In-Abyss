@@ -1,4 +1,4 @@
-package com.altnoir.mementoinabyss.impl.curse;
+package com.altnoir.mementoinabyss.impl.curse.data;
 
 import com.altnoir.mementoinabyss.impl.curse.record.CurseDimension;
 import com.altnoir.mementoinabyss.impl.curse.record.CurseEffect;
