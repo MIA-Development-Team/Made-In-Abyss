@@ -1,0 +1,8 @@
+{
+  "parent": "mementoinabyss:block/template/cube_tsb",
+  "textures": {
+    "bottom": "minecraft:block/tuff",
+    "side": "mementoinabyss:block/covergrass_tuff_side",
+    "top": "mementoinabyss:block/abyss_grass_block_top"
+  }
+}

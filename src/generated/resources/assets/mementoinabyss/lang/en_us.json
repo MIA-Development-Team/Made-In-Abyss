@@ -1,6 +1,8 @@
 {
   "block.mementoinabyss.abyss_andesite": "Abyss Andesite",
   "block.mementoinabyss.abyss_cobbled_andesite": "Abyss Cobbled Andesite",
+  "block.mementoinabyss.covergrass_abyss_andesite": "Covergrass Abyss Andesite",
+  "block.mementoinabyss.covergrass_tuff": "Covergrass Tuff",
   "itemGroup.mementoinabyss.artifact": "Memento In Abyss : Artifact",
   "itemGroup.mementoinabyss.base": "Memento In Abyss : Base"
 }

@@ -1,4 +1,4 @@
-package com.altnoir.mementoinabyss.content.block;
+package com.altnoir.mementoinabyss.content.block.abyss_andesite;
 
 import com.altnoir.mementoinabyss.content.block.base.TillableBlock;
 import net.minecraft.core.BlockPos;
