@@ -6,7 +6,6 @@ import com.tterrag.registrate.builders.NoConfigBuilder;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -48,5 +47,4 @@ public class MiaRegistrate extends AbstractRegistrate<MiaRegistrate> {
             return builder.build();
         });
     }
-
 }

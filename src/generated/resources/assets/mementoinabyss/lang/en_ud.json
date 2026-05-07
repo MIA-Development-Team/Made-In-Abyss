@@ -1,8 +1,22 @@
 {
   "block.mementoinabyss.abyss_andesite": "ǝʇısǝpuⱯ ssʎqⱯ",
+  "block.mementoinabyss.abyss_andesite_slab": "qɐןS ǝʇısǝpuⱯ ssʎqⱯ",
+  "block.mementoinabyss.abyss_andesite_stairs": "sɹıɐʇS ǝʇısǝpuⱯ ssʎqⱯ",
+  "block.mementoinabyss.abyss_andesite_wall": "ןןɐM ǝʇısǝpuⱯ ssʎqⱯ",
   "block.mementoinabyss.abyss_cobbled_andesite": "ǝʇısǝpuⱯ pǝןqqoƆ ssʎqⱯ",
+  "block.mementoinabyss.abyss_cobbled_andesite_slab": "qɐןS ǝʇısǝpuⱯ pǝןqqoƆ ssʎqⱯ",
+  "block.mementoinabyss.abyss_cobbled_andesite_stairs": "sɹıɐʇS ǝʇısǝpuⱯ pǝןqqoƆ ssʎqⱯ",
+  "block.mementoinabyss.abyss_cobbled_andesite_wall": "ןןɐM ǝʇısǝpuⱯ pǝןqqoƆ ssʎqⱯ",
   "block.mementoinabyss.covergrass_abyss_andesite": "ǝʇısǝpuⱯ ssʎqⱯ ssɐɹbɹǝʌoƆ",
   "block.mementoinabyss.covergrass_tuff": "ɟɟn⟘ ssɐɹbɹǝʌoƆ",
+  "block.mementoinabyss.mossy_abyss_cobbled_andesite": "ǝʇısǝpuⱯ pǝןqqoƆ ssʎqⱯ ʎssoW",
+  "block.mementoinabyss.mossy_abyss_cobbled_andesite_slab": "qɐןS ǝʇısǝpuⱯ pǝןqqoƆ ssʎqⱯ ʎssoW",
+  "block.mementoinabyss.mossy_abyss_cobbled_andesite_stairs": "sɹıɐʇS ǝʇısǝpuⱯ pǝןqqoƆ ssʎqⱯ ʎssoW",
+  "block.mementoinabyss.mossy_abyss_cobbled_andesite_wall": "ןןɐM ǝʇısǝpuⱯ pǝןqqoƆ ssʎqⱯ ʎssoW",
+  "block.mementoinabyss.polished_abyss_andesite": "ǝʇısǝpuⱯ ssʎqⱯ pǝɥsıןoԀ",
+  "block.mementoinabyss.polished_abyss_andesite_slab": "qɐןS ǝʇısǝpuⱯ ssʎqⱯ pǝɥsıןoԀ",
+  "block.mementoinabyss.polished_abyss_andesite_stairs": "sɹıɐʇS ǝʇısǝpuⱯ ssʎqⱯ pǝɥsıןoԀ",
+  "block.mementoinabyss.polished_abyss_andesite_wall": "ןןɐM ǝʇısǝpuⱯ ssʎqⱯ pǝɥsıןoԀ",
   "itemGroup.mementoinabyss.artifact": "ʇɔɐɟıʇɹⱯ : ssʎqⱯ uI oʇuǝɯǝW",
   "itemGroup.mementoinabyss.base": "ǝsɐᗺ : ssʎqⱯ uI oʇuǝɯǝW"
 }

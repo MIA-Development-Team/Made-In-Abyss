@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "mementoinabyss:block/mossy_abyss_cobbled_andesite_slab"
+    },
+    "type=double": {
+      "model": "mementoinabyss:block/mossy_abyss_cobbled_andesite"
+    },
+    "type=top": {
+      "model": "mementoinabyss:block/mossy_abyss_cobbled_andesite_slab_top"
+    }
+  }
+}

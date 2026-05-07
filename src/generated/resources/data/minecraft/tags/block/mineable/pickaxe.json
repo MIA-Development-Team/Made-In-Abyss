@@ -1,7 +1,19 @@
 {
   "values": [
     "mementoinabyss:abyss_andesite",
+    "mementoinabyss:abyss_andesite_stairs",
+    "mementoinabyss:abyss_andesite_slab",
+    "mementoinabyss:abyss_andesite_wall",
     "mementoinabyss:abyss_cobbled_andesite",
+    "mementoinabyss:abyss_cobbled_andesite_stairs",
+    "mementoinabyss:abyss_cobbled_andesite_slab",
+    "mementoinabyss:abyss_cobbled_andesite_wall",
+    "mementoinabyss:mossy_abyss_cobbled_andesite_stairs",
+    "mementoinabyss:mossy_abyss_cobbled_andesite_slab",
+    "mementoinabyss:mossy_abyss_cobbled_andesite_wall",
+    "mementoinabyss:polished_abyss_andesite_stairs",
+    "mementoinabyss:polished_abyss_andesite_slab",
+    "mementoinabyss:polished_abyss_andesite_wall",
     "mementoinabyss:covergrass_abyss_andesite",
     "mementoinabyss:covergrass_tuff"
   ]
