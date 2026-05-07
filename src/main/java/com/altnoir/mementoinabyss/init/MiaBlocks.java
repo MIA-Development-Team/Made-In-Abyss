@@ -51,6 +51,7 @@ public class MiaBlocks {
             .properties(p -> p.mapColor(MapColor.GRASS)
                     .randomTicks())
             .blockstate(BlockStateGen::coverGrass)
+            .tag(MiaTags.BlockTags.COVERGRASS.tag)
             .transform(TagGen.pickaxeOnly())
             .loot((lt, b) ->  {
                 lt.add(b,
@@ -64,6 +65,7 @@ public class MiaBlocks {
             .block(TuffCoverGrassBlock::new)
             .initialProperties(() -> Blocks.TUFF)
             .blockstate(BlockStateGen::coverGrass)
+            .tag(MiaTags.BlockTags.COVERGRASS.tag)
             .transform(TagGen.pickaxeOnly())
             .loot((lt, b) ->  {
                 lt.add(b,
