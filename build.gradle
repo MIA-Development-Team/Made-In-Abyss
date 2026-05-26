@@ -40,6 +40,8 @@ repositories {
     maven { url = "https://api.modrinth.com/maven" } // Jade
     maven { url = "https://maven.blamejared.com/" } // JEI, Patchouli
     maven { url = "https://maven.theillusivec4.top/" } // Curios
+    maven { url = "https://maven.fzzyhmstrs.me/" } // FzzyConfig
+    maven { url = "https://thedarkcolour.github.io/KotlinForForge/" } // KotlinForForge
 }
 
 base {
@@ -123,6 +125,8 @@ configurations {
 dependencies {
     implementation jarJar("com.tterrag.registrate:Registrate:${registrate_version}")
 
+    implementation "me.fzzyhmstrs:fzzy_config:${fzzyconfig_version}"
+
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
@@ -142,6 +146,8 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_authors            : mod_authors,
             mod_license            : mod_license,
             mod_version            : mod_version,
+            curios_version         : curios_version,
+            fzzyconfig_version     : fzzyconfig_version,
     ]
     inputs.properties replaceProperties
     expand replaceProperties

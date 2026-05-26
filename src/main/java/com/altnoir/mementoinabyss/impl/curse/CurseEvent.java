@@ -1,10 +1,12 @@
 package com.altnoir.mementoinabyss.impl.curse;
 
+import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.impl.curse.data.CurseRegistries;
 import com.altnoir.mementoinabyss.init.MiaDataAttachments;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
@@ -19,6 +21,9 @@ public class CurseEvent {
             return;
 
         if (livingEntity.level().isClientSide())
+            return;
+
+        if (livingEntity instanceof Player player && player.isCreative() && !MementoInAbyss.CONFIGS.gamePlaySection.enableCurseCreative.get())
             return;
 
         var dimIdentifier = livingEntity.level().dimension().identifier();

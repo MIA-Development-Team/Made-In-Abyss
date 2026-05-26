@@ -7,7 +7,7 @@ displayName="${mod_name}"
 #updateJSONURL="https://change.me.example.invalid/updates.json"
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/"
 #logoFile="examplemod.png"
-#credits=""
+credits="Create, Curios, FzzyConfig, Jade, JEI, Registrate"
 authors="${mod_authors}"
 description='''
 Memento In Abyss.
@@ -31,6 +31,20 @@ config="${mod_id}.mixins.json"
     type="required"
     versionRange="${minecraft_version_range}"
     ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="curios"
+    type="required"
+    versionRange="[${curios_version},)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="fzzy_config"
+    type="required"
+    versionRange="[${fzzyconfig_version},)"
+    ordering="AFTER"
     side="BOTH"
 
 #[features.${mod_id}]

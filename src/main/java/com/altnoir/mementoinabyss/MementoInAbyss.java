@@ -1,27 +1,24 @@
 package com.altnoir.mementoinabyss;
 
+import com.altnoir.mementoinabyss.compat.MiaMods;
 import com.altnoir.mementoinabyss.data.MiaDataGen;
-import com.altnoir.mementoinabyss.impl.curse.CurseManager;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
-import com.altnoir.mementoinabyss.init.MiaBlocks;
-import com.altnoir.mementoinabyss.init.MiaDataAttachments;
-import com.altnoir.mementoinabyss.init.MiaItemGroups;
-import com.altnoir.mementoinabyss.init.MiaItems;
+import com.altnoir.mementoinabyss.init.*;
+import com.mojang.logging.LogUtils;
+import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.EventPriority;
-import org.slf4j.Logger;
-
-import com.mojang.logging.LogUtils;
-
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import org.slf4j.Logger;
 
 @Mod(MementoInAbyss.ID)
 public class MementoInAbyss {
     public static final String ID = "mementoinabyss";
     public static final String NAME = "Memento In Abyss";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static final MiaConfigs CONFIGS = ConfigApiJava.registerAndLoadConfig(MiaConfigs::new);
 
     private static final MiaRegistrate REGISTRATE = MiaRegistrate.create(ID);
 
@@ -36,6 +33,7 @@ public class MementoInAbyss {
         MiaBlocks.register();
         MiaItems.register();
 
+        modEventBus.addListener(EventPriority.HIGHEST, MiaDataGen::gatherDataHighPriority);
         modEventBus.addListener(EventPriority.LOWEST, MiaDataGen::gatherData);
     }
 

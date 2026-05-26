@@ -1,5 +1,6 @@
 package com.altnoir.mementoinabyss.compat;
 
+import lombok.Getter;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -15,16 +16,14 @@ import java.util.function.Supplier;
 public enum MiaMods {
     PONDER;
 
+    @Getter
     private final String id;
+    @Getter
     private final boolean isLoaded;
 
     MiaMods() {
         id = name().toLowerCase(Locale.ROOT);
         isLoaded = FMLLoader.getCurrent().getLoadingModList().getModFileById(id) != null;
-    }
-
-    public String id() {
-        return id;
     }
 
     public Identifier asResource(String path) {
@@ -41,10 +40,6 @@ public enum MiaMods {
         return BuiltInRegistries.ITEM.get(asResource(id))
                 .map(Holder.Reference::value)
                 .orElse(null);
-    }
-
-    public boolean isLoaded() {
-        return isLoaded;
     }
 
     public <T> Optional<T> runIfInstalled(Supplier<Supplier<T>> toRun) {
