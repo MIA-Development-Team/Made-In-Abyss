@@ -7,7 +7,7 @@ displayName="${mod_name}"
 #updateJSONURL="https://change.me.example.invalid/updates.json"
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/"
 #logoFile="examplemod.png"
-credits="Create, Curios, FzzyConfig, Jade, JEI, Registrate"
+credits=""
 authors="${mod_authors}"
 description='''
 Memento In Abyss.
