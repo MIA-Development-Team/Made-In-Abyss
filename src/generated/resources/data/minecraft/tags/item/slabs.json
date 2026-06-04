@@ -3,6 +3,12 @@
     "mementoinabyss:abyss_andesite_slab",
     "mementoinabyss:abyss_cobbled_andesite_slab",
     "mementoinabyss:mossy_abyss_cobbled_andesite_slab",
-    "mementoinabyss:polished_abyss_andesite_slab"
+    "mementoinabyss:polished_abyss_andesite_slab",
+    "mementoinabyss:polished_fossilized_wood_slab",
+    "mementoinabyss:polished_stripped_fossilized_wood_slab",
+    "mementoinabyss:fossilized_wood_bricks_slab",
+    "mementoinabyss:stripped_fossilized_wood_bricks_slab",
+    "mementoinabyss:mossy_fossilized_wood_bricks_slab",
+    "mementoinabyss:mossy_stripped_fossilized_wood_bricks_slab"
   ]
 }

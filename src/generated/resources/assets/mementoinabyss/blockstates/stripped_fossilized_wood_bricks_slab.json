@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "mementoinabyss:block/stripped_fossilized_wood_bricks_slab"
+    },
+    "type=double": {
+      "model": "mementoinabyss:block/stripped_fossilized_wood_bricks"
+    },
+    "type=top": {
+      "model": "mementoinabyss:block/stripped_fossilized_wood_bricks_slab_top"
+    }
+  }
+}

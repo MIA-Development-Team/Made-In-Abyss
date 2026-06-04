@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "mementoinabyss:block/polished_fossilized_wood_slab"
+    },
+    "type=double": {
+      "model": "mementoinabyss:block/polished_fossilized_wood"
+    },
+    "type=top": {
+      "model": "mementoinabyss:block/polished_fossilized_wood_slab_top"
+    }
+  }
+}

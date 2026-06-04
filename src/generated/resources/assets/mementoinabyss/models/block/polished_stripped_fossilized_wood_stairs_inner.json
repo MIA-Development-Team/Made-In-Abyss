@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "mementoinabyss:block/polished_stripped_fossilized_wood",
+    "side": "mementoinabyss:block/polished_stripped_fossilized_wood",
+    "top": "mementoinabyss:block/polished_stripped_fossilized_wood"
+  }
+}

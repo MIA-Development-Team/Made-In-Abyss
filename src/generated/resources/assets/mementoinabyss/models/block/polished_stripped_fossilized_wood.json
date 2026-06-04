@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "mementoinabyss:block/polished_stripped_fossilized_wood"
+  }
+}

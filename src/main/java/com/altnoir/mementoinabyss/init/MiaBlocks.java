@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.init;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.content.block.abyss_andesite.AbyssAndesiteBlock;
 import com.altnoir.mementoinabyss.content.block.cover_grass.CoverGrassBlock;
+import com.altnoir.mementoinabyss.content.block.stripped_rotated_pillar.StrippedRotatedPillarBlock;
 import com.altnoir.mementoinabyss.impl.registrate.BlockStateGen;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.impl.registrate.TagGen;
@@ -11,6 +12,7 @@ import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -18,6 +20,8 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+
+import java.util.Optional;
 
 public class MiaBlocks {
     private static final MiaRegistrate REGISTRATE = MementoInAbyss.registrate();
@@ -103,6 +107,150 @@ public class MiaBlocks {
             })
             .simpleItem()
             .register();
+
+    public static final BlockEntry<AbyssAndesiteBlock> MARLITH = REGISTRATE.object("marlith")
+            .block(AbyssAndesiteBlock::new)
+            .properties(p -> p.mapColor(MapColor.TERRACOTTA_WHITE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .requiresCorrectToolForDrops()
+                    .strength(3.5F, 8.0F)
+                    .sound(SoundType.CALCITE))
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_FOSSILIZED_LOG = REGISTRATE.object("stripped_fossilized_log")
+            .block(RotatedPillarBlock::new)
+            .properties(p -> p.mapColor(state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? MapColor.COLOR_BLACK : MapColor.PODZOL)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .requiresCorrectToolForDrops()
+                    .strength(2.0F, 4.2F)
+                    .sound(SoundType.BASALT))
+            .blockstate(() -> BlockStateGen.variantAxisBlock(
+                    null,
+                    5,
+                    Optional.of(new int[]{12, 1, 1, 1, 1})))
+            .item()
+            .model(() -> (ctx, prov) ->
+                    prov.createWithExistingModel(ctx.getEntry(), prov.modLoc("block/" + ctx.getName() + "0")))
+            .build()
+            .register();
+
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_FOSSILIZED_WOOD = REGISTRATE.object("stripped_fossilized_wood")
+            .block(RotatedPillarBlock::new)
+            .initialProperties(STRIPPED_FOSSILIZED_LOG)
+            .properties(p -> p.mapColor(MapColor.PODZOL)
+                    .strength(3.0F, 4.2F))
+            .blockstate(() -> BlockStateGen.variantAxisBlock(
+                    STRIPPED_FOSSILIZED_LOG,
+                    5,
+                    Optional.of(new int[]{12, 1, 1, 1, 1})))
+            .item()
+            .model(() -> (ctx, prov) ->
+                    prov.createWithExistingModel(ctx.getEntry(), prov.modLoc("block/" + ctx.getName() + "0")))
+            .build()
+            .register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> FOSSILIZED_LOG = REGISTRATE.object("fossilized_log")
+            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_FOSSILIZED_LOG.get(), p))
+            .initialProperties(STRIPPED_FOSSILIZED_LOG)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> FOSSILIZED_WOOD = REGISTRATE.object("fossilized_wood")
+            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_FOSSILIZED_WOOD.get(), p))
+            .initialProperties(STRIPPED_FOSSILIZED_WOOD)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> MOSSY_FOSSILIZED_LOG = REGISTRATE.object("mossy_fossilized_log")
+            .block(p -> new StrippedRotatedPillarBlock(FOSSILIZED_LOG.get(), p))
+            .initialProperties(FOSSILIZED_LOG)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> MOSSY_FOSSILIZED_WOOD = REGISTRATE.object("mossy_fossilized_wood")
+            .block(p -> new StrippedRotatedPillarBlock(FOSSILIZED_WOOD.get(), p))
+            .initialProperties(FOSSILIZED_WOOD)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> MOSSY_STRIPPED_FOSSILIZED_LOG = REGISTRATE.object("mossy_stripped_fossilized_log")
+            .block(p -> new StrippedRotatedPillarBlock(FOSSILIZED_WOOD.get(), p))
+            .initialProperties(STRIPPED_FOSSILIZED_LOG)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> MOSSY_STRIPPED_FOSSILIZED_WOOD = REGISTRATE.object("mossy_stripped_fossilized_wood")
+            .block(p -> new StrippedRotatedPillarBlock(FOSSILIZED_WOOD.get(), p))
+            .initialProperties(STRIPPED_FOSSILIZED_WOOD)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<Block> POLISHED_FOSSILIZED_WOOD = REGISTRATE.object("polished_fossilized_wood")
+            .block(Block::new)
+            .initialProperties(FOSSILIZED_WOOD)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StairBlock> POLISHED_FOSSILIZED_WOOD_STAIRS = stairs(POLISHED_FOSSILIZED_WOOD);
+    public static final BlockEntry<SlabBlock> POLISHED_FOSSILIZED_WOOD_SLAB = slab(POLISHED_FOSSILIZED_WOOD);
+    public static final BlockEntry<WallBlock> POLISHED_FOSSILIZED_WOOD_WALL = wall(POLISHED_FOSSILIZED_WOOD);
+
+    public static final BlockEntry<Block> POLISHED_STRIPPED_FOSSILIZED_WOOD = REGISTRATE.object("polished_stripped_fossilized_wood")
+            .block(Block::new)
+            .initialProperties(STRIPPED_FOSSILIZED_WOOD)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StairBlock> POLISHED_STRIPPED_FOSSILIZED_WOOD_STAIRS = stairs(POLISHED_STRIPPED_FOSSILIZED_WOOD);
+    public static final BlockEntry<SlabBlock> POLISHED_STRIPPED_FOSSILIZED_WOOD_SLAB = slab(POLISHED_STRIPPED_FOSSILIZED_WOOD);
+    public static final BlockEntry<WallBlock> POLISHED_STRIPPED_FOSSILIZED_WOOD_WALL = wall(POLISHED_STRIPPED_FOSSILIZED_WOOD);
+
+    public static final BlockEntry<Block> CHISLED_STRIPPED_FOSSILIZED_WOOD = REGISTRATE.object("chiseled_stripped_fossilized_wood")
+            .block(Block::new)
+            .initialProperties(STRIPPED_FOSSILIZED_WOOD)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<Block> FOSSILIZED_WOOD_BRICKS = REGISTRATE.object("fossilized_wood_bricks")
+            .block(Block::new)
+            .initialProperties(FOSSILIZED_WOOD)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StairBlock> FOSSILIZED_WOOD_BRICKS_STAIRS = stairs(FOSSILIZED_WOOD_BRICKS);
+    public static final BlockEntry<SlabBlock> FOSSILIZED_WOOD_BRICKS_SLAB = slab(FOSSILIZED_WOOD_BRICKS);
+    public static final BlockEntry<WallBlock> FOSSILIZED_WOOD_BRICKS_WALL = wall(FOSSILIZED_WOOD_BRICKS);
+
+    public static final BlockEntry<Block> STRIPPED_FOSSILIZED_WOOD_BRICKS = REGISTRATE.object("stripped_fossilized_wood_bricks")
+            .block(Block::new)
+            .initialProperties(STRIPPED_FOSSILIZED_WOOD)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StairBlock> STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS = stairs(STRIPPED_FOSSILIZED_WOOD_BRICKS);
+    public static final BlockEntry<SlabBlock> STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB = slab(STRIPPED_FOSSILIZED_WOOD_BRICKS);
+    public static final BlockEntry<WallBlock> STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL = wall(STRIPPED_FOSSILIZED_WOOD_BRICKS);
+
+    public static final BlockEntry<Block> MOSSY_FOSSILIZED_WOOD_BRICKS = REGISTRATE.object("mossy_fossilized_wood_bricks")
+            .block(Block::new)
+            .initialProperties(FOSSILIZED_WOOD)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StairBlock> MOSSY_FOSSILIZED_WOOD_BRICKS_STAIRS = stairs(MOSSY_FOSSILIZED_WOOD_BRICKS);
+    public static final BlockEntry<SlabBlock> MOSSY_FOSSILIZED_WOOD_BRICKS_SLAB = slab(MOSSY_FOSSILIZED_WOOD_BRICKS);
+    public static final BlockEntry<WallBlock> MOSSY_FOSSILIZED_WOOD_BRICKS_WALL = wall(MOSSY_FOSSILIZED_WOOD_BRICKS);
+
+    public static final BlockEntry<Block> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS = REGISTRATE.object("mossy_stripped_fossilized_wood_bricks")
+            .block(Block::new)
+            .initialProperties(FOSSILIZED_WOOD)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StairBlock> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS = stairs(MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+    public static final BlockEntry<SlabBlock> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB = slab(MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+    public static final BlockEntry<WallBlock> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL = wall(MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
 
     public static BlockEntry<StairBlock> stairs(BlockEntry<? extends Block> base) {
         var name = base.getId().getPath() + "_stairs";

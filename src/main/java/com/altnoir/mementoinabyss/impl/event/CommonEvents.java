@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.impl.event;
 
 import com.altnoir.mementoinabyss.impl.curse.CurseEvent;
 import com.altnoir.mementoinabyss.impl.curse.CurseManager;
+import com.altnoir.mementoinabyss.impl.strippable.StripEvent;
 import com.altnoir.mementoinabyss.impl.tillable.TillEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -35,6 +36,7 @@ public class CommonEvents {
     @SubscribeEvent
     public static void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         TillEvent.onRightClickBlock(event);
+        StripEvent.onRightClickBlock(event);
     }
 
     @EventBusSubscriber

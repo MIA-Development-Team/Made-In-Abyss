@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "mementoinabyss:block/mossy_stripped_fossilized_wood_bricks",
+    "side": "mementoinabyss:block/mossy_stripped_fossilized_wood_bricks",
+    "top": "mementoinabyss:block/mossy_stripped_fossilized_wood_bricks"
+  }
+}

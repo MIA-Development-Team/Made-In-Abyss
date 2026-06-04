@@ -5,13 +5,26 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.generators.RegistrateBlockModelGenerator;
+import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.renderer.block.dispatch.Variant;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import org.jspecify.annotations.Nullable;
+
+import java.util.Optional;
+
 
 public class BlockStateGen {
     private static boolean tsbTemplateEmitted = false;
@@ -30,6 +43,37 @@ public class BlockStateGen {
             var variants = BlockModelGenerators.createRotatedVariants(BlockModelGenerators.plainModel(model));
             prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, variants));
             prov.registerSimpleItemModel(block, model);
+        };
+    }
+
+    public static NonNullBiConsumer<DataGenContext<Block, RotatedPillarBlock>, RegistrateBlockModelGenerator> variantAxisBlock(@Nullable BlockEntry<?> end, int variants, Optional<int[]> optionalWeights) {
+        return (ctx, prov) -> {
+            var weights = optionalWeights.orElse(null);
+            var blockPath = ctx.getName();
+            WeightedList.Builder<Variant> verticalBuilder = WeightedList.builder();
+            WeightedList.Builder<Variant> horizontalBuilder = WeightedList.builder();
+
+            for (int i = 0; i < variants; i++) {
+                var sideTexture = prov.modBlockTexture(blockPath + i);
+                var endTexture = (end != null) ? new Material(end.getId()) : prov.modBlockTexture(blockPath + "_top");
+
+                var verticalModel = ModelTemplates.CUBE_COLUMN.create(
+                        prov.modLoc("block/" + blockPath + i),
+                        TextureMapping.column(sideTexture, endTexture),
+                        prov.modelOutput
+                );
+                var horizontalModel = ModelTemplates.CUBE_COLUMN_HORIZONTAL.create(
+                        prov.modLoc("block/" + blockPath + "_horizontal" + i),
+                        TextureMapping.column(sideTexture, endTexture),
+                        prov.modelOutput
+                );
+
+                int weight = (weights != null) ? weights[i] : 1;
+                verticalBuilder.add(BlockModelGenerators.plainModel(verticalModel), weight);
+                horizontalBuilder.add(BlockModelGenerators.plainModel(horizontalModel), weight);
+            }
+
+            prov.generateAxisBlock(ctx.get(), new MultiVariant(verticalBuilder.build()), new MultiVariant(horizontalBuilder.build()));
         };
     }
 
@@ -103,4 +147,5 @@ public class BlockStateGen {
         array.add(v2);
         return array;
     }
+
 }

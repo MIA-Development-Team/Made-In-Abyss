@@ -15,6 +15,24 @@
     "mementoinabyss:polished_abyss_andesite_slab",
     "mementoinabyss:polished_abyss_andesite_wall",
     "mementoinabyss:covergrass_abyss_andesite",
-    "mementoinabyss:covergrass_tuff"
+    "mementoinabyss:covergrass_tuff",
+    "mementoinabyss:polished_fossilized_wood_stairs",
+    "mementoinabyss:polished_fossilized_wood_slab",
+    "mementoinabyss:polished_fossilized_wood_wall",
+    "mementoinabyss:polished_stripped_fossilized_wood_stairs",
+    "mementoinabyss:polished_stripped_fossilized_wood_slab",
+    "mementoinabyss:polished_stripped_fossilized_wood_wall",
+    "mementoinabyss:fossilized_wood_bricks_stairs",
+    "mementoinabyss:fossilized_wood_bricks_slab",
+    "mementoinabyss:fossilized_wood_bricks_wall",
+    "mementoinabyss:stripped_fossilized_wood_bricks_stairs",
+    "mementoinabyss:stripped_fossilized_wood_bricks_slab",
+    "mementoinabyss:stripped_fossilized_wood_bricks_wall",
+    "mementoinabyss:mossy_fossilized_wood_bricks_stairs",
+    "mementoinabyss:mossy_fossilized_wood_bricks_slab",
+    "mementoinabyss:mossy_fossilized_wood_bricks_wall",
+    "mementoinabyss:mossy_stripped_fossilized_wood_bricks_stairs",
+    "mementoinabyss:mossy_stripped_fossilized_wood_bricks_slab",
+    "mementoinabyss:mossy_stripped_fossilized_wood_bricks_wall"
   ]
 }

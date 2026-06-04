@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "mementoinabyss:block/mossy_fossilized_wood_bricks_slab"
+    },
+    "type=double": {
+      "model": "mementoinabyss:block/mossy_fossilized_wood_bricks"
+    },
+    "type=top": {
+      "model": "mementoinabyss:block/mossy_fossilized_wood_bricks_slab_top"
+    }
+  }
+}

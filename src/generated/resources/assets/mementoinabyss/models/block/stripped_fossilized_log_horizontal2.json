@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "mementoinabyss:block/stripped_fossilized_log_top",
+    "side": "mementoinabyss:block/stripped_fossilized_log2"
+  }
+}
