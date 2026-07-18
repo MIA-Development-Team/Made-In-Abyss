@@ -1,7 +1,61 @@
 {
   "variants": {
-    "": {
-      "model": "mementoinabyss:block/mossy_fossilized_log"
-    }
+    "axis=x": [
+      {
+        "model": "mementoinabyss:block/mossy_fossilized_log_horizontal0",
+        "weight": 12,
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "mementoinabyss:block/mossy_fossilized_log_horizontal1",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "mementoinabyss:block/mossy_fossilized_log_horizontal2",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "mementoinabyss:block/mossy_fossilized_log_horizontal3",
+        "x": 90,
+        "y": 90
+      }
+    ],
+    "axis=y": [
+      {
+        "model": "mementoinabyss:block/mossy_fossilized_log0",
+        "weight": 12
+      },
+      {
+        "model": "mementoinabyss:block/mossy_fossilized_log1"
+      },
+      {
+        "model": "mementoinabyss:block/mossy_fossilized_log2"
+      },
+      {
+        "model": "mementoinabyss:block/mossy_fossilized_log3"
+      }
+    ],
+    "axis=z": [
+      {
+        "model": "mementoinabyss:block/mossy_fossilized_log_horizontal0",
+        "weight": 12,
+        "x": 90
+      },
+      {
+        "model": "mementoinabyss:block/mossy_fossilized_log_horizontal1",
+        "x": 90
+      },
+      {
+        "model": "mementoinabyss:block/mossy_fossilized_log_horizontal2",
+        "x": 90
+      },
+      {
+        "model": "mementoinabyss:block/mossy_fossilized_log_horizontal3",
+        "x": 90
+      }
+    ]
   }
 }

@@ -153,37 +153,79 @@ public class MiaBlocks {
     public static final BlockEntry<StrippedRotatedPillarBlock> FOSSILIZED_LOG = REGISTRATE.object("fossilized_log")
             .block(p -> new StrippedRotatedPillarBlock(STRIPPED_FOSSILIZED_LOG.get(), p))
             .initialProperties(STRIPPED_FOSSILIZED_LOG)
-            .simpleItem()
+            .blockstate(() -> BlockStateGen.variantAxisBlock(
+                    null,
+                    3,
+                    Optional.of(new int[]{12, 1, 1})))
+            .item()
+            .model(() -> (ctx, prov) ->
+                    prov.createWithExistingModel(ctx.getEntry(), prov.modLoc("block/" + ctx.getName() + "0")))
+            .build()
             .register();
 
     public static final BlockEntry<StrippedRotatedPillarBlock> FOSSILIZED_WOOD = REGISTRATE.object("fossilized_wood")
             .block(p -> new StrippedRotatedPillarBlock(STRIPPED_FOSSILIZED_WOOD.get(), p))
             .initialProperties(STRIPPED_FOSSILIZED_WOOD)
-            .simpleItem()
+            .blockstate(() -> BlockStateGen.variantAxisBlock(
+                    FOSSILIZED_LOG,
+                    3,
+                    Optional.of(new int[]{12, 1, 1})))
+            .item()
+            .model(() -> (ctx, prov) ->
+                    prov.createWithExistingModel(ctx.getEntry(), prov.modLoc("block/" + ctx.getName() + "0")))
+            .build()
             .register();
 
     public static final BlockEntry<StrippedRotatedPillarBlock> MOSSY_FOSSILIZED_LOG = REGISTRATE.object("mossy_fossilized_log")
             .block(p -> new StrippedRotatedPillarBlock(FOSSILIZED_LOG.get(), p))
             .initialProperties(FOSSILIZED_LOG)
-            .simpleItem()
+            .blockstate(() -> BlockStateGen.variantAxisBlock(
+                    null,
+                    4,
+                    Optional.of(new int[]{12, 1, 1, 1})))
+            .item()
+            .model(() -> (ctx, prov) ->
+                    prov.createWithExistingModel(ctx.getEntry(), prov.modLoc("block/" + ctx.getName() + "0")))
+            .build()
             .register();
 
     public static final BlockEntry<StrippedRotatedPillarBlock> MOSSY_FOSSILIZED_WOOD = REGISTRATE.object("mossy_fossilized_wood")
             .block(p -> new StrippedRotatedPillarBlock(FOSSILIZED_WOOD.get(), p))
             .initialProperties(FOSSILIZED_WOOD)
-            .simpleItem()
+            .blockstate(() -> BlockStateGen.variantAxisBlock(
+                    MOSSY_FOSSILIZED_LOG,
+                    4,
+                    Optional.of(new int[]{12, 1, 1, 1})))
+            .item()
+            .model(() -> (ctx, prov) ->
+                    prov.createWithExistingModel(ctx.getEntry(), prov.modLoc("block/" + ctx.getName() + "0")))
+            .build()
             .register();
 
     public static final BlockEntry<StrippedRotatedPillarBlock> MOSSY_STRIPPED_FOSSILIZED_LOG = REGISTRATE.object("mossy_stripped_fossilized_log")
             .block(p -> new StrippedRotatedPillarBlock(FOSSILIZED_WOOD.get(), p))
             .initialProperties(STRIPPED_FOSSILIZED_LOG)
-            .simpleItem()
+            .blockstate(() -> BlockStateGen.variantAxisBlock(
+                    null,
+                    5,
+                    Optional.of(new int[]{12, 1, 1, 1, 1})))
+            .item()
+            .model(() -> (ctx, prov) ->
+                    prov.createWithExistingModel(ctx.getEntry(), prov.modLoc("block/" + ctx.getName() + "0")))
+            .build()
             .register();
 
     public static final BlockEntry<StrippedRotatedPillarBlock> MOSSY_STRIPPED_FOSSILIZED_WOOD = REGISTRATE.object("mossy_stripped_fossilized_wood")
             .block(p -> new StrippedRotatedPillarBlock(FOSSILIZED_WOOD.get(), p))
             .initialProperties(STRIPPED_FOSSILIZED_WOOD)
-            .simpleItem()
+            .blockstate(() -> BlockStateGen.variantAxisBlock(
+                    MOSSY_STRIPPED_FOSSILIZED_LOG,
+                    5,
+                    Optional.of(new int[]{12, 1, 1, 1, 1})))
+            .item()
+            .model(() -> (ctx, prov) ->
+                    prov.createWithExistingModel(ctx.getEntry(), prov.modLoc("block/" + ctx.getName() + "0")))
+            .build()
             .register();
 
     public static final BlockEntry<Block> POLISHED_FOSSILIZED_WOOD = REGISTRATE.object("polished_fossilized_wood")

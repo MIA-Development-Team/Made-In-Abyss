@@ -1,5 +1,5 @@
 {
-  "parent": "mementoinabyss:block/template/cube_tsb",
+  "parent": "minecraft:block/cube_bottom_top",
   "textures": {
     "bottom": "minecraft:block/tuff",
     "side": "mementoinabyss:block/covergrass_tuff_side",

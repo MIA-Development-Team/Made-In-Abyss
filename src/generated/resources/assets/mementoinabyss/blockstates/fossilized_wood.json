@@ -1,7 +1,49 @@
 {
   "variants": {
-    "": {
-      "model": "mementoinabyss:block/fossilized_wood"
-    }
+    "axis=x": [
+      {
+        "model": "mementoinabyss:block/fossilized_wood_horizontal0",
+        "weight": 12,
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "mementoinabyss:block/fossilized_wood_horizontal1",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "mementoinabyss:block/fossilized_wood_horizontal2",
+        "x": 90,
+        "y": 90
+      }
+    ],
+    "axis=y": [
+      {
+        "model": "mementoinabyss:block/fossilized_wood0",
+        "weight": 12
+      },
+      {
+        "model": "mementoinabyss:block/fossilized_wood1"
+      },
+      {
+        "model": "mementoinabyss:block/fossilized_wood2"
+      }
+    ],
+    "axis=z": [
+      {
+        "model": "mementoinabyss:block/fossilized_wood_horizontal0",
+        "weight": 12,
+        "x": 90
+      },
+      {
+        "model": "mementoinabyss:block/fossilized_wood_horizontal1",
+        "x": 90
+      },
+      {
+        "model": "mementoinabyss:block/fossilized_wood_horizontal2",
+        "x": 90
+      }
+    ]
   }
 }
