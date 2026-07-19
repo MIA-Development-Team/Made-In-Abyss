@@ -1,0 +1,6 @@
+{
+  "parent": "mementoinabyss:block/template/column_middle",
+  "textures": {
+    "side": "mementoinabyss:block/abyss_andesite_pillar"
+  }
+}

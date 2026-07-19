@@ -1,6 +1,8 @@
 package com.altnoir.mementoinabyss.impl.registrate;
 
 import com.altnoir.mementoinabyss.content.block.cover_grass.CoverGrassBlock;
+import com.altnoir.mementoinabyss.content.block.column.ColumnBlock;
+import com.altnoir.mementoinabyss.content.block.column.ColumnSide;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.generators.RegistrateBlockModelGenerator;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -8,6 +10,7 @@ import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
@@ -88,6 +91,48 @@ public class BlockStateGen {
             }
 
             prov.generateAxisBlock(ctx.get(), new MultiVariant(verticalBuilder.build()), new MultiVariant(horizontalBuilder.build()));
+        };
+    }
+
+    public static NonNullBiConsumer<DataGenContext<Block, ColumnBlock>, RegistrateBlockModelGenerator> column(
+            BlockEntry<? extends Block> pillar, BlockEntry<? extends Block> decoration) {
+        return (ctx, prov) -> {
+            var side = prov.blockTexture(pillar.get());
+            var top = prov.blockTexture(pillar.get(), "_top");
+            var dec = prov.blockTexture(decoration.get());
+            var decSlot = TextureSlot.create("dec");
+            var baseName = "block/" + ctx.getName();
+
+            var single = prov.getBuilder()
+                    .parent(prov.modLoc("block/template/column"))
+                    .texture(TextureSlot.SIDE, side)
+                    .texture(TextureSlot.TOP, top)
+                    .texture(decSlot, dec)
+                    .build(prov.modLoc(baseName));
+            var bottom = prov.getBuilder()
+                    .parent(prov.modLoc("block/template/column_bottom"))
+                    .texture(TextureSlot.SIDE, side)
+                    .texture(TextureSlot.TOP, top)
+                    .texture(decSlot, dec)
+                    .build(prov.modLoc(baseName + "_bottom"));
+            var middle = prov.getBuilder()
+                    .parent(prov.modLoc("block/template/column_middle"))
+                    .texture(TextureSlot.SIDE, side)
+                    .build(prov.modLoc(baseName + "_middle"));
+            var columnTop = prov.getBuilder()
+                    .parent(prov.modLoc("block/template/column_top"))
+                    .texture(TextureSlot.SIDE, side)
+                    .texture(TextureSlot.TOP, top)
+                    .texture(decSlot, dec)
+                    .build(prov.modLoc(baseName + "_top"));
+
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get()).with(
+                    PropertyDispatch.initial(ColumnBlock.COLUMN)
+                            .select(ColumnSide.NONE, BlockModelGenerators.plainVariant(single))
+                            .select(ColumnSide.BOTTOM, BlockModelGenerators.plainVariant(bottom))
+                            .select(ColumnSide.MIDDLE, BlockModelGenerators.plainVariant(middle))
+                            .select(ColumnSide.TOP, BlockModelGenerators.plainVariant(columnTop))));
+            prov.registerSimpleItemModel(ctx.get(), single);
         };
     }
 

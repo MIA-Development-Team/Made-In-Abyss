@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "mementoinabyss:block/mossy_abyss_andesite_bricks"
+  }
+}

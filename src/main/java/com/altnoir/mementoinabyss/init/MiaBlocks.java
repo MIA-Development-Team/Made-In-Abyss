@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.init;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.content.block.abyss_andesite.AbyssAndesiteBlock;
 import com.altnoir.mementoinabyss.content.block.cover_grass.CoverGrassBlock;
+import com.altnoir.mementoinabyss.content.block.column.ColumnBlock;
 import com.altnoir.mementoinabyss.content.block.stripped_rotated_pillar.StrippedRotatedPillarBlock;
 import com.altnoir.mementoinabyss.impl.registrate.BlockStateGen;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
@@ -77,6 +78,59 @@ public class MiaBlocks {
     public static final BlockEntry<StairBlock> POLISHED_ABYSS_ANDESITE_STAIRS = stairs(POLISHED_ABYSS_ANDESITE);
     public static final BlockEntry<SlabBlock> POLISHED_ABYSS_ANDESITE_SLAB = slab(POLISHED_ABYSS_ANDESITE);
     public static final BlockEntry<WallBlock> POLISHED_ABYSS_ANDESITE_WALL = wall(POLISHED_ABYSS_ANDESITE);
+
+    public static final BlockEntry<RotatedPillarBlock> ABYSS_ANDESITE_PILLAR = REGISTRATE.object("abyss_andesite_pillar")
+            .block(RotatedPillarBlock::new)
+            .initialProperties(POLISHED_ABYSS_ANDESITE)
+            .transform(TagGen.pickaxeOnly())
+            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<Block> CHISLED_ABYSS_ANDESITE = REGISTRATE.object("chiseled_abyss_andesite")
+            .block(Block::new)
+            .initialProperties(POLISHED_ABYSS_ANDESITE)
+            .transform(TagGen.pickaxeOnly())
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<Block> ABYSS_ANDESITE_BRICKS = REGISTRATE.object("abyss_andesite_bricks")
+            .block(Block::new)
+            .initialProperties(ABYSS_COBBLED_ANDESITE)
+            .properties(p -> p.sound(SoundType.DEEPSLATE_TILES))
+            .transform(TagGen.pickaxeOnly())
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<ColumnBlock> ABYSS_ANDESITE_COLUMN = REGISTRATE.object("abyss_andesite_column")
+            .block(ColumnBlock::new)
+            .initialProperties(POLISHED_ABYSS_ANDESITE)
+            .transform(TagGen.pickaxeOnly())
+            .blockstate(() -> BlockStateGen.column(ABYSS_ANDESITE_PILLAR, ABYSS_ANDESITE_BRICKS))
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<Block> CRACKED_ABYSS_ANDESITE_BRICKS = REGISTRATE.object("cracked_abyss_andesite_bricks")
+            .block(Block::new)
+            .initialProperties(ABYSS_ANDESITE_BRICKS)
+            .transform(TagGen.pickaxeOnly())
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StairBlock> ABYSS_ANDESITE_BRICKS_STAIRS = stairs(ABYSS_ANDESITE_BRICKS);
+    public static final BlockEntry<SlabBlock> ABYSS_ANDESITE_BRICKS_SLAB = slab(ABYSS_ANDESITE_BRICKS);
+    public static final BlockEntry<WallBlock> ABYSS_ANDESITE_BRICKS_WALL = wall(ABYSS_ANDESITE_BRICKS);
+
+    public static final BlockEntry<Block> MOSSY_ABYSS_ANDESITE_BRICKS = REGISTRATE.object("mossy_abyss_andesite_bricks")
+            .block(Block::new)
+            .initialProperties(ABYSS_ANDESITE_BRICKS)
+            .transform(TagGen.pickaxeOnly())
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StairBlock> MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS = stairs(MOSSY_ABYSS_ANDESITE_BRICKS);
+    public static final BlockEntry<SlabBlock> MOSSY_ABYSS_ANDESITE_BRICKS_SLAB = slab(MOSSY_ABYSS_ANDESITE_BRICKS);
+    public static final BlockEntry<WallBlock> MOSSY_ABYSS_ANDESITE_BRICKS_WALL = wall(MOSSY_ABYSS_ANDESITE_BRICKS);
 
     public static final BlockEntry<CoverGrassBlock> COVERGRASS_ABYSS_ANDESITE = REGISTRATE.object("covergrass_abyss_andesite")
             .block(p -> new CoverGrassBlock(ABYSS_ANDESITE.get(), p))

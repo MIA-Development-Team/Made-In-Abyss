@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "mementoinabyss:block/mossy_abyss_andesite_bricks",
+    "side": "mementoinabyss:block/mossy_abyss_andesite_bricks",
+    "top": "mementoinabyss:block/mossy_abyss_andesite_bricks"
+  }
+}

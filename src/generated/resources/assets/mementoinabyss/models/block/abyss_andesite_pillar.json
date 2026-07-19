@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "mementoinabyss:block/abyss_andesite_pillar_top",
+    "side": "mementoinabyss:block/abyss_andesite_pillar"
+  }
+}

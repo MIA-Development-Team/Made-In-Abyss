@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "column=bottom": {
+      "model": "mementoinabyss:block/abyss_andesite_column_bottom"
+    },
+    "column=middle": {
+      "model": "mementoinabyss:block/abyss_andesite_column_middle"
+    },
+    "column=none": {
+      "model": "mementoinabyss:block/abyss_andesite_column"
+    },
+    "column=top": {
+      "model": "mementoinabyss:block/abyss_andesite_column_top"
+    }
+  }
+}
