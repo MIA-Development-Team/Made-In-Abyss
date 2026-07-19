@@ -10,6 +10,8 @@ import com.altnoir.mementoinabyss.content.block.plant.GloomBerryBlock;
 import com.altnoir.mementoinabyss.content.block.plant.WaterTallFlowerBlock;
 import com.altnoir.mementoinabyss.content.block.plant.MiaFungusBlock;
 import com.altnoir.mementoinabyss.content.block.plant.InvertedSaplingBlock;
+import com.altnoir.mementoinabyss.content.block.ore.ChlorophyteOreBlock;
+import com.altnoir.mementoinabyss.content.block.ore.BuddingPrasioliteBlock;
 import com.altnoir.mementoinabyss.impl.registrate.BlockStateGen;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.impl.registrate.TagGen;
@@ -36,6 +38,10 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -576,6 +582,47 @@ public class MiaBlocks {
             .tag(BlockTags.SAPLINGS).blockstate(BlockStateGen::crossPlant)
             .item().model(() -> flatPlantItem("block/inverted_sapling")).build().register();
 
+    public static final BlockEntry<DropExperienceBlock> ABYSS_IRON_ORE = ore("abyss_iron_ore", ConstantInt.of(0), Items.RAW_IRON);
+    public static final BlockEntry<DropExperienceBlock> ABYSS_GOLD_ORE = ore("abyss_gold_ore", ConstantInt.of(0), Items.RAW_GOLD);
+    public static final BlockEntry<DropExperienceBlock> ABYSS_DIAMOND_ORE = ore("abyss_diamond_ore", UniformInt.of(3, 7), Items.DIAMOND);
+    public static final BlockEntry<DropExperienceBlock> ABYSS_EMERALD_ORE = ore("abyss_emerald_ore", UniformInt.of(3, 7), Items.EMERALD);
+    public static final BlockEntry<DropExperienceBlock> ABYSS_QUARTZ_ORE = ore("abyss_quartz_ore", UniformInt.of(2, 5), Items.QUARTZ);
+
+    public static final BlockEntry<DropExperienceBlock> ABYSS_COPPER_ORE = REGISTRATE.object("abyss_copper_ore")
+            .block(p -> new DropExperienceBlock(ConstantInt.of(0), p)).initialProperties(ABYSS_ANDESITE)
+            .properties(p -> p.strength(4.5F, 3.0F)).transform(TagGen.pickaxeOnly())
+            .loot((lt, b) -> lt.add(b, lt.createCopperOreDrops(b))).simpleItem().register();
+    public static final BlockEntry<DropExperienceBlock> ABYSS_LAPIS_ORE = REGISTRATE.object("abyss_lapis_ore")
+            .block(p -> new DropExperienceBlock(UniformInt.of(2, 5), p)).initialProperties(ABYSS_ANDESITE)
+            .properties(p -> p.strength(4.5F, 3.0F)).transform(TagGen.pickaxeOnly())
+            .loot((lt, b) -> lt.add(b, lt.createLapisOreDrops(b))).simpleItem().register();
+    public static final BlockEntry<RedStoneOreBlock> ABYSS_REDSTONE_ORE = REGISTRATE.object("abyss_redstone_ore")
+            .block(RedStoneOreBlock::new).initialProperties(ABYSS_ANDESITE)
+            .properties(p -> p.randomTicks().lightLevel(s -> s.getValue(RedStoneOreBlock.LIT) ? 9 : 0).strength(4.5F, 3.0F))
+            .transform(TagGen.pickaxeOnly()).loot((lt, b) -> lt.add(b, lt.createRedstoneOreDrops(b))).simpleItem().register();
+    public static final BlockEntry<ChlorophyteOreBlock> ABYSS_CHLOROPHYTE_ORE = REGISTRATE.object("abyss_chlorophyte_ore")
+            .block(p -> new ChlorophyteOreBlock(UniformInt.of(2, 5), Blocks.MUD, p))
+            .properties(p -> p.mapColor(MapColor.TERRACOTTA_GREEN).randomTicks().strength(1.5F, 3.0F).sound(SoundType.MUD_BRICKS))
+            .transform(TagGen.pickaxeOnly()).loot((lt, b) -> lt.add(b, lt.createOreDrop(b, MiaItems.RAW_CHLOROPHYTE.get()))).simpleItem().register();
+
+    public static final BlockEntry<Block> RAW_CHLOROPHYTE_BLOCK = mineralBlock("raw_chlorophyte_block", MapColor.COLOR_LIGHT_GREEN, SoundType.STONE);
+    public static final BlockEntry<Block> CHLOROPHYTE_BLOCK = mineralBlock("chlorophyte_block", MapColor.METAL, SoundType.METAL);
+    public static final BlockEntry<Block> PRASIOLITE_BLOCK = mineralBlock("prasiolite_block", MapColor.COLOR_GREEN, SoundType.AMETHYST);
+    public static final BlockEntry<BuddingPrasioliteBlock> BUDDING_PRASIOLITE = REGISTRATE.object("budding_prasiolite")
+            .block(BuddingPrasioliteBlock::new).initialProperties(PRASIOLITE_BLOCK)
+            .properties(p -> p.randomTicks().pushReaction(PushReaction.DESTROY)).transform(TagGen.pickaxeOnly())
+            .loot((lt, b) -> lt.dropWhenSilkTouch(b)).simpleItem().register();
+    public static final BlockEntry<AmethystClusterBlock> SMALL_PRASIOLITE_BUD = crystal("small_prasiolite_bud", 3, 3, 1);
+    public static final BlockEntry<AmethystClusterBlock> MEDIUM_PRASIOLITE_BUD = crystal("medium_prasiolite_bud", 4, 3, 2);
+    public static final BlockEntry<AmethystClusterBlock> LARGE_PRASIOLITE_BUD = crystal("large_prasiolite_bud", 5, 3, 4);
+    public static final BlockEntry<AmethystClusterBlock> PRASIOLITE_CLUSTER = REGISTRATE.object("prasiolite_cluster")
+            .block(p -> new AmethystClusterBlock(7, 3, p)).properties(p -> crystalProperties(p, 5))
+            .transform(TagGen.pickaxeOnly()).blockstate(() -> (ctx, prov) -> prov.createAmethystCluster(ctx.get()))
+            .loot((lt, b) -> lt.add(b, lt.createOreDrop(b, MiaItems.PRASIOLITE_SHARD.get()))).simpleItem().register();
+    public static final BlockEntry<Block> SUN_STONE = REGISTRATE.object("sun_stone").block(Block::new)
+            .properties(p -> p.strength(0.3F).requiresCorrectToolForDrops().lightLevel(_ -> 15).sound(SoundType.FROGLIGHT))
+            .transform(TagGen.pickaxeOnly()).simpleItem().register();
+
     public static BlockEntry<StairBlock> stairs(BlockEntry<? extends Block> base) {
         var name = base.getId().getPath() + "_stairs";
         return REGISTRATE.object(name)
@@ -638,6 +685,33 @@ public class MiaBlocks {
     private static BlockBehaviour.Properties treeLogProperties(BlockBehaviour.Properties properties, MapColor top, MapColor side) {
         return properties.mapColor(state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : side)
                 .instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava();
+    }
+
+    private static BlockEntry<DropExperienceBlock> ore(String name, IntProvider experience, Item drop) {
+        return REGISTRATE.object(name).block(p -> new DropExperienceBlock(experience, p))
+                .initialProperties(ABYSS_ANDESITE).properties(p -> p.strength(4.5F, 3.0F))
+                .transform(TagGen.pickaxeOnly()).loot((lt, b) -> lt.add(b, lt.createOreDrop(b, drop)))
+                .simpleItem().register();
+    }
+
+    private static BlockEntry<Block> mineralBlock(String name, MapColor color, SoundType sound) {
+        return REGISTRATE.object(name).block(Block::new)
+                .properties(p -> p.mapColor(color).instrument(NoteBlockInstrument.BASEDRUM)
+                        .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(sound))
+                .transform(TagGen.pickaxeOnly()).simpleItem().register();
+    }
+
+    private static BlockEntry<AmethystClusterBlock> crystal(String name, int height, int offset, int light) {
+        return REGISTRATE.object(name).block(p -> new AmethystClusterBlock(height, offset, p))
+                .properties(p -> crystalProperties(p, light)).transform(TagGen.pickaxeOnly())
+                .blockstate(() -> (ctx, prov) -> prov.createAmethystCluster(ctx.get()))
+                .loot((lt, b) -> lt.dropWhenSilkTouch(b)).simpleItem().register();
+    }
+
+    private static BlockBehaviour.Properties crystalProperties(BlockBehaviour.Properties properties, int light) {
+        return properties.mapColor(MapColor.COLOR_GREEN).forceSolidOn().noOcclusion()
+                .sound(SoundType.AMETHYST_CLUSTER).strength(1.5F).lightLevel(_ -> light)
+                .pushReaction(PushReaction.DESTROY);
     }
 
     private static BlockEntry<FlowerBlock> flower(String name, net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect> effect,

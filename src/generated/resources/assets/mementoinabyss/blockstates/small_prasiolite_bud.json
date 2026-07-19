@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "mementoinabyss:block/small_prasiolite_bud",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "mementoinabyss:block/small_prasiolite_bud",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "mementoinabyss:block/small_prasiolite_bud",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "mementoinabyss:block/small_prasiolite_bud",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "mementoinabyss:block/small_prasiolite_bud"
+    },
+    "facing=west": {
+      "model": "mementoinabyss:block/small_prasiolite_bud",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

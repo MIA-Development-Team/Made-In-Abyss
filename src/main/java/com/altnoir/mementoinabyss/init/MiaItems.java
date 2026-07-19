@@ -5,6 +5,7 @@ import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 
 public class MiaItems {
     private static final MiaRegistrate REGISTRATE = MementoInAbyss.registrate();
@@ -22,6 +23,9 @@ public class MiaItems {
             .item("dream_lichee", p -> new BlockItem(MiaBlocks.DREAM_LICHEE_PLANT.get(), p))
             .properties(p -> p.food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.4F).build()))
             .register();
+
+    public static final ItemEntry<Item> RAW_CHLOROPHYTE = REGISTRATE.item("raw_chlorophyte", Item::new).register();
+    public static final ItemEntry<Item> PRASIOLITE_SHARD = REGISTRATE.item("prasiolite_shard", Item::new).register();
 
     public static void register() {}
 }

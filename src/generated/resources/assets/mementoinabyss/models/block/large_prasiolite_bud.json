@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "mementoinabyss:block/large_prasiolite_bud"
+  }
+}

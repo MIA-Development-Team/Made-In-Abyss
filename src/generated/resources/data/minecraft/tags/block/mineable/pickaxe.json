@@ -45,6 +45,24 @@
     "mementoinabyss:mossy_fossilized_wood_bricks_wall",
     "mementoinabyss:mossy_stripped_fossilized_wood_bricks_stairs",
     "mementoinabyss:mossy_stripped_fossilized_wood_bricks_slab",
-    "mementoinabyss:mossy_stripped_fossilized_wood_bricks_wall"
+    "mementoinabyss:mossy_stripped_fossilized_wood_bricks_wall",
+    "mementoinabyss:abyss_iron_ore",
+    "mementoinabyss:abyss_gold_ore",
+    "mementoinabyss:abyss_diamond_ore",
+    "mementoinabyss:abyss_emerald_ore",
+    "mementoinabyss:abyss_quartz_ore",
+    "mementoinabyss:abyss_copper_ore",
+    "mementoinabyss:abyss_lapis_ore",
+    "mementoinabyss:abyss_redstone_ore",
+    "mementoinabyss:abyss_chlorophyte_ore",
+    "mementoinabyss:raw_chlorophyte_block",
+    "mementoinabyss:chlorophyte_block",
+    "mementoinabyss:prasiolite_block",
+    "mementoinabyss:budding_prasiolite",
+    "mementoinabyss:small_prasiolite_bud",
+    "mementoinabyss:medium_prasiolite_bud",
+    "mementoinabyss:large_prasiolite_bud",
+    "mementoinabyss:prasiolite_cluster",
+    "mementoinabyss:sun_stone"
   ]
 }
