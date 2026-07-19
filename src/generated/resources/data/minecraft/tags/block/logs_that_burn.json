@@ -3,6 +3,10 @@
     "mementoinabyss:stripped_skyfog_log",
     "mementoinabyss:stripped_skyfog_wood",
     "mementoinabyss:skyfog_log",
-    "mementoinabyss:skyfog_wood"
+    "mementoinabyss:skyfog_wood",
+    "mementoinabyss:stripped_inverted_log",
+    "mementoinabyss:stripped_inverted_wood",
+    "mementoinabyss:inverted_log",
+    "mementoinabyss:inverted_wood"
   ]
 }

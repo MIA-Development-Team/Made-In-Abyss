@@ -28,6 +28,7 @@ public class MementoInAbyss {
         REGISTRATE.registerEventListeners(modEventBus);
 
         MiaDataAttachments.register(modEventBus);
+        MiaWorldgenFeatures.register(modEventBus);
 
         MiaItemGroups.register();
         MiaBlocks.register();

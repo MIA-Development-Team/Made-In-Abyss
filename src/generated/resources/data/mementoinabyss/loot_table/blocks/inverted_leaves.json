@@ -37,7 +37,7 @@
                   ]
                 }
               ],
-              "name": "mementoinabyss:skyfog_leaves"
+              "name": "mementoinabyss:inverted_leaves"
             },
             {
               "type": "minecraft:item",
@@ -56,7 +56,7 @@
                   "enchantment": "minecraft:fortune"
                 }
               ],
-              "name": "mementoinabyss:skyfog_sapling"
+              "name": "mementoinabyss:inverted_sapling"
             }
           ]
         }
@@ -132,5 +132,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "mementoinabyss:blocks/skyfog_leaves"
+  "random_sequence": "mementoinabyss:blocks/inverted_leaves"
 }

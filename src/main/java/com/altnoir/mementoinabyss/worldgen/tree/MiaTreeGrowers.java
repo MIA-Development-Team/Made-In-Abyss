@@ -11,6 +11,10 @@ public final class MiaTreeGrowers {
             Optional.of(MiaTreeFeatures.MEGA_SKYFOG_TREE),
             Optional.of(MiaTreeFeatures.SKYFOG_TREE),
             Optional.of(MiaTreeFeatures.SKYFOG_TREE_BEES));
+    public static final TreeGrower INVERTED = new TreeGrower(
+            MementoInAbyss.ID + ":inverted_tree",
+            Optional.of(MiaTreeFeatures.MEGA_INVERTED_TREE),
+            Optional.of(MiaTreeFeatures.INVERTED_TREE), Optional.empty());
 
     private MiaTreeGrowers() {}
 }

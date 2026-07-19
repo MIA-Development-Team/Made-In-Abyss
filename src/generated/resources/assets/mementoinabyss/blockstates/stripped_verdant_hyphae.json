@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "mementoinabyss:block/stripped_verdant_hyphae",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "mementoinabyss:block/stripped_verdant_hyphae"
+    },
+    "axis=z": {
+      "model": "mementoinabyss:block/stripped_verdant_hyphae",
+      "x": 90
+    }
+  }
+}
