@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "mementoinabyss:dream_lichee_plant",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "half": "lower"
+              }
+            }
+          ],
+          "name": "mementoinabyss:dream_lichee"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "mementoinabyss:blocks/dream_lichee_plant"
+}

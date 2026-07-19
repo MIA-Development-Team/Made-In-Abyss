@@ -8,6 +8,9 @@ import com.google.gson.Strictness;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 import com.tterrag.registrate.providers.ProviderType;
+import com.altnoir.mementoinabyss.worldgen.tree.MiaTreeFeatures;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.jspecify.annotations.Nullable;
 
@@ -29,6 +32,8 @@ public class MiaDataGen {
             return;
 
         event.createProvider(MiaCurseDataProvider::new);
+        event.createDatapackRegistryObjects(new RegistrySetBuilder()
+                .add(Registries.CONFIGURED_FEATURE, MiaTreeFeatures::bootstrap));
     }
 
     private static void addExtraRegistrateData() {

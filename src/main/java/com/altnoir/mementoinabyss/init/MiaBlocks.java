@@ -5,22 +5,42 @@ import com.altnoir.mementoinabyss.content.block.abyss_andesite.AbyssAndesiteBloc
 import com.altnoir.mementoinabyss.content.block.cover_grass.CoverGrassBlock;
 import com.altnoir.mementoinabyss.content.block.column.ColumnBlock;
 import com.altnoir.mementoinabyss.content.block.stripped_rotated_pillar.StrippedRotatedPillarBlock;
+import com.altnoir.mementoinabyss.content.block.plant.DreamLicheeBlock;
+import com.altnoir.mementoinabyss.content.block.plant.GloomBerryBlock;
+import com.altnoir.mementoinabyss.content.block.plant.WaterTallFlowerBlock;
 import com.altnoir.mementoinabyss.impl.registrate.BlockStateGen;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.impl.registrate.TagGen;
+import com.altnoir.mementoinabyss.worldgen.tree.MiaTreeGrowers;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.providers.DataGenContext;
+import com.tterrag.registrate.providers.generators.RegistrateItemModelGenerator;
+import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import java.util.Optional;
 
@@ -348,6 +368,130 @@ public class MiaBlocks {
     public static final BlockEntry<SlabBlock> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB = slab(MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
     public static final BlockEntry<WallBlock> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL = wall(MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
 
+    public static final BlockEntry<TallGrassBlock> MARGINAL_WEED = REGISTRATE.object("marginal_weed")
+            .block(TallGrassBlock::new)
+            .properties(MiaBlocks::plantProperties)
+            .blockstate(BlockStateGen::crossPlant)
+            .item().model(() -> flatPlantItem("block/marginal_weed")).build()
+            .register();
+
+    public static final BlockEntry<TallGrassBlock> CRIMSON_VEILGRASS = REGISTRATE.object("crimson_veilgrass")
+            .block(TallGrassBlock::new)
+            .properties(p -> plantProperties(p).mapColor(MapColor.NETHER).sound(SoundType.ROOTS))
+            .blockstate(BlockStateGen::crossPlant)
+            .item().model(() -> flatPlantItem("block/crimson_veilgrass")).build()
+            .register();
+
+    public static final BlockEntry<NetherSproutsBlock> SCORCHLEAF = REGISTRATE.object("scorchleaf")
+            .block(NetherSproutsBlock::new)
+            .properties(p -> plantProperties(p).mapColor(MapColor.COLOR_CYAN).sound(SoundType.NETHER_SPROUTS))
+            .blockstate(BlockStateGen::crossPlant)
+            .item().model(() -> flatPlantItem("block/scorchleaf")).build()
+            .register();
+
+    public static final BlockEntry<FlowerBedBlock> FORTITUDE_FLOWER = REGISTRATE.object("fortitude_flower")
+            .block(FlowerBedBlock::new)
+            .properties(p -> p.mapColor(MapColor.PLANT).noCollision().sound(SoundType.PINK_PETALS).pushReaction(PushReaction.DESTROY))
+            .blockstate(BlockStateGen::flowerBed)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<WaterTallFlowerBlock> REED = REGISTRATE.object("reed")
+            .block(WaterTallFlowerBlock::new)
+            .properties(MiaBlocks::plantProperties)
+            .blockstate(BlockStateGen::doublePlant)
+            .loot((lt, b) -> lt.add(b, LootTable.lootTable().withPool(
+                    LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+                            .when(ExplosionCondition.survivesExplosion())
+                            .add(LootItem.lootTableItem(b)
+                                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b)
+                                            .setProperties(StatePropertiesPredicate.Builder.properties()
+                                                    .hasProperty(DoublePlantBlock.HALF, DoubleBlockHalf.LOWER)))))))
+            .item()
+            .model(() -> flatPlantItem("block/reed_top"))
+            .build()
+            .register();
+
+    public static final BlockEntry<GloomBerryBlock> GLOOM_BERRY_PLANT = REGISTRATE.object("gloom_berry_plant")
+            .block(GloomBerryBlock::new)
+            .properties(p -> plantProperties(p).randomTicks().lightLevel(GloomBerryBlock::getLightLevel))
+            .blockstate(BlockStateGen::doubleBerry)
+            .loot((lt, b) -> lt.add(b, LootTable.lootTable().withPool(
+                    LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+                            .when(ExplosionCondition.survivesExplosion())
+                            .add(LootItem.lootTableItem(MiaItems.GLOOM_BERRY.get())
+                                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b)
+                                            .setProperties(StatePropertiesPredicate.Builder.properties()
+                                                    .hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER)))))))
+            .register();
+
+    public static final BlockEntry<DreamLicheeBlock> DREAM_LICHEE_PLANT = REGISTRATE.object("dream_lichee_plant")
+            .block(DreamLicheeBlock::new)
+            .properties(p -> plantProperties(p).randomTicks())
+            .blockstate(BlockStateGen::doubleBerry)
+            .loot((lt, b) -> lt.add(b, LootTable.lootTable().withPool(
+                    LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+                            .when(ExplosionCondition.survivesExplosion())
+                            .add(LootItem.lootTableItem(MiaItems.DREAM_LICHEE.get())
+                                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b)
+                                            .setProperties(StatePropertiesPredicate.Builder.properties()
+                                                    .hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER)))))))
+            .register();
+
+    public static final BlockEntry<FlowerBlock> BALLOON_PLANT = flower("balloon_plant", MobEffects.INSTANT_HEALTH, 5.0F, SoundType.GRASS, 0);
+    public static final BlockEntry<FlowerBlock> LANTERN_PLANT = flower("lantern_plant", MobEffects.NIGHT_VISION, 5.0F, SoundType.GRASS, 9);
+    public static final BlockEntry<FlowerBlock> GREEN_PERILLA = flower("green_perilla", MobEffects.INSTANT_HEALTH, 5.0F, SoundType.GRASS, 0);
+    public static final BlockEntry<FlowerBlock> KONJAC_ROOT = flower("konjac_root", MobEffects.INSTANT_HEALTH, 5.0F, SoundType.ROOTS, 0);
+    public static final BlockEntry<FlowerBlock> SILVEAF_FUNGUS = flower("silveaf_fungus", MobEffects.INSTANT_HEALTH, 5.0F, SoundType.ROOTS, 0);
+
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_SKYFOG_LOG = REGISTRATE.object("stripped_skyfog_log")
+            .block(RotatedPillarBlock::new)
+            .properties(p -> treeLogProperties(p, MapColor.WOOD, MapColor.WOOD))
+            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
+            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_SKYFOG_WOOD = REGISTRATE.object("stripped_skyfog_wood")
+            .block(RotatedPillarBlock::new)
+            .initialProperties(STRIPPED_SKYFOG_LOG)
+            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
+            .blockstate(() -> (ctx, prov) -> prov.woodProvider(STRIPPED_SKYFOG_LOG.get()).wood(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> SKYFOG_LOG = REGISTRATE.object("skyfog_log")
+            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_SKYFOG_LOG.get(), p))
+            .properties(p -> treeLogProperties(p, MapColor.WOOD, MapColor.PODZOL))
+            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
+            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> SKYFOG_WOOD = REGISTRATE.object("skyfog_wood")
+            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_SKYFOG_WOOD.get(), p))
+            .initialProperties(SKYFOG_LOG)
+            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
+            .blockstate(() -> (ctx, prov) -> prov.woodProvider(SKYFOG_LOG.get()).wood(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<UntintedParticleLeavesBlock> SKYFOG_LEAVES = REGISTRATE.object("skyfog_leaves")
+            .block(p -> new UntintedParticleLeavesBlock(0.01F, ParticleTypes.CHERRY_LEAVES, p))
+            .initialProperties(() -> Blocks.AZALEA_LEAVES)
+            .tag(BlockTags.LEAVES)
+            .simpleItem().register();
+
+    public static final BlockEntry<UntintedParticleLeavesBlock> SKYFOG_LEAVES_WITH_FRUITS = REGISTRATE.object("skyfog_leaves_with_fruits")
+            .block(p -> new UntintedParticleLeavesBlock(0.01F, ParticleTypes.CHERRY_LEAVES, p))
+            .initialProperties(SKYFOG_LEAVES)
+            .tag(BlockTags.LEAVES)
+            .simpleItem().register();
+
+    public static final BlockEntry<SaplingBlock> SKYFOG_SAPLING = REGISTRATE.object("skyfog_sapling")
+            .block(p -> new SaplingBlock(MiaTreeGrowers.SKYFOG, p))
+            .properties(p -> plantProperties(p).randomTicks().sound(SoundType.CHERRY_SAPLING))
+            .tag(BlockTags.SAPLINGS)
+            .blockstate(BlockStateGen::crossPlant)
+            .item().model(() -> flatPlantItem("block/skyfog_sapling")).build()
+            .register();
+
     public static BlockEntry<StairBlock> stairs(BlockEntry<? extends Block> base) {
         var name = base.getId().getPath() + "_stairs";
         return REGISTRATE.object(name)
@@ -399,6 +543,34 @@ public class MiaBlocks {
                 })
                 .build()
                 .register();
+    }
+
+    private static BlockBehaviour.Properties plantProperties(BlockBehaviour.Properties properties) {
+        return properties.mapColor(MapColor.PLANT).replaceable().noCollision().instabreak()
+                .sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)
+                .ignitedByLava().pushReaction(PushReaction.DESTROY);
+    }
+
+    private static BlockBehaviour.Properties treeLogProperties(BlockBehaviour.Properties properties, MapColor top, MapColor side) {
+        return properties.mapColor(state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : side)
+                .instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava();
+    }
+
+    private static BlockEntry<FlowerBlock> flower(String name, net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect> effect,
+                                                   float duration, SoundType sound, int light) {
+        return REGISTRATE.object(name)
+                .block(p -> new FlowerBlock(effect, duration, p))
+                .properties(p -> plantProperties(p).sound(sound).lightLevel(_ -> light))
+                .blockstate(BlockStateGen::crossPlant)
+                .item().model(() -> flatPlantItem("block/" + name)).build()
+                .register();
+    }
+
+    private static <T extends Item> NonNullBiConsumer<DataGenContext<Item, T>, RegistrateItemModelGenerator> flatPlantItem(String texture) {
+        return (ctx, prov) -> {
+            var model = ModelTemplates.FLAT_ITEM.create(ctx.get(), TextureMapping.layer0(new Material(prov.modLoc(texture))), prov.modelOutput);
+            prov.createWithExistingModel(ctx.getEntry(), model);
+        };
     }
 
     public static void register() {}

@@ -1,0 +1,71 @@
+{
+  "type": "minecraft:tree",
+  "config": {
+    "below_trunk_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:rooted_dirt"
+      }
+    },
+    "decorators": [],
+    "foliage_placer": {
+      "type": "minecraft:cherry_foliage_placer",
+      "corner_hole_chance": 0.25,
+      "hanging_leaves_chance": 0.16666667,
+      "hanging_leaves_extension_chance": 0.33333334,
+      "height": 4,
+      "offset": 0,
+      "radius": 3,
+      "wide_bottom_layer_hole_chance": 0.25
+    },
+    "foliage_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "mementoinabyss:skyfog_leaves",
+            "Properties": {
+              "distance": "7",
+              "persistent": "false",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 9
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:skyfog_leaves_with_fruits",
+            "Properties": {
+              "distance": "7",
+              "persistent": "false",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    },
+    "ignore_vines": false,
+    "minimum_size": {
+      "type": "minecraft:two_layers_feature_size",
+      "limit": 1,
+      "lower_size": 0,
+      "upper_size": 1
+    },
+    "trunk_placer": {
+      "type": "minecraft:forking_trunk_placer",
+      "base_height": 6,
+      "height_rand_a": 2,
+      "height_rand_b": 2
+    },
+    "trunk_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "mementoinabyss:skyfog_log",
+        "Properties": {
+          "axis": "y"
+        }
+      }
+    }
+  }
+}

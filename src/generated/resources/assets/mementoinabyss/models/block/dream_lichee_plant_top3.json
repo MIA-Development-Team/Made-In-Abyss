@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "mementoinabyss:block/dream_lichee_plant_top3"
+  }
+}

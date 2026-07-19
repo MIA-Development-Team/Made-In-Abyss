@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "mementoinabyss:block/skyfog_wood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "mementoinabyss:block/skyfog_wood"
+    },
+    "axis=z": {
+      "model": "mementoinabyss:block/skyfog_wood",
+      "x": 90
+    }
+  }
+}

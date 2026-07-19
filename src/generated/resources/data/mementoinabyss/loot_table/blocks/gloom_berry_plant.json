@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "mementoinabyss:gloom_berry_plant",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "half": "lower"
+              }
+            }
+          ],
+          "name": "mementoinabyss:gloom_berry"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "mementoinabyss:blocks/gloom_berry_plant"
+}

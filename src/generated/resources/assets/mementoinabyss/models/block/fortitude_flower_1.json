@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/flowerbed_1",
+  "textures": {
+    "flowerbed": "mementoinabyss:block/fortitude_flower",
+    "stem": "mementoinabyss:block/fortitude_flower_stem"
+  }
+}

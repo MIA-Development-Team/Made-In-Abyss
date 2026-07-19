@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.impl.registrate;
 import com.altnoir.mementoinabyss.content.block.cover_grass.CoverGrassBlock;
 import com.altnoir.mementoinabyss.content.block.column.ColumnBlock;
 import com.altnoir.mementoinabyss.content.block.column.ColumnSide;
+import com.altnoir.mementoinabyss.content.block.plant.DoubleBerryBlock;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.generators.RegistrateBlockModelGenerator;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -16,9 +17,11 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.renderer.block.dispatch.Variant;
 import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
@@ -133,6 +136,41 @@ public class BlockStateGen {
                             .select(ColumnSide.MIDDLE, BlockModelGenerators.plainVariant(middle))
                             .select(ColumnSide.TOP, BlockModelGenerators.plainVariant(columnTop))));
             prov.registerSimpleItemModel(ctx.get(), single);
+        };
+    }
+
+    public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> crossPlant() {
+        return (ctx, prov) -> prov.createCrossBlock(ctx.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+    }
+
+    public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> doublePlant() {
+        return (ctx, prov) -> prov.createDoublePlant(ctx.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+    }
+
+    public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> flowerBed() {
+        return (ctx, prov) -> prov.createFlowerBed(ctx.get());
+    }
+
+    public static <B extends DoubleBerryBlock> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> doubleBerry() {
+        return (ctx, prov) -> {
+            var models = new Identifier[2][DoubleBerryBlock.MAX_AGE + 1];
+            for (int age = 0; age <= DoubleBerryBlock.MAX_AGE; age++) {
+                String bottomSuffix = "_bottom" + age;
+                models[0][age] = BlockModelGenerators.PlantType.NOT_TINTED.getCross().createWithSuffix(
+                        ctx.get(), bottomSuffix,
+                        TextureMapping.cross(prov.modBlockTexture(ctx.getName() + bottomSuffix)), prov.modelOutput);
+                if (age >= 2) {
+                    String topSuffix = "_top" + age;
+                    models[1][age] = BlockModelGenerators.PlantType.NOT_TINTED.getCross().createWithSuffix(
+                            ctx.get(), topSuffix,
+                            TextureMapping.cross(prov.modBlockTexture(ctx.getName() + topSuffix)), prov.modelOutput);
+                }
+            }
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get()).with(
+                    PropertyDispatch.initial(DoubleBerryBlock.HALF, DoubleBerryBlock.AGE).generate((half, age) -> {
+                        var model = half == DoubleBlockHalf.UPPER && age >= 2 ? models[1][age] : models[0][age];
+                        return BlockModelGenerators.plainVariant(model);
+                    })));
         };
     }
 

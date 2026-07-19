@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "mementoinabyss:block/reed_bottom"
+    },
+    "half=upper": {
+      "model": "mementoinabyss:block/reed_top"
+    }
+  }
+}

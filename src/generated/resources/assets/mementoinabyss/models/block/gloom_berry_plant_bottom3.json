@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "mementoinabyss:block/gloom_berry_plant_bottom3"
+  }
+}
