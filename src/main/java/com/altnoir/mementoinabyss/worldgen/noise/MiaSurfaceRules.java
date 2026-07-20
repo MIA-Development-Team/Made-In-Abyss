@@ -39,18 +39,18 @@ public final class MiaSurfaceRules {
         SurfaceRules.RuleSource sequence = SurfaceRules.sequence(
                 // Layer 1
                 SurfaceRules.ifTrue(
-                        SurfaceRules.isBiome(
-                                MiaBiomes.THE_ABYSS,
-                                MiaBiomes.SKYFOG_FOREST,
-                                MiaBiomes.FOSSILIZED_FOREST,
-                                MiaBiomes.RICH_FOSSILIZED_FOREST,
-                                MiaBiomes.UNDER_FOSSILIZED_FOREST,
-                                MiaBiomes.ABYSS_PLAINS,
-                                MiaBiomes.PRASIOLITE_CAVES,
-                                MiaBiomes.ABYSS_LUSH_CAVES
-                        ),
+                        SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR),
                         SurfaceRules.ifTrue(
-                                SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR),
+                                SurfaceRules.isBiome(
+                                        MiaBiomes.THE_ABYSS,
+                                        MiaBiomes.SKYFOG_FOREST,
+                                        MiaBiomes.FOSSILIZED_FOREST,
+                                        MiaBiomes.RICH_FOSSILIZED_FOREST,
+                                        MiaBiomes.UNDER_FOSSILIZED_FOREST,
+                                        MiaBiomes.ABYSS_PLAINS,
+                                        MiaBiomes.PRASIOLITE_CAVES,
+                                        MiaBiomes.ABYSS_LUSH_CAVES
+                                ),
                                 SurfaceRules.sequence(
                                         SurfaceRules.ifTrue(
                                                 SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
@@ -61,9 +61,9 @@ public final class MiaSurfaceRules {
                         )
                 ),
                 SurfaceRules.ifTrue(
-                        SurfaceRules.isBiome(MiaBiomes.DENSE_SKYFOG_FOREST),
+                        SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR),
                         SurfaceRules.ifTrue(
-                                SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR),
+                                SurfaceRules.isBiome(MiaBiomes.DENSE_SKYFOG_FOREST),
                                 SurfaceRules.sequence(
                                         SurfaceRules.ifTrue(
                                                 SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
@@ -85,11 +85,9 @@ public final class MiaSurfaceRules {
                 ),
                 // Layer 2
                 SurfaceRules.ifTrue(
-                        SurfaceRules.isBiome(
-                                MiaBiomes.TEMPTATION_FOREST
-                        ),
+                        SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
                         SurfaceRules.ifTrue(
-                                SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
+                                SurfaceRules.isBiome(MiaBiomes.TEMPTATION_FOREST),
                                 SurfaceRules.sequence(
                                         SurfaceRules.ifTrue(
                                                 SurfaceRules.noiseCondition(MiaNoiseData.STRIPEY, -0.12, 0.12),
@@ -117,8 +115,9 @@ public final class MiaSurfaceRules {
                 SurfaceRules.verticalGradient("bedrock_floor", VerticalAnchor.aboveBottom(128), VerticalAnchor.aboveBottom(133)),
                 ROOTED_DIRT));
 
-        SurfaceRules.RuleSource ruleSource = SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(), sequence);
-        builder.add(sequence); // 为ture时，表面覆盖物只会在最上层生成
+        // Cave surfaces must remain eligible, so this cannot be wrapped in abovePreliminarySurface().
+        // The cheap stone-depth checks above run before biome checks to avoid lookups for deep stone.
+        builder.add(sequence);
         //builder.add(SurfaceRules.ifTrue(SurfaceRules.verticalGradient("deepslate", VerticalAnchor.absolute(0), VerticalAnchor.absolute(8)), makeStateRule(Blocks.DEEPSLATE)));
         return SurfaceRules.sequence(builder.build().toArray(SurfaceRules.RuleSource[]::new));
     }

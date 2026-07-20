@@ -3,12 +3,14 @@ package com.altnoir.mementoinabyss.worldgen.placement;
 import com.altnoir.mementoinabyss.init.MiaPlacementModifiers;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
@@ -41,7 +43,9 @@ public class InvertedCountOnEveryLayerPlacement extends PlacementModifier {
             int x = random.nextInt(16) + pos.getX();
             int z = random.nextInt(16) + pos.getZ();
             int topY = context.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
-            int y = findLowestRootedDirtCeiling(context, x, topY, z);
+            ChunkAccess chunk = context.getLevel().getChunk(
+                    SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z));
+            int y = findLowestRootedDirtCeiling(context, chunk, x, topY, z);
             if (y != Integer.MAX_VALUE) builder.add(new BlockPos(x, y, z));
         }
 
@@ -53,12 +57,13 @@ public class InvertedCountOnEveryLayerPlacement extends PlacementModifier {
         return MiaPlacementModifiers.INVERTED_COUNT_ON_EVERY_LAYER.get();
     }
 
-    private static int findLowestRootedDirtCeiling(PlacementContext context, int x, int topY, int z) {
+    private static int findLowestRootedDirtCeiling(PlacementContext context, ChunkAccess chunk,
+                                                   int x, int topY, int z) {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(x, context.getMinY(), z);
-        BlockState current = context.getBlockState(pos);
+        BlockState current = chunk.getBlockState(pos);
         for (int y = context.getMinY(); y < topY; y++) {
             pos.setY(y + 1);
-            BlockState above = context.getBlockState(pos);
+            BlockState above = chunk.getBlockState(pos);
             if (isEmpty(current) && above.is(Blocks.ROOTED_DIRT)) return y;
             current = above;
         }

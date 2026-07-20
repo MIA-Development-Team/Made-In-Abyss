@@ -6,7 +6,7 @@
       "chance": 2
     },
     {
-      "type": "minecraft:count_on_every_layer",
+      "type": "mementoinabyss:fast_count_on_every_layer",
       "count": 16
     },
     {

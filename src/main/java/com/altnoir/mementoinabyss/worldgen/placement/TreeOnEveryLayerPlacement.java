@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.worldgen.placement;
 import com.altnoir.mementoinabyss.init.MiaPlacementModifiers;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tags.BlockTags;
 import com.altnoir.mementoinabyss.init.MiaTags;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
@@ -49,7 +51,9 @@ public class TreeOnEveryLayerPlacement extends PlacementModifier {
                 int k = random.nextInt(16) + pos.getX();
                 int l = random.nextInt(16) + pos.getZ();
                 int i1 = context.getHeight(Heightmap.Types.MOTION_BLOCKING, k, l);
-                int j1 = findOnGroundYPosition(context, k, i1, l, i);
+                ChunkAccess chunk = context.getLevel().getChunk(
+                        SectionPos.blockToSectionCoord(k), SectionPos.blockToSectionCoord(l));
+                int j1 = findOnGroundYPosition(context, chunk, k, i1, l, i);
                 if (j1 != Integer.MAX_VALUE) {
                     builder.add(new BlockPos(k, j1, l));
                     flag = true;
@@ -67,14 +71,15 @@ public class TreeOnEveryLayerPlacement extends PlacementModifier {
         return MiaPlacementModifiers.TREE_ON_EVERY_LAYER.get();
     }
 
-    private static int findOnGroundYPosition(PlacementContext context, int x, int y, int z, int count) {
+    private static int findOnGroundYPosition(PlacementContext context, ChunkAccess chunk,
+                                             int x, int y, int z, int count) {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(x, y, z);
         int i = 0;
-        BlockState blockstate = context.getBlockState(blockpos$mutableblockpos);
+        BlockState blockstate = chunk.getBlockState(blockpos$mutableblockpos);
 
         for (int j = y; j >= context.getMinY() + 1; j--) {
             blockpos$mutableblockpos.setY(j - 1);
-            BlockState blockstate1 = context.getBlockState(blockpos$mutableblockpos);
+            BlockState blockstate1 = chunk.getBlockState(blockpos$mutableblockpos);
             if (isValidGround(blockstate1) && isEmpty(blockstate)) {
                 if (i == count) {
                     return blockpos$mutableblockpos.getY() + 1;

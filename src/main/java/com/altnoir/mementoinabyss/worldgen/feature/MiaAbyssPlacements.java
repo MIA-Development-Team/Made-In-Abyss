@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
-import net.minecraft.world.level.levelgen.placement.CountOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.worldgen.placement.FastCountOnEveryLayerPlacement;
 import net.minecraft.world.level.levelgen.placement.EnvironmentScanPlacement;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.HeightmapPlacement;
@@ -86,7 +86,7 @@ public final class MiaAbyssPlacements {
         everyLayer(context, PATCH_GRASS_PLAIN, configured.getOrThrow(vanillaConfigured("grass")), 1);
         everyLayer(context, PATCH_GRASS_FERN, configured.getOrThrow(vanillaConfigured("taiga_grass")), 1);
         context.register(PATCH_LARGE_FERN, new PlacedFeature(configured.getOrThrow(vanillaConfigured("large_fern")),
-                List.of(RarityFilter.onAverageOnceEvery(5), CountOnEveryLayerPlacement.of(1), BiomeFilter.biome())));
+                List.of(RarityFilter.onAverageOnceEvery(5), FastCountOnEveryLayerPlacement.of(1), BiomeFilter.biome())));
         everyLayer(context, PATCH_DENSE_LARGE_FERN, configured.getOrThrow(vanillaConfigured("large_fern")), 2);
         context.register(PATCH_SUNFLOWER, new PlacedFeature(configured.getOrThrow(vanillaConfigured("sunflower")),
                 List.of(RarityFilter.onAverageOnceEvery(2), InSquarePlacement.spread(), BiomeFilter.biome())));
@@ -95,7 +95,7 @@ public final class MiaAbyssPlacements {
         everyLayer(context, FLOWER_MEADOW_LAYER1, configured.getOrThrow(MiaAbyssFeatures.FLOWER_MEADOW_LAYER1), 24);
         everyLayer(context, FLOWER_MEADOW_LAYER2, configured.getOrThrow(MiaAbyssFeatures.FLOWER_MEADOW_LAYER2), 24);
         context.register(FOREST_FLOWERS, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.FOREST_FLOWERS),
-                List.of(RarityFilter.onAverageOnceEvery(2), CountOnEveryLayerPlacement.of(16), BiomeFilter.biome())));
+                List.of(RarityFilter.onAverageOnceEvery(2), FastCountOnEveryLayerPlacement.of(16), BiomeFilter.biome())));
         context.register(LONG_VINES, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.LONG_VINES), List.of(
                 CountPlacement.of(127), CountPlacement.of(5), InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(128), VerticalAnchor.belowTop(8)),
@@ -123,7 +123,7 @@ public final class MiaAbyssPlacements {
                 RarityFilter.onAverageOnceEvery(4), InSquarePlacement.spread(),
                 HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), BiomeFilter.biome())));
         context.register(RAW_IRON, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.RAW_IRON), List.of(
-                RarityFilter.onAverageOnceEvery(5), CountOnEveryLayerPlacement.of(1), BiomeFilter.biome())));
+                RarityFilter.onAverageOnceEvery(5), FastCountOnEveryLayerPlacement.of(1), BiomeFilter.biome())));
         ceilingPlant(context, SUN_STONE, configured.getOrThrow(MiaAbyssFeatures.SUN_STONE), 2, 12);
         context.register(PRASIOLITE_GEODE, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.PRASIOLITE_GEODE), List.of(
                 RarityFilter.onAverageOnceEvery(24), InSquarePlacement.spread(),
@@ -167,7 +167,7 @@ public final class MiaAbyssPlacements {
     private static void everyLayer(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key,
                                    Holder<ConfiguredFeature<?, ?>> configured, int count) {
         context.register(key, new PlacedFeature(configured,
-                List.of(CountOnEveryLayerPlacement.of(count), BiomeFilter.biome())));
+                List.of(FastCountOnEveryLayerPlacement.of(count), BiomeFilter.biome())));
     }
 
     private static void ceilingPlant(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key,

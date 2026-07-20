@@ -3,11 +3,13 @@ package com.altnoir.mementoinabyss.worldgen.placement;
 import com.altnoir.mementoinabyss.init.MiaPlacementModifiers;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
@@ -30,12 +32,14 @@ public final class WaterOnEveryLayerPlacement extends PlacementModifier {
             int x = origin.getX() + random.nextInt(16);
             int z = origin.getZ() + random.nextInt(16);
             int top = context.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+            ChunkAccess chunk = context.getLevel().getChunk(
+                    SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z));
             BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos(x, top, z);
             for (int y = top; y > context.getMinY(); y--) {
                 cursor.setY(y);
-                if (!context.getBlockState(cursor).isAir()) continue;
+                if (!chunk.getBlockState(cursor).isAir()) continue;
                 cursor.setY(y - 1);
-                if (context.getBlockState(cursor).is(Blocks.WATER)) {
+                if (chunk.getBlockState(cursor).is(Blocks.WATER)) {
                     positions.add(new BlockPos(x, y, z));
                     break;
                 }

@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.worldgen.placement.FastCountOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.worldgen.placement.InvertedCountOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.worldgen.placement.TreeOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.worldgen.placement.WaterOnEveryLayerPlacement;
@@ -20,6 +21,8 @@ public final class MiaPlacementModifiers {
             TYPES.register("tree_on_every_layer", () -> () -> TreeOnEveryLayerPlacement.CODEC);
     public static final DeferredHolder<PlacementModifierType<?>, PlacementModifierType<WaterOnEveryLayerPlacement>> WATER_ON_EVERY_LAYER =
             TYPES.register("water_on_every_layer", () -> () -> WaterOnEveryLayerPlacement.CODEC);
+    public static final DeferredHolder<PlacementModifierType<?>, PlacementModifierType<FastCountOnEveryLayerPlacement>> FAST_COUNT_ON_EVERY_LAYER =
+            TYPES.register("fast_count_on_every_layer", () -> () -> FastCountOnEveryLayerPlacement.CODEC);
 
     public static void register(IEventBus bus) { TYPES.register(bus); }
     private MiaPlacementModifiers() {}

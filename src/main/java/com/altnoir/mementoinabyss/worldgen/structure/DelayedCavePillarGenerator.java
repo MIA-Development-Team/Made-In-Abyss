@@ -9,6 +9,7 @@ import net.minecraft.server.level.FullChunkStatus;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -30,6 +31,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public final class DelayedCavePillarGenerator {
     private static final int CELL_SIZE_CHUNKS = 4;
     private static final int CANDIDATES_PER_TICK = 16;
+    private static final int PLACEMENT_OPERATIONS_PER_TICK = 1024;
     // Keep main's floor_to_ceiling_search_range and ABYSS_BRINK_HEIGHT placement limits.
     private static final int MAIN_SEARCH_RANGE = 188;
     private static final int MAIN_MIN_HEIGHT_ABOVE_BOTTOM = 128;
@@ -42,6 +44,7 @@ public final class DelayedCavePillarGenerator {
     private static final double MIN_ENDPOINT_SUPPORT = 0.5;
     private static final long SALT = 0x43C6A4A7935BD1E5L;
     private static final Map<ServerLevel, PendingCandidates> PENDING = new ConcurrentHashMap<>();
+    private static final Map<ServerLevel, PlacementTask> ACTIVE = new ConcurrentHashMap<>();
 
     public static void onChunkLoad(ChunkEvent.Load event) {
         if (!(event.getLevel() instanceof ServerLevel level)
@@ -58,6 +61,24 @@ public final class DelayedCavePillarGenerator {
         ServerLevel level = event.getServer().getLevel(MiaDimensions.THE_ABYSS_LEVEL);
         if (level == null) return;
 
+        PlacementTask active = ACTIVE.get(level);
+        if (active != null) {
+            if (!allChunksFull(level, active.pillar.bounds())) {
+                ACTIVE.remove(level, active);
+                PENDING.computeIfAbsent(level, ignored -> new PendingCandidates()).add(active.id);
+                return;
+            }
+            if (placeBatch(level, active, PLACEMENT_OPERATIONS_PER_TICK)) {
+                CavePillarSavedData savedData = level.getDataStorage().computeIfAbsent(CavePillarSavedData.TYPE);
+                savedData.markProcessed(active.id);
+                ACTIVE.remove(level, active);
+                MementoInAbyss.LOGGER.debug("Placed delayed cave pillar at {}, {}, mode {}, height {}, blocks {}",
+                        active.candidate.x(), active.candidate.z(), active.pillar.mode(),
+                        active.pillar.ceiling() - active.pillar.floor(), active.placed);
+            }
+            return;
+        }
+
         PendingCandidates pending = PENDING.get(level);
         if (pending == null || pending.isEmpty()) return;
         CavePillarSavedData savedData = level.getDataStorage().computeIfAbsent(CavePillarSavedData.TYPE);
@@ -67,13 +88,14 @@ public final class DelayedCavePillarGenerator {
             if (savedData.isProcessed(id)) continue;
             Result result = tryPlace(level, savedData, id);
             if (result == Result.RETRY) pending.add(id);
-            if (result == Result.PLACED) break;
+            if (result == Result.STARTED) break;
         }
         if (pending.isEmpty()) PENDING.remove(level);
     }
 
     public static void clearPending() {
         PENDING.clear();
+        ACTIVE.clear();
     }
 
     private static Result tryPlace(ServerLevel level, CavePillarSavedData savedData, long id) {
@@ -127,11 +149,8 @@ public final class DelayedCavePillarGenerator {
         }
         if (!allChunksFull(level, pillar.bounds())) return Result.RETRY;
 
-        int placed = place(level, pillar);
-        savedData.markProcessed(id);
-        MementoInAbyss.LOGGER.debug("Placed delayed cave pillar at {}, {}, mode {}, height {}, blocks {}",
-                candidate.x(), candidate.z(), pillar.mode(), pillar.ceiling() - pillar.floor(), placed);
-        return Result.PLACED;
+        ACTIVE.put(level, createPlacementTask(id, candidate, pillar));
+        return Result.STARTED;
     }
 
     private static Candidate candidate(long worldSeed, int cellX, int cellZ) {
@@ -313,10 +332,8 @@ public final class DelayedCavePillarGenerator {
         return chunk != null && chunk.getFullStatus().isOrAfter(FullChunkStatus.FULL) ? chunk : null;
     }
 
-    private static int place(ServerLevel level, Pillar pillar) {
-        int placed = 0;
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        BlockState state = MiaBlocks.FOSSILIZED_LOG.get().defaultBlockState();
+    private static PlacementTask createPlacementTask(long id, Candidate candidate, Pillar pillar) {
+        List<BlockPos> positions = new ArrayList<>();
         int minY = pillar.mode() == PillarMode.CEILING_SPIKE
                 ? pillar.floor() : pillar.floor() - EMBED_DEPTH;
         int maxY = pillar.mode() == PillarMode.FLOOR_SPIKE
@@ -354,16 +371,31 @@ public final class DelayedCavePillarGenerator {
                         if (radialDistance > connectionRadius
                                 && fromFloor > lowerHeight && fromCeiling > upperHeight) continue;
                     }
-                    pos.set(axisX + dx, y, axisZ + dz);
-                    BlockState current = level.getBlockState(pos);
-                    boolean surfaceLayer = (pillar.mode() != PillarMode.CEILING_SPIKE && y == pillar.floor())
-                            || (pillar.mode() != PillarMode.FLOOR_SPIKE && y == pillar.ceiling());
-                    if (canReplace(level, pos, current, embedded, surfaceLayer)
-                            && level.setBlock(pos, state, 2)) placed++;
+                    positions.add(new BlockPos(axisX + dx, y, axisZ + dz));
                 }
             }
         }
-        return placed;
+        return new PlacementTask(id, candidate, pillar, positions);
+    }
+
+    private static boolean placeBatch(ServerLevel level, PlacementTask task, int operationBudget) {
+        BlockState state = MiaBlocks.FOSSILIZED_LOG.get().defaultBlockState();
+        int end = Math.min(task.positions.size(), task.index + operationBudget);
+        while (task.index < end) {
+            BlockPos pos = task.positions.get(task.index++);
+            int y = pos.getY();
+            Pillar pillar = task.pillar;
+            boolean embedded = (pillar.mode() != PillarMode.CEILING_SPIKE && y <= pillar.floor())
+                    || (pillar.mode() != PillarMode.FLOOR_SPIKE && y >= pillar.ceiling());
+            boolean surfaceLayer = (pillar.mode() != PillarMode.CEILING_SPIKE && y == pillar.floor())
+                    || (pillar.mode() != PillarMode.FLOOR_SPIKE && y == pillar.ceiling());
+            BlockState current = level.getBlockState(pos);
+            if (canReplace(level, pos, current, embedded, surfaceLayer)
+                    && level.setBlock(pos, state, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE)) {
+                task.placed++;
+            }
+        }
+        return task.index >= task.positions.size();
     }
 
     private static int axisX(Pillar pillar, int y) {
@@ -436,7 +468,7 @@ public final class DelayedCavePillarGenerator {
         return value ^ value >>> 31;
     }
 
-    private enum Result { DONE, RETRY, PLACED }
+    private enum Result { DONE, RETRY, STARTED }
 
     private enum PillarMode {
         CONNECTED,
@@ -466,6 +498,22 @@ public final class DelayedCavePillarGenerator {
                           double upperBluntness, double lowerBluntness,
                           double windX, double windZ, int windOriginY,
                           PillarMode mode, BoundingBox bounds) {}
+
+    private static final class PlacementTask {
+        private final long id;
+        private final Candidate candidate;
+        private final Pillar pillar;
+        private final List<BlockPos> positions;
+        private int index;
+        private int placed;
+
+        private PlacementTask(long id, Candidate candidate, Pillar pillar, List<BlockPos> positions) {
+            this.id = id;
+            this.candidate = candidate;
+            this.pillar = pillar;
+            this.positions = positions;
+        }
+    }
 
     private static final class PendingCandidates {
         private final ConcurrentLinkedDeque<Long> queue = new ConcurrentLinkedDeque<>();
