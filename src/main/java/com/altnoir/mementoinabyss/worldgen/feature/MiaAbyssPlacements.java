@@ -130,11 +130,11 @@ public final class MiaAbyssPlacements {
                 HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(128), VerticalAnchor.belowTop(64)),
                 BiomeFilter.biome())));
         context.register(PRASIOLITE_CLUSTER, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.PRASIOLITE_CLUSTER), List.of(
-                CountPlacement.of(UniformInt.of(64, 128)), InSquarePlacement.spread(),
+                CountPlacement.of(UniformInt.of(32, 64)), InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(450)),
                 BiomeFilter.biome())));
         context.register(BIG_PRASIOLITE_CLUSTER, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.BIG_PRASIOLITE_CLUSTER), List.of(
-                CountPlacement.of(UniformInt.of(2, 4)), InSquarePlacement.spread(),
+                CountPlacement.of(UniformInt.of(1, 2)), InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(16), VerticalAnchor.absolute(400)),
                 BiomeFilter.biome())));
         ore(context, ORE_DIRT, configured.getOrThrow(MiaAbyssFeatures.ORE_DIRT), 7);
