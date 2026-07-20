@@ -1,0 +1,51 @@
+{
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "minecraft:big_dripleaf",
+            "Properties": {
+              "facing": "north",
+              "tilt": "none",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:balloon_plant"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:lantern_plant"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:silveaf_fungus"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:konjac_root"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:crimson_veilgrass"
+          },
+          "weight": 1
+        }
+      ]
+    }
+  }
+}

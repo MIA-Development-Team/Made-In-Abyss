@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:block_pile",
+  "config": {
+    "state_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "minecraft:raw_iron_block"
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:abyss_cobbled_andesite"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mossy_abyss_cobbled_andesite"
+          },
+          "weight": 1
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "feature": "mementoinabyss:tree/inverted_tree",
+  "placement": [
+    {
+      "type": "mementoinabyss:inverted_count_on_every_layer",
+      "count": 6
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

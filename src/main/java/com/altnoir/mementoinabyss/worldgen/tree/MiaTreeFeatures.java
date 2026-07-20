@@ -28,6 +28,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlac
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 
 import java.util.List;
+import com.altnoir.mementoinabyss.worldgen.feature.MiaAbyssFeatures;
 
 public final class MiaTreeFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE = key("skyfog_tree");
@@ -58,6 +59,7 @@ public final class MiaTreeFeatures {
                 inverted(10, 2, 3, 3)));
         context.register(MEGA_INVERTED_TREE, new ConfiguredFeature<>(MiaWorldgenFeatures.INVERTED_TREE.get(),
                 inverted(16, 3, 6, 5)));
+        MiaAbyssFeatures.bootstrap(context);
     }
 
     private static TreeConfiguration.TreeConfigurationBuilder skyfog() {

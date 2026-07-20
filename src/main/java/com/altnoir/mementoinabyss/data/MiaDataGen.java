@@ -9,8 +9,15 @@ import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 import com.tterrag.registrate.providers.ProviderType;
 import com.altnoir.mementoinabyss.worldgen.tree.MiaTreeFeatures;
+import com.altnoir.mementoinabyss.worldgen.noise.MiaNoiseData;
+import com.altnoir.mementoinabyss.worldgen.noise.MiaDensityFunctions;
+import com.altnoir.mementoinabyss.worldgen.noise.MiaNoiseGeneratorSettings;
+import com.altnoir.mementoinabyss.worldgen.biome.MiaBiomes;
+import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensions;
+import com.altnoir.mementoinabyss.worldgen.feature.MiaAbyssPlacements;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
+import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensionTypes;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.jspecify.annotations.Nullable;
 
@@ -33,6 +40,13 @@ public class MiaDataGen {
 
         event.createProvider(MiaCurseDataProvider::new);
         event.createDatapackRegistryObjects(new RegistrySetBuilder()
+                .add(Registries.DIMENSION_TYPE, MiaDimensionTypes::bootstrap)
+                .add(Registries.NOISE, MiaNoiseData::bootstrap)
+                .add(Registries.DENSITY_FUNCTION, MiaDensityFunctions::bootstrap)
+                .add(Registries.NOISE_SETTINGS, MiaNoiseGeneratorSettings::bootstrap)
+                .add(Registries.PLACED_FEATURE, MiaAbyssPlacements::bootstrap)
+                .add(Registries.BIOME, MiaBiomes::bootstrap)
+                .add(Registries.LEVEL_STEM, MiaDimensions::bootstrap)
                 .add(Registries.CONFIGURED_FEATURE, MiaTreeFeatures::bootstrap));
     }
 

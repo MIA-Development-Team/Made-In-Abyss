@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "mementoinabyss:abyss_hole",
+    "mul": 1.0,
+    "radius": 0.0,
+    "slope": 64.0
+  },
+  "argument2": "mementoinabyss:base_3d_noise_the_abyss"
+}

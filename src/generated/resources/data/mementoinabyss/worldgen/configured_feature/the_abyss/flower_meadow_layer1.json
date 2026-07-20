@@ -1,0 +1,57 @@
+{
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "minecraft:big_dripleaf",
+            "Properties": {
+              "facing": "north",
+              "tilt": "none",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:balloon_plant"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:lantern_plant"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:green_perilla"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:scorchleaf"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "minecraft:torchflower"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:marginal_weed"
+          },
+          "weight": 1
+        }
+      ]
+    }
+  }
+}

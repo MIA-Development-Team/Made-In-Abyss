@@ -40,11 +40,13 @@ public class CoverGrassBlock extends Block implements TillableBlock, Bonemealabl
     protected static boolean canBeGrass(BlockState state, LevelReader levelReader, BlockPos pos) {
         var blockpos = pos.above();
         var blockstate = levelReader.getBlockState(blockpos);
-        if (blockstate.getFluidState().getAmount() == 8) {
+        if (blockstate.isCollisionShapeFullBlock(levelReader, blockpos)
+                || blockstate.getFluidState().isFull()) {
             return false;
         } else {
-            var i = LightEngine.getLightBlockInto(state, blockstate, Direction.UP, 0);
-            return i < levelReader.getLightEngine().getMaxLightSection();
+            var i = LightEngine.getLightBlockInto(
+                    state, blockstate, Direction.UP, blockstate.getLightDampening());
+            return i < 15;
         }
     }
 

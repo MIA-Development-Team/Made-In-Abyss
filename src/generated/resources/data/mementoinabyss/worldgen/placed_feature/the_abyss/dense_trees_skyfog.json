@@ -1,0 +1,12 @@
+{
+  "feature": "mementoinabyss:tree/skyfog_tree",
+  "placement": [
+    {
+      "type": "mementoinabyss:tree_on_every_layer",
+      "count": 16
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

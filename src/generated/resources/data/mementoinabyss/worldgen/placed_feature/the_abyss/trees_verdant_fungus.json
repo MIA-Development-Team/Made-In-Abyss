@@ -1,0 +1,12 @@
+{
+  "feature": "mementoinabyss:tree/verdant_fungus",
+  "placement": [
+    {
+      "type": "mementoinabyss:tree_on_every_layer",
+      "count": 8
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

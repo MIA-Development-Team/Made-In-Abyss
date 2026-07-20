@@ -7,6 +7,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -18,6 +19,7 @@ public class InvertedTreeFeature extends Feature<TreeConfiguration> {
         WorldGenLevel level = context.level();
         RandomSource random = context.random();
         BlockPos origin = context.origin();
+        if (!level.getBlockState(origin.above()).is(Blocks.ROOTED_DIRT)) return false;
         TreeConfiguration config = context.config();
         int height = config.trunkPlacer.getTreeHeight(random);
         int configuredRadius = config.foliagePlacer.foliageRadius(random, height);

@@ -68,6 +68,7 @@ public class MiaBlocks {
                     .strength(3.0F, 6.0F)
                     .sound(SoundType.DEEPSLATE))
             .transform(TagGen.pickaxeOnly())
+            .tag(MiaTags.BlockTags.BASE_STONE_ABYSS.tag, MiaTags.BlockTags.ABYSS_ANDESITE_ORE_REPLACEABLE.tag)
             .simpleItem()
             .register();
 
@@ -167,7 +168,8 @@ public class MiaBlocks {
             .properties(p -> p.mapColor(MapColor.GRASS)
                     .randomTicks())
             .blockstate(BlockStateGen::coverGrass)
-            .tag(MiaTags.BlockTags.COVERGRASS.tag)
+            .tag(MiaTags.BlockTags.COVERGRASS.tag, BlockTags.DIRT)
+            .tag(MiaTags.BlockTags.BASE_STONE_ABYSS.tag)
             .transform(TagGen.pickaxeOnly())
             .loot((lt, b) ->  {
                 lt.add(b,
@@ -180,8 +182,9 @@ public class MiaBlocks {
     public static final BlockEntry<CoverGrassBlock> COVERGRASS_TUFF = REGISTRATE.object("covergrass_tuff")
             .block(p -> new CoverGrassBlock(Blocks.TUFF, p))
             .initialProperties(() -> Blocks.TUFF)
+            .properties(p -> p.randomTicks())
             .blockstate(BlockStateGen::coverGrass)
-            .tag(MiaTags.BlockTags.COVERGRASS.tag)
+            .tag(MiaTags.BlockTags.COVERGRASS.tag, BlockTags.DIRT)
             .transform(TagGen.pickaxeOnly())
             .loot((lt, b) ->  {
                 lt.add(b,

@@ -1,0 +1,12 @@
+{
+  "feature": "mementoinabyss:the_abyss/patch_waterlily",
+  "placement": [
+    {
+      "type": "mementoinabyss:water_on_every_layer",
+      "count": 2
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -1,0 +1,276 @@
+{
+  "type": "mementoinabyss:the_abyss_type",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "mementoinabyss:the_abyss",
+      "abyss_biomes": [
+        {
+          "biome": "mementoinabyss:the_abyss/the_abyss",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              0.0,
+              1.9
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              -1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "biome": "mementoinabyss:the_abyss/inverted_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              1.9,
+              2.0
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              -1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "abyss_radius": 272,
+      "biomes": [
+        {
+          "biome": "mementoinabyss:the_abyss/skyfog_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 0.0,
+            "erosion": 0.0,
+            "humidity": [
+              -0.5,
+              0.5
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              0.3,
+              0.5
+            ]
+          }
+        },
+        {
+          "biome": "mementoinabyss:the_abyss/dense_skyfog_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 0.0,
+            "erosion": 0.0,
+            "humidity": [
+              -0.5,
+              0.5
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              0.5,
+              0.8
+            ]
+          }
+        },
+        {
+          "biome": "mementoinabyss:the_abyss/fossilized_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 0.0,
+            "erosion": 0.0,
+            "humidity": [
+              -1.0,
+              0.0
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              -0.6,
+              -0.4
+            ]
+          }
+        },
+        {
+          "biome": "mementoinabyss:the_abyss/rich_fossilized_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": 0.0,
+            "erosion": 0.0,
+            "humidity": [
+              -1.0,
+              0.0
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              -0.9,
+              -0.6
+            ]
+          }
+        },
+        {
+          "biome": "mementoinabyss:the_abyss/under_fossilized_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              0.2,
+              1.5
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -0.5,
+              0.5
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              -0.6,
+              -0.4
+            ]
+          }
+        },
+        {
+          "biome": "mementoinabyss:the_abyss/abyss_lush_caves",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              0.1,
+              0.7
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -0.5,
+              0.5
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              0.15,
+              0.2
+            ]
+          }
+        },
+        {
+          "biome": "mementoinabyss:the_abyss/abyss_dripstone_caves",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              0.4,
+              1.0
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -0.5,
+              0.0
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              0.2,
+              0.3
+            ]
+          }
+        },
+        {
+          "biome": "mementoinabyss:the_abyss/prasiolite_caves",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              0.7,
+              1.5
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -0.3,
+              0.5
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              0.3,
+              0.45
+            ]
+          }
+        },
+        {
+          "biome": "mementoinabyss:the_abyss/temptation_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              1.85,
+              1.95
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              -0.5,
+              0.5
+            ]
+          }
+        },
+        {
+          "biome": "mementoinabyss:the_abyss/inverted_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              1.95,
+              2.0
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              -0.5,
+              0.5
+            ]
+          }
+        },
+        {
+          "biome": "mementoinabyss:the_abyss/abyss_plains",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              -1.0,
+              1.5
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              -0.2,
+              0.2
+            ]
+          }
+        }
+      ]
+    },
+    "settings": "mementoinabyss:the_abyss"
+  }
+}

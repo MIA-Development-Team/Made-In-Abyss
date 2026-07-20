@@ -1,0 +1,70 @@
+{
+  "carvers": [],
+  "downfall": 0.8,
+  "effects": {
+    "grass_color": "#acf750",
+    "water_color": "#5db7ef"
+  },
+  "features": [
+    [],
+    [],
+    [
+      "mementoinabyss:the_abyss/prasiolite_geode",
+      "mementoinabyss:the_abyss/raw_iron"
+    ],
+    [
+      "mementoinabyss:the_abyss/sun_stone"
+    ],
+    [],
+    [],
+    [
+      "mementoinabyss:the_abyss/ore_dirt",
+      "mementoinabyss:the_abyss/ore_gravel",
+      "mementoinabyss:the_abyss/ore_iron",
+      "mementoinabyss:the_abyss/ore_copper",
+      "mementoinabyss:the_abyss/ore_gold",
+      "mementoinabyss:the_abyss/ore_lapis",
+      "mementoinabyss:the_abyss/ore_redstone",
+      "mementoinabyss:the_abyss/ore_diamond",
+      "mementoinabyss:the_abyss/ore_emerald",
+      "mementoinabyss:the_abyss/ore_quartz",
+      "mementoinabyss:the_abyss/ore_chlorophyte"
+    ],
+    [],
+    [
+      "mementoinabyss:the_abyss/spring_water"
+    ],
+    [
+      "mementoinabyss:the_abyss/vines",
+      "mementoinabyss:the_abyss/glow_lichen",
+      "mementoinabyss:the_abyss/patch_waterlily",
+      "mementoinabyss:the_abyss/patch_marginal_weed",
+      "mementoinabyss:the_abyss/patch_balloon_plant",
+      "mementoinabyss:the_abyss/patch_lantern_plant",
+      "mementoinabyss:the_abyss/patch_green_perilla",
+      "mementoinabyss:the_abyss/patch_grass_plain",
+      "mementoinabyss:the_abyss/flower_meadow_layer1",
+      "mementoinabyss:the_abyss/forest_flowers",
+      "mementoinabyss:the_abyss/patch_gloom_berry_plant",
+      "mementoinabyss:the_abyss/patch_large_fern",
+      "mementoinabyss:the_abyss/cave_vines",
+      "mementoinabyss:the_abyss/caves_ceiling_vegetation",
+      "mementoinabyss:the_abyss/spore_blossom",
+      "mementoinabyss:the_abyss/trees_fossilized_under",
+      "mementoinabyss:the_abyss/trees_fossilized_under_ceiling"
+    ]
+  ],
+  "has_precipitation": true,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 0.8
+}

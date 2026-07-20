@@ -1,0 +1,31 @@
+{
+  "feature": "mementoinabyss:the_abyss/vines",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 127
+    },
+    {
+      "type": "minecraft:count",
+      "count": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "below_top": 8
+        },
+        "min_inclusive": {
+          "above_bottom": 128
+        }
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}
