@@ -7,10 +7,10 @@
     "ground_state": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "minecraft:moss_block"
+        "Name": "minecraft:mud"
       }
     },
-    "replaceable": "#minecraft:moss_replaceable",
+    "replaceable": "#mementoinabyss:base_stone_abyss",
     "surface": "floor",
     "vegetation_chance": 0.5,
     "vegetation_feature": {

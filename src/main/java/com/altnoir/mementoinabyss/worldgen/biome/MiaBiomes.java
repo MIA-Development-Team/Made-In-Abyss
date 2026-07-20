@@ -128,7 +128,7 @@ public final class MiaBiomes {
         }
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
-                .temperature(0.8F)
+                .temperature(2.0F)
                 .downfall(0.8F)
                 .mobSpawnSettings(new MobSpawnSettings.Builder().build())
                 .generationSettings(generationBuilder.build())

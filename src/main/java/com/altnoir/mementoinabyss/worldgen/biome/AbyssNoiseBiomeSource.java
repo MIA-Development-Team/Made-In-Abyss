@@ -14,6 +14,7 @@ import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.OverworldBiomeBuilder;
 import net.minecraft.world.level.levelgen.NoiseRouterData;
+import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
     private final Climate.ParameterList<Holder<Biome>> abyssParameters;
     private final Holder<Biome> abyss;
 
-    private AbyssNoiseBiomeSource(long radius, Climate.ParameterList<Holder<Biome>> parameters, Climate.ParameterList<Holder<Biome>> abyssParameters, Holder<Biome> abyss) {
+    private AbyssNoiseBiomeSource(long radius, @Nullable Climate.ParameterList<Holder<Biome>> parameters, @Nullable Climate.ParameterList<Holder<Biome>> abyssParameters, @Nullable Holder<Biome> abyss) {
         if (abyssParameters != null && abyss != null) {
             throw new IllegalArgumentException("Cannot specify both abyssParameters and abyss");
         }
@@ -69,7 +70,7 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
         this(radius, parameters, null, abyss);
     }
 
-    public AbyssNoiseBiomeSource(long radius, Climate.ParameterList<Holder<Biome>> parameters, Climate.ParameterList<Holder<Biome>> abyssParameters) {
+    public AbyssNoiseBiomeSource(long radius, @Nullable Climate.ParameterList<Holder<Biome>> parameters, @Nullable Climate.ParameterList<Holder<Biome>> abyssParameters) {
         this(radius, parameters, abyssParameters, null);
     }
 
@@ -114,7 +115,7 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
     }
 
     @Override
-    public @NonNull Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.@NonNull Sampler sampler) {
+    public @Nullable Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.@NonNull Sampler sampler) {
 
         int blockX = QuartPos.toBlock(x);
         int blockZ = QuartPos.toBlock(z);

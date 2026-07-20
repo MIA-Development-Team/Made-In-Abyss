@@ -137,8 +137,8 @@ public final class MiaAbyssFeatures {
         Holder<PlacedFeature> reed = Holder.direct(new PlacedFeature(context.lookup(Registries.CONFIGURED_FEATURE)
                 .getOrThrow(PATCH_REED), List.of()));
         context.register(POOL_WITH_REED, new ConfiguredFeature<>(Feature.WATERLOGGED_VEGETATION_PATCH,
-                new VegetationPatchConfiguration(BlockTags.MOSS_REPLACEABLE,
-                        BlockStateProvider.simple(Blocks.MOSS_BLOCK), reed, CaveSurface.FLOOR,
+                new VegetationPatchConfiguration(MiaTags.BlockTags.BASE_STONE_ABYSS.tag,
+                        BlockStateProvider.simple(Blocks.MUD), reed, CaveSurface.FLOOR,
                         ConstantInt.of(3), 1.0F, 5, 0.5F, UniformInt.of(4, 9), 0.1F)));
         context.register(SPRING_WATER, new ConfiguredFeature<>(Feature.SPRING,
                 new SpringConfiguration(Fluids.WATER.defaultFluidState(), true, 4, 1,
