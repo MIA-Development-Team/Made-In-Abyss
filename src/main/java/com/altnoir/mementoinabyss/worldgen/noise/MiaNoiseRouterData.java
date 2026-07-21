@@ -130,9 +130,14 @@ public class MiaNoiseRouterData extends NoiseRouterData {
 
     private static NoiseRouter theAbyssRouter(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noiseParameters) {
         DensityFunction yFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
+        DensityFunction normalFloodedness = theAbyssFluidLevel(
+                noiseParameters, Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS, 0.335, 0.5, yFunction);
+        DensityFunction sparseFloodedness = DensityFunctions.rangeChoice(
+                MiaDensityFunctionTypes.sparseAquifer(10), 0.0, 2.0,
+                normalFloodedness, DensityFunctions.constant(-1.0));
         DensityFunction fluidLevelFloodedness = DensityFunctions.rangeChoice(
                 yFunction, -160, MiaHeight.THE_ABYSS.maxY(),
-                theAbyssFluidLevel(noiseParameters, Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS, 0.335, 0.5, yFunction),
+                sparseFloodedness,
                 DensityFunctions.constant(-1.0));
         DensityFunction fluidLevelSpread = theAbyssFluidLevel(noiseParameters, Noises.AQUIFER_FLUID_LEVEL_SPREAD, 0.357142857, 0.5, yFunction);
 

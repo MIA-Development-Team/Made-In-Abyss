@@ -7,6 +7,7 @@ import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.QuadBuff
 import com.altnoir.mementoinabyss.network.CrossDimensionLodPayload;
 import com.altnoir.mementoinabyss.worldgen.lod.CrossDimensionLodKey;
 import com.altnoir.mementoinabyss.worldgen.lod.CrossDimensionLodLinks;
+import com.altnoir.mementoinabyss.worldgen.lighting.RegionalSkyLight;
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.buffers.Std140Builder;
@@ -21,8 +22,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
@@ -103,6 +106,8 @@ public final class CrossDimensionLodRenderer {
     private static FrameTiming windowPeak = FrameTiming.EMPTY;
     private static GpuBuffer lodFogBuffer;
     private static int lodFogRadius = -1;
+    private static GpuBuffer lodLightBuffer;
+    private static ResourceKey<Level> lodLightSource;
 
     public static DebugStats debugStats() {
         int viewRadius = serverViewRadius > 0 ? serverViewRadius
@@ -191,11 +196,22 @@ public final class CrossDimensionLodRenderer {
             }
             scheduled++;
             MESH_WORKERS.execute(() -> {
+                var jfr = LodJfrEvents.beginMeshBuild(payload.chunkX(), payload.chunkZ(), payload.cellSize());
                 try {
-                    COMPLETED_MESHES.add(new MeshBuildResult(key, revision, payload,
-                            CrossDimensionLodMesher.build(payload, DATA, HEIGHT_FIELDS), null));
+                    CpuMesh mesh = CrossDimensionLodMesher.build(payload, DATA, HEIGHT_FIELDS);
+                    if (jfr != null) {
+                        jfr.terrainQuads = mesh.quads.size;
+                        jfr.seamQuads = mesh.seamQuads.size;
+                        jfr.succeeded = true;
+                    }
+                    COMPLETED_MESHES.add(new MeshBuildResult(key, revision, payload, mesh, null));
                 } catch (Throwable throwable) {
                     COMPLETED_MESHES.add(new MeshBuildResult(key, revision, payload, null, throwable));
+                } finally {
+                    if (jfr != null) {
+                        jfr.end();
+                        jfr.commit();
+                    }
                 }
             });
         }
@@ -286,6 +302,9 @@ public final class CrossDimensionLodRenderer {
         if (lodFogBuffer != null) lodFogBuffer.close();
         lodFogBuffer = null;
         lodFogRadius = -1;
+        if (lodLightBuffer != null) lodLightBuffer.close();
+        lodLightBuffer = null;
+        lodLightSource = null;
     }
 
     private static void closeMeshes() {
@@ -304,15 +323,16 @@ public final class CrossDimensionLodRenderer {
     public static void renderPersistent(RenderLevelStageEvent.AfterOpaqueBlocks event) {
         long callbackStarted = System.nanoTime();
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.level == null
-                || CrossDimensionLodLinks.forTarget(minecraft.level.dimension()).isEmpty()
-                || !MementoInAbyss.CONFIGS.guiSection.crossDimensionLodEnabled.get()) return;
+        if (minecraft.level == null || !MementoInAbyss.CONFIGS.guiSection.crossDimensionLodEnabled.get()) return;
+        var activeLink = CrossDimensionLodLinks.forTarget(minecraft.level.dimension()).orElse(null);
+        if (activeLink == null) return;
         Vec3 camera = event.getLevelRenderState().cameraRenderState.pos;
         if (camera == null) return;
 
         renderFrame++;
         int viewRadius = serverViewRadius > 0 ? serverViewRadius
                 : MementoInAbyss.CONFIGS.guiSection.crossDimensionLodViewDistance.get() * 16;
+        var jfr = LodJfrEvents.beginFrame(renderFrame);
         if (renderFrame % EVICTION_INTERVAL_FRAMES == 0) evictFarChunks(camera, viewRadius);
         long meshStarted = System.nanoTime();
         closeRetiredMeshes();
@@ -374,7 +394,7 @@ public final class CrossDimensionLodRenderer {
         long receiveNanos = PENDING_RECEIVE_NANOS.getAndSet(0L);
         if (VISIBLE_MESHES.isEmpty() && VISIBLE_TRANSITIONS.isEmpty()
                 && VISIBLE_PAGES.isEmpty() && VISIBLE_PAGE_TRANSITIONS.isEmpty()) {
-            recordTiming(callbackStarted, receiveNanos, meshNanos, pageNanos, visibilityNanos, 0L);
+            recordTiming(callbackStarted, receiveNanos, meshNanos, pageNanos, visibilityNanos, 0L, 0, jfr);
             return;
         }
         long drawStarted = System.nanoTime();
@@ -427,6 +447,7 @@ public final class CrossDimensionLodRenderer {
         }
         var atlas = minecraft.getTextureManager().getTexture(TextureAtlas.LOCATION_BLOCKS);
         GpuBufferSlice lodFog = lodFog(viewRadius);
+        GpuBufferSlice lodLight = lodLight(activeLink.source());
 
         try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(
                 () -> "Cross-dimension persistent LOD", target.getColorTextureView(),
@@ -435,6 +456,7 @@ public final class CrossDimensionLodRenderer {
             RenderSystem.bindDefaultUniforms(pass);
             pass.setUniform("DynamicTransforms", transforms);
             pass.setUniform("LodFog", lodFog);
+            pass.setUniform("LodLight", lodLight);
             pass.bindTexture("Sampler0", atlas.getTextureView(), atlas.getSampler());
             pass.setIndexBuffer(indices, indexStorage.type());
             for (PageTransition transition : VISIBLE_PAGE_TRANSITIONS) {
@@ -480,12 +502,22 @@ public final class CrossDimensionLodRenderer {
                 pass.drawIndexed(0, 0, page.seamIndexCount, 1);
             }
         }
+        int drawCalls = VISIBLE_TRANSITIONS.size() + VISIBLE_PAGE_TRANSITIONS.size();
+        for (ChunkMesh mesh : VISIBLE_MESHES) {
+            if (mesh.indexCount > 0) drawCalls++;
+            if (mesh.seamIndexCount > 0) drawCalls++;
+        }
+        for (PageMesh page : VISIBLE_PAGES) {
+            if (page.indexCount > 0) drawCalls++;
+            if (page.seamIndexCount > 0) drawCalls++;
+        }
         recordTiming(callbackStarted, receiveNanos, meshNanos, pageNanos, visibilityNanos,
-                System.nanoTime() - drawStarted);
+                System.nanoTime() - drawStarted, drawCalls, jfr);
     }
 
     private static void recordTiming(long callbackStarted, long receiveNanos, long meshNanos,
-                                     long pageNanos, long visibilityNanos, long drawNanos) {
+                                     long pageNanos, long visibilityNanos, long drawNanos,
+                                     int drawCalls, LodJfrEvents.RenderFrameEvent jfr) {
         long callbackNanos = System.nanoTime() - callbackStarted;
         FrameTiming sample = new FrameTiming(renderFrame, callbackNanos + receiveNanos,
                 receiveNanos, meshNanos, pageNanos, visibilityNanos, drawNanos);
@@ -495,6 +527,18 @@ public final class CrossDimensionLodRenderer {
         if (renderFrame % 60 == 0) {
             peakTiming = windowPeak;
             windowPeak = FrameTiming.EMPTY;
+        }
+        if (jfr != null) {
+            jfr.receiveNanos = receiveNanos;
+            jfr.meshNanos = meshNanos;
+            jfr.pageNanos = pageNanos;
+            jfr.visibilityNanos = visibilityNanos;
+            jfr.drawNanos = drawNanos;
+            jfr.visibleResources = VISIBLE_MESHES.size() + VISIBLE_TRANSITIONS.size()
+                    + VISIBLE_PAGES.size() + VISIBLE_PAGE_TRANSITIONS.size();
+            jfr.drawCalls = drawCalls;
+            jfr.end();
+            jfr.commit();
         }
     }
 
@@ -565,10 +609,22 @@ public final class CrossDimensionLodRenderer {
             iterator.remove();
             PackedChunk[] chunks = pageChunks(key);
             MESH_WORKERS.execute(() -> {
+                var jfr = LodJfrEvents.beginPageBuild(CrossDimensionLodKey.x(key),
+                        CrossDimensionLodKey.z(key), chunks.length);
                 try {
-                    COMPLETED_PAGES.add(new PageBuildResult(key, revision, buildPageData(key, chunks), null));
+                    PageData data = buildPageData(key, chunks);
+                    if (jfr != null) {
+                        if (data != null) jfr.bytes = data.terrain.bytes.length + data.seam.bytes.length;
+                        jfr.succeeded = true;
+                    }
+                    COMPLETED_PAGES.add(new PageBuildResult(key, revision, data, null));
                 } catch (Throwable throwable) {
                     COMPLETED_PAGES.add(new PageBuildResult(key, revision, null, throwable));
+                } finally {
+                    if (jfr != null) {
+                        jfr.end();
+                        jfr.commit();
+                    }
                 }
             });
         }
@@ -713,6 +769,36 @@ public final class CrossDimensionLodRenderer {
         return lodFogBuffer.slice();
     }
 
+    private static GpuBufferSlice lodLight(ResourceKey<Level> sourceDimension) {
+        if (lodLightBuffer == null || !sourceDimension.equals(lodLightSource)) {
+            if (lodLightBuffer != null) lodLightBuffer.close();
+            RegionalSkyLight.Region region = RegionalSkyLight.resolve(sourceDimension);
+            float centerX = 0.0F;
+            float centerZ = 0.0F;
+            float radius = -1.0F;
+            float fadeDistance = 0.0F;
+            float ambient = 1.0F;
+            if (region != null) {
+                RegionalSkyLight.RenderMask mask = region.renderMask();
+                centerX = mask.centerX();
+                centerZ = mask.centerZ();
+                radius = mask.radius();
+                fadeDistance = mask.fadeDistance();
+                ambient = RegionalSkyLight.ambientBrightness(sourceDimension);
+            }
+            try (MemoryStack stack = MemoryStack.stackPush()) {
+                var data = stack.malloc(32);
+                Std140Builder.intoBuffer(data)
+                        .putVec4(centerX, centerZ, radius, fadeDistance)
+                        .putVec4(ambient, 0.0F, 0.0F, 0.0F);
+                lodLightBuffer = RenderSystem.getDevice().createBuffer(
+                        () -> "Cross-dimension LOD regional light", GpuBuffer.USAGE_UNIFORM, data.flip());
+            }
+            lodLightSource = sourceDimension;
+        }
+        return lodLightBuffer.slice();
+    }
+
     private static boolean isWithinHorizontalDistance(AABB bounds, Vec3 camera, double radius) {
         double closestX = Math.clamp(camera.x, bounds.minX, bounds.maxX);
         double closestZ = Math.clamp(camera.z, bounds.minZ, bounds.maxZ);
@@ -798,6 +884,7 @@ public final class CrossDimensionLodRenderer {
 
     private static GpuBuffer uploadPackedBuffer(PackedBuffer packed, String part, int x, int z) {
         if (packed.bytes.length == 0) return null;
+        var jfr = LodJfrEvents.beginUpload(part, x, z, packed.bytes.length);
         GpuBuffer buffer = RenderSystem.getDevice().createBuffer(
                 () -> "Cross-dimension LOD " + part + " [" + x + "," + z + "]",
                 GpuBuffer.USAGE_VERTEX | GpuBuffer.USAGE_COPY_DST, packed.bytes.length);
@@ -809,10 +896,16 @@ public final class CrossDimensionLodRenderer {
             } finally {
                 MemoryUtil.memFree(nativeBytes);
             }
+            if (jfr != null) jfr.succeeded = true;
             return buffer;
         } catch (Throwable throwable) {
             closeBuffer(buffer);
             throw throwable;
+        } finally {
+            if (jfr != null) {
+                jfr.end();
+                jfr.commit();
+            }
         }
     }
 

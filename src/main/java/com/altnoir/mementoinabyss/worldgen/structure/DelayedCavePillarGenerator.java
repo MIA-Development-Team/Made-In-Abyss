@@ -33,6 +33,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  */
 public final class DelayedCavePillarGenerator {
     private static final int CELL_SIZE_CHUNKS = 4;
+    private static final double CELL_GENERATION_CHANCE = 0.35;
     private static final int CANDIDATES_PER_TICK = 16;
     private static final int PLACEMENT_OPERATIONS_PER_TICK = 1024;
     // Keep main's floor_to_ceiling_search_range and ABYSS_BRINK_HEIGHT placement limits.
@@ -108,6 +109,10 @@ public final class DelayedCavePillarGenerator {
         int cellX = ChunkPos.getX(id);
         int cellZ = ChunkPos.getZ(id);
         Candidate candidate = candidate(level.getSeed(), cellX, cellZ);
+        if (candidate.random().nextDouble() >= CELL_GENERATION_CHANCE) {
+            savedData.markProcessed(id);
+            return Result.DONE;
+        }
         if (Math.hypot(candidate.x(), candidate.z()) < HopperAbyssHole.abyssRadius()) {
             savedData.markProcessed(id);
             return Result.DONE;

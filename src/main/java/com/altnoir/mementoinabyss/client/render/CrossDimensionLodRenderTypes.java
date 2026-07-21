@@ -26,6 +26,7 @@ public final class CrossDimensionLodRenderTypes {
             .withFragmentShader(MementoInAbyss.asResource("core/cross_dimension_lod"))
             .withSampler("Sampler0")
             .withUniform("LodFog", UniformType.UNIFORM_BUFFER)
+            .withUniform("LodLight", UniformType.UNIFORM_BUFFER)
             .withVertexFormat(LOD_VERTEX_FORMAT, VertexFormat.Mode.QUADS)
             .withDepthStencilState(DepthStencilState.DEFAULT)
             .build();

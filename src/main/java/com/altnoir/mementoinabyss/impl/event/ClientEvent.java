@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.impl.event;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodRenderer;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodRenderTypes;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodDebugEntry;
+import com.altnoir.mementoinabyss.client.render.EnvironmentCubeSkyboxRenderer;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodDebugPayload;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodPayload;
@@ -16,12 +17,19 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.RegisterDebugEntriesEvent;
+import net.neoforged.neoforge.client.event.RegisterCustomEnvironmentEffectRendererEvent;
 
 @EventBusSubscriber(Dist.CLIENT)
 public class ClientEvent {
     @SubscribeEvent
     public static void registerRenderPipelines(RegisterRenderPipelinesEvent event) {
         CrossDimensionLodRenderTypes.registerPipelines(event);
+        EnvironmentCubeSkyboxRenderer.registerPipeline(event);
+    }
+
+    @SubscribeEvent
+    public static void registerEnvironmentRenderers(RegisterCustomEnvironmentEffectRendererEvent event) {
+        event.registerSkyboxRenderer(EnvironmentCubeSkyboxRenderer.ID, EnvironmentCubeSkyboxRenderer.INSTANCE);
     }
 
     @SubscribeEvent

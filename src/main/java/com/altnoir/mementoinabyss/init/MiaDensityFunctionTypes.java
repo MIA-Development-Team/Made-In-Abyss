@@ -4,6 +4,7 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.worldgen.density.GeneralAbyssHole;
 import com.altnoir.mementoinabyss.worldgen.density.HopperAbyssHole;
 import com.altnoir.mementoinabyss.worldgen.density.NoodleAbyssHole;
+import com.altnoir.mementoinabyss.worldgen.density.SparseAquiferGate;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.DensityFunction;
@@ -21,6 +22,8 @@ public final class MiaDensityFunctionTypes {
             TYPES.register("general_abyss_hole", () -> GeneralAbyssHole.CODEC.codec());
     public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>> NOODLE_ABYSS_HOLE =
             TYPES.register("noodle_abyss_hole", () -> NoodleAbyssHole.CODEC.codec());
+    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>> SPARSE_AQUIFER_GATE =
+            TYPES.register("sparse_aquifer_gate", () -> SparseAquiferGate.CODEC.codec());
 
     public static DensityFunction hopper() {
         return hopper(0.0F);
@@ -48,6 +51,10 @@ public final class MiaDensityFunctionTypes {
 
     public static NoodleAbyssHole noodle(float radius, float multiplier) {
         return new NoodleAbyssHole(radius, multiplier);
+    }
+
+    public static SparseAquiferGate sparseAquifer(int oneIn) {
+        return new SparseAquiferGate(oneIn);
     }
 
     public static void register(IEventBus bus) {

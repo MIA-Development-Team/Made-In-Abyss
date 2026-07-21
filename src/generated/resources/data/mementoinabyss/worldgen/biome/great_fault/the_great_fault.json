@@ -6,20 +6,7 @@
     "grass_color": "#acf750",
     "water_color": "#5db7ef"
   },
-  "features": [
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [
-      "mementoinabyss:great_fault/abyss_light"
-    ]
-  ],
+  "features": [],
   "has_precipitation": true,
   "spawn_costs": {},
   "spawners": {

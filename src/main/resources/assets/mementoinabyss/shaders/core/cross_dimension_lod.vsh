@@ -13,6 +13,7 @@ out float sphericalVertexDistance;
 out float cylindricalVertexDistance;
 out vec4 vertexColor;
 out vec2 tileCoord;
+out vec2 worldHorizontalPosition;
 flat out vec2 spriteMin;
 flat out vec2 spriteMax;
 
@@ -23,6 +24,7 @@ void main() {
     cylindricalVertexDistance = fog_cylindrical_distance(viewPosition.xyz);
     float shade = Normal.y < -0.5 ? 0.6 : (Normal.y > 0.5 ? 1.0 : 0.8);
     vertexColor = vec4(vec3(shade), 1.0);
+    worldHorizontalPosition = Position.xz;
     if (abs(Normal.x) > 0.5) {
         tileCoord = vec2(Position.z, -Position.y);
     } else if (abs(Normal.y) > 0.5) {

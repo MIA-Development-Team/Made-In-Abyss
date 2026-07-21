@@ -2,7 +2,13 @@
   "required": true,
   "package": "com.altnoir.mementoinabyss.mixin",
   "compatibilityLevel": "JAVA_25",
-  "mixins": [],
+  "mixins": [
+    "lighting.LayerLightSectionStorageMixin",
+    "lighting.ScalableLuxStarLightInterfaceMixin",
+    "lighting.SodiumClonedChunkSectionMixin",
+    "lighting.SkyLightEngineMixin",
+    "lighting.SkyLightSectionStorageMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   },
@@ -10,6 +16,7 @@
     "requireAnnotations": true
   },
   "client": [
-    "accessor.PauseScreenAccessor"
+    "accessor.PauseScreenAccessor",
+    "client.GameRendererJfrMixin"
   ]
 }

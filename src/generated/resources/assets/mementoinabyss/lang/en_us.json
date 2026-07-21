@@ -145,6 +145,11 @@
   "mementoinabyss.config.gamePlaySection.hookShootVelocity": "Shoot Velocity",
   "mementoinabyss.config.gamePlaySection.hookStopPullDistance": "Stop Pull Distance",
   "mementoinabyss.config.guiSection": "Gui",
+  "mementoinabyss.config.guiSection.crossDimensionLodEnabled": "Enable Cross-Dimension LOD",
+  "mementoinabyss.config.guiSection.crossDimensionLodGroup": "Cross-Dimension LOD",
+  "mementoinabyss.config.guiSection.crossDimensionLodMargin": "Detail LOD Margin",
+  "mementoinabyss.config.guiSection.crossDimensionLodMinimumDiameter": "Detail LOD Minimum Diameter",
+  "mementoinabyss.config.guiSection.crossDimensionLodViewDistance": "LOD View Distance (Chunks)",
   "mementoinabyss.config.worldGenSection": "World Generation",
   "mementoinabyss.config.worldGenSection.abyssRadius": "Abyss Radius"
 }

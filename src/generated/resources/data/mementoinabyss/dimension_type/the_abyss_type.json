@@ -18,11 +18,12 @@
     },
     "minecraft:gameplay/nether_portal_spawns_piglin": true,
     "minecraft:gameplay/respawn_anchor_works": false,
-    "minecraft:visual/ambient_light_color": "#ffffff",
+    "minecraft:visual/ambient_light_color": "#1e1e1e",
     "minecraft:visual/cloud_color": "#ccffffff",
     "minecraft:visual/cloud_height": 640.0,
     "minecraft:visual/fog_color": "#708c79",
-    "minecraft:visual/sky_color": "#78a7ff"
+    "minecraft:visual/sky_color": "#78a7ff",
+    "neoforge:custom_skybox": "mementoinabyss:environment_cube"
   },
   "coordinate_scale": 1.0,
   "default_clock": "minecraft:overworld",

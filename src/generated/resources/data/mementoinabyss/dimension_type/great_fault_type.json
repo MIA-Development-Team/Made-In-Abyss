@@ -18,13 +18,14 @@
     },
     "minecraft:gameplay/nether_portal_spawns_piglin": true,
     "minecraft:gameplay/respawn_anchor_works": false,
-    "minecraft:visual/ambient_light_color": "#ffffff",
+    "minecraft:visual/ambient_light_color": "#060606",
     "minecraft:visual/cloud_color": "#ccffffff",
     "minecraft:visual/cloud_height": 384.0,
     "minecraft:visual/fog_color": "#8795aa",
-    "minecraft:visual/sky_color": "#8795aa"
+    "minecraft:visual/sky_color": "#8795aa",
+    "neoforge:custom_skybox": "mementoinabyss:environment_cube"
   },
-  "coordinate_scale": 2.0,
+  "coordinate_scale": 1.0,
   "default_clock": "minecraft:overworld",
   "has_ceiling": false,
   "has_ender_dragon_fight": false,
@@ -40,6 +41,5 @@
     "max_inclusive": 7,
     "min_inclusive": 0
   },
-  "skybox": "none",
   "timelines": "#minecraft:in_overworld"
 }

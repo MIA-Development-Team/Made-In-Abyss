@@ -18,6 +18,7 @@ import com.altnoir.mementoinabyss.worldgen.lod.MiaLodSampler;
 import com.altnoir.mementoinabyss.worldgen.lod.MiaLodStorage;
 import com.altnoir.mementoinabyss.worldgen.lod.CrossDimensionLodLinks;
 import com.altnoir.mementoinabyss.worldgen.lod.CrossDimensionLazyChunkGenerator;
+import com.altnoir.mementoinabyss.worldgen.dimension.VerticalDimensionTeleporter;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.server.level.ServerPlayer;
@@ -69,8 +70,9 @@ public class CommonEvents {
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
+        VerticalDimensionTeleporter.tick(event.getServer());
         DelayedCavePillarGenerator.onServerTick(event);
-        MiaLodStorage.processPendingCapture();
+        MiaLodStorage.processPendingCapture(event.getServer());
         CrossDimensionLazyChunkGenerator.tick(event.getServer());
         MiaLodSampler.tick(event.getServer());
     }
@@ -81,6 +83,7 @@ public class CommonEvents {
         MiaLodStorage.clearPendingCaptures();
         CrossDimensionLazyChunkGenerator.clear();
         MiaLodSampler.clear();
+        VerticalDimensionTeleporter.clear();
     }
 
     @SubscribeEvent
@@ -101,7 +104,10 @@ public class CommonEvents {
 
     @SubscribeEvent
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) MiaLodSampler.remove(player);
+        if (event.getEntity() instanceof ServerPlayer player) {
+            MiaLodSampler.remove(player);
+            VerticalDimensionTeleporter.remove(player);
+        }
     }
 
     @EventBusSubscriber

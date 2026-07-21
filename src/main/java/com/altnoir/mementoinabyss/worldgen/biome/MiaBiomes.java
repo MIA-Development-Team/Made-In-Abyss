@@ -154,10 +154,7 @@ public final class MiaBiomes {
     private static Biome createGreatFault(BootstrapContext<Biome> context, boolean inside) {
         BiomeGenerationSettings.Builder generationBuilder = new BiomeGenerationSettings.Builder(
                 context.lookup(Registries.PLACED_FEATURE), context.lookup(Registries.CONFIGURED_CARVER));
-        if (inside) {
-            generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                    com.altnoir.mementoinabyss.worldgen.feature.GreatFaultPlacements.ABYSS_LIGHT);
-        } else {
+        if (!inside) {
             generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS,
                     com.altnoir.mementoinabyss.worldgen.feature.GreatFaultPlacements.CAERULITE_GEODE);
             generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
