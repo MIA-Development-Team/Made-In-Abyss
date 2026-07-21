@@ -27,6 +27,8 @@ public final class MiaBiomes {
     public static final ResourceKey<Biome> ABYSS_DRIPSTONE_CAVES = key("abyss_dripstone_caves");
     public static final ResourceKey<Biome> TEMPTATION_FOREST = key("temptation_forest");
     public static final ResourceKey<Biome> INVERTED_FOREST = key("inverted_forest");
+    public static final ResourceKey<Biome> THE_GREAT_FAULT = greatFaultKey("the_great_fault");
+    public static final ResourceKey<Biome> GREAT_FAULT = greatFaultKey("great_fault");
 
     public static final List<ResourceKey<Biome>> FIRST_LAYERS = List.of(
             THE_ABYSS, SKYFOG_FOREST, DENSE_SKYFOG_FOREST, FOSSILIZED_FOREST,
@@ -38,6 +40,8 @@ public final class MiaBiomes {
         for (ResourceKey<Biome> biome : FIRST_LAYERS) {
             context.register(biome, create(context, biome));
         }
+        context.register(THE_GREAT_FAULT, createGreatFault(context, true));
+        context.register(GREAT_FAULT, createGreatFault(context, false));
     }
 
     private static Biome create(BootstrapContext<Biome> context, ResourceKey<Biome> biome) {
@@ -134,6 +138,7 @@ public final class MiaBiomes {
                 .generationSettings(generationBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(6141935)
+                        .foliageColorOverride(11335504)
                         .grassColorOverride(11335504)
                         .build())
                 .build();
@@ -141,6 +146,36 @@ public final class MiaBiomes {
 
     private static ResourceKey<Biome> key(String path) {
         return ResourceKey.create(Registries.BIOME, MementoInAbyss.asResource("the_abyss/" + path));
+    }
+
+    private static ResourceKey<Biome> greatFaultKey(String path) {
+        return ResourceKey.create(Registries.BIOME, MementoInAbyss.asResource("great_fault/" + path));
+    }
+
+    private static Biome createGreatFault(BootstrapContext<Biome> context, boolean inside) {
+        BiomeGenerationSettings.Builder generationBuilder = new BiomeGenerationSettings.Builder(
+                context.lookup(Registries.PLACED_FEATURE), context.lookup(Registries.CONFIGURED_CARVER));
+        if (inside) {
+            generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+                    com.altnoir.mementoinabyss.worldgen.feature.GreatFaultPlacements.ABYSS_LIGHT);
+        } else {
+            generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+                    com.altnoir.mementoinabyss.worldgen.feature.GreatFaultPlacements.CAERULITE_GEODE);
+            generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+                    MiaAbyssPlacements.PATCH_LARGE_FERN);
+        }
+        return new Biome.BiomeBuilder()
+                .hasPrecipitation(true)
+                .temperature(0.8F)
+                .downfall(0.8F)
+                .mobSpawnSettings(new MobSpawnSettings.Builder().build())
+                .generationSettings(generationBuilder.build())
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .waterColor(6141935)
+                        .foliageColorOverride(11335504)
+                        .grassColorOverride(11335504)
+                        .build())
+                .build();
     }
 
     private static void addGeode(BiomeGenerationSettings.Builder builder) {

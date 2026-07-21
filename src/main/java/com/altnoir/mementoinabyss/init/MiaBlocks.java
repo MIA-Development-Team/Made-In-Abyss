@@ -12,6 +12,7 @@ import com.altnoir.mementoinabyss.content.block.plant.MiaFungusBlock;
 import com.altnoir.mementoinabyss.content.block.plant.InvertedSaplingBlock;
 import com.altnoir.mementoinabyss.content.block.ore.ChlorophyteOreBlock;
 import com.altnoir.mementoinabyss.content.block.ore.BuddingPrasioliteBlock;
+import com.altnoir.mementoinabyss.content.block.ore.BuddingCaeruliteBlock;
 import com.altnoir.mementoinabyss.impl.registrate.BlockStateGen;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.impl.registrate.TagGen;
@@ -622,6 +623,18 @@ public class MiaBlocks {
             .block(p -> new AmethystClusterBlock(7, 3, p)).properties(p -> crystalProperties(p, 5))
             .transform(TagGen.pickaxeOnly()).blockstate(() -> (ctx, prov) -> prov.createAmethystCluster(ctx.get()))
             .loot((lt, b) -> lt.add(b, lt.createOreDrop(b, MiaItems.PRASIOLITE_SHARD.get()))).simpleItem().register();
+    public static final BlockEntry<Block> CAERULITE_BLOCK = mineralBlock("caerulite_block", MapColor.COLOR_BLUE, SoundType.AMETHYST);
+    public static final BlockEntry<BuddingCaeruliteBlock> BUDDING_CAERULITE = REGISTRATE.object("budding_caerulite")
+            .block(BuddingCaeruliteBlock::new).initialProperties(CAERULITE_BLOCK)
+            .properties(p -> p.randomTicks().pushReaction(PushReaction.DESTROY)).transform(TagGen.pickaxeOnly())
+            .loot((lt, b) -> lt.dropWhenSilkTouch(b)).simpleItem().register();
+    public static final BlockEntry<AmethystClusterBlock> SMALL_CAERULITE_BUD = crystal("small_caerulite_bud", 3, 3, 1);
+    public static final BlockEntry<AmethystClusterBlock> MEDIUM_CAERULITE_BUD = crystal("medium_caerulite_bud", 4, 3, 2);
+    public static final BlockEntry<AmethystClusterBlock> LARGE_CAERULITE_BUD = crystal("large_caerulite_bud", 5, 3, 4);
+    public static final BlockEntry<AmethystClusterBlock> CAERULITE_CLUSTER = REGISTRATE.object("caerulite_cluster")
+            .block(p -> new AmethystClusterBlock(7, 3, p)).properties(p -> crystalProperties(p, 5))
+            .transform(TagGen.pickaxeOnly()).blockstate(() -> (ctx, prov) -> prov.createAmethystCluster(ctx.get()))
+            .loot((lt, b) -> lt.add(b, lt.createOreDrop(b, MiaItems.CAERULITE_SHARD.get()))).simpleItem().register();
     public static final BlockEntry<Block> SUN_STONE = REGISTRATE.object("sun_stone").block(Block::new)
             .properties(p -> p.strength(0.3F).requiresCorrectToolForDrops().lightLevel(_ -> 15).sound(SoundType.FROGLIGHT))
             .transform(TagGen.pickaxeOnly()).simpleItem().register();

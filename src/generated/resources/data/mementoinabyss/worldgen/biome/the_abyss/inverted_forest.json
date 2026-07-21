@@ -2,6 +2,7 @@
   "carvers": [],
   "downfall": 0.8,
   "effects": {
+    "foliage_color": "#acf750",
     "grass_color": "#acf750",
     "water_color": "#5db7ef"
   },

@@ -63,6 +63,12 @@
     "mementoinabyss:medium_prasiolite_bud",
     "mementoinabyss:large_prasiolite_bud",
     "mementoinabyss:prasiolite_cluster",
+    "mementoinabyss:caerulite_block",
+    "mementoinabyss:budding_caerulite",
+    "mementoinabyss:small_caerulite_bud",
+    "mementoinabyss:medium_caerulite_bud",
+    "mementoinabyss:large_caerulite_bud",
+    "mementoinabyss:caerulite_cluster",
     "mementoinabyss:sun_stone"
   ]
 }

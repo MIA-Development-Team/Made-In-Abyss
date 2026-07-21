@@ -25,6 +25,10 @@ public final class MiaDimensions {
             Registries.LEVEL_STEM, MementoInAbyss.asResource("the_abyss"));
     public static final ResourceKey<Level> THE_ABYSS_LEVEL = ResourceKey.create(
             Registries.DIMENSION, MementoInAbyss.asResource("the_abyss"));
+    public static final ResourceKey<LevelStem> GREAT_FAULT = ResourceKey.create(
+            Registries.LEVEL_STEM, MementoInAbyss.asResource("great_fault"));
+    public static final ResourceKey<Level> GREAT_FAULT_LEVEL = ResourceKey.create(
+            Registries.DIMENSION, MementoInAbyss.asResource("great_fault"));
 
     public static void bootstrap(BootstrapContext<LevelStem> context) {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
@@ -52,6 +56,16 @@ public final class MiaDimensions {
                 AbyssNoiseBiomeSource.createFromList(272, outside, inside),
                 noiseSettings.getOrThrow(MiaNoiseGeneratorSettings.THE_ABYSS));
         context.register(THE_ABYSS, new LevelStem(dimensionTypes.getOrThrow(MiaDimensionTypes.THE_ABYSS), generator));
+
+        Climate.ParameterList<Holder<Biome>> greatFaultOutside = new Climate.ParameterList<>(List.of(
+                biomePair(-1.0F, 1.0F, 0.0F, 0.0F, -1.0F, 1.0F,
+                        biomes.getOrThrow(MiaBiomes.GREAT_FAULT))));
+        NoiseBasedChunkGenerator greatFaultGenerator = new NoiseBasedChunkGenerator(
+                AbyssNoiseBiomeSource.createFromList(
+                        112, greatFaultOutside, biomes.getOrThrow(MiaBiomes.THE_GREAT_FAULT)),
+                noiseSettings.getOrThrow(MiaNoiseGeneratorSettings.GREAT_FAULT));
+        context.register(GREAT_FAULT, new LevelStem(
+                dimensionTypes.getOrThrow(MiaDimensionTypes.GREAT_FAULT), greatFaultGenerator));
     }
 
     private static Pair<Climate.ParameterPoint, Holder<Biome>> biomePair(

@@ -26,11 +26,14 @@ import java.util.Optional;
 public final class MiaDimensionTypes {
     public static final ResourceKey<DimensionType> THE_ABYSS = ResourceKey.create(
             Registries.DIMENSION_TYPE, MementoInAbyss.asResource("the_abyss_type"));
+    public static final ResourceKey<DimensionType> GREAT_FAULT = ResourceKey.create(
+            Registries.DIMENSION_TYPE, MementoInAbyss.asResource("great_fault_type"));
 
     public static void bootstrap(BootstrapContext<DimensionType> context) {
-        HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
-        HolderGetter<WorldClock> clocks = context.lookup(Registries.WORLD_CLOCK);
-        EnvironmentAttributeMap attributes = EnvironmentAttributeMap.builder()
+        var timelines = context.lookup(Registries.TIMELINE);
+        var clocks = context.lookup(Registries.WORLD_CLOCK);
+        
+        var attributes = EnvironmentAttributeMap.builder()
                 .set(EnvironmentAttributes.FOG_COLOR, 0xFF708C79)
                 .set(EnvironmentAttributes.SKY_COLOR, OverworldBiomes.calculateSkyColor(0.8F))
                 .set(EnvironmentAttributes.AMBIENT_LIGHT_COLOR, ARGB.colorFromFloat(0.12F, 1.0F, 1.0F, 1.0F))
@@ -47,6 +50,26 @@ public final class MiaDimensionTypes {
                 BlockTags.INFINIBURN_OVERWORLD, 0.12F,
                 new DimensionType.MonsterSettings(UniformInt.of(0, 7), 0),
                 DimensionType.Skybox.OVERWORLD, CardinalLighting.Type.DEFAULT, attributes,
+                timelines.getOrThrow(TimelineTags.IN_OVERWORLD),
+                Optional.of(clocks.getOrThrow(WorldClocks.OVERWORLD))));
+
+        var greatFaultAttributes = EnvironmentAttributeMap.builder()
+                .set(EnvironmentAttributes.FOG_COLOR, 0xFF8795AA)
+                .set(EnvironmentAttributes.SKY_COLOR, 0xFF8795AA)
+                .set(EnvironmentAttributes.AMBIENT_LIGHT_COLOR, ARGB.colorFromFloat(0.025F, 1.0F, 1.0F, 1.0F))
+                .set(EnvironmentAttributes.CLOUD_COLOR, ARGB.white(0.8F))
+                .set(EnvironmentAttributes.CLOUD_HEIGHT, (float) MiaHeight.GREAT_FAULT.maxY())
+                .set(EnvironmentAttributes.BED_RULE, BedRule.CAN_SLEEP_WHEN_DARK)
+                .set(EnvironmentAttributes.RESPAWN_ANCHOR_WORKS, false)
+                .set(EnvironmentAttributes.NETHER_PORTAL_SPAWNS_PIGLINS, true)
+                .set(EnvironmentAttributes.AMBIENT_SOUNDS, AmbientSounds.LEGACY_CAVE_SETTINGS)
+                .build();
+        context.register(GREAT_FAULT, new DimensionType(
+                true, true, false, false, 2.0,
+                MiaHeight.GREAT_FAULT.minY(), MiaHeight.GREAT_FAULT.height(), MiaHeight.GREAT_FAULT.height(),
+                BlockTags.INFINIBURN_OVERWORLD, 0.025F,
+                new DimensionType.MonsterSettings(UniformInt.of(0, 7), 0),
+                DimensionType.Skybox.NONE, CardinalLighting.Type.DEFAULT, greatFaultAttributes,
                 timelines.getOrThrow(TimelineTags.IN_OVERWORLD),
                 Optional.of(clocks.getOrThrow(WorldClocks.OVERWORLD))));
     }

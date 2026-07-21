@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "mementoinabyss:block/caerulite_cluster",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "mementoinabyss:block/caerulite_cluster",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "mementoinabyss:block/caerulite_cluster",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "mementoinabyss:block/caerulite_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "mementoinabyss:block/caerulite_cluster"
+    },
+    "facing=west": {
+      "model": "mementoinabyss:block/caerulite_cluster",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

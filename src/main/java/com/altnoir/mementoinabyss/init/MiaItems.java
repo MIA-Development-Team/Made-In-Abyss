@@ -26,6 +26,7 @@ public class MiaItems {
 
     public static final ItemEntry<Item> RAW_CHLOROPHYTE = REGISTRATE.item("raw_chlorophyte", Item::new).register();
     public static final ItemEntry<Item> PRASIOLITE_SHARD = REGISTRATE.item("prasiolite_shard", Item::new).register();
+    public static final ItemEntry<Item> CAERULITE_SHARD = REGISTRATE.item("caerulite_shard", Item::new).register();
 
     public static void register() {}
 }
