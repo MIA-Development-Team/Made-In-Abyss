@@ -5,6 +5,11 @@
 
 uniform sampler2D Sampler0;
 
+layout(std140) uniform LodFog {
+    // x/y are the LOD-specific render-distance fog start/end in blocks.
+    vec4 LodFogDistances;
+};
+
 in float sphericalVertexDistance;
 in float cylindricalVertexDistance;
 in vec4 vertexColor;
@@ -27,11 +32,17 @@ void main() {
 
     float fade = vertexColor.a * ColorModulator.a;
     float dither = fract(52.9829189 * fract(dot(gl_FragCoord.xy, vec2(0.06711056, 0.00583715))));
-    if (dither > fade) discard;
+    if (fade >= 0.0) {
+        if (dither > fade) discard;
+    } else {
+        // A negative fade is the outgoing mesh. Its mask is exactly complementary
+        // to the incoming mesh, avoiding both holes and overlapping depth writes.
+        if (dither <= -fade) discard;
+    }
 
     color.rgb *= vertexColor.rgb * ColorModulator.rgb;
     color.a = 1.0;
     fragColor = apply_fog(color, sphericalVertexDistance, cylindricalVertexDistance,
             FogEnvironmentalStart, FogEnvironmentalEnd,
-            FogRenderDistanceStart, FogRenderDistanceEnd, FogColor);
+            LodFogDistances.x, LodFogDistances.y, FogColor);
 }

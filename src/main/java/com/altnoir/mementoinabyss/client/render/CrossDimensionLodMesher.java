@@ -42,11 +42,12 @@ final class CrossDimensionLodMesher {
         int horizontalSize = 16 / payload.cellSize();
         QuadBuffer quads = new QuadBuffer(Math.max(128,
                 horizontalSize * payload.yCells() * 2 + horizontalSize * horizontalSize * 2));
+        QuadBuffer seamQuads = new QuadBuffer(Math.max(32, horizontalSize * payload.yCells()));
         int[] mask = new int[horizontalSize * Math.max(horizontalSize, payload.yCells())];
         boolean surfaceOnly = payload.cellSize() >= 8;
         for (int face = 0; face < 6; face++) {
             int hiddenFarFace = payload.displayYOffset() > 0 ? 3 : 2;
-            if (!surfaceOnly || face != hiddenFarFace) greedyFace(payload, face, surfaceOnly, quads, mask);
+            if (!surfaceOnly || face != hiddenFarFace) greedyFace(payload, face, surfaceOnly, quads, seamQuads, mask);
         }
         int yOffset = payload.displayYOffset();
         int originX = payload.chunkX() * 16;
@@ -55,7 +56,7 @@ final class CrossDimensionLodMesher {
                 originX + 16, payload.minY() + payload.yCells() * payload.cellSize() + yOffset, originZ + 16);
         // The completed mesh owns this list; copying it here allocates another backing
         // array for every rebuilt chunk without providing any additional safety.
-        return new CpuMesh(quads, bounds, payload.chunkX(), payload.chunkZ(), payload.cellSize());
+        return new CpuMesh(quads, seamQuads, bounds, payload.chunkX(), payload.chunkZ(), payload.cellSize());
     }
 
     static HeightField buildHeightField(CrossDimensionLodPayload payload) {
@@ -93,7 +94,7 @@ final class CrossDimensionLodMesher {
     }
 
     private void greedyFace(CrossDimensionLodPayload payload, int face,
-                            boolean surfaceOnly, QuadBuffer quads, int[] mask) {
+                            boolean surfaceOnly, QuadBuffer quads, QuadBuffer seamQuads, int[] mask) {
         int size = 16 / payload.cellSize();
         int planes = face < 2 ? size : face < 4 ? payload.yCells() : size;
         int width = size;
@@ -117,8 +118,20 @@ final class CrossDimensionLodMesher {
                     mask[v * width + u] = state >= 0 && neighbor < 0 ? state + 1 : 0;
                 }
             }
-            mergeMask(payload, face, plane, width, height, mask, quads);
+            QuadBuffer target = isCrossLodBoundary(face, plane, size) ? seamQuads : quads;
+            mergeMask(payload, face, plane, width, height, mask, target);
         }
+    }
+
+    private boolean isCrossLodBoundary(int face, int plane, int size) {
+        CrossDimensionLodPayload neighbor = switch (face) {
+            case 0 -> plane == 0 ? west : null;
+            case 1 -> plane == size - 1 ? east : null;
+            case 4 -> plane == 0 ? north : null;
+            case 5 -> plane == size - 1 ? south : null;
+            default -> null;
+        };
+        return neighbor != null && neighbor.cellSize() != source.cellSize();
     }
 
     private static void mergeMask(CrossDimensionLodPayload payload, int face, int plane,
@@ -168,8 +181,7 @@ final class CrossDimensionLodMesher {
             x0 = ox + u * cell; x1 = x0 + width * cell;
             y0 = oy + v * cell; y1 = y0 + height * cell;
         }
-        int color = face == 2 ? 0xFF999999 : face == 3 ? 0xFFFFFFFF : 0xFFCCCCCC;
-        quads.add(x0, y0, z0, x1, y1, z1, color, face, stateId);
+        quads.add(x0, y0, z0, x1, y1, z1, face, stateId);
     }
 
     private int stateForMesh(CrossDimensionLodPayload source, int x, int y, int z, boolean surfaceOnly) {
@@ -251,13 +263,16 @@ final class CrossDimensionLodMesher {
 
     static final class CpuMesh {
         final QuadBuffer quads;
+        final QuadBuffer seamQuads;
         final AABB bounds;
         final int chunkX;
         final int chunkZ;
         final int cellSize;
 
-        private CpuMesh(QuadBuffer quads, AABB bounds, int chunkX, int chunkZ, int cellSize) {
+        private CpuMesh(QuadBuffer quads, QuadBuffer seamQuads, AABB bounds,
+                        int chunkX, int chunkZ, int cellSize) {
             this.quads = quads;
+            this.seamQuads = seamQuads;
             this.bounds = bounds;
             this.chunkX = chunkX;
             this.chunkZ = chunkZ;
@@ -289,11 +304,11 @@ final class CrossDimensionLodMesher {
 
         private QuadBuffer(int initialCapacity) {
             coordinates = new float[initialCapacity * 6];
-            attributes = new int[initialCapacity * 3];
+            attributes = new int[initialCapacity * 2];
         }
 
         private void add(float x0, float y0, float z0, float x1, float y1, float z1,
-                         int color, int face, int stateId) {
+                         int face, int stateId) {
             ensureCapacity(size + 1);
             int coordinate = size * 6;
             coordinates[coordinate] = x0;
@@ -302,19 +317,18 @@ final class CrossDimensionLodMesher {
             coordinates[coordinate + 3] = x1;
             coordinates[coordinate + 4] = y1;
             coordinates[coordinate + 5] = z1;
-            int attribute = size * 3;
-            attributes[attribute] = color;
-            attributes[attribute + 1] = face;
-            attributes[attribute + 2] = stateId;
+            int attribute = size * 2;
+            attributes[attribute] = face;
+            attributes[attribute + 1] = stateId;
             size++;
         }
 
         private void ensureCapacity(int wanted) {
-            int capacity = attributes.length / 3;
+            int capacity = attributes.length / 2;
             if (wanted <= capacity) return;
             int grown = Math.max(wanted, capacity + (capacity >> 1));
             coordinates = Arrays.copyOf(coordinates, grown * 6);
-            attributes = Arrays.copyOf(attributes, grown * 3);
+            attributes = Arrays.copyOf(attributes, grown * 2);
         }
     }
 }

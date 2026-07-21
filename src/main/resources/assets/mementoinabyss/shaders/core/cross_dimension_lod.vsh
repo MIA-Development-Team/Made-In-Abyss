@@ -5,8 +5,6 @@
 #moj_import <minecraft:projection.glsl>
 
 in vec3 Position;
-in vec4 Color;
-in vec2 UV0;
 in ivec2 UV1;
 in ivec2 UV2;
 in vec3 Normal;
@@ -23,8 +21,15 @@ void main() {
     gl_Position = ProjMat * viewPosition;
     sphericalVertexDistance = fog_spherical_distance(viewPosition.xyz);
     cylindricalVertexDistance = fog_cylindrical_distance(viewPosition.xyz);
-    vertexColor = Color;
-    tileCoord = UV0;
+    float shade = Normal.y < -0.5 ? 0.6 : (Normal.y > 0.5 ? 1.0 : 0.8);
+    vertexColor = vec4(vec3(shade), 1.0);
+    if (abs(Normal.x) > 0.5) {
+        tileCoord = vec2(Position.z, -Position.y);
+    } else if (abs(Normal.y) > 0.5) {
+        tileCoord = Position.xz;
+    } else {
+        tileCoord = vec2(Position.x, -Position.y);
+    }
     spriteMin = vec2(UV1) / 32767.0;
     spriteMax = vec2(UV2) / 32767.0;
 }
