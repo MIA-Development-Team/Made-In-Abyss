@@ -14,11 +14,28 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Optional;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /** Builds coarse 3D chunks directly from the Great Fault noise generator, without generating chunks. */
 public final class GreatFaultLodSampler {
-    private static final int CHUNKS_PER_TICK = 2;
+    private static final int MAX_CHUNKS_PER_TICK = 16;
+    private static final int MAX_RESULTS_PER_TICK = 64;
+    private static final int MAX_BYTES_PER_TICK = 128 * 1024;
+    private static final int MAX_IN_FLIGHT_PER_TASK = 32;
+    private static final ThreadPoolExecutor LOADER = new ThreadPoolExecutor(2, 2, 0L, TimeUnit.MILLISECONDS,
+            new ArrayBlockingQueue<>(256), runnable -> {
+                Thread thread = new Thread(runnable, "MIA LOD loader");
+                thread.setDaemon(true);
+                thread.setPriority(Thread.NORM_PRIORITY - 1);
+                return thread;
+            }, new ThreadPoolExecutor.AbortPolicy());
     private static final double FINE_LEVEL_END = 0.34;
     private static final double MEDIUM_LEVEL_END = 0.67;
     private static final Map<UUID, Task> TASKS = new ConcurrentHashMap<>();
@@ -40,36 +57,87 @@ public final class GreatFaultLodSampler {
                 TASKS.remove(task.player.getUUID(), task);
                 continue;
             }
-            for (int i = 0; i < CHUNKS_PER_TICK && task.cursor < task.chunks.size(); i++) {
-                ChunkPos pos = task.chunks.get(task.cursor++);
-                var storedChunk = GreatFaultLodStorage.read(task.link, source, pos);
-                if (storedChunk.isEmpty()) {
-                    task.missing.add(pos);
-                    continue;
-                }
-                storedChunk.ifPresent(stored -> {
-                    int cellSize = task.cellSize(pos);
-                    var selectedLevel = GreatFaultLodStorage.coarsen(stored, cellSize);
-                    CrossDimensionLodPayload payload = new CrossDimensionLodPayload(
-                            task.link.id().toString(), task.link.displayYOffset(), task.link.outsidePlaneY(),
-                            task.link.centerX(), task.link.centerZ(),
-                            task.radius, task.firstPayload,
-                            selectedLevel.chunkX(), selectedLevel.chunkZ(), selectedLevel.cellSize(),
-                            selectedLevel.minY(), selectedLevel.yCells(), selectedLevel.palette(), selectedLevel.voxels());
-                    task.firstPayload = false;
-                    PacketDistributor.sendToPlayer(task.player, payload);
-                });
-            }
-            if (task.cursor == task.chunks.size()) {
+            sendCompleted(task);
+            if (task.isPassComplete()) {
                 if (!task.missing.isEmpty() && task.pass++ < 2) {
                     task.chunks = new ArrayList<>(task.missing);
                     task.missing.clear();
-                    task.cursor = 0;
+                    task.scheduleCursor = 0;
+                    task.sendCursor = 0;
                 } else {
                     TASKS.remove(task.player.getUUID(), task);
+                    continue;
                 }
             }
+            scheduleLoads(task, source);
         }
+    }
+
+    private static void scheduleLoads(Task task, ServerLevel source) {
+        while (task.scheduleCursor < task.chunks.size()
+                && task.scheduleCursor - task.sendCursor < MAX_IN_FLIGHT_PER_TASK) {
+            int sequence = task.scheduleCursor;
+            ChunkPos pos = task.chunks.get(sequence);
+            int cellSize = task.cellSize(pos);
+            task.scheduleCursor++;
+            task.inFlight.incrementAndGet();
+            try {
+                LOADER.execute(() -> {
+                    GreatFaultLodStorage.StoredChunk selected = null;
+                    try {
+                        Optional<GreatFaultLodStorage.StoredChunk> stored =
+                                GreatFaultLodStorage.read(task.link, source, pos);
+                        if (stored.isPresent()) selected = GreatFaultLodStorage.coarsen(stored.get(), cellSize);
+                    } catch (Throwable throwable) {
+                        MementoInAbyss.LOGGER.warn("Unable to prepare Great Fault LOD chunk {}", pos, throwable);
+                    } finally {
+                        task.completed.put(sequence, new PreparedChunk(pos, selected));
+                        task.inFlight.decrementAndGet();
+                    }
+                });
+            } catch (RejectedExecutionException ignored) {
+                task.inFlight.decrementAndGet();
+                task.scheduleCursor--;
+                break;
+            }
+        }
+    }
+
+    private static void sendCompleted(Task task) {
+        int sent = 0;
+        int processed = 0;
+        int bytes = 0;
+        while (sent < MAX_CHUNKS_PER_TICK && processed < MAX_RESULTS_PER_TICK) {
+            PreparedChunk prepared = task.completed.get(task.sendCursor);
+            if (prepared == null) break;
+            if (prepared.chunk == null) {
+                task.completed.remove(task.sendCursor, prepared);
+                task.sendCursor++;
+                task.missing.add(prepared.pos);
+                processed++;
+                continue;
+            }
+
+            int estimatedBytes = estimatedPayloadBytes(task, prepared.chunk);
+            if (sent > 0 && bytes + estimatedBytes > MAX_BYTES_PER_TICK) break;
+            if (!task.completed.remove(task.sendCursor, prepared)) continue;
+            task.sendCursor++;
+            processed++;
+            CrossDimensionLodPayload payload = new CrossDimensionLodPayload(
+                    task.link.id().toString(), task.link.displayYOffset(), task.link.outsidePlaneY(),
+                    task.link.centerX(), task.link.centerZ(), task.radius, task.firstPayload,
+                    prepared.chunk.chunkX(), prepared.chunk.chunkZ(), prepared.chunk.cellSize(),
+                    prepared.chunk.minY(), prepared.chunk.yCells(), prepared.chunk.palette(), prepared.chunk.voxels());
+            task.firstPayload = false;
+            PacketDistributor.sendToPlayer(task.player, payload);
+            bytes += estimatedBytes;
+            sent++;
+        }
+    }
+
+    private static int estimatedPayloadBytes(Task task, GreatFaultLodStorage.StoredChunk chunk) {
+        return 64 + task.link.id().toString().length() * 3
+                + chunk.palette().length * 5 + chunk.voxels().length * Short.BYTES;
     }
 
     public static void remove(ServerPlayer player) { TASKS.remove(player.getUUID()); }
@@ -81,7 +149,10 @@ public final class GreatFaultLodSampler {
         private final int radius;
         private List<ChunkPos> chunks;
         private final List<ChunkPos> missing = new ArrayList<>();
-        private int cursor;
+        private int scheduleCursor;
+        private int sendCursor;
+        private final AtomicInteger inFlight = new AtomicInteger();
+        private final ConcurrentMap<Integer, PreparedChunk> completed = new ConcurrentHashMap<>();
         private boolean firstPayload = true;
         private int pass;
 
@@ -118,7 +189,14 @@ public final class GreatFaultLodSampler {
             return 16;
         }
 
+        private boolean isPassComplete() {
+            return scheduleCursor == chunks.size() && sendCursor == chunks.size()
+                    && inFlight.get() == 0 && completed.isEmpty();
+        }
+
     }
+
+    private record PreparedChunk(ChunkPos pos, GreatFaultLodStorage.StoredChunk chunk) {}
 
     private GreatFaultLodSampler() {}
 }

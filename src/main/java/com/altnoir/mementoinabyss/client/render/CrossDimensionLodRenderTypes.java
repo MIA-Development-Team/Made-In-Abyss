@@ -31,5 +31,9 @@ public final class CrossDimensionLodRenderTypes {
         event.registerPipeline(TILED_BLOCKS_PIPELINE);
     }
 
+    public static RenderPipeline tiledBlocksPipeline() {
+        return TILED_BLOCKS_PIPELINE;
+    }
+
     private CrossDimensionLodRenderTypes() {}
 }

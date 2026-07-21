@@ -19,9 +19,10 @@ flat out vec2 spriteMin;
 flat out vec2 spriteMax;
 
 void main() {
-    gl_Position = ProjMat * ModelViewMat * vec4(Position, 1.0);
-    sphericalVertexDistance = fog_spherical_distance(Position);
-    cylindricalVertexDistance = fog_cylindrical_distance(Position);
+    vec4 viewPosition = ModelViewMat * vec4(Position, 1.0);
+    gl_Position = ProjMat * viewPosition;
+    sphericalVertexDistance = fog_spherical_distance(viewPosition.xyz);
+    cylindricalVertexDistance = fog_cylindrical_distance(viewPosition.xyz);
     vertexColor = Color;
     tileCoord = UV0;
     spriteMin = vec2(UV1) / 32767.0;

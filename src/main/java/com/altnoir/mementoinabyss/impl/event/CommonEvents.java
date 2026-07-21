@@ -63,7 +63,7 @@ public class CommonEvents {
     public static void onChunkUnload(ChunkEvent.Unload event) {
         if (event.getLevel() instanceof ServerLevel level && event.getChunk() instanceof LevelChunk chunk) {
             CrossDimensionLodLinks.forSource(level.dimension())
-                    .ifPresent(link -> GreatFaultLodStorage.ingest(link, level, chunk));
+                    .ifPresent(link -> GreatFaultLodStorage.ingestIfMissing(link, level, chunk));
         }
     }
 

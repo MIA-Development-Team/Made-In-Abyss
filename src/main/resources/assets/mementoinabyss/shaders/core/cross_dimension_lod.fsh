@@ -23,8 +23,8 @@ void main() {
     // Derivatives from the unwrapped coordinate keep mip selection stable at tile boundaries.
     vec4 color = textureGrad(Sampler0, atlasCoord,
             dFdx(tileCoord) * spriteSize, dFdy(tileCoord) * spriteSize);
-    if (color.a < 0.1) discard;
     color *= vertexColor * ColorModulator;
+    color.a = 1.0;
     fragColor = apply_fog(color, sphericalVertexDistance, cylindricalVertexDistance,
             FogEnvironmentalStart, FogEnvironmentalEnd,
             FogRenderDistanceStart, FogRenderDistanceEnd, FogColor);

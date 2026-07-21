@@ -2,12 +2,12 @@ package com.altnoir.mementoinabyss.worldgen.lod;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.worldgen.MiaHeight;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.storage.LevelResource;
 
 import java.io.BufferedInputStream;
@@ -51,7 +51,7 @@ public final class GreatFaultLodStorage {
         if (!PENDING_WRITES.add(destination)) return;
         StoredChunk snapshot;
         try {
-            snapshot = voxelize(chunk);
+            snapshot = voxelize(link, chunk);
         } catch (RuntimeException exception) {
             PENDING_WRITES.remove(destination);
             throw exception;
@@ -140,18 +140,20 @@ public final class GreatFaultLodStorage {
                 palette.stream().mapToInt(Integer::intValue).toArray(), voxels);
     }
 
-    private static StoredChunk voxelize(ChunkAccess chunk) {
+    private static StoredChunk voxelize(CrossDimensionLodLink link, ChunkAccess chunk) {
+        MiaHeight sourceHeight = CrossDimensionLodLinks.sourceHeight(link);
         int horizontalCells = 16 / BASE_CELL_SIZE;
-        int minY = MiaHeight.GREAT_FAULT.minY();
-        int yCells = MiaHeight.GREAT_FAULT.height() / BASE_CELL_SIZE;
+        int minY = sourceHeight.minY();
+        int yCells = sourceHeight.height() / BASE_CELL_SIZE;
         short[] voxels = new short[horizontalCells * horizontalCells * yCells];
         List<Integer> palette = new ArrayList<>();
         Map<Integer, Short> paletteLookup = new HashMap<>();
         int airId = Block.getId(Blocks.AIR.defaultBlockState());
         palette.add(airId);
         paletteLookup.put(airId, (short) 0);
-        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         int[] ids = new int[BASE_CELL_SIZE * BASE_CELL_SIZE * BASE_CELL_SIZE];
+        LevelChunkSection[] sections = chunk.getSections();
+        int chunkMinY = chunk.getMinY();
 
         for (int z = 0; z < horizontalCells; z++) {
             for (int x = 0; x < horizontalCells; x++) {
@@ -160,10 +162,13 @@ public final class GreatFaultLodStorage {
                     for (int dz = 0; dz < BASE_CELL_SIZE; dz++) {
                         for (int dx = 0; dx < BASE_CELL_SIZE; dx++) {
                             for (int dy = 0; dy < BASE_CELL_SIZE; dy++) {
-                                cursor.set(chunk.getPos().getMinBlockX() + x * BASE_CELL_SIZE + dx,
-                                        minY + y * BASE_CELL_SIZE + dy,
-                                        chunk.getPos().getMinBlockZ() + z * BASE_CELL_SIZE + dz);
-                                var state = chunk.getBlockState(cursor);
+                                int blockY = minY + y * BASE_CELL_SIZE + dy;
+                                int sectionIndex = (blockY - chunkMinY) >> 4;
+                                if (sectionIndex < 0 || sectionIndex >= sections.length) continue;
+                                LevelChunkSection section = sections[sectionIndex];
+                                if (section.hasOnlyAir()) continue;
+                                var state = section.getBlockState(x * BASE_CELL_SIZE + dx,
+                                        blockY & 15, z * BASE_CELL_SIZE + dz);
                                 int id = Block.getId(state);
                                 if (id != airId && state.getLightEmission() == 0) ids[count++] = id;
                             }
