@@ -5,6 +5,7 @@ import com.altnoir.mementoinabyss.worldgen.MiaHeight;
 import com.altnoir.mementoinabyss.worldgen.density.HopperAbyssHole;
 import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensions;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
@@ -25,6 +26,8 @@ public final class CrossDimensionLodLinks {
     private static final List<CrossDimensionLodLink> LINKS = List.of(
             GREAT_FAULT_BELOW_ABYSS, ABYSS_ABOVE_GREAT_FAULT);
 
+    public static List<CrossDimensionLodLink> all() { return LINKS; }
+
     public static List<CrossDimensionLodLink> fromSource(ResourceKey<Level> dimension) {
         return LINKS.stream().filter(link -> link.source().equals(dimension)).toList();
     }
@@ -35,6 +38,11 @@ public final class CrossDimensionLodLinks {
 
     public static int radius(CrossDimensionLodLink link) {
         return MementoInAbyss.CONFIGS.guiSection.crossDimensionLodViewDistance.get() * 16;
+    }
+
+    /** Configured radius of the center-first lazy-generation area. */
+    public static int centralGenerationRadius() {
+        return Mth.ceil(HopperAbyssHole.abyssRadius());
     }
 
     /** Radius controlling fine/medium bands; the rest of the configured view remains coarse. */

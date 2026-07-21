@@ -30,19 +30,21 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
-/** Persistent, server-owned LOD storage derived only from fully generated source chunks. */
+/** Persistent server-owned LOD storage, shared by every link that uses the same source dimension. */
 public final class MiaLodStorage {
     public static final int BASE_CELL_SIZE = 4;
     private static final int MAGIC = 0x4D49414C; // MIAL
-    private static final int VERSION = 3;
+    private static final int VERSION = 5;
     private static final int MAX_PENDING_WRITES = 128;
-    private static final int MAX_PENDING_CAPTURES = 64;
+    // A normal client view can load several hundred chunks in one burst; do not lose upgrade requests.
+    private static final int MAX_PENDING_CAPTURES = 1024;
     private static final ExecutorService WRITER = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
             new ArrayBlockingQueue<>(MAX_PENDING_WRITES), r -> {
                 Thread thread = new Thread(r, "MIA cross-dimension LOD writer");
@@ -55,9 +57,10 @@ public final class MiaLodStorage {
     private static final java.util.Set<Path> PENDING_CAPTURE_PATHS = new HashSet<>();
 
     public static void enqueueIfMissing(CrossDimensionLodLink link, ServerLevel level, ChunkAccess chunk) {
-        Path destination = chunkPath(link, level, chunk.getPos());
-        if (Files.isRegularFile(destination) || PENDING_WRITES.contains(destination)
-                || PENDING_CAPTURE_PATHS.contains(destination) || PENDING_CAPTURES.size() >= MAX_PENDING_CAPTURES) return;
+        Path destination = chunkPath(level, chunk.getPos());
+        if (isComplete(destination)
+                || PENDING_CAPTURE_PATHS.contains(destination)
+                || PENDING_CAPTURES.size() >= MAX_PENDING_CAPTURES) return;
         PENDING_CAPTURES.addLast(new PendingCapture(link, level, chunk, destination));
         PENDING_CAPTURE_PATHS.add(destination);
     }
@@ -65,8 +68,17 @@ public final class MiaLodStorage {
     public static void processPendingCapture() {
         PendingCapture pending = PENDING_CAPTURES.pollFirst();
         if (pending == null) return;
+        if (PENDING_WRITES.contains(pending.destination)) {
+            PENDING_CAPTURES.addLast(pending);
+            return;
+        }
         PENDING_CAPTURE_PATHS.remove(pending.destination);
-        if (!Files.isRegularFile(pending.destination)) ingest(pending.link, pending.level, pending.chunk);
+        if (!isComplete(pending.destination)) {
+            ChunkPos pos = pending.chunk.getPos();
+            ingest(pending.link, pending.level, pending.chunk, false).thenRun(() ->
+                    pending.level.getServer().execute(() ->
+                            MiaLodSampler.notifyReplaced(pending.link, pos)));
+        }
     }
 
     public static void clearPendingCaptures() {
@@ -74,20 +86,30 @@ public final class MiaLodStorage {
         PENDING_CAPTURE_PATHS.clear();
     }
 
-    public static void ingest(CrossDimensionLodLink link, ServerLevel level, ChunkAccess chunk) {
-        Path destination = chunkPath(link, level, chunk.getPos());
-        if (!PENDING_WRITES.add(destination)) return;
+    public static CompletableFuture<Void> ingest(CrossDimensionLodLink link, ServerLevel level, ChunkAccess chunk) {
+        return ingest(link, level, chunk, false);
+    }
+
+    public static CompletableFuture<Void> ingest(CrossDimensionLodLink link, ServerLevel level,
+                                                 ChunkAccess chunk, boolean provisional) {
+        Path destination = chunkPath(level, chunk.getPos());
+        if (!PENDING_WRITES.add(destination)) return CompletableFuture.completedFuture(null);
         StoredChunk snapshot;
         try {
-            snapshot = voxelize(link, chunk);
+            snapshot = voxelize(link, chunk, provisional);
         } catch (RuntimeException exception) {
             PENDING_WRITES.remove(destination);
             throw exception;
         }
+        CompletableFuture<Void> completion = new CompletableFuture<>();
         try {
             WRITER.execute(() -> {
                 try {
                     write(destination, snapshot);
+                    completion.complete(null);
+                } catch (Throwable throwable) {
+                    MementoInAbyss.LOGGER.warn("Unable to write cross-dimension LOD {}", destination, throwable);
+                    completion.completeExceptionally(throwable);
                 } finally {
                     PENDING_WRITES.remove(destination);
                 }
@@ -95,20 +117,23 @@ public final class MiaLodStorage {
         } catch (RejectedExecutionException ignored) {
             // Never compress on the server thread. A later load/unload retries this chunk.
             PENDING_WRITES.remove(destination);
+            completion.completeExceptionally(ignored);
         }
+        return completion;
     }
 
     public static void ingestIfMissing(CrossDimensionLodLink link, ServerLevel level, ChunkAccess chunk) {
         // Presence checks must not inflate and allocate the complete voxel payload on every source chunk load.
-        if (!Files.isRegularFile(chunkPath(link, level, chunk.getPos()))) ingest(link, level, chunk);
+        if (!contains(level, chunk.getPos())) ingest(link, level, chunk);
     }
 
-    public static Optional<StoredChunk> read(CrossDimensionLodLink link, ServerLevel level, ChunkPos pos) {
-        Path path = chunkPath(link, level, pos);
+    public static Optional<StoredChunk> read(ServerLevel level, ChunkPos pos) {
+        Path path = chunkPath(level, pos);
         if (!Files.isRegularFile(path)) return Optional.empty();
         try (DataInputStream input = new DataInputStream(new InflaterInputStream(
                 new BufferedInputStream(Files.newInputStream(path))))) {
             if (input.readInt() != MAGIC || input.readInt() != VERSION) return Optional.empty();
+            boolean provisional = input.readBoolean();
             int chunkX = input.readInt();
             int chunkZ = input.readInt();
             int cellSize = input.readUnsignedByte();
@@ -127,11 +152,18 @@ public final class MiaLodStorage {
                 voxels[i] = input.readShort();
                 if (Short.toUnsignedInt(voxels[i]) >= paletteSize) return Optional.empty();
             }
-            return Optional.of(new StoredChunk(chunkX, chunkZ, cellSize, minY, yCells, palette, voxels));
+            StoredChunk stored = new StoredChunk(chunkX, chunkZ, cellSize, minY, yCells,
+                    palette, voxels, provisional);
+            return Optional.of(stored);
         } catch (IOException | RuntimeException exception) {
             MementoInAbyss.LOGGER.warn("Unable to read cross-dimension LOD {}", path, exception);
             return Optional.empty();
         }
+    }
+
+    /** Cheap presence check used by the lazy source-dimension generator. */
+    public static boolean contains(ServerLevel level, ChunkPos pos) {
+        return Files.isRegularFile(chunkPath(level, pos));
     }
 
     /** Derives a coarser level from the persisted base level without duplicating files on disk. */
@@ -177,10 +209,10 @@ public final class MiaLodStorage {
             }
         }
         return new StoredChunk(source.chunkX, source.chunkZ, targetCellSize, source.minY, yCells,
-                palette.stream().mapToInt(Integer::intValue).toArray(), voxels);
+                palette.stream().mapToInt(Integer::intValue).toArray(), voxels, source.provisional);
     }
 
-    private static StoredChunk voxelize(CrossDimensionLodLink link, ChunkAccess chunk) {
+    private static StoredChunk voxelize(CrossDimensionLodLink link, ChunkAccess chunk, boolean provisional) {
         MiaHeight sourceHeight = link.sourceHeight();
         int horizontalCells = 16 / BASE_CELL_SIZE;
         int minY = sourceHeight.minY();
@@ -233,7 +265,7 @@ public final class MiaLodStorage {
             }
         }
         return new StoredChunk(chunk.getPos().x(), chunk.getPos().z(), BASE_CELL_SIZE,
-                minY, yCells, palette.stream().mapToInt(Integer::intValue).toArray(), voxels);
+                minY, yCells, palette.stream().mapToInt(Integer::intValue).toArray(), voxels, provisional);
     }
 
     private static int mostFrequent(int[] ids, int length) {
@@ -250,39 +282,53 @@ public final class MiaLodStorage {
         return runCount > bestCount ? runId : bestId;
     }
 
-    private static void write(Path destination, StoredChunk chunk) {
+    private static void write(Path destination, StoredChunk chunk) throws IOException {
         Path temporary = destination.resolveSibling(destination.getFileName() + ".tmp");
-        try {
-            Files.createDirectories(destination.getParent());
-            try (DataOutputStream output = new DataOutputStream(new DeflaterOutputStream(
-                    new BufferedOutputStream(Files.newOutputStream(temporary))))) {
-                output.writeInt(MAGIC);
-                output.writeInt(VERSION);
-                output.writeInt(chunk.chunkX);
-                output.writeInt(chunk.chunkZ);
-                output.writeByte(chunk.cellSize);
-                output.writeInt(chunk.minY);
-                output.writeInt(chunk.yCells);
-                output.writeShort(chunk.palette.length);
-                for (int stateId : chunk.palette) output.writeInt(stateId);
-                for (short voxel : chunk.voxels) output.writeShort(voxel);
-            }
-            try {
-                Files.move(temporary, destination, StandardCopyOption.REPLACE_EXISTING,
-                        StandardCopyOption.ATOMIC_MOVE);
-            } catch (IOException ignored) {
-                Files.move(temporary, destination, StandardCopyOption.REPLACE_EXISTING);
-            }
-        } catch (IOException exception) {
-            MementoInAbyss.LOGGER.warn("Unable to write cross-dimension LOD {}", destination, exception);
+        Files.createDirectories(destination.getParent());
+        try (DataOutputStream output = new DataOutputStream(new DeflaterOutputStream(
+                new BufferedOutputStream(Files.newOutputStream(temporary))))) {
+            output.writeInt(MAGIC);
+            output.writeInt(VERSION);
+            output.writeBoolean(chunk.provisional);
+            output.writeInt(chunk.chunkX);
+            output.writeInt(chunk.chunkZ);
+            output.writeByte(chunk.cellSize);
+            output.writeInt(chunk.minY);
+            output.writeInt(chunk.yCells);
+            output.writeShort(chunk.palette.length);
+            for (int stateId : chunk.palette) output.writeInt(stateId);
+            for (short voxel : chunk.voxels) output.writeShort(voxel);
         }
+        try {
+            Files.move(temporary, destination, StandardCopyOption.REPLACE_EXISTING,
+                    StandardCopyOption.ATOMIC_MOVE);
+        } catch (IOException ignored) {
+            Files.move(temporary, destination, StandardCopyOption.REPLACE_EXISTING);
+        }
+        Path marker = completeMarker(destination);
+        if (chunk.provisional) Files.deleteIfExists(marker);
+        else Files.write(marker, new byte[0]);
     }
 
-    private static Path chunkPath(CrossDimensionLodLink link, ServerLevel level, ChunkPos pos) {
+    private static Path chunkPath(ServerLevel level, ChunkPos pos) {
+        return chunkPath(level, pos, VERSION);
+    }
+
+    private static Path chunkPath(ServerLevel level, ChunkPos pos, int version) {
+        var dimension = level.dimension().identifier();
         return level.getServer().getWorldPath(LevelResource.ROOT)
-                .resolve("data").resolve(MementoInAbyss.ID).resolve("lod").resolve(link.id().getPath())
+                .resolve("data").resolve(MementoInAbyss.ID).resolve("lod").resolve("dimensions")
+                .resolve(dimension.getNamespace()).resolve(dimension.getPath())
                 .resolve("r." + Math.floorDiv(pos.x(), 32) + "." + Math.floorDiv(pos.z(), 32))
-                .resolve("c." + pos.x() + "." + pos.z() + ".v" + VERSION + ".mialod");
+                .resolve("c." + pos.x() + "." + pos.z() + ".v" + version + ".mialod");
+    }
+
+    private static boolean isComplete(Path path) {
+        return Files.isRegularFile(path) && Files.isRegularFile(completeMarker(path));
+    }
+
+    private static Path completeMarker(Path path) {
+        return path.resolveSibling(path.getFileName() + ".complete");
     }
 
     private static int index(int x, int y, int z, int horizontalCells, int yCells) {
@@ -290,7 +336,7 @@ public final class MiaLodStorage {
     }
 
     public record StoredChunk(int chunkX, int chunkZ, int cellSize, int minY,
-                              int yCells, int[] palette, short[] voxels) {}
+                              int yCells, int[] palette, short[] voxels, boolean provisional) {}
     private record PendingCapture(CrossDimensionLodLink link, ServerLevel level,
                                   ChunkAccess chunk, Path destination) {}
     private MiaLodStorage() {}

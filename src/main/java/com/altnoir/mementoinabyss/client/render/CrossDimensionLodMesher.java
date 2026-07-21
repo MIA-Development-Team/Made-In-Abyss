@@ -4,9 +4,7 @@ import com.altnoir.mementoinabyss.network.CrossDimensionLodPayload;
 import com.altnoir.mementoinabyss.worldgen.lod.CrossDimensionLodKey;
 import net.minecraft.world.phys.AABB;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 /** Pure CPU greedy meshing. Worker threads only read immutable payloads and concurrent lookup maps. */
@@ -41,11 +39,14 @@ final class CrossDimensionLodMesher {
 
     private CpuMesh build() {
         CrossDimensionLodPayload payload = source;
-        List<Quad> quads = new ArrayList<>();
+        int horizontalSize = 16 / payload.cellSize();
+        QuadBuffer quads = new QuadBuffer(Math.max(128,
+                horizontalSize * payload.yCells() * 2 + horizontalSize * horizontalSize * 2));
+        int[] mask = new int[horizontalSize * Math.max(horizontalSize, payload.yCells())];
         boolean surfaceOnly = payload.cellSize() >= 8;
         for (int face = 0; face < 6; face++) {
             int hiddenFarFace = payload.displayYOffset() > 0 ? 3 : 2;
-            if (!surfaceOnly || face != hiddenFarFace) greedyFace(payload, face, surfaceOnly, quads);
+            if (!surfaceOnly || face != hiddenFarFace) greedyFace(payload, face, surfaceOnly, quads, mask);
         }
         int yOffset = payload.displayYOffset();
         int originX = payload.chunkX() * 16;
@@ -92,13 +93,11 @@ final class CrossDimensionLodMesher {
     }
 
     private void greedyFace(CrossDimensionLodPayload payload, int face,
-                            boolean surfaceOnly, List<Quad> quads) {
+                            boolean surfaceOnly, QuadBuffer quads, int[] mask) {
         int size = 16 / payload.cellSize();
         int planes = face < 2 ? size : face < 4 ? payload.yCells() : size;
         int width = size;
         int height = face < 2 ? payload.yCells() : face < 4 ? size : payload.yCells();
-        int[] mask = new int[width * height];
-
         for (int plane = 0; plane < planes; plane++) {
             for (int v = 0; v < height; v++) {
                 for (int u = 0; u < width; u++) {
@@ -123,7 +122,7 @@ final class CrossDimensionLodMesher {
     }
 
     private static void mergeMask(CrossDimensionLodPayload payload, int face, int plane,
-                                  int width, int height, int[] mask, List<Quad> quads) {
+                                  int width, int height, int[] mask, QuadBuffer quads) {
         for (int v = 0; v < height; v++) {
             for (int u = 0; u < width;) {
                 int value = mask[v * width + u];
@@ -150,7 +149,7 @@ final class CrossDimensionLodMesher {
     }
 
     private static void addGreedyQuad(CrossDimensionLodPayload p, int face, int plane,
-                                      int u, int v, int width, int height, int stateId, List<Quad> quads) {
+                                      int u, int v, int width, int height, int stateId, QuadBuffer quads) {
         float cell = p.cellSize();
         float ox = p.chunkX() * 16.0F;
         float oy = p.minY() + p.displayYOffset();
@@ -170,7 +169,7 @@ final class CrossDimensionLodMesher {
             y0 = oy + v * cell; y1 = y0 + height * cell;
         }
         int color = face == 2 ? 0xFF999999 : face == 3 ? 0xFFFFFFFF : 0xFFCCCCCC;
-        quads.add(new Quad(x0, y0, z0, x1, y1, z1, color, face, stateId));
+        quads.add(x0, y0, z0, x1, y1, z1, color, face, stateId);
     }
 
     private int stateForMesh(CrossDimensionLodPayload source, int x, int y, int z, boolean surfaceOnly) {
@@ -251,13 +250,13 @@ final class CrossDimensionLodMesher {
     }
 
     static final class CpuMesh {
-        final List<Quad> quads;
+        final QuadBuffer quads;
         final AABB bounds;
         final int chunkX;
         final int chunkZ;
         final int cellSize;
 
-        private CpuMesh(List<Quad> quads, AABB bounds, int chunkX, int chunkZ, int cellSize) {
+        private CpuMesh(QuadBuffer quads, AABB bounds, int chunkX, int chunkZ, int cellSize) {
             this.quads = quads;
             this.bounds = bounds;
             this.chunkX = chunkX;
@@ -282,19 +281,40 @@ final class CrossDimensionLodMesher {
         }
     }
 
-    static final class Quad {
-        final float x0, y0, z0, x1, y1, z1;
-        final int color;
-        final int face;
-        final int stateId;
+    /** Structure-of-arrays storage avoids one Java object allocation per greedy quad. */
+    static final class QuadBuffer {
+        float[] coordinates;
+        int[] attributes;
+        int size;
 
-        private Quad(float x0, float y0, float z0, float x1, float y1, float z1,
-                     int color, int face, int stateId) {
-            this.x0 = x0; this.y0 = y0; this.z0 = z0;
-            this.x1 = x1; this.y1 = y1; this.z1 = z1;
-            this.color = color;
-            this.face = face;
-            this.stateId = stateId;
+        private QuadBuffer(int initialCapacity) {
+            coordinates = new float[initialCapacity * 6];
+            attributes = new int[initialCapacity * 3];
+        }
+
+        private void add(float x0, float y0, float z0, float x1, float y1, float z1,
+                         int color, int face, int stateId) {
+            ensureCapacity(size + 1);
+            int coordinate = size * 6;
+            coordinates[coordinate] = x0;
+            coordinates[coordinate + 1] = y0;
+            coordinates[coordinate + 2] = z0;
+            coordinates[coordinate + 3] = x1;
+            coordinates[coordinate + 4] = y1;
+            coordinates[coordinate + 5] = z1;
+            int attribute = size * 3;
+            attributes[attribute] = color;
+            attributes[attribute + 1] = face;
+            attributes[attribute + 2] = stateId;
+            size++;
+        }
+
+        private void ensureCapacity(int wanted) {
+            int capacity = attributes.length / 3;
+            if (wanted <= capacity) return;
+            int grown = Math.max(wanted, capacity + (capacity >> 1));
+            coordinates = Arrays.copyOf(coordinates, grown * 6);
+            attributes = Arrays.copyOf(attributes, grown * 3);
         }
     }
 }

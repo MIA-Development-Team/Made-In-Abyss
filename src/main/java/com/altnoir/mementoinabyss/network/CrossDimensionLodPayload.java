@@ -71,7 +71,9 @@ public record CrossDimensionLodPayload(
     }
 
     public static void register(RegisterPayloadHandlersEvent event) {
-        event.registrar("3").playToClient(TYPE, STREAM_CODEC);
+        var registrar = event.registrar("3");
+        registrar.playToClient(TYPE, STREAM_CODEC);
+        registrar.playToClient(CrossDimensionLodDebugPayload.TYPE, CrossDimensionLodDebugPayload.STREAM_CODEC);
     }
 
     @Override

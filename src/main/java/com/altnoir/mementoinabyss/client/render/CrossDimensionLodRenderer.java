@@ -3,7 +3,7 @@ package com.altnoir.mementoinabyss.client.render;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.CpuMesh;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.HeightField;
-import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.Quad;
+import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.QuadBuffer;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodPayload;
 import com.altnoir.mementoinabyss.worldgen.lod.CrossDimensionLodKey;
 import com.altnoir.mementoinabyss.worldgen.lod.CrossDimensionLodLinks;
@@ -44,16 +44,19 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /** Renders server-provided cross-dimension voxel chunks with six-direction greedy meshing. */
 public final class CrossDimensionLodRenderer {
-    private static final int MESH_UPLOADS_PER_FRAME = 12;
-    private static final int MESH_SCHEDULES_PER_FRAME = 32;
-    private static final int MAX_IN_FLIGHT_MESHES = 64;
-    private static final int REGION_CHUNKS = 8;
-    private static final int REGION_REBUILDS_PER_FRAME = 2;
+    private static final int MESH_UPLOADS_PER_FRAME = 4;
+    private static final int MESH_SCHEDULES_PER_FRAME = 8;
+    private static final int MAX_IN_FLIGHT_MESHES = 16;
+    private static final long MESH_UPLOAD_BUDGET_NANOS = 1_500_000L;
+    private static final int REGION_CHUNKS = 4;
+    private static final int REGION_REBUILDS_PER_FRAME = 1;
+    private static final long REGION_REBUILD_BUDGET_NANOS = 1_000_000L;
     private static final int REGION_REBUILD_DEBOUNCE_FRAMES = 5;
     private static final int EVICTION_INTERVAL_FRAMES = 20;
     private static final int EVICTION_MARGIN_CHUNKS = 10;
     private static final int FADE_DURATION_FRAMES = 24;
     private static final int FADE_STEPS = 16;
+    private static final long SLOW_LOD_FRAME_NANOS = 4_000_000L;
     private static final Map<Long, CrossDimensionLodPayload> DATA = new ConcurrentHashMap<>();
     private static final Map<Long, HeightField> HEIGHT_FIELDS = new ConcurrentHashMap<>();
     private static final Map<Long, ChunkMesh> CHUNKS = new ConcurrentHashMap<>();
@@ -65,11 +68,12 @@ public final class CrossDimensionLodRenderer {
     private static final Map<Long, Long> IN_FLIGHT_MESHES = new ConcurrentHashMap<>();
     private static final ConcurrentLinkedQueue<MeshBuildResult> COMPLETED_MESHES = new ConcurrentLinkedQueue<>();
     private static final AtomicLong NEXT_MESH_REVISION = new AtomicLong();
+    private static final AtomicLong PENDING_RECEIVE_NANOS = new AtomicLong();
     private static final ExecutorService MESH_WORKERS = Executors.newFixedThreadPool(
-            Math.max(2, Math.min(4, Runtime.getRuntime().availableProcessors() - 1)), runnable -> {
+            Math.max(1, Math.min(2, Runtime.getRuntime().availableProcessors() - 2)), runnable -> {
                 Thread thread = new Thread(runnable, "MIA LOD Mesher");
                 thread.setDaemon(true);
-                thread.setPriority(Thread.NORM_PRIORITY - 1);
+                thread.setPriority(Thread.MIN_PRIORITY);
                 return thread;
             });
     private static final Map<Long, TextureAtlasSprite> FACE_SPRITES = new ConcurrentHashMap<>();
@@ -80,8 +84,23 @@ public final class CrossDimensionLodRenderer {
     private static final HashSet<TextureAtlasSprite> VISIBLE_SPRITES = new HashSet<>();
     private static long renderFrame;
     private static volatile int serverViewRadius;
+    private static volatile FrameTiming lastTiming = FrameTiming.EMPTY;
+    private static volatile FrameTiming peakTiming = FrameTiming.EMPTY;
+    private static volatile FrameTiming lastSpike = FrameTiming.EMPTY;
+    private static FrameTiming windowPeak = FrameTiming.EMPTY;
+
+    public static DebugStats debugStats() {
+        int viewRadius = serverViewRadius > 0 ? serverViewRadius
+                : MementoInAbyss.CONFIGS.guiSection.crossDimensionLodViewDistance.get() * 16;
+        return new DebugStats(DATA.size(), CHUNKS.size(), REGIONS.size(),
+                VISIBLE_MESHES.size() + VISIBLE_REGIONS.size() + VISIBLE_TRANSITIONS.size(),
+                DIRTY_CHUNKS.size(), IN_FLIGHT_MESHES.size(), COMPLETED_MESHES.size(), viewRadius,
+                lastTiming, peakTiming, lastSpike);
+    }
 
     public static void accept(CrossDimensionLodPayload payload) {
+        long started = System.nanoTime();
+        try {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null) return;
         var activeLink = CrossDimensionLodLinks.forTarget(minecraft.level.dimension()).orElse(null);
@@ -105,6 +124,9 @@ public final class CrossDimensionLodRenderer {
         markDirtyIfPresent(payload.chunkX() + 1, payload.chunkZ());
         markDirtyIfPresent(payload.chunkX(), payload.chunkZ() - 1);
         markDirtyIfPresent(payload.chunkX(), payload.chunkZ() + 1);
+        } finally {
+            PENDING_RECEIVE_NANOS.addAndGet(System.nanoTime() - started);
+        }
     }
 
     private static void markDirty(int chunkX, int chunkZ) {
@@ -149,10 +171,14 @@ public final class CrossDimensionLodRenderer {
     }
 
     private static void drainCompletedMeshes() {
+        long started = System.nanoTime();
         int uploaded = 0;
-        while (uploaded < MESH_UPLOADS_PER_FRAME) {
+        int processed = 0;
+        while (uploaded < MESH_UPLOADS_PER_FRAME && processed < MAX_IN_FLIGHT_MESHES
+                && (processed == 0 || System.nanoTime() - started < MESH_UPLOAD_BUDGET_NANOS)) {
             MeshBuildResult result = COMPLETED_MESHES.poll();
             if (result == null) break;
+            processed++;
             IN_FLIGHT_MESHES.remove(result.key, result.revision);
             if (result.failure != null) {
                 MementoInAbyss.LOGGER.error("Failed to build cross-dimension LOD mesh [{},{}]",
@@ -200,6 +226,11 @@ public final class CrossDimensionLodRenderer {
         VISIBLE_SPRITES.clear();
         FACE_SPRITES.clear();
         serverViewRadius = 0;
+        PENDING_RECEIVE_NANOS.set(0L);
+        lastTiming = FrameTiming.EMPTY;
+        peakTiming = FrameTiming.EMPTY;
+        lastSpike = FrameTiming.EMPTY;
+        windowPeak = FrameTiming.EMPTY;
     }
 
     private static void closeMeshes() {
@@ -214,6 +245,7 @@ public final class CrossDimensionLodRenderer {
 
     /** Draws already-uploaded chunk meshes without rebuilding a transient BufferBuilder every frame. */
     public static void renderPersistent(RenderLevelStageEvent.AfterOpaqueBlocks event) {
+        long callbackStarted = System.nanoTime();
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null
                 || CrossDimensionLodLinks.forTarget(minecraft.level.dimension()).isEmpty()
@@ -225,9 +257,14 @@ public final class CrossDimensionLodRenderer {
         int viewRadius = serverViewRadius > 0 ? serverViewRadius
                 : MementoInAbyss.CONFIGS.guiSection.crossDimensionLodViewDistance.get() * 16;
         if (renderFrame % EVICTION_INTERVAL_FRAMES == 0) evictFarChunks(camera, viewRadius);
+        long meshStarted = System.nanoTime();
         updateMeshes();
         finishTransitions();
+        long meshNanos = System.nanoTime() - meshStarted;
+        long regionStarted = System.nanoTime();
         rebuildDirtyRegions();
+        long regionNanos = System.nanoTime() - regionStarted;
+        long visibilityStarted = System.nanoTime();
         var frustum = event.getLevelRenderState().cameraRenderState.cullFrustum;
         VISIBLE_MESHES.clear();
         VISIBLE_TRANSITIONS.clear();
@@ -263,7 +300,13 @@ public final class CrossDimensionLodRenderer {
                 if (sodiumLoaded) VISIBLE_SPRITES.addAll(mesh.sprites);
             }
         }
-        if (VISIBLE_MESHES.isEmpty() && VISIBLE_REGIONS.isEmpty() && VISIBLE_TRANSITIONS.isEmpty()) return;
+        long visibilityNanos = System.nanoTime() - visibilityStarted;
+        long receiveNanos = PENDING_RECEIVE_NANOS.getAndSet(0L);
+        if (VISIBLE_MESHES.isEmpty() && VISIBLE_REGIONS.isEmpty() && VISIBLE_TRANSITIONS.isEmpty()) {
+            recordTiming(callbackStarted, receiveNanos, meshNanos, regionNanos, visibilityNanos, 0L);
+            return;
+        }
+        long drawStarted = System.nanoTime();
         if (sodiumLoaded) {
             for (TextureAtlasSprite sprite : VISIBLE_SPRITES) {
                 com.altnoir.mementoinabyss.compat.SodiumLodCompat.markSpriteActive(sprite);
@@ -326,6 +369,22 @@ public final class CrossDimensionLodRenderer {
                 pass.setVertexBuffer(0, mesh.vertexBuffer);
                 pass.drawIndexed(0, 0, mesh.indexCount, 1);
             }
+        }
+        recordTiming(callbackStarted, receiveNanos, meshNanos, regionNanos, visibilityNanos,
+                System.nanoTime() - drawStarted);
+    }
+
+    private static void recordTiming(long callbackStarted, long receiveNanos, long meshNanos,
+                                     long regionNanos, long visibilityNanos, long drawNanos) {
+        long callbackNanos = System.nanoTime() - callbackStarted;
+        FrameTiming sample = new FrameTiming(renderFrame, callbackNanos + receiveNanos,
+                receiveNanos, meshNanos, regionNanos, visibilityNanos, drawNanos);
+        lastTiming = sample;
+        windowPeak = windowPeak.max(sample);
+        if (sample.totalNanos >= SLOW_LOD_FRAME_NANOS) lastSpike = sample;
+        if (renderFrame % 60 == 0) {
+            peakTiming = windowPeak;
+            windowPeak = FrameTiming.EMPTY;
         }
     }
 
@@ -401,9 +460,11 @@ public final class CrossDimensionLodRenderer {
     }
 
     private static void rebuildDirtyRegions() {
+        long started = System.nanoTime();
         int rebuilt = 0;
         var iterator = DIRTY_REGIONS.entrySet().iterator();
-        while (iterator.hasNext() && rebuilt < REGION_REBUILDS_PER_FRAME) {
+        while (iterator.hasNext() && rebuilt < REGION_REBUILDS_PER_FRAME
+                && (rebuilt == 0 || System.nanoTime() - started < REGION_REBUILD_BUDGET_NANOS)) {
             var entry = iterator.next();
             if (renderFrame - entry.getValue() < REGION_REBUILD_DEBOUNCE_FRAMES) continue;
             long key = entry.getKey();
@@ -471,19 +532,21 @@ public final class CrossDimensionLodRenderer {
     }
 
     private static ChunkMesh uploadMesh(CpuMesh cpuMesh, long fadeStartFrame) {
-        List<Quad> quads = cpuMesh.quads;
+        QuadBuffer quads = cpuMesh.quads;
         Set<TextureAtlasSprite> sprites = new HashSet<>();
-        int vertexCount = Math.multiplyExact(quads.size(), 4);
+        int vertexCount = Math.multiplyExact(quads.size, 4);
         int vertexBytes = Math.multiplyExact(vertexCount, DefaultVertexFormat.ENTITY.getVertexSize());
         if (vertexBytes == 0) return new ChunkMesh(cpuMesh.chunkX, cpuMesh.chunkZ,
                 null, 0, Set.copyOf(sprites), cpuMesh.bounds, cpuMesh.cellSize, fadeStartFrame);
         try (ByteBufferBuilder bytes = ByteBufferBuilder.exactlySized(vertexBytes)) {
             BufferBuilder builder = new BufferBuilder(bytes, CrossDimensionLodRenderTypes.TILED_BLOCKS.mode(),
                     DefaultVertexFormat.ENTITY);
-            for (Quad quad : quads) {
-                TextureAtlasSprite sprite = blockSprite(quad.stateId, quad.face);
+            for (int quad = 0; quad < quads.size; quad++) {
+                int attribute = quad * 3;
+                int face = quads.attributes[attribute + 1];
+                TextureAtlasSprite sprite = blockSprite(quads.attributes[attribute + 2], face);
                 sprites.add(sprite);
-                emitQuad(builder, quad, sprite);
+                emitQuad(builder, quads, quad, sprite);
             }
             try (MeshData mesh = builder.buildOrThrow()) {
                 GpuBuffer buffer = RenderSystem.getDevice().createBuffer(
@@ -524,42 +587,53 @@ public final class CrossDimensionLodRenderer {
         });
     }
 
-    private static void emitQuad(VertexConsumer consumer, Quad q, TextureAtlasSprite sprite) {
-        switch (q.face) {
-            case 0 -> emitTextured(consumer, q, sprite, -1, 0, 0,
-                    q.x0,q.y0,q.z1, q.x0,q.y1,q.z1, q.x0,q.y1,q.z0, q.x0,q.y0,q.z0);
-            case 1 -> emitTextured(consumer, q, sprite, 1, 0, 0,
-                    q.x0,q.y0,q.z0, q.x0,q.y1,q.z0, q.x0,q.y1,q.z1, q.x0,q.y0,q.z1);
-            case 2 -> emitTextured(consumer, q, sprite, 0, -1, 0,
-                    q.x0,q.y0,q.z0, q.x1,q.y0,q.z0, q.x1,q.y0,q.z1, q.x0,q.y0,q.z1);
-            case 3 -> emitTextured(consumer, q, sprite, 0, 1, 0,
-                    q.x0,q.y0,q.z1, q.x1,q.y0,q.z1, q.x1,q.y0,q.z0, q.x0,q.y0,q.z0);
-            case 4 -> emitTextured(consumer, q, sprite, 0, 0, -1,
-                    q.x0,q.y0,q.z0, q.x0,q.y1,q.z0, q.x1,q.y1,q.z0, q.x1,q.y0,q.z0);
-            case 5 -> emitTextured(consumer, q, sprite, 0, 0, 1,
-                    q.x1,q.y0,q.z0, q.x1,q.y1,q.z0, q.x0,q.y1,q.z0, q.x0,q.y0,q.z0);
+    private static void emitQuad(VertexConsumer consumer, QuadBuffer quads, int index,
+                                 TextureAtlasSprite sprite) {
+        int coordinate = index * 6;
+        float x0 = quads.coordinates[coordinate];
+        float y0 = quads.coordinates[coordinate + 1];
+        float z0 = quads.coordinates[coordinate + 2];
+        float x1 = quads.coordinates[coordinate + 3];
+        float y1 = quads.coordinates[coordinate + 4];
+        float z1 = quads.coordinates[coordinate + 5];
+        int attribute = index * 3;
+        int color = quads.attributes[attribute];
+        int face = quads.attributes[attribute + 1];
+        switch (face) {
+            case 0 -> emitTextured(consumer, face, color, sprite, -1, 0, 0,
+                    x0,y0,z1, x0,y1,z1, x0,y1,z0, x0,y0,z0);
+            case 1 -> emitTextured(consumer, face, color, sprite, 1, 0, 0,
+                    x0,y0,z0, x0,y1,z0, x0,y1,z1, x0,y0,z1);
+            case 2 -> emitTextured(consumer, face, color, sprite, 0, -1, 0,
+                    x0,y0,z0, x1,y0,z0, x1,y0,z1, x0,y0,z1);
+            case 3 -> emitTextured(consumer, face, color, sprite, 0, 1, 0,
+                    x0,y0,z1, x1,y0,z1, x1,y0,z0, x0,y0,z0);
+            case 4 -> emitTextured(consumer, face, color, sprite, 0, 0, -1,
+                    x0,y0,z0, x0,y1,z0, x1,y1,z0, x1,y0,z0);
+            case 5 -> emitTextured(consumer, face, color, sprite, 0, 0, 1,
+                    x1,y0,z0, x1,y1,z0, x0,y1,z0, x0,y0,z0);
         }
     }
 
-    private static void emitTextured(VertexConsumer consumer, Quad q, TextureAtlasSprite sprite,
+    private static void emitTextured(VertexConsumer consumer, int face, int color, TextureAtlasSprite sprite,
                                      float nx, float ny, float nz,
                                      float ax, float ay, float az, float bx, float by, float bz,
                                      float cx, float cy, float cz, float dx, float dy, float dz) {
-        texturedVertex(consumer, q, sprite, ax, ay, az, nx, ny, nz);
-        texturedVertex(consumer, q, sprite, bx, by, bz, nx, ny, nz);
-        texturedVertex(consumer, q, sprite, cx, cy, cz, nx, ny, nz);
-        texturedVertex(consumer, q, sprite, dx, dy, dz, nx, ny, nz);
+        texturedVertex(consumer, face, color, sprite, ax, ay, az, nx, ny, nz);
+        texturedVertex(consumer, face, color, sprite, bx, by, bz, nx, ny, nz);
+        texturedVertex(consumer, face, color, sprite, cx, cy, cz, nx, ny, nz);
+        texturedVertex(consumer, face, color, sprite, dx, dy, dz, nx, ny, nz);
     }
 
-    private static void texturedVertex(VertexConsumer consumer, Quad q, TextureAtlasSprite sprite,
+    private static void texturedVertex(VertexConsumer consumer, int face, int color, TextureAtlasSprite sprite,
                                        double x, double y, double z,
                                        float nx, float ny, float nz) {
         float u;
         float v;
-        if (q.face < 2) {
+        if (face < 2) {
             u = (float) z;
             v = (float) -y;
-        } else if (q.face < 4) {
+        } else if (face < 4) {
             u = (float) x;
             v = (float) z;
         } else {
@@ -568,7 +642,7 @@ public final class CrossDimensionLodRenderer {
         }
         int minimumUv = packUv(sprite.getU0(), sprite.getV0());
         int maximumUv = packUv(sprite.getU1(), sprite.getV1());
-        consumer.addVertex((float) x, (float) y, (float) z).setColor(q.color).setUv(u, v)
+        consumer.addVertex((float) x, (float) y, (float) z).setColor(color).setUv(u, v)
                 .setOverlay(minimumUv).setLight(maximumUv).setNormal(nx, ny, nz);
     }
 
@@ -596,5 +670,19 @@ public final class CrossDimensionLodRenderer {
         }
     }
     private record MeshBuildResult(long key, long revision, CpuMesh mesh, Throwable failure) {}
+    public record DebugStats(int data, int meshes, int regions, int visible, int dirty,
+                             int building, int ready, int viewRadius, FrameTiming lastTiming,
+                             FrameTiming peakTiming, FrameTiming lastSpike) {}
+    public record FrameTiming(long frame, long totalNanos, long receiveNanos, long meshNanos,
+                              long regionNanos, long visibilityNanos, long drawNanos) {
+        private static final FrameTiming EMPTY = new FrameTiming(0L, 0L, 0L, 0L, 0L, 0L, 0L);
+
+        private FrameTiming max(FrameTiming other) {
+            return new FrameTiming(other.frame, Math.max(totalNanos, other.totalNanos),
+                    Math.max(receiveNanos, other.receiveNanos), Math.max(meshNanos, other.meshNanos),
+                    Math.max(regionNanos, other.regionNanos), Math.max(visibilityNanos, other.visibilityNanos),
+                    Math.max(drawNanos, other.drawNanos));
+        }
+    }
     private CrossDimensionLodRenderer() {}
 }

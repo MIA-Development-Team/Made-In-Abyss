@@ -17,6 +17,7 @@ import com.altnoir.mementoinabyss.worldgen.structure.DelayedCavePillarGenerator;
 import com.altnoir.mementoinabyss.worldgen.lod.MiaLodSampler;
 import com.altnoir.mementoinabyss.worldgen.lod.MiaLodStorage;
 import com.altnoir.mementoinabyss.worldgen.lod.CrossDimensionLodLinks;
+import com.altnoir.mementoinabyss.worldgen.lod.CrossDimensionLazyChunkGenerator;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.server.level.ServerPlayer;
@@ -70,6 +71,7 @@ public class CommonEvents {
     public static void onServerTick(ServerTickEvent.Post event) {
         DelayedCavePillarGenerator.onServerTick(event);
         MiaLodStorage.processPendingCapture();
+        CrossDimensionLazyChunkGenerator.tick(event.getServer());
         MiaLodSampler.tick(event.getServer());
     }
 
@@ -77,6 +79,7 @@ public class CommonEvents {
     public static void onServerStopped(ServerStoppedEvent event) {
         DelayedCavePillarGenerator.clearPending();
         MiaLodStorage.clearPendingCaptures();
+        CrossDimensionLazyChunkGenerator.clear();
         MiaLodSampler.clear();
     }
 

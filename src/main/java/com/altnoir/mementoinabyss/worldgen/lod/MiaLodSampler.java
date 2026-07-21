@@ -95,7 +95,7 @@ public final class MiaLodSampler {
                     MiaLodStorage.StoredChunk selected = null;
                     try {
                         Optional<MiaLodStorage.StoredChunk> stored =
-                                MiaLodStorage.read(task.link, source, pos);
+                                MiaLodStorage.read(source, pos);
                         if (stored.isPresent()) selected = MiaLodStorage.coarsen(stored.get(), cellSize);
                     } catch (Throwable throwable) {
                         MementoInAbyss.LOGGER.warn("Unable to prepare cross-dimension LOD chunk {}", pos, throwable);
@@ -155,7 +155,39 @@ public final class MiaLodSampler {
     }
 
     public static void remove(ServerPlayer player) { TASKS.remove(player.getUUID()); }
+
+    /** Makes a newly written lazy-generated chunk eligible for immediate delivery. Server thread only. */
+    public static void notifyAvailable(CrossDimensionLodLink link, ChunkPos pos) {
+        long key = CrossDimensionLodKey.pack(pos.x(), pos.z());
+        for (Task task : TASKS.values()) {
+            if (!task.link.equals(link)) continue;
+            task.missingUntil.remove(key);
+            task.nextMissingRetry = Math.min(task.nextMissingRetry, task.player.level().getGameTime());
+        }
+    }
+
+    /** Forces a newly captured complete chunk to replace a provisional payload on clients. */
+    public static void notifyReplaced(CrossDimensionLodLink link, ChunkPos pos) {
+        long key = CrossDimensionLodKey.pack(pos.x(), pos.z());
+        for (Task task : TASKS.values()) {
+            if (!task.link.equals(link)) continue;
+            task.knownCellSizes.remove(key);
+            task.missingUntil.remove(key);
+            task.nextMissingRetry = Math.min(task.nextMissingRetry, task.player.level().getGameTime());
+        }
+    }
+
     public static void clear() { TASKS.clear(); }
+
+    public static DebugSnapshot debugSnapshot(ServerPlayer player) {
+        Task task = TASKS.get(player.getUUID());
+        if (task == null) return new DebugSnapshot(0, 0, 0, 0, 0, 0, 0);
+        return new DebugSnapshot(task.chunks.size(), task.scheduleCursor, task.sendCursor,
+                task.inFlight.get(), task.completed.size(), task.knownCellSizes.size(), task.missingUntil.size());
+    }
+
+    public record DebugSnapshot(int queued, int scheduled, int sent, int loading,
+                                int ready, int known, int missing) {}
 
     private static final class Task {
         private final ServerPlayer player;
