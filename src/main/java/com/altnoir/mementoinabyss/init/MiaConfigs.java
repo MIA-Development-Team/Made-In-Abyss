@@ -32,7 +32,7 @@ public class MiaConfigs extends Config {
         public ValidatedInt crossDimensionLodMinimumDiameter = new ValidatedInt(1024, 8192, 256, ValidatedInt.WidgetType.TEXTBOX);
         public ValidatedInt crossDimensionLodMargin = new ValidatedInt(192, 1024, 0, ValidatedInt.WidgetType.TEXTBOX);
         @ConfigGroup.Pop
-        public ValidatedInt crossDimensionLodSegments = new ValidatedInt(128, 256, 32, ValidatedInt.WidgetType.TEXTBOX);
+        public ValidatedInt crossDimensionLodViewDistance = new ValidatedInt(32, 128, 16, ValidatedInt.WidgetType.TEXTBOX);
     }
 
     public static class GamePlaySection extends ConfigSection {

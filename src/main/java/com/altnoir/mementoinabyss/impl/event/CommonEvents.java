@@ -14,9 +14,8 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import com.altnoir.mementoinabyss.worldgen.structure.DelayedCavePillarGenerator;
-import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensions;
-import com.altnoir.mementoinabyss.worldgen.lod.GreatFaultLodSampler;
-import com.altnoir.mementoinabyss.worldgen.lod.GreatFaultLodStorage;
+import com.altnoir.mementoinabyss.worldgen.lod.MiaLodSampler;
+import com.altnoir.mementoinabyss.worldgen.lod.MiaLodStorage;
 import com.altnoir.mementoinabyss.worldgen.lod.CrossDimensionLodLinks;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -54,50 +53,52 @@ public class CommonEvents {
     public static void onChunkLoad(ChunkEvent.Load event) {
         DelayedCavePillarGenerator.onChunkLoad(event);
         if (event.getLevel() instanceof ServerLevel level && event.getChunk() instanceof LevelChunk chunk) {
-            CrossDimensionLodLinks.forSource(level.dimension())
-                    .ifPresent(link -> GreatFaultLodStorage.ingestIfMissing(link, level, chunk));
+            CrossDimensionLodLinks.fromSource(level.dimension())
+                    .forEach(link -> MiaLodStorage.enqueueIfMissing(link, level, chunk));
         }
     }
 
     @SubscribeEvent
     public static void onChunkUnload(ChunkEvent.Unload event) {
         if (event.getLevel() instanceof ServerLevel level && event.getChunk() instanceof LevelChunk chunk) {
-            CrossDimensionLodLinks.forSource(level.dimension())
-                    .ifPresent(link -> GreatFaultLodStorage.ingestIfMissing(link, level, chunk));
+            CrossDimensionLodLinks.fromSource(level.dimension())
+                    .forEach(link -> MiaLodStorage.enqueueIfMissing(link, level, chunk));
         }
     }
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
         DelayedCavePillarGenerator.onServerTick(event);
-        GreatFaultLodSampler.tick(event.getServer());
+        MiaLodStorage.processPendingCapture();
+        MiaLodSampler.tick(event.getServer());
     }
 
     @SubscribeEvent
     public static void onServerStopped(ServerStoppedEvent event) {
         DelayedCavePillarGenerator.clearPending();
-        GreatFaultLodSampler.clear();
+        MiaLodStorage.clearPendingCaptures();
+        MiaLodSampler.clear();
     }
 
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer player
                 && CrossDimensionLodLinks.forTarget(player.level().dimension()).isPresent()) {
-            GreatFaultLodSampler.request(player);
+            MiaLodSampler.request(player);
         }
     }
 
     @SubscribeEvent
     public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            if (CrossDimensionLodLinks.forTarget(event.getTo()).isPresent()) GreatFaultLodSampler.request(player);
-            else GreatFaultLodSampler.remove(player);
+            if (CrossDimensionLodLinks.forTarget(event.getTo()).isPresent()) MiaLodSampler.request(player);
+            else MiaLodSampler.remove(player);
         }
     }
 
     @SubscribeEvent
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) GreatFaultLodSampler.remove(player);
+        if (event.getEntity() instanceof ServerPlayer player) MiaLodSampler.remove(player);
     }
 
     @EventBusSubscriber

@@ -6,10 +6,9 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
-/** One independently renderable, coarse voxel chunk from the Great Fault. */
+/** One independently renderable cross-dimension voxel chunk. */
 public record CrossDimensionLodPayload(
-        String linkId, int displayYOffset, int outsidePlaneY, int centerX, int centerZ,
-        int radius, boolean reset, int chunkX, int chunkZ, int cellSize,
+        String linkId, int displayYOffset, int radius, boolean reset, int chunkX, int chunkZ, int cellSize,
         int minY, int yCells, int[] palette, short[] voxels) implements CustomPacketPayload {
     public static final Type<CrossDimensionLodPayload> TYPE =
             new Type<>(MementoInAbyss.asResource("cross_dimension_lod_chunk"));
@@ -17,11 +16,18 @@ public record CrossDimensionLodPayload(
             StreamCodec.ofMember(CrossDimensionLodPayload::encode, CrossDimensionLodPayload::decode);
 
     public CrossDimensionLodPayload {
-        int horizontalCells = 16 / cellSize;
         if (radius <= 0 || cellSize <= 0 || 16 % cellSize != 0 || yCells <= 0
-                || palette.length == 0 || palette.length > Short.MAX_VALUE
-                || voxels.length != horizontalCells * horizontalCells * yCells) {
+                || palette.length == 0 || palette.length > Short.MAX_VALUE) {
             throw new IllegalArgumentException("Invalid cross-dimension voxel chunk");
+        }
+        int horizontalCells = 16 / cellSize;
+        if (voxels.length != horizontalCells * horizontalCells * yCells) {
+            throw new IllegalArgumentException("Invalid cross-dimension voxel count");
+        }
+        for (short voxel : voxels) {
+            if (Short.toUnsignedInt(voxel) >= palette.length) {
+                throw new IllegalArgumentException("Invalid cross-dimension palette index");
+            }
         }
     }
 
@@ -29,9 +35,6 @@ public record CrossDimensionLodPayload(
         buffer.writeVarInt(radius);
         buffer.writeUtf(linkId, 256);
         buffer.writeInt(displayYOffset);
-        buffer.writeInt(outsidePlaneY);
-        buffer.writeInt(centerX);
-        buffer.writeInt(centerZ);
         buffer.writeBoolean(reset);
         buffer.writeInt(chunkX);
         buffer.writeInt(chunkZ);
@@ -47,9 +50,6 @@ public record CrossDimensionLodPayload(
         int radius = buffer.readVarInt();
         String linkId = buffer.readUtf(256);
         int displayYOffset = buffer.readInt();
-        int outsidePlaneY = buffer.readInt();
-        int centerX = buffer.readInt();
-        int centerZ = buffer.readInt();
         boolean reset = buffer.readBoolean();
         int chunkX = buffer.readInt();
         int chunkZ = buffer.readInt();
@@ -66,13 +66,12 @@ public record CrossDimensionLodPayload(
         int horizontalCells = 16 / cellSize;
         short[] voxels = new short[Math.multiplyExact(horizontalCells * horizontalCells, yCells)];
         for (int i = 0; i < voxels.length; i++) voxels[i] = buffer.readShort();
-        return new CrossDimensionLodPayload(linkId, displayYOffset, outsidePlaneY, centerX, centerZ,
-                radius, reset, chunkX, chunkZ, cellSize,
+        return new CrossDimensionLodPayload(linkId, displayYOffset, radius, reset, chunkX, chunkZ, cellSize,
                 minY, yCells, palette, voxels);
     }
 
     public static void register(RegisterPayloadHandlersEvent event) {
-        event.registrar("2").playToClient(TYPE, STREAM_CODEC);
+        event.registrar("3").playToClient(TYPE, STREAM_CODEC);
     }
 
     @Override

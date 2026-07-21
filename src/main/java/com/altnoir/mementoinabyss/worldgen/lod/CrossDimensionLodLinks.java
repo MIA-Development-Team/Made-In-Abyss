@@ -15,18 +15,18 @@ public final class CrossDimensionLodLinks {
     public static final CrossDimensionLodLink GREAT_FAULT_BELOW_ABYSS = new CrossDimensionLodLink(
             MementoInAbyss.asResource("great_fault_below_abyss"),
             MiaDimensions.GREAT_FAULT_LEVEL, MiaDimensions.THE_ABYSS_LEVEL,
-            0, 0, MiaHeight.THE_ABYSS.minY() - MiaHeight.GREAT_FAULT.maxY(),
-            MiaHeight.THE_ABYSS.minY() - 24);
+            MiaHeight.GREAT_FAULT, MiaHeight.THE_ABYSS.minY() - MiaHeight.GREAT_FAULT.maxY(),
+            CrossDimensionLodLink.DetailProfile.ABYSS_HOLE);
     public static final CrossDimensionLodLink ABYSS_ABOVE_GREAT_FAULT = new CrossDimensionLodLink(
             MementoInAbyss.asResource("abyss_above_great_fault"),
             MiaDimensions.THE_ABYSS_LEVEL, MiaDimensions.GREAT_FAULT_LEVEL,
-            0, 0, MiaHeight.GREAT_FAULT.maxY() - MiaHeight.THE_ABYSS.minY(),
-            MiaHeight.GREAT_FAULT.maxY() + 24);
+            MiaHeight.THE_ABYSS, MiaHeight.GREAT_FAULT.maxY() - MiaHeight.THE_ABYSS.minY(),
+            CrossDimensionLodLink.DetailProfile.ABYSS_HOLE);
     private static final List<CrossDimensionLodLink> LINKS = List.of(
             GREAT_FAULT_BELOW_ABYSS, ABYSS_ABOVE_GREAT_FAULT);
 
-    public static Optional<CrossDimensionLodLink> forSource(ResourceKey<Level> dimension) {
-        return LINKS.stream().filter(link -> link.source().equals(dimension)).findFirst();
+    public static List<CrossDimensionLodLink> fromSource(ResourceKey<Level> dimension) {
+        return LINKS.stream().filter(link -> link.source().equals(dimension)).toList();
     }
 
     public static Optional<CrossDimensionLodLink> forTarget(ResourceKey<Level> dimension) {
@@ -34,18 +34,17 @@ public final class CrossDimensionLodLinks {
     }
 
     public static int radius(CrossDimensionLodLink link) {
-        if (link == GREAT_FAULT_BELOW_ABYSS || link == ABYSS_ABOVE_GREAT_FAULT) {
+        return MementoInAbyss.CONFIGS.guiSection.crossDimensionLodViewDistance.get() * 16;
+    }
+
+    /** Radius controlling fine/medium bands; the rest of the configured view remains coarse. */
+    public static int detailRadius(CrossDimensionLodLink link) {
+        if (link.detailProfile() == CrossDimensionLodLink.DetailProfile.ABYSS_HOLE) {
             return (int) Math.ceil(Math.max(
                     MementoInAbyss.CONFIGS.guiSection.crossDimensionLodMinimumDiameter.get() * .5,
                     HopperAbyssHole.abyssRadius() + MementoInAbyss.CONFIGS.guiSection.crossDimensionLodMargin.get()));
         }
         return MementoInAbyss.CONFIGS.guiSection.crossDimensionLodMinimumDiameter.get() / 2;
-    }
-
-    public static MiaHeight sourceHeight(CrossDimensionLodLink link) {
-        if (link.source().equals(MiaDimensions.THE_ABYSS_LEVEL)) return MiaHeight.THE_ABYSS;
-        if (link.source().equals(MiaDimensions.GREAT_FAULT_LEVEL)) return MiaHeight.GREAT_FAULT;
-        throw new IllegalArgumentException("No LOD source height registered for " + link.source().identifier());
     }
 
     private CrossDimensionLodLinks() {}
