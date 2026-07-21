@@ -42,6 +42,7 @@ repositories {
     maven { url = "https://maven.theillusivec4.top/" } // Curios
     maven { url = "https://maven.fzzyhmstrs.me/" } // FzzyConfig
     maven { url = "https://thedarkcolour.github.io/KotlinForForge/" } // KotlinForForge
+    maven { url = "https://maven.caffeinemc.net/releases" } // Sodium
 }
 
 base {
@@ -134,6 +135,9 @@ dependencies {
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
     implementation "maven.modrinth:jade:${jade_version}"
+
+    compileOnly "net.caffeinemc:sodium-neoforge-api:${sodium_version}"
+    runtimeOnly "net.caffeinemc:sodium-neoforge:${sodium_version}"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

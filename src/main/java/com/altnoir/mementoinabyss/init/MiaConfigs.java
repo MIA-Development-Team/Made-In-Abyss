@@ -26,6 +26,13 @@ public class MiaConfigs extends Config {
         public GuiSection() {
             super();
         }
+
+        public ConfigGroup crossDimensionLodGroup = new ConfigGroup("cross_dimension_lod");
+        public ValidatedBoolean crossDimensionLodEnabled = new ValidatedBoolean(true);
+        public ValidatedInt crossDimensionLodMinimumDiameter = new ValidatedInt(1024, 8192, 256, ValidatedInt.WidgetType.TEXTBOX);
+        public ValidatedInt crossDimensionLodMargin = new ValidatedInt(192, 1024, 0, ValidatedInt.WidgetType.TEXTBOX);
+        @ConfigGroup.Pop
+        public ValidatedInt crossDimensionLodSegments = new ValidatedInt(128, 256, 32, ValidatedInt.WidgetType.TEXTBOX);
     }
 
     public static class GamePlaySection extends ConfigSection {

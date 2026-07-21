@@ -14,7 +14,8 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public enum MiaMods {
-    PONDER;
+    PONDER,
+    SODIUM;
 
     @Getter
     private final String id;

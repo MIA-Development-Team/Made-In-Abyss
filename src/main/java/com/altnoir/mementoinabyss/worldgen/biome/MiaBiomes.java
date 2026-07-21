@@ -63,7 +63,6 @@ public final class MiaBiomes {
                 .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.LONG_VINES)
                 .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.GLOW_LICHEN)
                 .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.PATCH_WATERLILY)
-                .addFeature(GenerationStep.Decoration.FLUID_SPRINGS, MiaAbyssPlacements.SPRING_WATER)
                 .addFeature(GenerationStep.Decoration.UNDERGROUND_STRUCTURES, MiaAbyssPlacements.SUN_STONE);
         switch (AbyssBiome.from(biome)) {
             case THE_ABYSS -> {
