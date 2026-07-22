@@ -145,6 +145,7 @@
   "mementoinabyss.config.gamePlaySection.hookShootVelocity": "Shoot Velocity",
   "mementoinabyss.config.gamePlaySection.hookStopPullDistance": "Stop Pull Distance",
   "mementoinabyss.config.guiSection": "Gui",
+  "mementoinabyss.config.guiSection.crossDimensionLodCaptureQueueLimit": "LOD Capture Queue Limit",
   "mementoinabyss.config.guiSection.crossDimensionLodEnabled": "Enable Cross-Dimension LOD",
   "mementoinabyss.config.guiSection.crossDimensionLodGroup": "Cross-Dimension LOD",
   "mementoinabyss.config.guiSection.crossDimensionLodMargin": "Detail LOD Margin",

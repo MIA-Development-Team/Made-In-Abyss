@@ -4,6 +4,7 @@
   "mementoinabyss.config.guiSection.crossDimensionLodEnabled": "Enable Cross-Dimension LOD",
   "mementoinabyss.config.guiSection.crossDimensionLodMinimumDiameter": "Detail LOD Minimum Diameter",
   "mementoinabyss.config.guiSection.crossDimensionLodMargin": "Detail LOD Margin",
+  "mementoinabyss.config.guiSection.crossDimensionLodCaptureQueueLimit": "LOD Capture Queue Limit",
   "mementoinabyss.config.guiSection.crossDimensionLodViewDistance": "LOD View Distance (Chunks)",
   "mementoinabyss.config.gamePlaySection": "GamePlay",
   "mementoinabyss.config.gamePlaySection.curseGroup": "Curse",

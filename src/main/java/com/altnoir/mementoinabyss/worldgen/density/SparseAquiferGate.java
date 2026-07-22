@@ -5,10 +5,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.world.level.levelgen.DensityFunction;
 
-/** Deterministically enables one out of every N aquifer sampling cells. */
+/** Disables the central Abyss region, then deterministically enables one out of every N aquifer cells. */
 public record SparseAquiferGate(int oneIn) implements DensityFunction.SimpleFunction {
     private static final int CELL_WIDTH = 16;
     private static final int CELL_HEIGHT = 12;
+    /** Prevents an enabled neighboring aquifer sample cell from bleeding back across the radius. */
+    private static final int CENTER_GUARD_WIDTH = CELL_WIDTH;
 
     public static final KeyDispatchDataCodec<SparseAquiferGate> CODEC = KeyDispatchDataCodec.of(
             RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -17,6 +19,13 @@ public record SparseAquiferGate(int oneIn) implements DensityFunction.SimpleFunc
 
     @Override
     public double compute(FunctionContext context) {
+        double dryRadius = HopperAbyssHole.abyssRadius() + CENTER_GUARD_WIDTH;
+        long blockX = context.blockX();
+        long blockZ = context.blockZ();
+        if ((double) blockX * blockX + (double) blockZ * blockZ <= dryRadius * dryRadius) {
+            return -1.0;
+        }
+
         long x = Math.floorDiv(context.blockX(), CELL_WIDTH);
         long y = Math.floorDiv(context.blockY(), CELL_HEIGHT);
         long z = Math.floorDiv(context.blockZ(), CELL_WIDTH);

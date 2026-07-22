@@ -26,6 +26,7 @@ import java.lang.ref.WeakReference;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,8 +50,6 @@ public final class MiaLodStorage {
     private static final int MAGIC = 0x4D49414C; // MIAL
     private static final int VERSION = 5;
     private static final int MAX_PENDING_WRITES = 128;
-    // A normal client view can load several hundred chunks in one burst; do not lose upgrade requests.
-    private static final int MAX_PENDING_CAPTURES = 1024;
     private static final int MAX_CAPTURE_SUBMISSIONS_PER_TICK = 2;
     private static final int MAX_CAPTURES_IN_FLIGHT = 16;
     private static final ExecutorService WRITER = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
@@ -60,6 +59,7 @@ public final class MiaLodStorage {
                 return thread;
             }, new ThreadPoolExecutor.AbortPolicy());
     private static final java.util.Set<Path> PENDING_WRITES = ConcurrentHashMap.newKeySet();
+    private static final java.util.Set<Path> READY_DIRECTORIES = ConcurrentHashMap.newKeySet();
     private static final ThreadPoolExecutor CAPTURE_WORKERS = new ThreadPoolExecutor(2, 2, 0L,
             TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(MAX_CAPTURES_IN_FLIGHT), r -> {
                 Thread thread = new Thread(r, "MIA real-chunk LOD capture");
@@ -74,7 +74,8 @@ public final class MiaLodStorage {
     private static final AtomicInteger CAPTURES_IN_FLIGHT = new AtomicInteger();
 
     public static void enqueueIfMissing(CrossDimensionLodLink link, ServerLevel level, ChunkAccess chunk) {
-        if (PENDING_CAPTURE_COUNT.get() >= MAX_PENDING_CAPTURES) return;
+        int queueLimit = MementoInAbyss.CONFIGS.guiSection.crossDimensionLodCaptureQueueLimit.get();
+        if (PENDING_CAPTURE_COUNT.get() >= queueLimit) return;
         CaptureKey key = new CaptureKey(level.dimension(),
                 ChunkPos.pack(chunk.getPos().x(), chunk.getPos().z()));
         if (!PENDING_CAPTURE_KEYS.add(key)) return;
@@ -149,6 +150,7 @@ public final class MiaLodStorage {
         PENDING_CAPTURES.clear();
         PENDING_CAPTURE_KEYS.clear();
         PENDING_CAPTURE_COUNT.set(0);
+        READY_DIRECTORIES.clear();
     }
 
     public static CompletableFuture<Void> ingest(CrossDimensionLodLink link, ServerLevel level,
@@ -182,7 +184,7 @@ public final class MiaLodStorage {
 
     public static Optional<StoredChunk> read(ServerLevel level, ChunkPos pos) {
         Path path = chunkPath(level, pos);
-        if (!Files.isRegularFile(path)) return Optional.empty();
+        if (!isFile(path)) return Optional.empty();
         try (DataInputStream input = new DataInputStream(new InflaterInputStream(
                 new BufferedInputStream(Files.newInputStream(path))))) {
             if (input.readInt() != MAGIC || input.readInt() != VERSION) return Optional.empty();
@@ -216,7 +218,7 @@ public final class MiaLodStorage {
 
     /** Cheap presence check used by the lazy source-dimension generator. */
     public static boolean contains(ServerLevel level, ChunkPos pos) {
-        return Files.isRegularFile(chunkPath(level, pos));
+        return isFile(chunkPath(level, pos));
     }
 
     /** Derives a coarser level from the persisted base level without duplicating files on disk. */
@@ -406,7 +408,7 @@ public final class MiaLodStorage {
 
     private static void write(Path destination, StoredChunk chunk) throws IOException {
         Path temporary = destination.resolveSibling(destination.getFileName() + ".tmp");
-        Files.createDirectories(destination.getParent());
+        ensureDirectory(destination.getParent());
         try (DataOutputStream output = new DataOutputStream(new DeflaterOutputStream(
                 new BufferedOutputStream(Files.newOutputStream(temporary))))) {
             output.writeInt(MAGIC);
@@ -428,7 +430,9 @@ public final class MiaLodStorage {
             Files.move(temporary, destination, StandardCopyOption.REPLACE_EXISTING);
         }
         Path marker = completeMarker(destination);
-        if (chunk.provisional) Files.deleteIfExists(marker);
+        if (chunk.provisional) {
+            if (marker.toFile().exists()) Files.delete(marker);
+        }
         else Files.write(marker, new byte[0]);
     }
 
@@ -446,7 +450,30 @@ public final class MiaLodStorage {
     }
 
     private static boolean isComplete(Path path) {
-        return Files.isRegularFile(path) && Files.isRegularFile(completeMarker(path));
+        return isFile(path) && isFile(completeMarker(path));
+    }
+
+    /** Default world paths can use File's non-throwing native attribute probe on missing files. */
+    private static boolean isFile(Path path) {
+        return path.toFile().isFile();
+    }
+
+    /**
+     * Creates only the missing directory segments. Files.createDirectories first attempts the
+     * leaf and catches FileAlreadyExistsException as normal control flow, which becomes visible
+     * and allocates heavily when JFR exception events are enabled.
+     */
+    private static synchronized void ensureDirectory(Path directory) throws IOException {
+        if (READY_DIRECTORIES.contains(directory)) return;
+
+        ArrayDeque<Path> missing = new ArrayDeque<>();
+        Path current = directory;
+        while (current != null && !current.toFile().isDirectory()) {
+            missing.push(current);
+            current = current.getParent();
+        }
+        while (!missing.isEmpty()) Files.createDirectory(missing.pop());
+        READY_DIRECTORIES.add(directory);
     }
 
     private static Path completeMarker(Path path) {

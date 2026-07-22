@@ -31,6 +31,8 @@ public class MiaConfigs extends Config {
         public ValidatedBoolean crossDimensionLodEnabled = new ValidatedBoolean(true);
         public ValidatedInt crossDimensionLodMinimumDiameter = new ValidatedInt(1024, 8192, 256, ValidatedInt.WidgetType.TEXTBOX);
         public ValidatedInt crossDimensionLodMargin = new ValidatedInt(192, 1024, 0, ValidatedInt.WidgetType.TEXTBOX);
+        public ValidatedInt crossDimensionLodCaptureQueueLimit = new ValidatedInt(
+                1024, 16384, 64, ValidatedInt.WidgetType.TEXTBOX);
         @ConfigGroup.Pop
         public ValidatedInt crossDimensionLodViewDistance = new ValidatedInt(32, 128, 16, ValidatedInt.WidgetType.TEXTBOX);
     }
