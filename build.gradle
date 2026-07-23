@@ -61,6 +61,14 @@ neoForge {
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
+        clientWithZink {
+            client()
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            jvmArguments.add(
+                    "-javaagent:${file('libs/mesa-loader-windows-26.0.4-x64.jar').absolutePath}=zink"
+            )
+        }
+
         server {
             server()
             programArgument '--nogui'
