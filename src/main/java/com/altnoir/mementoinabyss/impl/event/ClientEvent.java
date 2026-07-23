@@ -6,6 +6,8 @@ import com.altnoir.mementoinabyss.client.render.CrossDimensionLodDebugEntry;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodRenderer;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodRenderTypes;
 import com.altnoir.mementoinabyss.client.render.EnvironmentCubeSkyboxRenderer;
+import com.altnoir.mementoinabyss.client.render.StarCompassOverlay;
+import com.altnoir.mementoinabyss.network.CompassTargetPayload;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodDebugPayload;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodPayload;
 import net.minecraft.client.gui.components.debug.DebugScreenEntryStatus;
@@ -19,6 +21,7 @@ import net.neoforged.neoforge.client.event.RegisterCustomEnvironmentEffectRender
 import net.neoforged.neoforge.client.event.RegisterDebugEntriesEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
@@ -41,6 +44,11 @@ public final class ClientEvent {
     }
 
     @SubscribeEvent
+    public static void renderStarCompass(RenderGuiEvent.Post event) {
+        StarCompassOverlay.render(event.getGuiGraphics(), event.getPartialTick());
+    }
+
+    @SubscribeEvent
     public static void clientTick(ClientTickEvent.Post event) {
         CrossDimensionLodRenderer.clientTick();
     }
@@ -51,6 +59,8 @@ public final class ClientEvent {
                 (payload, context) -> CrossDimensionLodRenderer.accept(payload));
         event.register(CrossDimensionLodDebugPayload.TYPE,
                 (payload, context) -> CrossDimensionLodDebugEntry.accept(payload));
+        event.register(CompassTargetPayload.TYPE,
+                (payload, context) -> StarCompassOverlay.accept(payload.target()));
     }
 
     @SubscribeEvent
@@ -65,6 +75,7 @@ public final class ClientEvent {
     public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
         CrossDimensionLodRenderer.disconnect();
         CrossDimensionLodDebugEntry.clear();
+        StarCompassOverlay.clear();
     }
 
     @SubscribeEvent

@@ -6,6 +6,7 @@ import com.altnoir.mementoinabyss.content.artifact.ArtifactGrade;
 import com.altnoir.mementoinabyss.content.artifact.ArtifactItem;
 import com.altnoir.mementoinabyss.content.artifact.ArtifactProfile;
 import com.altnoir.mementoinabyss.content.artifact.component.ArtifactAttributeComponent;
+import com.altnoir.mementoinabyss.content.item.StarCompassItem;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -17,6 +18,8 @@ public final class MiaArtifactItems {
     static {
         REGISTRATE.defaultCreativeTab(MiaItemGroups.ARTIFACT.getKey());
     }
+
+    public static final ItemEntry<StarCompassItem> STAR_COMPASS = REGISTRATE.item("star_compass", StarCompassItem::new).register();
 
     public static final ItemEntry<ArtifactItem> TEST_ARTIFACT_1 = REGISTRATE
             .item("test_artifact_1", properties -> ArtifactItem
