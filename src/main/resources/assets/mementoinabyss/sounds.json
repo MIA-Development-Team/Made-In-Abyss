@@ -3,5 +3,17 @@
     "sounds": [
       "mementoinabyss:block/abyss_portal_travel"
     ]
+  },
+  "music.the_first_layer": {
+    "sounds": [
+      {
+        "name": "mementoinabyss:music/the_first_layer",
+        "stream": true
+      },
+      {
+        "name": "mementoinabyss:music/rikos_cooking",
+        "stream": true
+      }
+    ]
   }
 }

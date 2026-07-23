@@ -1,9 +1,12 @@
 package com.altnoir.mementoinabyss.worldgen.biome;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.init.MiaSoundEvents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.attribute.BackgroundMusic;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
@@ -135,6 +138,9 @@ public final class MiaBiomes {
                 .downfall(0.8F)
                 .mobSpawnSettings(new MobSpawnSettings.Builder().build())
                 .generationSettings(generationBuilder.build())
+                .setAttribute(
+                        EnvironmentAttributes.BACKGROUND_MUSIC,
+                        new BackgroundMusic(MiaSoundEvents.MUSIC_THE_FIRST_LAYER))
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(6141935)
                         .foliageColorOverride(11335504)
