@@ -718,7 +718,7 @@ public class MiaBlocks {
     }
 
     private static BlockEntry<AmethystClusterBlock> crystal(String name, int height, int offset, int light) {
-        return REGISTRATE.object(name).block(p -> new AmethystClusterBlock(height, offset, p))
+        return REGISTRATE.object(name).block(p -> new AmethystClusterBlock(height, offset, p)).ignore()
                 .properties(p -> crystalProperties(p, light)).transform(TagGen.pickaxeOnly())
                 .blockstate(() -> (ctx, prov) -> prov.createAmethystCluster(ctx.get()))
                 .loot((lt, b) -> lt.dropWhenSilkTouch(b)).simpleItem().register();
