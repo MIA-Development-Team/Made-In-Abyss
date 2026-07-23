@@ -16,17 +16,25 @@
         "translate": "block.minecraft.bed.no_sleep"
       }
     },
+    "minecraft:gameplay/monsters_burn": true,
     "minecraft:gameplay/nether_portal_spawns_piglin": true,
     "minecraft:gameplay/respawn_anchor_works": false,
+    "minecraft:gameplay/sky_light_level": 15.0,
     "minecraft:visual/ambient_light_color": "#1e1e1e",
     "minecraft:visual/cloud_color": "#ccffffff",
     "minecraft:visual/cloud_height": 640.0,
     "minecraft:visual/fog_color": "#708c79",
+    "minecraft:visual/moon_angle": 180.0,
     "minecraft:visual/sky_color": "#78a7ff",
+    "minecraft:visual/sky_light_factor": 1.0,
+    "minecraft:visual/star_angle": 0.0,
+    "minecraft:visual/star_brightness": 0.0,
+    "minecraft:visual/sun_angle": 0.0,
+    "minecraft:visual/sunrise_sunset_color": "#00000000",
     "neoforge:custom_skybox": "mementoinabyss:environment_cube"
   },
   "coordinate_scale": 1.0,
-  "default_clock": "minecraft:overworld",
+  "default_clock": "mementoinabyss:noon",
   "has_ceiling": false,
   "has_ender_dragon_fight": false,
   "has_fixed_time": true,
@@ -40,6 +48,5 @@
     "type": "minecraft:uniform",
     "max_inclusive": 7,
     "min_inclusive": 0
-  },
-  "timelines": "#minecraft:in_overworld"
+  }
 }

@@ -474,8 +474,8 @@ final class MiaLodStorage {
 
     /**
      * Creates only the missing directory segments. Files.createDirectories first attempts the
-     * leaf and catches FileAlreadyExistsException as normal control flow, which becomes visible
-     * and allocates heavily when JFR exception events are enabled.
+     * leaf and catches FileAlreadyExistsException as normal control flow, which creates avoidable
+     * exceptions and allocations on the I/O path.
      */
     private static synchronized void ensureDirectory(Path directory) throws IOException {
         if (READY_DIRECTORIES.contains(directory)) return;

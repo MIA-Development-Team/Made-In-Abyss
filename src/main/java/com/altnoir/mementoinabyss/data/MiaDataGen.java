@@ -21,6 +21,7 @@ import com.altnoir.mementoinabyss.worldgen.feature.GreatFaultPlacements;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensionTypes;
+import com.altnoir.mementoinabyss.worldgen.dimension.MiaWorldClocks;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.jspecify.annotations.Nullable;
 
@@ -43,6 +44,7 @@ public class MiaDataGen {
 
         event.createProvider(MiaCurseDataProvider::new);
         event.createDatapackRegistryObjects(new RegistrySetBuilder()
+                .add(Registries.WORLD_CLOCK, MiaWorldClocks::bootstrap)
                 .add(Registries.DIMENSION_TYPE, MiaDimensionTypes::bootstrap)
                 .add(Registries.NOISE, MiaNoiseData::bootstrap)
                 .add(Registries.DENSITY_FUNCTION, MiaDensityFunctions::bootstrap)

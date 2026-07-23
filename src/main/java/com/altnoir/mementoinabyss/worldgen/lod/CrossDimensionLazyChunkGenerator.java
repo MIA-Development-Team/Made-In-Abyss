@@ -43,6 +43,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -324,7 +325,7 @@ final class CrossDimensionLazyChunkGenerator {
         private final Map<Long, ActiveRequest> activeRequests = new LinkedHashMap<>();
         private int centralCursor;
         private int centralRadius = -1;
-        private int playerCursor;
+        private final Map<UUID, PlayerScan> playerScans = new HashMap<>();
         private int generated;
         private int failed;
         private ChunkPos lastPos;
@@ -382,12 +383,18 @@ final class CrossDimensionLazyChunkGenerator {
             int diameter = radius * 2 + 1;
             int area = diameter * diameter;
             int checked = 0;
+            Set<UUID> activePlayers = new HashSet<>();
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 if (!player.level().dimension().equals(link.target())
                         || !MiaLodSampler.wantsLod(player)) continue;
+                UUID playerId = player.getUUID();
+                activePlayers.add(playerId);
                 ChunkPos center = player.chunkPosition();
+                PlayerScan scan = playerScans.computeIfAbsent(playerId,
+                        ignored -> new PlayerScan(center.x(), center.z()));
+                scan.moveCenter(center.x(), center.z());
                 while (checked++ < MAX_CANDIDATE_CHECKS_PER_TICK) {
-                    ChunkPos offset = squareSpiral(Math.floorMod(playerCursor++, area));
+                    ChunkPos offset = squareSpiral(Math.floorMod(scan.cursor++, area));
                     long offsetX = offset.x() * 16L;
                     long offsetZ = offset.z() * 16L;
                     if (offsetX * offsetX + offsetZ * offsetZ
@@ -396,6 +403,7 @@ final class CrossDimensionLazyChunkGenerator {
                     if (needsGeneration(source, pos)) return pos;
                 }
             }
+            playerScans.keySet().retainAll(activePlayers);
             return null;
         }
 
@@ -416,6 +424,24 @@ final class CrossDimensionLazyChunkGenerator {
             if (offset < side) return new ChunkPos(ring - offset, ring);
             offset -= side;
             return new ChunkPos(-ring, ring - offset);
+        }
+
+        private static final class PlayerScan {
+            private int centerChunkX;
+            private int centerChunkZ;
+            private int cursor;
+
+            private PlayerScan(int centerChunkX, int centerChunkZ) {
+                this.centerChunkX = centerChunkX;
+                this.centerChunkZ = centerChunkZ;
+            }
+
+            private void moveCenter(int centerChunkX, int centerChunkZ) {
+                if (this.centerChunkX == centerChunkX && this.centerChunkZ == centerChunkZ) return;
+                this.centerChunkX = centerChunkX;
+                this.centerChunkZ = centerChunkZ;
+                this.cursor = 0;
+            }
         }
     }
 

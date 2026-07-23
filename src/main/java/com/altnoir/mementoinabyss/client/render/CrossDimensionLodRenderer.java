@@ -63,8 +63,9 @@ public final class CrossDimensionLodRenderer {
     private static final int PAGE_UPLOADS_PER_FRAME = 1;
     private static final int EVICTION_INTERVAL_FRAMES = 20;
     private static final int EVICTION_MARGIN_CHUNKS = 10;
-    private static final int FADE_DURATION_FRAMES = 8;
-    private static final int FADE_STEPS = 16;
+    private static final int FADE_DURATION_FRAMES = 16;
+    private static final int FADE_STEPS = 32;
+    private static final int TRANSITION_PREWARM_FRAMES = 1;
     private static final long SLOW_LOD_FRAME_NANOS = 4_000_000L;
     private static final Map<Long, CrossDimensionLodPayload> DATA = new ConcurrentHashMap<>();
     private static final Map<Long, HeightField> HEIGHT_FIELDS = new ConcurrentHashMap<>();
@@ -207,25 +208,14 @@ public final class CrossDimensionLodRenderer {
             long workEpoch = WORK_EPOCH.get();
             MiaExecutors.execute(MiaExecutors.Priority.LOD_MESH, () -> {
                 if (workEpoch != WORK_EPOCH.get() || !lodEnabled()) return;
-                var jfr = LodJfrEvents.beginMeshBuild(payload.chunkX(), payload.chunkZ(), payload.cellSize());
                 try {
                     CpuMesh mesh = CrossDimensionLodMesher.build(payload, DATA, HEIGHT_FIELDS);
-                    if (jfr != null) {
-                        jfr.terrainQuads = mesh.quads.size;
-                        jfr.seamQuads = mesh.seamQuads.size;
-                        jfr.succeeded = true;
-                    }
                     if (workEpoch == WORK_EPOCH.get() && lodEnabled()) {
                         COMPLETED_MESHES.add(new MeshBuildResult(key, revision, payload, mesh, null));
                     }
                 } catch (Throwable throwable) {
                     if (workEpoch == WORK_EPOCH.get() && lodEnabled()) {
                         COMPLETED_MESHES.add(new MeshBuildResult(key, revision, payload, null, throwable));
-                    }
-                } finally {
-                    if (jfr != null) {
-                        jfr.end();
-                        jfr.commit();
                     }
                 }
             });
@@ -273,16 +263,15 @@ public final class CrossDimensionLodRenderer {
                 fadeStartFrame = renderFrame;
             } else if (previous.cellSize == result.mesh.cellSize) {
                 fadeStartFrame = previous.fadeStartFrame;
-            } else fadeStartFrame = renderFrame;
+            } else fadeStartFrame = renderFrame - FADE_DURATION_FRAMES;
             packed = packed.withFadeStartFrame(fadeStartFrame);
             PACKED_CHUNKS.put(result.key, packed);
             ChunkMesh replacement = uploadChunkMesh(packed);
             CHUNKS.put(result.key, replacement);
             if (previous != null && previous.cellSize != replacement.cellSize) {
-                // The shader uses complementary dither masks for these two meshes, so they
-                // cross-fade without ever drawing both resolutions into the same pixel.
                 if (active != null) retire(active.oldMesh);
-                TRANSITIONS.put(result.key, new LodTransition(previous, renderFrame));
+                TRANSITIONS.put(result.key, new LodTransition(
+                        previous, renderFrame + TRANSITION_PREWARM_FRAMES));
             } else if (previous != null) retire(previous);
             uploaded++;
         }
@@ -379,7 +368,6 @@ public final class CrossDimensionLodRenderer {
         renderFrame++;
         int viewRadius = serverViewRadius > 0 ? serverViewRadius
                 : MementoInAbyss.CONFIGS.guiSection.crossDimensionLodViewDistance.get() * 16;
-        var jfr = LodJfrEvents.beginFrame(renderFrame);
         if (renderFrame % EVICTION_INTERVAL_FRAMES == 0) evictFarChunks(camera, viewRadius);
         long meshStarted = System.nanoTime();
         closeRetiredMeshes();
@@ -441,7 +429,7 @@ public final class CrossDimensionLodRenderer {
         long receiveNanos = PENDING_RECEIVE_NANOS.getAndSet(0L);
         if (VISIBLE_MESHES.isEmpty() && VISIBLE_TRANSITIONS.isEmpty()
                 && VISIBLE_PAGES.isEmpty() && VISIBLE_PAGE_TRANSITIONS.isEmpty()) {
-            recordTiming(callbackStarted, receiveNanos, meshNanos, pageNanos, visibilityNanos, 0L, 0, jfr);
+            recordTiming(callbackStarted, receiveNanos, meshNanos, pageNanos, visibilityNanos, 0L);
             return;
         }
         long drawStarted = System.nanoTime();
@@ -471,10 +459,12 @@ public final class CrossDimensionLodRenderer {
         }
         for (LodTransition transition : VISIBLE_TRANSITIONS) {
             int fadeStep = transitionFadeStep(transition);
-            fadeTransforms.computeIfAbsent(-fadeStep, step ->
-                    RenderSystem.getDynamicUniforms().writeTransform(modelView,
-                            new Vector4f(1.0F, 1.0F, 1.0F, step / (float) FADE_STEPS),
-                            new Vector3f(), new Matrix4f()));
+            if (fadeStep > 0) {
+                fadeTransforms.computeIfAbsent(-fadeStep, step ->
+                        RenderSystem.getDynamicUniforms().writeTransform(modelView,
+                                new Vector4f(1.0F, 1.0F, 1.0F, step / (float) FADE_STEPS),
+                                new Vector3f(), new Matrix4f()));
+            }
         }
         for (PageMesh page : VISIBLE_PAGES) {
             int fadeStep = fadeStep(page.fadeStartFrame);
@@ -487,10 +477,12 @@ public final class CrossDimensionLodRenderer {
         }
         for (PageTransition transition : VISIBLE_PAGE_TRANSITIONS) {
             int fadeStep = transitionFadeStep(transition.startFrame);
-            fadeTransforms.computeIfAbsent(-fadeStep, step ->
-                    RenderSystem.getDynamicUniforms().writeTransform(modelView,
-                            new Vector4f(1.0F, 1.0F, 1.0F, step / (float) FADE_STEPS),
-                            new Vector3f(), new Matrix4f()));
+            if (fadeStep > 0) {
+                fadeTransforms.computeIfAbsent(-fadeStep, step ->
+                        RenderSystem.getDynamicUniforms().writeTransform(modelView,
+                                new Vector4f(1.0F, 1.0F, 1.0F, step / (float) FADE_STEPS),
+                                new Vector3f(), new Matrix4f()));
+            }
         }
         var atlas = minecraft.getTextureManager().getTexture(TextureAtlas.LOCATION_BLOCKS);
         GpuBufferSlice lodFog = lodFog(viewRadius);
@@ -506,18 +498,9 @@ public final class CrossDimensionLodRenderer {
             pass.setUniform("LodLight", lodLight);
             pass.bindTexture("Sampler0", atlas.getTextureView(), atlas.getSampler());
             pass.setIndexBuffer(indices, indexStorage.type());
-            for (PageTransition transition : VISIBLE_PAGE_TRANSITIONS) {
-                int fadeStep = transitionFadeStep(transition.startFrame);
-                pass.setUniform("DynamicTransforms", fadeTransforms.get(-fadeStep));
-                pass.setVertexBuffer(0, transition.oldMesh.vertexBuffer);
-                pass.drawIndexed(0, 0, transition.oldMesh.indexCount, 1);
-            }
-            for (LodTransition transition : VISIBLE_TRANSITIONS) {
-                int fadeStep = transitionFadeStep(transition);
-                pass.setUniform("DynamicTransforms", fadeTransforms.get(-fadeStep));
-                pass.setVertexBuffer(0, transition.oldMesh.vertexBuffer);
-                pass.drawIndexed(0, 0, transition.oldMesh.indexCount, 1);
-            }
+            // Draw the incoming level first. The outgoing level is then laid over it and
+            // dithered away, so a lower or higher replacement is already present before
+            // the previous geometry starts disappearing.
             for (ChunkMesh mesh : VISIBLE_MESHES) {
                 int fadeStep = fadeStep(mesh);
                 if (mesh.indexCount > 0) {
@@ -535,6 +518,20 @@ public final class CrossDimensionLodRenderer {
                 pass.setVertexBuffer(0, page.vertexBuffer);
                 pass.drawIndexed(0, 0, page.indexCount, 1);
             }
+            for (PageTransition transition : VISIBLE_PAGE_TRANSITIONS) {
+                int fadeStep = transitionFadeStep(transition.startFrame);
+                pass.setUniform("DynamicTransforms",
+                        fadeStep == 0 ? transforms : fadeTransforms.get(-fadeStep));
+                pass.setVertexBuffer(0, transition.oldMesh.vertexBuffer);
+                pass.drawIndexed(0, 0, transition.oldMesh.indexCount, 1);
+            }
+            for (LodTransition transition : VISIBLE_TRANSITIONS) {
+                int fadeStep = transitionFadeStep(transition);
+                pass.setUniform("DynamicTransforms",
+                        fadeStep == 0 ? transforms : fadeTransforms.get(-fadeStep));
+                pass.setVertexBuffer(0, transition.oldMesh.vertexBuffer);
+                pass.drawIndexed(0, 0, transition.oldMesh.indexCount, 1);
+            }
             // Cross-resolution boundary walls switch atomically. Fading these walls with the
             // terrain would expose empty pixels because the outgoing same-LOD mesh has no wall.
             pass.setUniform("DynamicTransforms", transforms);
@@ -549,22 +546,12 @@ public final class CrossDimensionLodRenderer {
                 pass.drawIndexed(0, 0, page.seamIndexCount, 1);
             }
         }
-        int drawCalls = VISIBLE_TRANSITIONS.size() + VISIBLE_PAGE_TRANSITIONS.size();
-        for (ChunkMesh mesh : VISIBLE_MESHES) {
-            if (mesh.indexCount > 0) drawCalls++;
-            if (mesh.seamIndexCount > 0) drawCalls++;
-        }
-        for (PageMesh page : VISIBLE_PAGES) {
-            if (page.indexCount > 0) drawCalls++;
-            if (page.seamIndexCount > 0) drawCalls++;
-        }
         recordTiming(callbackStarted, receiveNanos, meshNanos, pageNanos, visibilityNanos,
-                System.nanoTime() - drawStarted, drawCalls, jfr);
+                System.nanoTime() - drawStarted);
     }
 
     private static void recordTiming(long callbackStarted, long receiveNanos, long meshNanos,
-                                     long pageNanos, long visibilityNanos, long drawNanos,
-                                     int drawCalls, LodJfrEvents.RenderFrameEvent jfr) {
+                                     long pageNanos, long visibilityNanos, long drawNanos) {
         long callbackNanos = System.nanoTime() - callbackStarted;
         FrameTiming sample = new FrameTiming(renderFrame, callbackNanos + receiveNanos,
                 receiveNanos, meshNanos, pageNanos, visibilityNanos, drawNanos);
@@ -574,18 +561,6 @@ public final class CrossDimensionLodRenderer {
         if (renderFrame % 60 == 0) {
             peakTiming = windowPeak;
             windowPeak = FrameTiming.EMPTY;
-        }
-        if (jfr != null) {
-            jfr.receiveNanos = receiveNanos;
-            jfr.meshNanos = meshNanos;
-            jfr.pageNanos = pageNanos;
-            jfr.visibilityNanos = visibilityNanos;
-            jfr.drawNanos = drawNanos;
-            jfr.visibleResources = VISIBLE_MESHES.size() + VISIBLE_TRANSITIONS.size()
-                    + VISIBLE_PAGES.size() + VISIBLE_PAGE_TRANSITIONS.size();
-            jfr.drawCalls = drawCalls;
-            jfr.end();
-            jfr.commit();
         }
     }
 
@@ -605,9 +580,11 @@ public final class CrossDimensionLodRenderer {
     }
 
     private static int transitionFadeStep(long startFrame) {
+        if (renderFrame < startFrame) return 0;
         float progress = Math.clamp((renderFrame - startFrame) / (float) FADE_DURATION_FRAMES,
                 0.0F, 1.0F);
-        progress = progress * progress * (3.0F - 2.0F * progress);
+        progress = progress * progress * progress
+                * (progress * (progress * 6.0F - 15.0F) + 10.0F);
         return Math.clamp(Math.round(progress * FADE_STEPS), 1, FADE_STEPS);
     }
 
@@ -616,7 +593,7 @@ public final class CrossDimensionLodRenderer {
         while (iterator.hasNext()) {
             var entry = iterator.next();
             LodTransition transition = entry.getValue();
-            if (renderFrame - transition.startFrame < FADE_DURATION_FRAMES) continue;
+            if (renderFrame - transition.startFrame <= FADE_DURATION_FRAMES) continue;
             retire(transition.oldMesh);
             iterator.remove();
         }
@@ -658,25 +635,14 @@ public final class CrossDimensionLodRenderer {
             long workEpoch = WORK_EPOCH.get();
             MiaExecutors.execute(MiaExecutors.Priority.LOD_MESH, () -> {
                 if (workEpoch != WORK_EPOCH.get() || !lodEnabled()) return;
-                var jfr = LodJfrEvents.beginPageBuild(CrossDimensionLodKey.x(key),
-                        CrossDimensionLodKey.z(key), chunks.length);
                 try {
                     PageData data = buildPageData(key, chunks);
-                    if (jfr != null) {
-                        if (data != null) jfr.bytes = data.terrain.bytes.length + data.seam.bytes.length;
-                        jfr.succeeded = true;
-                    }
                     if (workEpoch == WORK_EPOCH.get() && lodEnabled()) {
                         COMPLETED_PAGES.add(new PageBuildResult(key, revision, data, null));
                     }
                 } catch (Throwable throwable) {
                     if (workEpoch == WORK_EPOCH.get() && lodEnabled()) {
                         COMPLETED_PAGES.add(new PageBuildResult(key, revision, null, throwable));
-                    }
-                } finally {
-                    if (jfr != null) {
-                        jfr.end();
-                        jfr.commit();
                     }
                 }
             });
@@ -704,11 +670,12 @@ public final class CrossDimensionLodRenderer {
                 PAGE_REVISIONS.remove(result.key, result.revision);
                 if (previous != null) retire(previous);
             } else {
-                long fadeStart = previous == null ? renderFrame - FADE_DURATION_FRAMES : renderFrame;
+                long fadeStart = renderFrame - FADE_DURATION_FRAMES;
                 PageMesh replacement = uploadPage(result.data, fadeStart);
                 PAGES.put(result.key, replacement);
                 if (previous != null) {
-                    PAGE_TRANSITIONS.put(result.key, new PageTransition(previous, renderFrame));
+                    PAGE_TRANSITIONS.put(result.key, new PageTransition(
+                            previous, renderFrame + TRANSITION_PREWARM_FRAMES));
                 }
                 retireChunkMeshesInPage(result.key);
             }
@@ -800,7 +767,7 @@ public final class CrossDimensionLodRenderer {
         var iterator = PAGE_TRANSITIONS.entrySet().iterator();
         while (iterator.hasNext()) {
             var entry = iterator.next();
-            if (renderFrame - entry.getValue().startFrame < FADE_DURATION_FRAMES) continue;
+            if (renderFrame - entry.getValue().startFrame <= FADE_DURATION_FRAMES) continue;
             retire(entry.getValue().oldMesh);
             iterator.remove();
         }
@@ -937,7 +904,6 @@ public final class CrossDimensionLodRenderer {
 
     private static GpuBuffer uploadPackedBuffer(PackedBuffer packed, String part, int x, int z) {
         if (packed.bytes.length == 0) return null;
-        var jfr = LodJfrEvents.beginUpload(part, x, z, packed.bytes.length);
         GpuBuffer buffer = RenderSystem.getDevice().createBuffer(
                 () -> "Cross-dimension LOD " + part + " [" + x + "," + z + "]",
                 GpuBuffer.USAGE_VERTEX | GpuBuffer.USAGE_COPY_DST, packed.bytes.length);
@@ -949,16 +915,10 @@ public final class CrossDimensionLodRenderer {
             } finally {
                 MemoryUtil.memFree(nativeBytes);
             }
-            if (jfr != null) jfr.succeeded = true;
             return buffer;
         } catch (Throwable throwable) {
             closeBuffer(buffer);
             throw throwable;
-        } finally {
-            if (jfr != null) {
-                jfr.end();
-                jfr.commit();
-            }
         }
     }
 

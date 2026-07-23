@@ -151,6 +151,17 @@
   "mementoinabyss.config.guiSection.crossDimensionLodMargin": "uıbɹɐW ᗡOꞀ ןıɐʇǝᗡ",
   "mementoinabyss.config.guiSection.crossDimensionLodMinimumDiameter": "ɹǝʇǝɯɐıᗡ ɯnɯıuıW ᗡOꞀ ןıɐʇǝᗡ",
   "mementoinabyss.config.guiSection.crossDimensionLodViewDistance": "(sʞunɥƆ) ǝɔuɐʇsıᗡ ʍǝıΛ ᗡOꞀ",
+  "mementoinabyss.config.guiSection.miaCpuThreadLimit": "spɐǝɹɥ⟘ ∩ԀƆ punoɹbʞɔɐᗺ ⱯIW",
+  "mementoinabyss.config.guiSection.performanceGroup": "ǝɔuɐɯɹoɟɹǝԀ",
   "mementoinabyss.config.worldGenSection": "uoıʇɐɹǝuǝ⅁ pןɹoM",
-  "mementoinabyss.config.worldGenSection.abyssRadius": "snıpɐᴚ ssʎqⱯ"
+  "mementoinabyss.config.worldGenSection.abyssRadius": "snıpɐᴚ ssʎqⱯ",
+  "mementoinabyss.sodium.cross_dimension_lod_capture_queue_limit.tooltip": "˙ɐʇɐp ᗡOꞀ oʇuı pǝʇɹǝʌuoɔ ǝq oʇ buıʇıɐʍ sǝɹnʇdɐɔ ʞunɥɔ-ןɐǝɹ ɟo ɹǝqɯnu ɯnɯıxɐW",
+  "mementoinabyss.sodium.cross_dimension_lod_enabled.tooltip": "˙buıɹǝpuǝɹ puɐ 'uoıʇɐɹǝuǝb 'buıpɐoן ᗡOꞀ uoısuǝɯıp-ssoɹɔ sǝןqɐuƎ",
+  "mementoinabyss.sodium.cross_dimension_lod_margin.tooltip": "˙uoıbǝɹ ɹǝʇuǝɔ s,ʞuıן uoısuǝɯıp ǝɥʇ ǝpısʇno pǝppɐ ǝɔuɐʇsıp ᗡOꞀ pǝןıɐʇǝp ɐɹʇxƎ",
+  "mementoinabyss.sodium.cross_dimension_lod_minimum_diameter.tooltip": "˙ʞuıן uoısuǝɯıp ǝɥʇ punoɹɐ ɐǝɹɐ ᗡOꞀ pǝןıɐʇǝp ǝɥʇ ɟo ɹǝʇǝɯɐıp ɯnɯıuıW",
+  "mementoinabyss.sodium.cross_dimension_lod_view_distance.tooltip": "˙pǝʎɐןdsıp sı uıɐɹɹǝʇ ᗡOꞀ uoısuǝɯıp-ssoɹɔ ɥɔıɥʍ ʇɐ sʞunɥɔ uı ǝɔuɐʇsıp ɯnɯıxɐW",
+  "mementoinabyss.sodium.lod_page": "ᗡOꞀ ⱯIW",
+  "mementoinabyss.sodium.value.blocks": "sʞɔoןq %1$s",
+  "mementoinabyss.sodium.value.chunks": "sʞunɥɔ %1$s",
+  "mementoinabyss.sodium.value.entries": "sǝıɹʇuǝ %1$s"
 }

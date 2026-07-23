@@ -6,6 +6,7 @@ import com.altnoir.mementoinabyss.impl.strippable.StripEvent;
 import com.altnoir.mementoinabyss.impl.tillable.TillEvent;
 import com.altnoir.mementoinabyss.init.MiaSoundEvents;
 import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensions;
+import com.altnoir.mementoinabyss.worldgen.dimension.MiaWorldClocks;
 import com.altnoir.mementoinabyss.worldgen.dimension.VerticalDimensionTeleporter;
 import com.altnoir.mementoinabyss.worldgen.lod.MiaLodServer;
 import com.altnoir.mementoinabyss.worldgen.structure.DelayedCavePillarGenerator;
@@ -40,6 +41,7 @@ public final class CommonEvents {
     @SubscribeEvent
     public static void onServerStarted(ServerStartedEvent event) {
         CurseManager.init(event);
+        MiaWorldClocks.initialize(event.getServer());
     }
 
     @SubscribeEvent

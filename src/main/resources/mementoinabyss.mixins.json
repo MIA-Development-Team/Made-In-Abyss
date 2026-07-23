@@ -16,7 +16,6 @@
     "requireAnnotations": true
   },
   "client": [
-    "accessor.PauseScreenAccessor",
-    "client.GameRendererJfrMixin"
+    "accessor.PauseScreenAccessor"
   ]
 }
