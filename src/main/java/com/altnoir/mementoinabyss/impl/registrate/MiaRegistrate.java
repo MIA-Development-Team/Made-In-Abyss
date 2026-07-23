@@ -41,7 +41,6 @@ public class MiaRegistrate extends AbstractRegistrate<MiaRegistrate> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T extends Item, P> MiaItemBuilder<T, P> item(
             P parent,
             String name,
@@ -82,7 +81,6 @@ public class MiaRegistrate extends AbstractRegistrate<MiaRegistrate> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T extends Block, P> MiaBlockBuilder<T, P> block(
             P parent,
             String name,
@@ -147,7 +145,7 @@ public class MiaRegistrate extends AbstractRegistrate<MiaRegistrate> {
         return this.generic(parent, name, Registries.CREATIVE_MODE_TAB, () -> {
             var builder = CreativeModeTab.builder()
                     .icon(() -> getAll(Registries.ITEM).stream().findFirst().map(ItemEntry::cast).map(ItemEntry::asStack).orElse(new ItemStack(Items.AIR)))
-                    .title(this.addLang("itemGroup", MementoInAbyss.asResource(name), MementoInAbyss.NAME + " : " + RegistrateLangProvider.toEnglishName(name)));
+                    .title(this.addLang("itemGroup", MementoInAbyss.asResource(name), MementoInAbyss.NAME + ": " + RegistrateLangProvider.toEnglishName(name)));
             config.accept(builder);
             return builder.build();
         });
