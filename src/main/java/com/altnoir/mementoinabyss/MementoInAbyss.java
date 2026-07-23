@@ -28,6 +28,7 @@ public class MementoInAbyss {
 
         REGISTRATE.registerEventListeners(modEventBus);
 
+        MiaDataComponents.register(modEventBus);
         MiaDataAttachments.register(modEventBus);
         MiaBiomeSources.register(modEventBus);
         MiaDensityFunctionTypes.register(modEventBus);
@@ -38,6 +39,7 @@ public class MementoInAbyss {
         MiaSoundEvents.register();
         MiaBlocks.register();
         MiaItems.register();
+        MiaArtifactItems.register();
 
         modEventBus.addListener(EventPriority.HIGHEST, MiaDataGen::gatherDataHighPriority);
         modEventBus.addListener(EventPriority.LOWEST, MiaDataGen::gatherData);

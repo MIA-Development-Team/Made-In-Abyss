@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.impl.event;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.client.tooltip.TooltipModifierRegistry;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodDebugEntry;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodRenderer;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodRenderTypes;
@@ -19,6 +20,7 @@ import net.neoforged.neoforge.client.event.RegisterDebugEntriesEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 @EventBusSubscriber(Dist.CLIENT)
 public final class ClientEvent {
@@ -63,6 +65,11 @@ public final class ClientEvent {
     public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
         CrossDimensionLodRenderer.disconnect();
         CrossDimensionLodDebugEntry.clear();
+    }
+
+    @SubscribeEvent
+    public static void onItemTooltip(ItemTooltipEvent event) {
+        TooltipModifierRegistry.get(event.getItemStack().getItem()).modify(event);
     }
 
     private ClientEvent() {}

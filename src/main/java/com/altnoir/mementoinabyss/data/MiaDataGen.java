@@ -43,6 +43,7 @@ public class MiaDataGen {
             return;
 
         event.createProvider(MiaCurseDataProvider::new);
+        event.createProvider(MiaCuriosDataProvider::new);
         event.createDatapackRegistryObjects(new RegistrySetBuilder()
                 .add(Registries.WORLD_CLOCK, MiaWorldClocks::bootstrap)
                 .add(Registries.DIMENSION_TYPE, MiaDimensionTypes::bootstrap)
