@@ -4,7 +4,7 @@ import com.altnoir.mementoinabyss.compat.MiaMods;
 import com.altnoir.mementoinabyss.data.MiaDataGen;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.init.*;
-import com.altnoir.mementoinabyss.network.CrossDimensionLodPayload;
+import com.altnoir.mementoinabyss.network.MiaLodNetwork;
 import com.mojang.logging.LogUtils;
 import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import net.minecraft.resources.Identifier;
@@ -35,12 +35,13 @@ public class MementoInAbyss {
         MiaWorldgenFeatures.register(modEventBus);
 
         MiaItemGroups.register();
+        MiaSoundEvents.register();
         MiaBlocks.register();
         MiaItems.register();
 
         modEventBus.addListener(EventPriority.HIGHEST, MiaDataGen::gatherDataHighPriority);
         modEventBus.addListener(EventPriority.LOWEST, MiaDataGen::gatherData);
-        modEventBus.addListener(CrossDimensionLodPayload::register);
+        modEventBus.addListener(MiaLodNetwork::register);
     }
 
     public static Identifier asResource(String string) {

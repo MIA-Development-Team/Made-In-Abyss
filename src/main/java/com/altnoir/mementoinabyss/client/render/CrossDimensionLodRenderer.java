@@ -4,7 +4,9 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.CpuMesh;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.HeightField;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.QuadBuffer;
+import com.altnoir.mementoinabyss.network.CrossDimensionLodControlPayload;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodPayload;
+import com.altnoir.mementoinabyss.util.concurrent.MiaExecutors;
 import com.altnoir.mementoinabyss.worldgen.lod.CrossDimensionLodKey;
 import com.altnoir.mementoinabyss.worldgen.lod.CrossDimensionLodLinks;
 import com.altnoir.mementoinabyss.worldgen.lighting.RegionalSkyLight;
@@ -24,28 +26,27 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
-import java.util.ArrayList;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashSet;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
 
 /** Renders server-provided cross-dimension voxel chunks with six-direction greedy meshing. */
@@ -84,13 +85,7 @@ public final class CrossDimensionLodRenderer {
     private static final ConcurrentLinkedQueue<MeshBuildResult> COMPLETED_MESHES = new ConcurrentLinkedQueue<>();
     private static final AtomicLong NEXT_MESH_REVISION = new AtomicLong();
     private static final AtomicLong PENDING_RECEIVE_NANOS = new AtomicLong();
-    private static final ExecutorService MESH_WORKERS = Executors.newFixedThreadPool(
-            Math.max(1, Math.min(2, Runtime.getRuntime().availableProcessors() - 2)), runnable -> {
-                Thread thread = new Thread(runnable, "MIA LOD Mesher");
-                thread.setDaemon(true);
-                thread.setPriority(Thread.MIN_PRIORITY);
-                return thread;
-            });
+    private static final AtomicLong WORK_EPOCH = new AtomicLong();
     private static final Map<Long, TextureAtlasSprite> FACE_SPRITES = new ConcurrentHashMap<>();
     /** Reused between extraction and rendering in the same frame; custom geometry is rendered before next extraction. */
     private static final ArrayList<ChunkMesh> VISIBLE_MESHES = new ArrayList<>();
@@ -108,6 +103,8 @@ public final class CrossDimensionLodRenderer {
     private static int lodFogRadius = -1;
     private static GpuBuffer lodLightBuffer;
     private static ResourceKey<Level> lodLightSource;
+    private static ClientState clientState = ClientState.RUNNING;
+    private static Boolean reportedServerEnabled;
 
     public static DebugStats debugStats() {
         int viewRadius = serverViewRadius > 0 ? serverViewRadius
@@ -118,32 +115,47 @@ public final class CrossDimensionLodRenderer {
                 DIRTY_CHUNKS.size() + DIRTY_PAGES.size(),
                 IN_FLIGHT_MESHES.size() + IN_FLIGHT_PAGES.size(),
                 COMPLETED_MESHES.size() + COMPLETED_PAGES.size(), viewRadius,
+                MiaExecutors.threadCount(), MiaExecutors.activeTaskCount(), MiaExecutors.queuedTaskCount(),
                 lastTiming, peakTiming, lastSpike);
     }
 
     public static void accept(CrossDimensionLodPayload payload) {
         long started = System.nanoTime();
         try {
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.level == null) return;
-        var activeLink = CrossDimensionLodLinks.forTarget(minecraft.level.dimension()).orElse(null);
-        if (activeLink == null || !activeLink.id().toString().equals(payload.linkId())) return;
-        serverViewRadius = payload.radius();
-        if (payload.reset()) {
-            DATA.clear();
-            HEIGHT_FIELDS.clear();
-            PACKED_CHUNKS.clear();
-            closeMeshes();
-            DIRTY_CHUNKS.clear();
-            DIRTY_CHUNK_QUEUE.clear();
-            MESH_REVISIONS.clear();
-            IN_FLIGHT_MESHES.clear();
-            COMPLETED_MESHES.clear();
-            DIRTY_PAGES.clear();
-            PAGE_REVISIONS.clear();
-            IN_FLIGHT_PAGES.clear();
-            COMPLETED_PAGES.clear();
+            Minecraft minecraft = Minecraft.getInstance();
+            if (!lodEnabled()) {
+                transitionTo(ClientState.DISABLED);
+                return;
+            }
+            if (minecraft.level == null) return;
+            var activeLink = CrossDimensionLodLinks.forTarget(minecraft.level.dimension()).orElse(null);
+            if (activeLink == null || !activeLink.id().toString().equals(payload.linkId())) return;
+            transitionTo(ClientState.RUNNING);
+            applyPayload(payload);
+        } finally {
+            PENDING_RECEIVE_NANOS.addAndGet(System.nanoTime() - started);
         }
+    }
+
+    public static void clientTick() {
+        MiaExecutors.refreshThreadLimit();
+        Minecraft minecraft = Minecraft.getInstance();
+        ClientState desiredState = desiredState(minecraft);
+        transitionTo(desiredState);
+        if (minecraft.getConnection() == null) {
+            reportedServerEnabled = null;
+            return;
+        }
+        boolean serverEnabled = desiredState == ClientState.RUNNING;
+        if (reportedServerEnabled == null || reportedServerEnabled != serverEnabled) {
+            ClientPacketDistributor.sendToServer(new CrossDimensionLodControlPayload(serverEnabled));
+            reportedServerEnabled = serverEnabled;
+        }
+    }
+
+    private static void applyPayload(CrossDimensionLodPayload payload) {
+        serverViewRadius = payload.radius();
+        if (payload.reset()) resetStreamData();
         long key = CrossDimensionLodKey.pack(payload.chunkX(), payload.chunkZ());
         DATA.put(key, payload);
         HeightField heightField = CrossDimensionLodMesher.buildHeightField(payload);
@@ -153,9 +165,6 @@ public final class CrossDimensionLodRenderer {
         markDirtyIfPresent(payload.chunkX() + 1, payload.chunkZ());
         markDirtyIfPresent(payload.chunkX(), payload.chunkZ() - 1);
         markDirtyIfPresent(payload.chunkX(), payload.chunkZ() + 1);
-        } finally {
-            PENDING_RECEIVE_NANOS.addAndGet(System.nanoTime() - started);
-        }
     }
 
     private static void markDirty(int chunkX, int chunkZ) {
@@ -195,7 +204,9 @@ public final class CrossDimensionLodRenderer {
                 continue;
             }
             scheduled++;
-            MESH_WORKERS.execute(() -> {
+            long workEpoch = WORK_EPOCH.get();
+            MiaExecutors.execute(MiaExecutors.Priority.LOD_MESH, () -> {
+                if (workEpoch != WORK_EPOCH.get() || !lodEnabled()) return;
                 var jfr = LodJfrEvents.beginMeshBuild(payload.chunkX(), payload.chunkZ(), payload.cellSize());
                 try {
                     CpuMesh mesh = CrossDimensionLodMesher.build(payload, DATA, HEIGHT_FIELDS);
@@ -204,9 +215,13 @@ public final class CrossDimensionLodRenderer {
                         jfr.seamQuads = mesh.seamQuads.size;
                         jfr.succeeded = true;
                     }
-                    COMPLETED_MESHES.add(new MeshBuildResult(key, revision, payload, mesh, null));
+                    if (workEpoch == WORK_EPOCH.get() && lodEnabled()) {
+                        COMPLETED_MESHES.add(new MeshBuildResult(key, revision, payload, mesh, null));
+                    }
                 } catch (Throwable throwable) {
-                    COMPLETED_MESHES.add(new MeshBuildResult(key, revision, payload, null, throwable));
+                    if (workEpoch == WORK_EPOCH.get() && lodEnabled()) {
+                        COMPLETED_MESHES.add(new MeshBuildResult(key, revision, payload, null, throwable));
+                    }
                 } finally {
                     if (jfr != null) {
                         jfr.end();
@@ -273,20 +288,8 @@ public final class CrossDimensionLodRenderer {
         }
     }
 
-    public static void clear() {
-        DATA.clear();
-        HEIGHT_FIELDS.clear();
-        PACKED_CHUNKS.clear();
-        closeMeshes();
-        DIRTY_CHUNKS.clear();
-        DIRTY_CHUNK_QUEUE.clear();
-        MESH_REVISIONS.clear();
-        IN_FLIGHT_MESHES.clear();
-        COMPLETED_MESHES.clear();
-        DIRTY_PAGES.clear();
-        PAGE_REVISIONS.clear();
-        IN_FLIGHT_PAGES.clear();
-        COMPLETED_PAGES.clear();
+    private static void clearResources() {
+        resetStreamData();
         VISIBLE_MESHES.clear();
         VISIBLE_TRANSITIONS.clear();
         VISIBLE_PAGES.clear();
@@ -307,6 +310,45 @@ public final class CrossDimensionLodRenderer {
         lodLightSource = null;
     }
 
+    public static void disconnect() {
+        reportedServerEnabled = null;
+        transitionTo(ClientState.DISCONNECTED);
+    }
+
+    private static void resetStreamData() {
+        invalidateMeshWork();
+        DATA.clear();
+        HEIGHT_FIELDS.clear();
+        PACKED_CHUNKS.clear();
+        closeMeshes();
+        DIRTY_CHUNKS.clear();
+        DIRTY_CHUNK_QUEUE.clear();
+        MESH_REVISIONS.clear();
+        DIRTY_PAGES.clear();
+        PAGE_REVISIONS.clear();
+    }
+
+    private static ClientState desiredState(Minecraft minecraft) {
+        if (minecraft.getConnection() == null) return ClientState.DISCONNECTED;
+        if (!lodEnabled()) return ClientState.DISABLED;
+        return ClientState.RUNNING;
+    }
+
+    private static void transitionTo(ClientState nextState) {
+        if (clientState == nextState) return;
+        clientState = nextState;
+        if (nextState != ClientState.RUNNING) clearResources();
+    }
+
+    private static void invalidateMeshWork() {
+        WORK_EPOCH.incrementAndGet();
+        MiaExecutors.discardQueuedTasks(MiaExecutors.Priority.LOD_MESH);
+        IN_FLIGHT_MESHES.clear();
+        COMPLETED_MESHES.clear();
+        IN_FLIGHT_PAGES.clear();
+        COMPLETED_PAGES.clear();
+    }
+
     private static void closeMeshes() {
         for (ChunkMesh mesh : CHUNKS.values()) mesh.close();
         CHUNKS.clear();
@@ -323,7 +365,12 @@ public final class CrossDimensionLodRenderer {
     public static void renderPersistent(RenderLevelStageEvent.AfterOpaqueBlocks event) {
         long callbackStarted = System.nanoTime();
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.level == null || !MementoInAbyss.CONFIGS.guiSection.crossDimensionLodEnabled.get()) return;
+        if (!lodEnabled()) {
+            transitionTo(ClientState.DISABLED);
+            return;
+        }
+        if (minecraft.level == null) return;
+        transitionTo(ClientState.RUNNING);
         var activeLink = CrossDimensionLodLinks.forTarget(minecraft.level.dimension()).orElse(null);
         if (activeLink == null) return;
         Vec3 camera = event.getLevelRenderState().cameraRenderState.pos;
@@ -608,7 +655,9 @@ public final class CrossDimensionLodRenderer {
             if (revision == null || IN_FLIGHT_PAGES.putIfAbsent(key, revision) != null) continue;
             iterator.remove();
             PackedChunk[] chunks = pageChunks(key);
-            MESH_WORKERS.execute(() -> {
+            long workEpoch = WORK_EPOCH.get();
+            MiaExecutors.execute(MiaExecutors.Priority.LOD_MESH, () -> {
+                if (workEpoch != WORK_EPOCH.get() || !lodEnabled()) return;
                 var jfr = LodJfrEvents.beginPageBuild(CrossDimensionLodKey.x(key),
                         CrossDimensionLodKey.z(key), chunks.length);
                 try {
@@ -617,9 +666,13 @@ public final class CrossDimensionLodRenderer {
                         if (data != null) jfr.bytes = data.terrain.bytes.length + data.seam.bytes.length;
                         jfr.succeeded = true;
                     }
-                    COMPLETED_PAGES.add(new PageBuildResult(key, revision, data, null));
+                    if (workEpoch == WORK_EPOCH.get() && lodEnabled()) {
+                        COMPLETED_PAGES.add(new PageBuildResult(key, revision, data, null));
+                    }
                 } catch (Throwable throwable) {
-                    COMPLETED_PAGES.add(new PageBuildResult(key, revision, null, throwable));
+                    if (workEpoch == WORK_EPOCH.get() && lodEnabled()) {
+                        COMPLETED_PAGES.add(new PageBuildResult(key, revision, null, throwable));
+                    }
                 } finally {
                     if (jfr != null) {
                         jfr.end();
@@ -995,6 +1048,16 @@ public final class CrossDimensionLodRenderer {
         return Math.clamp(Math.round(coordinate * 32767.0F), 0, 32767);
     }
 
+    private static boolean lodEnabled() {
+        return MementoInAbyss.CONFIGS.guiSection.crossDimensionLodEnabled.get();
+    }
+
+    private enum ClientState {
+        RUNNING,
+        DISABLED,
+        DISCONNECTED
+    }
+
     private interface GpuResource extends AutoCloseable {
         @Override
         void close();
@@ -1039,7 +1102,8 @@ public final class CrossDimensionLodRenderer {
                                    CpuMesh mesh, Throwable failure) {}
     private record PageBuildResult(long key, long revision, PageData data, Throwable failure) {}
     public record DebugStats(int data, int meshes, int pages, int visible, int dirty,
-                             int building, int ready, int viewRadius, FrameTiming lastTiming,
+                             int building, int ready, int viewRadius,
+                             int cpuThreads, int cpuActive, int cpuQueued, FrameTiming lastTiming,
                              FrameTiming peakTiming, FrameTiming lastSpike) {}
     public record FrameTiming(long frame, long totalNanos, long receiveNanos, long meshNanos,
                               long pageNanos, long visibilityNanos, long drawNanos) {

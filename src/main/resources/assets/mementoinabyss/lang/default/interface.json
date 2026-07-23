@@ -6,6 +6,8 @@
   "mementoinabyss.config.guiSection.crossDimensionLodMargin": "Detail LOD Margin",
   "mementoinabyss.config.guiSection.crossDimensionLodCaptureQueueLimit": "LOD Capture Queue Limit",
   "mementoinabyss.config.guiSection.crossDimensionLodViewDistance": "LOD View Distance (Chunks)",
+  "mementoinabyss.config.guiSection.performanceGroup": "Performance",
+  "mementoinabyss.config.guiSection.miaCpuThreadLimit": "MIA Background CPU Threads",
   "mementoinabyss.config.gamePlaySection": "GamePlay",
   "mementoinabyss.config.gamePlaySection.curseGroup": "Curse",
   "mementoinabyss.config.gamePlaySection.enableCurse": "Enable Curse",

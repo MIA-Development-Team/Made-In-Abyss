@@ -1,0 +1,7 @@
+{
+  "block.abyss_portal.travel": {
+    "sounds": [
+      "mementoinabyss:block/abyss_portal_travel"
+    ]
+  }
+}

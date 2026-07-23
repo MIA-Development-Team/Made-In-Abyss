@@ -74,6 +74,10 @@ public final class CrossDimensionLodDebugEntry implements DebugScreenEntry {
                 "Stream: queue %d, scheduled %d, sent %d, loading %d, ready %d, known %d, missing %d",
                 state.queued(), state.scheduled(), state.sent(), state.loading(), state.ready(),
                 state.known(), state.missing()));
+        displayer.addLine(String.format(Locale.ROOT,
+                "CPU: client %d/%d active, %d queued; server %d/%d active, %d queued",
+                client.cpuActive(), client.cpuThreads(), client.cpuQueued(),
+                state.cpuActive(), state.cpuThreads(), state.cpuQueued()));
     }
 
     @Override

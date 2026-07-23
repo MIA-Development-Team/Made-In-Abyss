@@ -27,6 +27,14 @@ public class MiaConfigs extends Config {
             super();
         }
 
+        public ConfigGroup performanceGroup = new ConfigGroup("performance");
+        @ConfigGroup.Pop
+        public ValidatedInt miaCpuThreadLimit = new ValidatedInt(
+                Math.max(1, Runtime.getRuntime().availableProcessors() - 6),
+                Math.max(1, Runtime.getRuntime().availableProcessors()),
+                1,
+                ValidatedInt.WidgetType.TEXTBOX);
+
         public ConfigGroup crossDimensionLodGroup = new ConfigGroup("cross_dimension_lod");
         public ValidatedBoolean crossDimensionLodEnabled = new ValidatedBoolean(true);
         public ValidatedInt crossDimensionLodMinimumDiameter = new ValidatedInt(1024, 8192, 256, ValidatedInt.WidgetType.TEXTBOX);

@@ -1,24 +1,25 @@
 package com.altnoir.mementoinabyss.worldgen.lod;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.util.concurrent.MiaExecutors;
 import com.altnoir.mementoinabyss.worldgen.MiaHeight;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.EmptyBlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
-import net.minecraft.world.level.EmptyBlockGetter;
 import net.minecraft.world.level.storage.LevelResource;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -32,27 +33,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
 /** Persistent server-owned LOD storage, shared by every link that uses the same source dimension. */
-public final class MiaLodStorage {
-    public static final int BASE_CELL_SIZE = 4;
+final class MiaLodStorage {
+    private static final int BASE_CELL_SIZE = 4;
     private static final int MAGIC = 0x4D49414C; // MIAL
     private static final int VERSION = 5;
     private static final int MAX_PENDING_WRITES = 128;
     private static final int MAX_CAPTURE_SUBMISSIONS_PER_TICK = 2;
     private static final int MAX_CAPTURES_IN_FLIGHT = 16;
-    private static final ExecutorService WRITER = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
+    private static final ThreadPoolExecutor WRITER = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
             new ArrayBlockingQueue<>(MAX_PENDING_WRITES), r -> {
                 Thread thread = new Thread(r, "MIA cross-dimension LOD writer");
                 thread.setDaemon(true);
@@ -60,20 +62,15 @@ public final class MiaLodStorage {
             }, new ThreadPoolExecutor.AbortPolicy());
     private static final java.util.Set<Path> PENDING_WRITES = ConcurrentHashMap.newKeySet();
     private static final java.util.Set<Path> READY_DIRECTORIES = ConcurrentHashMap.newKeySet();
-    private static final ThreadPoolExecutor CAPTURE_WORKERS = new ThreadPoolExecutor(2, 2, 0L,
-            TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(MAX_CAPTURES_IN_FLIGHT), r -> {
-                Thread thread = new Thread(r, "MIA real-chunk LOD capture");
-                thread.setDaemon(true);
-                thread.setPriority(Thread.NORM_PRIORITY - 1);
-                return thread;
-            }, new ThreadPoolExecutor.AbortPolicy());
     /** Chunk events may run off-thread under C2ME; entries retain chunks only weakly until selected. */
     private static final ConcurrentLinkedDeque<PendingCapture> PENDING_CAPTURES = new ConcurrentLinkedDeque<>();
     private static final java.util.Set<CaptureKey> PENDING_CAPTURE_KEYS = ConcurrentHashMap.newKeySet();
     private static final AtomicInteger PENDING_CAPTURE_COUNT = new AtomicInteger();
     private static final AtomicInteger CAPTURES_IN_FLIGHT = new AtomicInteger();
+    private static final AtomicLong CAPTURE_EPOCH = new AtomicLong();
 
-    public static void enqueueIfMissing(CrossDimensionLodLink link, ServerLevel level, ChunkAccess chunk) {
+    static void enqueueIfMissing(CrossDimensionLodLink link, ServerLevel level, ChunkAccess chunk) {
+        if (!lodEnabled()) return;
         int queueLimit = MementoInAbyss.CONFIGS.guiSection.crossDimensionLodCaptureQueueLimit.get();
         if (PENDING_CAPTURE_COUNT.get() >= queueLimit) return;
         CaptureKey key = new CaptureKey(level.dimension(),
@@ -84,7 +81,8 @@ public final class MiaLodStorage {
                 key, link, new WeakReference<>(chunk)));
     }
 
-    public static void processPendingCapture(MinecraftServer server) {
+    static void processPendingCapture(MinecraftServer server) {
+        if (!lodEnabled()) return;
         int submitted = 0;
         for (int checked = 0; checked < 32 && submitted < MAX_CAPTURE_SUBMISSIONS_PER_TICK
                 && CAPTURES_IN_FLIGHT.get() < MAX_CAPTURES_IN_FLIGHT; checked++) {
@@ -122,67 +120,80 @@ public final class MiaLodStorage {
             // PalettedContainer.copy() duplicates compact palette/bit-storage data without scanning
             // every block. Workers can then read this immutable snapshot without touching the level.
             ChunkSnapshot snapshot = snapshot(chunk, true);
+            long captureEpoch = CAPTURE_EPOCH.get();
             CAPTURES_IN_FLIGHT.incrementAndGet();
             try {
-                CAPTURE_WORKERS.execute(() -> {
+                MiaExecutors.execute(MiaExecutors.Priority.REAL_CHUNK_CAPTURE, () -> {
                     try {
+                        if (captureEpoch != CAPTURE_EPOCH.get() || !lodEnabled()) return;
                         StoredChunk stored = voxelize(pending.link, snapshot, false);
+                        if (captureEpoch != CAPTURE_EPOCH.get() || !lodEnabled()) return;
                         persist(destination, stored).thenRun(() -> server.execute(() ->
                                 MiaLodSampler.notifyReplaced(pending.link, pos)));
                     } catch (Throwable throwable) {
                         MementoInAbyss.LOGGER.warn("Unable to capture real chunk LOD {}", pos, throwable);
                     } finally {
                         PENDING_CAPTURE_KEYS.remove(pending.key);
-                        CAPTURES_IN_FLIGHT.decrementAndGet();
+                        if (captureEpoch == CAPTURE_EPOCH.get()) CAPTURES_IN_FLIGHT.decrementAndGet();
                     }
                 });
                 submitted++;
             } catch (RejectedExecutionException ignored) {
-                CAPTURES_IN_FLIGHT.decrementAndGet();
-                PENDING_CAPTURE_COUNT.incrementAndGet();
-                PENDING_CAPTURES.addFirst(pending);
+                if (captureEpoch == CAPTURE_EPOCH.get()) {
+                    CAPTURES_IN_FLIGHT.decrementAndGet();
+                    if (lodEnabled()) {
+                        PENDING_CAPTURE_COUNT.incrementAndGet();
+                        PENDING_CAPTURES.addFirst(pending);
+                    }
+                }
                 return;
             }
         }
     }
 
-    public static void clearPendingCaptures() {
+    static void clearPendingCaptures() {
+        CAPTURE_EPOCH.incrementAndGet();
         PENDING_CAPTURES.clear();
         PENDING_CAPTURE_KEYS.clear();
         PENDING_CAPTURE_COUNT.set(0);
+        CAPTURES_IN_FLIGHT.set(0);
+        cancelPendingWrites();
         READY_DIRECTORIES.clear();
     }
 
-    public static CompletableFuture<Void> ingest(CrossDimensionLodLink link, ServerLevel level,
-                                                 ChunkAccess chunk, boolean provisional) {
+    static CompletableFuture<Void> ingest(CrossDimensionLodLink link, ServerLevel level,
+                                          ChunkAccess chunk, boolean provisional) {
+        if (!lodEnabled()) return CompletableFuture.completedFuture(null);
         Path destination = chunkPath(level, chunk.getPos());
         return persist(destination, voxelize(link, chunk, provisional));
     }
 
     private static CompletableFuture<Void> persist(Path destination, StoredChunk snapshot) {
+        if (!lodEnabled()) return CompletableFuture.completedFuture(null);
         if (!PENDING_WRITES.add(destination)) return CompletableFuture.completedFuture(null);
         CompletableFuture<Void> completion = new CompletableFuture<>();
+        byte[] encoded;
         try {
-            WRITER.execute(() -> {
-                try {
-                    write(destination, snapshot);
-                    completion.complete(null);
-                } catch (Throwable throwable) {
-                    MementoInAbyss.LOGGER.warn("Unable to write cross-dimension LOD {}", destination, throwable);
-                    completion.completeExceptionally(throwable);
-                } finally {
-                    PENDING_WRITES.remove(destination);
-                }
-            });
+            // persist is reached from a prioritized CPU task. Keep Deflate work there and leave
+            // the single writer responsible only for ordered filesystem operations.
+            encoded = encode(snapshot);
+        } catch (Throwable throwable) {
+            PENDING_WRITES.remove(destination);
+            completion.completeExceptionally(throwable);
+            return completion;
+        }
+        try {
+            WRITER.execute(new PendingWrite(destination, snapshot.provisional, encoded, completion));
         } catch (RejectedExecutionException ignored) {
-            // Never compress on the server thread. A later load/unload retries this chunk.
+            // A later load/unload retries this chunk if the bounded I/O queue is full.
             PENDING_WRITES.remove(destination);
             completion.completeExceptionally(ignored);
         }
         return completion;
     }
 
-    public static Optional<StoredChunk> read(ServerLevel level, ChunkPos pos) {
+    static Optional<StoredChunk> read(ServerLevel level, ChunkPos pos) {
+        if (!lodEnabled()) return Optional.empty();
         Path path = chunkPath(level, pos);
         if (!isFile(path)) return Optional.empty();
         try (DataInputStream input = new DataInputStream(new InflaterInputStream(
@@ -217,12 +228,12 @@ public final class MiaLodStorage {
     }
 
     /** Cheap presence check used by the lazy source-dimension generator. */
-    public static boolean contains(ServerLevel level, ChunkPos pos) {
+    static boolean contains(ServerLevel level, ChunkPos pos) {
         return isFile(chunkPath(level, pos));
     }
 
     /** Derives a coarser level from the persisted base level without duplicating files on disk. */
-    public static StoredChunk coarsen(StoredChunk source, int targetCellSize) {
+    static StoredChunk coarsen(StoredChunk source, int targetCellSize) {
         if (targetCellSize == source.cellSize) return source;
         if (targetCellSize < source.cellSize || targetCellSize > 16
                 || targetCellSize % source.cellSize != 0 || 16 % targetCellSize != 0) {
@@ -406,11 +417,11 @@ public final class MiaLodStorage {
         return bestId;
     }
 
-    private static void write(Path destination, StoredChunk chunk) throws IOException {
-        Path temporary = destination.resolveSibling(destination.getFileName() + ".tmp");
-        ensureDirectory(destination.getParent());
-        try (DataOutputStream output = new DataOutputStream(new DeflaterOutputStream(
-                new BufferedOutputStream(Files.newOutputStream(temporary))))) {
+    private static byte[] encode(StoredChunk chunk) throws IOException {
+        int estimatedSize = 32 + chunk.palette.length * Integer.BYTES
+                + chunk.voxels.length * Short.BYTES;
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream(estimatedSize);
+        try (DataOutputStream output = new DataOutputStream(new DeflaterOutputStream(bytes))) {
             output.writeInt(MAGIC);
             output.writeInt(VERSION);
             output.writeBoolean(chunk.provisional);
@@ -423,6 +434,13 @@ public final class MiaLodStorage {
             for (int stateId : chunk.palette) output.writeInt(stateId);
             for (short voxel : chunk.voxels) output.writeShort(voxel);
         }
+        return bytes.toByteArray();
+    }
+
+    private static void write(Path destination, boolean provisional, byte[] encoded) throws IOException {
+        Path temporary = destination.resolveSibling(destination.getFileName() + ".tmp");
+        ensureDirectory(destination.getParent());
+        Files.write(temporary, encoded);
         try {
             Files.move(temporary, destination, StandardCopyOption.REPLACE_EXISTING,
                     StandardCopyOption.ATOMIC_MOVE);
@@ -430,23 +448,19 @@ public final class MiaLodStorage {
             Files.move(temporary, destination, StandardCopyOption.REPLACE_EXISTING);
         }
         Path marker = completeMarker(destination);
-        if (chunk.provisional) {
+        if (provisional) {
             if (marker.toFile().exists()) Files.delete(marker);
         }
         else Files.write(marker, new byte[0]);
     }
 
     private static Path chunkPath(ServerLevel level, ChunkPos pos) {
-        return chunkPath(level, pos, VERSION);
-    }
-
-    private static Path chunkPath(ServerLevel level, ChunkPos pos, int version) {
         var dimension = level.dimension().identifier();
         return level.getServer().getWorldPath(LevelResource.ROOT)
                 .resolve("data").resolve(MementoInAbyss.ID).resolve("lod").resolve("dimensions")
                 .resolve(dimension.getNamespace()).resolve(dimension.getPath())
                 .resolve("r." + Math.floorDiv(pos.x(), 32) + "." + Math.floorDiv(pos.z(), 32))
-                .resolve("c." + pos.x() + "." + pos.z() + ".v" + version + ".mialod");
+                .resolve("c." + pos.x() + "." + pos.z() + ".v" + VERSION + ".mialod");
     }
 
     private static boolean isComplete(Path path) {
@@ -484,11 +498,61 @@ public final class MiaLodStorage {
         return (z * horizontalCells + x) * yCells + y;
     }
 
-    public record StoredChunk(int chunkX, int chunkZ, int cellSize, int minY,
-                              int yCells, int[] palette, short[] voxels, boolean provisional) {}
+    record StoredChunk(int chunkX, int chunkZ, int cellSize, int minY,
+                       int yCells, int[] palette, short[] voxels, boolean provisional) {}
     private record CaptureKey(ResourceKey<Level> dimension, long chunkPos) {}
     private record PendingCapture(CaptureKey key, CrossDimensionLodLink link,
                                   WeakReference<ChunkAccess> chunk) {}
     private record ChunkSnapshot(ChunkPos pos, int minY, PalettedContainer<BlockState>[] sections) {}
+
+    private static void cancelPendingWrites() {
+        List<Runnable> cancelled = new ArrayList<>();
+        WRITER.getQueue().drainTo(cancelled);
+        for (Runnable runnable : cancelled) {
+            if (runnable instanceof PendingWrite write) write.cancel();
+        }
+    }
+
+    private static boolean lodEnabled() {
+        return MementoInAbyss.CONFIGS.guiSection.crossDimensionLodEnabled.get();
+    }
+
+    private static final class PendingWrite implements Runnable {
+        private final Path destination;
+        private final boolean provisional;
+        private final byte[] encoded;
+        private final CompletableFuture<Void> completion;
+
+        private PendingWrite(Path destination, boolean provisional, byte[] encoded,
+                             CompletableFuture<Void> completion) {
+            this.destination = destination;
+            this.provisional = provisional;
+            this.encoded = encoded;
+            this.completion = completion;
+        }
+
+        @Override
+        public void run() {
+            if (!lodEnabled()) {
+                cancel();
+                return;
+            }
+            try {
+                write(destination, provisional, encoded);
+                completion.complete(null);
+            } catch (Throwable throwable) {
+                MementoInAbyss.LOGGER.warn("Unable to write cross-dimension LOD {}", destination, throwable);
+                completion.completeExceptionally(throwable);
+            } finally {
+                PENDING_WRITES.remove(destination);
+            }
+        }
+
+        private void cancel() {
+            PENDING_WRITES.remove(destination);
+            completion.completeExceptionally(new CancellationException("Cross-dimension LOD disabled"));
+        }
+    }
+
     private MiaLodStorage() {}
 }

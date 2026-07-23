@@ -4,7 +4,6 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 /** One independently renderable cross-dimension voxel chunk. */
 public record CrossDimensionLodPayload(
@@ -68,12 +67,6 @@ public record CrossDimensionLodPayload(
         for (int i = 0; i < voxels.length; i++) voxels[i] = buffer.readShort();
         return new CrossDimensionLodPayload(linkId, displayYOffset, radius, reset, chunkX, chunkZ, cellSize,
                 minY, yCells, palette, voxels);
-    }
-
-    public static void register(RegisterPayloadHandlersEvent event) {
-        var registrar = event.registrar("3");
-        registrar.playToClient(TYPE, STREAM_CODEC);
-        registrar.playToClient(CrossDimensionLodDebugPayload.TYPE, CrossDimensionLodDebugPayload.STREAM_CODEC);
     }
 
     @Override

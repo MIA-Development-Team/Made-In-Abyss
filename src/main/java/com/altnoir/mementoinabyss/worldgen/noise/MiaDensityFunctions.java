@@ -89,7 +89,7 @@ public class MiaDensityFunctions {
         context.register(THE_ABYSS_BASE_PILLARS, pillars(holdergetter));
         context.register(THE_ABYSS_PILLARS, DensityFunctions.rangeChoice(
                 getFunction(holdergetter1, THE_ABYSS_BASE_PILLARS),
-                -1000000, 0.03, DensityFunctions.constant(-1000000),
+                -1000000, 0.06, DensityFunctions.constant(-1000000),
                 getFunction(holdergetter1, THE_ABYSS_BASE_PILLARS)
         ));
         context.register(THE_ABYSS_DEPTH, DensityFunctions.rangeChoice(

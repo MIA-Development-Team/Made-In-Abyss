@@ -1,7 +1,7 @@
 package com.altnoir.mementoinabyss.worldgen.lod;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.network.CrossDimensionLodDebugPayload;
+import com.altnoir.mementoinabyss.util.concurrent.MiaExecutors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -40,47 +40,41 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.List;
-import java.util.function.Predicate;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Predicate;
 
 /** Generates terrain-only ProtoChunks for LOD capture without loading them into the server world. */
-public final class CrossDimensionLazyChunkGenerator {
+final class CrossDimensionLazyChunkGenerator {
     private static final int GENERATION_INTERVAL_TICKS = 5;
     private static final int MAX_IN_FLIGHT = 2;
     private static final int MAX_CANDIDATE_CHECKS_PER_TICK = 64;
-    private static final int DEBUG_SYNC_INTERVAL_TICKS = 20;
     private static final Map<CrossDimensionLodLink, State> STATES = new HashMap<>();
-    private static final ExecutorService REQUESTER = Executors.newFixedThreadPool(MAX_IN_FLIGHT, runnable -> {
-        Thread thread = new Thread(runnable, "MIA lazy chunk requester");
-        thread.setDaemon(true);
-        thread.setPriority(Thread.NORM_PRIORITY - 1);
-        return thread;
-    });
+    private static final Executor PREGEN_EXECUTOR =
+            MiaExecutors.executor(MiaExecutors.Priority.LOD_PREGEN);
     private static final java.util.concurrent.atomic.AtomicInteger IN_FLIGHT =
             new java.util.concurrent.atomic.AtomicInteger();
+    private static final AtomicLong GENERATION_EPOCH = new AtomicLong();
     private static long nextGenerationTick;
-    private static long nextDebugSyncTick;
 
-    public static void tick(MinecraftServer server) {
+    static void tick(MinecraftServer server) {
+        if (!lodEnabled()) return;
         long gameTime = server.overworld().getGameTime();
-        if (gameTime >= nextDebugSyncTick) {
-            nextDebugSyncTick = gameTime + DEBUG_SYNC_INTERVAL_TICKS;
-            CrossDimensionLodDebugPayload.send(server);
-        }
         if (gameTime < nextGenerationTick || IN_FLIGHT.get() >= MAX_IN_FLIGHT) return;
         for (CrossDimensionLodLink link : CrossDimensionLodLinks.all()) {
             ServerLevel source = server.getLevel(link.source());
             if (source == null || server.getPlayerList().getPlayers().stream().noneMatch(
-                    player -> player.level().dimension().equals(link.target()))) continue;
+                    player -> player.level().dimension().equals(link.target())
+                            && MiaLodSampler.wantsLod(player))) continue;
 
             State state = STATES.computeIfAbsent(link, ignored -> new State());
             String phase = "center";
-            ChunkPos candidate = state.nextCentral(link, source);
+            ChunkPos candidate = state.nextCentral(source);
             if (candidate == null && state.centralComplete()) {
                 phase = "player-view";
                 candidate = state.nextPlayerVisible(server, link, source);
@@ -97,12 +91,12 @@ public final class CrossDimensionLazyChunkGenerator {
                                      CrossDimensionLodLink link, State state, ChunkPos pos, String phase) {
         long key = ChunkPos.pack(pos.x(), pos.z());
         state.requested.add(key);
-        state.activePos = pos;
-        state.activePhase = phase;
-        state.startedNanos = System.nanoTime();
+        state.start(pos, phase);
+        long generationEpoch = GENERATION_EPOCH.get();
         IN_FLIGHT.incrementAndGet();
-        REQUESTER.execute(() -> {
+        PREGEN_EXECUTOR.execute(() -> {
             try {
+                requireActive(generationEpoch);
                 ProtoChunk protoChunk = new ProtoChunk(
                         pos, UpgradeData.EMPTY, source, source.palettedContainerFactory(), null);
                 ChunkGenerator generator = source.getChunkSource().getGenerator();
@@ -112,15 +106,20 @@ public final class CrossDimensionLazyChunkGenerator {
                 // No ticket, LevelChunk, entities, lighting, server save, or ticking is created.
                 // After surface generation, addTrees runs only this mod's tree placed-features.
                 generator.createBiomes(randomState, Blender.empty(), structureManager, protoChunk)
-                        .thenApply(chunk -> advanceStatus(chunk, ChunkStatus.BIOMES))
+                        .thenApply(chunk -> activeChunk(generationEpoch,
+                                advanceStatus(chunk, ChunkStatus.BIOMES)))
                         .thenCompose(chunk -> generator.fillFromNoise(
                                 Blender.empty(), randomState, structureManager, chunk))
-                        .thenApply(chunk -> advanceStatus(chunk, ChunkStatus.NOISE))
+                        .thenApply(chunk -> activeChunk(generationEpoch,
+                                advanceStatus(chunk, ChunkStatus.NOISE)))
                         .thenApplyAsync(chunk -> buildSurface(
-                                source, generator, structureManager, randomState, chunk), REQUESTER)
-                        .thenApplyAsync(chunk -> addTrees(source, generator, chunk), REQUESTER)
-                        .thenComposeAsync(chunk -> MiaLodStorage.ingest(link, source, chunk, true), REQUESTER)
+                                source, generator, structureManager, randomState,
+                                activeChunk(generationEpoch, chunk)), PREGEN_EXECUTOR)
+                        .thenApplyAsync(chunk -> addTrees(source, generator,
+                                activeChunk(generationEpoch, chunk)), PREGEN_EXECUTOR)
+                        .thenComposeAsync(chunk -> MiaLodStorage.ingest(link, source, chunk, true), PREGEN_EXECUTOR)
                         .whenComplete((ignored, throwable) -> server.execute(() -> {
+                            if (generationEpoch != GENERATION_EPOCH.get()) return;
                             try {
                                 if (throwable != null) {
                                     state.requested.remove(key);
@@ -140,6 +139,7 @@ public final class CrossDimensionLazyChunkGenerator {
                         }));
             } catch (Throwable throwable) {
                 server.execute(() -> {
+                    if (generationEpoch != GENERATION_EPOCH.get()) return;
                     state.requested.remove(key);
                     state.failed++;
                     state.lastResult = "failed";
@@ -227,31 +227,48 @@ public final class CrossDimensionLazyChunkGenerator {
         };
     }
 
-    public static void clear() {
+    static void clear() {
+        GENERATION_EPOCH.incrementAndGet();
         STATES.clear();
         IN_FLIGHT.set(0);
         nextGenerationTick = 0;
-        nextDebugSyncTick = 0;
     }
 
-    public static DebugSnapshot debugSnapshot(CrossDimensionLodLink link) {
+    private static ChunkAccess activeChunk(long generationEpoch, ChunkAccess chunk) {
+        requireActive(generationEpoch);
+        return chunk;
+    }
+
+    private static void requireActive(long generationEpoch) {
+        if (generationEpoch != GENERATION_EPOCH.get() || !lodEnabled()) {
+            throw new CancellationException("Cross-dimension LOD generation stopped");
+        }
+    }
+
+    private static boolean lodEnabled() {
+        return MementoInAbyss.CONFIGS.guiSection.crossDimensionLodEnabled.get();
+    }
+
+    static DebugSnapshot debugSnapshot(CrossDimensionLodLink link) {
         State state = STATES.get(link);
         int radius = Mth.ceil(CrossDimensionLodLinks.centralGenerationRadius() / 16.0);
         int total = (radius * 2 + 1) * (radius * 2 + 1);
         if (state == null) return new DebugSnapshot("center", false, 0, total,
                 0, 0, 0, 0, 0, 0, 0, 0L, "none");
-        boolean generating = state.activePos != null;
-        long elapsed = generating ? (System.nanoTime() - state.startedNanos) / 1_000_000L : state.lastMillis;
-        return new DebugSnapshot(state.activePhase, generating, state.centralCursor, total,
+        ActiveRequest active = state.activeRequest();
+        boolean generating = active != null;
+        long elapsed = generating ? (System.nanoTime() - active.startedNanos) / 1_000_000L : state.lastMillis;
+        String phase = generating ? active.phase : state.lastPhase;
+        return new DebugSnapshot(phase, generating, state.centralCursor, total,
                 state.requested.size(), state.generated, state.failed,
-                generating ? state.activePos.x() : 0, generating ? state.activePos.z() : 0,
+                generating ? active.pos.x() : 0, generating ? active.pos.z() : 0,
                 state.lastPos == null ? 0 : state.lastPos.x(), state.lastPos == null ? 0 : state.lastPos.z(),
                 elapsed, state.lastResult);
     }
 
-    public record DebugSnapshot(String phase, boolean generating, int centralCursor, int centralTotal,
-                                int requested, int generated, int failed, int activeX, int activeZ,
-                                int lastX, int lastZ, long elapsedMillis, String lastResult) {}
+    record DebugSnapshot(String phase, boolean generating, int centralCursor, int centralTotal,
+                         int requested, int generated, int failed, int activeX, int activeZ,
+                         int lastX, int lastZ, long elapsedMillis, String lastResult) {}
 
     private static final class TemporaryChunkHolder extends GenerationChunkHolder {
         private final ChunkAccess chunk;
@@ -304,25 +321,36 @@ public final class CrossDimensionLazyChunkGenerator {
 
     private static final class State {
         private final Set<Long> requested = new HashSet<>();
+        private final Map<Long, ActiveRequest> activeRequests = new LinkedHashMap<>();
         private int centralCursor;
         private int centralRadius = -1;
         private int playerCursor;
         private int generated;
         private int failed;
-        private ChunkPos activePos;
         private ChunkPos lastPos;
-        private String activePhase = "center";
+        private String lastPhase = "center";
         private String lastResult = "none";
-        private long startedNanos;
         private long lastMillis;
 
-        private void finish(ChunkPos pos) {
-            lastMillis = (System.nanoTime() - startedNanos) / 1_000_000L;
-            lastPos = pos;
-            activePos = null;
+        private void start(ChunkPos pos, String phase) {
+            activeRequests.put(ChunkPos.pack(pos.x(), pos.z()),
+                    new ActiveRequest(pos, phase, System.nanoTime()));
         }
 
-        private ChunkPos nextCentral(CrossDimensionLodLink link, ServerLevel source) {
+        private void finish(ChunkPos pos) {
+            ActiveRequest request = activeRequests.remove(ChunkPos.pack(pos.x(), pos.z()));
+            if (request != null) {
+                lastMillis = (System.nanoTime() - request.startedNanos) / 1_000_000L;
+                lastPhase = request.phase;
+            }
+            lastPos = pos;
+        }
+
+        private ActiveRequest activeRequest() {
+            return activeRequests.isEmpty() ? null : activeRequests.values().iterator().next();
+        }
+
+        private ChunkPos nextCentral(ServerLevel source) {
             int radiusBlocks = CrossDimensionLodLinks.centralGenerationRadius();
             int radius = Mth.ceil(radiusBlocks / 16.0);
             if (centralRadius != radiusBlocks) {
@@ -355,7 +383,8 @@ public final class CrossDimensionLazyChunkGenerator {
             int area = diameter * diameter;
             int checked = 0;
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                if (!player.level().dimension().equals(link.target())) continue;
+                if (!player.level().dimension().equals(link.target())
+                        || !MiaLodSampler.wantsLod(player)) continue;
                 ChunkPos center = player.chunkPosition();
                 while (checked++ < MAX_CANDIDATE_CHECKS_PER_TICK) {
                     ChunkPos offset = squareSpiral(Math.floorMod(playerCursor++, area));
@@ -389,6 +418,8 @@ public final class CrossDimensionLazyChunkGenerator {
             return new ChunkPos(-ring, ring - offset);
         }
     }
+
+    private record ActiveRequest(ChunkPos pos, String phase, long startedNanos) {}
 
     private CrossDimensionLazyChunkGenerator() {}
 }

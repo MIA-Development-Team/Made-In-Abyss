@@ -2,56 +2,57 @@ package com.altnoir.mementoinabyss.worldgen.lod;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodPayload;
+import com.altnoir.mementoinabyss.util.concurrent.MiaExecutors;
+import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.neoforged.neoforge.network.PacketDistributor;
-import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
-import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Optional;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /** Streams stored cross-dimension LOD chunks through a player-centered moving window. */
-public final class MiaLodSampler {
+final class MiaLodSampler {
     private static final int MAX_CHUNKS_PER_TICK = 16;
     private static final int MAX_RESULTS_PER_TICK = 64;
     private static final int MAX_BYTES_PER_TICK = 128 * 1024;
     private static final int MAX_IN_FLIGHT_PER_TASK = 32;
     private static final long MISSING_RETRY_TICKS = 1200L;
-    private static final ThreadPoolExecutor LOADER = new ThreadPoolExecutor(2, 2, 0L, TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue<>(256), runnable -> {
-                Thread thread = new Thread(runnable, "MIA LOD loader");
-                thread.setDaemon(true);
-                thread.setPriority(Thread.NORM_PRIORITY - 1);
-                return thread;
-            }, new ThreadPoolExecutor.AbortPolicy());
     private static final double FINE_LEVEL_END = 0.34;
     private static final double MEDIUM_LEVEL_END = 0.67;
     private static final Map<UUID, Task> TASKS = new ConcurrentHashMap<>();
+    private static final Set<UUID> CLIENT_DISABLED = ConcurrentHashMap.newKeySet();
 
-    public static void request(ServerPlayer player) {
+    static void request(ServerPlayer player) {
+        if (!lodEnabled() || CLIENT_DISABLED.contains(player.getUUID())) return;
         var link = CrossDimensionLodLinks.forTarget(player.level().dimension()).orElse(null);
-        if (link == null) return;
+        if (link == null) {
+            remove(player);
+            return;
+        }
         int radius = CrossDimensionLodLinks.radius(link);
         TASKS.put(player.getUUID(), new Task(player, link, radius, player.level().getGameTime()));
-        MementoInAbyss.LOGGER.info("Queued {} cross-dimension LOD chunks for link {} (radius {}) for {}",
+        MementoInAbyss.LOGGER.debug("Queued {} cross-dimension LOD chunks for link {} (radius {}) for {}",
                 TASKS.get(player.getUUID()).chunks.size(), link.id(), radius, player.getGameProfile().name());
     }
 
-    public static void tick(MinecraftServer server) {
+    static void tick(MinecraftServer server) {
+        if (!lodEnabled()) {
+            TASKS.clear();
+            return;
+        }
         for (Task original : TASKS.values()) {
             Task task = original;
             ServerLevel source = server.getLevel(task.link.source());
@@ -91,16 +92,19 @@ public final class MiaLodSampler {
             task.scheduleCursor++;
             task.inFlight.incrementAndGet();
             try {
-                LOADER.execute(() -> {
+                MiaExecutors.execute(MiaExecutors.Priority.LOD_LOAD, () -> {
                     MiaLodStorage.StoredChunk selected = null;
                     try {
+                        if (!isCurrent(task)) return;
                         Optional<MiaLodStorage.StoredChunk> stored =
                                 MiaLodStorage.read(source, pos);
                         if (stored.isPresent()) selected = MiaLodStorage.coarsen(stored.get(), cellSize);
                     } catch (Throwable throwable) {
                         MementoInAbyss.LOGGER.warn("Unable to prepare cross-dimension LOD chunk {}", pos, throwable);
                     } finally {
-                        task.completed.put(sequence, new PreparedChunk(pos, selected));
+                        if (isCurrent(task)) {
+                            task.completed.put(sequence, new PreparedChunk(pos, selected));
+                        }
                         task.inFlight.decrementAndGet();
                     }
                 });
@@ -154,10 +158,45 @@ public final class MiaLodSampler {
                 + chunk.palette().length * 5 + chunk.voxels().length * Short.BYTES;
     }
 
-    public static void remove(ServerPlayer player) { TASKS.remove(player.getUUID()); }
+    static void remove(ServerPlayer player) { TASKS.remove(player.getUUID()); }
+
+    static void forget(ServerPlayer player) {
+        remove(player);
+        CLIENT_DISABLED.remove(player.getUUID());
+    }
+
+    static void setClientEnabled(ServerPlayer player, boolean enabled) {
+        if (enabled) {
+            CLIENT_DISABLED.remove(player.getUUID());
+            request(player);
+        } else {
+            CLIENT_DISABLED.add(player.getUUID());
+            remove(player);
+        }
+    }
+
+    static boolean wantsLod(ServerPlayer player) {
+        return lodEnabled() && !CLIENT_DISABLED.contains(player.getUUID());
+    }
+
+    static boolean hasInterestedPlayer(MinecraftServer server) {
+        if (!lodEnabled()) return false;
+        return server.getPlayerList().getPlayers().stream().anyMatch(player ->
+                player.isAlive()
+                        && CrossDimensionLodLinks.forTarget(player.level().dimension()).isPresent()
+                        && !CLIENT_DISABLED.contains(player.getUUID()));
+    }
+
+    private static boolean isCurrent(Task task) {
+        return lodEnabled()
+                && !CLIENT_DISABLED.contains(task.player.getUUID())
+                && TASKS.get(task.player.getUUID()) == task
+                && task.player.isAlive()
+                && task.player.level().dimension().equals(task.link.target());
+    }
 
     /** Makes a newly written lazy-generated chunk eligible for immediate delivery. Server thread only. */
-    public static void notifyAvailable(CrossDimensionLodLink link, ChunkPos pos) {
+    static void notifyAvailable(CrossDimensionLodLink link, ChunkPos pos) {
         long key = CrossDimensionLodKey.pack(pos.x(), pos.z());
         for (Task task : TASKS.values()) {
             if (!task.link.equals(link)) continue;
@@ -167,7 +206,7 @@ public final class MiaLodSampler {
     }
 
     /** Forces a newly captured complete chunk to replace a provisional payload on clients. */
-    public static void notifyReplaced(CrossDimensionLodLink link, ChunkPos pos) {
+    static void notifyReplaced(CrossDimensionLodLink link, ChunkPos pos) {
         long key = CrossDimensionLodKey.pack(pos.x(), pos.z());
         for (Task task : TASKS.values()) {
             if (!task.link.equals(link)) continue;
@@ -177,17 +216,21 @@ public final class MiaLodSampler {
         }
     }
 
-    public static void clear() { TASKS.clear(); }
+    static void clearTasks() { TASKS.clear(); }
 
-    public static DebugSnapshot debugSnapshot(ServerPlayer player) {
+    static void clearClientPreferences() {
+        CLIENT_DISABLED.clear();
+    }
+
+    static DebugSnapshot debugSnapshot(ServerPlayer player) {
         Task task = TASKS.get(player.getUUID());
         if (task == null) return new DebugSnapshot(0, 0, 0, 0, 0, 0, 0);
         return new DebugSnapshot(task.chunks.size(), task.scheduleCursor, task.sendCursor,
                 task.inFlight.get(), task.completed.size(), task.knownCellSizes.size(), task.missingUntil.size());
     }
 
-    public record DebugSnapshot(int queued, int scheduled, int sent, int loading,
-                                int ready, int known, int missing) {}
+    record DebugSnapshot(int queued, int scheduled, int sent, int loading,
+                         int ready, int known, int missing) {}
 
     private static final class Task {
         private final ServerPlayer player;
@@ -313,6 +356,10 @@ public final class MiaLodSampler {
     }
 
     private record PreparedChunk(ChunkPos pos, MiaLodStorage.StoredChunk chunk) {}
+
+    private static boolean lodEnabled() {
+        return MementoInAbyss.CONFIGS.guiSection.crossDimensionLodEnabled.get();
+    }
 
     private MiaLodSampler() {}
 }

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:range_choice",
   "input": "mementoinabyss:the_abyss/caves/base_pillars",
-  "max_exclusive": 0.03,
+  "max_exclusive": 0.06,
   "min_inclusive": -1000000.0,
   "when_in_range": -1000000.0,
   "when_out_of_range": "mementoinabyss:the_abyss/caves/base_pillars"

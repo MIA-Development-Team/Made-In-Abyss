@@ -100,24 +100,8 @@
                                       "input": "mementoinabyss:the_abyss/big_abyss_hole",
                                       "max_exclusive": 0.025,
                                       "min_inclusive": -1000000.0,
-                                      "when_in_range": {
-                                        "type": "minecraft:min",
-                                        "argument1": "mementoinabyss:the_abyss/middle_3d_noise",
-                                        "argument2": {
-                                          "type": "minecraft:add",
-                                          "argument1": "minecraft:overworld/caves/spaghetti_2d",
-                                          "argument2": "minecraft:overworld/caves/spaghetti_roughness_function"
-                                        }
-                                      },
-                                      "when_out_of_range": {
-                                        "type": "minecraft:min",
-                                        "argument1": "mementoinabyss:the_abyss/outside_abyss_3d_noise",
-                                        "argument2": {
-                                          "type": "minecraft:add",
-                                          "argument1": "minecraft:overworld/caves/spaghetti_2d",
-                                          "argument2": "minecraft:overworld/caves/spaghetti_roughness_function"
-                                        }
-                                      }
+                                      "when_in_range": "mementoinabyss:the_abyss/middle_3d_noise",
+                                      "when_out_of_range": "mementoinabyss:the_abyss/outside_abyss_3d_noise"
                                     },
                                     "argument2": "mementoinabyss:the_abyss/caves/pillars"
                                   }

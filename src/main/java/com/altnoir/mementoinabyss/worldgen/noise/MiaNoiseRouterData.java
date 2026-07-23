@@ -26,12 +26,10 @@ public class MiaNoiseRouterData extends NoiseRouterData {
     public static final ResourceKey<DensityFunction> DEPTH = createKey("overworld/depth");
     public static final ResourceKey<DensityFunction> SLOPED_CHEESE = createKey("overworld/sloped_cheese");
 
-    public static final ResourceKey<DensityFunction> SPAGHETTI_ROUGHNESS_FUNCTION = createKey("overworld/caves/spaghetti_roughness_function");
     public static final ResourceKey<DensityFunction> ENTRANCES = createKey("overworld/caves/entrances");
     public static final ResourceKey<DensityFunction> NOODLE = createKey("overworld/caves/noodle");
     public static final ResourceKey<DensityFunction> PILLARS = createKey("overworld/caves/pillars");
     public static final ResourceKey<DensityFunction> SPAGHETTI_2D_THICKNESS_MODULATOR = createKey("overworld/caves/spaghetti_2d_thickness_modulator");
-    public static final ResourceKey<DensityFunction> SPAGHETTI_2D = createKey("overworld/caves/spaghetti_2d");
 
     private static ResourceKey<DensityFunction> createKey(String location) {
         return ResourceKey.create(Registries.DENSITY_FUNCTION, Identifier.withDefaultNamespace(location));
@@ -60,15 +58,8 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         DensityFunction outsideAbyssNoise = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_OUTSIDE_BASE_3D);
         DensityFunction abyssPillars = getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_PILLARS);
 
-        DensityFunction middle = DensityFunctions.min(middleAbyssNoise,
-                DensityFunctions.add(getFunction(densityFunctions, SPAGHETTI_2D), getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION))
-        );
-        DensityFunction outside = DensityFunctions.min(outsideAbyssNoise,
-                DensityFunctions.add(getFunction(densityFunctions, SPAGHETTI_2D), getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION))
-        );
-
         DensityFunction rangeChoice2 = DensityFunctions.rangeChoice(
-                abyssBigHole, -1000000.0, 0.025, middle, outside
+                abyssBigHole, -1000000.0, 0.025, middleAbyssNoise, outsideAbyssNoise
         );
 
         DensityFunction layer2 = DensityFunctions.add(DensityFunctions.constant(0.2), abyssGreatCave);
@@ -105,12 +96,8 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         DensityFunction abyssHoleAbove = getFunction(densityFunctions, MiaDensityFunctions.GREAT_FAULT_HOLE_ABOVE);
         DensityFunction abyssHoleBelow = getFunction(densityFunctions, MiaDensityFunctions.GREAT_FAULT_HOLE_BELOW);
 
-        DensityFunction abyss = DensityFunctions.min(abyssHoleBelow,
-                DensityFunctions.add(getFunction(densityFunctions, SPAGHETTI_2D), getFunction(densityFunctions, SPAGHETTI_ROUGHNESS_FUNCTION))
-        );
-
         DensityFunction rangeChoice = DensityFunctions.rangeChoice(
-                yFunction, MiaHeight.GREAT_FAULT.minY(), MiaHeight.GREAT_FAULT.maxY() - 64, abyss, abyssHoleAbove
+                yFunction, MiaHeight.GREAT_FAULT.minY(), MiaHeight.GREAT_FAULT.maxY() - 64, abyssHoleBelow, abyssHoleAbove
         );
 
         DensityFunction yc1 = DensityFunctions.yClampedGradient(MiaHeight.GREAT_FAULT.maxY() - 64, MiaHeight.GREAT_FAULT.maxY(), 1, 0);
