@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.client.render;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.compat.IrisRenderCompat;
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
@@ -43,6 +44,7 @@ public final class EnvironmentCubeSkyboxRenderer implements CustomSkyboxRenderer
 
     public static void registerPipeline(RegisterRenderPipelinesEvent event) {
         event.registerPipeline(PIPELINE);
+        IrisRenderCompat.assignSkyPipeline(PIPELINE);
     }
 
     @Override

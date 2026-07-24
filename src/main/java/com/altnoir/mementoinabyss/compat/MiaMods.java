@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public enum MiaMods {
+    IRIS,
     PONDER,
     SODIUM;
 

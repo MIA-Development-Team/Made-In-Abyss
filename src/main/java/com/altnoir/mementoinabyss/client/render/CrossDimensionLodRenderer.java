@@ -4,6 +4,7 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.CpuMesh;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.HeightField;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.QuadBuffer;
+import com.altnoir.mementoinabyss.compat.IrisRenderCompat;
 import com.altnoir.mementoinabyss.compat.MiaMods;
 import com.altnoir.mementoinabyss.compat.sodium.SodiumLodCompat;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodControlPayload;
@@ -441,7 +442,10 @@ public final class CrossDimensionLodRenderer {
             }
         }
 
-        var pipeline = CrossDimensionLodRenderTypes.tiledBlocksPipeline();
+        boolean irisShaders = IrisRenderCompat.isShaderPackInUse();
+        var pipeline = irisShaders
+                ? CrossDimensionLodRenderTypes.irisBlocksPipeline()
+                : CrossDimensionLodRenderTypes.tiledBlocksPipeline();
         RenderTarget target = minecraft.getMainRenderTarget();
         var indexStorage = RenderSystem.getSequentialBuffer(pipeline.getVertexFormatMode());
         GpuBuffer indices = indexStorage.getBuffer(maximumIndexCount);
@@ -496,8 +500,10 @@ public final class CrossDimensionLodRenderer {
             pass.setPipeline(pipeline);
             RenderSystem.bindDefaultUniforms(pass);
             pass.setUniform("DynamicTransforms", transforms);
-            pass.setUniform("LodFog", lodFog);
-            pass.setUniform("LodLight", lodLight);
+            if (!irisShaders) {
+                pass.setUniform("LodFog", lodFog);
+                pass.setUniform("LodLight", lodLight);
+            }
             pass.bindTexture("Sampler0", atlas.getTextureView(), atlas.getSampler());
             pass.setIndexBuffer(indices, indexStorage.type());
             // Draw the incoming level first. The outgoing level is then laid over it and
@@ -505,47 +511,53 @@ public final class CrossDimensionLodRenderer {
             // the previous geometry starts disappearing.
             for (ChunkMesh mesh : VISIBLE_MESHES) {
                 int fadeStep = fadeStep(mesh);
-                if (mesh.indexCount > 0) {
+                int indexCount = irisShaders ? mesh.irisIndexCount : mesh.indexCount;
+                if (indexCount > 0) {
                     pass.setUniform("DynamicTransforms",
                             fadeStep < FADE_STEPS ? fadeTransforms.get(fadeStep) : transforms);
-                    pass.setVertexBuffer(0, mesh.vertexBuffer);
-                    pass.drawIndexed(0, 0, mesh.indexCount, 1);
+                    pass.setVertexBuffer(0, irisShaders ? mesh.irisVertexBuffer : mesh.vertexBuffer);
+                    pass.drawIndexed(0, 0, indexCount, 1);
                 }
             }
             for (PageMesh page : VISIBLE_PAGES) {
-                if (page.indexCount == 0) continue;
+                int indexCount = irisShaders ? page.irisIndexCount : page.indexCount;
+                if (indexCount == 0) continue;
                 int fadeStep = fadeStep(page.fadeStartFrame);
                 pass.setUniform("DynamicTransforms",
                         fadeStep < FADE_STEPS ? fadeTransforms.get(fadeStep) : transforms);
-                pass.setVertexBuffer(0, page.vertexBuffer);
-                pass.drawIndexed(0, 0, page.indexCount, 1);
+                pass.setVertexBuffer(0, irisShaders ? page.irisVertexBuffer : page.vertexBuffer);
+                pass.drawIndexed(0, 0, indexCount, 1);
             }
             for (PageTransition transition : VISIBLE_PAGE_TRANSITIONS) {
                 int fadeStep = transitionFadeStep(transition.startFrame);
                 pass.setUniform("DynamicTransforms",
                         fadeStep == 0 ? transforms : fadeTransforms.get(-fadeStep));
-                pass.setVertexBuffer(0, transition.oldMesh.vertexBuffer);
-                pass.drawIndexed(0, 0, transition.oldMesh.indexCount, 1);
+                PageMesh page = transition.oldMesh;
+                pass.setVertexBuffer(0, irisShaders ? page.irisVertexBuffer : page.vertexBuffer);
+                pass.drawIndexed(0, 0, irisShaders ? page.irisIndexCount : page.indexCount, 1);
             }
             for (LodTransition transition : VISIBLE_TRANSITIONS) {
                 int fadeStep = transitionFadeStep(transition);
                 pass.setUniform("DynamicTransforms",
                         fadeStep == 0 ? transforms : fadeTransforms.get(-fadeStep));
-                pass.setVertexBuffer(0, transition.oldMesh.vertexBuffer);
-                pass.drawIndexed(0, 0, transition.oldMesh.indexCount, 1);
+                ChunkMesh mesh = transition.oldMesh;
+                pass.setVertexBuffer(0, irisShaders ? mesh.irisVertexBuffer : mesh.vertexBuffer);
+                pass.drawIndexed(0, 0, irisShaders ? mesh.irisIndexCount : mesh.indexCount, 1);
             }
             // Cross-resolution boundary walls switch atomically. Fading these walls with the
             // terrain would expose empty pixels because the outgoing same-LOD mesh has no wall.
             pass.setUniform("DynamicTransforms", transforms);
             for (ChunkMesh mesh : VISIBLE_MESHES) {
-                if (mesh.seamIndexCount == 0) continue;
-                pass.setVertexBuffer(0, mesh.seamVertexBuffer);
-                pass.drawIndexed(0, 0, mesh.seamIndexCount, 1);
+                int indexCount = irisShaders ? mesh.irisSeamIndexCount : mesh.seamIndexCount;
+                if (indexCount == 0) continue;
+                pass.setVertexBuffer(0, irisShaders ? mesh.irisSeamVertexBuffer : mesh.seamVertexBuffer);
+                pass.drawIndexed(0, 0, indexCount, 1);
             }
             for (PageMesh page : VISIBLE_PAGES) {
-                if (page.seamIndexCount == 0) continue;
-                pass.setVertexBuffer(0, page.seamVertexBuffer);
-                pass.drawIndexed(0, 0, page.seamIndexCount, 1);
+                int indexCount = irisShaders ? page.irisSeamIndexCount : page.seamIndexCount;
+                if (indexCount == 0) continue;
+                pass.setVertexBuffer(0, irisShaders ? page.irisSeamVertexBuffer : page.seamVertexBuffer);
+                pass.drawIndexed(0, 0, indexCount, 1);
             }
         }
         recordTiming(callbackStarted, receiveNanos, meshNanos, pageNanos, visibilityNanos,
@@ -712,30 +724,50 @@ public final class CrossDimensionLodRenderer {
         if (chunks.length == 0) return null;
         int terrainBytes = 0;
         int seamBytes = 0;
+        int irisTerrainBytes = 0;
+        int irisSeamBytes = 0;
         int terrainIndices = 0;
         int seamIndices = 0;
+        int irisTerrainIndices = 0;
+        int irisSeamIndices = 0;
         AABB bounds = null;
         Set<TextureAtlasSprite> sprites = new HashSet<>();
         for (PackedChunk chunk : chunks) {
             terrainBytes = Math.addExact(terrainBytes, chunk.terrain.bytes.length);
             seamBytes = Math.addExact(seamBytes, chunk.seam.bytes.length);
+            irisTerrainBytes = Math.addExact(irisTerrainBytes, chunk.irisTerrain.bytes.length);
+            irisSeamBytes = Math.addExact(irisSeamBytes, chunk.irisSeam.bytes.length);
             terrainIndices = Math.addExact(terrainIndices, chunk.terrain.indexCount);
             seamIndices = Math.addExact(seamIndices, chunk.seam.indexCount);
+            irisTerrainIndices = Math.addExact(irisTerrainIndices, chunk.irisTerrain.indexCount);
+            irisSeamIndices = Math.addExact(irisSeamIndices, chunk.irisSeam.indexCount);
             bounds = bounds == null ? chunk.bounds : bounds.minmax(chunk.bounds);
             sprites.addAll(chunk.sprites);
         }
         byte[] terrain = new byte[terrainBytes];
         byte[] seam = new byte[seamBytes];
+        byte[] irisTerrain = new byte[irisTerrainBytes];
+        byte[] irisSeam = new byte[irisSeamBytes];
         int terrainOffset = 0;
         int seamOffset = 0;
+        int irisTerrainOffset = 0;
+        int irisSeamOffset = 0;
         for (PackedChunk chunk : chunks) {
             System.arraycopy(chunk.terrain.bytes, 0, terrain, terrainOffset, chunk.terrain.bytes.length);
             System.arraycopy(chunk.seam.bytes, 0, seam, seamOffset, chunk.seam.bytes.length);
+            System.arraycopy(chunk.irisTerrain.bytes, 0, irisTerrain, irisTerrainOffset,
+                    chunk.irisTerrain.bytes.length);
+            System.arraycopy(chunk.irisSeam.bytes, 0, irisSeam, irisSeamOffset,
+                    chunk.irisSeam.bytes.length);
             terrainOffset += chunk.terrain.bytes.length;
             seamOffset += chunk.seam.bytes.length;
+            irisTerrainOffset += chunk.irisTerrain.bytes.length;
+            irisSeamOffset += chunk.irisSeam.bytes.length;
         }
         return new PageData(key, new PackedBuffer(terrain, terrainIndices),
-                new PackedBuffer(seam, seamIndices), Set.copyOf(sprites), bounds);
+                new PackedBuffer(seam, seamIndices),
+                new PackedBuffer(irisTerrain, irisTerrainIndices),
+                new PackedBuffer(irisSeam, irisSeamIndices), Set.copyOf(sprites), bounds);
     }
 
     private static PageMesh uploadPage(PageData data, long fadeStartFrame) {
@@ -744,8 +776,22 @@ public final class CrossDimensionLodRenderer {
         GpuBuffer terrain = uploadPackedBuffer(data.terrain, "page terrain", x, z);
         try {
             GpuBuffer seam = uploadPackedBuffer(data.seam, "page seam", x, z);
-            return new PageMesh(terrain, data.terrain.indexCount, seam, data.seam.indexCount,
-                    data.sprites, data.bounds, fadeStartFrame);
+            try {
+                GpuBuffer irisTerrain = uploadPackedBuffer(data.irisTerrain, "page Iris terrain", x, z);
+                try {
+                    GpuBuffer irisSeam = uploadPackedBuffer(data.irisSeam, "page Iris seam", x, z);
+                    return new PageMesh(terrain, data.terrain.indexCount, seam, data.seam.indexCount,
+                            irisTerrain, data.irisTerrain.indexCount,
+                            irisSeam, data.irisSeam.indexCount,
+                            data.sprites, data.bounds, fadeStartFrame);
+                } catch (Throwable throwable) {
+                    closeBuffer(irisTerrain);
+                    throw throwable;
+                }
+            } catch (Throwable throwable) {
+                closeBuffer(seam);
+                throw throwable;
+            }
         } catch (Throwable throwable) {
             closeBuffer(terrain);
             throw throwable;
@@ -861,7 +907,11 @@ public final class CrossDimensionLodRenderer {
         Set<TextureAtlasSprite> sprites = new HashSet<>();
         PackedBuffer terrain = packQuadBuffer(cpuMesh.quads, sprites);
         PackedBuffer seam = packQuadBuffer(cpuMesh.seamQuads, sprites);
-        return new PackedChunk(cpuMesh.chunkX, cpuMesh.chunkZ, terrain, seam,
+        PackedBuffer irisTerrain = MiaMods.IRIS.isLoaded()
+                ? packIrisQuadBuffer(cpuMesh.quads) : PackedBuffer.EMPTY;
+        PackedBuffer irisSeam = MiaMods.IRIS.isLoaded()
+                ? packIrisQuadBuffer(cpuMesh.seamQuads) : PackedBuffer.EMPTY;
+        return new PackedChunk(cpuMesh.chunkX, cpuMesh.chunkZ, terrain, seam, irisTerrain, irisSeam,
                 Set.copyOf(sprites), cpuMesh.bounds, cpuMesh.cellSize, fadeStartFrame);
     }
 
@@ -889,15 +939,55 @@ public final class CrossDimensionLodRenderer {
         }
     }
 
+    private static PackedBuffer packIrisQuadBuffer(QuadBuffer quads) {
+        int vertexCount = Math.multiplyExact(quads.size, 4);
+        int vertexBytes = Math.multiplyExact(vertexCount,
+                CrossDimensionLodRenderTypes.IRIS_VERTEX_FORMAT.getVertexSize());
+        if (vertexBytes == 0) return PackedBuffer.EMPTY;
+        try (ByteBufferBuilder bytes = ByteBufferBuilder.exactlySized(vertexBytes)) {
+            BufferBuilder builder = new BufferBuilder(bytes,
+                    CrossDimensionLodRenderTypes.irisBlocksPipeline().getVertexFormatMode(),
+                    CrossDimensionLodRenderTypes.IRIS_VERTEX_FORMAT);
+            for (int quad = 0; quad < quads.size; quad++) {
+                int attribute = quad * 2;
+                int face = quads.attributes[attribute];
+                TextureAtlasSprite sprite = blockSprite(quads.attributes[attribute + 1], face);
+                emitIrisQuad(builder, quads, quad, sprite);
+            }
+            try (MeshData mesh = builder.buildOrThrow()) {
+                var vertexData = mesh.vertexBuffer().duplicate();
+                byte[] packed = new byte[vertexData.remaining()];
+                vertexData.get(packed);
+                return new PackedBuffer(packed, mesh.drawState().indexCount());
+            }
+        }
+    }
+
     private static ChunkMesh uploadChunkMesh(PackedChunk packed) {
         GpuBuffer terrain = uploadPackedBuffer(packed.terrain, "chunk terrain",
                 packed.chunkX, packed.chunkZ);
         try {
             GpuBuffer seam = uploadPackedBuffer(packed.seam, "chunk seam",
                     packed.chunkX, packed.chunkZ);
-            return new ChunkMesh(packed.chunkX, packed.chunkZ,
-                    terrain, packed.terrain.indexCount, seam, packed.seam.indexCount,
-                    packed.sprites, packed.bounds, packed.cellSize, packed.fadeStartFrame);
+            try {
+                GpuBuffer irisTerrain = uploadPackedBuffer(packed.irisTerrain, "chunk Iris terrain",
+                        packed.chunkX, packed.chunkZ);
+                try {
+                    GpuBuffer irisSeam = uploadPackedBuffer(packed.irisSeam, "chunk Iris seam",
+                            packed.chunkX, packed.chunkZ);
+                    return new ChunkMesh(packed.chunkX, packed.chunkZ,
+                            terrain, packed.terrain.indexCount, seam, packed.seam.indexCount,
+                            irisTerrain, packed.irisTerrain.indexCount,
+                            irisSeam, packed.irisSeam.indexCount,
+                            packed.sprites, packed.bounds, packed.cellSize, packed.fadeStartFrame);
+                } catch (Throwable throwable) {
+                    closeBuffer(irisTerrain);
+                    throw throwable;
+                }
+            } catch (Throwable throwable) {
+                closeBuffer(seam);
+                throw throwable;
+            }
         } catch (Throwable throwable) {
             closeBuffer(terrain);
             throw throwable;
@@ -1002,6 +1092,47 @@ public final class CrossDimensionLodRenderer {
                 .setOverlay(minimumUv).setLight(maximumUv).setNormal(nx, ny, nz);
     }
 
+    private static void emitIrisQuad(VertexConsumer consumer, QuadBuffer quads, int index,
+                                     TextureAtlasSprite sprite) {
+        int coordinate = index * 6;
+        float x0 = quads.coordinates[coordinate];
+        float y0 = quads.coordinates[coordinate + 1];
+        float z0 = quads.coordinates[coordinate + 2];
+        float x1 = quads.coordinates[coordinate + 3];
+        float y1 = quads.coordinates[coordinate + 4];
+        float z1 = quads.coordinates[coordinate + 5];
+        int face = quads.attributes[index * 2];
+        switch (face) {
+            case 0 -> emitIrisTextured(consumer, sprite, 0.8F,
+                    x0,y0,z1, x0,y1,z1, x0,y1,z0, x0,y0,z0);
+            case 1 -> emitIrisTextured(consumer, sprite, 0.8F,
+                    x0,y0,z0, x0,y1,z0, x0,y1,z1, x0,y0,z1);
+            case 2 -> emitIrisTextured(consumer, sprite, 0.6F,
+                    x0,y0,z0, x1,y0,z0, x1,y0,z1, x0,y0,z1);
+            case 3 -> emitIrisTextured(consumer, sprite, 1.0F,
+                    x0,y0,z1, x1,y0,z1, x1,y0,z0, x0,y0,z0);
+            case 4 -> emitIrisTextured(consumer, sprite, 0.8F,
+                    x0,y0,z0, x0,y1,z0, x1,y1,z0, x1,y0,z0);
+            case 5 -> emitIrisTextured(consumer, sprite, 0.8F,
+                    x1,y0,z0, x1,y1,z0, x0,y1,z0, x0,y0,z0);
+        }
+    }
+
+    private static void emitIrisTextured(VertexConsumer consumer, TextureAtlasSprite sprite,
+                                         float shade,
+                                         float ax, float ay, float az, float bx, float by, float bz,
+                                         float cx, float cy, float cz, float dx, float dy, float dz) {
+        irisVertex(consumer, ax, ay, az, sprite.getU0(), sprite.getV1(), shade);
+        irisVertex(consumer, bx, by, bz, sprite.getU0(), sprite.getV0(), shade);
+        irisVertex(consumer, cx, cy, cz, sprite.getU1(), sprite.getV0(), shade);
+        irisVertex(consumer, dx, dy, dz, sprite.getU1(), sprite.getV1(), shade);
+    }
+
+    private static void irisVertex(VertexConsumer consumer, float x, float y, float z,
+                                   float u, float v, float shade) {
+        consumer.addVertex(x, y, z).setUv(u, v).setColor(shade, shade, shade, 1.0F);
+    }
+
     private static int packUv(float u, float v) {
         return packAtlasCoordinate(u) | packAtlasCoordinate(v) << 16;
     }
@@ -1027,35 +1158,46 @@ public final class CrossDimensionLodRenderer {
 
     private record ChunkMesh(int chunkX, int chunkZ, GpuBuffer vertexBuffer, int indexCount,
                              GpuBuffer seamVertexBuffer, int seamIndexCount,
+                             GpuBuffer irisVertexBuffer, int irisIndexCount,
+                             GpuBuffer irisSeamVertexBuffer, int irisSeamIndexCount,
                              Set<TextureAtlasSprite> sprites, AABB bounds, int cellSize,
                              long fadeStartFrame) implements GpuResource {
         @Override
         public void close() {
             closeBuffer(vertexBuffer);
             closeBuffer(seamVertexBuffer);
+            closeBuffer(irisVertexBuffer);
+            closeBuffer(irisSeamVertexBuffer);
         }
     }
     private record PageMesh(GpuBuffer vertexBuffer, int indexCount,
                             GpuBuffer seamVertexBuffer, int seamIndexCount,
+                            GpuBuffer irisVertexBuffer, int irisIndexCount,
+                            GpuBuffer irisSeamVertexBuffer, int irisSeamIndexCount,
                             Set<TextureAtlasSprite> sprites, AABB bounds,
                             long fadeStartFrame) implements GpuResource {
         @Override
         public void close() {
             closeBuffer(vertexBuffer);
             closeBuffer(seamVertexBuffer);
+            closeBuffer(irisVertexBuffer);
+            closeBuffer(irisSeamVertexBuffer);
         }
     }
     private record PackedBuffer(byte[] bytes, int indexCount) {
         private static final PackedBuffer EMPTY = new PackedBuffer(new byte[0], 0);
     }
     private record PackedChunk(int chunkX, int chunkZ, PackedBuffer terrain, PackedBuffer seam,
+                               PackedBuffer irisTerrain, PackedBuffer irisSeam,
                                Set<TextureAtlasSprite> sprites, AABB bounds, int cellSize,
                                long fadeStartFrame) {
         private PackedChunk withFadeStartFrame(long frame) {
-            return new PackedChunk(chunkX, chunkZ, terrain, seam, sprites, bounds, cellSize, frame);
+            return new PackedChunk(chunkX, chunkZ, terrain, seam, irisTerrain, irisSeam,
+                    sprites, bounds, cellSize, frame);
         }
     }
     private record PageData(long key, PackedBuffer terrain, PackedBuffer seam,
+                            PackedBuffer irisTerrain, PackedBuffer irisSeam,
                             Set<TextureAtlasSprite> sprites, AABB bounds) {}
     private record LodTransition(ChunkMesh oldMesh, long startFrame) {}
     private record PageTransition(PageMesh oldMesh, long startFrame) {}
