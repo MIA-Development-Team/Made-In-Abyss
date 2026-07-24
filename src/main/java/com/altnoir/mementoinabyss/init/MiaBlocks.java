@@ -69,6 +69,7 @@ public class MiaBlocks {
 
     public static final BlockEntry<AbyssPortalBlock> ABYSS_PORTAL = REGISTRATE.object("abyss_portal")
             .block(AbyssPortalBlock::new)
+            .ignore()
             .properties(p -> p.mapColor(MapColor.COLOR_BLACK).noCollision().noOcclusion()
                     .lightLevel(_ -> 15).strength(-1.0F, 3_600_000.0F)
                     .noLootTable().pushReaction(PushReaction.BLOCK))
