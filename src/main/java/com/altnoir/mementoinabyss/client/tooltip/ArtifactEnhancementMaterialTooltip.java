@@ -1,5 +1,6 @@
 package com.altnoir.mementoinabyss.client.tooltip;
 
+import com.altnoir.mementoinabyss.client.ArtifactEnhancementClientRecipes;
 import com.altnoir.mementoinabyss.content.artifact.enhancement.ArtifactEnhancementRecipe;
 import com.altnoir.mementoinabyss.init.MiaAttributes;
 import com.altnoir.mementoinabyss.init.MiaRecipes;
@@ -22,8 +23,9 @@ public final class ArtifactEnhancementMaterialTooltip {
     private static Map<Item, List<ArtifactEnhancementRecipe>> recipesByMaterial = Map.of();
 
     public static void update(RecipeMap recipes) {
+        ArtifactEnhancementClientRecipes.update(recipes);
         Map<Item, List<ArtifactEnhancementRecipe>> updated = new IdentityHashMap<>();
-        recipes.byType(MiaRecipes.ARTIFACT_ENHANCEMENT_TYPE.get()).forEach(holder -> {
+        ArtifactEnhancementClientRecipes.all().forEach(holder -> {
             ArtifactEnhancementRecipe recipe = holder.value();
             updated.computeIfAbsent(recipe.material().value(), ignored -> new ArrayList<>()).add(recipe);
         });
@@ -32,6 +34,7 @@ public final class ArtifactEnhancementMaterialTooltip {
     }
 
     public static void clear() {
+        ArtifactEnhancementClientRecipes.clear();
         recipesByMaterial = Map.of();
     }
 
@@ -58,11 +61,11 @@ public final class ArtifactEnhancementMaterialTooltip {
                 "tooltip.mementoinabyss.artifact.enhancement_material"
         ).withStyle(TooltipPalette.MIA.highlight()));
         for (ArtifactEnhancementRecipe recipe : recipes) {
-            event.getToolTip().add(index++, formatModifier(recipe));
+            event.getToolTip().add(index++, modifierLine(recipe));
         }
     }
 
-    private static Component formatModifier(ArtifactEnhancementRecipe recipe) {
+    public static Component modifierLine(ArtifactEnhancementRecipe recipe) {
         boolean percentage = recipe.operation() != AttributeModifier.Operation.ADD_VALUE
                 || recipe.attribute().is(MiaAttributes.CRITICAL_HIT)
                 || recipe.attribute().is(MiaAttributes.CRITICAL_HIT_DAMAGE);
