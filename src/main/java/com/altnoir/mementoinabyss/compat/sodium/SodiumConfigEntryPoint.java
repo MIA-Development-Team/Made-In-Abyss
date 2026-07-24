@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.compat.sodium;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.caffeinemc.mods.sodium.api.config.ConfigEntryPoint;
+import net.caffeinemc.mods.sodium.api.config.ConfigEntryPointForge;
 import net.caffeinemc.mods.sodium.api.config.StorageEventHandler;
 import net.caffeinemc.mods.sodium.api.config.option.ControlValueFormatter;
 import net.caffeinemc.mods.sodium.api.config.structure.ConfigBuilder;
@@ -11,6 +12,7 @@ import net.caffeinemc.mods.sodium.api.config.structure.OptionGroupBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
+@ConfigEntryPointForge(MementoInAbyss.ID)
 public final class SodiumConfigEntryPoint implements ConfigEntryPoint {
     private static final String CONFIG_KEY_PREFIX = "mementoinabyss.config.guiSection.";
     private static final String SODIUM_KEY_PREFIX = "mementoinabyss.sodium.";

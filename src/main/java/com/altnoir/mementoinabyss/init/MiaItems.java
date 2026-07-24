@@ -24,6 +24,11 @@ public class MiaItems {
             .properties(p -> p.food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.4F).build()))
             .register();
 
+    public static final ItemEntry<Item> MISTFUZZ_PEACH = REGISTRATE
+            .item("mistfuzz_peach", Item::new)
+            .properties(p -> p.food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build()))
+            .register();
+
     public static final ItemEntry<Item> RAW_CHLOROPHYTE = REGISTRATE.item("raw_chlorophyte", Item::new).register();
     public static final ItemEntry<Item> PRASIOLITE_SHARD = REGISTRATE.item("prasiolite_shard", Item::new).register();
     public static final ItemEntry<Item> CAERULITE_SHARD = REGISTRATE.item("caerulite_shard", Item::new).register();

@@ -13,9 +13,6 @@ description='''
 Memento In Abyss.
 '''
 
-[modproperties.${mod_id}]
-"sodium:config_api_user" = "com.altnoir.mementoinabyss.compat.SodiumConfigEntryPoint"
-
 [[mixins]]
 config="${mod_id}.mixins.json"
 

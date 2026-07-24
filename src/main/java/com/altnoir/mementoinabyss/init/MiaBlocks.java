@@ -6,7 +6,9 @@ import com.altnoir.mementoinabyss.content.block.cover_grass.CoverGrassBlock;
 import com.altnoir.mementoinabyss.content.block.column.ColumnBlock;
 import com.altnoir.mementoinabyss.content.block.stripped_rotated_pillar.StrippedRotatedPillarBlock;
 import com.altnoir.mementoinabyss.content.block.plant.DreamLicheeBlock;
+import com.altnoir.mementoinabyss.content.block.plant.FruitingSkyfogLeavesBlock;
 import com.altnoir.mementoinabyss.content.block.plant.GloomBerryBlock;
+import com.altnoir.mementoinabyss.content.block.plant.GreenParticleLeavesBlock;
 import com.altnoir.mementoinabyss.content.block.plant.WaterTallFlowerBlock;
 import com.altnoir.mementoinabyss.content.block.plant.MiaFungusBlock;
 import com.altnoir.mementoinabyss.content.block.plant.InvertedSaplingBlock;
@@ -31,7 +33,6 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -523,15 +524,15 @@ public class MiaBlocks {
             .blockstate(() -> (ctx, prov) -> prov.woodProvider(SKYFOG_LOG.get()).wood(ctx.get()))
             .simpleItem().register();
 
-    public static final BlockEntry<UntintedParticleLeavesBlock> SKYFOG_LEAVES = REGISTRATE.object("skyfog_leaves")
-            .block(p -> new UntintedParticleLeavesBlock(0.01F, ParticleTypes.CHERRY_LEAVES, p))
+    public static final BlockEntry<GreenParticleLeavesBlock> SKYFOG_LEAVES = REGISTRATE.object("skyfog_leaves")
+            .block(p -> new GreenParticleLeavesBlock(0.01F, p))
             .initialProperties(() -> Blocks.AZALEA_LEAVES)
             .tag(BlockTags.LEAVES)
             .loot((lt, b) -> lt.add(b, lt.createLeavesDrops(b, MiaBlocks.SKYFOG_SAPLING.get(), 0.05F, 0.0625F, 0.083333336F, 0.1F)))
             .simpleItem().register();
 
-    public static final BlockEntry<UntintedParticleLeavesBlock> SKYFOG_LEAVES_WITH_FRUITS = REGISTRATE.object("skyfog_leaves_with_fruits")
-            .block(p -> new UntintedParticleLeavesBlock(0.01F, ParticleTypes.CHERRY_LEAVES, p))
+    public static final BlockEntry<FruitingSkyfogLeavesBlock> SKYFOG_LEAVES_WITH_FRUITS = REGISTRATE.object("skyfog_leaves_with_fruits")
+            .block(p -> new FruitingSkyfogLeavesBlock(0.01F, p))
             .initialProperties(SKYFOG_LEAVES)
             .tag(BlockTags.LEAVES)
             .loot((lt, b) -> lt.add(b, lt.createLeavesDrops(b, MiaBlocks.SKYFOG_SAPLING.get(), 0.05F, 0.0625F, 0.083333336F, 0.1F)))
@@ -612,8 +613,8 @@ public class MiaBlocks {
             .blockstate(() -> (ctx, prov) -> prov.woodProvider(INVERTED_LOG.get()).wood(ctx.get()))
             .simpleItem().register();
 
-    public static final BlockEntry<UntintedParticleLeavesBlock> INVERTED_LEAVES = REGISTRATE.object("inverted_leaves")
-            .block(p -> new UntintedParticleLeavesBlock(0.01F, ParticleTypes.CHERRY_LEAVES, p))
+    public static final BlockEntry<GreenParticleLeavesBlock> INVERTED_LEAVES = REGISTRATE.object("inverted_leaves")
+            .block(p -> new GreenParticleLeavesBlock(0.01F, p))
             .initialProperties(() -> Blocks.CHERRY_LEAVES).tag(BlockTags.LEAVES)
             .loot((lt, b) -> lt.add(b, lt.createLeavesDrops(b, MiaBlocks.INVERTED_SAPLING.get(), 0.05F, 0.0625F, 0.083333336F, 0.1F)))
             .simpleItem().register();
