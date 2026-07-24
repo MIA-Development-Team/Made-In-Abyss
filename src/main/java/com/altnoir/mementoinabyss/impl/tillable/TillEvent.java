@@ -1,6 +1,8 @@
 package com.altnoir.mementoinabyss.impl.tillable;
 
 import com.altnoir.mementoinabyss.content.block.base.TillableBlock;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.HoeItem;
@@ -23,6 +25,7 @@ public class TillEvent {
         var newBlock = tillable.getTilledState(state, level, pos, player);
         if (newBlock == null) return;
 
+        level.playSound(player, pos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
         if (!level.isClientSide()) {
             level.setBlock(pos, newBlock, 3);
             stack.hurtAndBreak(1, player, event.getHand());

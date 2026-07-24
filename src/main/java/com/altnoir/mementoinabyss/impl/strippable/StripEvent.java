@@ -1,6 +1,8 @@
 package com.altnoir.mementoinabyss.impl.strippable;
 
 import com.altnoir.mementoinabyss.content.block.base.StrippableBlock;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.AxeItem;
@@ -23,6 +25,7 @@ public class StripEvent {
         var newBlock = strippable.getStrippedState(state, level, pos, player);
         if (newBlock == null) return;
 
+        level.playSound(player, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
         if (!level.isClientSide()) {
             level.setBlock(pos, newBlock, 3);
             stack.hurtAndBreak(1, player, event.getHand());
