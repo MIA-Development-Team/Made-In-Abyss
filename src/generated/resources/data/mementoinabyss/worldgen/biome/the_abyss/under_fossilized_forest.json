@@ -62,7 +62,7 @@
       "mementoinabyss:the_abyss/trees_fossilized_under_ceiling"
     ]
   ],
-  "has_precipitation": true,
+  "has_precipitation": false,
   "spawn_costs": {},
   "spawners": {
     "ambient": [],

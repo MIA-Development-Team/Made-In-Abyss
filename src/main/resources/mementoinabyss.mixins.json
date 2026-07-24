@@ -7,7 +7,9 @@
     "lighting.ScalableLuxStarLightInterfaceMixin",
     "lighting.SodiumClonedChunkSectionMixin",
     "lighting.SkyLightEngineMixin",
-    "lighting.SkyLightSectionStorageMixin"
+    "lighting.SkyLightSectionStorageMixin",
+    "weather.LevelWeatherMixin",
+    "weather.ServerLevelWeatherMixin"
   ],
   "injectors": {
     "defaultRequire": 1

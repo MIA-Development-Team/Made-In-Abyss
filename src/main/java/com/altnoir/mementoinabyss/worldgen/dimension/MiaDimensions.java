@@ -30,6 +30,10 @@ public final class MiaDimensions {
     public static final ResourceKey<Level> GREAT_FAULT_LEVEL = ResourceKey.create(
             Registries.DIMENSION, MementoInAbyss.asResource("great_fault"));
 
+    public static boolean isMiaDimension(ResourceKey<Level> dimension) {
+        return dimension.equals(THE_ABYSS_LEVEL) || dimension.equals(GREAT_FAULT_LEVEL);
+    }
+
     public static void bootstrap(BootstrapContext<LevelStem> context) {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
         HolderGetter<DimensionType> dimensionTypes = context.lookup(Registries.DIMENSION_TYPE);

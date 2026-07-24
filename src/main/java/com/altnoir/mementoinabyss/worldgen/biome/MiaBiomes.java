@@ -133,7 +133,7 @@ public final class MiaBiomes {
             }
         }
         return new Biome.BiomeBuilder()
-                .hasPrecipitation(true)
+                .hasPrecipitation(false)
                 .temperature(2.0F)
                 .downfall(0.8F)
                 .mobSpawnSettings(new MobSpawnSettings.Builder().build())
@@ -167,7 +167,7 @@ public final class MiaBiomes {
                     MiaAbyssPlacements.PATCH_LARGE_FERN);
         }
         return new Biome.BiomeBuilder()
-                .hasPrecipitation(true)
+                .hasPrecipitation(false)
                 .temperature(0.8F)
                 .downfall(0.8F)
                 .mobSpawnSettings(new MobSpawnSettings.Builder().build())

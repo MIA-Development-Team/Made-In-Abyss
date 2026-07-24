@@ -58,7 +58,7 @@
       "mementoinabyss:the_abyss/trees_verdant_fungus"
     ]
   ],
-  "has_precipitation": true,
+  "has_precipitation": false,
   "spawn_costs": {},
   "spawners": {
     "ambient": [],
