@@ -13,6 +13,9 @@ import com.altnoir.mementoinabyss.content.block.plant.InvertedSaplingBlock;
 import com.altnoir.mementoinabyss.content.block.ore.ChlorophyteOreBlock;
 import com.altnoir.mementoinabyss.content.block.ore.BuddingPrasioliteBlock;
 import com.altnoir.mementoinabyss.content.block.ore.BuddingCaeruliteBlock;
+import com.altnoir.mementoinabyss.content.block.AbyssPortalBlock;
+import com.altnoir.mementoinabyss.content.block.AbyssPortalCoreBlock;
+import com.altnoir.mementoinabyss.content.block.PedestalBlock;
 import com.altnoir.mementoinabyss.impl.registrate.BlockStateGen;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.impl.registrate.TagGen;
@@ -60,6 +63,41 @@ public class MiaBlocks {
     static {
         REGISTRATE.defaultCreativeTab(MiaItemGroups.BASE.getKey());
     }
+
+    public static final BlockEntry<AbyssPortalBlock> ABYSS_PORTAL = REGISTRATE.object("abyss_portal")
+            .block(AbyssPortalBlock::new)
+            .properties(p -> p.mapColor(MapColor.COLOR_BLACK).noCollision().noOcclusion()
+                    .lightLevel(_ -> 15).strength(-1.0F, 3_600_000.0F)
+                    .noLootTable().pushReaction(PushReaction.BLOCK))
+            .blockstate(BlockStateGen::abyssPortal)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<AbyssPortalCoreBlock> ABYSS_PORTAL_CORE = REGISTRATE.object("abyss_portal_core")
+            .block(AbyssPortalCoreBlock::new)
+            .properties(p -> p.mapColor(MapColor.STONE).strength(-1.0F, 3_600_000.0F)
+                    .sound(SoundType.NETHERITE_BLOCK).noLootTable().pushReaction(PushReaction.BLOCK))
+            .blockstate(BlockStateGen::abyssPortalCore)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<Block> ABYSS_PORTAL_FRAME = REGISTRATE.object("abyss_portal_frame")
+            .block(Block::new)
+            .properties(p -> p.mapColor(MapColor.STONE).requiresCorrectToolForDrops()
+                    .strength(100.0F, 1200.0F).sound(SoundType.NETHERITE_BLOCK))
+            .transform(TagGen.pickaxeOnly())
+            .blockstate(BlockStateGen::abyssPortalFrame)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<PedestalBlock> PEDESTAL = REGISTRATE.object("pedestal")
+            .block(PedestalBlock::new)
+            .properties(p -> p.mapColor(MapColor.STONE).strength(2.5F, 6.0F)
+                    .sound(SoundType.DEEPSLATE).noOcclusion())
+            .transform(TagGen.pickaxeOnly())
+            .blockstate(BlockStateGen::pedestal)
+            .simpleItem()
+            .register();
 
     public static final BlockEntry<AbyssAndesiteBlock> ABYSS_ANDESITE = REGISTRATE.object("abyss_andesite")
             .block(AbyssAndesiteBlock::new)

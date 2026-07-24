@@ -1,0 +1,7 @@
+{
+  "parent": "mementoinabyss:block/template/pedestal",
+  "textures": {
+    "particle": "mementoinabyss:block/abyss_andesite",
+    "pedestal": "mementoinabyss:block/model/pedestal"
+  }
+}

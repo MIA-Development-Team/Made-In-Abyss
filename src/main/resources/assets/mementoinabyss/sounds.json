@@ -4,6 +4,11 @@
       "mementoinabyss:block/abyss_portal_travel"
     ]
   },
+  "block.abyss_portal.ambient": {
+    "sounds": [
+      "mementoinabyss:block/abyss_portal_ambient"
+    ]
+  },
   "music.the_first_layer": {
     "sounds": [
       {

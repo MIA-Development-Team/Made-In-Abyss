@@ -28,6 +28,57 @@ import java.util.Optional;
 
 
 public class BlockStateGen {
+    public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> abyssPortal() {
+        return (ctx, prov) -> {
+            var portal = TextureSlot.create("portal");
+            var texture = prov.modBlockTexture(ctx.getName());
+            var model = prov.getBuilder()
+                    .texture(portal, texture)
+                    .texture(TextureSlot.PARTICLE, texture)
+                    .transformTemplate(template -> template
+                            .ambientOcclusion(false)
+                            .element(element -> element.from(0, 1, 0).to(16, 15, 16)
+                                    .face(net.minecraft.core.Direction.UP,
+                                            face -> face.uvs(0, 0, 16, 16).texture(portal))
+                                    .face(net.minecraft.core.Direction.DOWN,
+                                            face -> face.uvs(0, 0, 16, 16).texture(portal))))
+                    .build(ctx.get());
+            prov.create(ctx.get(), model);
+        };
+    }
+
+    public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> abyssPortalCore() {
+        return (ctx, prov) -> {
+            var model = prov.getBuilder()
+                    .parent(prov.modLoc("block/template/abyss_portal_core"))
+                    .texture(TextureSlot.ALL, prov.modBlockTexture("model/abyss_portal_core"))
+                    .texture(TextureSlot.BOTTOM, prov.modBlockTexture("abyss_portal_frame"))
+                    .texture(TextureSlot.PARTICLE, prov.modBlockTexture("abyss_portal_frame"))
+                    .build(ctx.get());
+            prov.create(ctx.get(), model);
+        };
+    }
+
+    public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> abyssPortalFrame() {
+        return (ctx, prov) -> {
+            var model = ModelTemplates.CUBE_ALL.create(
+                    ctx.get(), TextureMapping.cube(prov.modBlockTexture(ctx.getName())), prov.modelOutput);
+            prov.create(ctx.get(), model);
+        };
+    }
+
+    public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> pedestal() {
+        return (ctx, prov) -> {
+            var pedestal = TextureSlot.create("pedestal");
+            var model = prov.getBuilder()
+                    .parent(prov.modLoc("block/template/pedestal"))
+                    .texture(pedestal, prov.modBlockTexture("model/pedestal"))
+                    .texture(TextureSlot.PARTICLE, prov.modBlockTexture("abyss_andesite"))
+                    .build(ctx.get());
+            prov.create(ctx.get(), model);
+        };
+    }
+
     public static <B extends CoverGrassBlock> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> coverGrass() {
         return (ctx, prov) -> {
             var block = ctx.getEntry();

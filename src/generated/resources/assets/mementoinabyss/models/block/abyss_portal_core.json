@@ -1,0 +1,8 @@
+{
+  "parent": "mementoinabyss:block/template/abyss_portal_core",
+  "textures": {
+    "all": "mementoinabyss:block/model/abyss_portal_core",
+    "bottom": "mementoinabyss:block/abyss_portal_frame",
+    "particle": "mementoinabyss:block/abyss_portal_frame"
+  }
+}

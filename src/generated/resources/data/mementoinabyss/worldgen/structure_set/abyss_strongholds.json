@@ -1,0 +1,16 @@
+{
+  "placement": {
+    "type": "minecraft:concentric_rings",
+    "count": 64,
+    "distance": 32,
+    "preferred_biomes": "#minecraft:is_overworld",
+    "salt": 0,
+    "spread": 11
+  },
+  "structures": [
+    {
+      "structure": "mementoinabyss:abyss_stronghold",
+      "weight": 1
+    }
+  ]
+}

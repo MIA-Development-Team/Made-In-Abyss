@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "mementoinabyss:star_compass"}
+      ]
+    },
+    {
+      "rolls": 3,
+      "entries": [
+        {"type": "minecraft:item", "name": "minecraft:iron_ingot", "weight": 5},
+        {"type": "minecraft:item", "name": "minecraft:gold_ingot", "weight": 10},
+        {"type": "minecraft:item", "name": "minecraft:diamond", "weight": 3},
+        {"type": "minecraft:item", "name": "minecraft:ender_pearl", "weight": 6}
+      ]
+    }
+  ]
+}

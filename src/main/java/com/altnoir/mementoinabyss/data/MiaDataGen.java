@@ -22,6 +22,11 @@ import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensionTypes;
 import com.altnoir.mementoinabyss.worldgen.dimension.MiaWorldClocks;
+import com.altnoir.mementoinabyss.worldgen.MiaPaintingVariants;
+import com.altnoir.mementoinabyss.worldgen.structure.MiaProcessorLists;
+import com.altnoir.mementoinabyss.worldgen.structure.MiaStructurePools;
+import com.altnoir.mementoinabyss.worldgen.structure.MiaStructureSets;
+import com.altnoir.mementoinabyss.worldgen.structure.MiaStructures;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.jspecify.annotations.Nullable;
 
@@ -60,6 +65,11 @@ public class MiaDataGen {
                     GreatFaultPlacements.bootstrap(context);
                 })
                 .add(Registries.BIOME, MiaBiomes::bootstrap)
+                .add(Registries.PROCESSOR_LIST, MiaProcessorLists::bootstrap)
+                .add(Registries.TEMPLATE_POOL, MiaStructurePools::bootstrap)
+                .add(Registries.STRUCTURE, MiaStructures::bootstrap)
+                .add(Registries.STRUCTURE_SET, MiaStructureSets::bootstrap)
+                .add(Registries.PAINTING_VARIANT, MiaPaintingVariants::bootstrap)
                 .add(Registries.LEVEL_STEM, MiaDimensions::bootstrap));
     }
 

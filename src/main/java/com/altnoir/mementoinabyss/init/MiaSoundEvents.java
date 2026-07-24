@@ -15,6 +15,12 @@ public class MiaSoundEvents {
             () -> SoundEvent.createVariableRangeEvent(MementoInAbyss.asResource("block.abyss_portal.travel"))
     );
 
+    public static final RegistryEntry<SoundEvent, SoundEvent> ABYSS_PORTAL_AMBIENT = REGISTRATE.simple(
+            "block.abyss_portal.ambient",
+            Registries.SOUND_EVENT,
+            () -> SoundEvent.createVariableRangeEvent(MementoInAbyss.asResource("block.abyss_portal.ambient"))
+    );
+
     public static final RegistryEntry<SoundEvent, SoundEvent> MUSIC_THE_FIRST_LAYER = REGISTRATE.simple(
             "music.the_first_layer",
             Registries.SOUND_EVENT,

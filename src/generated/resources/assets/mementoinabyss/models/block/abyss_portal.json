@@ -1,0 +1,29 @@
+{
+  "ambientocclusion": false,
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#portal"
+        },
+        "up": {
+          "texture": "#portal"
+        }
+      },
+      "from": [
+        0,
+        1,
+        0
+      ],
+      "to": [
+        16,
+        15,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "mementoinabyss:block/abyss_portal",
+    "portal": "mementoinabyss:block/abyss_portal"
+  }
+}
