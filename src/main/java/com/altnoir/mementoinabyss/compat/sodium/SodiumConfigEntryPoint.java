@@ -20,7 +20,7 @@ public final class SodiumConfigEntryPoint implements ConfigEntryPoint {
 
     @Override
     public void registerConfigLate(ConfigBuilder builder) {
-        var config = MementoInAbyss.CONFIGS.guiSection;
+        var config = MementoInAbyss.CONFIGS.graphsSection;
         Identifier enabledId = id("cross_dimension_lod_enabled");
 
         OptionGroupBuilder lodGroup = builder.createOptionGroup()

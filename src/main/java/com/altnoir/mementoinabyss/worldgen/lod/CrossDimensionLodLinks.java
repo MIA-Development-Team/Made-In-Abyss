@@ -37,7 +37,7 @@ public final class CrossDimensionLodLinks {
     }
 
     public static int radius(CrossDimensionLodLink link) {
-        return MementoInAbyss.CONFIGS.guiSection.crossDimensionLodViewDistance.get() * 16;
+        return MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodViewDistance.get() * 16;
     }
 
     /** Configured radius of the center-first lazy-generation area. */
@@ -49,10 +49,10 @@ public final class CrossDimensionLodLinks {
     public static int detailRadius(CrossDimensionLodLink link) {
         if (link.detailProfile() == CrossDimensionLodLink.DetailProfile.ABYSS_HOLE) {
             return (int) Math.ceil(Math.max(
-                    MementoInAbyss.CONFIGS.guiSection.crossDimensionLodMinimumDiameter.get() * .5,
-                    HopperAbyssHole.abyssRadius() + MementoInAbyss.CONFIGS.guiSection.crossDimensionLodMargin.get()));
+                    MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodMinimumDiameter.get() * .5,
+                    HopperAbyssHole.abyssRadius() + MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodMargin.get()));
         }
-        return MementoInAbyss.CONFIGS.guiSection.crossDimensionLodMinimumDiameter.get() / 2;
+        return MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodMinimumDiameter.get() / 2;
     }
 
     private CrossDimensionLodLinks() {}

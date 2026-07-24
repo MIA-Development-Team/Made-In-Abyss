@@ -63,7 +63,7 @@ public final class MiaExecutors {
 
     /** Applies the live config without rebuilding the queue or interrupting active tasks. */
     public static void refreshThreadLimit() {
-        int requested = MementoInAbyss.CONFIGS.guiSection.miaCpuThreadLimit.get();
+        int requested = MementoInAbyss.CONFIGS.graphsSection.miaCpuThreadLimit.get();
         int limit = Math.clamp(requested, 1, Runtime.getRuntime().availableProcessors());
         if (CPU.getCorePoolSize() == limit && CPU.getMaximumPoolSize() == limit) return;
         synchronized (CPU) {

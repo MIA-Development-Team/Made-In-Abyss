@@ -247,7 +247,7 @@ final class CrossDimensionLazyChunkGenerator {
     }
 
     private static boolean lodEnabled() {
-        return MementoInAbyss.CONFIGS.guiSection.crossDimensionLodEnabled.get();
+        return MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodEnabled.get();
     }
 
     static DebugSnapshot debugSnapshot(CrossDimensionLodLink link) {

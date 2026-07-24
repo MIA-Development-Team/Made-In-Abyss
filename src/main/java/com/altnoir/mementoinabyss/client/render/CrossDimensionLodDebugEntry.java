@@ -36,7 +36,7 @@ public final class CrossDimensionLodDebugEntry implements DebugScreenEntry {
 
         var client = CrossDimensionLodRenderer.debugStats();
         displayer.addLine(String.format(Locale.ROOT, "MIA LOD: %s (%s, radius %d)",
-                link.id(), MementoInAbyss.CONFIGS.guiSection.crossDimensionLodEnabled.get() ? "on" : "off",
+                link.id(), MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodEnabled.get() ? "on" : "off",
                 client.viewRadius()));
         displayer.addLine(String.format(Locale.ROOT,
                 "Client: data %d, loose %d, page %d, visible %d, dirty %d, build %d, ready %d",

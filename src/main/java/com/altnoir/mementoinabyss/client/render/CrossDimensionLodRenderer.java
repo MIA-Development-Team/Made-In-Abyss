@@ -114,7 +114,7 @@ public final class CrossDimensionLodRenderer {
 
     public static DebugStats debugStats() {
         int viewRadius = serverViewRadius > 0 ? serverViewRadius
-                : MementoInAbyss.CONFIGS.guiSection.crossDimensionLodViewDistance.get() * 16;
+                : MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodViewDistance.get() * 16;
         return new DebugStats(DATA.size(), CHUNKS.size(), PAGES.size(),
                 VISIBLE_MESHES.size() + VISIBLE_TRANSITIONS.size()
                         + VISIBLE_PAGES.size() + VISIBLE_PAGE_TRANSITIONS.size(),
@@ -372,7 +372,7 @@ public final class CrossDimensionLodRenderer {
 
         renderFrame++;
         int viewRadius = serverViewRadius > 0 ? serverViewRadius
-                : MementoInAbyss.CONFIGS.guiSection.crossDimensionLodViewDistance.get() * 16;
+                : MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodViewDistance.get() * 16;
         if (renderFrame % EVICTION_INTERVAL_FRAMES == 0) evictFarChunks(camera, viewRadius);
         long meshStarted = System.nanoTime();
         closeRetiredMeshes();
@@ -1171,7 +1171,7 @@ public final class CrossDimensionLodRenderer {
     }
 
     private static boolean lodEnabled() {
-        return MementoInAbyss.CONFIGS.guiSection.crossDimensionLodEnabled.get();
+        return MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodEnabled.get();
     }
 
     private enum ClientState {

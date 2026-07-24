@@ -120,7 +120,7 @@ public final class MiaLodServer {
     }
 
     private static boolean isEnabled() {
-        return MementoInAbyss.CONFIGS.guiSection.crossDimensionLodEnabled.get();
+        return MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodEnabled.get();
     }
 
     private MiaLodServer() {}

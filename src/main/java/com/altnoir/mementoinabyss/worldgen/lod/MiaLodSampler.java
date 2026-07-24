@@ -358,7 +358,7 @@ final class MiaLodSampler {
     private record PreparedChunk(ChunkPos pos, MiaLodStorage.StoredChunk chunk) {}
 
     private static boolean lodEnabled() {
-        return MementoInAbyss.CONFIGS.guiSection.crossDimensionLodEnabled.get();
+        return MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodEnabled.get();
     }
 
     private MiaLodSampler() {}

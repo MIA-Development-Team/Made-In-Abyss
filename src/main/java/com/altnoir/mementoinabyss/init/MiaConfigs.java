@@ -17,13 +17,13 @@ public class MiaConfigs extends Config {
     }
 
     @NonSync
-    public GuiSection guiSection = new GuiSection();
+    public GraphsSection graphsSection = new GraphsSection();
 
     public GamePlaySection gamePlaySection = new GamePlaySection();
     public WorldGenSection worldGenSection = new WorldGenSection();
 
-    public static class GuiSection extends ConfigSection {
-        public GuiSection() {
+    public static class GraphsSection extends ConfigSection {
+        public GraphsSection() {
             super();
         }
 
@@ -38,7 +38,7 @@ public class MiaConfigs extends Config {
         public ConfigGroup crossDimensionLodGroup = new ConfigGroup("cross_dimension_lod");
         public ValidatedBoolean crossDimensionLodEnabled = new ValidatedBoolean(true);
         public ValidatedInt crossDimensionLodMinimumDiameter = new ValidatedInt(1024, 8192, 256, ValidatedInt.WidgetType.TEXTBOX);
-        public ValidatedInt crossDimensionLodMargin = new ValidatedInt(192, 1024, 0, ValidatedInt.WidgetType.TEXTBOX);
+        public ValidatedInt crossDimensionLodMargin = new ValidatedInt(512, 1024, 0, ValidatedInt.WidgetType.TEXTBOX);
         public ValidatedInt crossDimensionLodCaptureQueueLimit = new ValidatedInt(
                 1024, 16384, 64, ValidatedInt.WidgetType.TEXTBOX);
         @ConfigGroup.Pop

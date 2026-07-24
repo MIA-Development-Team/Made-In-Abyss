@@ -74,7 +74,7 @@ final class MiaLodStorage {
 
     static void enqueueIfMissing(CrossDimensionLodLink link, ServerLevel level, ChunkAccess chunk) {
         if (!lodEnabled()) return;
-        int queueLimit = MementoInAbyss.CONFIGS.guiSection.crossDimensionLodCaptureQueueLimit.get();
+        int queueLimit = MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodCaptureQueueLimit.get();
         if (PENDING_CAPTURE_COUNT.get() >= queueLimit) return;
         CaptureKey key = new CaptureKey(level.dimension(),
                 ChunkPos.pack(chunk.getPos().x(), chunk.getPos().z()));
@@ -522,7 +522,7 @@ final class MiaLodStorage {
     }
 
     private static boolean lodEnabled() {
-        return MementoInAbyss.CONFIGS.guiSection.crossDimensionLodEnabled.get();
+        return MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodEnabled.get();
     }
 
     private static final class PendingWrite implements Runnable {
