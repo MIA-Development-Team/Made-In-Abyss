@@ -1,4 +1,4 @@
-package com.altnoir.mementoinabyss.compat;
+package com.altnoir.mementoinabyss.compat.sodium;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
@@ -11,13 +11,6 @@ import net.caffeinemc.mods.sodium.api.config.structure.OptionGroupBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
-/**
- * Exposes MIA's existing LOD settings in Sodium's video settings screen.
- *
- * <p>This class is only loaded through Sodium's optional config API entrypoint.
- * The option bindings remain backed by Fzzy Config, so there is only one source
- * of truth regardless of which config screen edits the values.</p>
- */
 public final class SodiumConfigEntryPoint implements ConfigEntryPoint {
     private static final String CONFIG_KEY_PREFIX = "mementoinabyss.config.guiSection.";
     private static final String SODIUM_KEY_PREFIX = "mementoinabyss.sodium.";

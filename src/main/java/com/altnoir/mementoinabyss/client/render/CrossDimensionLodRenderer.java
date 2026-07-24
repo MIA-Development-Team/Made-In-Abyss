@@ -4,6 +4,7 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.CpuMesh;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.HeightField;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.QuadBuffer;
+import com.altnoir.mementoinabyss.compat.sodium.SodiumLodCompat;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodControlPayload;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodPayload;
 import com.altnoir.mementoinabyss.util.concurrent.MiaExecutors;
@@ -386,7 +387,7 @@ public final class CrossDimensionLodRenderer {
         VISIBLE_PAGE_TRANSITIONS.clear();
         VISIBLE_SPRITES.clear();
         int maximumIndexCount = 0;
-        boolean sodiumLoaded = com.altnoir.mementoinabyss.compat.SodiumLodCompat.isLoaded();
+        boolean sodiumLoaded = SodiumLodCompat.isLoaded();
         for (PageMesh page : PAGES.values()) {
             if ((page.indexCount > 0 || page.seamIndexCount > 0)
                     && isWithinHorizontalDistance(page.bounds, camera, viewRadius)
@@ -435,7 +436,7 @@ public final class CrossDimensionLodRenderer {
         long drawStarted = System.nanoTime();
         if (sodiumLoaded) {
             for (TextureAtlasSprite sprite : VISIBLE_SPRITES) {
-                com.altnoir.mementoinabyss.compat.SodiumLodCompat.markSpriteActive(sprite);
+                SodiumLodCompat.markSpriteActive(sprite);
             }
         }
 
