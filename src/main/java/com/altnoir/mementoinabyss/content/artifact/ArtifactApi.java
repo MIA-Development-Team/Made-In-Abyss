@@ -24,6 +24,17 @@ public final class ArtifactApi {
         return stack.getOrDefault(MiaDataComponents.ARTIFACT_ENHANCEMENT.get(), ArtifactEnhancement.EMPTY);
     }
 
+    public static boolean isEnhanceable(ItemStack stack) {
+        return isArtifact(stack) && stack.has(MiaDataComponents.ARTIFACT_ENHANCEMENT.get());
+    }
+
+    public static boolean canEnhance(ItemStack stack) {
+        ArtifactProfile profile = stack.get(MiaDataComponents.ARTIFACT_PROFILE.get());
+        return profile != null
+                && isEnhanceable(stack)
+                && enhancement(stack).level() < profile.maxEnhancementLevel();
+    }
+
     public static boolean setEnhancement(ItemStack stack, ArtifactEnhancement enhancement) {
         ArtifactProfile profile = stack.get(MiaDataComponents.ARTIFACT_PROFILE.get());
         if (profile == null

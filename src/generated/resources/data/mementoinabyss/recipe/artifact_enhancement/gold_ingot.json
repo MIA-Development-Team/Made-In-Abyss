@@ -1,0 +1,11 @@
+{
+  "type": "mementoinabyss:artifact_enhancement",
+  "attribute": "minecraft:attack_damage",
+  "count": 2,
+  "material": "minecraft:gold_ingot",
+  "operation": "add_value",
+  "value": {
+    "max": 5.0,
+    "min": 0.1
+  }
+}

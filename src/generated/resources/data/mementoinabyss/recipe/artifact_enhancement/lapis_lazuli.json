@@ -1,0 +1,11 @@
+{
+  "type": "mementoinabyss:artifact_enhancement",
+  "attribute": "minecraft:attack_speed",
+  "count": 1,
+  "material": "minecraft:lapis_lazuli",
+  "operation": "add_multiplied_base",
+  "value": {
+    "max": 1.5,
+    "min": 0.5
+  }
+}

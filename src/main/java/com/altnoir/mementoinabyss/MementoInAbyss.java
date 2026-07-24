@@ -30,6 +30,9 @@ public class MementoInAbyss {
 
         MiaDataComponents.register(modEventBus);
         MiaDataAttachments.register(modEventBus);
+        MiaAttributes.register(modEventBus);
+        MiaRecipes.register(modEventBus);
+        MiaMenus.register(modEventBus);
         MiaBiomeSources.register(modEventBus);
         MiaDensityFunctionTypes.register(modEventBus);
         MiaPlacementModifiers.register(modEventBus);
@@ -45,6 +48,7 @@ public class MementoInAbyss {
 
         modEventBus.addListener(EventPriority.HIGHEST, MiaDataGen::gatherDataHighPriority);
         modEventBus.addListener(EventPriority.LOWEST, MiaDataGen::gatherData);
+        modEventBus.addListener(MiaAttributes::addEntityAttributes);
         modEventBus.addListener(MiaNetwork::register);
     }
 

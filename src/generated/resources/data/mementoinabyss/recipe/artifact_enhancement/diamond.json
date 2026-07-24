@@ -1,0 +1,11 @@
+{
+  "type": "mementoinabyss:artifact_enhancement",
+  "attribute": "minecraft:scale",
+  "count": 1,
+  "material": "minecraft:diamond",
+  "operation": "add_value",
+  "value": {
+    "max": 1.5,
+    "min": -0.5
+  }
+}

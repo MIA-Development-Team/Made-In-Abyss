@@ -17,10 +17,19 @@ public record ItemDescription(
         List<Component> controlLines
 ) {
     public static ItemDescription create(Item item, TooltipPalette palette) {
-        return create(item, palette, false);
+        return create(item, palette, false, false);
     }
 
     public static ItemDescription create(Item item, TooltipPalette palette, boolean externalControls) {
+        return create(item, palette, externalControls, false);
+    }
+
+    public static ItemDescription create(
+            Item item,
+            TooltipPalette palette,
+            boolean externalControls,
+            boolean behavioursInControls
+    ) {
         String translationKey = item.getDescriptionId() + ".tooltip";
         if (!I18n.exists(translationKey + ".summary")) {
             return null;
@@ -28,6 +37,9 @@ public record ItemDescription(
         Builder builder = new Builder(palette);
         if (externalControls) {
             builder.externalControls();
+        }
+        if (behavioursInControls) {
+            builder.behavioursInControls();
         }
         builder.summary(I18n.get(translationKey + ".summary"));
         for (int i = 1; I18n.exists(translationKey + ".condition" + i); i++) {
@@ -59,16 +71,26 @@ public record ItemDescription(
     public static final class Modifier implements TooltipModifier {
         private final TooltipPalette palette;
         private final boolean externalControls;
+        private final boolean behavioursInControls;
         private String cachedLanguage = "";
         private ItemDescription description;
 
         public Modifier(TooltipPalette palette) {
-            this(palette, false);
+            this(palette, false, false);
         }
 
         public Modifier(TooltipPalette palette, boolean externalControls) {
+            this(palette, externalControls, false);
+        }
+
+        public Modifier(
+                TooltipPalette palette,
+                boolean externalControls,
+                boolean behavioursInControls
+        ) {
             this.palette = palette;
             this.externalControls = externalControls;
+            this.behavioursInControls = behavioursInControls;
         }
 
         @Override
@@ -76,7 +98,12 @@ public record ItemDescription(
             String language = Minecraft.getInstance().getLanguageManager().getSelected();
             if (!language.equals(cachedLanguage)) {
                 cachedLanguage = language;
-                description = create(event.getItemStack().getItem(), palette, externalControls);
+                description = create(
+                        event.getItemStack().getItem(),
+                        palette,
+                        externalControls,
+                        behavioursInControls
+                );
             }
             if (description != null) {
                 event.getToolTip().addAll(Math.min(1, event.getToolTip().size()), description.currentLines());
@@ -90,6 +117,7 @@ public record ItemDescription(
         private final List<Entry> behaviours = new ArrayList<>();
         private final List<Entry> actions = new ArrayList<>();
         private boolean externalControls;
+        private boolean behavioursInControls;
 
         public Builder(TooltipPalette palette) {
             this.palette = palette;
@@ -115,6 +143,11 @@ public record ItemDescription(
             return this;
         }
 
+        public Builder behavioursInControls() {
+            behavioursInControls = true;
+            return this;
+        }
+
         public ItemDescription build() {
             List<Component> defaultLines = new ArrayList<>();
             List<Component> shiftLines = new ArrayList<>();
@@ -123,12 +156,16 @@ public record ItemDescription(
             for (String summary : summaries) {
                 shiftLines.addAll(TooltipHelper.wrap(summary, palette));
             }
-            if (!summaries.isEmpty() && !behaviours.isEmpty()) {
-                shiftLines.add(CommonComponents.EMPTY);
+            List<Component> behaviourLines = behavioursInControls ? controlLines : shiftLines;
+            if (!behaviourLines.isEmpty() && !behaviours.isEmpty()) {
+                behaviourLines.add(CommonComponents.EMPTY);
             }
             for (Entry behaviour : behaviours) {
-                shiftLines.add(Component.literal(behaviour.heading()).withStyle(palette.highlight()));
-                shiftLines.addAll(TooltipHelper.wrap(behaviour.body(), palette, 1));
+                behaviourLines.add(Component.literal(behaviour.heading()).withStyle(palette.highlight()));
+                behaviourLines.addAll(TooltipHelper.wrap(behaviour.body(), palette, 1));
+            }
+            if (!controlLines.isEmpty() && !actions.isEmpty()) {
+                controlLines.add(CommonComponents.EMPTY);
             }
             for (Entry action : actions) {
                 controlLines.add(Component.literal(action.heading()).withStyle(palette.highlight()));

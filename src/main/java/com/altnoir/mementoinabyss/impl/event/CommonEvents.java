@@ -5,6 +5,8 @@ import com.altnoir.mementoinabyss.impl.curse.CurseManager;
 import com.altnoir.mementoinabyss.impl.strippable.StripEvent;
 import com.altnoir.mementoinabyss.impl.tillable.TillEvent;
 import com.altnoir.mementoinabyss.init.MiaSoundEvents;
+import com.altnoir.mementoinabyss.init.MiaAttributes;
+import com.altnoir.mementoinabyss.init.MiaRecipes;
 import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensions;
 import com.altnoir.mementoinabyss.worldgen.dimension.MiaWorldClocks;
 import com.altnoir.mementoinabyss.worldgen.dimension.VerticalDimensionTeleporter;
@@ -18,7 +20,9 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
@@ -28,6 +32,23 @@ import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 @EventBusSubscriber
 public final class CommonEvents {
+    @SubscribeEvent
+    public static void onDatapackSync(OnDatapackSyncEvent event) {
+        event.sendRecipes(MiaRecipes.ARTIFACT_ENHANCEMENT_TYPE.get());
+    }
+
+    @SubscribeEvent
+    public static void onCriticalHit(CriticalHitEvent event) {
+        if (event.getEntity().level().isClientSide() || event.isCriticalHit()) return;
+        double chance = event.getEntity().getAttributeValue(MiaAttributes.CRITICAL_HIT);
+        if (chance <= 0.0 || event.getEntity().getRandom().nextDouble() >= Math.min(chance, 1.0)) return;
+
+        double multiplier = event.getEntity().getAttributeValue(MiaAttributes.CRITICAL_HIT_DAMAGE)
+                + Math.max(0.0, chance - 1.0);
+        event.setCriticalHit(true);
+        event.setDamageMultiplier((float) multiplier);
+    }
+
     @SubscribeEvent
     public static void onEntityTick(EntityTickEvent.Post event) {
         CurseEvent.onEntityTick(event);

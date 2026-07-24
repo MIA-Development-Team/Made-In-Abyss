@@ -1,0 +1,11 @@
+{
+  "type": "mementoinabyss:artifact_enhancement",
+  "attribute": "minecraft:gravity",
+  "count": 1,
+  "material": "minecraft:netherite_ingot",
+  "operation": "add_multiplied_base",
+  "value": {
+    "max": 0.5,
+    "min": -0.5
+  }
+}

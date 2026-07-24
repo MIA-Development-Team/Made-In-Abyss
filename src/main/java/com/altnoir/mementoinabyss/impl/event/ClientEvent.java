@@ -1,7 +1,9 @@
 package com.altnoir.mementoinabyss.impl.event;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.client.tooltip.ArtifactEnhancementMaterialTooltip;
 import com.altnoir.mementoinabyss.client.tooltip.TooltipModifierRegistry;
+import com.altnoir.mementoinabyss.client.screen.ArtifactEnhancementScreen;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodDebugEntry;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodRenderer;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodRenderTypes;
@@ -10,6 +12,8 @@ import com.altnoir.mementoinabyss.client.render.StarCompassOverlay;
 import com.altnoir.mementoinabyss.network.CompassTargetPayload;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodDebugPayload;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodPayload;
+import com.altnoir.mementoinabyss.init.MiaMenus;
+import com.altnoir.mementoinabyss.init.MiaRecipes;
 import net.minecraft.client.gui.components.debug.DebugScreenEntryStatus;
 import net.minecraft.client.gui.components.debug.DebugScreenProfile;
 import net.neoforged.api.distmarker.Dist;
@@ -20,6 +24,8 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterCustomEnvironmentEffectRendererEvent;
 import net.neoforged.neoforge.client.event.RegisterDebugEntriesEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RecipesReceivedEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
@@ -27,6 +33,11 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 @EventBusSubscriber(Dist.CLIENT)
 public final class ClientEvent {
+    @SubscribeEvent
+    public static void registerMenuScreens(RegisterMenuScreensEvent event) {
+        event.register(MiaMenus.ARTIFACT_ENHANCEMENT.get(), ArtifactEnhancementScreen::new);
+    }
+
     @SubscribeEvent
     public static void registerRenderPipelines(RegisterRenderPipelinesEvent event) {
         CrossDimensionLodRenderTypes.registerPipelines(event);
@@ -73,6 +84,7 @@ public final class ClientEvent {
 
     @SubscribeEvent
     public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        ArtifactEnhancementMaterialTooltip.clear();
         CrossDimensionLodRenderer.disconnect();
         CrossDimensionLodDebugEntry.clear();
         StarCompassOverlay.clear();
@@ -81,6 +93,14 @@ public final class ClientEvent {
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
         TooltipModifierRegistry.get(event.getItemStack().getItem()).modify(event);
+        ArtifactEnhancementMaterialTooltip.append(event);
+    }
+
+    @SubscribeEvent
+    public static void onRecipesReceived(RecipesReceivedEvent event) {
+        if (event.getRecipeTypes().contains(MiaRecipes.ARTIFACT_ENHANCEMENT_TYPE.get())) {
+            ArtifactEnhancementMaterialTooltip.update(event.getRecipeMap());
+        }
     }
 
     private ClientEvent() {}

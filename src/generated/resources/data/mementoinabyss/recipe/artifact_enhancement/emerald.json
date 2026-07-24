@@ -1,0 +1,11 @@
+{
+  "type": "mementoinabyss:artifact_enhancement",
+  "attribute": "mementoinabyss:critical_hit",
+  "count": 1,
+  "material": "minecraft:emerald",
+  "operation": "add_value",
+  "value": {
+    "max": 0.9,
+    "min": 0.5
+  }
+}

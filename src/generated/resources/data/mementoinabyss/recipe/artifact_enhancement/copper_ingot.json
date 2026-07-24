@@ -1,0 +1,11 @@
+{
+  "type": "mementoinabyss:artifact_enhancement",
+  "attribute": "minecraft:armor",
+  "count": 3,
+  "material": "minecraft:copper_ingot",
+  "operation": "add_value",
+  "value": {
+    "max": 1.0,
+    "min": 0.5
+  }
+}

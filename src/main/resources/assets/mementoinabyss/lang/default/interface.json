@@ -37,5 +37,13 @@
   "mementoinabyss.config.gamePlaySection.caveExplorerBeaconVertical": "Vertical Range",
   "mementoinabyss.config.gamePlaySection.caveExplorerBeaconMaxVertical": "Use Max Vertical Range",
   "mementoinabyss.config.worldGenSection": "World Generation",
-  "mementoinabyss.config.worldGenSection.abyssRadius": "Abyss Radius"
+  "mementoinabyss.config.worldGenSection.abyssRadius": "Abyss Radius",
+  "container.mementoinabyss.artifact_enhancement": "Artifact Smithing Table",
+  "container.mementoinabyss.artifact_enhancement.insert_artifact": "Insert an enhanceable artifact",
+  "container.mementoinabyss.artifact_enhancement.insert_material": "Insert an enhancement material",
+  "container.mementoinabyss.artifact_enhancement.invalid_material": "This material cannot enhance the artifact",
+  "container.mementoinabyss.artifact_enhancement.ready": "Enhancement ready",
+  "container.mementoinabyss.artifact_enhancement.max_level": "Maximum enhancement reached",
+  "attribute.name.mementoinabyss.critical_hit": "Critical Hit Chance",
+  "attribute.name.mementoinabyss.critical_hit_damage": "Critical Hit Damage"
 }

@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.client.tooltip;
 import com.altnoir.mementoinabyss.content.artifact.ArtifactItem;
 import com.altnoir.mementoinabyss.content.artifact.component.ArtifactItemComponent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
@@ -26,6 +27,11 @@ public final class ArtifactTooltipModifier implements TooltipModifier {
                     event.getFlags(),
                     lines
             );
+        }
+        if (!lines.isEmpty()
+                && !event.getToolTip().isEmpty()
+                && !event.getToolTip().getLast().getString().isEmpty()) {
+            lines.addFirst(CommonComponents.EMPTY);
         }
         event.getToolTip().addAll(lines);
     }

@@ -18,6 +18,7 @@ import com.altnoir.mementoinabyss.content.block.ore.BuddingCaeruliteBlock;
 import com.altnoir.mementoinabyss.content.block.AbyssPortalBlock;
 import com.altnoir.mementoinabyss.content.block.AbyssPortalCoreBlock;
 import com.altnoir.mementoinabyss.content.block.PedestalBlock;
+import com.altnoir.mementoinabyss.content.block.ArtifactSmithingTableBlock;
 import com.altnoir.mementoinabyss.impl.registrate.BlockStateGen;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.impl.registrate.TagGen;
@@ -111,6 +112,19 @@ public class MiaBlocks {
             .tag(MiaTags.BlockTags.BASE_STONE_ABYSS.tag, MiaTags.BlockTags.ABYSS_ANDESITE_ORE_REPLACEABLE.tag)
             .simpleItem()
             .register();
+
+    public static final BlockEntry<ArtifactSmithingTableBlock> ARTIFACT_SMITHING_TABLE =
+            REGISTRATE.object("artifact_smithing_table")
+                    .block(ArtifactSmithingTableBlock::new)
+                    .properties(p -> p.mapColor(MapColor.STONE)
+                            .requiresCorrectToolForDrops()
+                            .strength(3.0F, 6.0F)
+                            .sound(SoundType.NETHERITE_BLOCK))
+                    .transform(TagGen.pickaxeOnly())
+                    .blockstate(BlockStateGen::artifactSmithingTable)
+                    .simpleItem()
+                    .lang("Artifact Smithing Table")
+                    .register();
 
     public static final BlockEntry<StairBlock> ABYSS_ANDESITE_STAIRS = stairs(ABYSS_ANDESITE);
     public static final BlockEntry<SlabBlock> ABYSS_ANDESITE_SLAB = slab(ABYSS_ANDESITE);

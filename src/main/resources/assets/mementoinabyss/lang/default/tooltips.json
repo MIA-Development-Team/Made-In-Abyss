@@ -1,6 +1,7 @@
 {
   "tooltip.mementoinabyss.hold_for_description": "Hold [%s] for Description",
-  "tooltip.mementoinabyss.hold_for_controls": "Hold [%s] for Controls",
+  "tooltip.mementoinabyss.hold_for_controls": "Hold [%s] for Details",
+  "tooltip.mementoinabyss.hold_for_enhancements": "Hold [%s] for Details",
   "tooltip.mementoinabyss.key_shift": "Shift",
   "tooltip.mementoinabyss.key_control": "Ctrl",
   "item.mementoinabyss.test_artifact_1.tooltip.summary": "A simple relic recovered from the _Abyss_. Its original purpose remains unknown.",
@@ -17,5 +18,7 @@
   "tooltip.mementoinabyss.artifact.grade.unknown": "Unknown Grade Artifact",
   "tooltip.mementoinabyss.artifact.weight": "Weight: %s",
   "tooltip.mementoinabyss.artifact.enhancement.level": "Enhancement: %s/%s",
-  "tooltip.mementoinabyss.artifact.enhancement.max": "Enhancement: MAX"
+  "tooltip.mementoinabyss.artifact.enhancement.max": "Enhancement: MAX",
+  "tooltip.mementoinabyss.artifact.enhancement_material": "Artifact Enhancement Material",
+  "tooltip.mementoinabyss.artifact.enhancement_material.modifier": "%s %s"
 }

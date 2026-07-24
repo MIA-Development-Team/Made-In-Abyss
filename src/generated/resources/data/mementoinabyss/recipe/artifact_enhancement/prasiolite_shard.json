@@ -1,0 +1,11 @@
+{
+  "type": "mementoinabyss:artifact_enhancement",
+  "attribute": "minecraft:block_break_speed",
+  "count": 8,
+  "material": "mementoinabyss:prasiolite_shard",
+  "operation": "add_multiplied_total",
+  "value": {
+    "max": 0.3,
+    "min": 0.1
+  }
+}

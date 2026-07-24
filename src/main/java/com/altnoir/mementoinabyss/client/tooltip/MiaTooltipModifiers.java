@@ -11,7 +11,7 @@ public final class MiaTooltipModifiers {
     }
 
     private static void registerArtifact(java.util.function.Supplier<? extends net.minecraft.world.item.Item> item) {
-        TooltipModifier modifier = new ItemDescription.Modifier(TooltipPalette.MIA, true)
+        TooltipModifier modifier = new ItemDescription.Modifier(TooltipPalette.MIA, true, true)
                 .andThen(ArtifactTooltipModifier.INSTANCE);
         TooltipModifierRegistry.register(item, modifier);
     }

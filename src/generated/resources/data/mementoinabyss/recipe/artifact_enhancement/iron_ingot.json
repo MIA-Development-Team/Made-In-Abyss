@@ -1,0 +1,11 @@
+{
+  "type": "mementoinabyss:artifact_enhancement",
+  "attribute": "minecraft:knockback_resistance",
+  "count": 2,
+  "material": "minecraft:iron_ingot",
+  "operation": "add_multiplied_base",
+  "value": {
+    "max": 0.4,
+    "min": 0.2
+  }
+}

@@ -1,0 +1,57 @@
+package com.altnoir.mementoinabyss.content.block;
+
+import com.altnoir.mementoinabyss.content.artifact.enhancement.ArtifactEnhancementMenu;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.CraftingTableBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+
+public final class ArtifactSmithingTableBlock extends CraftingTableBlock {
+    public static final MapCodec<ArtifactSmithingTableBlock> CODEC =
+            simpleCodec(ArtifactSmithingTableBlock::new);
+    private static final Component TITLE =
+            Component.translatable("container.mementoinabyss.artifact_enhancement");
+
+    public ArtifactSmithingTableBlock(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public MapCodec<ArtifactSmithingTableBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
+    protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
+        return new SimpleMenuProvider(
+                (containerId, inventory, player) -> new ArtifactEnhancementMenu(
+                        containerId,
+                        inventory,
+                        ContainerLevelAccess.create(level, pos)
+                ),
+                TITLE
+        );
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            BlockHitResult hit
+    ) {
+        if (!level.isClientSide()) {
+            player.openMenu(getMenuProvider(state, level, pos));
+        }
+        return InteractionResult.SUCCESS;
+    }
+}

@@ -79,6 +79,26 @@ public class BlockStateGen {
         };
     }
 
+    public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+    artifactSmithingTable() {
+        return (ctx, prov) -> {
+            var bottom = prov.modBlockTexture("chiseled_abyss_andesite");
+            var northSouth = prov.modBlockTexture("artifact_smithing_table_1");
+            var eastWest = prov.modBlockTexture("artifact_smithing_table_2");
+            var top = prov.modBlockTexture("artifact_smithing_table_top");
+            var textures = new TextureMapping()
+                    .put(TextureSlot.PARTICLE, bottom)
+                    .put(TextureSlot.DOWN, bottom)
+                    .put(TextureSlot.UP, top)
+                    .put(TextureSlot.NORTH, northSouth)
+                    .put(TextureSlot.SOUTH, northSouth)
+                    .put(TextureSlot.EAST, eastWest)
+                    .put(TextureSlot.WEST, eastWest);
+            var model = ModelTemplates.CUBE.create(ctx.get(), textures, prov.modelOutput);
+            prov.create(ctx.get(), model);
+        };
+    }
+
     public static <B extends CoverGrassBlock> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> coverGrass() {
         return (ctx, prov) -> {
             var block = ctx.getEntry();
