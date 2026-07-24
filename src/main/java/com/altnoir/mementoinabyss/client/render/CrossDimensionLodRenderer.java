@@ -4,6 +4,7 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.CpuMesh;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.HeightField;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.QuadBuffer;
+import com.altnoir.mementoinabyss.compat.MiaMods;
 import com.altnoir.mementoinabyss.compat.sodium.SodiumLodCompat;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodControlPayload;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodPayload;
@@ -387,7 +388,7 @@ public final class CrossDimensionLodRenderer {
         VISIBLE_PAGE_TRANSITIONS.clear();
         VISIBLE_SPRITES.clear();
         int maximumIndexCount = 0;
-        boolean sodiumLoaded = SodiumLodCompat.isLoaded();
+        boolean sodiumLoaded = MiaMods.SODIUM.isLoaded();
         for (PageMesh page : PAGES.values()) {
             if ((page.indexCount > 0 || page.seamIndexCount > 0)
                     && isWithinHorizontalDistance(page.bounds, camera, viewRadius)

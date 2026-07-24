@@ -4,12 +4,8 @@ import com.altnoir.mementoinabyss.compat.MiaMods;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
 public final class SodiumLodCompat {
-    public static boolean isLoaded() {
-        return MiaMods.SODIUM.isLoaded();
-    }
-
     public static void markSpriteActive(TextureAtlasSprite sprite) {
-        if (isLoaded()) SodiumApi.markSpriteActive(sprite);
+        MiaMods.SODIUM.executeIfInstalled(() -> () -> SodiumApi.markSpriteActive(sprite));
     }
 
     private static final class SodiumApi {
