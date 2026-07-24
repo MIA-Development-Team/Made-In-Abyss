@@ -44,6 +44,11 @@
   "container.mementoinabyss.artifact_enhancement.invalid_material": "This material cannot enhance the artifact",
   "container.mementoinabyss.artifact_enhancement.ready": "Enhancement ready",
   "container.mementoinabyss.artifact_enhancement.max_level": "Maximum enhancement reached",
+  "itemGroup.mementoinabyss.artifact.section.artifacts": "Artifacts",
+  "itemGroup.mementoinabyss.artifact.section.functional_blocks": "Functional Blocks",
+  "itemGroup.mementoinabyss.base.section.building_blocks": "Building Blocks",
+  "itemGroup.mementoinabyss.base.section.nature_blocks": "Nature Blocks",
+  "itemGroup.mementoinabyss.base.section.items": "Items",
   "attribute.name.mementoinabyss.critical_hit": "Critical Hit Chance",
   "attribute.name.mementoinabyss.critical_hit_damage": "Critical Hit Damage"
 }

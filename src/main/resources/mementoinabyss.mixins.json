@@ -18,6 +18,8 @@
     "requireAnnotations": true
   },
   "client": [
-    "accessor.PauseScreenAccessor"
+    "accessor.PauseScreenAccessor",
+    "creative.CreativeModeInventoryScreenMixin",
+    "creative.CustomCreativeSlotMixin"
   ]
 }

@@ -53,6 +53,7 @@ public final class MiaAbyssPlacements {
     public static final ResourceKey<PlacedFeature> POOL_WITH_REED = key("pool_with_reed");
     public static final ResourceKey<PlacedFeature> SPRING_WATER = key("spring_water");
     public static final ResourceKey<PlacedFeature> LAKE_WATER = key("lake_water");
+    public static final ResourceKey<PlacedFeature> SLAB_RUINS = key("slab_ruins");
     public static final ResourceKey<PlacedFeature> RAW_IRON = key("raw_iron");
     public static final ResourceKey<PlacedFeature> SUN_STONE = key("sun_stone");
     public static final ResourceKey<PlacedFeature> PRASIOLITE_GEODE = key("prasiolite_geode");
@@ -122,6 +123,10 @@ public final class MiaAbyssPlacements {
         context.register(LAKE_WATER, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.LAKE_WATER), List.of(
                 RarityFilter.onAverageOnceEvery(4), InSquarePlacement.spread(),
                 HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), BiomeFilter.biome())));
+        context.register(SLAB_RUINS, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.SLAB_RUINS), List.of(
+                RarityFilter.onAverageOnceEvery(2), InSquarePlacement.spread(),
+                HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(128), VerticalAnchor.belowTop(64)),
+                BiomeFilter.biome())));
         context.register(RAW_IRON, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.RAW_IRON), List.of(
                 RarityFilter.onAverageOnceEvery(5), FastCountOnEveryLayerPlacement.of(1), BiomeFilter.biome())));
         ceilingPlant(context, SUN_STONE, configured.getOrThrow(MiaAbyssFeatures.SUN_STONE), 2, 12);

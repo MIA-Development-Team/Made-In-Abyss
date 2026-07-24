@@ -11,7 +11,7 @@ public class MiaItems {
     private static final MiaRegistrate REGISTRATE = MementoInAbyss.registrate();
 
     static {
-        REGISTRATE.defaultCreativeTab(MiaItemGroups.BASE.getKey());
+        REGISTRATE.defaultCreativeSection(MiaItemGroups.BASE_ITEMS);
     }
 
     public static final ItemEntry<BlockItem> GLOOM_BERRY = REGISTRATE

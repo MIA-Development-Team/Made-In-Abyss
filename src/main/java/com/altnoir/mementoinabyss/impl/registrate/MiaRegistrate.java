@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.impl.registrate;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.impl.creative.CreativeTabSection;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.ItemBuilder;
@@ -25,6 +26,7 @@ import java.util.function.Consumer;
 public class MiaRegistrate extends AbstractRegistrate<MiaRegistrate> {
     private final Set<String> ignoredCreativeTabEntries = new HashSet<>();
     private ResourceKey<CreativeModeTab> defaultCreativeTab;
+    private CreativeTabSection defaultCreativeSection;
 
     protected MiaRegistrate(String modId) {
         super(modId);
@@ -37,7 +39,14 @@ public class MiaRegistrate extends AbstractRegistrate<MiaRegistrate> {
     @Override
     public MiaRegistrate defaultCreativeTab(ResourceKey<CreativeModeTab> creativeModeTab) {
         defaultCreativeTab = creativeModeTab;
+        defaultCreativeSection = null;
         return super.defaultCreativeTab(creativeModeTab);
+    }
+
+    public MiaRegistrate defaultCreativeSection(CreativeTabSection section) {
+        defaultCreativeTab = section.tab();
+        defaultCreativeSection = section;
+        return super.defaultCreativeTab(section.tab());
     }
 
     @Override
@@ -52,6 +61,9 @@ public class MiaRegistrate extends AbstractRegistrate<MiaRegistrate> {
                             MiaItemBuilder.create(this, parent, name, callback, factory);
                     if (defaultCreativeTab != null && !ignoredCreativeTabEntries.contains(name)) {
                         builder.tab(defaultCreativeTab);
+                        if (defaultCreativeSection != null) {
+                            defaultCreativeSection.add(MementoInAbyss.asResource(name));
+                        }
                     }
                     return builder;
                 });

@@ -6,6 +6,8 @@ import com.altnoir.mementoinabyss.worldgen.feature.BlockTrunkConfiguration;
 import com.altnoir.mementoinabyss.worldgen.feature.BlockTrunkFeature;
 import com.altnoir.mementoinabyss.worldgen.feature.LongVinesConfiguration;
 import com.altnoir.mementoinabyss.worldgen.feature.LongVinesFeature;
+import com.altnoir.mementoinabyss.worldgen.feature.SlabRuinsConfiguration;
+import com.altnoir.mementoinabyss.worldgen.feature.SlabRuinsFeature;
 import com.altnoir.mementoinabyss.worldgen.feature.ClusterConfiguration;
 import com.altnoir.mementoinabyss.worldgen.feature.ClusterFeature;
 import net.minecraft.core.registries.Registries;
@@ -27,6 +29,8 @@ public final class MiaWorldgenFeatures {
             "cluster", () -> new ClusterFeature(ClusterConfiguration.CODEC, false));
     public static final DeferredHolder<Feature<?>, ClusterFeature> BIG_CLUSTER = FEATURES.register(
             "big_cluster", () -> new ClusterFeature(ClusterConfiguration.CODEC, true));
+    public static final DeferredHolder<Feature<?>, SlabRuinsFeature> SLAB_RUINS = FEATURES.register(
+            "slab_ruins", () -> new SlabRuinsFeature(SlabRuinsConfiguration.CODEC));
     public static void register(IEventBus bus) { FEATURES.register(bus); }
     private MiaWorldgenFeatures() {}
 }

@@ -16,7 +16,7 @@ public final class MiaArtifactItems {
     private static final MiaRegistrate REGISTRATE = MementoInAbyss.registrate();
 
     static {
-        REGISTRATE.defaultCreativeTab(MiaItemGroups.ARTIFACT.getKey());
+        REGISTRATE.defaultCreativeSection(MiaItemGroups.ARTIFACTS);
     }
 
     public static final ItemEntry<StarCompassItem> STAR_COMPASS = REGISTRATE.item("star_compass", StarCompassItem::new).register();

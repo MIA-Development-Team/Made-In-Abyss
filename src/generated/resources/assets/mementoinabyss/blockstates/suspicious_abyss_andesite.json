@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "dusted=0": {
+      "model": "mementoinabyss:block/suspicious_abyss_andesite_0"
+    },
+    "dusted=1": {
+      "model": "mementoinabyss:block/suspicious_abyss_andesite_1"
+    },
+    "dusted=2": {
+      "model": "mementoinabyss:block/suspicious_abyss_andesite_2"
+    },
+    "dusted=3": {
+      "model": "mementoinabyss:block/suspicious_abyss_andesite_3"
+    }
+  }
+}

@@ -35,6 +35,7 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.*;
@@ -63,7 +64,7 @@ public class MiaBlocks {
     private static final MiaRegistrate REGISTRATE = MementoInAbyss.registrate();
 
     static {
-        REGISTRATE.defaultCreativeTab(MiaItemGroups.BASE.getKey());
+        REGISTRATE.defaultCreativeSection(MiaItemGroups.FUNCTIONAL_BLOCKS);
     }
 
     public static final BlockEntry<AbyssPortalBlock> ABYSS_PORTAL = REGISTRATE.object("abyss_portal")
@@ -101,6 +102,22 @@ public class MiaBlocks {
             .simpleItem()
             .register();
 
+    public static final BlockEntry<ArtifactSmithingTableBlock> ARTIFACT_SMITHING_TABLE =
+            REGISTRATE.object("artifact_smithing_table")
+                    .block(ArtifactSmithingTableBlock::new)
+                    .properties(p -> p.mapColor(MapColor.STONE)
+                            .requiresCorrectToolForDrops()
+                            .strength(3.0F, 6.0F)
+                            .sound(SoundType.NETHERITE_BLOCK))
+                    .transform(TagGen.pickaxeOnly())
+                    .blockstate(BlockStateGen::artifactSmithingTable)
+                    .simpleItem()
+                    .register();
+
+    static {
+        REGISTRATE.defaultCreativeSection(MiaItemGroups.BASE_BUILDING_BLOCKS);
+    }
+
     public static final BlockEntry<AbyssAndesiteBlock> ABYSS_ANDESITE = REGISTRATE.object("abyss_andesite")
             .block(AbyssAndesiteBlock::new)
             .properties(p -> p.mapColor(MapColor.STONE)
@@ -112,19 +129,6 @@ public class MiaBlocks {
             .tag(MiaTags.BlockTags.BASE_STONE_ABYSS.tag, MiaTags.BlockTags.ABYSS_ANDESITE_ORE_REPLACEABLE.tag)
             .simpleItem()
             .register();
-
-    public static final BlockEntry<ArtifactSmithingTableBlock> ARTIFACT_SMITHING_TABLE =
-            REGISTRATE.object("artifact_smithing_table")
-                    .block(ArtifactSmithingTableBlock::new)
-                    .properties(p -> p.mapColor(MapColor.STONE)
-                            .requiresCorrectToolForDrops()
-                            .strength(3.0F, 6.0F)
-                            .sound(SoundType.NETHERITE_BLOCK))
-                    .transform(TagGen.pickaxeOnly())
-                    .blockstate(BlockStateGen::artifactSmithingTable)
-                    .simpleItem()
-                    .lang("Artifact Smithing Table")
-                    .register();
 
     public static final BlockEntry<StairBlock> ABYSS_ANDESITE_STAIRS = stairs(ABYSS_ANDESITE);
     public static final BlockEntry<SlabBlock> ABYSS_ANDESITE_SLAB = slab(ABYSS_ANDESITE);
@@ -247,6 +251,26 @@ public class MiaBlocks {
             })
             .simpleItem()
             .register();
+
+    public static final BlockEntry<BrushableBlock> SUSPICIOUS_ABYSS_ANDESITE =
+            REGISTRATE.object("suspicious_abyss_andesite")
+                    .block(p -> new BrushableBlock(
+                            ABYSS_ANDESITE.get(),
+                            SoundEvents.BRUSH_SAND,
+                            SoundEvents.BRUSH_SAND_COMPLETED,
+                            p))
+                    .initialProperties(ABYSS_ANDESITE)
+                    .properties(p -> p.instrument(NoteBlockInstrument.SNARE)
+                            .sound(SoundType.SUSPICIOUS_GRAVEL)
+                            .pushReaction(PushReaction.DESTROY)
+                            .noLootTable())
+                    .transform(TagGen.pickaxeOnly())
+                    .blockstate(BlockStateGen::suspiciousAbyssAndesite)
+                    .item()
+                    .model(() -> (ctx, prov) -> prov.createWithExistingModel(
+                            ctx.getEntry(), prov.modLoc("block/" + ctx.getName() + "_0")))
+                    .build()
+                    .register();
 
     public static final BlockEntry<AbyssAndesiteBlock> MARLITH = REGISTRATE.object("marlith")
             .block(AbyssAndesiteBlock::new)
@@ -434,6 +458,92 @@ public class MiaBlocks {
     public static final BlockEntry<SlabBlock> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB = slab(MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
     public static final BlockEntry<WallBlock> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL = wall(MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
 
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_SKYFOG_LOG = REGISTRATE.object("stripped_skyfog_log")
+            .block(RotatedPillarBlock::new)
+            .properties(p -> treeLogProperties(p, MapColor.WOOD, MapColor.WOOD))
+            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
+            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_SKYFOG_WOOD = REGISTRATE.object("stripped_skyfog_wood")
+            .block(RotatedPillarBlock::new)
+            .initialProperties(STRIPPED_SKYFOG_LOG)
+            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
+            .blockstate(() -> (ctx, prov) -> prov.woodProvider(STRIPPED_SKYFOG_LOG.get()).wood(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> SKYFOG_LOG = REGISTRATE.object("skyfog_log")
+            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_SKYFOG_LOG.get(), p))
+            .properties(p -> treeLogProperties(p, MapColor.WOOD, MapColor.PODZOL))
+            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
+            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> SKYFOG_WOOD = REGISTRATE.object("skyfog_wood")
+            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_SKYFOG_WOOD.get(), p))
+            .initialProperties(SKYFOG_LOG)
+            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
+            .blockstate(() -> (ctx, prov) -> prov.woodProvider(SKYFOG_LOG.get()).wood(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_VERDANT_STEM = REGISTRATE.object("stripped_verdant_stem")
+            .block(RotatedPillarBlock::new)
+            .properties(p -> treeLogProperties(p, MapColor.TERRACOTTA_RED, MapColor.WOOD).sound(SoundType.STEM))
+            .tag(BlockTags.LOGS)
+            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_VERDANT_HYPHAE = REGISTRATE.object("stripped_verdant_hyphae")
+            .block(RotatedPillarBlock::new)
+            .initialProperties(STRIPPED_VERDANT_STEM)
+            .tag(BlockTags.LOGS)
+            .blockstate(() -> (ctx, prov) -> prov.woodProvider(STRIPPED_VERDANT_STEM.get()).wood(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> VERDANT_STEM = REGISTRATE.object("verdant_stem")
+            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_VERDANT_STEM.get(), p))
+            .properties(p -> treeLogProperties(p, MapColor.TERRACOTTA_YELLOW, MapColor.WOOD).sound(SoundType.STEM))
+            .tag(BlockTags.LOGS)
+            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> VERDANT_HYPHAE = REGISTRATE.object("verdant_hyphae")
+            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_VERDANT_HYPHAE.get(), p))
+            .initialProperties(VERDANT_STEM)
+            .tag(BlockTags.LOGS)
+            .blockstate(() -> (ctx, prov) -> prov.woodProvider(VERDANT_STEM.get()).wood(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_INVERTED_LOG = REGISTRATE.object("stripped_inverted_log")
+            .block(RotatedPillarBlock::new)
+            .properties(p -> treeLogProperties(p, MapColor.WOOD, MapColor.WOOD))
+            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
+            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_INVERTED_WOOD = REGISTRATE.object("stripped_inverted_wood")
+            .block(RotatedPillarBlock::new).initialProperties(STRIPPED_INVERTED_LOG)
+            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
+            .blockstate(() -> (ctx, prov) -> prov.woodProvider(STRIPPED_INVERTED_LOG.get()).wood(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> INVERTED_LOG = REGISTRATE.object("inverted_log")
+            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_INVERTED_LOG.get(), p))
+            .properties(p -> treeLogProperties(p, MapColor.WOOD, MapColor.PODZOL))
+            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
+            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
+            .simpleItem().register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> INVERTED_WOOD = REGISTRATE.object("inverted_wood")
+            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_INVERTED_WOOD.get(), p)).initialProperties(INVERTED_LOG)
+            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
+            .blockstate(() -> (ctx, prov) -> prov.woodProvider(INVERTED_LOG.get()).wood(ctx.get()))
+            .simpleItem().register();
+
+    static {
+        REGISTRATE.defaultCreativeSection(MiaItemGroups.BASE_NATURE_BLOCKS);
+    }
+
     public static final BlockEntry<TallGrassBlock> MARGINAL_WEED = REGISTRATE.object("marginal_weed")
             .block(TallGrassBlock::new)
             .properties(MiaBlocks::plantProperties)
@@ -510,34 +620,6 @@ public class MiaBlocks {
     public static final BlockEntry<FlowerBlock> KONJAC_ROOT = flower("konjac_root", MobEffects.INSTANT_HEALTH, 5.0F, SoundType.ROOTS, 0);
     public static final BlockEntry<FlowerBlock> SILVEAF_FUNGUS = flower("silveaf_fungus", MobEffects.INSTANT_HEALTH, 5.0F, SoundType.ROOTS, 0);
 
-    public static final BlockEntry<RotatedPillarBlock> STRIPPED_SKYFOG_LOG = REGISTRATE.object("stripped_skyfog_log")
-            .block(RotatedPillarBlock::new)
-            .properties(p -> treeLogProperties(p, MapColor.WOOD, MapColor.WOOD))
-            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
-            .simpleItem().register();
-
-    public static final BlockEntry<RotatedPillarBlock> STRIPPED_SKYFOG_WOOD = REGISTRATE.object("stripped_skyfog_wood")
-            .block(RotatedPillarBlock::new)
-            .initialProperties(STRIPPED_SKYFOG_LOG)
-            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-            .blockstate(() -> (ctx, prov) -> prov.woodProvider(STRIPPED_SKYFOG_LOG.get()).wood(ctx.get()))
-            .simpleItem().register();
-
-    public static final BlockEntry<StrippedRotatedPillarBlock> SKYFOG_LOG = REGISTRATE.object("skyfog_log")
-            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_SKYFOG_LOG.get(), p))
-            .properties(p -> treeLogProperties(p, MapColor.WOOD, MapColor.PODZOL))
-            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
-            .simpleItem().register();
-
-    public static final BlockEntry<StrippedRotatedPillarBlock> SKYFOG_WOOD = REGISTRATE.object("skyfog_wood")
-            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_SKYFOG_WOOD.get(), p))
-            .initialProperties(SKYFOG_LOG)
-            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-            .blockstate(() -> (ctx, prov) -> prov.woodProvider(SKYFOG_LOG.get()).wood(ctx.get()))
-            .simpleItem().register();
-
     public static final BlockEntry<GreenParticleLeavesBlock> SKYFOG_LEAVES = REGISTRATE.object("skyfog_leaves")
             .block(p -> new GreenParticleLeavesBlock(0.01F, p))
             .initialProperties(() -> Blocks.AZALEA_LEAVES)
@@ -560,34 +642,6 @@ public class MiaBlocks {
             .item().model(() -> flatPlantItem("block/skyfog_sapling")).build()
             .register();
 
-    public static final BlockEntry<RotatedPillarBlock> STRIPPED_VERDANT_STEM = REGISTRATE.object("stripped_verdant_stem")
-            .block(RotatedPillarBlock::new)
-            .properties(p -> treeLogProperties(p, MapColor.TERRACOTTA_RED, MapColor.WOOD).sound(SoundType.STEM))
-            .tag(BlockTags.LOGS)
-            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
-            .simpleItem().register();
-
-    public static final BlockEntry<RotatedPillarBlock> STRIPPED_VERDANT_HYPHAE = REGISTRATE.object("stripped_verdant_hyphae")
-            .block(RotatedPillarBlock::new)
-            .initialProperties(STRIPPED_VERDANT_STEM)
-            .tag(BlockTags.LOGS)
-            .blockstate(() -> (ctx, prov) -> prov.woodProvider(STRIPPED_VERDANT_STEM.get()).wood(ctx.get()))
-            .simpleItem().register();
-
-    public static final BlockEntry<StrippedRotatedPillarBlock> VERDANT_STEM = REGISTRATE.object("verdant_stem")
-            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_VERDANT_STEM.get(), p))
-            .properties(p -> treeLogProperties(p, MapColor.TERRACOTTA_YELLOW, MapColor.WOOD).sound(SoundType.STEM))
-            .tag(BlockTags.LOGS)
-            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
-            .simpleItem().register();
-
-    public static final BlockEntry<StrippedRotatedPillarBlock> VERDANT_HYPHAE = REGISTRATE.object("verdant_hyphae")
-            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_VERDANT_HYPHAE.get(), p))
-            .initialProperties(VERDANT_STEM)
-            .tag(BlockTags.LOGS)
-            .blockstate(() -> (ctx, prov) -> prov.woodProvider(VERDANT_STEM.get()).wood(ctx.get()))
-            .simpleItem().register();
-
     public static final BlockEntry<SlimeBlock> VERDANT_LEAVES = REGISTRATE.object("verdant_leaves")
             .block(SlimeBlock::new)
             .properties(p -> p.mapColor(MapColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WART_BLOCK)
@@ -600,32 +654,6 @@ public class MiaBlocks {
             .blockstate(BlockStateGen::crossPlant)
             .item().model(() -> flatPlantItem("block/verdant_fungus")).build()
             .register();
-
-    public static final BlockEntry<RotatedPillarBlock> STRIPPED_INVERTED_LOG = REGISTRATE.object("stripped_inverted_log")
-            .block(RotatedPillarBlock::new)
-            .properties(p -> treeLogProperties(p, MapColor.WOOD, MapColor.WOOD))
-            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
-            .simpleItem().register();
-
-    public static final BlockEntry<RotatedPillarBlock> STRIPPED_INVERTED_WOOD = REGISTRATE.object("stripped_inverted_wood")
-            .block(RotatedPillarBlock::new).initialProperties(STRIPPED_INVERTED_LOG)
-            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-            .blockstate(() -> (ctx, prov) -> prov.woodProvider(STRIPPED_INVERTED_LOG.get()).wood(ctx.get()))
-            .simpleItem().register();
-
-    public static final BlockEntry<StrippedRotatedPillarBlock> INVERTED_LOG = REGISTRATE.object("inverted_log")
-            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_INVERTED_LOG.get(), p))
-            .properties(p -> treeLogProperties(p, MapColor.WOOD, MapColor.PODZOL))
-            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-            .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
-            .simpleItem().register();
-
-    public static final BlockEntry<StrippedRotatedPillarBlock> INVERTED_WOOD = REGISTRATE.object("inverted_wood")
-            .block(p -> new StrippedRotatedPillarBlock(STRIPPED_INVERTED_WOOD.get(), p)).initialProperties(INVERTED_LOG)
-            .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-            .blockstate(() -> (ctx, prov) -> prov.woodProvider(INVERTED_LOG.get()).wood(ctx.get()))
-            .simpleItem().register();
 
     public static final BlockEntry<GreenParticleLeavesBlock> INVERTED_LEAVES = REGISTRATE.object("inverted_leaves")
             .block(p -> new GreenParticleLeavesBlock(0.01F, p))

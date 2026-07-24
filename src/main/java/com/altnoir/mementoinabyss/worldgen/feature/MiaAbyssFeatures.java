@@ -61,6 +61,7 @@ public final class MiaAbyssFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> POOL_WITH_REED = key("pool_with_reed");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SPRING_WATER = key("spring_water");
     public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_WATER = key("lake_water");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SLAB_RUINS = key("slab_ruins");
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAW_IRON = key("raw_iron");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SUN_STONE = key("sun_stone");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_GEODE = key("prasiolite_geode");
@@ -147,6 +148,16 @@ public final class MiaAbyssFeatures {
         context.register(LAKE_WATER, new ConfiguredFeature<>(Feature.LAKE,
                 new LakeFeature.Configuration(BlockStateProvider.simple(Blocks.WATER),
                         BlockStateProvider.simple(Blocks.SAND))));
+        context.register(SLAB_RUINS, new ConfiguredFeature<>(MiaWorldgenFeatures.SLAB_RUINS.get(),
+                new SlabRuinsConfiguration(
+                        new WeightedStateProvider(WeightedList.<BlockState>builder()
+                                .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get().defaultBlockState(), 1)
+                                .add(MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB.get().defaultBlockState(), 1)
+                                .build()),
+                        new WeightedStateProvider(WeightedList.<BlockState>builder()
+                                .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS.get().defaultBlockState(), 1)
+                                .add(MiaBlocks.ABYSS_ANDESITE_BRICKS.get().defaultBlockState(), 1)
+                                .build()))));
         context.register(RAW_IRON, new ConfiguredFeature<>(Feature.BLOCK_PILE,
                 new BlockPileConfiguration(new WeightedStateProvider(WeightedList.<BlockState>builder()
                         .add(Blocks.RAW_IRON_BLOCK.defaultBlockState(), 2)

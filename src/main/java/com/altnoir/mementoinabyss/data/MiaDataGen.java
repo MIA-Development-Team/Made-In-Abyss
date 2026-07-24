@@ -50,6 +50,7 @@ public class MiaDataGen {
         event.createProvider(MiaCurseDataProvider::new);
         event.createProvider(MiaCuriosDataProvider::new);
         event.createProvider(MiaArtifactEnhancementRecipeProvider.Runner::new);
+        event.createProvider(MiaLootTableProvider::create);
         event.createDatapackRegistryObjects(new RegistrySetBuilder()
                 .add(Registries.WORLD_CLOCK, MiaWorldClocks::bootstrap)
                 .add(Registries.DIMENSION_TYPE, MiaDimensionTypes::bootstrap)

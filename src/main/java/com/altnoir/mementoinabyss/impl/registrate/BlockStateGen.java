@@ -20,7 +20,9 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BrushableBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import org.jspecify.annotations.Nullable;
 
@@ -113,6 +115,24 @@ public class BlockStateGen {
             var variants = BlockModelGenerators.createRotatedVariants(BlockModelGenerators.plainModel(model));
             prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, variants));
             prov.registerSimpleItemModel(block, model);
+        };
+    }
+
+    public static NonNullBiConsumer<DataGenContext<Block, BrushableBlock>, RegistrateBlockModelGenerator>
+    suspiciousAbyssAndesite() {
+        return (ctx, prov) -> {
+            var models = new MultiVariant[4];
+            for (int dusted = 0; dusted < models.length; dusted++) {
+                var suffix = "_" + dusted;
+                var model = ModelTemplates.CUBE_ALL.create(
+                        prov.modLoc("block/" + ctx.getName() + suffix),
+                        TextureMapping.cube(prov.modBlockTexture(ctx.getName() + suffix)),
+                        prov.modelOutput);
+                models[dusted] = BlockModelGenerators.plainVariant(model);
+            }
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get()).with(
+                    PropertyDispatch.initial(BlockStateProperties.DUSTED)
+                            .generate(dusted -> models[dusted])));
         };
     }
 

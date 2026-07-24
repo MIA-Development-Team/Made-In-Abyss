@@ -2,8 +2,8 @@
   "values": [
     "mementoinabyss:abyss_portal_frame",
     "mementoinabyss:pedestal",
-    "mementoinabyss:abyss_andesite",
     "mementoinabyss:artifact_smithing_table",
+    "mementoinabyss:abyss_andesite",
     "mementoinabyss:abyss_andesite_stairs",
     "mementoinabyss:abyss_andesite_slab",
     "mementoinabyss:abyss_andesite_wall",
@@ -31,6 +31,7 @@
     "mementoinabyss:mossy_abyss_andesite_bricks_wall",
     "mementoinabyss:covergrass_abyss_andesite",
     "mementoinabyss:covergrass_tuff",
+    "mementoinabyss:suspicious_abyss_andesite",
     "mementoinabyss:polished_fossilized_wood_stairs",
     "mementoinabyss:polished_fossilized_wood_slab",
     "mementoinabyss:polished_fossilized_wood_wall",
