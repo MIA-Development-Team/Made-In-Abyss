@@ -1,7 +1,7 @@
 package com.altnoir.mementoinabyss.client.render;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.compat.IrisRenderCompat;
+import com.altnoir.mementoinabyss.compat.iris.IrisRenderCompat;
 import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.shaders.UniformType;

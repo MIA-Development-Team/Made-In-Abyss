@@ -1,5 +1,6 @@
-package com.altnoir.mementoinabyss.compat;
+package com.altnoir.mementoinabyss.compat.iris;
 
+import com.altnoir.mementoinabyss.compat.MiaMods;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.irisshaders.iris.api.v0.IrisProgram;
 

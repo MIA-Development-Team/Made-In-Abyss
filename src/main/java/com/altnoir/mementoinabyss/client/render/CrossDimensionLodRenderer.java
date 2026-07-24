@@ -4,7 +4,7 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.CpuMesh;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.HeightField;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.QuadBuffer;
-import com.altnoir.mementoinabyss.compat.IrisRenderCompat;
+import com.altnoir.mementoinabyss.compat.iris.IrisRenderCompat;
 import com.altnoir.mementoinabyss.compat.MiaMods;
 import com.altnoir.mementoinabyss.compat.sodium.SodiumLodCompat;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodControlPayload;
