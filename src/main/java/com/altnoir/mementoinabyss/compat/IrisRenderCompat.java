@@ -8,8 +8,8 @@ public final class IrisRenderCompat {
         return MiaMods.IRIS.runIfInstalled(() -> IrisApi::isShaderPackInUse).orElse(false);
     }
 
-    public static void assignTexturedPipeline(RenderPipeline pipeline) {
-        MiaMods.IRIS.executeIfInstalled(() -> () -> IrisApi.assignTexturedPipeline(pipeline));
+    public static void assignTerrainSolidPipeline(RenderPipeline pipeline) {
+        MiaMods.IRIS.executeIfInstalled(() -> () -> IrisApi.assignTerrainSolidPipeline(pipeline));
     }
 
     public static void assignSkyPipeline(RenderPipeline pipeline) {
@@ -21,9 +21,9 @@ public final class IrisRenderCompat {
             return net.irisshaders.iris.api.v0.IrisApi.getInstance().isShaderPackInUse();
         }
 
-        private static void assignTexturedPipeline(RenderPipeline pipeline) {
+        private static void assignTerrainSolidPipeline(RenderPipeline pipeline) {
             net.irisshaders.iris.api.v0.IrisApi.getInstance()
-                    .assignPipeline(pipeline, IrisProgram.TEXTURED);
+                    .assignPipeline(pipeline, IrisProgram.TERRAIN_SOLID);
         }
 
         private static void assignSkyPipeline(RenderPipeline pipeline) {

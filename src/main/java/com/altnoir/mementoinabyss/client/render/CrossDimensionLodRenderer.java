@@ -28,6 +28,8 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.LightCoordsUtil;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -244,7 +246,7 @@ public final class CrossDimensionLodRenderer {
             // invalidate useful work for an unchanged source chunk. Only replacement of the
             // source payload makes this completed mesh obsolete.
             if (DATA.get(result.key) != result.sourcePayload) continue;
-            PackedChunk packed = packMesh(result.mesh, renderFrame);
+            PackedChunk packed = packMesh(result.mesh, renderFrame, irisSkyExposureRegion());
             PACKED_CHUNKS.put(result.key, packed);
             long pageKey = pageKey(result.mesh.chunkX, result.mesh.chunkZ);
             markPageDirty(pageKey);
@@ -903,16 +905,28 @@ public final class CrossDimensionLodRenderer {
         }
     }
 
-    private static PackedChunk packMesh(CpuMesh cpuMesh, long fadeStartFrame) {
+    private static PackedChunk packMesh(CpuMesh cpuMesh, long fadeStartFrame,
+                                        RegionalSkyLight.Region irisSkyExposureRegion) {
         Set<TextureAtlasSprite> sprites = new HashSet<>();
         PackedBuffer terrain = packQuadBuffer(cpuMesh.quads, sprites);
         PackedBuffer seam = packQuadBuffer(cpuMesh.seamQuads, sprites);
         PackedBuffer irisTerrain = MiaMods.IRIS.isLoaded()
-                ? packIrisQuadBuffer(cpuMesh.quads) : PackedBuffer.EMPTY;
+                ? packIrisQuadBuffer(cpuMesh.quads, irisSkyExposureRegion) : PackedBuffer.EMPTY;
         PackedBuffer irisSeam = MiaMods.IRIS.isLoaded()
-                ? packIrisQuadBuffer(cpuMesh.seamQuads) : PackedBuffer.EMPTY;
+                ? packIrisQuadBuffer(cpuMesh.seamQuads, irisSkyExposureRegion) : PackedBuffer.EMPTY;
         return new PackedChunk(cpuMesh.chunkX, cpuMesh.chunkZ, terrain, seam, irisTerrain, irisSeam,
                 Set.copyOf(sprites), cpuMesh.bounds, cpuMesh.cellSize, fadeStartFrame);
+    }
+
+    /**
+     * Supplies only sky visibility to Iris. The shader pack still owns the
+     * actual sun color, time-of-day response, shadowing, and final brightness.
+     */
+    private static RegionalSkyLight.Region irisSkyExposureRegion() {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.level == null) return null;
+        var activeLink = CrossDimensionLodLinks.forTarget(minecraft.level.dimension()).orElse(null);
+        return activeLink == null ? null : RegionalSkyLight.resolve(activeLink.source());
     }
 
     private static PackedBuffer packQuadBuffer(QuadBuffer quads, Set<TextureAtlasSprite> sprites) {
@@ -939,7 +953,8 @@ public final class CrossDimensionLodRenderer {
         }
     }
 
-    private static PackedBuffer packIrisQuadBuffer(QuadBuffer quads) {
+    private static PackedBuffer packIrisQuadBuffer(QuadBuffer quads,
+                                                   RegionalSkyLight.Region skyExposureRegion) {
         int vertexCount = Math.multiplyExact(quads.size, 4);
         int vertexBytes = Math.multiplyExact(vertexCount,
                 CrossDimensionLodRenderTypes.IRIS_VERTEX_FORMAT.getVertexSize());
@@ -952,7 +967,7 @@ public final class CrossDimensionLodRenderer {
                 int attribute = quad * 2;
                 int face = quads.attributes[attribute];
                 TextureAtlasSprite sprite = blockSprite(quads.attributes[attribute + 1], face);
-                emitIrisQuad(builder, quads, quad, sprite);
+                emitIrisQuad(builder, quads, quad, sprite, skyExposureRegion);
             }
             try (MeshData mesh = builder.buildOrThrow()) {
                 var vertexData = mesh.vertexBuffer().duplicate();
@@ -1093,7 +1108,8 @@ public final class CrossDimensionLodRenderer {
     }
 
     private static void emitIrisQuad(VertexConsumer consumer, QuadBuffer quads, int index,
-                                     TextureAtlasSprite sprite) {
+                                     TextureAtlasSprite sprite,
+                                     RegionalSkyLight.Region skyExposureRegion) {
         int coordinate = index * 6;
         float x0 = quads.coordinates[coordinate];
         float y0 = quads.coordinates[coordinate + 1];
@@ -1103,34 +1119,47 @@ public final class CrossDimensionLodRenderer {
         float z1 = quads.coordinates[coordinate + 5];
         int face = quads.attributes[index * 2];
         switch (face) {
-            case 0 -> emitIrisTextured(consumer, sprite, 0.8F,
+            case 0 -> emitIrisTextured(consumer, sprite, 0.8F, -1, 0, 0, skyExposureRegion,
                     x0,y0,z1, x0,y1,z1, x0,y1,z0, x0,y0,z0);
-            case 1 -> emitIrisTextured(consumer, sprite, 0.8F,
+            case 1 -> emitIrisTextured(consumer, sprite, 0.8F, 1, 0, 0, skyExposureRegion,
                     x0,y0,z0, x0,y1,z0, x0,y1,z1, x0,y0,z1);
-            case 2 -> emitIrisTextured(consumer, sprite, 0.6F,
+            case 2 -> emitIrisTextured(consumer, sprite, 0.6F, 0, -1, 0, skyExposureRegion,
                     x0,y0,z0, x1,y0,z0, x1,y0,z1, x0,y0,z1);
-            case 3 -> emitIrisTextured(consumer, sprite, 1.0F,
+            case 3 -> emitIrisTextured(consumer, sprite, 1.0F, 0, 1, 0, skyExposureRegion,
                     x0,y0,z1, x1,y0,z1, x1,y0,z0, x0,y0,z0);
-            case 4 -> emitIrisTextured(consumer, sprite, 0.8F,
+            case 4 -> emitIrisTextured(consumer, sprite, 0.8F, 0, 0, -1, skyExposureRegion,
                     x0,y0,z0, x0,y1,z0, x1,y1,z0, x1,y0,z0);
-            case 5 -> emitIrisTextured(consumer, sprite, 0.8F,
+            case 5 -> emitIrisTextured(consumer, sprite, 0.8F, 0, 0, 1, skyExposureRegion,
                     x1,y0,z0, x1,y1,z0, x0,y1,z0, x0,y0,z0);
         }
     }
 
     private static void emitIrisTextured(VertexConsumer consumer, TextureAtlasSprite sprite,
-                                         float shade,
+                                         float shade, float nx, float ny, float nz,
+                                         RegionalSkyLight.Region skyExposureRegion,
                                          float ax, float ay, float az, float bx, float by, float bz,
                                          float cx, float cy, float cz, float dx, float dy, float dz) {
-        irisVertex(consumer, ax, ay, az, sprite.getU0(), sprite.getV1(), shade);
-        irisVertex(consumer, bx, by, bz, sprite.getU0(), sprite.getV0(), shade);
-        irisVertex(consumer, cx, cy, cz, sprite.getU1(), sprite.getV0(), shade);
-        irisVertex(consumer, dx, dy, dz, sprite.getU1(), sprite.getV1(), shade);
+        irisVertex(consumer, ax, ay, az, sprite.getU0(), sprite.getV1(),
+                shade, nx, ny, nz, skyExposureRegion);
+        irisVertex(consumer, bx, by, bz, sprite.getU0(), sprite.getV0(),
+                shade, nx, ny, nz, skyExposureRegion);
+        irisVertex(consumer, cx, cy, cz, sprite.getU1(), sprite.getV0(),
+                shade, nx, ny, nz, skyExposureRegion);
+        irisVertex(consumer, dx, dy, dz, sprite.getU1(), sprite.getV1(),
+                shade, nx, ny, nz, skyExposureRegion);
     }
 
     private static void irisVertex(VertexConsumer consumer, float x, float y, float z,
-                                   float u, float v, float shade) {
-        consumer.addVertex(x, y, z).setUv(u, v).setColor(shade, shade, shade, 1.0F);
+                                   float u, float v, float shade,
+                                   float nx, float ny, float nz,
+                                   RegionalSkyLight.Region skyExposureRegion) {
+        int skyExposure = skyExposureRegion == null
+                ? 15 : skyExposureRegion.maxSkyLight(Mth.floor(x), Mth.floor(z));
+        consumer.addVertex(x, y, z)
+                .setColor(shade, shade, shade, 1.0F)
+                .setUv(u, v)
+                .setLight(LightCoordsUtil.pack(0, skyExposure))
+                .setNormal(nx, ny, nz);
     }
 
     private static int packUv(float u, float v) {

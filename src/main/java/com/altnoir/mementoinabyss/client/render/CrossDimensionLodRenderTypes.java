@@ -5,7 +5,6 @@ import com.altnoir.mementoinabyss.compat.IrisRenderCompat;
 import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.shaders.UniformType;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -21,8 +20,19 @@ public final class CrossDimensionLodRenderTypes {
             .add("Normal", VertexFormatElement.NORMAL)
             .padding(1)
             .build();
-    /** Standard non-integer format used only while an Iris shader pack is active. */
-    public static final VertexFormat IRIS_VERTEX_FORMAT = DefaultVertexFormat.POSITION_TEX_COLOR;
+    /**
+     * Terrain-compatible format used while an Iris shader pack is active.
+     * Light coordinates and normals are required by terrain gbuffers; omitting
+     * either makes many shader packs treat the LOD as unlit textured geometry.
+     */
+    public static final VertexFormat IRIS_VERTEX_FORMAT = VertexFormat.builder()
+            .add("Position", VertexFormatElement.POSITION)
+            .add("Color", VertexFormatElement.COLOR)
+            .add("UV0", VertexFormatElement.UV0)
+            .add("UV2", VertexFormatElement.UV2)
+            .add("Normal", VertexFormatElement.NORMAL)
+            .padding(1)
+            .build();
 
     private static final RenderPipeline TILED_BLOCKS_PIPELINE = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
             .withLocation(MementoInAbyss.asResource("pipeline/cross_dimension_lod"))
@@ -46,7 +56,7 @@ public final class CrossDimensionLodRenderTypes {
     public static void registerPipelines(RegisterRenderPipelinesEvent event) {
         event.registerPipeline(TILED_BLOCKS_PIPELINE);
         event.registerPipeline(IRIS_BLOCKS_PIPELINE);
-        IrisRenderCompat.assignTexturedPipeline(IRIS_BLOCKS_PIPELINE);
+        IrisRenderCompat.assignTerrainSolidPipeline(IRIS_BLOCKS_PIPELINE);
     }
 
     public static RenderPipeline tiledBlocksPipeline() {
