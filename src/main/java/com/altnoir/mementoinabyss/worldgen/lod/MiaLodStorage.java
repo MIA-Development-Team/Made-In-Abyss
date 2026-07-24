@@ -4,6 +4,9 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.util.concurrent.MiaExecutors;
 import com.altnoir.mementoinabyss.worldgen.MiaHeight;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -50,7 +53,7 @@ import java.util.zip.InflaterInputStream;
 final class MiaLodStorage {
     private static final int BASE_CELL_SIZE = 4;
     private static final int MAGIC = 0x4D49414C; // MIAL
-    private static final int VERSION = 5;
+    private static final int VERSION = 6;
     private static final int MAX_PENDING_WRITES = 128;
     private static final int MAX_CAPTURE_SUBMISSIONS_PER_TICK = 2;
     private static final int MAX_CAPTURES_IN_FLIGHT = 16;
@@ -211,7 +214,10 @@ final class MiaLodStorage {
                 return Optional.empty();
             }
             int[] palette = new int[paletteSize];
-            for (int i = 0; i < paletteSize; i++) palette[i] = input.readInt();
+            for (int i = 0; i < paletteSize; i++) {
+                BlockState state = NbtUtils.readBlockState(BuiltInRegistries.BLOCK, NbtIo.read(input));
+                palette[i] = Block.getId(state);
+            }
             int horizontalCells = 16 / cellSize;
             short[] voxels = new short[horizontalCells * horizontalCells * yCells];
             for (int i = 0; i < voxels.length; i++) {
@@ -418,7 +424,7 @@ final class MiaLodStorage {
     }
 
     private static byte[] encode(StoredChunk chunk) throws IOException {
-        int estimatedSize = 32 + chunk.palette.length * Integer.BYTES
+        int estimatedSize = 32 + chunk.palette.length * 64
                 + chunk.voxels.length * Short.BYTES;
         ByteArrayOutputStream bytes = new ByteArrayOutputStream(estimatedSize);
         try (DataOutputStream output = new DataOutputStream(new DeflaterOutputStream(bytes))) {
@@ -431,7 +437,9 @@ final class MiaLodStorage {
             output.writeInt(chunk.minY);
             output.writeInt(chunk.yCells);
             output.writeShort(chunk.palette.length);
-            for (int stateId : chunk.palette) output.writeInt(stateId);
+            for (int stateId : chunk.palette) {
+                NbtIo.write(NbtUtils.writeBlockState(Block.stateById(stateId)), output);
+            }
             for (short voxel : chunk.voxels) output.writeShort(voxel);
         }
         return bytes.toByteArray();
