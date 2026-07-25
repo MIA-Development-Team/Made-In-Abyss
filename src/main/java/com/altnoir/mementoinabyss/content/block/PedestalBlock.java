@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.content.block;
 
 import com.altnoir.mementoinabyss.content.block.entity.PedestalBlockEntity;
+import com.altnoir.mementoinabyss.init.MiaBlockEntityTypes;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -10,6 +11,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -67,11 +69,11 @@ public final class PedestalBlock extends BaseEntityBlock implements SimpleWaterl
         if (!(level.getBlockEntity(pos) instanceof PedestalBlockEntity pedestal) || stack.isEmpty()) {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
-        if (!pedestal.insert(stack, level.isClientSide())) {
+        if (!pedestal.tryInsertItem(stack, level.isClientSide())) {
             return InteractionResult.CONSUME;
         }
         if (!level.isClientSide()) {
-            stack.shrink(1);
+            stack.setCount(0);
             level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.5F, 1.0F);
         }
         return InteractionResult.SUCCESS;
@@ -83,7 +85,7 @@ public final class PedestalBlock extends BaseEntityBlock implements SimpleWaterl
         if (!(level.getBlockEntity(pos) instanceof PedestalBlockEntity pedestal)) {
             return InteractionResult.PASS;
         }
-        ItemStack extracted = pedestal.extract(level.isClientSide());
+        ItemStack extracted = pedestal.tryExtractItem(Item.ABSOLUTE_MAX_STACK_SIZE, level.isClientSide());
         if (extracted.isEmpty()) {
             return InteractionResult.CONSUME;
         }
@@ -124,6 +126,6 @@ public final class PedestalBlock extends BaseEntityBlock implements SimpleWaterl
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new PedestalBlockEntity(pos, state);
+        return MiaBlockEntityTypes.PEDESTAL.create(pos, state);
     }
 }
