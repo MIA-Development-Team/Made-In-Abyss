@@ -1,7 +1,7 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.content.artifact.enhancement.ArtifactEnhancementRecipe;
+import com.altnoir.mementoinabyss.impl.artifact.enhancement.ArtifactEnhancementRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;

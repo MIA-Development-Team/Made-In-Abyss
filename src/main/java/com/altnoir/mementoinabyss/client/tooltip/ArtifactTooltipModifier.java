@@ -1,7 +1,7 @@
 package com.altnoir.mementoinabyss.client.tooltip;
 
-import com.altnoir.mementoinabyss.content.artifact.ArtifactItem;
-import com.altnoir.mementoinabyss.content.artifact.component.ArtifactItemComponent;
+import com.altnoir.mementoinabyss.content.item.artifact.ArtifactItem;
+import com.altnoir.mementoinabyss.impl.artifact.component.ArtifactItemComponent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;

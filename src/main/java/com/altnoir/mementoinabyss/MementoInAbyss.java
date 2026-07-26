@@ -45,6 +45,7 @@ public class MementoInAbyss {
         MiaBlocks.register();
         MiaItems.register();
         MiaArtifactItems.register();
+        MiaWhistleItems.register();
 
         modEventBus.addListener(EventPriority.HIGHEST, MiaDataGen::gatherDataHighPriority);
         modEventBus.addListener(EventPriority.LOWEST, MiaDataGen::gatherData);

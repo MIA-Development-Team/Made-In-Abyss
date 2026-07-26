@@ -1,8 +1,9 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.content.artifact.ArtifactEnhancement;
-import com.altnoir.mementoinabyss.content.artifact.ArtifactProfile;
+import com.altnoir.mementoinabyss.impl.artifact.ArtifactEnhancement;
+import com.altnoir.mementoinabyss.impl.artifact.ArtifactProfile;
+import com.altnoir.mementoinabyss.impl.whistle.component.WhistleLoadout;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -23,6 +24,11 @@ public final class MiaDataComponents {
             COMPONENTS.registerComponentType("artifact_enhancement", builder -> builder
                     .persistent(ArtifactEnhancement.CODEC)
                     .networkSynchronized(ByteBufCodecs.fromCodecWithRegistries(ArtifactEnhancement.CODEC)));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<WhistleLoadout>> WHISTLE_LOADOUT =
+            COMPONENTS.registerComponentType("whistle_loadout", builder -> builder
+                    .persistent(WhistleLoadout.CODEC)
+                    .networkSynchronized(ByteBufCodecs.fromCodecWithRegistries(WhistleLoadout.CODEC)));
 
     public static void register(IEventBus eventBus) {
         COMPONENTS.register(eventBus);

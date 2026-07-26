@@ -1,8 +1,8 @@
 package com.altnoir.mementoinabyss.data;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.content.artifact.enhancement.ArtifactEnhancementRecipe;
-import com.altnoir.mementoinabyss.content.artifact.enhancement.DoubleRange;
+import com.altnoir.mementoinabyss.impl.artifact.enhancement.ArtifactEnhancementRecipe;
+import com.altnoir.mementoinabyss.impl.artifact.enhancement.DoubleRange;
 import com.altnoir.mementoinabyss.init.MiaAttributes;
 import com.altnoir.mementoinabyss.init.MiaItems;
 import net.minecraft.core.Holder;

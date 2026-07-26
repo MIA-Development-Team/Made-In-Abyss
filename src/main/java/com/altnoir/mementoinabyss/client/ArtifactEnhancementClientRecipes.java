@@ -1,6 +1,6 @@
 package com.altnoir.mementoinabyss.client;
 
-import com.altnoir.mementoinabyss.content.artifact.enhancement.ArtifactEnhancementRecipe;
+import com.altnoir.mementoinabyss.impl.artifact.enhancement.ArtifactEnhancementRecipe;
 import com.altnoir.mementoinabyss.init.MiaRecipes;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeMap;

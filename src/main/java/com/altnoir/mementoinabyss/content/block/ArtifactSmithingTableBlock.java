@@ -1,6 +1,6 @@
 package com.altnoir.mementoinabyss.content.block;
 
-import com.altnoir.mementoinabyss.content.artifact.enhancement.ArtifactEnhancementMenu;
+import com.altnoir.mementoinabyss.impl.artifact.enhancement.ArtifactEnhancementMenu;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

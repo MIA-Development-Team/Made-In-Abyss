@@ -19,6 +19,7 @@ import com.altnoir.mementoinabyss.content.block.AbyssPortalBlock;
 import com.altnoir.mementoinabyss.content.block.AbyssPortalCoreBlock;
 import com.altnoir.mementoinabyss.content.block.PedestalBlock;
 import com.altnoir.mementoinabyss.content.block.ArtifactSmithingTableBlock;
+import com.altnoir.mementoinabyss.content.block.WhistleWorkbenchBlock;
 import com.altnoir.mementoinabyss.impl.registrate.BlockStateGen;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.impl.registrate.TagGen;
@@ -34,7 +35,6 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -112,6 +112,18 @@ public class MiaBlocks {
                             .sound(SoundType.NETHERITE_BLOCK))
                     .transform(TagGen.pickaxeOnly())
                     .blockstate(BlockStateGen::artifactSmithingTable)
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<WhistleWorkbenchBlock> WHISTLE_WORKBENCH =
+            REGISTRATE.object("whistle_workbench")
+                    .block(WhistleWorkbenchBlock::new)
+                    .properties(p -> p.mapColor(MapColor.STONE)
+                            .requiresCorrectToolForDrops()
+                            .strength(3.0F, 6.0F)
+                            .sound(SoundType.WOOD))
+                    .transform(TagGen.pickaxeOnly())
+                    .blockstate(BlockStateGen::whistleWorkbench)
                     .simpleItem()
                     .register();
 

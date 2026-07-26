@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "mementoinabyss:block/chiseled_abyss_andesite",
+    "east": "mementoinabyss:block/artifact_smithing_table_2",
+    "north": "mementoinabyss:block/artifact_smithing_table_2",
+    "particle": "mementoinabyss:block/chiseled_abyss_andesite",
+    "south": "mementoinabyss:block/artifact_smithing_table_2",
+    "up": "mementoinabyss:block/artifact_smithing_table_top",
+    "west": "mementoinabyss:block/artifact_smithing_table_2"
+  }
+}

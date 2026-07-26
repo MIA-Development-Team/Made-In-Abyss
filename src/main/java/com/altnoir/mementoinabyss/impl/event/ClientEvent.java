@@ -2,13 +2,17 @@ package com.altnoir.mementoinabyss.impl.event;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.client.tooltip.ArtifactEnhancementMaterialTooltip;
+import com.altnoir.mementoinabyss.client.WhistleComboHandler;
+import com.altnoir.mementoinabyss.client.WhistleKeyMappings;
 import com.altnoir.mementoinabyss.client.tooltip.TooltipModifierRegistry;
 import com.altnoir.mementoinabyss.client.screen.ArtifactEnhancementScreen;
+import com.altnoir.mementoinabyss.client.screen.WhistleWorkbenchScreen;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodDebugEntry;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodRenderer;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodRenderTypes;
 import com.altnoir.mementoinabyss.client.render.EnvironmentCubeSkyboxRenderer;
 import com.altnoir.mementoinabyss.client.render.StarCompassOverlay;
+import com.altnoir.mementoinabyss.client.render.WhistleComboOverlay;
 import com.altnoir.mementoinabyss.network.CompassTargetPayload;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodDebugPayload;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodPayload;
@@ -25,6 +29,7 @@ import net.neoforged.neoforge.client.event.RegisterCustomEnvironmentEffectRender
 import net.neoforged.neoforge.client.event.RegisterDebugEntriesEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RecipesReceivedEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
@@ -36,6 +41,13 @@ public final class ClientEvent {
     @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(MiaMenus.ARTIFACT_ENHANCEMENT.get(), ArtifactEnhancementScreen::new);
+        event.register(MiaMenus.WHISTLE_WORKBENCH.get(), WhistleWorkbenchScreen::new);
+    }
+
+    @SubscribeEvent
+    public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
+        event.registerCategory(WhistleKeyMappings.CATEGORY);
+        event.register(WhistleKeyMappings.SKILL_DIAL);
     }
 
     @SubscribeEvent
@@ -57,11 +69,13 @@ public final class ClientEvent {
     @SubscribeEvent
     public static void renderStarCompass(RenderGuiEvent.Post event) {
         StarCompassOverlay.render(event.getGuiGraphics(), event.getPartialTick());
+        WhistleComboOverlay.render(event.getGuiGraphics());
     }
 
     @SubscribeEvent
     public static void clientTick(ClientTickEvent.Post event) {
         CrossDimensionLodRenderer.clientTick();
+        WhistleComboHandler.tick();
     }
 
     @SubscribeEvent
@@ -88,6 +102,7 @@ public final class ClientEvent {
         CrossDimensionLodRenderer.disconnect();
         CrossDimensionLodDebugEntry.clear();
         StarCompassOverlay.clear();
+        WhistleComboHandler.reset();
     }
 
     @SubscribeEvent

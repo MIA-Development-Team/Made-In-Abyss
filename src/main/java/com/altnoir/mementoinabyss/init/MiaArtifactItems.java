@@ -1,11 +1,11 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.content.artifact.ArtifactAttribute;
-import com.altnoir.mementoinabyss.content.artifact.ArtifactGrade;
-import com.altnoir.mementoinabyss.content.artifact.ArtifactItem;
-import com.altnoir.mementoinabyss.content.artifact.ArtifactProfile;
-import com.altnoir.mementoinabyss.content.artifact.component.ArtifactAttributeComponent;
+import com.altnoir.mementoinabyss.impl.artifact.ArtifactAttribute;
+import com.altnoir.mementoinabyss.impl.artifact.ArtifactGrade;
+import com.altnoir.mementoinabyss.content.item.artifact.ArtifactItem;
+import com.altnoir.mementoinabyss.impl.artifact.ArtifactProfile;
+import com.altnoir.mementoinabyss.impl.artifact.component.ArtifactAttributeComponent;
 import com.altnoir.mementoinabyss.content.item.StarCompassItem;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;

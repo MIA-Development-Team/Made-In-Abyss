@@ -1,7 +1,7 @@
 package com.altnoir.mementoinabyss.client.tooltip;
 
 import com.altnoir.mementoinabyss.client.ArtifactEnhancementClientRecipes;
-import com.altnoir.mementoinabyss.content.artifact.enhancement.ArtifactEnhancementRecipe;
+import com.altnoir.mementoinabyss.impl.artifact.enhancement.ArtifactEnhancementRecipe;
 import com.altnoir.mementoinabyss.init.MiaAttributes;
 import com.altnoir.mementoinabyss.init.MiaRecipes;
 import net.minecraft.client.Minecraft;

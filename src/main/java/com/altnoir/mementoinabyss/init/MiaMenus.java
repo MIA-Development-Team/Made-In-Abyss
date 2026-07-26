@@ -1,7 +1,8 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.content.artifact.enhancement.ArtifactEnhancementMenu;
+import com.altnoir.mementoinabyss.impl.artifact.enhancement.ArtifactEnhancementMenu;
+import com.altnoir.mementoinabyss.impl.whistle.workbench.WhistleWorkbenchMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
@@ -17,6 +18,12 @@ public final class MiaMenus {
             ARTIFACT_ENHANCEMENT = MENUS.register(
                     "artifact_enhancement",
                     () -> new MenuType<>(ArtifactEnhancementMenu::new, FeatureFlags.DEFAULT_FLAGS)
+            );
+
+    public static final DeferredHolder<MenuType<?>, MenuType<WhistleWorkbenchMenu>>
+            WHISTLE_WORKBENCH = MENUS.register(
+                    "whistle_workbench",
+                    () -> new MenuType<>(WhistleWorkbenchMenu::new, FeatureFlags.DEFAULT_FLAGS)
             );
 
     public static void register(IEventBus bus) {

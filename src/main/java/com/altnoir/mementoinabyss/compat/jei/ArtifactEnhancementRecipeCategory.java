@@ -1,9 +1,9 @@
 package com.altnoir.mementoinabyss.compat.jei;
 
 import com.altnoir.mementoinabyss.client.tooltip.ArtifactEnhancementMaterialTooltip;
-import com.altnoir.mementoinabyss.content.artifact.ArtifactApi;
-import com.altnoir.mementoinabyss.content.artifact.enhancement.ArtifactEnhancementRecipe;
-import com.altnoir.mementoinabyss.content.artifact.enhancement.ArtifactEnhancementRecipeInput;
+import com.altnoir.mementoinabyss.impl.artifact.ArtifactApi;
+import com.altnoir.mementoinabyss.impl.artifact.enhancement.ArtifactEnhancementRecipe;
+import com.altnoir.mementoinabyss.impl.artifact.enhancement.ArtifactEnhancementRecipeInput;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.ITooltipBuilder;

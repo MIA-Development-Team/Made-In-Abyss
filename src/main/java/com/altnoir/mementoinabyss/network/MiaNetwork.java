@@ -13,6 +13,11 @@ public final class MiaNetwork {
         registrar.playToClient(CrossDimensionLodDebugPayload.TYPE, CrossDimensionLodDebugPayload.STREAM_CODEC);
         registrar.playToServer(CrossDimensionLodControlPayload.TYPE,
                 CrossDimensionLodControlPayload.STREAM_CODEC, CrossDimensionLodControlPayload::handle);
+        registrar.playToServer(
+                ActivateWhistleSkillPayload.TYPE,
+                ActivateWhistleSkillPayload.STREAM_CODEC,
+                ActivateWhistleSkillPayload::handle
+        );
     }
 
     private MiaNetwork() {}

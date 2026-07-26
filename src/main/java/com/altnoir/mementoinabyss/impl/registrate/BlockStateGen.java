@@ -101,6 +101,25 @@ public class BlockStateGen {
         };
     }
 
+    public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+    whistleWorkbench() {
+        return (ctx, prov) -> {
+            var bottom = prov.modBlockTexture("chiseled_abyss_andesite");
+            var side = prov.modBlockTexture("artifact_smithing_table_2");
+            var top = prov.modBlockTexture("artifact_smithing_table_top");
+            var textures = new TextureMapping()
+                    .put(TextureSlot.PARTICLE, bottom)
+                    .put(TextureSlot.DOWN, bottom)
+                    .put(TextureSlot.UP, top)
+                    .put(TextureSlot.NORTH, side)
+                    .put(TextureSlot.SOUTH, side)
+                    .put(TextureSlot.EAST, side)
+                    .put(TextureSlot.WEST, side);
+            var model = ModelTemplates.CUBE.create(ctx.get(), textures, prov.modelOutput);
+            prov.create(ctx.get(), model);
+        };
+    }
+
     public static <B extends CoverGrassBlock> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> coverGrass() {
         return (ctx, prov) -> {
             var block = ctx.getEntry();
