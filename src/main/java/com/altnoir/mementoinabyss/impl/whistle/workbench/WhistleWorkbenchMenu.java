@@ -47,7 +47,7 @@ public final class WhistleWorkbenchMenu extends AbstractContainerMenu {
                 WhistleWorkbenchMenu.this.slotsChanged(this);
             }
         };
-        this.whistleSlot = addSlot(new Slot(whistleContainer, 0, 20, 33) {
+        this.whistleSlot = addSlot(new Slot(whistleContainer, 0, 18, 28) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return WhistleApi.isWhistle(stack);
@@ -59,7 +59,7 @@ public final class WhistleWorkbenchMenu extends AbstractContainerMenu {
             }
         });
 
-        addStandardInventorySlots(inventory, 8, 102);
+        addStandardInventorySlots(inventory, 8, 108);
     }
 
     public ItemStack whistle() {

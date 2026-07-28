@@ -31,14 +31,11 @@ import java.util.stream.Collectors;
 public final class WhistleWorkbenchScreen
         extends AbstractContainerScreen<WhistleWorkbenchMenu> {
     private static final Identifier BACKGROUND =
-            MementoInAbyss.asResource("textures/gui/container/artifact_smithing_table.png");
+            MementoInAbyss.asResource("textures/gui/container/whistle_workbench.png");
 
-    private static final int GRID_X = 62;
+    private static final int GRID_X = 58;
     private static final int GRID_Y = 32;
     private static final int CELL_SIZE = 18;
-    private static final int MAX_GRID_WIDTH = 3;
-    private static final int MAX_GRID_HEIGHT = 3;
-
     private static final int SLOT_SHADOW = 0xFF373737;
     private static final int SLOT_FACE = 0xFF8B8B8B;
     private static final int SLOT_LIGHT = 0xFFFFFFFF;
@@ -55,11 +52,11 @@ public final class WhistleWorkbenchScreen
             Inventory inventory,
             Component title
     ) {
-        super(menu, inventory, title, 176, 184);
-        this.titleLabelX = 8;
-        this.titleLabelY = 6;
+        super(menu, inventory, title, 176, 192);
+        this.titleLabelX = 4;
+        this.titleLabelY = 2;
         this.inventoryLabelX = 8;
-        this.inventoryLabelY = 90;
+        this.inventoryLabelY = 94;
     }
 
     @Override
@@ -84,9 +81,11 @@ public final class WhistleWorkbenchScreen
         );
 
         Optional<WhistleGrid> grid = WhistleApi.grid(menu.whistle());
-        drawGrid(graphics, grid.orElse(null), mouseX, mouseY);
-        drawInstalledFragments(graphics);
-        drawPlacementPreview(graphics, grid.orElse(null), mouseX, mouseY);
+        grid.ifPresent(value -> {
+            drawGrid(graphics, value, mouseX, mouseY);
+            drawInstalledFragments(graphics);
+            drawPlacementPreview(graphics, value, mouseX, mouseY);
+        });
     }
 
     private void drawGrid(
@@ -96,14 +95,12 @@ public final class WhistleWorkbenchScreen
             int mouseY
     ) {
         GridCell hovered = hoveredCell(mouseX, mouseY).orElse(null);
-        int width = grid == null ? MAX_GRID_WIDTH : grid.width();
-        int height = grid == null ? MAX_GRID_HEIGHT : grid.height();
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        for (int y = 0; y < grid.height(); y++) {
+            for (int x = 0; x < grid.width(); x++) {
                 GridCell cell = new GridCell(x, y);
                 int cellX = leftPos + GRID_X + x * CELL_SIZE;
                 int cellY = topPos + GRID_Y + y * CELL_SIZE;
-                boolean blocked = grid == null || !grid.accepts(cell);
+                boolean blocked = !grid.accepts(cell);
                 drawVanillaSlot(graphics, cellX, cellY);
                 if (blocked) {
                     graphics.fill(
@@ -278,8 +275,7 @@ public final class WhistleWorkbenchScreen
     }
 
     private boolean sendButton(int buttonId) {
-        if (minecraft == null || minecraft.player == null || minecraft.gameMode == null
-                || !menu.clickMenuButton(minecraft.player, buttonId)) {
+        if (minecraft.player == null || minecraft.gameMode == null || !menu.clickMenuButton(minecraft.player, buttonId)) {
             return false;
         }
         minecraft.gameMode.handleInventoryButtonClick(menu.containerId, buttonId);
