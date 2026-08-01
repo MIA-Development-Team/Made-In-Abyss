@@ -20,6 +20,7 @@ import com.altnoir.mementoinabyss.content.block.AbyssPortalCoreBlock;
 import com.altnoir.mementoinabyss.content.block.PedestalBlock;
 import com.altnoir.mementoinabyss.content.block.ArtifactSmithingTableBlock;
 import com.altnoir.mementoinabyss.content.block.WhistleWorkbenchBlock;
+import com.altnoir.mementoinabyss.content.block.RopeConnectorBlock;
 import com.altnoir.mementoinabyss.impl.registrate.BlockStateGen;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.impl.registrate.TagGen;
@@ -124,6 +125,18 @@ public class MiaBlocks {
                             .sound(SoundType.WOOD))
                     .transform(TagGen.pickaxeOnly())
                     .blockstate(BlockStateGen::whistleWorkbench)
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<RopeConnectorBlock> ROPE_CONNECTOR =
+            REGISTRATE.object("rope_connector")
+                    .block(RopeConnectorBlock::new)
+                    .properties(p -> p.mapColor(MapColor.METAL)
+                            .requiresCorrectToolForDrops()
+                            .strength(3.0F, 6.0F)
+                            .sound(SoundType.CHAIN))
+                    .transform(TagGen.pickaxeOnly())
+                    .blockstate(BlockStateGen::ropeConnector)
                     .simpleItem()
                     .register();
 

@@ -4,6 +4,7 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.client.tooltip.ArtifactEnhancementMaterialTooltip;
 import com.altnoir.mementoinabyss.client.WhistleComboHandler;
 import com.altnoir.mementoinabyss.client.WhistleKeyMappings;
+import com.altnoir.mementoinabyss.client.RopeFreeEndGrabHandler;
 import com.altnoir.mementoinabyss.client.tooltip.TooltipModifierRegistry;
 import com.altnoir.mementoinabyss.client.screen.ArtifactEnhancementScreen;
 import com.altnoir.mementoinabyss.client.screen.WhistleWorkbenchScreen;
@@ -13,10 +14,16 @@ import com.altnoir.mementoinabyss.client.render.CrossDimensionLodRenderTypes;
 import com.altnoir.mementoinabyss.client.render.EnvironmentCubeSkyboxRenderer;
 import com.altnoir.mementoinabyss.client.render.StarCompassOverlay;
 import com.altnoir.mementoinabyss.client.render.WhistleComboOverlay;
+import com.altnoir.mementoinabyss.impl.rope.minecraft.RopeClimbing;
+import com.altnoir.mementoinabyss.content.block.entity.RopeConnectorBlockEntity;
+import com.altnoir.mementoinabyss.content.item.RopeItem;
+import com.altnoir.mementoinabyss.network.AdjustRopeLengthPayload;
 import com.altnoir.mementoinabyss.network.CompassTargetPayload;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodDebugPayload;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodPayload;
+import com.altnoir.mementoinabyss.network.RopeSnapshotPayload;
 import com.altnoir.mementoinabyss.init.MiaMenus;
+import com.altnoir.mementoinabyss.init.MiaDataComponents;
 import com.altnoir.mementoinabyss.init.MiaRecipes;
 import net.minecraft.client.gui.components.debug.DebugScreenEntryStatus;
 import net.minecraft.client.gui.components.debug.DebugScreenProfile;
@@ -25,6 +32,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterCustomEnvironmentEffectRendererEvent;
 import net.neoforged.neoforge.client.event.RegisterDebugEntriesEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
@@ -34,6 +42,7 @@ import net.neoforged.neoforge.client.event.RecipesReceivedEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 @EventBusSubscriber(Dist.CLIENT)
@@ -73,9 +82,13 @@ public final class ClientEvent {
     }
 
     @SubscribeEvent
-    public static void clientTick(ClientTickEvent.Post event) {
-        CrossDimensionLodRenderer.clientTick();
-        WhistleComboHandler.tick();
+    public static void clientTick(ClientTickEvent.Pre event) {
+        var player = net.minecraft.client.Minecraft.getInstance().player;
+        if (player != null) {
+            var input = player.input.keyPresses;
+            RopeClimbing.tick(player, RopeConnectorBlockEntity.clientInstances(),
+                    input.jump(), input.shift());
+        }
     }
 
     @SubscribeEvent
@@ -86,6 +99,14 @@ public final class ClientEvent {
                 (payload, context) -> CrossDimensionLodDebugEntry.accept(payload));
         event.register(CompassTargetPayload.TYPE,
                 (payload, context) -> StarCompassOverlay.accept(payload.target()));
+        event.register(RopeSnapshotPayload.TYPE, (payload, context) -> {
+            var level = net.minecraft.client.Minecraft.getInstance().level;
+            if (level != null
+                    && level.getBlockEntity(payload.connector())
+                    instanceof com.altnoir.mementoinabyss.content.block.entity.RopeConnectorBlockEntity connector) {
+                connector.acceptServerSnapshot(payload.points());
+            }
+        });
     }
 
     @SubscribeEvent
@@ -103,12 +124,41 @@ public final class ClientEvent {
         CrossDimensionLodDebugEntry.clear();
         StarCompassOverlay.clear();
         WhistleComboHandler.reset();
+        RopeFreeEndGrabHandler.clear();
     }
 
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
         TooltipModifierRegistry.get(event.getItemStack().getItem()).modify(event);
         ArtifactEnhancementMaterialTooltip.append(event);
+    }
+
+    @SubscribeEvent
+    public static void adjustRopeLength(InputEvent.MouseScrollingEvent event) {
+        var minecraft = net.minecraft.client.Minecraft.getInstance();
+        if (minecraft.player == null
+                || minecraft.screen != null
+                || !minecraft.player.isUsingItem()
+                || event.getScrollDeltaY() == 0.0) {
+            return;
+        }
+        var stack = minecraft.player.getUseItem();
+        if (!(stack.getItem() instanceof RopeItem)
+                || stack.get(MiaDataComponents.ROPE_ENDPOINT.get()) == null) {
+            return;
+        }
+        event.setCanceled(true);
+        int direction = event.getScrollDeltaY() > 0.0 ? 1 : -1;
+        if (RopeItem.adjustSelectedLength(minecraft.player, stack, direction)) {
+            ClientPacketDistributor.sendToServer(new AdjustRopeLengthPayload(direction));
+        }
+    }
+
+    @SubscribeEvent
+    public static void clientTick(ClientTickEvent.Post event) {
+        CrossDimensionLodRenderer.clientTick();
+        WhistleComboHandler.tick();
+        RopeFreeEndGrabHandler.tick();
     }
 
     @SubscribeEvent

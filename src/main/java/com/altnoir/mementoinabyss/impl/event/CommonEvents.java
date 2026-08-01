@@ -4,6 +4,8 @@ import com.altnoir.mementoinabyss.impl.curse.CurseEvent;
 import com.altnoir.mementoinabyss.impl.curse.CurseManager;
 import com.altnoir.mementoinabyss.impl.strippable.StripEvent;
 import com.altnoir.mementoinabyss.impl.tillable.TillEvent;
+import com.altnoir.mementoinabyss.impl.rope.minecraft.RopeClimbing;
+import com.altnoir.mementoinabyss.content.block.entity.RopeConnectorBlockEntity;
 import com.altnoir.mementoinabyss.init.MiaSoundEvents;
 import com.altnoir.mementoinabyss.init.MiaAttributes;
 import com.altnoir.mementoinabyss.init.MiaRecipes;
@@ -47,6 +49,15 @@ public final class CommonEvents {
                 + Math.max(0.0, chance - 1.0);
         event.setCriticalHit(true);
         event.setDamageMultiplier((float) multiplier);
+    }
+
+    @SubscribeEvent
+    public static void onEntityTick(EntityTickEvent.Pre event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            var input = player.getLastClientInput();
+            RopeClimbing.tick(player, RopeConnectorBlockEntity.serverInstances(),
+                    input.jump(), input.shift());
+        }
     }
 
     @SubscribeEvent

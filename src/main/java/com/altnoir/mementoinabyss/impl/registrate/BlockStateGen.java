@@ -120,6 +120,18 @@ public class BlockStateGen {
         };
     }
 
+    public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+    ropeConnector() {
+        return (ctx, prov) -> {
+            var model = ModelTemplates.CUBE_ALL.create(
+                    ctx.get(),
+                    TextureMapping.cube(prov.blockTexture(net.minecraft.world.level.block.Blocks.IRON_BLOCK)),
+                    prov.modelOutput
+            );
+            prov.create(ctx.get(), model);
+        };
+    }
+
     public static <B extends CoverGrassBlock> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> coverGrass() {
         return (ctx, prov) -> {
             var block = ctx.getEntry();

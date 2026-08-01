@@ -2,7 +2,9 @@ package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.client.render.PedestalRenderer;
+import com.altnoir.mementoinabyss.client.render.rope.RopeConnectorRenderer;
 import com.altnoir.mementoinabyss.content.block.entity.PedestalBlockEntity;
+import com.altnoir.mementoinabyss.content.block.entity.RopeConnectorBlockEntity;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -22,6 +24,12 @@ public class MiaBlockEntityTypes {
                     Capabilities.Item.BLOCK,
                     MiaBlockEntityTypes.PEDESTAL.get(),
                     WorldlyContainerWrapper::new))
+            .register();
+
+    public static final BlockEntityEntry<RopeConnectorBlockEntity> ROPE_CONNECTOR = REGISTRATE
+            .blockEntity("rope_connector_entity", RopeConnectorBlockEntity::new)
+            .validBlock(MiaBlocks.ROPE_CONNECTOR)
+            .renderer(() -> RopeConnectorRenderer::new)
             .register();
 
     public static void register(IEventBus bus) {

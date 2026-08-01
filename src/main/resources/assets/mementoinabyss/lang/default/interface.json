@@ -55,5 +55,14 @@
   "key.category.mementoinabyss.whistle": "Memento in Abyss",
   "key.mementoinabyss.whistle_skill_dial": "Whistle Skill Dial",
   "gui.mementoinabyss.whistle.skills": "Whistle Skills",
-  "gui.mementoinabyss.whistle.cooldown": "Cooldown: %s s"
+  "gui.mementoinabyss.whistle.cooldown": "Cooldown: %s s",
+  "mementoinabyss.rope.endpoint_picked": "Rope end attached. Hold use to carry it, or use another connector.",
+  "mementoinabyss.rope.endpoint_released": "Rope end released.",
+  "mementoinabyss.rope.wrong_dimension": "Ropes cannot cross dimensions. This connector is now selected.",
+  "mementoinabyss.rope.missing_endpoint": "The previous connector is missing. This connector is now selected.",
+  "mementoinabyss.rope.too_far": "The connectors are too far apart (maximum: %s blocks).",
+  "mementoinabyss.rope.not_enough_length": "The endpoint is beyond the selected rope length (%s blocks).",
+  "mementoinabyss.rope.length": "Rope length: %s / %s blocks",
+  "mementoinabyss.rope.free_end_placed": "The free end of the rope was placed.",
+  "mementoinabyss.rope.connected": "Rope connected."
 }
