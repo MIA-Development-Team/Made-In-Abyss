@@ -28,6 +28,8 @@ public class MiaLangProvider extends LanguageProvider {
         addDefault("tooltip");
         addDefault("ponder");
 
+        add("config.jade.plugin_mia.spawner_cooldown", "Spawner Cooldown");
+
         MiaBiomes.BIOMES.forEach(biome -> {
             add("biome.mia." + biome.location().getPath(), formatName(biome));
         });

@@ -1,0 +1,20 @@
+{
+  "type": "mia:abyss_wall_template",
+  "anchor_name": "mia:abyss_wall_anchor",
+  "biomes": "#mia:has_abyss_windmill",
+  "plan": {
+    "attempts_per_band": 64,
+    "candidate_count": 20,
+    "contract_version": 2,
+    "embed_depth": 3,
+    "max_correction": 16,
+    "max_y": 125,
+    "min_anchor_distance": 32,
+    "min_y": -96,
+    "salt": 1296646487
+  },
+  "spawn_overrides": {},
+  "step": "underground_structures",
+  "straight_pool": "mia:abyss_windmill/straight",
+  "tilt_pool": "mia:abyss_windmill/tilt"
+}

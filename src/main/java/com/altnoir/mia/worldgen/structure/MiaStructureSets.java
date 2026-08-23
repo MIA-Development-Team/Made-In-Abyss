@@ -1,6 +1,8 @@
 package com.altnoir.mia.worldgen.structure;
 
 import com.altnoir.mia.util.MiaUtil;
+import com.altnoir.mia.worldgen.structure.wall.AbyssWallPlanConfig;
+import com.altnoir.mia.worldgen.structure.wall.AbyssWallStructurePlacement;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 public interface MiaStructureSets {
     ResourceKey<StructureSet> STAR_COMPASS_RUINS = register("star_compass_ruins");
     ResourceKey<StructureSet> ABYSS_STRONGHOLDS = register("abyss_strongholds");
+    ResourceKey<StructureSet> ABYSS_WINDMILLS = register("abyss_windmills");
 
     static void bootstrap(BootstrapContext<StructureSet> context) {
         HolderGetter<Structure> structure = context.lookup(Registries.STRUCTURE);
@@ -35,6 +38,13 @@ public interface MiaStructureSets {
                 new StructureSet(
                         structure.getOrThrow(MiaStructures.ABYSS_STRONGHOLD),
                         new ConcentricRingsStructurePlacement(32, 11, 64, biome.getOrThrow(BiomeTags.IS_OVERWORLD))
+                )
+        );
+        context.register(
+                ABYSS_WINDMILLS,
+                new StructureSet(
+                        structure.getOrThrow(MiaStructures.ABYSS_WINDMILL),
+                        new AbyssWallStructurePlacement(AbyssWallPlanConfig.DEFAULT)
                 )
         );
     }
