@@ -15,7 +15,7 @@ public record AbyssWallPlanConfig(
         int contractVersion
 ) {
     public static final AbyssWallPlanConfig DEFAULT = new AbyssWallPlanConfig(
-            -96, 125, 20, 32, 16, 3, 64, 0x4D494157, 2
+            -96, 288, 20, 32, 16, 3, 64, 0x4D494157, 3
     );
 
     public static final Codec<AbyssWallPlanConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(

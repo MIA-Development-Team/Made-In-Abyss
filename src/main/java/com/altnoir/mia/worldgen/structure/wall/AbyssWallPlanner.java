@@ -8,11 +8,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,7 @@ import java.util.function.IntPredicate;
 public final class AbyssWallPlanner {
     private static final int FORBIDDEN_MIN_Y = -3;
     private static final int FORBIDDEN_MAX_Y = 25;
+    private static final int FINAL_DENSITY_TOLERANCE = 3;
     private static final int EMBED_SALT = 0x57414C4C;
     private static final double FULL_CIRCLE = Math.PI * 2.0;
     private static final double SECTOR_SIZE = Math.PI / 4.0;
@@ -43,6 +46,15 @@ public final class AbyssWallPlanner {
     }
 
     public static List<AbyssWallCandidate> createPlan(long seed, AbyssWallPlanConfig config, RadiusPredictor predictor) {
+        return createPlan(seed, config, predictor, predictor);
+    }
+
+    private static List<AbyssWallCandidate> createPlan(
+            long seed,
+            AbyssWallPlanConfig config,
+            RadiusPredictor preliminaryPredictor,
+            RadiusPredictor preferredPredictor
+    ) {
         List<AbyssWallCandidate> candidates = new ArrayList<>(config.candidateCount());
         Set<ChunkPos> claimedChunks = new HashSet<>();
         long bufferedMinimumDistance = config.planningAnchorDistance();
@@ -64,8 +76,19 @@ public final class AbyssWallPlanner {
             for (int attempt = 0; attempt < config.attemptsPerBand(); attempt++) {
                 int y = allowedYAt(config, Mth.nextInt(random, bandMinIndex, bandMaxIndex));
                 double angle = random.nextDouble() * FULL_CIRCLE;
-                OptionalDouble predictedRadius = predictor.radiusAt(angle, y);
-                if (predictedRadius.isEmpty() || !Double.isFinite(predictedRadius.getAsDouble()) || predictedRadius.getAsDouble() <= 0.0) {
+                OptionalDouble preliminaryRadius = preliminaryPredictor.radiusAt(angle, y);
+                if (!isUsableRadius(preliminaryRadius)) {
+                    continue;
+                }
+
+                BlockPos preliminaryAnchor = blockPos(angle, y, preliminaryRadius.getAsDouble());
+                if (claimedChunks.contains(new ChunkPos(preliminaryAnchor))
+                        || isTooClose(preliminaryAnchor, candidates, minimumDistanceSquared)) {
+                    continue;
+                }
+
+                OptionalDouble predictedRadius = preferredPredictor.radiusAt(angle, y);
+                if (!isUsableRadius(predictedRadius)) {
                     continue;
                 }
 
@@ -101,8 +124,19 @@ public final class AbyssWallPlanner {
         Map<PlanKey, CachedPlan> plans = WORLD_PLANS.asMap()
                 .computeIfAbsent(randomState, ignored -> new ConcurrentHashMap<>());
         return plans.computeIfAbsent(new PlanKey(seed, config, abyssRadius), ignored -> {
-            List<AbyssWallCandidate> plan = createPlan(seed, config,
-                    (angle, y) -> OptionalDouble.of(nominalRadius(y, abyssRadius)));
+            DensityFunction finalDensity = randomState.router().finalDensity();
+            RadiusPredictor macroPredictor = (angle, y) -> OptionalDouble.of(nominalRadius(y, abyssRadius));
+            RadiusPredictor finalDensityPredictor = (angle, y) -> {
+                double macroRadius = nominalRadius(y, abyssRadius);
+                return OptionalDouble.of(preferredRadius(
+                        macroRadius,
+                        FINAL_DENSITY_TOLERANCE,
+                        radius -> sampleDensity(finalDensity, angle, y, radius) > 0.0
+                ));
+            };
+            List<AbyssWallCandidate> plan = createPlan(
+                    seed, config, macroPredictor, finalDensityPredictor
+            );
             MIA.LOGGER.debug("Abyss wall candidates for seed {}: {}", seed, plan);
             return CachedPlan.create(plan);
         });
@@ -160,6 +194,17 @@ public final class AbyssWallPlanner {
         );
     }
 
+    public static double preferredRadius(double macroRadius, int tolerance, IntPredicate isSolid) {
+        int maximumBoundary = Math.max(1, (int) Math.floor(macroRadius + tolerance));
+        Map<Integer, Boolean> solidity = new HashMap<>();
+        OptionalInt boundary = findFirstStableBoundary(
+                1,
+                maximumBoundary + 3,
+                radius -> solidity.computeIfAbsent(radius, ignored -> isSolid.test(radius))
+        );
+        return boundary.isPresent() ? boundary.getAsInt() : macroRadius;
+    }
+
     public static int wallAnchorOffset(long seed, AbyssWallCandidate candidate, AbyssWallPlanConfig config) {
         if (config.embedDepth() == 0) {
             return 0;
@@ -176,6 +221,10 @@ public final class AbyssWallPlanner {
             }
         }
         return false;
+    }
+
+    private static boolean isUsableRadius(OptionalDouble radius) {
+        return radius.isPresent() && Double.isFinite(radius.getAsDouble()) && radius.getAsDouble() > 0.0;
     }
 
     private static Rotation rotationFromSouth(int sector) {
@@ -221,6 +270,11 @@ public final class AbyssWallPlanner {
         return index < lowerAllowedCount
                 ? config.minY() + index
                 : Math.max(config.minY(), FORBIDDEN_MAX_Y + 1) + index - lowerAllowedCount;
+    }
+
+    private static double sampleDensity(DensityFunction density, double angle, int y, int radius) {
+        BlockPos pos = blockPos(angle, y, radius);
+        return density.compute(new DensityFunction.SinglePointContext(pos.getX(), pos.getY(), pos.getZ()));
     }
 
     private record PlanKey(long seed, AbyssWallPlanConfig config, int abyssRadius) {

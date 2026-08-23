@@ -60,7 +60,7 @@ public class MiaGameTests {
 
         for (int i = 0; i < first.size(); i++) {
             AbyssWallCandidate candidate = first.get(i);
-            helper.assertTrue(candidate.y() >= -96 && candidate.y() <= 125,
+            helper.assertTrue(candidate.y() >= -96 && candidate.y() <= 288,
                     "candidate Y must stay in the allowed windmill range");
             helper.assertTrue(candidate.y() < -3 || candidate.y() > 25,
                     "candidate Y must avoid the horizontal transition shelf from -3 through 25");
@@ -117,12 +117,22 @@ public class MiaGameTests {
         OptionalInt missing = AbyssWallPlanner.findFirstStableBoundary(180, 230, radius -> false);
         OptionalInt lowerWall = AbyssWallPlanner.findRefinedBoundary(96.0, 16, radius -> radius >= 94);
         OptionalInt unrelatedOuterWall = AbyssWallPlanner.findRefinedBoundary(96.0, 16, radius -> radius >= 125);
+        double inwardPrediction = AbyssWallPlanner.preferredRadius(96.0, 3, radius -> radius >= 90);
+        double toleratedPrediction = AbyssWallPlanner.preferredRadius(96.0, 3, radius -> radius >= 99);
+        double justOutsideTolerance = AbyssWallPlanner.preferredRadius(96.0, 3, radius -> radius >= 100);
+        double distantOuterPrediction = AbyssWallPlanner.preferredRadius(96.0, 3, radius -> radius >= 125);
 
         helper.assertValueEqual(boundary, OptionalInt.of(205), "first stable wall radius");
         helper.assertValueEqual(missing, OptionalInt.empty(), "missing wall must reject the candidate");
         helper.assertValueEqual(lowerWall, OptionalInt.of(94), "nearby lower-layer wall must refine the macro radius");
         helper.assertValueEqual(unrelatedOuterWall, OptionalInt.empty(),
                 "a perforated main wall must not fall through to a farther cave boundary");
+        helper.assertValueEqual(inwardPrediction, 90.0, "an inward final-density wall must override the macro radius");
+        helper.assertValueEqual(toleratedPrediction, 99.0, "the tolerance boundary must remain eligible");
+        helper.assertValueEqual(justOutsideTolerance, 96.0,
+                "a final-density wall beyond tolerance must fall back to the macro radius");
+        helper.assertValueEqual(distantOuterPrediction, 96.0,
+                "a distant outer wall must fall back to the macro radius");
         helper.succeed();
     }
 
@@ -139,12 +149,11 @@ public class MiaGameTests {
         helper.assertTrue(candidates.size() >= 16 && candidates.size() <= 20,
                 "real Abyss wall plan must yield approximately 16-20 candidates");
         for (AbyssWallCandidate candidate : candidates) {
-            helper.assertTrue(candidate.y() <= 125, "real-density candidates above Y=125 must be rejected");
             helper.assertTrue(candidate.y() < -3 || candidate.y() > 25,
                     "real-density candidates must avoid the horizontal transition shelf");
             if (candidate.y() < -3) {
-                helper.assertValueEqual(candidate.predictedRadius(), 96.0,
-                        "lower-layer candidates must target the macro wall instead of a farther final-density boundary");
+                helper.assertTrue(candidate.predictedRadius() <= 99.0,
+                        "lower-layer prediction must not select a wall beyond macro radius plus tolerance");
             }
         }
         helper.assertValueEqual(candidates, AbyssWallPlanner.planFor(seed, randomState, AbyssWallPlanConfig.DEFAULT),

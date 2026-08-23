@@ -4,10 +4,10 @@
     "plan": {
       "attempts_per_band": 64,
       "candidate_count": 20,
-      "contract_version": 2,
+      "contract_version": 3,
       "embed_depth": 3,
       "max_correction": 16,
-      "max_y": 125,
+      "max_y": 288,
       "min_anchor_distance": 32,
       "min_y": -96,
       "salt": 1296646487
