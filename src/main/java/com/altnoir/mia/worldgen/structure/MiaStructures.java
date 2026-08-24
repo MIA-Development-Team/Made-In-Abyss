@@ -4,7 +4,10 @@ import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.worldgen.structure.pools.AbyssStrongholdPools;
+import com.altnoir.mia.worldgen.structure.pools.AbyssWindmillPools;
 import com.altnoir.mia.worldgen.structure.pools.StarCompassRuinsPools;
+import com.altnoir.mia.worldgen.structure.wall.AbyssWallPlanConfig;
+import com.altnoir.mia.worldgen.structure.wall.AbyssWindmillStructure;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -36,6 +39,7 @@ import java.util.stream.Collectors;
 public class MiaStructures {
     public static final ResourceKey<Structure> STAR_COMPASS_RUINS = createKey("star_compass_ruins");
     public static final ResourceKey<Structure> ABYSS_STRONGHOLD = createKey("abyss_stronghold");
+    public static final ResourceKey<Structure> ABYSS_WINDMILL = createKey("abyss_windmill");
 
     public static void bootstrap(BootstrapContext<Structure> context) {
         HolderGetter<Biome> biome = context.lookup(Registries.BIOME);
@@ -91,6 +95,19 @@ public class MiaStructures {
                         List.of(),
                         new DimensionPadding(10),
                         LiquidSettings.IGNORE_WATERLOGGING
+                )
+        );
+        context.register(
+                ABYSS_WINDMILL,
+                new AbyssWindmillStructure(
+                        new Structure.StructureSettings.Builder(biome.getOrThrow(MiaTags.Biomes.HAS_ABYSS_WINDMILL))
+                                .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
+                                .terrainAdapation(TerrainAdjustment.NONE)
+                                .build(),
+                        templatePool.getOrThrow(AbyssWindmillPools.STRAIGHT),
+                        templatePool.getOrThrow(AbyssWindmillPools.TILT),
+                        MiaUtil.miaId("abyss_wall_anchor"),
+                        AbyssWallPlanConfig.DEFAULT
                 )
         );
     }

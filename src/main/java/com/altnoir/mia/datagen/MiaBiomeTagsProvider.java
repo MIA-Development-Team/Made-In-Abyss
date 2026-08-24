@@ -32,5 +32,8 @@ public class MiaBiomeTagsProvider extends BiomeTagsProvider {
                 .add(Biomes.SPARSE_JUNGLE)
                 .add(Biomes.BAMBOO_JUNGLE)
                 .add(Biomes.MANGROVE_SWAMP);
+        tag(MiaTags.Biomes.HAS_ABYSS_WINDMILL)
+                .add(MiaBiomes.THE_ABYSS)
+                .add(MiaBiomes.INVERTED_FOREST);
     }
 }

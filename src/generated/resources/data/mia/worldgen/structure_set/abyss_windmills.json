@@ -1,0 +1,27 @@
+{
+  "placement": {
+    "type": "mia:abyss_wall",
+    "plan": {
+      "attempts_per_band": 64,
+      "candidate_count": 20,
+      "contract_version": 4,
+      "embed_depth": 3,
+      "final_density_inward_search": 32,
+      "final_density_tolerance": 3,
+      "forbidden_max_y": 25,
+      "forbidden_min_y": -3,
+      "max_correction": 16,
+      "max_y": 125,
+      "min_anchor_distance": 32,
+      "min_y": -96,
+      "salt": 1296646487
+    },
+    "salt": 1296646487
+  },
+  "structures": [
+    {
+      "structure": "mia:abyss_windmill",
+      "weight": 1
+    }
+  ]
+}
