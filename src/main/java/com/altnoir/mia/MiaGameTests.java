@@ -5,6 +5,8 @@ import com.altnoir.mia.worldgen.noise_setting.MiaNoiseGeneratorSettings;
 import com.altnoir.mia.worldgen.structure.wall.AbyssWallCandidate;
 import com.altnoir.mia.worldgen.structure.wall.AbyssWallPlanConfig;
 import com.altnoir.mia.worldgen.structure.wall.AbyssWallPlanner;
+import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.Vec3i;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.Set;
+import java.util.function.IntPredicate;
 import java.util.stream.IntStream;
 import java.util.stream.Collectors;
 
@@ -60,7 +63,7 @@ public class MiaGameTests {
 
         for (int i = 0; i < first.size(); i++) {
             AbyssWallCandidate candidate = first.get(i);
-            helper.assertTrue(candidate.y() >= -96 && candidate.y() <= 288,
+            helper.assertTrue(candidate.y() >= -96 && candidate.y() <= 125,
                     "candidate Y must stay in the allowed windmill range");
             helper.assertTrue(candidate.y() < -3 || candidate.y() > 25,
                     "candidate Y must avoid the horizontal transition shelf from -3 through 25");
@@ -86,6 +89,69 @@ public class MiaGameTests {
                     "embedding must be deterministic for a seed and candidate"
             );
         }
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void abyssWallPlanCodecSerializesTuningKnobs(GameTestHelper helper) {
+        JsonObject encoded = AbyssWallPlanConfig.CODEC.encodeStart(JsonOps.INSTANCE, AbyssWallPlanConfig.DEFAULT)
+                .getOrThrow()
+                .getAsJsonObject();
+
+        helper.assertValueEqual(encoded.get("max_y").getAsInt(), 125,
+                "the default data contract must temporarily disable windmills above Y=125");
+        helper.assertValueEqual(encoded.get("forbidden_min_y").getAsInt(), -3,
+                "the transition shelf lower bound must be serialized");
+        helper.assertValueEqual(encoded.get("forbidden_max_y").getAsInt(), 25,
+                "the transition shelf upper bound must be serialized");
+        helper.assertValueEqual(encoded.get("final_density_inward_search").getAsInt(), 32,
+                "the inward final-density search distance must be serialized");
+        helper.assertValueEqual(encoded.get("final_density_tolerance").getAsInt(), 3,
+                "the outward final-density tolerance must be serialized");
+        helper.assertValueEqual(
+                AbyssWallPlanConfig.CODEC.parse(JsonOps.INSTANCE, encoded).getOrThrow(),
+                AbyssWallPlanConfig.DEFAULT,
+                "the complete wall plan data contract must round-trip"
+        );
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void abyssWallPlanConfigControlsForbiddenYRange(GameTestHelper helper) {
+        JsonObject encoded = AbyssWallPlanConfig.CODEC.encodeStart(JsonOps.INSTANCE, AbyssWallPlanConfig.DEFAULT)
+                .getOrThrow()
+                .getAsJsonObject();
+        encoded.addProperty("min_y", -20);
+        encoded.addProperty("max_y", 20);
+        encoded.addProperty("candidate_count", 4);
+        encoded.addProperty("forbidden_min_y", -20);
+        encoded.addProperty("forbidden_max_y", 20);
+        AbyssWallPlanConfig config = AbyssWallPlanConfig.CODEC.parse(JsonOps.INSTANCE, encoded).getOrThrow();
+
+        helper.assertValueEqual(
+                AbyssWallPlanner.createPlan(42L, config, (angle, y) -> OptionalDouble.of(96.0)),
+                List.of(),
+                "a data-configured forbidden range covering the full height range must produce no candidates"
+        );
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void abyssWallPlanConfigControlsDensitySearch(GameTestHelper helper) {
+        int[] minimumSampledRadius = {Integer.MAX_VALUE};
+        IntPredicate wallAtNinetyTwo = radius -> {
+            minimumSampledRadius[0] = Math.min(minimumSampledRadius[0], radius);
+            return radius >= 92;
+        };
+        double configuredPrediction = AbyssWallPlanner.preferredRadius(96.0, 8, 3, wallAtNinetyTwo);
+
+        helper.assertValueEqual(configuredPrediction, 92.0,
+                "a wall within the configured inward search must be selected");
+        helper.assertValueEqual(minimumSampledRadius[0], 88,
+                "an inward search of 8 must begin at macroRadius - 8");
         helper.succeed();
     }
 
@@ -121,6 +187,12 @@ public class MiaGameTests {
         double toleratedPrediction = AbyssWallPlanner.preferredRadius(96.0, 3, radius -> radius >= 99);
         double justOutsideTolerance = AbyssWallPlanner.preferredRadius(96.0, 3, radius -> radius >= 100);
         double distantOuterPrediction = AbyssWallPlanner.preferredRadius(96.0, 3, radius -> radius >= 125);
+        double solidAtSearchStart = AbyssWallPlanner.preferredRadius(96.0, 3, radius -> radius >= 64);
+        int[] minimumSampledRadius = {Integer.MAX_VALUE};
+        double boundedPrediction = AbyssWallPlanner.preferredRadius(96.0, 3, radius -> {
+            minimumSampledRadius[0] = Math.min(minimumSampledRadius[0], radius);
+            return radius >= 90;
+        });
 
         helper.assertValueEqual(boundary, OptionalInt.of(205), "first stable wall radius");
         helper.assertValueEqual(missing, OptionalInt.empty(), "missing wall must reject the candidate");
@@ -133,6 +205,12 @@ public class MiaGameTests {
                 "a final-density wall beyond tolerance must fall back to the macro radius");
         helper.assertValueEqual(distantOuterPrediction, 96.0,
                 "a distant outer wall must fall back to the macro radius");
+        helper.assertTrue(Double.isNaN(solidAtSearchStart),
+                "a candidate whose inward search limit is already solid must be rejected");
+        helper.assertValueEqual(boundedPrediction, 90.0,
+                "a stable wall within the bounded inward search must still be selected");
+        helper.assertValueEqual(minimumSampledRadius[0], 64,
+                "final density must not be sampled more than 32 blocks inward from the macro radius");
         helper.succeed();
     }
 

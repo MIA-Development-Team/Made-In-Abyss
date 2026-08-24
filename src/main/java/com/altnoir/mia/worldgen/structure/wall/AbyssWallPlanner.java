@@ -25,9 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.IntPredicate;
 
 public final class AbyssWallPlanner {
-    private static final int FORBIDDEN_MIN_Y = -3;
-    private static final int FORBIDDEN_MAX_Y = 25;
-    private static final int FINAL_DENSITY_TOLERANCE = 3;
     private static final int EMBED_SALT = 0x57414C4C;
     private static final double FULL_CIRCLE = Math.PI * 2.0;
     private static final double SECTOR_SIZE = Math.PI / 4.0;
@@ -125,12 +122,13 @@ public final class AbyssWallPlanner {
                 .computeIfAbsent(randomState, ignored -> new ConcurrentHashMap<>());
         return plans.computeIfAbsent(new PlanKey(seed, config, abyssRadius), ignored -> {
             DensityFunction finalDensity = randomState.router().finalDensity();
-            RadiusPredictor macroPredictor = (angle, y) -> OptionalDouble.of(nominalRadius(y, abyssRadius));
+            RadiusPredictor macroPredictor = (angle, y) -> OptionalDouble.of(nominalRadius(y, abyssRadius, config));
             RadiusPredictor finalDensityPredictor = (angle, y) -> {
-                double macroRadius = nominalRadius(y, abyssRadius);
+                double macroRadius = nominalRadius(y, abyssRadius, config);
                 return OptionalDouble.of(preferredRadius(
                         macroRadius,
-                        FINAL_DENSITY_TOLERANCE,
+                        config.finalDensityInwardSearch(),
+                        config.finalDensityTolerance(),
                         radius -> sampleDensity(finalDensity, angle, y, radius) > 0.0
                 ));
             };
@@ -195,12 +193,31 @@ public final class AbyssWallPlanner {
     }
 
     public static double preferredRadius(double macroRadius, int tolerance, IntPredicate isSolid) {
+        return preferredRadius(
+                macroRadius,
+                AbyssWallPlanConfig.DEFAULT.finalDensityInwardSearch(),
+                tolerance,
+                isSolid
+        );
+    }
+
+    public static double preferredRadius(
+            double macroRadius,
+            int inwardSearch,
+            int tolerance,
+            IntPredicate isSolid
+    ) {
+        int minimumSampleRadius = Math.max(1, (int) Math.floor(macroRadius) - inwardSearch);
         int maximumBoundary = Math.max(1, (int) Math.floor(macroRadius + tolerance));
         Map<Integer, Boolean> solidity = new HashMap<>();
+        IntPredicate cachedSolidity = radius -> solidity.computeIfAbsent(radius, ignored -> isSolid.test(radius));
+        if (cachedSolidity.test(minimumSampleRadius)) {
+            return Double.NaN;
+        }
         OptionalInt boundary = findFirstStableBoundary(
-                1,
+                minimumSampleRadius,
                 maximumBoundary + 3,
-                radius -> solidity.computeIfAbsent(radius, ignored -> isSolid.test(radius))
+                cachedSolidity
         );
         return boundary.isPresent() ? boundary.getAsInt() : macroRadius;
     }
@@ -251,25 +268,28 @@ public final class AbyssWallPlanner {
         return MiaConfig.abyssRadius > 0 ? MiaConfig.abyssRadius : 160;
     }
 
-    private static double nominalRadius(int y, int abyssRadius) {
+    private static double nominalRadius(int y, int abyssRadius, AbyssWallPlanConfig config) {
         double radius = abyssRadius;
-        return y < FORBIDDEN_MIN_Y
+        return y < config.forbiddenMinY()
                 ? radius * 0.6
                 : radius * Mth.clamp(1.0 + y / 512.0, 1.0, 2.0);
     }
 
     private static int allowedYCount(AbyssWallPlanConfig config) {
         int total = config.maxY() - config.minY() + 1;
-        int excludedMin = Math.max(config.minY(), FORBIDDEN_MIN_Y);
-        int excludedMax = Math.min(config.maxY(), FORBIDDEN_MAX_Y);
+        int excludedMin = Math.max(config.minY(), config.forbiddenMinY());
+        int excludedMax = Math.min(config.maxY(), config.forbiddenMaxY());
         return total - Math.max(0, excludedMax - excludedMin + 1);
     }
 
     private static int allowedYAt(AbyssWallPlanConfig config, int index) {
-        int lowerAllowedCount = Math.max(0, Math.min(config.maxY(), FORBIDDEN_MIN_Y - 1) - config.minY() + 1);
+        int lowerAllowedCount = Math.max(
+                0,
+                Math.min(config.maxY(), config.forbiddenMinY() - 1) - config.minY() + 1
+        );
         return index < lowerAllowedCount
                 ? config.minY() + index
-                : Math.max(config.minY(), FORBIDDEN_MAX_Y + 1) + index - lowerAllowedCount;
+                : Math.max(config.minY(), config.forbiddenMaxY() + 1) + index - lowerAllowedCount;
     }
 
     private static double sampleDensity(DensityFunction density, double angle, int y, int radius) {

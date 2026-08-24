@@ -12,10 +12,15 @@ public record AbyssWallPlanConfig(
         int embedDepth,
         int attemptsPerBand,
         int salt,
-        int contractVersion
+        int contractVersion,
+        int forbiddenMinY,
+        int forbiddenMaxY,
+        int finalDensityInwardSearch,
+        int finalDensityTolerance
 ) {
     public static final AbyssWallPlanConfig DEFAULT = new AbyssWallPlanConfig(
-            -96, 288, 20, 32, 16, 3, 64, 0x4D494157, 3
+            -96, 125, 20, 32, 16, 3, 64, 0x4D494157, 4,
+            -3, 25, 32, 3
     );
 
     public static final Codec<AbyssWallPlanConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -27,12 +32,19 @@ public record AbyssWallPlanConfig(
             Codec.intRange(0, 32).fieldOf("embed_depth").forGetter(AbyssWallPlanConfig::embedDepth),
             Codec.intRange(1, 256).fieldOf("attempts_per_band").forGetter(AbyssWallPlanConfig::attemptsPerBand),
             Codec.intRange(0, Integer.MAX_VALUE).fieldOf("salt").forGetter(AbyssWallPlanConfig::salt),
-            Codec.intRange(1, Integer.MAX_VALUE).fieldOf("contract_version").forGetter(AbyssWallPlanConfig::contractVersion)
+            Codec.intRange(1, Integer.MAX_VALUE).fieldOf("contract_version").forGetter(AbyssWallPlanConfig::contractVersion),
+            Codec.intRange(-2048, 2048).fieldOf("forbidden_min_y").forGetter(AbyssWallPlanConfig::forbiddenMinY),
+            Codec.intRange(-2048, 2048).fieldOf("forbidden_max_y").forGetter(AbyssWallPlanConfig::forbiddenMaxY),
+            Codec.intRange(0, 256).fieldOf("final_density_inward_search").forGetter(AbyssWallPlanConfig::finalDensityInwardSearch),
+            Codec.intRange(0, 256).fieldOf("final_density_tolerance").forGetter(AbyssWallPlanConfig::finalDensityTolerance)
     ).apply(instance, AbyssWallPlanConfig::new));
 
     public AbyssWallPlanConfig {
         if (maxY < minY) {
             throw new IllegalArgumentException("maxY must be greater than or equal to minY");
+        }
+        if (forbiddenMaxY < forbiddenMinY) {
+            throw new IllegalArgumentException("forbiddenMaxY must be greater than or equal to forbiddenMinY");
         }
     }
 
