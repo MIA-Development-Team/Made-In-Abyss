@@ -1,0 +1,55 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "#mia:has_ancient_trial_compass_ruins",
+  "dimension_padding": 10,
+  "liquid_settings": "ignore_waterlogging",
+  "max_distance_from_center": 116,
+  "size": 1,
+  "spawn_overrides": {
+    "ambient": {
+      "bounding_box": "piece",
+      "spawns": []
+    },
+    "axolotls": {
+      "bounding_box": "piece",
+      "spawns": []
+    },
+    "creature": {
+      "bounding_box": "piece",
+      "spawns": []
+    },
+    "misc": {
+      "bounding_box": "piece",
+      "spawns": []
+    },
+    "monster": {
+      "bounding_box": "piece",
+      "spawns": []
+    },
+    "underground_water_creature": {
+      "bounding_box": "piece",
+      "spawns": []
+    },
+    "water_ambient": {
+      "bounding_box": "piece",
+      "spawns": []
+    },
+    "water_creature": {
+      "bounding_box": "piece",
+      "spawns": []
+    }
+  },
+  "start_height": {
+    "type": "minecraft:uniform",
+    "max_inclusive": {
+      "absolute": -20
+    },
+    "min_inclusive": {
+      "absolute": -40
+    }
+  },
+  "start_pool": "mia:ancient_trial_compass_ruins/starts",
+  "step": "underground_structures",
+  "terrain_adaptation": "encapsulate",
+  "use_expansion_hack": false
+}

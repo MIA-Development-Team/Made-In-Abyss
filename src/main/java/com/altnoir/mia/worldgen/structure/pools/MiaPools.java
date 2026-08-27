@@ -16,7 +16,7 @@ public class MiaPools {
     }
 
     public static void bootstrap(BootstrapContext<StructureTemplatePool> context) {
-        StarCompassRuinsPools.bootstrap(context);
+        CompassRuinsPools.bootstrap(context);
         AbyssStrongholdPools.bootstrap(context);
         AbyssWindmillPools.bootstrap(context);
     }
