@@ -22,6 +22,7 @@ public interface MiaStructureSets {
     ResourceKey<StructureSet> ANCIENT_ROMAN_COMPASS_RUINS = register("ancient_roman_compass_ruins");
     ResourceKey<StructureSet> ANCIENT_TRIAL_COMPASS_RUINS = register("ancient_trial_compass_ruins");
     ResourceKey<StructureSet> ANCIENT_ANGKOR_COMPASS_RUINS = register("ancient_angkor_compass_ruins");
+    ResourceKey<StructureSet> PETRIFIED_SHIPS = register("petrified_ships");
     ResourceKey<StructureSet> ABYSS_STRONGHOLDS = register("abyss_strongholds");
     ResourceKey<StructureSet> ABYSS_WINDMILLS = register("abyss_windmills");
 
@@ -58,6 +59,13 @@ public interface MiaStructureSets {
                 new StructureSet(
                         structure.getOrThrow(MiaStructures.ANCIENT_ANGKOR_COMPASS_RUINS),
                         new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 70387319)
+                )
+        );
+        context.register(
+                PETRIFIED_SHIPS,
+                new StructureSet(
+                        structure.getOrThrow(MiaStructures.PETRIFIED_SHIP),
+                        new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 70387320)
                 )
         );
         context.register(

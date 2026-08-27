@@ -5,6 +5,7 @@ import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.worldgen.structure.pools.AbyssStrongholdPools;
 import com.altnoir.mia.worldgen.structure.pools.AbyssWindmillPools;
 import com.altnoir.mia.worldgen.structure.pools.CompassRuinsPools;
+import com.altnoir.mia.worldgen.structure.pools.PetrifiedShipPools;
 import com.altnoir.mia.worldgen.structure.wall.AbyssWallPlanConfig;
 import com.altnoir.mia.worldgen.structure.wall.AbyssWindmillStructure;
 import net.minecraft.core.HolderGetter;
@@ -42,6 +43,7 @@ public class MiaStructures {
     public static final ResourceKey<Structure> ANCIENT_ROMAN_COMPASS_RUINS = createKey("ancient_roman_compass_ruins");
     public static final ResourceKey<Structure> ANCIENT_TRIAL_COMPASS_RUINS = createKey("ancient_trial_compass_ruins");
     public static final ResourceKey<Structure> ANCIENT_ANGKOR_COMPASS_RUINS = createKey("ancient_angkor_compass_ruins");
+    public static final ResourceKey<Structure> PETRIFIED_SHIP = createKey("petrified_ship");
     public static final ResourceKey<Structure> ABYSS_STRONGHOLD = createKey("abyss_stronghold");
     public static final ResourceKey<Structure> ABYSS_WINDMILL = createKey("abyss_windmill");
 
@@ -98,6 +100,25 @@ public class MiaStructures {
                         116,
                         List.of(),
                         new DimensionPadding(10),
+                        LiquidSettings.IGNORE_WATERLOGGING
+                )
+        );
+        context.register(
+                PETRIFIED_SHIP,
+                new MiaJigsawStructure(
+                        new Structure.StructureSettings.Builder(biome.getOrThrow(MiaTags.Biomes.HAS_PETRIFIED_SHIP))
+                                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                                .terrainAdapation(TerrainAdjustment.BEARD_THIN)
+                                .build(),
+                        templatePool.getOrThrow(PetrifiedShipPools.START),
+                        Optional.empty(),
+                        8,
+                        ConstantHeight.of(VerticalAnchor.absolute(0)),
+                        false,
+                        Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
+                        128,
+                        List.of(),
+                        DimensionPadding.ZERO,
                         LiquidSettings.IGNORE_WATERLOGGING
                 )
         );

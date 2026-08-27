@@ -40,6 +40,9 @@ public class MiaBiomeTagsProvider extends BiomeTagsProvider {
                 .addTag(BiomeTags.HAS_TRIAL_CHAMBERS);
         tag(MiaTags.Biomes.HAS_ANCIENT_ANGKOR_COMPASS_RUINS)
                 .addTag(Tags.Biomes.IS_DESERT);
+        tag(MiaTags.Biomes.HAS_PETRIFIED_SHIP)
+                .add(MiaBiomes.THE_GREAT_FAULT)
+                .add(MiaBiomes.GREAT_FAULT);
         tag(MiaTags.Biomes.HAS_ABYSS_WINDMILL)
                 .add(MiaBiomes.THE_ABYSS)
                 .add(MiaBiomes.INVERTED_FOREST);

@@ -56,6 +56,7 @@ public class MiaTags {
         public static final TagKey<Biome> HAS_ANCIENT_ROMAN_COMPASS_RUINS = create("has_ancient_roman_compass_ruins");
         public static final TagKey<Biome> HAS_ANCIENT_TRIAL_COMPASS_RUINS = create("has_ancient_trial_compass_ruins");
         public static final TagKey<Biome> HAS_ANCIENT_ANGKOR_COMPASS_RUINS = create("has_ancient_angkor_compass_ruins");
+        public static final TagKey<Biome> HAS_PETRIFIED_SHIP = create("has_petrified_ship");
         public static final TagKey<Biome> HAS_ABYSS_WINDMILL = create("has_abyss_windmill");
 
         private static TagKey<Biome> create(String name) {

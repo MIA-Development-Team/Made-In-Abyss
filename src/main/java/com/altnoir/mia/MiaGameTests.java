@@ -3,6 +3,7 @@ package com.altnoir.mia;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.util.MiaUtil;
+import com.altnoir.mia.worldgen.biome.MiaBiomes;
 import com.altnoir.mia.worldgen.noise_setting.MiaNoiseGeneratorSettings;
 import com.altnoir.mia.worldgen.structure.MiaStructureSets;
 import com.altnoir.mia.worldgen.structure.MiaStructures;
@@ -29,6 +30,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.gametest.framework.*;
@@ -386,6 +388,220 @@ public class MiaGameTests {
         helper.assertValueEqual(trialHeight.getAsJsonObject("max_inclusive").get("absolute").getAsInt(),
                 -20, "trial maximum Y");
         helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void petrifiedShipTemplatesKeepTheirDirectionalJigsawContract(GameTestHelper helper) {
+        assertPetrifiedShipTemplate(
+                helper,
+                "petrified_ship_body_big",
+                new Vec3i(8, 6, 17),
+                Set.of(
+                        new JigsawContract(new BlockPos(0, 1, 7), FrontAndTop.WEST_UP,
+                                "mia:petrified_ship/branch", "mia:petrified_ship/branch", "mia:petrified_ship/branch"),
+                        new JigsawContract(new BlockPos(3, 1, 0), FrontAndTop.NORTH_UP,
+                                "mia:petrified_ship/connect_right", "mia:petrified_ship/connect_left", "mia:petrified_ship/connect_left"),
+                        new JigsawContract(new BlockPos(3, 1, 16), FrontAndTop.SOUTH_UP,
+                                "mia:petrified_ship/connect_left", "mia:petrified_ship/connect_right", "mia:petrified_ship/connect_right"),
+                        new JigsawContract(new BlockPos(7, 1, 10), FrontAndTop.EAST_UP,
+                                "mia:petrified_ship/branch", "mia:petrified_ship/branch", "mia:petrified_ship/branch")
+                )
+        );
+        assertPetrifiedShipTemplate(
+                helper,
+                "petrified_ship_body_small",
+                new Vec3i(5, 5, 6),
+                Set.of(
+                        new JigsawContract(new BlockPos(2, 1, 0), FrontAndTop.NORTH_UP,
+                                "mia:petrified_ship/connect_right", "mia:petrified_ship/connect_left", "mia:petrified_ship/connect_left"),
+                        new JigsawContract(new BlockPos(2, 1, 5), FrontAndTop.SOUTH_UP,
+                                "mia:petrified_ship/connect_left", "mia:petrified_ship/connect_right", "mia:petrified_ship/connect_right")
+                )
+        );
+        assertPetrifiedShipTemplate(
+                helper,
+                "petrified_ship_left",
+                new Vec3i(14, 23, 27),
+                Set.of(new JigsawContract(new BlockPos(6, 1, 0), FrontAndTop.NORTH_UP,
+                        "mia:petrified_ship/connect_right", "mia:petrified_ship/connect_left", "minecraft:empty"))
+        );
+        assertPetrifiedShipTemplate(
+                helper,
+                "petrified_ship_right",
+                new Vec3i(12, 16, 17),
+                Set.of(
+                        new JigsawContract(new BlockPos(6, 1, 16), FrontAndTop.SOUTH_UP,
+                                "mia:petrified_ship/connect_left", "mia:petrified_ship/connect_right", "minecraft:empty"),
+                        new JigsawContract(new BlockPos(11, 0, 12), FrontAndTop.EAST_UP,
+                                "mia:petrified_ship/branch", "mia:petrified_ship/branch", "mia:petrified_ship/branch")
+                )
+        );
+        assertPetrifiedShipTemplate(helper, "petrified_ship_part_1", new Vec3i(4, 3, 5),
+                Set.of(branchEnd(new BlockPos(3, 0, 2))));
+        assertPetrifiedShipTemplate(helper, "petrified_ship_part_2", new Vec3i(5, 4, 5),
+                Set.of(branchEnd(new BlockPos(4, 1, 2))));
+        assertPetrifiedShipTemplate(helper, "petrified_ship_part_3", new Vec3i(5, 4, 5),
+                Set.of(branchEnd(new BlockPos(4, 1, 2))));
+        assertPetrifiedShipTemplate(helper, "petrified_ship_part_4", new Vec3i(5, 2, 3),
+                Set.of(branchEnd(new BlockPos(4, 1, 1))));
+        assertPetrifiedShipTemplate(helper, "petrified_ship_part_5", new Vec3i(6, 4, 4),
+                Set.of(branchEnd(new BlockPos(5, 1, 1))));
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void petrifiedShipPoolsKeepEndsDirectionalAndUnique(GameTestHelper helper) {
+        assertTemplatePool(helper, "petrified_ship/main", "minecraft:empty", Map.of(
+                "mia:petrified_ship_body_small", 1,
+                "mia:petrified_ship_body_big", 1
+        ));
+        assertTemplatePool(helper, "petrified_ship/start", "mia:petrified_ship/main", Map.of(
+                "mia:petrified_ship_body_small", 1,
+                "mia:petrified_ship_body_big", 3
+        ));
+        assertTemplatePool(helper, "petrified_ship/connect_left", "mia:petrified_ship/left_or_right", Map.of(
+                "mia:petrified_ship_body_small", 1,
+                "mia:petrified_ship_body_big", 1,
+                "mia:petrified_ship_right", 1
+        ));
+        assertTemplatePool(helper, "petrified_ship/connect_right", "mia:petrified_ship/left_or_right", Map.of(
+                "mia:petrified_ship_body_small", 1,
+                "mia:petrified_ship_body_big", 1,
+                "mia:petrified_ship_left", 1
+        ));
+        assertTemplatePool(helper, "petrified_ship/left_or_right", "minecraft:empty", Map.of(
+                "mia:petrified_ship_left", 1,
+                "mia:petrified_ship_right", 1
+        ));
+        assertTemplatePool(helper, "petrified_ship/branch", "minecraft:empty", Map.of(
+                "mia:petrified_ship_part_1", 1,
+                "mia:petrified_ship_part_2", 1,
+                "mia:petrified_ship_part_3", 1,
+                "mia:petrified_ship_part_4", 1,
+                "mia:petrified_ship_part_5", 1
+        ));
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void petrifiedShipWorldgenUsesGreatFaultSurfaceContract(GameTestHelper helper) {
+        TagKey<Biome> petrifiedShipBiomes = TagKey.create(
+                Registries.BIOME,
+                MiaUtil.miaId("has_petrified_ship")
+        );
+        ResourceKey<Structure> petrifiedShip = ResourceKey.create(
+                Registries.STRUCTURE,
+                MiaUtil.miaId("petrified_ship")
+        );
+        ResourceKey<StructureSet> petrifiedShips = ResourceKey.create(
+                Registries.STRUCTURE_SET,
+                MiaUtil.miaId("petrified_ships")
+        );
+
+        assertBiomeTagEquals(helper, petrifiedShipBiomes,
+                Set.of(MiaBiomes.THE_GREAT_FAULT, MiaBiomes.GREAT_FAULT));
+
+        JsonObject structure = encodeStructure(helper, petrifiedShip);
+        helper.assertValueEqual(structure.get("type").getAsString(), "mia:jigsaw", "petrified ship type");
+        helper.assertValueEqual(structure.get("step").getAsString(),
+                GenerationStep.Decoration.SURFACE_STRUCTURES.getName(), "petrified ship generation step");
+        helper.assertValueEqual(structure.get("terrain_adaptation").getAsString(),
+                "beard_thin", "petrified ship terrain adaptation");
+        helper.assertValueEqual(structure.get("start_pool").getAsString(),
+                "mia:petrified_ship/start", "petrified ship start pool");
+        helper.assertValueEqual(structure.get("size").getAsInt(), 8, "petrified ship Jigsaw depth");
+        helper.assertValueEqual(structure.getAsJsonObject("start_height").get("absolute").getAsInt(),
+                0, "petrified ship base Y before surface projection");
+        helper.assertValueEqual(structure.get("project_start_to_heightmap").getAsString(),
+                "WORLD_SURFACE_WG", "petrified ship surface heightmap");
+        helper.assertValueEqual(structure.get("max_distance_from_center").getAsInt(),
+                128, "petrified ship maximum Jigsaw range");
+        helper.assertFalse(structure.get("use_expansion_hack").getAsBoolean(),
+                "petrified ship must not use the expansion hack");
+
+        assertRandomSpreadSet(helper, petrifiedShips,
+                32, 8, 70387320, Map.of("mia:petrified_ship", 1));
+        helper.succeed();
+    }
+
+    private static JigsawContract branchEnd(BlockPos pos) {
+        return new JigsawContract(
+                pos,
+                FrontAndTop.EAST_UP,
+                "mia:petrified_ship/branch",
+                "mia:petrified_ship/branch",
+                "minecraft:empty"
+        );
+    }
+
+    private static void assertPetrifiedShipTemplate(
+            GameTestHelper helper,
+            String path,
+            Vec3i expectedSize,
+            Set<JigsawContract> expectedJigsaws
+    ) {
+        StructureTemplate template = helper.getLevel().getStructureManager().get(MiaUtil.miaId(path))
+                .orElseThrow(() -> new AssertionError("missing structure template mia:" + path));
+        helper.assertValueEqual(template.getSize(), expectedSize, path + " template size");
+        helper.assertTrue(
+                template.filterBlocks(BlockPos.ZERO, new StructurePlaceSettings(), Blocks.STRUCTURE_BLOCK).isEmpty(),
+                path + " must not contain authoring-only structure blocks"
+        );
+
+        Set<JigsawContract> actualJigsaws = template
+                .filterBlocks(BlockPos.ZERO, new StructurePlaceSettings(), Blocks.JIGSAW)
+                .stream()
+                .map(info -> {
+                    if (info.nbt() == null) {
+                        throw new AssertionError(path + " contains a Jigsaw without block-entity NBT at " + info.pos());
+                    }
+                    return new JigsawContract(
+                            info.pos(),
+                            info.state().getValue(JigsawBlock.ORIENTATION),
+                            info.nbt().getString("name"),
+                            info.nbt().getString("target"),
+                            info.nbt().getString("pool")
+                    );
+                })
+                .collect(Collectors.toSet());
+        helper.assertValueEqual(actualJigsaws, expectedJigsaws, path + " Jigsaw contract");
+    }
+
+    private static void assertTemplatePool(
+            GameTestHelper helper,
+            String path,
+            String expectedFallback,
+            Map<String, Integer> expectedElements
+    ) {
+        ResourceKey<StructureTemplatePool> key = ResourceKey.create(Registries.TEMPLATE_POOL, MiaUtil.miaId(path));
+        RegistryOps<JsonElement> ops = RegistryOps.create(JsonOps.INSTANCE, helper.getLevel().registryAccess());
+        StructureTemplatePool pool = helper.getLevel().registryAccess().lookupOrThrow(Registries.TEMPLATE_POOL)
+                .getOrThrow(key)
+                .value();
+        JsonObject encoded = StructureTemplatePool.DIRECT_CODEC.encodeStart(ops, pool)
+                .getOrThrow()
+                .getAsJsonObject();
+        helper.assertValueEqual(encoded.get("fallback").getAsString(), expectedFallback, path + " fallback");
+
+        Map<String, Integer> actualElements = encoded.getAsJsonArray("elements").asList().stream()
+                .map(JsonElement::getAsJsonObject)
+                .collect(Collectors.toMap(
+                        entry -> entry.getAsJsonObject("element").get("location").getAsString(),
+                        entry -> entry.get("weight").getAsInt()
+                ));
+        helper.assertValueEqual(actualElements, expectedElements, path + " elements");
+    }
+
+    private record JigsawContract(
+            BlockPos pos,
+            FrontAndTop orientation,
+            String name,
+            String target,
+            String pool
+    ) {
     }
 
     private static void assertStructureTemplateSize(GameTestHelper helper, String path, Vec3i expectedSize) {
