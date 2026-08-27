@@ -62,7 +62,7 @@ public class MiaBiomeTagsProvider extends BiomeTagsProvider {
                         MiaBiomes.INVERTED_FOREST
                 );
         tag(MiaTags.Biomes.HAS_CAVE_RAIDER_HUT)
-                .add(MiaBiomes.INVERTED_FOREST);
+                .add(MiaBiomes.TEMPTATION_FOREST);
         tag(MiaTags.Biomes.HAS_RUINED_CAVE_RAIDER_HUT)
                 .add(MiaBiomes.ABYSS_PLAINS);
         tag(MiaTags.Biomes.HAS_FISHERMAN_HUT)

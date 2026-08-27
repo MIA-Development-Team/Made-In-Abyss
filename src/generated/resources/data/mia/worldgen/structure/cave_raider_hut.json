@@ -12,7 +12,7 @@
   "size": 1,
   "spawn_overrides": {},
   "start_height": {
-    "absolute": -113
+    "absolute": 374
   },
   "start_pool": "mia:cave_raider_hut/start",
   "step": "underground_structures",

@@ -6,6 +6,7 @@ import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.worldgen.biome.MiaBiomes;
 import com.altnoir.mia.worldgen.noise_setting.MiaNoiseGeneratorSettings;
 import com.altnoir.mia.worldgen.structure.CaveFloorSearch;
+import com.altnoir.mia.worldgen.structure.MiaJigsawStructure;
 import com.altnoir.mia.worldgen.structure.MiaStructureSets;
 import com.altnoir.mia.worldgen.structure.MiaStructures;
 import com.altnoir.mia.worldgen.structure.wall.AbyssWallCandidate;
@@ -22,6 +23,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.JigsawBlock;
@@ -572,7 +574,7 @@ public class MiaGameTests {
 
     @PrefixGameTestTemplate(false)
     @GameTest(template = "gametest/amethyst_lamptube")
-    public static void abyssSurfaceWorldgenKeepsApprovedBiomeAndPlacementContract(GameTestHelper helper) {
+    public static void abyssStructureWorldgenKeepsApprovedBiomeAndPlacementContract(GameTestHelper helper) {
         TagKey<Biome> abyssalRuinsBiomes = biomeTag("has_abyssal_ruins");
         TagKey<Biome> caveRaiderHutBiomes = biomeTag("has_cave_raider_hut");
         TagKey<Biome> ruinedCaveRaiderHutBiomes = biomeTag("has_ruined_cave_raider_hut");
@@ -600,49 +602,28 @@ public class MiaGameTests {
         );
 
         assertBiomeTagEquals(helper, abyssalRuinsBiomes, allAbyssBiomes);
-        assertBiomeTagEquals(helper, caveRaiderHutBiomes, Set.of(MiaBiomes.INVERTED_FOREST));
+        assertBiomeTagEquals(helper, caveRaiderHutBiomes, Set.of(MiaBiomes.TEMPTATION_FOREST));
         assertBiomeTagEquals(helper, ruinedCaveRaiderHutBiomes, Set.of(MiaBiomes.ABYSS_PLAINS));
         assertBiomeTagEquals(helper, fishermanHutBiomes, surfaceAbyssBiomes);
 
-        assertSurfaceJigsawStructure(helper, "abyssal_ruins_01", "has_abyssal_ruins",
-                "abyssal_ruins_01/starts");
-        assertSurfaceJigsawStructure(helper, "abyssal_ruins_02", "has_abyssal_ruins",
-                "abyssal_ruins_02/starts");
-        assertSurfaceJigsawStructure(helper, "abyssal_ruins_03", "has_abyssal_ruins",
-                "abyssal_ruins_03/starts");
-        assertSurfaceJigsawStructure(helper, "abyssal_ruins_04", "has_abyssal_ruins",
-                "abyssal_ruins_04/starts");
-        assertSurfaceJigsawStructure(helper, "abyssal_ruins_05", "has_abyssal_ruins",
-                "abyssal_ruins_05/starts");
-        assertSurfaceJigsawStructure(helper, "abyssal_ruins_06", "has_abyssal_ruins",
-                "abyssal_ruins_06/starts");
-        JsonObject caveRaiderHut = encodeStructure(helper, structureKey("cave_raider_hut"));
-        helper.assertValueEqual(caveRaiderHut.get("type").getAsString(),
-                "mia:jigsaw", "cave raider hut structure type");
-        helper.assertValueEqual(caveRaiderHut.get("biomes").getAsString(),
-                "#mia:has_cave_raider_hut", "cave raider hut biome tag");
-        helper.assertValueEqual(caveRaiderHut.get("step").getAsString(),
-                GenerationStep.Decoration.UNDERGROUND_STRUCTURES.getName(), "cave raider hut generation step");
-        helper.assertValueEqual(caveRaiderHut.get("terrain_adaptation").getAsString(),
-                "beard_thin", "cave raider hut terrain adaptation");
-        helper.assertValueEqual(caveRaiderHut.get("start_pool").getAsString(),
-                "mia:cave_raider_hut/start", "cave raider hut start pool");
-        helper.assertValueEqual(caveRaiderHut.get("size").getAsInt(), 1, "cave raider hut Jigsaw depth");
-        helper.assertValueEqual(caveRaiderHut.getAsJsonObject("start_height").get("absolute").getAsInt(),
-                -113, "cave raider hut inverted-forest ceiling");
-        helper.assertFalse(caveRaiderHut.has("project_start_to_heightmap"),
-                "cave raider hut must not project to the column's highest surface");
-        JsonObject caveFloorSearch = caveRaiderHut.getAsJsonObject("cave_floor_search");
-        helper.assertValueEqual(caveFloorSearch.getAsJsonObject("min_y").get("above_bottom").getAsInt(),
-                16, "cave raider hut search lower bound");
-        helper.assertValueEqual(caveFloorSearch.get("clearance").getAsInt(),
-                10, "cave raider hut top clearance");
-        helper.assertValueEqual(caveFloorSearch.get("horizontal_samples").getAsInt(),
-                16, "cave raider hut sampled columns");
-        assertSurfaceJigsawStructure(helper, "ruined_cave_raider_hut", "has_ruined_cave_raider_hut",
-                "ruined_cave_raider_hut/starts");
-        assertSurfaceJigsawStructure(helper, "fisherman_hut", "has_fisherman_hut",
-                "fisherman_hut/starts");
+        assertCaveFloorJigsawStructure(helper, "abyssal_ruins_01", "has_abyssal_ruins",
+                "abyssal_ruins_01/starts", 9);
+        assertCaveFloorJigsawStructure(helper, "abyssal_ruins_02", "has_abyssal_ruins",
+                "abyssal_ruins_02/starts", 7);
+        assertCaveFloorJigsawStructure(helper, "abyssal_ruins_03", "has_abyssal_ruins",
+                "abyssal_ruins_03/starts", 9);
+        assertCaveFloorJigsawStructure(helper, "abyssal_ruins_04", "has_abyssal_ruins",
+                "abyssal_ruins_04/starts", 8);
+        assertCaveFloorJigsawStructure(helper, "abyssal_ruins_05", "has_abyssal_ruins",
+                "abyssal_ruins_05/starts", 9);
+        assertCaveFloorJigsawStructure(helper, "abyssal_ruins_06", "has_abyssal_ruins",
+                "abyssal_ruins_06/starts", 10);
+        assertCaveFloorJigsawStructure(helper, "cave_raider_hut", "has_cave_raider_hut",
+                "cave_raider_hut/start", 10);
+        assertHeightCappedSurfaceJigsawStructure(helper, "ruined_cave_raider_hut",
+                "has_ruined_cave_raider_hut", "ruined_cave_raider_hut/starts");
+        assertHeightCappedSurfaceJigsawStructure(helper, "fisherman_hut",
+                "has_fisherman_hut", "fisherman_hut/starts");
 
         assertRandomSpreadSet(helper, structureSetKey("abyssal_ruins"),
                 16, 4, 70387321, Map.of(
@@ -660,6 +641,27 @@ public class MiaGameTests {
                 ));
         assertRandomSpreadSet(helper, structureSetKey("fisherman_huts"),
                 32, 8, 70387323, Map.of("mia:fisherman_hut", 1));
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void miaJigsawHeightLimitRejectsBoundaryButAllowsBelow(GameTestHelper helper) {
+        JsonObject structureJson = encodeStructure(helper, structureKey("abyssal_ruins_01"));
+        structureJson.addProperty("type", "mia:jigsaw");
+        structureJson.remove("cave_floor_search");
+        structureJson.remove("project_start_to_heightmap");
+        structureJson.add("max_start_y_exclusive", absoluteHeight(375));
+
+        structureJson.add("start_height", absoluteHeight(375));
+        MiaJigsawStructure atBoundary = decodeMiaJigsawStructure(helper, structureJson);
+        helper.assertTrue(atBoundary.findGenerationPoint(generationContext(helper)).isEmpty(),
+                "an origin at the exclusive maximum must be rejected");
+
+        structureJson.add("start_height", absoluteHeight(374));
+        MiaJigsawStructure belowBoundary = decodeMiaJigsawStructure(helper, structureJson);
+        helper.assertTrue(belowBoundary.findGenerationPoint(generationContext(helper)).isPresent(),
+                "an origin one block below the exclusive maximum must be allowed");
         helper.succeed();
     }
 
@@ -1014,16 +1016,50 @@ public class MiaGameTests {
         helper.assertValueEqual(structures, expectedStructures, key.location() + " weighted structures");
     }
 
-    private static void assertSurfaceJigsawStructure(
+    private static void assertCaveFloorJigsawStructure(
+            GameTestHelper helper,
+            String structureName,
+            String biomeTag,
+            String startPool,
+            int clearance
+    ) {
+        ResourceKey<Structure> key = ResourceKey.create(Registries.STRUCTURE, MiaUtil.miaId(structureName));
+        JsonObject structure = encodeStructure(helper, key);
+        helper.assertValueEqual(structure.get("type").getAsString(),
+                "mia:jigsaw", structureName + " structure type");
+        helper.assertValueEqual(structure.get("biomes").getAsString(),
+                "#mia:" + biomeTag, structureName + " biome tag");
+        helper.assertValueEqual(structure.get("step").getAsString(),
+                GenerationStep.Decoration.UNDERGROUND_STRUCTURES.getName(), structureName + " generation step");
+        helper.assertValueEqual(structure.get("terrain_adaptation").getAsString(),
+                "beard_thin", structureName + " terrain adaptation");
+        helper.assertValueEqual(structure.get("start_pool").getAsString(),
+                "mia:" + startPool, structureName + " start pool");
+        helper.assertValueEqual(structure.get("size").getAsInt(), 1, structureName + " Jigsaw depth");
+        helper.assertValueEqual(structure.getAsJsonObject("start_height").get("absolute").getAsInt(),
+                374, structureName + " maximum cave-floor origin");
+        helper.assertFalse(structure.has("project_start_to_heightmap"),
+                structureName + " must inspect local floors instead of the highest surface");
+        JsonObject caveFloorSearch = structure.getAsJsonObject("cave_floor_search");
+        helper.assertValueEqual(caveFloorSearch.getAsJsonObject("min_y").get("above_bottom").getAsInt(),
+                16, structureName + " cave-floor search lower bound");
+        helper.assertValueEqual(caveFloorSearch.get("clearance").getAsInt(),
+                clearance, structureName + " cave-floor clearance");
+        helper.assertValueEqual(caveFloorSearch.get("horizontal_samples").getAsInt(),
+                16, structureName + " sampled columns");
+        helper.assertTrue(structure.get("use_expansion_hack").getAsBoolean(),
+                structureName + " expansion hack");
+    }
+
+    private static void assertHeightCappedSurfaceJigsawStructure(
             GameTestHelper helper,
             String structureName,
             String biomeTag,
             String startPool
     ) {
-        ResourceKey<Structure> key = ResourceKey.create(Registries.STRUCTURE, MiaUtil.miaId(structureName));
-        JsonObject structure = encodeStructure(helper, key);
+        JsonObject structure = encodeStructure(helper, structureKey(structureName));
         helper.assertValueEqual(structure.get("type").getAsString(),
-                "minecraft:jigsaw", structureName + " structure type");
+                "mia:jigsaw", structureName + " structure type");
         helper.assertValueEqual(structure.get("biomes").getAsString(),
                 "#mia:" + biomeTag, structureName + " biome tag");
         helper.assertValueEqual(structure.get("step").getAsString(),
@@ -1034,9 +1070,11 @@ public class MiaGameTests {
                 "mia:" + startPool, structureName + " start pool");
         helper.assertValueEqual(structure.get("size").getAsInt(), 1, structureName + " Jigsaw depth");
         helper.assertValueEqual(structure.getAsJsonObject("start_height").get("absolute").getAsInt(),
-                0, structureName + " start height");
+                0, structureName + " surface projection offset");
         helper.assertValueEqual(structure.get("project_start_to_heightmap").getAsString(),
                 "WORLD_SURFACE_WG", structureName + " surface heightmap");
+        helper.assertValueEqual(structure.getAsJsonObject("max_start_y_exclusive").get("absolute").getAsInt(),
+                375, structureName + " exclusive maximum start height");
         helper.assertTrue(structure.get("use_expansion_hack").getAsBoolean(),
                 structureName + " expansion hack");
     }
@@ -1053,6 +1091,28 @@ public class MiaGameTests {
         return ResourceKey.create(Registries.STRUCTURE, MiaUtil.miaId(name));
     }
 
+    private static JsonObject absoluteHeight(int y) {
+        JsonObject height = new JsonObject();
+        height.addProperty("absolute", y);
+        return height;
+    }
+
+    private static Structure.GenerationContext generationContext(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var chunkSource = level.getChunkSource();
+        return new Structure.GenerationContext(
+                level.registryAccess(),
+                chunkSource.getGenerator(),
+                chunkSource.getGenerator().getBiomeSource(),
+                chunkSource.randomState(),
+                level.getStructureManager(),
+                level.getSeed(),
+                new ChunkPos(helper.absolutePos(BlockPos.ZERO)),
+                level,
+                biome -> true
+        );
+    }
+
     private static JsonObject encodeStructureSet(GameTestHelper helper, ResourceKey<StructureSet> key) {
         RegistryOps<JsonElement> ops = RegistryOps.create(JsonOps.INSTANCE, helper.getLevel().registryAccess());
         StructureSet structureSet = helper.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE_SET)
@@ -1067,6 +1127,11 @@ public class MiaGameTests {
                 .getOrThrow(key)
                 .value();
         return Structure.DIRECT_CODEC.encodeStart(ops, structure).getOrThrow().getAsJsonObject();
+    }
+
+    private static MiaJigsawStructure decodeMiaJigsawStructure(GameTestHelper helper, JsonObject structure) {
+        RegistryOps<JsonElement> ops = RegistryOps.create(JsonOps.INSTANCE, helper.getLevel().registryAccess());
+        return (MiaJigsawStructure) Structure.DIRECT_CODEC.parse(ops, structure).getOrThrow();
     }
 
     private static void assertWindmillTemplate(GameTestHelper helper, String path, Vec3i expectedSize) {
