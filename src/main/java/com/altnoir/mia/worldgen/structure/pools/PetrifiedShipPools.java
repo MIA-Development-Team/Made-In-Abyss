@@ -48,12 +48,14 @@ public final class PetrifiedShipPools {
         context.register(CONNECT_LEFT, pool(leftOrRight, List.of(
                 piece("petrified_ship_body_small", 1),
                 piece("petrified_ship_body_big", 1),
-                piece("petrified_ship_right", 3)
+                piece("petrified_ship_right", 5),
+                emptyPiece(1)
         )));
         context.register(CONNECT_RIGHT, pool(leftOrRight, List.of(
                 piece("petrified_ship_body_small", 1),
                 piece("petrified_ship_body_big", 1),
-                piece("petrified_ship_left", 3)
+                piece("petrified_ship_left", 5),
+                emptyPiece(1)
         )));
         context.register(BRANCH, pool(empty, List.of(
                 piece("petrified_ship_part_1", 1),
@@ -69,6 +71,12 @@ public final class PetrifiedShipPools {
             int weight
     ) {
         return Pair.of(MiaSructurePoolUtils.single(template), weight);
+    }
+
+    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> emptyPiece(
+            int weight
+    ) {
+        return Pair.of(StructurePoolElement.empty(), weight);
     }
 
     private static StructureTemplatePool pool(

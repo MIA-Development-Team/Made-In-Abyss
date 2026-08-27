@@ -65,7 +65,7 @@ public interface MiaStructureSets {
                 PETRIFIED_SHIPS,
                 new StructureSet(
                         structure.getOrThrow(MiaStructures.PETRIFIED_SHIP),
-                        new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 70387320)
+                        new RandomSpreadStructurePlacement(16, 4, RandomSpreadType.LINEAR, 70387320)
                 )
         );
         context.register(

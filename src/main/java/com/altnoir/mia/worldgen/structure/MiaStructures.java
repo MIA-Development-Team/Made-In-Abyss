@@ -107,15 +107,16 @@ public class MiaStructures {
                 PETRIFIED_SHIP,
                 new MiaJigsawStructure(
                         new Structure.StructureSettings.Builder(biome.getOrThrow(MiaTags.Biomes.HAS_PETRIFIED_SHIP))
-                                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                                .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
                                 .terrainAdapation(TerrainAdjustment.BEARD_THIN)
                                 .build(),
                         templatePool.getOrThrow(PetrifiedShipPools.START),
                         Optional.empty(),
-                        8,
-                        ConstantHeight.of(VerticalAnchor.absolute(0)),
+                        4,
+                        ConstantHeight.of(VerticalAnchor.absolute(324)),
                         false,
-                        Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
+                        Optional.empty(),
+                        Optional.of(new CaveFloorSearch(VerticalAnchor.aboveBottom(16), 24, 4)),
                         128,
                         List.of(),
                         DimensionPadding.ZERO,

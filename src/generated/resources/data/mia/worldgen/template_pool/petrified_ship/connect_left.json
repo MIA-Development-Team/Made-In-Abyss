@@ -31,7 +31,13 @@
         },
         "projection": "rigid"
       },
-      "weight": 3
+      "weight": 5
+    },
+    {
+      "element": {
+        "element_type": "minecraft:empty_pool_element"
+      },
+      "weight": 1
     }
   ],
   "fallback": "mia:petrified_ship/left_or_right"

@@ -5,6 +5,7 @@ import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.worldgen.biome.MiaBiomes;
 import com.altnoir.mia.worldgen.noise_setting.MiaNoiseGeneratorSettings;
+import com.altnoir.mia.worldgen.structure.CaveFloorSearch;
 import com.altnoir.mia.worldgen.structure.MiaStructureSets;
 import com.altnoir.mia.worldgen.structure.MiaStructures;
 import com.altnoir.mia.worldgen.structure.wall.AbyssWallCandidate;
@@ -21,13 +22,16 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.JigsawBlock;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
@@ -452,24 +456,26 @@ public class MiaGameTests {
 
     @PrefixGameTestTemplate(false)
     @GameTest(template = "gametest/amethyst_lamptube")
-    public static void petrifiedShipPoolsKeepEndsDirectionalAndUnique(GameTestHelper helper) {
+    public static void petrifiedShipPoolsKeepDirectionalTerminationWeights(GameTestHelper helper) {
         assertTemplatePool(helper, "petrified_ship/main", "minecraft:empty", Map.of(
                 "mia:petrified_ship_body_small", 1,
                 "mia:petrified_ship_body_big", 1
         ));
         assertTemplatePool(helper, "petrified_ship/start", "mia:petrified_ship/main", Map.of(
                 "mia:petrified_ship_body_small", 1,
-                "mia:petrified_ship_body_big", 3
+                "mia:petrified_ship_body_big", 1
         ));
         assertTemplatePool(helper, "petrified_ship/connect_left", "mia:petrified_ship/left_or_right", Map.of(
                 "mia:petrified_ship_body_small", 1,
                 "mia:petrified_ship_body_big", 1,
-                "mia:petrified_ship_right", 1
+                "mia:petrified_ship_right", 5,
+                "minecraft:empty_pool_element", 1
         ));
         assertTemplatePool(helper, "petrified_ship/connect_right", "mia:petrified_ship/left_or_right", Map.of(
                 "mia:petrified_ship_body_small", 1,
                 "mia:petrified_ship_body_big", 1,
-                "mia:petrified_ship_left", 1
+                "mia:petrified_ship_left", 5,
+                "minecraft:empty_pool_element", 1
         ));
         assertTemplatePool(helper, "petrified_ship/left_or_right", "minecraft:empty", Map.of(
                 "mia:petrified_ship_left", 1,
@@ -487,7 +493,7 @@ public class MiaGameTests {
 
     @PrefixGameTestTemplate(false)
     @GameTest(template = "gametest/amethyst_lamptube")
-    public static void petrifiedShipWorldgenUsesGreatFaultSurfaceContract(GameTestHelper helper) {
+    public static void petrifiedShipWorldgenUsesGreatFaultCaveContract(GameTestHelper helper) {
         TagKey<Biome> petrifiedShipBiomes = TagKey.create(
                 Registries.BIOME,
                 MiaUtil.miaId("has_petrified_ship")
@@ -507,24 +513,137 @@ public class MiaGameTests {
         JsonObject structure = encodeStructure(helper, petrifiedShip);
         helper.assertValueEqual(structure.get("type").getAsString(), "mia:jigsaw", "petrified ship type");
         helper.assertValueEqual(structure.get("step").getAsString(),
-                GenerationStep.Decoration.SURFACE_STRUCTURES.getName(), "petrified ship generation step");
+                GenerationStep.Decoration.UNDERGROUND_STRUCTURES.getName(), "petrified ship generation step");
         helper.assertValueEqual(structure.get("terrain_adaptation").getAsString(),
                 "beard_thin", "petrified ship terrain adaptation");
         helper.assertValueEqual(structure.get("start_pool").getAsString(),
                 "mia:petrified_ship/start", "petrified ship start pool");
-        helper.assertValueEqual(structure.get("size").getAsInt(), 8, "petrified ship Jigsaw depth");
+        helper.assertValueEqual(structure.get("size").getAsInt(), 4, "petrified ship Jigsaw depth");
         helper.assertValueEqual(structure.getAsJsonObject("start_height").get("absolute").getAsInt(),
-                0, "petrified ship base Y before surface projection");
-        helper.assertValueEqual(structure.get("project_start_to_heightmap").getAsString(),
-                "WORLD_SURFACE_WG", "petrified ship surface heightmap");
+                324, "petrified ship cave scan ceiling");
+        helper.assertFalse(structure.has("project_start_to_heightmap"),
+                "petrified ship must not project onto the surface heightmap");
+        JsonObject caveFloorSearch = structure.getAsJsonObject("cave_floor_search");
+        helper.assertValueEqual(caveFloorSearch.getAsJsonObject("min_y").get("above_bottom").getAsInt(),
+                16, "petrified ship cave scan lower bound");
+        helper.assertValueEqual(caveFloorSearch.get("clearance").getAsInt(),
+                24, "petrified ship cave clearance");
+        helper.assertValueEqual(caveFloorSearch.get("horizontal_samples").getAsInt(),
+                4, "petrified ship cave column samples");
         helper.assertValueEqual(structure.get("max_distance_from_center").getAsInt(),
                 128, "petrified ship maximum Jigsaw range");
         helper.assertFalse(structure.get("use_expansion_hack").getAsBoolean(),
                 "petrified ship must not use the expansion hack");
 
         assertRandomSpreadSet(helper, petrifiedShips,
-                32, 8, 70387320, Map.of("mia:petrified_ship", 1));
+                16, 4, 70387320, Map.of("mia:petrified_ship", 1));
         helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void miaJigsawCodecKeepsLegacyStructuresWithoutCaveSearch(GameTestHelper helper) {
+        JsonObject stronghold = encodeStructure(helper, MiaStructures.ABYSS_STRONGHOLD);
+
+        helper.assertValueEqual(stronghold.get("type").getAsString(),
+                "mia:jigsaw", "abyss stronghold structure type");
+        helper.assertFalse(stronghold.has("cave_floor_search"),
+                "legacy Mia Jigsaw structures must not acquire cave-floor placement");
+        helper.assertFalse(stronghold.has("project_start_to_heightmap"),
+                "abyss stronghold must retain its original fixed-height placement");
+        helper.assertValueEqual(stronghold.getAsJsonObject("start_height").get("absolute").getAsInt(),
+                -50, "abyss stronghold fixed start Y");
+        helper.assertValueEqual(stronghold.get("size").getAsInt(),
+                14, "abyss stronghold Jigsaw depth");
+        helper.assertValueEqual(stronghold.get("max_distance_from_center").getAsInt(),
+                230, "abyss stronghold maximum Jigsaw range");
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void caveFloorSearchFindsDrySturdyFloorWithClearance(GameTestHelper helper) {
+        NoiseColumn column = stoneColumn(0, 80);
+        for (int y = 11; y <= 34; y++) {
+            column.setBlock(y, Blocks.AIR.defaultBlockState());
+        }
+
+        helper.assertValueEqual(
+                findCaveFloorStarts(column, 0, 34, 24),
+                List.of(11),
+                "a sturdy floor below 24 dry air blocks must place the structure one block above the floor"
+        );
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void caveFloorSearchRequiresFullClearance(GameTestHelper helper) {
+        NoiseColumn column = stoneColumn(0, 80);
+        for (int y = 11; y <= 33; y++) {
+            column.setBlock(y, Blocks.AIR.defaultBlockState());
+        }
+
+        helper.assertValueEqual(
+                findCaveFloorStarts(column, 0, 34, 24),
+                List.of(),
+                "a cave with only 23 air blocks must be rejected"
+        );
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void caveFloorSearchRejectsWetFloor(GameTestHelper helper) {
+        NoiseColumn column = stoneColumn(0, 80);
+        column.setBlock(10, Blocks.WATER.defaultBlockState());
+        for (int y = 11; y <= 34; y++) {
+            column.setBlock(y, Blocks.AIR.defaultBlockState());
+        }
+
+        helper.assertValueEqual(
+                findCaveFloorStarts(column, 0, 34, 24),
+                List.of(),
+                "a fluid-filled support block must not count as a cave floor"
+        );
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void caveFloorSearchKeepsOriginBelowConfiguredCeiling(GameTestHelper helper) {
+        NoiseColumn column = stoneColumn(300, 80);
+        for (int y = 325; y <= 348; y++) {
+            column.setBlock(y, Blocks.AIR.defaultBlockState());
+        }
+
+        helper.assertValueEqual(
+                findCaveFloorStarts(column, 300, 324, 24),
+                List.of(),
+                "an otherwise valid floor at Y=324 must not produce an origin above Y=324"
+        );
+        helper.assertValueEqual(
+                findCaveFloorStarts(column, 300, 325, 24),
+                List.of(325),
+                "the same floor must become valid when Y=325 is allowed"
+        );
+        helper.succeed();
+    }
+
+    private static NoiseColumn stoneColumn(int minY, int height) {
+        BlockState[] blocks = new BlockState[height];
+        Arrays.fill(blocks, Blocks.STONE.defaultBlockState());
+        return new NoiseColumn(minY, blocks);
+    }
+
+    private static List<Integer> findCaveFloorStarts(
+            NoiseColumn column,
+            int minY,
+            int maxY,
+            int clearance
+    ) {
+        return new CaveFloorSearch(VerticalAnchor.absolute(minY), clearance, 4)
+                .findStartYs(column, minY, maxY);
     }
 
     private static JigsawContract branchEnd(BlockPos pos) {
@@ -589,7 +708,12 @@ public class MiaGameTests {
         Map<String, Integer> actualElements = encoded.getAsJsonArray("elements").asList().stream()
                 .map(JsonElement::getAsJsonObject)
                 .collect(Collectors.toMap(
-                        entry -> entry.getAsJsonObject("element").get("location").getAsString(),
+                        entry -> {
+                            JsonObject element = entry.getAsJsonObject("element");
+                            return element.has("location")
+                                    ? element.get("location").getAsString()
+                                    : element.get("element_type").getAsString();
+                        },
                         entry -> entry.get("weight").getAsInt()
                 ));
         helper.assertValueEqual(actualElements, expectedElements, path + " elements");
