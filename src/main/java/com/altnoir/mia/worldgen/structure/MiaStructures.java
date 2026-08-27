@@ -3,7 +3,9 @@ package com.altnoir.mia.worldgen.structure;
 import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.worldgen.structure.pools.AbyssStrongholdPools;
+import com.altnoir.mia.worldgen.structure.pools.AbyssSurfacePools;
 import com.altnoir.mia.worldgen.structure.pools.AbyssWindmillPools;
+import com.altnoir.mia.worldgen.structure.pools.CaveRaiderHutPools;
 import com.altnoir.mia.worldgen.structure.pools.CompassRuinsPools;
 import com.altnoir.mia.worldgen.structure.pools.PetrifiedShipPools;
 import com.altnoir.mia.worldgen.structure.wall.AbyssWallPlanConfig;
@@ -44,6 +46,15 @@ public class MiaStructures {
     public static final ResourceKey<Structure> ANCIENT_TRIAL_COMPASS_RUINS = createKey("ancient_trial_compass_ruins");
     public static final ResourceKey<Structure> ANCIENT_ANGKOR_COMPASS_RUINS = createKey("ancient_angkor_compass_ruins");
     public static final ResourceKey<Structure> PETRIFIED_SHIP = createKey("petrified_ship");
+    public static final ResourceKey<Structure> ABYSSAL_RUINS_01 = createKey("abyssal_ruins_01");
+    public static final ResourceKey<Structure> ABYSSAL_RUINS_02 = createKey("abyssal_ruins_02");
+    public static final ResourceKey<Structure> ABYSSAL_RUINS_03 = createKey("abyssal_ruins_03");
+    public static final ResourceKey<Structure> ABYSSAL_RUINS_04 = createKey("abyssal_ruins_04");
+    public static final ResourceKey<Structure> ABYSSAL_RUINS_05 = createKey("abyssal_ruins_05");
+    public static final ResourceKey<Structure> ABYSSAL_RUINS_06 = createKey("abyssal_ruins_06");
+    public static final ResourceKey<Structure> CAVE_RAIDER_HUT = createKey("cave_raider_hut");
+    public static final ResourceKey<Structure> RUINED_CAVE_RAIDER_HUT = createKey("ruined_cave_raider_hut");
+    public static final ResourceKey<Structure> FISHERMAN_HUT = createKey("fisherman_hut");
     public static final ResourceKey<Structure> ABYSS_STRONGHOLD = createKey("abyss_stronghold");
     public static final ResourceKey<Structure> ABYSS_WINDMILL = createKey("abyss_windmill");
 
@@ -83,6 +94,42 @@ public class MiaStructures {
                 MiaTags.Biomes.HAS_ANCIENT_ANGKOR_COMPASS_RUINS,
                 CompassRuinsPools.ANCIENT_ANGKOR
         );
+        registerSurfaceStructure(context, biome, templatePool, ABYSSAL_RUINS_01,
+                MiaTags.Biomes.HAS_ABYSSAL_RUINS, AbyssSurfacePools.ABYSSAL_RUINS_01);
+        registerSurfaceStructure(context, biome, templatePool, ABYSSAL_RUINS_02,
+                MiaTags.Biomes.HAS_ABYSSAL_RUINS, AbyssSurfacePools.ABYSSAL_RUINS_02);
+        registerSurfaceStructure(context, biome, templatePool, ABYSSAL_RUINS_03,
+                MiaTags.Biomes.HAS_ABYSSAL_RUINS, AbyssSurfacePools.ABYSSAL_RUINS_03);
+        registerSurfaceStructure(context, biome, templatePool, ABYSSAL_RUINS_04,
+                MiaTags.Biomes.HAS_ABYSSAL_RUINS, AbyssSurfacePools.ABYSSAL_RUINS_04);
+        registerSurfaceStructure(context, biome, templatePool, ABYSSAL_RUINS_05,
+                MiaTags.Biomes.HAS_ABYSSAL_RUINS, AbyssSurfacePools.ABYSSAL_RUINS_05);
+        registerSurfaceStructure(context, biome, templatePool, ABYSSAL_RUINS_06,
+                MiaTags.Biomes.HAS_ABYSSAL_RUINS, AbyssSurfacePools.ABYSSAL_RUINS_06);
+        context.register(
+                CAVE_RAIDER_HUT,
+                new MiaJigsawStructure(
+                        new Structure.StructureSettings.Builder(biome.getOrThrow(MiaTags.Biomes.HAS_CAVE_RAIDER_HUT))
+                                .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
+                                .terrainAdapation(TerrainAdjustment.BEARD_THIN)
+                                .build(),
+                        templatePool.getOrThrow(CaveRaiderHutPools.START),
+                        Optional.empty(),
+                        1,
+                        ConstantHeight.of(VerticalAnchor.absolute(-113)),
+                        true,
+                        Optional.empty(),
+                        Optional.of(new CaveFloorSearch(VerticalAnchor.aboveBottom(16), 10, 16)),
+                        80,
+                        List.of(),
+                        DimensionPadding.ZERO,
+                        LiquidSettings.APPLY_WATERLOGGING
+                )
+        );
+        registerSurfaceStructure(context, biome, templatePool, RUINED_CAVE_RAIDER_HUT,
+                MiaTags.Biomes.HAS_RUINED_CAVE_RAIDER_HUT, AbyssSurfacePools.RUINED_CAVE_RAIDER_HUT);
+        registerSurfaceStructure(context, biome, templatePool, FISHERMAN_HUT,
+                MiaTags.Biomes.HAS_FISHERMAN_HUT, AbyssSurfacePools.FISHERMAN_HUT);
         context.register(
                 ANCIENT_TRIAL_COMPASS_RUINS,
                 new JigsawStructure(
@@ -176,6 +223,29 @@ public class MiaStructures {
                         new Structure.StructureSettings.Builder(biomes.getOrThrow(biomeTag))
                                 .terrainAdapation(TerrainAdjustment.BEARD_THIN)
                                 .spawnOverrides(surfaceSpawnOverrides())
+                                .build(),
+                        templatePools.getOrThrow(startPool),
+                        1,
+                        ConstantHeight.of(VerticalAnchor.absolute(0)),
+                        true,
+                        Heightmap.Types.WORLD_SURFACE_WG
+                )
+        );
+    }
+
+    private static void registerSurfaceStructure(
+            BootstrapContext<Structure> context,
+            HolderGetter<Biome> biomes,
+            HolderGetter<StructureTemplatePool> templatePools,
+            ResourceKey<Structure> structureKey,
+            TagKey<Biome> biomeTag,
+            ResourceKey<StructureTemplatePool> startPool
+    ) {
+        context.register(
+                structureKey,
+                new JigsawStructure(
+                        new Structure.StructureSettings.Builder(biomes.getOrThrow(biomeTag))
+                                .terrainAdapation(TerrainAdjustment.BEARD_THIN)
                                 .build(),
                         templatePools.getOrThrow(startPool),
                         1,

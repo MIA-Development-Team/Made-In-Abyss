@@ -46,5 +46,32 @@ public class MiaBiomeTagsProvider extends BiomeTagsProvider {
         tag(MiaTags.Biomes.HAS_ABYSS_WINDMILL)
                 .add(MiaBiomes.THE_ABYSS)
                 .add(MiaBiomes.INVERTED_FOREST);
+        tag(MiaTags.Biomes.HAS_ABYSSAL_RUINS)
+                .add(
+                        MiaBiomes.THE_ABYSS,
+                        MiaBiomes.SKYFOG_FOREST,
+                        MiaBiomes.DENSE_SKYFOG_FOREST,
+                        MiaBiomes.FOSSILIZED_FOREST,
+                        MiaBiomes.RICH_FOSSILIZED_FOREST,
+                        MiaBiomes.UNDER_FOSSILIZED_FOREST,
+                        MiaBiomes.ABYSS_PLAINS,
+                        MiaBiomes.PRASIOLITE_CAVES,
+                        MiaBiomes.ABYSS_LUSH_CAVES,
+                        MiaBiomes.ABYSS_DRIPSTONE_CAVES,
+                        MiaBiomes.TEMPTATION_FOREST,
+                        MiaBiomes.INVERTED_FOREST
+                );
+        tag(MiaTags.Biomes.HAS_CAVE_RAIDER_HUT)
+                .add(MiaBiomes.INVERTED_FOREST);
+        tag(MiaTags.Biomes.HAS_RUINED_CAVE_RAIDER_HUT)
+                .add(MiaBiomes.ABYSS_PLAINS);
+        tag(MiaTags.Biomes.HAS_FISHERMAN_HUT)
+                .add(
+                        MiaBiomes.SKYFOG_FOREST,
+                        MiaBiomes.DENSE_SKYFOG_FOREST,
+                        MiaBiomes.FOSSILIZED_FOREST,
+                        MiaBiomes.RICH_FOSSILIZED_FOREST,
+                        MiaBiomes.ABYSS_PLAINS
+                );
     }
 }

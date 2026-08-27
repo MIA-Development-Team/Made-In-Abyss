@@ -23,6 +23,9 @@ public interface MiaStructureSets {
     ResourceKey<StructureSet> ANCIENT_TRIAL_COMPASS_RUINS = register("ancient_trial_compass_ruins");
     ResourceKey<StructureSet> ANCIENT_ANGKOR_COMPASS_RUINS = register("ancient_angkor_compass_ruins");
     ResourceKey<StructureSet> PETRIFIED_SHIPS = register("petrified_ships");
+    ResourceKey<StructureSet> ABYSSAL_RUINS = register("abyssal_ruins");
+    ResourceKey<StructureSet> CAVE_RAIDER_HUTS = register("cave_raider_huts");
+    ResourceKey<StructureSet> FISHERMAN_HUTS = register("fisherman_huts");
     ResourceKey<StructureSet> ABYSS_STRONGHOLDS = register("abyss_strongholds");
     ResourceKey<StructureSet> ABYSS_WINDMILLS = register("abyss_windmills");
 
@@ -66,6 +69,37 @@ public interface MiaStructureSets {
                 new StructureSet(
                         structure.getOrThrow(MiaStructures.PETRIFIED_SHIP),
                         new RandomSpreadStructurePlacement(16, 4, RandomSpreadType.LINEAR, 70387320)
+                )
+        );
+        context.register(
+                ABYSSAL_RUINS,
+                new StructureSet(
+                        List.of(
+                                StructureSet.entry(structure.getOrThrow(MiaStructures.ABYSSAL_RUINS_01), 1),
+                                StructureSet.entry(structure.getOrThrow(MiaStructures.ABYSSAL_RUINS_02), 1),
+                                StructureSet.entry(structure.getOrThrow(MiaStructures.ABYSSAL_RUINS_03), 1),
+                                StructureSet.entry(structure.getOrThrow(MiaStructures.ABYSSAL_RUINS_04), 1),
+                                StructureSet.entry(structure.getOrThrow(MiaStructures.ABYSSAL_RUINS_05), 1),
+                                StructureSet.entry(structure.getOrThrow(MiaStructures.ABYSSAL_RUINS_06), 1)
+                        ),
+                        new RandomSpreadStructurePlacement(16, 4, RandomSpreadType.LINEAR, 70387321)
+                )
+        );
+        context.register(
+                CAVE_RAIDER_HUTS,
+                new StructureSet(
+                        List.of(
+                                StructureSet.entry(structure.getOrThrow(MiaStructures.CAVE_RAIDER_HUT), 1),
+                                StructureSet.entry(structure.getOrThrow(MiaStructures.RUINED_CAVE_RAIDER_HUT), 1)
+                        ),
+                        new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 70387322)
+                )
+        );
+        context.register(
+                FISHERMAN_HUTS,
+                new StructureSet(
+                        structure.getOrThrow(MiaStructures.FISHERMAN_HUT),
+                        new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 70387323)
                 )
         );
         context.register(

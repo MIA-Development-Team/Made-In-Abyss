@@ -536,6 +536,135 @@ public class MiaGameTests {
 
     @PrefixGameTestTemplate(false)
     @GameTest(template = "gametest/amethyst_lamptube")
+    public static void abyssSurfaceTemplatesArePackagedWithExpectedContracts(GameTestHelper helper) {
+        assertJigsawTemplate(helper, "abyssal_ruins_01", new Vec3i(19, 9, 19), Set.of());
+        assertJigsawTemplate(helper, "abyssal_ruins_02", new Vec3i(18, 7, 18), Set.of());
+        assertJigsawTemplate(helper, "abyssal_ruins_03", new Vec3i(9, 9, 15), Set.of());
+        assertJigsawTemplate(helper, "abyssal_ruins_04", new Vec3i(19, 8, 19), Set.of());
+        assertJigsawTemplate(helper, "abyssal_ruins_05", new Vec3i(19, 9, 20), Set.of());
+        assertJigsawTemplate(helper, "abyssal_ruins_06", new Vec3i(21, 10, 22), Set.of());
+        assertJigsawTemplate(helper, "ruined_cave_raider_hut", new Vec3i(22, 19, 18), Set.of());
+        assertJigsawTemplate(helper, "fisherman_hut", new Vec3i(43, 25, 48), Set.of());
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void abyssSurfaceTemplatePoolsUseTheirStructureNames(GameTestHelper helper) {
+        assertTemplatePool(helper, "abyssal_ruins_01/starts", "minecraft:empty",
+                Map.of("mia:abyssal_ruins_01", 1));
+        assertTemplatePool(helper, "abyssal_ruins_02/starts", "minecraft:empty",
+                Map.of("mia:abyssal_ruins_02", 1));
+        assertTemplatePool(helper, "abyssal_ruins_03/starts", "minecraft:empty",
+                Map.of("mia:abyssal_ruins_03", 1));
+        assertTemplatePool(helper, "abyssal_ruins_04/starts", "minecraft:empty",
+                Map.of("mia:abyssal_ruins_04", 1));
+        assertTemplatePool(helper, "abyssal_ruins_05/starts", "minecraft:empty",
+                Map.of("mia:abyssal_ruins_05", 1));
+        assertTemplatePool(helper, "abyssal_ruins_06/starts", "minecraft:empty",
+                Map.of("mia:abyssal_ruins_06", 1));
+        assertTemplatePool(helper, "ruined_cave_raider_hut/starts", "minecraft:empty",
+                Map.of("mia:ruined_cave_raider_hut", 1));
+        assertTemplatePool(helper, "fisherman_hut/starts", "minecraft:empty",
+                Map.of("mia:fisherman_hut", 1));
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void abyssSurfaceWorldgenKeepsApprovedBiomeAndPlacementContract(GameTestHelper helper) {
+        TagKey<Biome> abyssalRuinsBiomes = biomeTag("has_abyssal_ruins");
+        TagKey<Biome> caveRaiderHutBiomes = biomeTag("has_cave_raider_hut");
+        TagKey<Biome> ruinedCaveRaiderHutBiomes = biomeTag("has_ruined_cave_raider_hut");
+        TagKey<Biome> fishermanHutBiomes = biomeTag("has_fisherman_hut");
+        Set<ResourceKey<Biome>> allAbyssBiomes = Set.of(
+                MiaBiomes.THE_ABYSS,
+                MiaBiomes.SKYFOG_FOREST,
+                MiaBiomes.DENSE_SKYFOG_FOREST,
+                MiaBiomes.FOSSILIZED_FOREST,
+                MiaBiomes.RICH_FOSSILIZED_FOREST,
+                MiaBiomes.UNDER_FOSSILIZED_FOREST,
+                MiaBiomes.ABYSS_PLAINS,
+                MiaBiomes.PRASIOLITE_CAVES,
+                MiaBiomes.ABYSS_LUSH_CAVES,
+                MiaBiomes.ABYSS_DRIPSTONE_CAVES,
+                MiaBiomes.TEMPTATION_FOREST,
+                MiaBiomes.INVERTED_FOREST
+        );
+        Set<ResourceKey<Biome>> surfaceAbyssBiomes = Set.of(
+                MiaBiomes.SKYFOG_FOREST,
+                MiaBiomes.DENSE_SKYFOG_FOREST,
+                MiaBiomes.FOSSILIZED_FOREST,
+                MiaBiomes.RICH_FOSSILIZED_FOREST,
+                MiaBiomes.ABYSS_PLAINS
+        );
+
+        assertBiomeTagEquals(helper, abyssalRuinsBiomes, allAbyssBiomes);
+        assertBiomeTagEquals(helper, caveRaiderHutBiomes, Set.of(MiaBiomes.INVERTED_FOREST));
+        assertBiomeTagEquals(helper, ruinedCaveRaiderHutBiomes, Set.of(MiaBiomes.ABYSS_PLAINS));
+        assertBiomeTagEquals(helper, fishermanHutBiomes, surfaceAbyssBiomes);
+
+        assertSurfaceJigsawStructure(helper, "abyssal_ruins_01", "has_abyssal_ruins",
+                "abyssal_ruins_01/starts");
+        assertSurfaceJigsawStructure(helper, "abyssal_ruins_02", "has_abyssal_ruins",
+                "abyssal_ruins_02/starts");
+        assertSurfaceJigsawStructure(helper, "abyssal_ruins_03", "has_abyssal_ruins",
+                "abyssal_ruins_03/starts");
+        assertSurfaceJigsawStructure(helper, "abyssal_ruins_04", "has_abyssal_ruins",
+                "abyssal_ruins_04/starts");
+        assertSurfaceJigsawStructure(helper, "abyssal_ruins_05", "has_abyssal_ruins",
+                "abyssal_ruins_05/starts");
+        assertSurfaceJigsawStructure(helper, "abyssal_ruins_06", "has_abyssal_ruins",
+                "abyssal_ruins_06/starts");
+        JsonObject caveRaiderHut = encodeStructure(helper, structureKey("cave_raider_hut"));
+        helper.assertValueEqual(caveRaiderHut.get("type").getAsString(),
+                "mia:jigsaw", "cave raider hut structure type");
+        helper.assertValueEqual(caveRaiderHut.get("biomes").getAsString(),
+                "#mia:has_cave_raider_hut", "cave raider hut biome tag");
+        helper.assertValueEqual(caveRaiderHut.get("step").getAsString(),
+                GenerationStep.Decoration.UNDERGROUND_STRUCTURES.getName(), "cave raider hut generation step");
+        helper.assertValueEqual(caveRaiderHut.get("terrain_adaptation").getAsString(),
+                "beard_thin", "cave raider hut terrain adaptation");
+        helper.assertValueEqual(caveRaiderHut.get("start_pool").getAsString(),
+                "mia:cave_raider_hut/start", "cave raider hut start pool");
+        helper.assertValueEqual(caveRaiderHut.get("size").getAsInt(), 1, "cave raider hut Jigsaw depth");
+        helper.assertValueEqual(caveRaiderHut.getAsJsonObject("start_height").get("absolute").getAsInt(),
+                -113, "cave raider hut inverted-forest ceiling");
+        helper.assertFalse(caveRaiderHut.has("project_start_to_heightmap"),
+                "cave raider hut must not project to the column's highest surface");
+        JsonObject caveFloorSearch = caveRaiderHut.getAsJsonObject("cave_floor_search");
+        helper.assertValueEqual(caveFloorSearch.getAsJsonObject("min_y").get("above_bottom").getAsInt(),
+                16, "cave raider hut search lower bound");
+        helper.assertValueEqual(caveFloorSearch.get("clearance").getAsInt(),
+                10, "cave raider hut top clearance");
+        helper.assertValueEqual(caveFloorSearch.get("horizontal_samples").getAsInt(),
+                16, "cave raider hut sampled columns");
+        assertSurfaceJigsawStructure(helper, "ruined_cave_raider_hut", "has_ruined_cave_raider_hut",
+                "ruined_cave_raider_hut/starts");
+        assertSurfaceJigsawStructure(helper, "fisherman_hut", "has_fisherman_hut",
+                "fisherman_hut/starts");
+
+        assertRandomSpreadSet(helper, structureSetKey("abyssal_ruins"),
+                16, 4, 70387321, Map.of(
+                        "mia:abyssal_ruins_01", 1,
+                        "mia:abyssal_ruins_02", 1,
+                        "mia:abyssal_ruins_03", 1,
+                        "mia:abyssal_ruins_04", 1,
+                        "mia:abyssal_ruins_05", 1,
+                        "mia:abyssal_ruins_06", 1
+                ));
+        assertRandomSpreadSet(helper, structureSetKey("cave_raider_huts"),
+                32, 8, 70387322, Map.of(
+                        "mia:cave_raider_hut", 1,
+                        "mia:ruined_cave_raider_hut", 1
+                ));
+        assertRandomSpreadSet(helper, structureSetKey("fisherman_huts"),
+                32, 8, 70387323, Map.of("mia:fisherman_hut", 1));
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
     public static void petrifiedShipWorldgenUsesGreatFaultCaveContract(GameTestHelper helper) {
         TagKey<Biome> petrifiedShipBiomes = TagKey.create(
                 Registries.BIOME,
@@ -883,6 +1012,45 @@ public class MiaGameTests {
                         entry -> entry.get("weight").getAsInt()
                 ));
         helper.assertValueEqual(structures, expectedStructures, key.location() + " weighted structures");
+    }
+
+    private static void assertSurfaceJigsawStructure(
+            GameTestHelper helper,
+            String structureName,
+            String biomeTag,
+            String startPool
+    ) {
+        ResourceKey<Structure> key = ResourceKey.create(Registries.STRUCTURE, MiaUtil.miaId(structureName));
+        JsonObject structure = encodeStructure(helper, key);
+        helper.assertValueEqual(structure.get("type").getAsString(),
+                "minecraft:jigsaw", structureName + " structure type");
+        helper.assertValueEqual(structure.get("biomes").getAsString(),
+                "#mia:" + biomeTag, structureName + " biome tag");
+        helper.assertValueEqual(structure.get("step").getAsString(),
+                GenerationStep.Decoration.SURFACE_STRUCTURES.getName(), structureName + " generation step");
+        helper.assertValueEqual(structure.get("terrain_adaptation").getAsString(),
+                "beard_thin", structureName + " terrain adaptation");
+        helper.assertValueEqual(structure.get("start_pool").getAsString(),
+                "mia:" + startPool, structureName + " start pool");
+        helper.assertValueEqual(structure.get("size").getAsInt(), 1, structureName + " Jigsaw depth");
+        helper.assertValueEqual(structure.getAsJsonObject("start_height").get("absolute").getAsInt(),
+                0, structureName + " start height");
+        helper.assertValueEqual(structure.get("project_start_to_heightmap").getAsString(),
+                "WORLD_SURFACE_WG", structureName + " surface heightmap");
+        helper.assertTrue(structure.get("use_expansion_hack").getAsBoolean(),
+                structureName + " expansion hack");
+    }
+
+    private static TagKey<Biome> biomeTag(String name) {
+        return TagKey.create(Registries.BIOME, MiaUtil.miaId(name));
+    }
+
+    private static ResourceKey<StructureSet> structureSetKey(String name) {
+        return ResourceKey.create(Registries.STRUCTURE_SET, MiaUtil.miaId(name));
+    }
+
+    private static ResourceKey<Structure> structureKey(String name) {
+        return ResourceKey.create(Registries.STRUCTURE, MiaUtil.miaId(name));
     }
 
     private static JsonObject encodeStructureSet(GameTestHelper helper, ResourceKey<StructureSet> key) {

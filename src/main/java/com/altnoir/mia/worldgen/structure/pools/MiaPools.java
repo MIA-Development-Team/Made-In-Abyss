@@ -21,5 +21,6 @@ public class MiaPools {
         AbyssWindmillPools.bootstrap(context);
         PetrifiedShipPools.bootstrap(context);
         CaveRaiderHutPools.bootstrap(context);
+        AbyssSurfacePools.bootstrap(context);
     }
 }
