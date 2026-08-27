@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 70387320,
+    "separation": 4,
+    "spacing": 16
+  },
+  "structures": [
+    {
+      "structure": "mia:petrified_ship",
+      "weight": 1
+    }
+  ]
+}

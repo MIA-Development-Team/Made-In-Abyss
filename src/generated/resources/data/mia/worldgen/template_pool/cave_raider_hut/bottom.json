@@ -3,22 +3,17 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "mia:star_compass_ruins/jungle_ruins",
+        "location": "mia:cave_raider_hut_bottom",
         "processors": {
           "processors": []
         },
         "projection": "rigid"
       },
-      "weight": 3
+      "weight": 1
     },
     {
       "element": {
-        "element_type": "minecraft:single_pool_element",
-        "location": "mia:star_compass_ruins/jungle_ruins2",
-        "processors": {
-          "processors": []
-        },
-        "projection": "rigid"
+        "element_type": "minecraft:empty_pool_element"
       },
       "weight": 1
     }

@@ -51,8 +51,17 @@ public class MiaTags {
     public static class Biomes {
         public static final TagKey<Biome> HAS_ISLAND = create("has_island");
         public static final TagKey<Biome> THE_ABYSS_CLEAR = create("the_abyss_clear");
-        public static final TagKey<Biome> HAS_STAR_COMPASS_TEMPLE = create("has_star_compass_temple");
+        public static final TagKey<Biome> HAS_ANCIENT_BABYLON_COMPASS_RUINS = create("has_ancient_babylon_compass_ruins");
+        public static final TagKey<Biome> HAS_ANCIENT_MAYA_COMPASS_RUINS = create("has_ancient_maya_compass_ruins");
+        public static final TagKey<Biome> HAS_ANCIENT_ROMAN_COMPASS_RUINS = create("has_ancient_roman_compass_ruins");
+        public static final TagKey<Biome> HAS_ANCIENT_TRIAL_COMPASS_RUINS = create("has_ancient_trial_compass_ruins");
+        public static final TagKey<Biome> HAS_ANCIENT_ANGKOR_COMPASS_RUINS = create("has_ancient_angkor_compass_ruins");
+        public static final TagKey<Biome> HAS_PETRIFIED_SHIP = create("has_petrified_ship");
         public static final TagKey<Biome> HAS_ABYSS_WINDMILL = create("has_abyss_windmill");
+        public static final TagKey<Biome> HAS_ABYSSAL_RUINS = create("has_abyssal_ruins");
+        public static final TagKey<Biome> HAS_CAVE_RAIDER_HUT = create("has_cave_raider_hut");
+        public static final TagKey<Biome> HAS_RUINED_CAVE_RAIDER_HUT = create("has_ruined_cave_raider_hut");
+        public static final TagKey<Biome> HAS_FISHERMAN_HUT = create("has_fisherman_hut");
 
         private static TagKey<Biome> create(String name) {
             return TagKey.create(Registries.BIOME, MiaUtil.miaId(name));
