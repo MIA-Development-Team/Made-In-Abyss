@@ -397,7 +397,7 @@ public class MiaGameTests {
     @PrefixGameTestTemplate(false)
     @GameTest(template = "gametest/amethyst_lamptube")
     public static void petrifiedShipTemplatesKeepTheirDirectionalJigsawContract(GameTestHelper helper) {
-        assertPetrifiedShipTemplate(
+        assertJigsawTemplate(
                 helper,
                 "petrified_ship_body_big",
                 new Vec3i(8, 6, 17),
@@ -412,7 +412,7 @@ public class MiaGameTests {
                                 "mia:petrified_ship/branch", "mia:petrified_ship/branch", "mia:petrified_ship/branch")
                 )
         );
-        assertPetrifiedShipTemplate(
+        assertJigsawTemplate(
                 helper,
                 "petrified_ship_body_small",
                 new Vec3i(5, 5, 6),
@@ -423,14 +423,14 @@ public class MiaGameTests {
                                 "mia:petrified_ship/connect_left", "mia:petrified_ship/connect_right", "mia:petrified_ship/connect_right")
                 )
         );
-        assertPetrifiedShipTemplate(
+        assertJigsawTemplate(
                 helper,
                 "petrified_ship_left",
                 new Vec3i(14, 23, 27),
                 Set.of(new JigsawContract(new BlockPos(6, 1, 0), FrontAndTop.NORTH_UP,
                         "mia:petrified_ship/connect_right", "mia:petrified_ship/connect_left", "minecraft:empty"))
         );
-        assertPetrifiedShipTemplate(
+        assertJigsawTemplate(
                 helper,
                 "petrified_ship_right",
                 new Vec3i(12, 16, 17),
@@ -441,15 +441,15 @@ public class MiaGameTests {
                                 "mia:petrified_ship/branch", "mia:petrified_ship/branch", "mia:petrified_ship/branch")
                 )
         );
-        assertPetrifiedShipTemplate(helper, "petrified_ship_part_1", new Vec3i(4, 3, 5),
+        assertJigsawTemplate(helper, "petrified_ship_part_1", new Vec3i(4, 3, 5),
                 Set.of(branchEnd(new BlockPos(3, 0, 2))));
-        assertPetrifiedShipTemplate(helper, "petrified_ship_part_2", new Vec3i(5, 4, 5),
+        assertJigsawTemplate(helper, "petrified_ship_part_2", new Vec3i(5, 4, 5),
                 Set.of(branchEnd(new BlockPos(4, 1, 2))));
-        assertPetrifiedShipTemplate(helper, "petrified_ship_part_3", new Vec3i(5, 4, 5),
+        assertJigsawTemplate(helper, "petrified_ship_part_3", new Vec3i(5, 4, 5),
                 Set.of(branchEnd(new BlockPos(4, 1, 2))));
-        assertPetrifiedShipTemplate(helper, "petrified_ship_part_4", new Vec3i(5, 2, 3),
+        assertJigsawTemplate(helper, "petrified_ship_part_4", new Vec3i(5, 2, 3),
                 Set.of(branchEnd(new BlockPos(4, 1, 1))));
-        assertPetrifiedShipTemplate(helper, "petrified_ship_part_5", new Vec3i(6, 4, 4),
+        assertJigsawTemplate(helper, "petrified_ship_part_5", new Vec3i(6, 4, 4),
                 Set.of(branchEnd(new BlockPos(5, 1, 1))));
         helper.succeed();
     }
@@ -487,6 +487,49 @@ public class MiaGameTests {
                 "mia:petrified_ship_part_3", 1,
                 "mia:petrified_ship_part_4", 1,
                 "mia:petrified_ship_part_5", 1
+        ));
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void caveRaiderHutTemplatesKeepVerticalJigsawContract(GameTestHelper helper) {
+        assertJigsawTemplate(
+                helper,
+                "cave_raider_hut_top",
+                new Vec3i(19, 10, 23),
+                Set.of(new JigsawContract(
+                        new BlockPos(15, 0, 4),
+                        FrontAndTop.DOWN_NORTH,
+                        "minecraft:empty",
+                        "mia:cave_raider_hut/bottom",
+                        "mia:cave_raider_hut/bottom"
+                ))
+        );
+        assertJigsawTemplate(
+                helper,
+                "cave_raider_hut_bottom",
+                new Vec3i(15, 5, 15),
+                Set.of(new JigsawContract(
+                        new BlockPos(14, 4, 0),
+                        FrontAndTop.UP_NORTH,
+                        "mia:cave_raider_hut/bottom",
+                        "minecraft:empty",
+                        "minecraft:empty"
+                ))
+        );
+        helper.succeed();
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(template = "gametest/amethyst_lamptube")
+    public static void caveRaiderHutBottomIsOptionalAtEqualWeight(GameTestHelper helper) {
+        assertTemplatePool(helper, "cave_raider_hut/start", "minecraft:empty", Map.of(
+                "mia:cave_raider_hut_top", 1
+        ));
+        assertTemplatePool(helper, "cave_raider_hut/bottom", "minecraft:empty", Map.of(
+                "mia:cave_raider_hut_bottom", 1,
+                "minecraft:empty_pool_element", 1
         ));
         helper.succeed();
     }
@@ -656,7 +699,7 @@ public class MiaGameTests {
         );
     }
 
-    private static void assertPetrifiedShipTemplate(
+    private static void assertJigsawTemplate(
             GameTestHelper helper,
             String path,
             Vec3i expectedSize,
