@@ -30,6 +30,7 @@ public class MementoInAbyss {
 
         MiaDataComponents.register(modEventBus);
         MiaDataAttachments.register(modEventBus);
+        MiaEffects.register(modEventBus);
         MiaAttributes.register(modEventBus);
         MiaRecipes.register(modEventBus);
         MiaMenus.register(modEventBus);

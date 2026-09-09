@@ -1,8 +1,10 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.client.render.CaveExplorerBeaconRenderer;
 import com.altnoir.mementoinabyss.client.render.PedestalRenderer;
 import com.altnoir.mementoinabyss.client.render.rope.RopeConnectorRenderer;
+import com.altnoir.mementoinabyss.content.block.entity.CaveExplorerBeaconBlockEntity;
 import com.altnoir.mementoinabyss.content.block.entity.PedestalBlockEntity;
 import com.altnoir.mementoinabyss.content.block.entity.RopeConnectorBlockEntity;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
@@ -30,6 +32,12 @@ public class MiaBlockEntityTypes {
             .blockEntity("rope_connector_entity", RopeConnectorBlockEntity::new)
             .validBlock(MiaBlocks.ROPE_CONNECTOR)
             .renderer(() -> RopeConnectorRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<CaveExplorerBeaconBlockEntity> CAVE_EXPLORER_BEACON = REGISTRATE
+            .blockEntity("cave_explorer_beacon_entity", CaveExplorerBeaconBlockEntity::new)
+            .validBlock(MiaBlocks.CAVE_EXPLORER_BEACON)
+            .renderer(() -> CaveExplorerBeaconRenderer::new)
             .register();
 
     public static void register(IEventBus bus) {

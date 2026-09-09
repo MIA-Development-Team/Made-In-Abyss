@@ -36,6 +36,7 @@
   "mementoinabyss.config.gamePlaySection.caveExplorerBeaconHorizontal": "Horizontal Range",
   "mementoinabyss.config.gamePlaySection.caveExplorerBeaconVertical": "Vertical Range",
   "mementoinabyss.config.gamePlaySection.caveExplorerBeaconMaxVertical": "Use Max Vertical Range",
+  "effect.mementoinabyss.abyss_blessing": "Abyss Blessing",
   "mementoinabyss.config.worldGenSection": "World Generation",
   "mementoinabyss.config.worldGenSection.abyssRadius": "Abyss Radius",
   "container.mementoinabyss.artifact_enhancement": "Artifact Smithing Table",

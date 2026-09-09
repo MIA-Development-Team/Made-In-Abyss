@@ -1,0 +1,7 @@
+{
+  "parent": "mementoinabyss:block/template/abyss_beacon",
+  "textures": {
+    "all": "mementoinabyss:block/model/cave_explorer_beacon",
+    "particle": "mementoinabyss:block/cave_explorer_beacon_particle"
+  }
+}

@@ -69,6 +69,18 @@ public class BlockStateGen {
         };
     }
 
+    public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+    caveExplorerBeacon() {
+        return (ctx, prov) -> {
+            var model = prov.getBuilder()
+                    .parent(prov.modLoc("block/template/abyss_beacon"))
+                    .texture(TextureSlot.ALL, prov.modBlockTexture("model/cave_explorer_beacon"))
+                    .texture(TextureSlot.PARTICLE, prov.modBlockTexture("cave_explorer_beacon_particle"))
+                    .build(ctx.get());
+            prov.create(ctx.get(), model);
+        };
+    }
+
     public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> pedestal() {
         return (ctx, prov) -> {
             var pedestal = TextureSlot.create("pedestal");

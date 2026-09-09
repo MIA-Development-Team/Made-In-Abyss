@@ -17,6 +17,7 @@ import com.altnoir.mementoinabyss.content.block.ore.BuddingPrasioliteBlock;
 import com.altnoir.mementoinabyss.content.block.ore.BuddingCaeruliteBlock;
 import com.altnoir.mementoinabyss.content.block.AbyssPortalBlock;
 import com.altnoir.mementoinabyss.content.block.AbyssPortalCoreBlock;
+import com.altnoir.mementoinabyss.content.block.CaveExplorerBeaconBlock;
 import com.altnoir.mementoinabyss.content.block.PedestalBlock;
 import com.altnoir.mementoinabyss.content.block.ArtifactSmithingTableBlock;
 import com.altnoir.mementoinabyss.content.block.WhistleWorkbenchBlock;
@@ -103,6 +104,20 @@ public class MiaBlocks {
             .blockstate(BlockStateGen::pedestal)
             .simpleItem()
             .register();
+
+    public static final BlockEntry<CaveExplorerBeaconBlock> CAVE_EXPLORER_BEACON =
+            REGISTRATE.object("cave_explorer_beacon")
+                    .block(CaveExplorerBeaconBlock::new)
+                    .properties(p -> p.mapColor(MapColor.EMERALD)
+                            .instrument(NoteBlockInstrument.HAT)
+                            .strength(3.0F, 6.0F)
+                            .lightLevel(_ -> 15)
+                            .noOcclusion()
+                            .isRedstoneConductor((state, level, pos) -> false))
+                    .blockstate(BlockStateGen::caveExplorerBeacon)
+                    .lang("Cave Explorer Beacon")
+                    .simpleItem()
+                    .register();
 
     public static final BlockEntry<ArtifactSmithingTableBlock> ARTIFACT_SMITHING_TABLE =
             REGISTRATE.object("artifact_smithing_table")
