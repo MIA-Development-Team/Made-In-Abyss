@@ -1,5 +1,6 @@
 package com.altnoir.mementoinabyss.impl.registrate;
 
+import com.altnoir.mementoinabyss.content.block.RopeConnectorBlock;
 import com.altnoir.mementoinabyss.content.block.cover_grass.CoverGrassBlock;
 import com.altnoir.mementoinabyss.content.block.column.ColumnBlock;
 import com.altnoir.mementoinabyss.content.block.column.ColumnSide;
@@ -135,12 +136,13 @@ public class BlockStateGen {
     public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
     ropeConnector() {
         return (ctx, prov) -> {
-            var model = ModelTemplates.CUBE_ALL.create(
-                    ctx.get(),
-                    TextureMapping.cube(prov.blockTexture(net.minecraft.world.level.block.Blocks.IRON_BLOCK)),
-                    prov.modelOutput
-            );
-            prov.create(ctx.get(), model);
+            var idle = BlockModelGenerators.plainVariant(prov.modLoc("block/rope_connector"));
+            var connected = BlockModelGenerators.plainVariant(prov.modLoc("block/rope_connector_connected"));
+            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(ctx.get()).with(
+                    PropertyDispatch.initial(RopeConnectorBlock.CONNECTED)
+                            .select(false, idle)
+                            .select(true, connected)));
+            prov.registerSimpleItemModel(ctx.get(), prov.modLoc("block/rope_connector"));
         };
     }
 

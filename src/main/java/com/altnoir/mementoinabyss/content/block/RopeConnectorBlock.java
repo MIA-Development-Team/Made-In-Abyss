@@ -11,19 +11,24 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public final class RopeConnectorBlock extends BaseEntityBlock {
     public static final MapCodec<RopeConnectorBlock> CODEC = simpleCodec(RopeConnectorBlock::new);
+    public static final BooleanProperty CONNECTED = BooleanProperty.create("connected");
 
     public RopeConnectorBlock(Properties properties) {
         super(properties);
+        registerDefaultState(stateDefinition.any().setValue(CONNECTED, false));
     }
 
     @Override
@@ -34,6 +39,11 @@ public final class RopeConnectorBlock extends BaseEntityBlock {
     @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(CONNECTED);
     }
 
     @Override
