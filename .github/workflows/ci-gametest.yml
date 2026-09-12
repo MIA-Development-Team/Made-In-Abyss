@@ -3,10 +3,10 @@ name: CI (Game Tests)
 on:
   push:
     branches:
-      - main
+      - 26.1/dev
   pull_request:
     branches:
-      - main
+      - 26.1/dev
 
 jobs:
   game-test:
