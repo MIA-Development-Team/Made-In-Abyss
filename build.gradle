@@ -2,74 +2,42 @@ plugins {
     id 'idea'
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.1.21'
+    id 'net.neoforged.moddev' version '2.0.146'
     id 'net.kyori.blossom' version '2.2.0'
-    id 'me.modmuss50.mod-publish-plugin' version '1.1.0'
-    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.4.1'
+    id 'me.modmuss50.mod-publish-plugin' version '2.1.1'
 }
 
 tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-def release = providers.environmentVariable("RELEASE")
-boolean dev = !release.map { it.toBoolean() }.getOrElse(false)
+boolean dev = System.getenv("RELEASE") == null || System.getenv("RELEASE") == "false"
+String buildNumber = System.getenv("BUILD_NUMBER")
+String gitHash = calculateGitHash() + (hasUnstaged() ? "-modified" : "")
 
-def gitHash = providers.exec {
-    commandLine 'git', 'rev-parse', '--short', 'HEAD'
-}.standardOutput.asText.map { it.trim() }.getOrElse("dev")
-
-version = mod_version
+version = mod_version + (dev && buildNumber != null ? "-${buildNumber}" : "")
 group = mod_group_id
 
 repositories {
-    maven { url = "https://api.modrinth.com/maven" } // Jade
+    maven { url = "https://api.modrinth.com/maven" } // Jade, Simple Bedrock Model
     maven { url = "https://maven.terraformersmc.com/" } // EMI
     maven { url = "https://maven.blamejared.com/" } // JEI, Patchouli
     maven { url = "https://maven.theillusivec4.top/" } // Curios
-    maven { url = "https://api.modrinth.com/maven" } // Simple Bedrock Model
     maven { url = "https://maven.latvian.dev/releases" } // KubeJS
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Ponder
     maven { url = "https://maven.createmod.net" } // Ponder, Flywheel
     maven { url = "https://jitpack.io" }
     maven { url = "https://maven.firstdark.dev/snapshots" } // LDLib2
+    maven { url = "https://maven.ringlo.im/releases"} // AbyssLib
 }
 
 base {
     archivesName = mod_id
-    version = mod_version + (dev && gitHash != null ? "+${gitHash}" : "")
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 java.withSourcesJar()
 java.withJavadocJar()
-
-minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
-
-runs {
-    configureEach {
-        systemProperty 'forge.logging.markers', 'REGISTRIES'
-        systemProperty 'forge.logging.console.level', 'debug'
-        modSource project.sourceSets.main
-    }
-
-    client {
-        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-    }
-
-    server {
-        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        argument '--nogui'
-    }
-
-    gameTestServer {
-        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-    }
-
-    data {
-        arguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-    }
-}
 
 sourceSets.main {
     resources {
@@ -78,7 +46,51 @@ sourceSets.main {
     }
     blossom.javaSources {
         property 'version', mod_version
-        property 'gitCommit', gitHash
+        property 'gitCommit', gitHash.toString()
+    }
+}
+
+neoForge {
+    version = project.neo_version
+    validateAccessTransformers = true
+
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
+
+    runs {
+        client {
+            client()
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        server {
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        data {
+            data()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
     }
 }
 
@@ -116,14 +128,17 @@ configurations {
 }
 
 dependencies {
-    implementation "net.neoforged:neoforge:${neo_version}"
-
     // Curios
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
     // Simple Bedrock Model
-    implementation jarJar("maven.modrinth:simplebedrockmodel:$sbm_version")
+    jarJar(implementation("maven.modrinth:simplebedrockmodel:${sbm_version}")) {
+        version {
+            strictly "[${sbm_version}]"
+            prefer sbm_version
+        }
+    }
     compileOnly "com.maydaymemory:mae:$mae_version"
 
     // JEI
@@ -150,7 +165,7 @@ dependencies {
     runtimeOnly "dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}"
 }
 
-tasks.withType(ProcessResources).configureEach {
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
     var replaceProperties = [
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
@@ -165,11 +180,12 @@ tasks.withType(ProcessResources).configureEach {
             curios_version_range   : curios_version_range,
     ]
     inputs.properties replaceProperties
-
-    filesMatching(['META-INF/neoforge.mods.toml']) {
-        expand replaceProperties
-    }
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
 }
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
 
 publishing {
     publications {
@@ -179,7 +195,11 @@ publishing {
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/repo"
+            url = "https://maven.ringlo.im/releases"
+            credentials {
+                username = providers.environmentVariable("MAVEN_USERNAME").orNull
+                password = providers.environmentVariable("MAVEN_PASSWORD").orNull
+            }
         }
     }
 }
@@ -206,5 +226,30 @@ idea {
     module {
         downloadSources = true
         downloadJavadoc = true
+    }
+}
+
+String calculateGitHash() {
+    try {
+        ExecOutput output = providers.exec {
+            commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        }
+        return output.standardOutput.asText.get().trim()
+    } catch (Throwable ignored) {
+        return "unknown"
+    }
+}
+
+boolean hasUnstaged() {
+    try {
+        ExecOutput output = providers.exec {
+            commandLine 'git', 'status', '--porcelain'
+        }
+        String result = output.standardOutput.asText.get().trim()
+        if (!result.isEmpty())
+            println("Found stageable results:\n ${result}\n")
+        return !result.isEmpty()
+    } catch (Throwable ignored) {
+        return false
     }
 }
