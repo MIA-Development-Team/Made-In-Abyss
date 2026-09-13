@@ -45,6 +45,7 @@ public class MIA {
         MiaDensityFunctionTypes.register(modEventBus);
         MiaFeatures.register(modEventBus);
         MiaPlacements.register(modEventBus);
+        MiaStructurePlacementTypes.register(modEventBus);
         MiaStructureTypes.register(modEventBus);
         MiaFoliagePlacerTypes.register(modEventBus);
         MiaTrunkPlacerTypes.register(modEventBus);

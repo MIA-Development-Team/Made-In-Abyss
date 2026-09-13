@@ -56,7 +56,7 @@ public class MiaClientEvents {
     // 游戏事件-持续事件
     public static void onClientTick(ClientTickEvent.Post event) {
         final Minecraft MC = Minecraft.getInstance();
-        if (MC.level == null && MC.player == null) {
+        if (MC.level == null || MC.player == null) {
             TheAbyssFogRenderer.clearCache();
         }
         if (MC.level == null || MC.player == null) return;
@@ -96,5 +96,3 @@ public class MiaClientEvents {
         event.setRoll(event.getRoll() + 180.0F);
     }
 }
-
-

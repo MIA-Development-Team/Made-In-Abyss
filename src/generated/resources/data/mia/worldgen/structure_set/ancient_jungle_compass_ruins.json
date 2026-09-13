@@ -1,0 +1,18 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 70387317,
+    "separation": 8,
+    "spacing": 32
+  },
+  "structures": [
+    {
+      "structure": "mia:ancient_babylon_compass_ruins",
+      "weight": 3
+    },
+    {
+      "structure": "mia:ancient_maya_compass_ruins",
+      "weight": 1
+    }
+  ]
+}

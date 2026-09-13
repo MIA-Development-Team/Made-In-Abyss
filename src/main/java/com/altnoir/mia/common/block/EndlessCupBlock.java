@@ -58,9 +58,7 @@ public class EndlessCupBlock extends BaseEntityBlock implements SimpleWaterlogge
 
     public EndlessCupBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any()
-                .setValue(WATERLOGGED, Boolean.valueOf(false))
-        );
+        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, Boolean.valueOf(false)));
     }
 
     @Override

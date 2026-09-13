@@ -174,6 +174,7 @@
   "block.mia.verdant_stairs": "Verdant Stairs",
   "block.mia.verdant_stem": "Verdant Stem",
   "block.mia.verdant_trapdoor": "Verdant Trapdoor",
+  "config.jade.plugin_mia.spawner_cooldown": "Spawner Cooldown",
   "container.mia.artifact.smithing.title": "Artifact Smithing Table",
   "curios.identifier.whistle": "Whistle",
   "curios.modifiers.whistle": "Whistle Attributes",

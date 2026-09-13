@@ -1,0 +1,18 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 70387322,
+    "separation": 8,
+    "spacing": 32
+  },
+  "structures": [
+    {
+      "structure": "mia:cave_raider_hut",
+      "weight": 1
+    },
+    {
+      "structure": "mia:ruined_cave_raider_hut",
+      "weight": 1
+    }
+  ]
+}

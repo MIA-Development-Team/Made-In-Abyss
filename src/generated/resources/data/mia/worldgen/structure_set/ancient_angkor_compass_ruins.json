@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 70387319,
+    "separation": 8,
+    "spacing": 32
+  },
+  "structures": [
+    {
+      "structure": "mia:ancient_angkor_compass_ruins",
+      "weight": 1
+    }
+  ]
+}

@@ -10,6 +10,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -39,6 +40,8 @@ public class MiaJigsawStructure extends Structure {
                                     HeightProvider.CODEC.fieldOf("start_height").forGetter(jigsaw -> jigsaw.startHeight),
                                     Codec.BOOL.fieldOf("use_expansion_hack").forGetter(jigsaw -> jigsaw.useExpansionHack),
                                     Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(jigsaw -> jigsaw.projectStartToHeightmap),
+                                    CaveFloorSearch.CODEC.optionalFieldOf("cave_floor_search").forGetter(jigsaw -> jigsaw.caveFloorSearch),
+                                    VerticalAnchor.CODEC.optionalFieldOf("max_start_y_exclusive").forGetter(jigsaw -> jigsaw.maxStartYExclusive),
                                     Codec.intRange(1, 256).fieldOf("max_distance_from_center").forGetter(jigsaw -> jigsaw.maxDistanceFromCenter),
                                     Codec.list(PoolAliasBinding.CODEC).optionalFieldOf("pool_aliases", List.of()).forGetter(jigsaw -> jigsaw.poolAliases),
                                     DimensionPadding.CODEC
@@ -55,6 +58,8 @@ public class MiaJigsawStructure extends Structure {
     private final HeightProvider startHeight;
     private final boolean useExpansionHack;
     private final Optional<Heightmap.Types> projectStartToHeightmap;
+    private final Optional<CaveFloorSearch> caveFloorSearch;
+    private final Optional<VerticalAnchor> maxStartYExclusive;
     private final int maxDistanceFromCenter;
     private final List<PoolAliasBinding> poolAliases;
     private final DimensionPadding dimensionPadding;
@@ -78,6 +83,8 @@ public class MiaJigsawStructure extends Structure {
             HeightProvider startHeight,
             boolean useExpansionHack,
             Optional<Heightmap.Types> projectStartToHeightmap,
+            Optional<CaveFloorSearch> caveFloorSearch,
+            Optional<VerticalAnchor> maxStartYExclusive,
             int maxDistanceFromCenter,
             List<PoolAliasBinding> poolAliases,
             DimensionPadding dimensionPadding,
@@ -90,10 +97,72 @@ public class MiaJigsawStructure extends Structure {
         this.startHeight = startHeight;
         this.useExpansionHack = useExpansionHack;
         this.projectStartToHeightmap = projectStartToHeightmap;
+        this.caveFloorSearch = caveFloorSearch;
+        this.maxStartYExclusive = maxStartYExclusive;
         this.maxDistanceFromCenter = maxDistanceFromCenter;
         this.poolAliases = poolAliases;
         this.dimensionPadding = dimensionPadding;
         this.liquidSettings = liquidSettings;
+    }
+
+    public MiaJigsawStructure(
+            Structure.StructureSettings settings,
+            Holder<StructureTemplatePool> startPool,
+            Optional<ResourceLocation> startJigsawName,
+            int maxDepth,
+            HeightProvider startHeight,
+            boolean useExpansionHack,
+            Optional<Heightmap.Types> projectStartToHeightmap,
+            Optional<CaveFloorSearch> caveFloorSearch,
+            int maxDistanceFromCenter,
+            List<PoolAliasBinding> poolAliases,
+            DimensionPadding dimensionPadding,
+            LiquidSettings liquidSettings
+    ) {
+        this(
+                settings,
+                startPool,
+                startJigsawName,
+                maxDepth,
+                startHeight,
+                useExpansionHack,
+                projectStartToHeightmap,
+                caveFloorSearch,
+                Optional.empty(),
+                maxDistanceFromCenter,
+                poolAliases,
+                dimensionPadding,
+                liquidSettings
+        );
+    }
+
+    public MiaJigsawStructure(
+            Structure.StructureSettings settings,
+            Holder<StructureTemplatePool> startPool,
+            Optional<ResourceLocation> startJigsawName,
+            int maxDepth,
+            HeightProvider startHeight,
+            boolean useExpansionHack,
+            Optional<Heightmap.Types> projectStartToHeightmap,
+            int maxDistanceFromCenter,
+            List<PoolAliasBinding> poolAliases,
+            DimensionPadding dimensionPadding,
+            LiquidSettings liquidSettings
+    ) {
+        this(
+                settings,
+                startPool,
+                startJigsawName,
+                maxDepth,
+                startHeight,
+                useExpansionHack,
+                projectStartToHeightmap,
+                Optional.empty(),
+                maxDistanceFromCenter,
+                poolAliases,
+                dimensionPadding,
+                liquidSettings
+        );
     }
 
     public MiaJigsawStructure(
@@ -112,6 +181,7 @@ public class MiaJigsawStructure extends Structure {
                 startHeight,
                 useExpansionHack,
                 Optional.of(projectStartToHeightmap),
+                Optional.empty(),
                 80,
                 List.of(),
                 DEFAULT_DIMENSION_PADDING,
@@ -130,6 +200,7 @@ public class MiaJigsawStructure extends Structure {
                 startHeight,
                 useExpansionHack,
                 Optional.empty(),
+                Optional.empty(),
                 80,
                 List.of(),
                 DEFAULT_DIMENSION_PADDING,
@@ -140,9 +211,16 @@ public class MiaJigsawStructure extends Structure {
     @Override
     public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
         ChunkPos chunkpos = context.chunkPos();
-        int i = this.startHeight.sample(context.random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor()));
-        BlockPos blockpos = new BlockPos(chunkpos.getMinBlockX(), i, chunkpos.getMinBlockZ());
-        return JigsawPlacement.addPieces(
+        WorldGenerationContext heightContext = new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor());
+        int i = this.startHeight.sample(context.random(), heightContext);
+        Optional<BlockPos> start = this.caveFloorSearch.isPresent()
+                ? this.caveFloorSearch.get().findStart(context, i)
+                : Optional.of(new BlockPos(chunkpos.getMinBlockX(), i, chunkpos.getMinBlockZ()));
+        if (start.isEmpty()) {
+            return Optional.empty();
+        }
+        BlockPos blockpos = start.get();
+        Optional<Structure.GenerationStub> generation = JigsawPlacement.addPieces(
                 context,
                 this.startPool,
                 this.startJigsawName,
@@ -155,6 +233,11 @@ public class MiaJigsawStructure extends Structure {
                 this.dimensionPadding,
                 this.liquidSettings
         );
+        if (this.maxStartYExclusive.isEmpty()) {
+            return generation;
+        }
+        int maxYExclusive = this.maxStartYExclusive.get().resolveY(heightContext);
+        return generation.filter(stub -> stub.position().getY() < maxYExclusive);
     }
 
     @Override

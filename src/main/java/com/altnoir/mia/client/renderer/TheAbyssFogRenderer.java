@@ -5,34 +5,22 @@ import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.FogRenderer;
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.QuartPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.ClientHooks;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 public class TheAbyssFogRenderer {
-    private static final Map<Long, Float> FOG_DENSITY_CACHE = new LinkedHashMap<>(256, 0.75f, true) {
-        @Override
-        protected boolean removeEldestEntry(Map.Entry<Long, Float> eldest) {
-            return size() > 1024;
-        }
-    };
-    // 过渡控制变量
-    private static final int TRANSITION_RANGE = 16; // 过渡范围
-    private static float lastFogStart = 0;
-    private static float lastFogEnd = 192;
-    private static long lastUpdateTime = 0;
+    private static final int TRANSITION_RANGE = 16;
 
-    // 性能保护变量
-    private static final ThreadLocal<Integer> samplesThisFrame = ThreadLocal.withInitial(() -> 0);
-    private static final ThreadLocal<Long> lastFrameTime = ThreadLocal.withInitial(() -> 0L);
-    private static final int MAX_SAMPLES_PER_FRAME = 16;
+    private static float lastFogStart = -1;
+    private static float lastFogEnd = -1;
+    private static float lastGameTime = -1;
+
+    private static int lastSampleGridX = Integer.MIN_VALUE;
+    private static int lastSampleGridZ = Integer.MIN_VALUE;
+    private static int lastSampleChunkY = Integer.MIN_VALUE;
+    private static float lastClearFactor = 1;
 
     public static boolean renderFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, float partialTick) {
         var player = camera.getEntity();
@@ -43,55 +31,60 @@ public class TheAbyssFogRenderer {
         double entityX = player.getX();
         double entityZ = player.getZ();
 
-        float maxY = 256.0F; // 雾起高度
-        float minY = -16.0F; // 雾止高度
+        float maxY = 256.0F;
+        float minY = -16.0F;
 
-        float baseStart = farPlaneDistance - Mth.clamp(farPlaneDistance / 10.0F, 4.0F, 64.0F);
-        float baseEnd = farPlaneDistance;
+        float thinFogStart = farPlaneDistance - Mth.clamp(farPlaneDistance / 10.0F, 4.0F, 64.0F);
+        float thinFogEnd = farPlaneDistance;
 
-        float maxStart = farPlaneDistance * 0.05F;
-        float maxEnd = Math.min(farPlaneDistance, 192.0F) * 0.5F;
+        float thickFogStart = farPlaneDistance * 0.05F;
+        float thickFogEnd = Math.min(farPlaneDistance, 192.0F) * 0.5F;
 
         boolean fogSky = level.isRaining() || level.isThundering();
 
         if (fogSky) {
-            baseStart = 0.0F;
+            thinFogStart = 0.0F;
+            thickFogStart = farPlaneDistance * 0.025F;
         }
-       /* if (biome.is(MiaTags.Biomes.THE_ABYSS_DENSE)) {
-            baseStart = farPlaneDistance * 0.025F;
-            baseEnd = farPlaneDistance * 0.25F;
-            maxStart = farPlaneDistance * 0.0025F;
-            maxEnd = Math.min(farPlaneDistance, 192.0F) * 0.125F;
-        }*/
 
-        // 根据高度计算雾强度
-        float fogIntensity = Mth.clamp(1.0F - (entityY - minY) / (maxY - minY), 0.0F, 1.0F);
+        float heightFactor = Mth.clamp(1.0F - (entityY - minY) / (maxY - minY), 0.0F, 1.0F);
 
-        // 获取平滑后的群系混合因子
-        float biomeFactor = getSmoothedBiomeFactor(level, entityX, entityY, entityZ);
-        float biomeFogStart = baseStart, biomeFogEnd = baseEnd;
+        int currentGridX = Mth.floor(entityX / TRANSITION_RANGE);
+        int currentGridZ = Mth.floor(entityZ / TRANSITION_RANGE);
+        int currentChunkY = Mth.floor(entityY / 16);
 
-        float mainStart = Mth.lerp(fogIntensity, baseStart, maxStart);     // 其他群系：根据高度变化的起始
-        float mainEnd = Mth.lerp(fogIntensity, farPlaneDistance, maxEnd);   // 其他群系：根据高度变化的结束
+        float clearFactor;
+        if (currentGridX == lastSampleGridX && currentGridZ == lastSampleGridZ && currentChunkY == lastSampleChunkY) {
+            clearFactor = lastClearFactor;
+        } else {
+            clearFactor = getSmoothedClearFactor(level, entityX, entityY, entityZ);
+            lastSampleGridX = currentGridX;
+            lastSampleGridZ = currentGridZ;
+            lastSampleChunkY = currentChunkY;
+            lastClearFactor = clearFactor;
+        }
 
-        // 关键修复：混合因子逻辑
-        // biomeFactor = 1: 全是无雾群系 → 使用noFog参数（稀薄雾）
-        // biomeFactor = 0: 没有无雾群系 → 使用other参数（浓雾）
-        fogData.start = Mth.lerp(biomeFactor, mainStart, biomeFogStart);
-        fogData.end = Mth.lerp(biomeFactor, mainEnd, biomeFogEnd);
+        float effectiveHeightFactor = heightFactor * (1.0F - clearFactor);
+        fogData.start = Mth.lerp(effectiveHeightFactor, thinFogStart, thickFogStart);
+        fogData.end = Mth.lerp(effectiveHeightFactor, thinFogEnd, thickFogEnd);
 
-        // 时间平滑过渡（避免帧间跳变）
-        long currentTime = System.currentTimeMillis();
-        float timeDelta = (currentTime - lastUpdateTime) / 1000.0f; // 转换为秒
-        float smoothFactor = Mth.clamp(timeDelta * 2.0f, 0, 1); // 0.5秒内完成过渡
+        float currentGameTime = level.getGameTime() + partialTick;
+        if (lastGameTime < 0 || lastFogStart < 0 || lastFogEnd < 0) {
+            lastFogStart = fogData.start;
+            lastFogEnd = fogData.end;
+            lastGameTime = currentGameTime;
+        } else {
+            float timeDelta = currentGameTime - lastGameTime;
+            lastGameTime = currentGameTime;
 
-        fogData.start = Mth.lerp(smoothFactor, lastFogStart, fogData.start);
-        fogData.end = Mth.lerp(smoothFactor, lastFogEnd, fogData.end);
+            float smoothFactor = Mth.clamp(timeDelta * 0.2f, 0.0f, 1.0f);
 
-        // 更新缓存值
-        lastFogStart = fogData.start;
-        lastFogEnd = fogData.end;
-        lastUpdateTime = currentTime;
+            fogData.start = Mth.lerp(smoothFactor, lastFogStart, fogData.start);
+            fogData.end = Mth.lerp(smoothFactor, lastFogEnd, fogData.end);
+
+            lastFogStart = fogData.start;
+            lastFogEnd = fogData.end;
+        }
 
         if (fogData.end >= farPlaneDistance) {
             fogData.end = farPlaneDistance;
@@ -107,7 +100,6 @@ public class TheAbyssFogRenderer {
         return true;
     }
 
-    @OnlyIn(Dist.CLIENT)
     static class FogData {
         public final FogRenderer.FogMode mode;
         public float start;
@@ -119,92 +111,64 @@ public class TheAbyssFogRenderer {
         }
     }
 
-    private static float getSmoothedBiomeFactor(Level level, double x, double y, double z) {
-        // 计算在过渡网格中的位置
+    private static float getSmoothedClearFactor(Level level, double x, double y, double z) {
         int gridX = Mth.floor(x / TRANSITION_RANGE);
         int gridZ = Mth.floor(z / TRANSITION_RANGE);
 
-        // 获取四个角点的混合因子
         float[] factors = new float[4];
-        factors[0] = calculateBiomeBlendFactor(level, gridX * TRANSITION_RANGE, y, gridZ * TRANSITION_RANGE);
-        factors[1] = calculateBiomeBlendFactor(level, (gridX + 1) * TRANSITION_RANGE, y, gridZ * TRANSITION_RANGE);
-        factors[2] = calculateBiomeBlendFactor(level, gridX * TRANSITION_RANGE, y, (gridZ + 1) * TRANSITION_RANGE);
-        factors[3] = calculateBiomeBlendFactor(level, (gridX + 1) * TRANSITION_RANGE, y, (gridZ + 1) * TRANSITION_RANGE);
+        factors[0] = calculateClearBiomeRatio(level, gridX * TRANSITION_RANGE, y, gridZ * TRANSITION_RANGE);
+        factors[1] = calculateClearBiomeRatio(level, (gridX + 1) * TRANSITION_RANGE, y, gridZ * TRANSITION_RANGE);
+        factors[2] = calculateClearBiomeRatio(level, gridX * TRANSITION_RANGE, y, (gridZ + 1) * TRANSITION_RANGE);
+        factors[3] = calculateClearBiomeRatio(level, (gridX + 1) * TRANSITION_RANGE, y, (gridZ + 1) * TRANSITION_RANGE);
 
-        // 计算在网格内的相对位置（0-1）
         float dx = (float) (x - gridX * TRANSITION_RANGE) / TRANSITION_RANGE;
         float dz = (float) (z - gridZ * TRANSITION_RANGE) / TRANSITION_RANGE;
 
-        // 双线性插值
         float a = Mth.lerp(dx, factors[0], factors[1]);
         float b = Mth.lerp(dx, factors[2], factors[3]);
 
         return Mth.lerp(dz, a, b);
     }
 
-    private static float calculateBiomeBlendFactor(Level level, double x, double y, double z) {
-        // 性能保护：每帧重置采样计数器
-        long currentTime = System.currentTimeMillis();
-        if (currentTime != lastFrameTime.get()) {
-            samplesThisFrame.set(0);
-            lastFrameTime.set(currentTime);
-        }
-        // 如果超过每帧最大采样次数，返回基于位置的默认值，而不是固定的0.5
-        if (samplesThisFrame.get() >= MAX_SAMPLES_PER_FRAME) {
-            // 基于位置计算一个伪随机但稳定的值，避免所有位置都返回相同值
-            long seed = (long) (x * 3129871) ^ (long) (z * 116129781L) ^ (long) y;
-            return 0.3f + (Math.abs(seed % 40) / 100.0f);
-        }
-
-        // 将世界坐标转换为区块坐标
+    private static float calculateClearBiomeRatio(Level level, double x, double y, double z) {
         int chunkX = Mth.floor(x / 16);
-        int chunkY = Mth.floor(y / 16);
         int chunkZ = Mth.floor(z / 16);
-        long key = ((long) (chunkX & 0x1FFFFF) << 42)
-                | ((long) (chunkZ & 0x1FFFFF) << 21)
-                | (chunkY & 0x1FFFFFL);
+        int blockY = Mth.floor(y);
+        int qy = QuartPos.fromBlock(blockY);
 
-        // 检查缓存
-        if (FOG_DENSITY_CACHE.containsKey(key)) {
-            return FOG_DENSITY_CACHE.get(key);
-        }
-        samplesThisFrame.set(samplesThisFrame.get() + 1); // 增加采样计数
-
-        // 采样3x3区块段
-        int biomeFogCount = 0;
+        int clearBiomeCount = 0;
         int totalSamples = 0;
 
         for (int dx = -1; dx <= 1; dx++) {
             for (int dz = -1; dz <= 1; dz++) {
-                BlockPos pos = new BlockPos((chunkX + dx) * 16 + 8, (int) y, (chunkZ + dz) * 16 + 8);
-                var biome = level.getBiome(pos);
-
+                int blockX = (chunkX + dx) * 16 + 8;
+                int blockZ = (chunkZ + dz) * 16 + 8;
+                if (!level.hasChunkAt(blockX, blockZ)) {
+                    continue;
+                }
+                int qx = QuartPos.fromBlock(blockX);
+                int qz = QuartPos.fromBlock(blockZ);
+                var biome = level.getNoiseBiome(qx, qy, qz);
                 if (biome.is(MiaTags.Biomes.THE_ABYSS_CLEAR)) {
-                    biomeFogCount++;
+                    clearBiomeCount++;
                 }
                 totalSamples++;
             }
         }
-        float blendFactor = (float) biomeFogCount / totalSamples;
 
-        // 存入缓存
-        FOG_DENSITY_CACHE.put(key, blendFactor);
-        // 限制缓存大小，避免内存泄漏
-        synchronized (FOG_DENSITY_CACHE) {
-            if (FOG_DENSITY_CACHE.size() > 256) {
-                Iterator<Map.Entry<Long, Float>> it = FOG_DENSITY_CACHE.entrySet().iterator();
-                if (it.hasNext()) {
-                    it.next(); // 不加这行会崩溃（我试过了）
-                    it.remove();
-                }
-            }
+        if (totalSamples == 0) {
+            return 1.0f;
         }
-
-        return blendFactor;
+        return (float) clearBiomeCount / totalSamples;
     }
 
-    // 提供一个方法来清除缓存，可在游戏退出时调用
     public static void clearCache() {
-        FOG_DENSITY_CACHE.clear();
+        lastFogStart = -1;
+        lastFogEnd = -1;
+        lastGameTime = -1;
+        lastSampleGridX = Integer.MIN_VALUE;
+        lastSampleGridZ = Integer.MIN_VALUE;
+        lastSampleChunkY = Integer.MIN_VALUE;
+        lastClearFactor = 1;
     }
 }
