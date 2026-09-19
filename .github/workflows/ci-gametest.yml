@@ -3,10 +3,10 @@ name: CI (Game Tests)
 on:
   push:
     branches:
-      - 26.1/dev
+      - 26.1.2-NeoForge
   pull_request:
     branches:
-      - 26.1/dev
+      - 26.1.2-NeoForge
 
 jobs:
   game-test:
