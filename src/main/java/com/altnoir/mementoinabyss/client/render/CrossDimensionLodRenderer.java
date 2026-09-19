@@ -3,6 +3,9 @@ package com.altnoir.mementoinabyss.client.render;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.CpuMesh;
 import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.QuadBuffer;
+import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.Side;
+import com.altnoir.mementoinabyss.client.render.CrossDimensionLodMesher.BoundaryBuilder;
+import com.altnoir.mementoinabyss.client.render.CrossDimensionLodAmbientOcclusion.View;
 import com.altnoir.mementoinabyss.compat.iris.IrisRenderCompat;
 import com.altnoir.mementoinabyss.compat.MiaMods;
 import com.altnoir.mementoinabyss.compat.sodium.SodiumLodCompat;
@@ -53,6 +56,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -82,9 +86,8 @@ public final class CrossDimensionLodRenderer {
     private static final int PAGE_UPLOAD_BYTES_PER_FRAME = 2 * 1024 * 1024;
     private static final int EVICTION_INTERVAL_FRAMES = 20;
     private static final int EVICTION_MARGIN_CHUNKS = 10;
-    private static final int FADE_DURATION_FRAMES = 16;
-    private static final int FADE_STEPS = 32;
-    private static final int TRANSITION_PREWARM_FRAMES = 1;
+    private static final long FADE_DURATION_NANOS = 240_000_000L;
+    private static final int FADE_STEPS = 64;
     private static final long SLOW_LOD_FRAME_NANOS = 4_000_000L;
     private static final Map<Long, CrossDimensionLodColumn> DATA = new ConcurrentHashMap<>();
     /** Server-validated detail selected from the client's camera interest. */
@@ -107,6 +110,9 @@ public final class CrossDimensionLodRenderer {
     }
     private static final Map<Long, PackedChunk> PACKED_CHUNKS = new ConcurrentHashMap<>();
     private static final Map<Long, PageMesh> PAGES = new HashMap<>();
+    private static final Map<Long, Side[]> PUBLISHED_SIDES = new HashMap<>();
+    private static final Map<EdgeKey, EdgeMesh> PAGE_EDGES = new HashMap<>();
+    private static final ArrayList<EdgeMesh> VISIBLE_EDGES = new ArrayList<>();
     private static final Map<Long, PageTransition> PAGE_TRANSITIONS = new HashMap<>();
     private static final Map<Long, Long> DIRTY_PAGES = new HashMap<>();
     private static final Map<Long, Long> PAGE_REVISIONS = new ConcurrentHashMap<>();
@@ -153,7 +159,7 @@ public final class CrossDimensionLodRenderer {
         int viewRadius = serverViewRadius > 0 ? serverViewRadius
                 : MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodViewDistance.get() * 16;
         return new DebugStats(DATA.size(), PACKED_CHUNKS.size(), PAGES.size(),
-                VISIBLE_PAGES.size() + VISIBLE_PAGE_TRANSITIONS.size(),
+                VISIBLE_PAGES.size() + VISIBLE_PAGE_TRANSITIONS.size() + VISIBLE_EDGES.size(),
                 DIRTY_CHUNKS.size() + DIRTY_PAGES.size(),
                 IN_FLIGHT_MESHES.size() + IN_FLIGHT_PAGES.size(),
                 COMPLETED_MESHES.size() + COMPLETED_PAGES.size(),
@@ -210,7 +216,7 @@ public final class CrossDimensionLodRenderer {
         }
         var batch = (CrossDimensionLodBatchPayload) payload;
         var result = SECTION_STORE.accept(batch, clientTick);
-        if (result.column() != null) applyColumn(result.column(), result.dirtyFaces());
+        if (result.column() != null) applyColumn(result.column());
         // ACK is still after the complete CPU transaction, never after mere receipt or disk IO.
         if (result.receipt() != null) ClientPacketDistributor.sendToServer(result.receipt());
         if (result.column() != null) clientCache.save(batch.transfer(), SECTION_STORE.snapshot(batch.transfer()));
@@ -231,7 +237,7 @@ public final class CrossDimensionLodRenderer {
         }
         var result = SECTION_STORE.restore(transfer, sections, clientTick);
         if (result.column() != null) {
-            applyColumn(result.column(), result.dirtyFaces());
+            applyColumn(result.column());
             clientCache.hit();
         }
         if (result.receipt() != null) ClientPacketDistributor.sendToServer(result.receipt());
@@ -267,7 +273,7 @@ public final class CrossDimensionLodRenderer {
         }
     }
 
-    private static void applyColumn(CrossDimensionLodColumn payload, byte dirtyFaces) {
+    private static void applyColumn(CrossDimensionLodColumn payload) {
         serverViewRadius = payload.radius();
         long key = CrossDimensionLodKey.pack(payload.chunkX(), payload.chunkZ());
         // Revisions belong to individual sections; the assembled mesh input has no column-wide
@@ -276,7 +282,7 @@ public final class CrossDimensionLodRenderer {
         // The server owns the authoritative 1/4/16 selection. Never build a speculative
         // client mip or height field on packet or render paths.
         SELECTED_DATA.put(key, payload);
-        markDirtyWithFaces(payload.chunkX(), payload.chunkZ(), dirtyFaces);
+        markDirty(payload.chunkX(), payload.chunkZ());
     }
 
     private static void markDirty(int chunkX, int chunkZ) {
@@ -285,27 +291,6 @@ public final class CrossDimensionLodRenderer {
         MESH_RETRY_AFTER.remove(key);
         MESH_REVISIONS.put(key, NEXT_MESH_REVISION.incrementAndGet());
         if (DIRTY_CHUNKS.add(key)) DIRTY_CHUNK_QUEUE.add(key);
-    }
-
-    private static void markDirtyIfPresent(int chunkX, int chunkZ) {
-        long key = CrossDimensionLodKey.pack(chunkX, chunkZ);
-        if (DATA.containsKey(key)) markDirty(chunkX, chunkZ);
-    }
-
-    private static void markDirtyWithFaces(int chunkX, int chunkZ, byte dirtyFaces) {
-        markDirty(chunkX, chunkZ);
-        if ((dirtyFaces & CrossDimensionLodBatchPayload.DIRTY_NEG_X) != 0) {
-            markDirtyIfPresent(chunkX - 1, chunkZ);
-        }
-        if ((dirtyFaces & CrossDimensionLodBatchPayload.DIRTY_POS_X) != 0) {
-            markDirtyIfPresent(chunkX + 1, chunkZ);
-        }
-        if ((dirtyFaces & CrossDimensionLodBatchPayload.DIRTY_NEG_Z) != 0) {
-            markDirtyIfPresent(chunkX, chunkZ - 1);
-        }
-        if ((dirtyFaces & CrossDimensionLodBatchPayload.DIRTY_POS_Z) != 0) {
-            markDirtyIfPresent(chunkX, chunkZ + 1);
-        }
     }
 
     private static void updateMeshes() {
@@ -352,7 +337,6 @@ public final class CrossDimensionLodRenderer {
                 continue;
             }
             scheduled++;
-            Map<Long, CrossDimensionLodColumn> meshInput = meshNeighbours(selectedPayload);
             RegionalSkyLight.Region skyExposureRegion = irisSkyExposureRegion();
             boolean irisFormat = Boolean.TRUE.equals(packedIrisFormat);
             long workEpoch = WORK_EPOCH.get();
@@ -361,7 +345,7 @@ public final class CrossDimensionLodRenderer {
                     if (workEpoch != WORK_EPOCH.get() || !lodEnabled()) return;
                     long workStarted = System.nanoTime();
                     try {
-                        CpuMesh mesh = CrossDimensionLodMesher.build(selectedPayload, meshInput);
+                        CpuMesh mesh = CrossDimensionLodMesher.build(selectedPayload, !irisFormat);
                         PackedChunk packed = packMesh(mesh, skyExposureRegion, irisFormat);
                         recordMeshWork(System.nanoTime() - workStarted);
                         if (workEpoch == WORK_EPOCH.get() && lodEnabled()) {
@@ -403,25 +387,6 @@ public final class CrossDimensionLodRenderer {
         if (DIRTY_CHUNKS.add(key)) DIRTY_CHUNK_QUEUE.add(key);
     }
 
-    private static Map<Long, CrossDimensionLodColumn> meshNeighbours(CrossDimensionLodColumn payload) {
-        int x = payload.chunkX();
-        int z = payload.chunkZ();
-        Map<Long, CrossDimensionLodColumn> snapshot = new HashMap<>(5);
-        snapshot.put(CrossDimensionLodKey.pack(x, z), payload);
-        putNeighbour(snapshot, SELECTED_DATA.get(CrossDimensionLodKey.pack(x - 1, z)));
-        putNeighbour(snapshot, SELECTED_DATA.get(CrossDimensionLodKey.pack(x + 1, z)));
-        putNeighbour(snapshot, SELECTED_DATA.get(CrossDimensionLodKey.pack(x, z - 1)));
-        putNeighbour(snapshot, SELECTED_DATA.get(CrossDimensionLodKey.pack(x, z + 1)));
-        return Map.copyOf(snapshot);
-    }
-
-    private static void putNeighbour(Map<Long, CrossDimensionLodColumn> snapshot,
-                                     CrossDimensionLodColumn payload) {
-        if (payload != null) {
-            snapshot.put(CrossDimensionLodKey.pack(payload.chunkX(), payload.chunkZ()), payload);
-        }
-    }
-
     private static void drainCompletedMeshes() {
         long started = System.nanoTime();
         int processed = 0;
@@ -441,9 +406,7 @@ public final class CrossDimensionLodRenderer {
                 }
                 continue;
             }
-            // A neighbour update deliberately queues another seam rebuild, but it must not
-            // invalidate useful work for an unchanged source chunk. A source or selected level
-            // replacement, however, makes this completed mesh obsolete.
+            // Interiors and boundary samples must describe the same immutable source column.
             if (DATA.get(result.key) != result.sourcePayload
                     || SELECTED_DATA.get(result.key) != result.selectedPayload) continue;
             PackedChunk packed = result.packed;
@@ -584,7 +547,11 @@ public final class CrossDimensionLodRenderer {
     private static void closeMeshes() {
         for (PageMesh page : PAGES.values()) page.close();
         PAGES.clear();
-        for (PageTransition transition : PAGE_TRANSITIONS.values()) transition.oldMesh.close();
+        for (EdgeMesh edge : PAGE_EDGES.values()) edge.close();
+        PAGE_EDGES.clear();
+        PUBLISHED_SIDES.clear();
+        VISIBLE_EDGES.clear();
+        for (PageTransition transition : PAGE_TRANSITIONS.values()) transition.close();
         PAGE_TRANSITIONS.clear();
         while (!RETIRED_MESHES.isEmpty()) RETIRED_MESHES.removeFirst().resource.close();
     }
@@ -619,11 +586,13 @@ public final class CrossDimensionLodRenderer {
         updateMeshes();
         long meshNanos = System.nanoTime() - meshStarted;
         long pageStarted = System.nanoTime();
+        finishPageTransitions(pageStarted);
         updatePages();
-        finishPageTransitions();
+        long transitionTime = System.nanoTime();
         long pageNanos = System.nanoTime() - pageStarted;
         long visibilityStarted = System.nanoTime();
         var frustum = event.getLevelRenderState().cameraRenderState.cullFrustum;
+        VISIBLE_EDGES.clear();
         VISIBLE_PAGES.clear();
         VISIBLE_PAGE_TRANSITIONS.clear();
         VISIBLE_SPRITES.clear();
@@ -643,20 +612,38 @@ public final class CrossDimensionLodRenderer {
         }
         for (PageTransition transition : PAGE_TRANSITIONS.values()) {
             PageMesh page = transition.oldMesh;
-            int terrainCount = irisShaders ? page.irisIndexCount : page.indexCount;
-            int seamCount = irisShaders ? page.irisSeamIndexCount : page.seamIndexCount;
-            maximumIndexCount = Math.max(maximumIndexCount, terrainCount);
-            maximumIndexCount = Math.max(maximumIndexCount, seamCount);
-            if (terrainCount > 0
-                    && isWithinViewDistance(page.bounds, camera, viewRadius)
-                    && (frustum == null || frustum.isVisible(page.bounds))) {
+            boolean visible = false;
+            if (page != null) {
+                maximumIndexCount = Math.max(maximumIndexCount, page.indexCount);
+                maximumIndexCount = Math.max(maximumIndexCount, page.seamIndexCount);
+                visible = hasNativeGeometry(page) && isWithinViewDistance(page.bounds, camera, viewRadius)
+                        && (frustum == null || frustum.isVisible(page.bounds));
+            }
+            for (EdgeMesh edge : transition.oldEdges) {
+                maximumIndexCount = Math.max(maximumIndexCount, edge.indexCount);
+                visible |= isWithinViewDistance(edge.bounds, camera, viewRadius)
+                        && (frustum == null || frustum.isVisible(edge.bounds));
+            }
+            // A shared edge may remain visible even when the outgoing page body is empty or off screen.
+            if (visible) {
                 VISIBLE_PAGE_TRANSITIONS.add(transition);
-                if (sodiumLoaded) VISIBLE_SPRITES.addAll(page.sprites);
+                if (sodiumLoaded) {
+                    if (page != null) VISIBLE_SPRITES.addAll(page.sprites);
+                    for (EdgeMesh edge : transition.oldEdges) VISIBLE_SPRITES.addAll(edge.sprites);
+                }
+            }
+        }
+        for (EdgeMesh edge : PAGE_EDGES.values()) {
+            if (isWithinViewDistance(edge.bounds, camera, viewRadius)
+                    && (frustum == null || frustum.isVisible(edge.bounds))) {
+                VISIBLE_EDGES.add(edge);
+                maximumIndexCount = Math.max(maximumIndexCount, edge.indexCount);
+                if (sodiumLoaded) VISIBLE_SPRITES.addAll(edge.sprites);
             }
         }
         long visibilityNanos = System.nanoTime() - visibilityStarted;
         long receiveNanos = PENDING_RECEIVE_NANOS.getAndSet(0L);
-        if (VISIBLE_PAGES.isEmpty() && VISIBLE_PAGE_TRANSITIONS.isEmpty()) {
+        if (VISIBLE_PAGES.isEmpty() && VISIBLE_PAGE_TRANSITIONS.isEmpty() && VISIBLE_EDGES.isEmpty()) {
             recordTiming(callbackStarted, receiveNanos, meshNanos, pageNanos, visibilityNanos, 0L);
             return;
         }
@@ -678,23 +665,15 @@ public final class CrossDimensionLodRenderer {
         GpuBufferSlice transforms = RenderSystem.getDynamicUniforms().writeTransform(modelView,
                 new Vector4f(1.0F), new Vector3f(), new Matrix4f());
         Map<Integer, GpuBufferSlice> fadeTransforms = new HashMap<>();
-        for (PageMesh page : VISIBLE_PAGES) {
-            int fadeStep = fadeStep(page.fadeStartFrame);
-            if (fadeStep < FADE_STEPS) {
-                fadeTransforms.computeIfAbsent(fadeStep, step ->
-                        RenderSystem.getDynamicUniforms().writeTransform(modelView,
-                                new Vector4f(1.0F, 1.0F, 1.0F, step / (float) FADE_STEPS),
-                                new Vector3f(), new Matrix4f()));
-            }
-        }
-        for (PageTransition transition : VISIBLE_PAGE_TRANSITIONS) {
-            int fadeStep = transitionFadeStep(transition.startFrame);
-            if (fadeStep > 0) {
-                fadeTransforms.computeIfAbsent(-fadeStep, step ->
-                        RenderSystem.getDynamicUniforms().writeTransform(modelView,
-                                new Vector4f(1.0F, 1.0F, 1.0F, step / (float) FADE_STEPS),
-                                new Vector3f(), new Matrix4f()));
-            }
+        fadeTransforms.put(FADE_STEPS, transforms);
+        Map<GpuResource, Integer> incomingSteps = new IdentityHashMap<>();
+        for (PageTransition transition : PAGE_TRANSITIONS.values()) {
+            int incoming = transitionFadeStep(transition.startNanos, transitionTime, true);
+            int outgoing = transitionFadeStep(transition.startNanos, transitionTime, false);
+            if (transition.newMesh != null) incomingSteps.put(transition.newMesh, incoming);
+            for (EdgeMesh edge : transition.newEdges) incomingSteps.put(edge, incoming);
+            prepareFadeTransform(fadeTransforms, modelView, incoming);
+            prepareFadeTransform(fadeTransforms, modelView, outgoing);
         }
         var atlas = minecraft.getTextureManager().getTexture(TextureAtlas.LOCATION_BLOCKS);
         GpuBufferSlice lodFog = lodFog(viewRadius);
@@ -718,29 +697,28 @@ public final class CrossDimensionLodRenderer {
             // point if a future Blaze3D backend exposes indirect or multi-draw commands.
             ArrayList<RenderPass.Draw<GpuBufferSlice>> draws = new ArrayList<>(
                     VISIBLE_PAGES.size() + VISIBLE_PAGE_TRANSITIONS.size());
-            for (PageMesh page : VISIBLE_PAGES) {
-                int fadeStep = fadeStep(page.fadeStartFrame);
-                addDraw(draws, irisShaders ? page.irisVertexBuffer : page.vertexBuffer,
-                        irisShaders ? page.irisIndexCount : page.indexCount,
-                        fadeStep < FADE_STEPS ? fadeTransforms.get(fadeStep) : transforms);
-            }
+            // Draw each complete old snapshot before the incoming geometry, including its detached shared edges.
+            // At least one snapshot stays opaque: different silhouettes cannot use complementary masks.
             for (PageTransition transition : VISIBLE_PAGE_TRANSITIONS) {
-                int fadeStep = transitionFadeStep(transition.startFrame);
+                GpuBufferSlice oldTransforms = fadeTransforms.get(transitionFadeStep(transition.startNanos, transitionTime, false));
                 PageMesh page = transition.oldMesh;
-                GpuBufferSlice transitionTransforms = fadeStep == 0
-                        ? transforms : fadeTransforms.get(-fadeStep);
-                addDraw(draws, irisShaders ? page.irisVertexBuffer : page.vertexBuffer,
-                        irisShaders ? page.irisIndexCount : page.indexCount,
-                        transitionTransforms);
-                addDraw(draws, irisShaders ? page.irisSeamVertexBuffer : page.seamVertexBuffer,
-                        irisShaders ? page.irisSeamIndexCount : page.seamIndexCount,
-                        transitionTransforms);
+                if (page != null) {
+                    addDraw(draws, page.vertexBuffer, page.indexCount, oldTransforms);
+                    addDraw(draws, page.seamVertexBuffer, page.seamIndexCount, oldTransforms);
+                }
+                for (EdgeMesh edge : transition.oldEdges) addDraw(draws, edge.buffer, edge.indexCount, oldTransforms);
             }
             for (PageMesh page : VISIBLE_PAGES) {
+                GpuBufferSlice pageTransforms = fadeTransforms.get(incomingSteps.getOrDefault(page, FADE_STEPS));
+                addDraw(draws, irisShaders ? page.irisVertexBuffer : page.vertexBuffer,
+                        irisShaders ? page.irisIndexCount : page.indexCount, pageTransforms);
                 addDraw(draws, irisShaders ? page.irisSeamVertexBuffer : page.seamVertexBuffer,
-                        irisShaders ? page.irisSeamIndexCount : page.seamIndexCount, transforms);
+                        irisShaders ? page.irisSeamIndexCount : page.seamIndexCount, pageTransforms);
             }
-            pass.drawMultipleIndexed(draws, indices, indexStorage.type(), java.util.List.of(), null);
+            for (EdgeMesh edge : VISIBLE_EDGES) {
+                addDraw(draws, edge.buffer, edge.indexCount, fadeTransforms.get(incomingSteps.getOrDefault(edge, FADE_STEPS)));
+            }
+            pass.drawMultipleIndexed(draws, indices, indexStorage.type(), java.util.List.of("DynamicTransforms"), null);
         }
         recordTiming(callbackStarted, receiveNanos, meshNanos, pageNanos, visibilityNanos,
                 System.nanoTime() - drawStarted);
@@ -795,7 +773,7 @@ public final class CrossDimensionLodRenderer {
     private static void addDraw(List<RenderPass.Draw<GpuBufferSlice>> draws,
                                 GpuBuffer vertexBuffer, int indexCount,
                                 GpuBufferSlice transforms) {
-        if (vertexBuffer == null || indexCount <= 0) return;
+        if (vertexBuffer == null || indexCount <= 0 || transforms == null) return;
         draws.add(new RenderPass.Draw<>(0, vertexBuffer, null, null,
                 0, indexCount, 0,
                 (ignored, uploader) -> uploader.upload("DynamicTransforms", transforms)));
@@ -816,20 +794,19 @@ public final class CrossDimensionLodRenderer {
         }
     }
 
-    private static int fadeStep(long fadeStartFrame) {
-        float progress = Math.clamp((renderFrame - fadeStartFrame) / (float) FADE_DURATION_FRAMES,
-                0.0F, 1.0F);
-        progress = progress * progress * (3.0F - 2.0F * progress);
-        return Math.clamp(Math.round(progress * FADE_STEPS), 1, FADE_STEPS);
+    private static int transitionFadeStep(long startNanos, long now, boolean incoming) {
+        float progress = Math.clamp((now - startNanos) / (float) FADE_DURATION_NANOS, 0.0F, 1.0F);
+        // First reveal the new scene over an opaque old scene, then dissolve the old over the opaque new scene.
+        float opacity = Math.clamp(incoming ? progress * 2.0F : 2.0F - progress * 2.0F, 0.0F, 1.0F);
+        opacity = opacity * opacity * opacity * (opacity * (opacity * 6.0F - 15.0F) + 10.0F);
+        return Math.clamp(Math.round(opacity * FADE_STEPS), 0, FADE_STEPS);
     }
 
-    private static int transitionFadeStep(long startFrame) {
-        if (renderFrame < startFrame) return 0;
-        float progress = Math.clamp((renderFrame - startFrame) / (float) FADE_DURATION_FRAMES,
-                0.0F, 1.0F);
-        progress = progress * progress * progress
-                * (progress * (progress * 6.0F - 15.0F) + 10.0F);
-        return Math.clamp(Math.round(progress * FADE_STEPS), 1, FADE_STEPS);
+    private static void prepareFadeTransform(Map<Integer, GpuBufferSlice> transforms, Matrix4f modelView, int step) {
+        // A zero-opacity draw is omitted; all uniform writes happen before opening the render pass.
+        if (step == 0) return;
+        transforms.computeIfAbsent(step, value -> RenderSystem.getDynamicUniforms().writeTransform(modelView,
+                new Vector4f(1.0F, 1.0F, 1.0F, value / (float) FADE_STEPS), new Vector3f(), new Matrix4f()));
     }
 
     private static void retire(GpuResource resource) {
@@ -864,18 +841,35 @@ public final class CrossDimensionLodRenderer {
         for (var candidate : candidates) {
             long key = candidate.key;
             if (IN_FLIGHT_PAGES.size() >= MAX_IN_FLIGHT_PAGES) break;
+            // Include diagonal pages for AO, and retain the reservation through the visual transition.
+            if (pageOrNeighbourBusy(key)) continue;
             if (PAGES.containsKey(key) && renderFrame - DIRTY_PAGES.get(key) < PAGE_BUILD_DEBOUNCE_FRAMES) continue;
             Long revision = PAGE_REVISIONS.get(key);
             if (revision == null || IN_FLIGHT_PAGES.putIfAbsent(key, revision) != null) continue;
             DIRTY_PAGES.remove(key);
             PackedChunk[] chunks = pageChunks(key);
+            PageMesh current = PAGES.get(key);
+            Side[][] previousSides = current == null ? new Side[4][PAGE_CHUNKS] : current.sides;
+            Side[][] neighbours = new Side[4][];
+            for (int side = 0; side < 4; side++) {
+                PageMesh neighbour = PAGES.get(neighbourPage(key, side));
+                neighbours[side] = neighbour == null ? new Side[PAGE_CHUNKS] : neighbour.sides[side ^ 1];
+            }
+            Side[][][] edgeContexts = new Side[4][][];
+            for (int side = 0; side < 4; side++) {
+                EdgeMesh edge = PAGE_EDGES.get(edgeKey(key, side));
+                edgeContexts[side] = edge == null ? null : edge.aoContext;
+            }
+            boolean irisFormat = Boolean.TRUE.equals(packedIrisFormat);
+            View ao = irisFormat ? null : snapshotAo(key);
+            RegionalSkyLight.Region skyExposure = irisSkyExposureRegion();
             long workEpoch = WORK_EPOCH.get();
             try {
                 MiaExecutors.execute(MiaExecutors.Priority.LOD_PAGE, () -> {
                     if (workEpoch != WORK_EPOCH.get() || !lodEnabled()) return;
                     long workStarted = System.nanoTime();
                     try {
-                        PageData data = buildPageData(key, chunks);
+                        PageData data = buildPageData(key, chunks, previousSides, neighbours, edgeContexts, ao, irisFormat, skyExposure);
                         recordPageWork(System.nanoTime() - workStarted);
                         if (workEpoch == WORK_EPOCH.get() && lodEnabled()) {
                             COMPLETED_PAGES.add(new PageBuildResult(key, revision, workEpoch, data, null));
@@ -907,8 +901,7 @@ public final class CrossDimensionLodRenderer {
         }
         ready.sort(Comparator.comparingDouble(result -> pagePriority(result.key)));
         for (PageBuildResult result : ready) {
-            long size = result.data == null ? 0 : (long) result.data.terrain.bytes.length + result.data.seam.bytes.length
-                    + result.data.irisTerrain.bytes.length + result.data.irisSeam.bytes.length;
+            long size = result.data == null ? 0 : result.data.byteSize();
             if (uploaded >= PAGE_UPLOADS_PER_FRAME || uploaded > 0
                     && (System.nanoTime() - started >= PAGE_UPLOAD_BUDGET_NANOS || uploadedBytes + size > PAGE_UPLOAD_BYTES_PER_FRAME)) {
                 COMPLETED_PAGES.add(result);
@@ -924,22 +917,134 @@ public final class CrossDimensionLodRenderer {
             }
             // Publish a useful frozen page even if more chunks arrived while it was built.
             // Those arrivals keep DIRTY_PAGES queued. An obsolete empty page must not erase newer data.
-            if (result.data == null && !Long.valueOf(result.revision).equals(PAGE_REVISIONS.get(result.key))) continue;
+            if (result.data.bounds == null && !Long.valueOf(result.revision).equals(PAGE_REVISIONS.get(result.key))) continue;
             PageMesh previous = PAGES.get(result.key);
-            PageTransition active = PAGE_TRANSITIONS.remove(result.key);
-            if (active != null) retire(active.oldMesh);
-            if (result.data == null) {
+            PageMesh replacement = null;
+            EdgeMesh[] edges = new EdgeMesh[4];
+            try {
+                if (result.data.bounds != null) replacement = uploadPage(result.data);
+                for (int side = 0; side < 4; side++) {
+                    EdgeData edge = result.data.edges[side];
+                    if (edge != null && edge.geometry.indexCount > 0) {
+                        GpuBuffer buffer = uploadPackedBuffer(edge.geometry, "shared page edge",
+                                CrossDimensionLodKey.x(result.key), CrossDimensionLodKey.z(result.key));
+                        edges[side] = new EdgeMesh(buffer, edge.geometry.indexCount, edge.sprites, edge.bounds, edge.aoContext);
+                    }
+                }
+            } catch (RuntimeException failure) {
+                if (replacement != null) replacement.close();
+                for (EdgeMesh edge : edges) if (edge != null) edge.close();
+                MementoInAbyss.LOGGER.error("Failed to upload cross-dimension LOD page and edges [{},{}]",
+                        CrossDimensionLodKey.x(result.key), CrossDimensionLodKey.z(result.key), failure);
+                retryPage(result.key, result.revision);
+                uploaded++;
+                uploadedBytes += size;
+                continue;
+            }
+            // One client-thread publication: neither a page nor either half of its shared edges is visible early.
+            List<EdgeMesh> oldEdges = new ArrayList<>(4), newEdges = new ArrayList<>(4);
+            for (int side = 0; side < 4; side++) {
+                if (result.data.edges[side] == null) continue; // Unchanged edge supports both snapshots and stays opaque.
+                EdgeKey edgeKey = edgeKey(result.key, side);
+                EdgeMesh old = edges[side] == null ? PAGE_EDGES.remove(edgeKey) : PAGE_EDGES.put(edgeKey, edges[side]);
+                if (old != null) oldEdges.add(old);
+                if (edges[side] != null) newEdges.add(edges[side]);
+            }
+            if (replacement == null) {
                 PAGES.remove(result.key);
                 PAGE_REVISIONS.remove(result.key, result.revision);
-                if (previous != null) retire(previous);
             } else {
-                PageMesh replacement = uploadPage(result.data, renderFrame - FADE_DURATION_FRAMES);
                 PAGES.put(result.key, replacement);
-                if (previous != null) PAGE_TRANSITIONS.put(result.key, new PageTransition(previous, renderFrame + TRANSITION_PREWARM_FRAMES));
             }
+            // AO repairs have identical source profiles: do not restart a visual transition or reserve neighbours for them.
+            if (!Boolean.TRUE.equals(packedIrisFormat) && pageContentChanged(result.key, result.data.columns)
+                    && (hasNativeGeometry(previous) || hasNativeGeometry(replacement) || !oldEdges.isEmpty() || !newEdges.isEmpty())) {
+                PAGE_TRANSITIONS.put(result.key, new PageTransition(previous, List.copyOf(oldEdges), replacement,
+                        List.copyOf(newEdges), System.nanoTime()));
+            } else {
+                if (previous != null) retire(previous);
+                for (EdgeMesh edge : oldEdges) retire(edge);
+            }
+            publishAoProfiles(result.key, result.data.columns);
             uploaded++;
             uploadedBytes += size;
         }
+    }
+
+    private static View snapshotAo(long page) {
+        int x = CrossDimensionLodKey.x(page) * PAGE_CHUNKS - 1, z = CrossDimensionLodKey.z(page) * PAGE_CHUNKS - 1;
+        int width = PAGE_CHUNKS + 2;
+        Side[][] columns = new Side[width * width][];
+        for (int dz = 0; dz < width; dz++) for (int dx = 0; dx < width; dx++) {
+            columns[dz * width + dx] = PUBLISHED_SIDES.get(CrossDimensionLodKey.pack(x + dx, z + dz));
+        }
+        return new View(x, z, width, columns);
+    }
+
+    private static void publishAoProfiles(long page, Side[][] columns) {
+        int ox = CrossDimensionLodKey.x(page) * PAGE_CHUNKS, oz = CrossDimensionLodKey.z(page) * PAGE_CHUNKS;
+        Set<Long> repairs = new HashSet<>();
+        for (int z = 0; z < PAGE_CHUNKS; z++) for (int x = 0; x < PAGE_CHUNKS; x++) {
+            long key = CrossDimensionLodKey.pack(ox + x, oz + z);
+            Side[] next = columns[z * PAGE_CHUNKS + x];
+            Side[] old = next == null ? PUBLISHED_SIDES.remove(key) : PUBLISHED_SIDES.put(key, next);
+            if (Boolean.TRUE.equals(packedIrisFormat) || old == next || !castsAo(old) && !castsAo(next)) continue;
+            for (int dz = -1; dz <= 1; dz++) for (int dx = -1; dx <= 1; dx++) {
+                long neighbourPage = pageKey(ox + x + dx, oz + z + dz);
+                if (neighbourPage != page && PAGES.containsKey(neighbourPage)
+                        && castsAo(PUBLISHED_SIDES.get(CrossDimensionLodKey.pack(ox + x + dx, oz + z + dz)))) repairs.add(neighbourPage);
+            }
+        }
+        // AO-only publications reuse the identical profiles and therefore cannot trigger a repair loop.
+        for (long repair : repairs) markPageDirty(repair, false);
+    }
+
+    private static boolean castsAo(Side[] sides) { return sides != null && sides[0].cellSize() <= 4; }
+
+    private static Side[][] edgeAoContext(View view, int ox, int oz, int side) {
+        if (view == null) return null;
+        Side[][] context = new Side[(PAGE_CHUNKS + 2) * 2][];
+        int plane = side < 2 ? ox + (side == 0 ? 0 : PAGE_CHUNKS) : oz + (side == 2 ? 0 : PAGE_CHUNKS);
+        for (int u = -1; u <= PAGE_CHUNKS; u++) for (int n = 0; n < 2; n++) {
+            context[(u + 1) * 2 + n] = view.column(side < 2 ? plane - 1 + n : ox + u,
+                    side < 2 ? oz + u : plane - 1 + n);
+        }
+        return context;
+    }
+
+    private static boolean sameSide(Side[] first, Side[] second) {
+        for (int u = 0; u < PAGE_CHUNKS; u++) if (first[u] != second[u]) return false;
+        return true;
+    }
+
+    private static boolean hasNativeGeometry(PageMesh page) {
+        return page != null && (page.indexCount > 0 || page.seamIndexCount > 0);
+    }
+
+    private static boolean pageContentChanged(long page, Side[][] columns) {
+        int ox = CrossDimensionLodKey.x(page) * PAGE_CHUNKS, oz = CrossDimensionLodKey.z(page) * PAGE_CHUNKS;
+        for (int z = 0; z < PAGE_CHUNKS; z++) for (int x = 0; x < PAGE_CHUNKS; x++) {
+            if (columns[z * PAGE_CHUNKS + x] != PUBLISHED_SIDES.get(CrossDimensionLodKey.pack(ox + x, oz + z))) return true;
+        }
+        return false;
+    }
+
+    private static long neighbourPage(long key, int side) {
+        return CrossDimensionLodKey.pack(CrossDimensionLodKey.x(key) + (side == 0 ? -1 : side == 1 ? 1 : 0),
+                CrossDimensionLodKey.z(key) + (side == 2 ? -1 : side == 3 ? 1 : 0));
+    }
+
+    private static EdgeKey edgeKey(long page, int side) {
+        return new EdgeKey((side & 1) == 0 ? neighbourPage(page, side) : page, side < 2);
+    }
+
+    private static boolean pageOrNeighbourBusy(long key) {
+        int x = CrossDimensionLodKey.x(key), z = CrossDimensionLodKey.z(key);
+        for (int dz = -1; dz <= 1; dz++) for (int dx = -1; dx <= 1; dx++) {
+            long neighbour = CrossDimensionLodKey.pack(x + dx, z + dz);
+            if (IN_FLIGHT_PAGES.containsKey(neighbour) || PAGE_TRANSITIONS.containsKey(neighbour)) return true;
+        }
+        return false;
     }
 
     private static void retryPage(long key, long revision) {
@@ -962,57 +1067,89 @@ public final class CrossDimensionLodRenderer {
         return chunks.toArray(PackedChunk[]::new);
     }
 
-    private static PageData buildPageData(long key, PackedChunk[] chunks) {
-        if (chunks.length == 0) return null;
-        int terrainBytes = 0;
-        int seamBytes = 0;
-        int irisTerrainBytes = 0;
-        int irisSeamBytes = 0;
-        int terrainIndices = 0;
-        int seamIndices = 0;
-        int irisTerrainIndices = 0;
-        int irisSeamIndices = 0;
+    private static PageData buildPageData(long key, PackedChunk[] chunks, Side[][] previousSides, Side[][] neighbours,
+                                         Side[][][] previousContexts, View ao,
+                                         boolean irisFormat, RegionalSkyLight.Region skyExposure) {
+        int terrainBytes = 0, irisTerrainBytes = 0, terrainIndices = 0, irisTerrainIndices = 0;
+        int originX = CrossDimensionLodKey.x(key) * PAGE_CHUNKS, originZ = CrossDimensionLodKey.z(key) * PAGE_CHUNKS;
+        PackedChunk[] grid = new PackedChunk[PAGE_CHUNKS * PAGE_CHUNKS];
+        Side[][] columns = new Side[grid.length][];
         AABB bounds = null;
         Set<TextureAtlasSprite> sprites = new HashSet<>();
         for (PackedChunk chunk : chunks) {
+            grid[(chunk.chunkZ - originZ) * PAGE_CHUNKS + chunk.chunkX - originX] = chunk;
             terrainBytes = Math.addExact(terrainBytes, chunk.terrain.bytes.length);
-            seamBytes = Math.addExact(seamBytes, chunk.seam.bytes.length);
             irisTerrainBytes = Math.addExact(irisTerrainBytes, chunk.irisTerrain.bytes.length);
-            irisSeamBytes = Math.addExact(irisSeamBytes, chunk.irisSeam.bytes.length);
             terrainIndices = Math.addExact(terrainIndices, chunk.terrain.indexCount);
-            seamIndices = Math.addExact(seamIndices, chunk.seam.indexCount);
             irisTerrainIndices = Math.addExact(irisTerrainIndices, chunk.irisTerrain.indexCount);
-            irisSeamIndices = Math.addExact(irisSeamIndices, chunk.irisSeam.indexCount);
             bounds = bounds == null ? chunk.bounds : bounds.minmax(chunk.bounds);
             sprites.addAll(chunk.sprites);
         }
-        byte[] terrain = new byte[terrainBytes];
-        byte[] seam = new byte[seamBytes];
-        byte[] irisTerrain = new byte[irisTerrainBytes];
-        byte[] irisSeam = new byte[irisSeamBytes];
-        int terrainOffset = 0;
-        int seamOffset = 0;
-        int irisTerrainOffset = 0;
-        int irisSeamOffset = 0;
+        byte[] terrain = new byte[terrainBytes], irisTerrain = new byte[irisTerrainBytes];
+        int terrainOffset = 0, irisTerrainOffset = 0;
         for (PackedChunk chunk : chunks) {
             System.arraycopy(chunk.terrain.bytes, 0, terrain, terrainOffset, chunk.terrain.bytes.length);
-            System.arraycopy(chunk.seam.bytes, 0, seam, seamOffset, chunk.seam.bytes.length);
-            System.arraycopy(chunk.irisTerrain.bytes, 0, irisTerrain, irisTerrainOffset,
-                    chunk.irisTerrain.bytes.length);
-            System.arraycopy(chunk.irisSeam.bytes, 0, irisSeam, irisSeamOffset,
-                    chunk.irisSeam.bytes.length);
+            System.arraycopy(chunk.irisTerrain.bytes, 0, irisTerrain, irisTerrainOffset, chunk.irisTerrain.bytes.length);
             terrainOffset += chunk.terrain.bytes.length;
-            seamOffset += chunk.seam.bytes.length;
             irisTerrainOffset += chunk.irisTerrain.bytes.length;
-            irisSeamOffset += chunk.irisSeam.bytes.length;
         }
-        return new PageData(key, new PackedBuffer(terrain, terrainIndices),
-                new PackedBuffer(seam, seamIndices),
-                new PackedBuffer(irisTerrain, irisTerrainIndices),
-                new PackedBuffer(irisSeam, irisSeamIndices), Set.copyOf(sprites), bounds);
+        // The centre is the page we will publish; the halo is the geometry already displayed by neighbours.
+        for (int z = 0; z < PAGE_CHUNKS; z++) for (int x = 0; x < PAGE_CHUNKS; x++) {
+            PackedChunk chunk = grid[z * PAGE_CHUNKS + x];
+            columns[z * PAGE_CHUNKS + x] = chunk == null ? null : chunk.sides;
+            if (ao != null) ao.columns[(z + 1) * ao.width + x + 1] = columns[z * PAGE_CHUNKS + x];
+        }
+        var builder = new BoundaryBuilder(ao);
+        var internal = new QuadBuffer(128);
+        Side[][] sides = new Side[4][PAGE_CHUNKS];
+        for (int z = 0; z < PAGE_CHUNKS; z++) for (int x = 0; x < PAGE_CHUNKS; x++) {
+            PackedChunk chunk = grid[z * PAGE_CHUNKS + x];
+            if (chunk == null) continue;
+            if (ao != null) CrossDimensionLodMesher.appendAoRim(internal, chunk.rimSource, ao);
+            for (int side = 0; side < 4; side++) {
+                int nx = x + (side == 0 ? -1 : side == 1 ? 1 : 0);
+                int nz = z + (side == 2 ? -1 : side == 3 ? 1 : 0);
+                if (nx < 0 || nx >= PAGE_CHUNKS || nz < 0 || nz >= PAGE_CHUNKS) {
+                    sides[side][side < 2 ? z : x] = chunk.sides[side];
+                } else {
+                    PackedChunk neighbour = grid[nz * PAGE_CHUNKS + nx];
+                    builder.append(internal, side, chunk.chunkX, chunk.chunkZ, chunk.sides[side],
+                            neighbour == null ? null : neighbour.sides[side ^ 1]);
+                }
+            }
+        }
+        PackedBuffer seam = irisFormat ? PackedBuffer.EMPTY : packQuadBuffer(internal, sprites);
+        PackedBuffer irisSeam = irisFormat ? packIrisQuadBuffer(internal, skyExposure, sprites) : PackedBuffer.EMPTY;
+        EdgeData[] edges = new EdgeData[4];
+        for (int side = 0; side < 4; side++) {
+            Side[][] context = edgeAoContext(ao, originX, originZ, side);
+            if (sameSide(previousSides[side], sides[side]) && (ao == null || previousContexts[side] == null
+                    || java.util.Arrays.equals(previousContexts[side], context))) continue;
+            var quads = new QuadBuffer(32);
+            int minY = Integer.MAX_VALUE, maxY = Integer.MIN_VALUE;
+            for (int u = 0; u < PAGE_CHUNKS; u++) {
+                Side own = sides[side][u], other = neighbours[side][u];
+                int x = originX + (side < 2 ? (side == 0 ? 0 : PAGE_CHUNKS - 1) : u);
+                int z = originZ + (side < 2 ? u : (side == 2 ? 0 : PAGE_CHUNKS - 1));
+                builder.append(quads, side, x, z, own, other);
+                builder.append(quads, side ^ 1, x + (side == 0 ? -1 : side == 1 ? 1 : 0),
+                        z + (side == 2 ? -1 : side == 3 ? 1 : 0), other, own);
+                if (own != null) { minY = Math.min(minY, own.minY()); maxY = Math.max(maxY, own.maxY()); }
+                if (other != null) { minY = Math.min(minY, other.minY()); maxY = Math.max(maxY, other.maxY()); }
+            }
+            Set<TextureAtlasSprite> edgeSprites = new HashSet<>();
+            PackedBuffer geometry = irisFormat ? packIrisQuadBuffer(quads, skyExposure, edgeSprites) : packQuadBuffer(quads, edgeSprites);
+            double x = originX * 16.0 + (side == 1 ? PAGE_CHUNKS * 16 : 0);
+            double z = originZ * 16.0 + (side == 3 ? PAGE_CHUNKS * 16 : 0);
+            AABB edgeBounds = geometry.indexCount == 0 ? null : new AABB(x - .01, minY, z - .01,
+                    x + (side < 2 ? .01 : PAGE_CHUNKS * 16), maxY, z + (side < 2 ? PAGE_CHUNKS * 16 : .01));
+            edges[side] = new EdgeData(geometry, Set.copyOf(edgeSprites), edgeBounds, context);
+        }
+        return new PageData(key, new PackedBuffer(terrain, terrainIndices), seam,
+                new PackedBuffer(irisTerrain, irisTerrainIndices), irisSeam, Set.copyOf(sprites), bounds, sides, columns, edges);
     }
 
-    private static PageMesh uploadPage(PageData data, long fadeStartFrame) {
+    private static PageMesh uploadPage(PageData data) {
         int x = CrossDimensionLodKey.x(data.key);
         int z = CrossDimensionLodKey.z(data.key);
         GpuBuffer terrain = uploadPackedBuffer(data.terrain, "page terrain", x, z);
@@ -1025,7 +1162,7 @@ public final class CrossDimensionLodRenderer {
                     return new PageMesh(terrain, data.terrain.indexCount, seam, data.seam.indexCount,
                             irisTerrain, data.irisTerrain.indexCount,
                             irisSeam, data.irisSeam.indexCount,
-                            data.sprites, data.bounds, fadeStartFrame);
+                            data.sprites, data.bounds, data.sides);
                 } catch (Throwable throwable) {
                     closeBuffer(irisTerrain);
                     throw throwable;
@@ -1040,12 +1177,12 @@ public final class CrossDimensionLodRenderer {
         }
     }
 
-    private static void finishPageTransitions() {
+    private static void finishPageTransitions(long now) {
         var iterator = PAGE_TRANSITIONS.entrySet().iterator();
         while (iterator.hasNext()) {
             var entry = iterator.next();
-            if (renderFrame - entry.getValue().startFrame <= FADE_DURATION_FRAMES) continue;
-            retire(entry.getValue().oldMesh);
+            if (now - entry.getValue().startNanos < FADE_DURATION_NANOS) continue;
+            retire(entry.getValue());
             iterator.remove();
         }
     }
@@ -1126,10 +1263,6 @@ public final class CrossDimensionLodRenderer {
             MESH_FAILURES.remove(key);
             MESH_RETRY_AFTER.remove(key);
             markPageDirty(pageKey(chunkX, chunkZ), false);
-            markDirtyIfPresent(chunkX - 1, chunkZ);
-            markDirtyIfPresent(chunkX + 1, chunkZ);
-            markDirtyIfPresent(chunkX, chunkZ - 1);
-            markDirtyIfPresent(chunkX, chunkZ + 1);
         }
     }
 
@@ -1139,14 +1272,10 @@ public final class CrossDimensionLodRenderer {
         Set<TextureAtlasSprite> sprites = new HashSet<>();
         PackedBuffer terrain = irisFormat
                 ? PackedBuffer.EMPTY : packQuadBuffer(cpuMesh.quads, sprites);
-        PackedBuffer seam = irisFormat
-                ? PackedBuffer.EMPTY : packQuadBuffer(cpuMesh.seamQuads, sprites);
         PackedBuffer irisTerrain = irisFormat
                 ? packIrisQuadBuffer(cpuMesh.quads, irisSkyExposureRegion, sprites) : PackedBuffer.EMPTY;
-        PackedBuffer irisSeam = irisFormat
-                ? packIrisQuadBuffer(cpuMesh.seamQuads, irisSkyExposureRegion, sprites) : PackedBuffer.EMPTY;
-        return new PackedChunk(cpuMesh.chunkX, cpuMesh.chunkZ, cpuMesh.cellSize, terrain, seam, irisTerrain, irisSeam,
-                Set.copyOf(sprites), cpuMesh.bounds);
+        return new PackedChunk(cpuMesh.chunkX, cpuMesh.chunkZ, cpuMesh.cellSize, terrain, irisTerrain,
+                Set.copyOf(sprites), cpuMesh.bounds, cpuMesh.sides, cpuMesh.rimSource);
     }
 
     /**
@@ -1169,7 +1298,7 @@ public final class CrossDimensionLodRenderer {
                     CrossDimensionLodRenderTypes.tiledBlocksPipeline().getVertexFormatMode(),
                     CrossDimensionLodRenderTypes.LOD_VERTEX_FORMAT);
             for (int quad = 0; quad < quads.size; quad++) {
-                int attribute = quad * 2;
+                int attribute = quad * QuadBuffer.ATTRIBUTE_STRIDE;
                 int face = quads.attributes[attribute];
                 TextureAtlasSprite sprite = blockSprite(quads.attributes[attribute + 1], face);
                 sprites.add(sprite);
@@ -1196,7 +1325,7 @@ public final class CrossDimensionLodRenderer {
                     CrossDimensionLodRenderTypes.irisBlocksPipeline().getVertexFormatMode(),
                     CrossDimensionLodRenderTypes.IRIS_VERTEX_FORMAT);
             for (int quad = 0; quad < quads.size; quad++) {
-                int attribute = quad * 2;
+                int attribute = quad * QuadBuffer.ATTRIBUTE_STRIDE;
                 int face = quads.attributes[attribute];
                 TextureAtlasSprite sprite = blockSprite(quads.attributes[attribute + 1], face);
                 sprites.add(sprite);
@@ -1309,40 +1438,51 @@ public final class CrossDimensionLodRenderer {
         float x1 = quads.coordinates[coordinate + 3];
         float y1 = quads.coordinates[coordinate + 4];
         float z1 = quads.coordinates[coordinate + 5];
-        int attribute = index * 2;
+        int attribute = index * QuadBuffer.ATTRIBUTE_STRIDE;
         int face = quads.attributes[attribute];
+        int ao = CrossDimensionLodAmbientOcclusion.outwardOrder(face, quads.attributes[attribute + 2]);
         switch (face) {
-            case 0 -> emitTextured(consumer, sprite, -1, 0, 0,
+            case 0 -> emitTextured(consumer, sprite, ao, -1, 0, 0,
                     x0,y0,z1, x0,y1,z1, x0,y1,z0, x0,y0,z0);
-            case 1 -> emitTextured(consumer, sprite, 1, 0, 0,
+            case 1 -> emitTextured(consumer, sprite, ao, 1, 0, 0,
                     x0,y0,z0, x0,y1,z0, x0,y1,z1, x0,y0,z1);
-            case 2 -> emitTextured(consumer, sprite, 0, -1, 0,
+            case 2 -> emitTextured(consumer, sprite, ao, 0, -1, 0,
                     x0,y0,z0, x1,y0,z0, x1,y0,z1, x0,y0,z1);
-            case 3 -> emitTextured(consumer, sprite, 0, 1, 0,
+            case 3 -> emitTextured(consumer, sprite, ao, 0, 1, 0,
                     x0,y0,z1, x1,y0,z1, x1,y0,z0, x0,y0,z0);
-            case 4 -> emitTextured(consumer, sprite, 0, 0, -1,
+            case 4 -> emitTextured(consumer, sprite, ao, 0, 0, -1,
                     x0,y0,z0, x0,y1,z0, x1,y1,z0, x1,y0,z0);
-            case 5 -> emitTextured(consumer, sprite, 0, 0, 1,
+            case 5 -> emitTextured(consumer, sprite, ao, 0, 0, 1,
                     x1,y0,z0, x1,y1,z0, x0,y1,z0, x0,y0,z0);
         }
     }
 
-    private static void emitTextured(VertexConsumer consumer, TextureAtlasSprite sprite,
+    private static void emitTextured(VertexConsumer consumer, TextureAtlasSprite sprite, int ao,
                                      float nx, float ny, float nz,
                                      float ax, float ay, float az, float bx, float by, float bz,
                                      float cx, float cy, float cz, float dx, float dy, float dz) {
-        texturedVertex(consumer, sprite, ax, ay, az, nx, ny, nz);
-        texturedVertex(consumer, sprite, bx, by, bz, nx, ny, nz);
-        texturedVertex(consumer, sprite, cx, cy, cz, nx, ny, nz);
-        texturedVertex(consumer, sprite, dx, dy, dz, nx, ny, nz);
+        float a = CrossDimensionLodAmbientOcclusion.shade(ao, 0), b = CrossDimensionLodAmbientOcclusion.shade(ao, 1);
+        float c = CrossDimensionLodAmbientOcclusion.shade(ao, 2), d = CrossDimensionLodAmbientOcclusion.shade(ao, 3);
+        if (CrossDimensionLodAmbientOcclusion.flipDiagonal(ao)) {
+            texturedVertex(consumer, sprite, bx, by, bz, nx, ny, nz, b);
+            texturedVertex(consumer, sprite, cx, cy, cz, nx, ny, nz, c);
+            texturedVertex(consumer, sprite, dx, dy, dz, nx, ny, nz, d);
+            texturedVertex(consumer, sprite, ax, ay, az, nx, ny, nz, a);
+        } else {
+            texturedVertex(consumer, sprite, ax, ay, az, nx, ny, nz, a);
+            texturedVertex(consumer, sprite, bx, by, bz, nx, ny, nz, b);
+            texturedVertex(consumer, sprite, cx, cy, cz, nx, ny, nz, c);
+            texturedVertex(consumer, sprite, dx, dy, dz, nx, ny, nz, d);
+        }
     }
 
     private static void texturedVertex(VertexConsumer consumer, TextureAtlasSprite sprite,
                                        double x, double y, double z,
-                                       float nx, float ny, float nz) {
+                                       float nx, float ny, float nz, float ao) {
         int minimumUv = packUv(sprite.getU0(), sprite.getV0());
         int maximumUv = packUv(sprite.getU1(), sprite.getV1());
         consumer.addVertex((float) x, (float) y, (float) z)
+                .setColor(ao, ao, ao, 1.0F)
                 .setOverlay(minimumUv).setLight(maximumUv).setNormal(nx, ny, nz);
     }
 
@@ -1356,7 +1496,7 @@ public final class CrossDimensionLodRenderer {
         float x1 = quads.coordinates[coordinate + 3];
         float y1 = quads.coordinates[coordinate + 4];
         float z1 = quads.coordinates[coordinate + 5];
-        int face = quads.attributes[index * 2];
+        int face = quads.attributes[index * QuadBuffer.ATTRIBUTE_STRIDE];
         switch (face) {
             case 0 -> emitIrisTextured(consumer, sprite, 0.8F, -1, 0, 0, skyExposureRegion,
                     x0,y0,z1, x0,y1,z1, x0,y1,z0, x0,y0,z0);
@@ -1428,8 +1568,7 @@ public final class CrossDimensionLodRenderer {
                             GpuBuffer seamVertexBuffer, int seamIndexCount,
                             GpuBuffer irisVertexBuffer, int irisIndexCount,
                             GpuBuffer irisSeamVertexBuffer, int irisSeamIndexCount,
-                            Set<TextureAtlasSprite> sprites, AABB bounds,
-                            long fadeStartFrame) implements GpuResource {
+                            Set<TextureAtlasSprite> sprites, AABB bounds, Side[][] sides) implements GpuResource {
         @Override
         public void close() {
             closeBuffer(vertexBuffer);
@@ -1441,14 +1580,31 @@ public final class CrossDimensionLodRenderer {
     private record PackedBuffer(byte[] bytes, int indexCount) {
         private static final PackedBuffer EMPTY = new PackedBuffer(new byte[0], 0);
     }
-    private record PackedChunk(int chunkX, int chunkZ, int cellSize, PackedBuffer terrain, PackedBuffer seam,
-                               PackedBuffer irisTerrain, PackedBuffer irisSeam,
-                               Set<TextureAtlasSprite> sprites, AABB bounds) {}
+    private record PackedChunk(int chunkX, int chunkZ, int cellSize, PackedBuffer terrain, PackedBuffer irisTerrain,
+                               Set<TextureAtlasSprite> sprites, AABB bounds, Side[] sides, CrossDimensionLodColumn rimSource) {}
+    private record EdgeKey(long lowerPage, boolean xAxis) {}
+    private record EdgeData(PackedBuffer geometry, Set<TextureAtlasSprite> sprites, AABB bounds, Side[][] aoContext) {}
+    private record EdgeMesh(GpuBuffer buffer, int indexCount, Set<TextureAtlasSprite> sprites, AABB bounds, Side[][] aoContext) implements GpuResource {
+        @Override public void close() { closeBuffer(buffer); }
+    }
     private record PageData(long key, PackedBuffer terrain, PackedBuffer seam,
                             PackedBuffer irisTerrain, PackedBuffer irisSeam,
-                            Set<TextureAtlasSprite> sprites, AABB bounds) {}
+                            Set<TextureAtlasSprite> sprites, AABB bounds, Side[][] sides, Side[][] columns, EdgeData[] edges) {
+        long byteSize() {
+            long size = (long) terrain.bytes.length + seam.bytes.length + irisTerrain.bytes.length + irisSeam.bytes.length;
+            for (EdgeData edge : edges) if (edge != null) size += edge.geometry.bytes.length;
+            return size;
+        }
+    }
     private record RankedKey(long key, double priority) {}
-    private record PageTransition(PageMesh oldMesh, long startFrame) {}
+    private record PageTransition(PageMesh oldMesh, List<EdgeMesh> oldEdges,
+                                  PageMesh newMesh, List<EdgeMesh> newEdges, long startNanos) implements GpuResource {
+        // Only the detached old resources belong to the transition. PAGES/PAGE_EDGES still own the new ones.
+        @Override public void close() {
+            if (oldMesh != null) oldMesh.close();
+            for (EdgeMesh edge : oldEdges) edge.close();
+        }
+    }
     private record RetiredResource(GpuResource resource, long closeAfterFrame) {}
     private record MeshBuildResult(long key, long revision, long epoch, CrossDimensionLodColumn sourcePayload,
                                    CrossDimensionLodColumn selectedPayload,

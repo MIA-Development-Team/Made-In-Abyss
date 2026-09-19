@@ -12,9 +12,10 @@ import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 
 /** Render state for greedy LOD quads whose block sprites repeat in the shader. */
 public final class CrossDimensionLodRenderTypes {
-    /** Compact native format containing packed sprite bounds for atlas-safe repetition. */
+    /** Packed sprite bounds plus native AO colour; Iris retains its own terrain vertex format. */
     public static final VertexFormat LOD_VERTEX_FORMAT = VertexFormat.builder()
             .add("Position", VertexFormatElement.POSITION)
+            .add("Color", VertexFormatElement.COLOR)
             .add("UV1", VertexFormatElement.UV1)
             .add("UV2", VertexFormatElement.UV2)
             .add("Normal", VertexFormatElement.NORMAL)

@@ -1,75 +1,38 @@
 package com.altnoir.mementoinabyss.client.render;
 
-import com.altnoir.mementoinabyss.worldgen.lod.CrossDimensionLodKey;
 import net.minecraft.world.phys.AABB;
+import com.altnoir.mementoinabyss.client.render.CrossDimensionLodAmbientOcclusion.View;
 
 import java.util.Arrays;
-import java.util.Map;
 
 /** Pure CPU greedy meshing. Worker threads only read immutable payloads and concurrent lookup maps. */
 final class CrossDimensionLodMesher {
     private final CrossDimensionLodColumn source;
     private final HeightField sourceHeightField;
-    private final CrossDimensionLodColumn west, east, north, south;
-    private final HeightField westHeight, eastHeight, northHeight, southHeight;
-
-    private CrossDimensionLodMesher(CrossDimensionLodColumn source,
-                                    Map<Long, CrossDimensionLodColumn> chunks) {
+    private CrossDimensionLodMesher(CrossDimensionLodColumn source) {
         this.source = source;
-        int x = source.chunkX();
-        int z = source.chunkZ();
-        this.sourceHeightField = heightField(source);
-        this.west = chunks.get(CrossDimensionLodKey.pack(x - 1, z));
-        this.east = chunks.get(CrossDimensionLodKey.pack(x + 1, z));
-        this.north = chunks.get(CrossDimensionLodKey.pack(x, z - 1));
-        this.south = chunks.get(CrossDimensionLodKey.pack(x, z + 1));
-        this.westHeight = heightField(west);
-        this.eastHeight = heightField(east);
-        this.northHeight = heightField(north);
-        this.southHeight = heightField(south);
+        this.sourceHeightField = source.heightField();
     }
 
-    static CpuMesh build(CrossDimensionLodColumn payload,
-                         Map<Long, CrossDimensionLodColumn> chunks) {
-        return new CrossDimensionLodMesher(payload, chunks).build();
+    static CpuMesh build(CrossDimensionLodColumn payload, boolean ambientOcclusion) {
+        int originX = payload.chunkX() * 16, originZ = payload.chunkZ() * 16;
+        AABB bounds = new AABB(originX, payload.minY() + payload.displayYOffset(), originZ,
+                originX + 16, payload.minY() + payload.yCells() * payload.cellSize() + payload.displayYOffset(), originZ + 16);
+        boolean ao = ambientOcclusion && payload.cellSize() <= 4;
+        return new CpuMesh(payload.interiorCopy(ao), payload.sides(), bounds,
+                payload.chunkX(), payload.chunkZ(), payload.cellSize(), ao ? payload : null);
     }
 
-    private static HeightField heightField(CrossDimensionLodColumn payload) {
-        return payload == null ? null : payload.heightField();
-    }
-
-    static QuadBuffer buildInterior(CrossDimensionLodColumn payload) {
-        var mesher = new CrossDimensionLodMesher(payload, Map.of());
-        int size = 16 / payload.cellSize();
+    static QuadBuffer buildInterior(CrossDimensionLodColumn payload, boolean ao) {
         var quads = new QuadBuffer(128);
-        var unusedSeams = new QuadBuffer(1);
-        int[] mask = new int[size * Math.max(size, payload.yCells())];
-        boolean surfaceOnly = payload.cellSize() >= 8;
-        for (int face = 0; face < 6; face++) {
-            int hiddenFarFace = payload.displayYOffset() > 0 ? 3 : 2;
-            if (!surfaceOnly || face != hiddenFarFace) mesher.greedyFace(payload, face, surfaceOnly, quads, unusedSeams, mask, false);
-        }
+        View view = ao && payload.cellSize() <= 4
+                ? new View(payload.chunkX(), payload.chunkZ(), 1, new Side[1][]).withSource(payload) : null;
+        new CrossDimensionLodMesher(payload).meshInteriors(quads, view, false);
         return quads;
     }
 
-    private CpuMesh build() {
-        CrossDimensionLodColumn payload = source;
-        int horizontalSize = 16 / payload.cellSize();
-        QuadBuffer quads = payload.interiorCopy();
-        QuadBuffer seamQuads = new QuadBuffer(32);
-        int[] mask = new int[horizontalSize * Math.max(horizontalSize, payload.yCells())];
-        boolean surfaceOnly = payload.cellSize() >= 8;
-        for (int face : new int[]{0, 1, 4, 5}) {
-            greedyFace(payload, face, surfaceOnly, quads, seamQuads, mask, true);
-        }
-        int yOffset = payload.displayYOffset();
-        int originX = payload.chunkX() * 16;
-        int originZ = payload.chunkZ() * 16;
-        AABB bounds = new AABB(originX, payload.minY() + yOffset, originZ,
-                originX + 16, payload.minY() + payload.yCells() * payload.cellSize() + yOffset, originZ + 16);
-        // The completed mesh owns this list; copying it here allocates another backing
-        // array for every rebuilt chunk without providing any additional safety.
-        return new CpuMesh(quads, seamQuads, bounds, payload.chunkX(), payload.chunkZ(), payload.cellSize());
+    static void appendAoRim(QuadBuffer quads, CrossDimensionLodColumn source, View view) {
+        if (source != null) new CrossDimensionLodMesher(source).meshInteriors(quads, view.withSource(source), true);
     }
 
     static HeightField buildHeightField(CrossDimensionLodColumn payload) {
@@ -106,72 +69,159 @@ final class CrossDimensionLodMesher {
         return new HeightField(size, topY, topState, bottomY, bottomState);
     }
 
-    private void greedyFace(CrossDimensionLodColumn payload, int face,
-                            boolean surfaceOnly, QuadBuffer quads, QuadBuffer seamQuads, int[] mask, boolean boundaryOnly) {
-        int size = 16 / payload.cellSize();
-        int planes = face < 2 ? size : face < 4 ? payload.yCells() : size;
-        int width = size;
-        int height = face < 2 ? payload.yCells() : face < 4 ? size : payload.yCells();
-        for (int plane = 0; plane < planes; plane++) {
-            boolean boundary = switch (face) {
-                case 0, 4 -> plane == 0;
-                case 1, 5 -> plane == size - 1;
-                default -> false;
-            };
-            if (boundary != boundaryOnly) continue;
-            for (int v = 0; v < height; v++) {
-                for (int u = 0; u < width; u++) {
-                    int x, y, z, nx, ny, nz;
-                    if (face < 2) {
-                        x = plane; y = v; z = u;
-                        nx = x + (face == 0 ? -1 : 1); ny = y; nz = z;
-                    } else if (face < 4) {
-                        x = u; y = plane; z = v;
-                        nx = x; ny = y + (face == 2 ? -1 : 1); nz = z;
-                    } else {
-                        x = u; y = v; z = plane;
-                        nx = x; ny = y; nz = z + (face == 4 ? -1 : 1);
+    private void meshInteriors(QuadBuffer quads, View ao, boolean rimOnly) {
+        int size = 16 / source.cellSize();
+        int[] mask = new int[size * Math.max(size, source.yCells())];
+        int[] light = ao == null ? null : new int[mask.length];
+        for (int face = 0; face < 6; face++) {
+            if (source.cellSize() >= 8 && face == (source.displayYOffset() > 0 ? 3 : 2)) continue;
+            int planes = face < 2 || face >= 4 ? size : source.yCells();
+            int height = face < 2 || face >= 4 ? source.yCells() : size;
+            for (int plane = 0; plane < planes; plane++) {
+                if ((face == 0 || face == 4) && plane == 0 || (face == 1 || face == 5) && plane == size - 1) continue;
+                if (ao == null) {
+                    meshRegion(face, plane, 0, 0, size, height, quads, mask, light, null);
+                } else if (!rimOnly) {
+                    meshRegion(face, plane, 1, face == 2 || face == 3 ? 1 : 0,
+                            size - 2, face == 2 || face == 3 ? height - 2 : height, quads, mask, light, ao);
+                } else {
+                    meshRegion(face, plane, 0, 0, 1, height, quads, mask, light, ao);
+                    meshRegion(face, plane, size - 1, 0, 1, height, quads, mask, light, ao);
+                    if (face == 2 || face == 3) {
+                        meshRegion(face, plane, 1, 0, size - 2, 1, quads, mask, light, ao);
+                        meshRegion(face, plane, 1, height - 1, size - 2, 1, quads, mask, light, ao);
                     }
-                    int state = stateForMesh(payload, x, y, z, surfaceOnly);
-                    int neighbor = stateForMesh(payload, nx, ny, nz, surfaceOnly);
-                    mask[v * width + u] = state >= 0 && neighbor < 0 ? state + 1 : 0;
                 }
             }
-            QuadBuffer target = isCrossLodBoundary(face, plane, size) ? seamQuads : quads;
-            mergeMask(payload, face, plane, width, height, mask, target);
         }
     }
 
-    private boolean isCrossLodBoundary(int face, int plane, int size) {
-        CrossDimensionLodColumn neighbor = switch (face) {
-            case 0 -> plane == 0 ? west : null;
-            case 1 -> plane == size - 1 ? east : null;
-            case 4 -> plane == 0 ? north : null;
-            case 5 -> plane == size - 1 ? south : null;
-            default -> null;
-        };
-        return neighbor != null && neighbor.cellSize() != source.cellSize();
+    private void meshRegion(int face, int plane, int startU, int startV, int width, int height,
+                            QuadBuffer quads, int[] mask, int[] light, View ao) {
+        int cell = source.cellSize();
+        int ox = source.chunkX() * 16, oy = source.minY() + source.displayYOffset(), oz = source.chunkZ() * 16;
+        int offset = (plane + (face & 1)) * cell;
+        if (face < 2) { ox += offset; oz += startU * cell; oy += startV * cell; }
+        else if (face < 4) { oy += offset; ox += startU * cell; oz += startV * cell; }
+        else { oz += offset; ox += startU * cell; oy += startV * cell; }
+        for (int v = 0; v < height; v++) for (int u = 0; u < width; u++) {
+            int su = startU + u, sv = startV + v;
+            int x = face < 2 ? plane : su, y = face >= 2 && face < 4 ? plane : sv, z = face < 2 ? su : face < 4 ? sv : plane;
+            int nx = x + (face == 0 ? -1 : face == 1 ? 1 : 0);
+            int ny = y + (face == 2 ? -1 : face == 3 ? 1 : 0);
+            int nz = z + (face == 4 ? -1 : face == 5 ? 1 : 0);
+            int state = renderedState(source, sourceHeightField, x, y, z);
+            int index = v * width + u;
+            mask[index] = state >= 0 && renderedState(source, sourceHeightField, nx, ny, nz) < 0 ? state + 1 : 0;
+            if (light != null && mask[index] != 0) light[index] = CrossDimensionLodAmbientOcclusion.corners(ao, face,
+                    ox + (face < 2 ? 0 : u * cell), oy + (face >= 2 && face < 4 ? 0 : v * cell),
+                    oz + (face < 2 ? u * cell : face < 4 ? v * cell : 0), cell, cell);
+        }
+        mergeMask(face, width, height, mask, light, quads, ox, oy, oz, cell, cell);
     }
 
-    private static void mergeMask(CrossDimensionLodColumn payload, int face, int plane,
-                                  int width, int height, int[] mask, QuadBuffer quads) {
+    /** Immutable rendered boundary samples; never retains a column's full voxel body or packed vertices. */
+    record Side(int cellSize, int minY, int yCells, int[] palette, short[] cells) {
+        int maxY() { return minY + yCells * cellSize; }
+
+        int state(int along, int worldY) {
+            int y = Math.floorDiv(worldY - minY, cellSize);
+            if (y < 0 || y >= yCells) return -1;
+            int index = cells.length == 1 ? 0 : cells.length == yCells ? y : along / cellSize * yCells + y;
+            int value = Short.toUnsignedInt(cells[index]);
+            return value == 0 ? -1 : palette[value];
+        }
+
+        static Side capture(CrossDimensionLodColumn column, int side) {
+            int width = 16 / column.cellSize(), height = column.yCells();
+            short[] cells = new short[width * height];
+            int edge = (side & 1) == 0 ? 0 : width - 1;
+            for (int u = 0; u < width; u++) {
+                int x = side < 2 ? edge : u, z = side < 2 ? u : edge;
+                System.arraycopy(column.voxels(), (z * width + x) * height, cells, u * height, height);
+                if (column.cellSize() >= 8) {
+                    int y = column.displayYOffset() > 0 ? 0 : height - 1;
+                    int direction = column.displayYOffset() > 0 ? 1 : -1;
+                    while (y >= 0 && y < height && cells[u * height + y] == 0) y += direction;
+                    if (y >= 0 && y < height) Arrays.fill(cells,
+                            u * height + (direction > 0 ? y : 0),
+                            u * height + (direction > 0 ? height : y + 1), cells[u * height + y]);
+                }
+            }
+            // Flat strata and uniform sides need only one vertical strip, or one palette index.
+            boolean repeated = true, uniform = true;
+            for (int i = 1; i < cells.length; i++) {
+                uniform &= cells[i] == cells[0];
+                repeated &= cells[i] == cells[i % height];
+            }
+            if (uniform) cells = new short[]{cells[0]};
+            else if (repeated && width > 1) cells = Arrays.copyOf(cells, height);
+            return new Side(column.cellSize(), column.minY() + column.displayYOffset(), height, column.palette(), cells);
+        }
+    }
+
+    /** Reuses one mask for all boundaries of a frozen page and its four shared edges. */
+    static final class BoundaryBuilder {
+        private int[] mask = new int[0], light = new int[0];
+        private final View ao;
+
+        BoundaryBuilder(View ao) { this.ao = ao; }
+
+        void append(QuadBuffer quads, int side, int chunkX, int chunkZ, Side source, Side neighbour) {
+            if (source == null) return;
+            int cell = neighbour == null ? source.cellSize : Math.min(source.cellSize, neighbour.cellSize);
+            int yStep = cell;
+            if (neighbour != null) while (Math.floorMod(source.minY - neighbour.minY, yStep) != 0) yStep /= 2;
+            int width = 16 / cell, height = source.yCells * source.cellSize / yStep;
+            if (mask.length < width * height) {
+                mask = new int[width * height];
+                light = new int[mask.length];
+            }
+            int face = side < 2 ? side : side + 2;
+            int ox = chunkX * 16 + (side == 1 ? 16 : 0), oz = chunkZ * 16 + (side == 3 ? 16 : 0);
+            boolean shade = ao != null && source.cellSize <= 4;
+            for (int v = 0; v < height; v++) {
+                int y = source.minY + v * yStep;
+                for (int u = 0; u < width; u++) {
+                    int state = source.state(u * cell, y);
+                    boolean covered = neighbour != null && neighbour.state(u * cell, y) >= 0;
+                    int index = v * width + u;
+                    mask[index] = state >= 0 && !covered ? state + 1 : 0;
+                    if (shade && mask[index] != 0) light[index] = CrossDimensionLodAmbientOcclusion.corners(ao, face,
+                            ox + (side < 2 ? 0 : u * cell), y, oz + (side < 2 ? u * cell : 0), cell, yStep);
+                }
+            }
+            mergeMask(face, width, height, mask, shade ? light : null, quads,
+                    ox, source.minY, oz, cell, yStep);
+        }
+    }
+
+    private static void mergeMask(int face, int width, int height, int[] mask, int[] light, QuadBuffer quads,
+                                  float ox, float oy, float oz, float cellU, float cellV) {
         for (int v = 0; v < height; v++) {
             for (int u = 0; u < width;) {
                 int value = mask[v * width + u];
                 if (value == 0) { u++; continue; }
+                int ao = light == null ? CrossDimensionLodAmbientOcclusion.UNOCCLUDED : light[v * width + u];
+                // A gradient may extend along its constant axis, never along the axis that changes brightness.
+                boolean stretchU = CrossDimensionLodAmbientOcclusion.constantU(ao);
+                boolean stretchV = CrossDimensionLodAmbientOcclusion.constantV(ao);
                 int rectangleWidth = 1;
-                while (u + rectangleWidth < width && mask[v * width + u + rectangleWidth] == value) {
+                while (stretchU && u + rectangleWidth < width && mask[v * width + u + rectangleWidth] == value
+                        && (light == null || light[v * width + u + rectangleWidth] == ao)) {
                     rectangleWidth++;
                 }
                 int rectangleHeight = 1;
                 heightLoop:
-                while (v + rectangleHeight < height) {
+                while (stretchV && v + rectangleHeight < height) {
                     for (int x = 0; x < rectangleWidth; x++) {
-                        if (mask[(v + rectangleHeight) * width + u + x] != value) break heightLoop;
+                        int index = (v + rectangleHeight) * width + u + x;
+                        if (mask[index] != value || light != null && light[index] != ao) break heightLoop;
                     }
                     rectangleHeight++;
                 }
-                addGreedyQuad(payload, face, plane, u, v, rectangleWidth, rectangleHeight, value - 1, quads);
+                addGreedyQuad(face, ox, oy, oz, u * cellU, v * cellV,
+                        rectangleWidth * cellU, rectangleHeight * cellV, value - 1, ao, quads);
                 for (int y = 0; y < rectangleHeight; y++) {
                     for (int x = 0; x < rectangleWidth; x++) mask[(v + y) * width + u + x] = 0;
                 }
@@ -180,133 +230,57 @@ final class CrossDimensionLodMesher {
         }
     }
 
-    private static void addGreedyQuad(CrossDimensionLodColumn p, int face, int plane,
-                                      int u, int v, int width, int height, int stateId, QuadBuffer quads) {
-        float cell = p.cellSize();
-        float ox = p.chunkX() * 16.0F;
-        float oy = p.minY() + p.displayYOffset();
-        float oz = p.chunkZ() * 16.0F;
+    private static void addGreedyQuad(int face, float ox, float oy, float oz,
+                                      float u, float v, float width, float height, int stateId, int ao, QuadBuffer quads) {
         float x0, x1, y0, y1, z0, z1;
         if (face < 2) {
-            x0 = x1 = ox + (plane + (face == 1 ? 1 : 0)) * cell;
-            z0 = oz + u * cell; z1 = z0 + width * cell;
-            y0 = oy + v * cell; y1 = y0 + height * cell;
+            x0 = x1 = ox;
+            z0 = oz + u; z1 = z0 + width;
+            y0 = oy + v; y1 = y0 + height;
         } else if (face < 4) {
-            y0 = y1 = oy + (plane + (face == 3 ? 1 : 0)) * cell;
-            x0 = ox + u * cell; x1 = x0 + width * cell;
-            z0 = oz + v * cell; z1 = z0 + height * cell;
+            y0 = y1 = oy;
+            x0 = ox + u; x1 = x0 + width;
+            z0 = oz + v; z1 = z0 + height;
         } else {
-            z0 = z1 = oz + (plane + (face == 5 ? 1 : 0)) * cell;
-            x0 = ox + u * cell; x1 = x0 + width * cell;
-            y0 = oy + v * cell; y1 = y0 + height * cell;
+            z0 = z1 = oz;
+            x0 = ox + u; x1 = x0 + width;
+            y0 = oy + v; y1 = y0 + height;
         }
-        quads.add(x0, y0, z0, x1, y1, z1, face, stateId);
+        quads.add(x0, y0, z0, x1, y1, z1, face, stateId, ao);
     }
 
-    private int stateForMesh(CrossDimensionLodColumn source, int x, int y, int z, boolean surfaceOnly) {
-        return surfaceOnly ? surfaceStateAt(source, x, y, z) : stateAt(source, x, y, z);
-    }
-
-    /** Returns the block-state ID, or -1 for air. Supports horizontal neighbor chunks. */
-    private int stateAt(CrossDimensionLodColumn source, int x, int y, int z) {
-        if (y < 0 || y >= source.yCells()) return -1;
-        int sourceSize = 16 / source.cellSize();
-        // Almost all samples are interior: no world-coordinate division/modulo in the hot loop.
-        if (x >= 0 && x < sourceSize && z >= 0 && z < sourceSize) {
-            int index = Short.toUnsignedInt(source.voxels()[(z * sourceSize + x) * source.yCells() + y]);
-            return index == 0 ? -1 : source.palette()[index];
+    /** Local occupancy, including the finite vertical bounds of coarse height envelopes. */
+    private static int renderedState(CrossDimensionLodColumn column, HeightField heights, int x, int y, int z) {
+        int size = 16 / column.cellSize();
+        if (x < 0 || x >= size || z < 0 || z >= size || y < 0 || y >= column.yCells()) return -1;
+        if (heights != null) {
+            int index = z * size + x, worldY = column.minY() + y * column.cellSize();
+            return column.displayYOffset() > 0
+                    ? worldY >= heights.bottomY[index] ? heights.bottomState[index] : -1
+                    : worldY <= heights.topY[index] ? heights.topState[index] : -1;
         }
-        int worldX = source.chunkX() * 16 + (x < 0 ? -1 : x >= sourceSize ? 16 : x * source.cellSize());
-        int worldZ = source.chunkZ() * 16 + (z < 0 ? -1 : z >= sourceSize ? 16 : z * source.cellSize());
-        int worldY = source.minY() + y * source.cellSize();
-        int chunkX = Math.floorDiv(worldX, 16);
-        int chunkZ = Math.floorDiv(worldZ, 16);
-        boolean crossedBoundary = chunkX != source.chunkX() || chunkZ != source.chunkZ();
-        CrossDimensionLodColumn data = crossedBoundary ? neighborChunk(chunkX, chunkZ) : source;
-        if (data == null) return -1;
-        int dataHeight = data.yCells() * data.cellSize();
-        if (worldY < data.minY() || worldY >= data.minY() + dataHeight) return -1;
-        if (crossedBoundary && data.cellSize() != source.cellSize()) {
-            // The coarse side owns the boundary wall; fine geometry only fills beyond its height field.
-            if (source.cellSize() > data.cellSize()) return -1;
-            HeightField heights = neighborHeightField(chunkX, chunkZ);
-            if (heights == null) return -1;
-            int index = Math.floorMod(worldZ, 16) / data.cellSize() * heights.size
-                    + Math.floorMod(worldX, 16) / data.cellSize();
-            if (source.displayYOffset() > 0) {
-                return worldY >= heights.bottomY[index] ? heights.bottomState[index] : -1;
-            }
-            return worldY <= heights.topY[index] ? heights.topState[index] : -1;
-        }
-        int dataSize = 16 / data.cellSize();
-        int dataX = Math.floorMod(worldX, 16) / data.cellSize();
-        int dataZ = Math.floorMod(worldZ, 16) / data.cellSize();
-        int dataY = (worldY - data.minY()) / data.cellSize();
-        short paletteIndex = data.voxels()[(dataZ * dataSize + dataX) * data.yCells() + dataY];
-        return paletteIndex == 0 ? -1 : data.palette()[paletteIndex];
-    }
-
-    /** Height-field lookup used by coarse levels to discard caves and hidden interior surfaces. */
-    private int surfaceStateAt(CrossDimensionLodColumn source, int x, int y, int z) {
-        if (y < 0 || y >= source.yCells()) return -1;
-        int sourceSize = 16 / source.cellSize();
-        if (x >= 0 && x < sourceSize && z >= 0 && z < sourceSize) {
-            int index = z * sourceSize + x, worldY = source.minY() + y * source.cellSize();
-            return source.displayYOffset() > 0
-                    ? worldY >= sourceHeightField.bottomY[index] ? sourceHeightField.bottomState[index] : -1
-                    : worldY <= sourceHeightField.topY[index] ? sourceHeightField.topState[index] : -1;
-        }
-        int worldX = source.chunkX() * 16 + (x < 0 ? -1 : x >= sourceSize ? 16 : x * source.cellSize());
-        int worldZ = source.chunkZ() * 16 + (z < 0 ? -1 : z >= sourceSize ? 16 : z * source.cellSize());
-        int worldY = source.minY() + y * source.cellSize();
-        int chunkX = Math.floorDiv(worldX, 16);
-        int chunkZ = Math.floorDiv(worldZ, 16);
-        boolean crossedBoundary = chunkX != source.chunkX() || chunkZ != source.chunkZ();
-        CrossDimensionLodColumn data = crossedBoundary ? neighborChunk(chunkX, chunkZ) : source;
-        HeightField heights = crossedBoundary ? neighborHeightField(chunkX, chunkZ) : sourceHeightField;
-        if (data == null || heights == null) return -1;
-        if (crossedBoundary && data.cellSize() != source.cellSize() && source.cellSize() > data.cellSize()) return -1;
-        int dataX = Math.floorMod(worldX, 16) / data.cellSize();
-        int dataZ = Math.floorMod(worldZ, 16) / data.cellSize();
-        int index = dataZ * heights.size + dataX;
-        if (source.displayYOffset() > 0) {
-            return worldY >= heights.bottomY[index] ? heights.bottomState[index] : -1;
-        }
-        return worldY <= heights.topY[index] ? heights.topState[index] : -1;
-    }
-
-    private CrossDimensionLodColumn neighborChunk(int chunkX, int chunkZ) {
-        if (chunkX < source.chunkX()) return west;
-        if (chunkX > source.chunkX()) return east;
-        if (chunkZ < source.chunkZ()) return north;
-        if (chunkZ > source.chunkZ()) return south;
-        return source;
-    }
-
-    private HeightField neighborHeightField(int chunkX, int chunkZ) {
-        if (chunkX < source.chunkX()) return westHeight;
-        if (chunkX > source.chunkX()) return eastHeight;
-        if (chunkZ < source.chunkZ()) return northHeight;
-        if (chunkZ > source.chunkZ()) return southHeight;
-        return sourceHeightField;
+        int index = Short.toUnsignedInt(column.voxels()[(z * size + x) * column.yCells() + y]);
+        return index == 0 ? -1 : column.palette()[index];
     }
 
     static final class CpuMesh {
         final QuadBuffer quads;
-        final QuadBuffer seamQuads;
+        final Side[] sides;
         final AABB bounds;
         final int chunkX;
         final int chunkZ;
         final int cellSize;
+        final CrossDimensionLodColumn rimSource;
 
-        private CpuMesh(QuadBuffer quads, QuadBuffer seamQuads, AABB bounds,
-                        int chunkX, int chunkZ, int cellSize) {
+        private CpuMesh(QuadBuffer quads, Side[] sides, AABB bounds,
+                        int chunkX, int chunkZ, int cellSize, CrossDimensionLodColumn rimSource) {
             this.quads = quads;
-            this.seamQuads = seamQuads;
+            this.sides = sides;
             this.bounds = bounds;
             this.chunkX = chunkX;
             this.chunkZ = chunkZ;
             this.cellSize = cellSize;
+            this.rimSource = rimSource;
         }
     }
 
@@ -328,17 +302,18 @@ final class CrossDimensionLodMesher {
 
     /** Structure-of-arrays storage avoids one Java object allocation per greedy quad. */
     static final class QuadBuffer {
+        static final int ATTRIBUTE_STRIDE = 3;
         float[] coordinates;
         int[] attributes;
         int size;
 
-        private QuadBuffer(int initialCapacity) {
+        QuadBuffer(int initialCapacity) {
             coordinates = new float[initialCapacity * 6];
-            attributes = new int[initialCapacity * 2];
+            attributes = new int[initialCapacity * ATTRIBUTE_STRIDE];
         }
 
         private void add(float x0, float y0, float z0, float x1, float y1, float z1,
-                         int face, int stateId) {
+                         int face, int stateId, int ao) {
             ensureCapacity(size + 1);
             int coordinate = size * 6;
             coordinates[coordinate] = x0;
@@ -347,31 +322,32 @@ final class CrossDimensionLodMesher {
             coordinates[coordinate + 3] = x1;
             coordinates[coordinate + 4] = y1;
             coordinates[coordinate + 5] = z1;
-            int attribute = size * 2;
+            int attribute = size * ATTRIBUTE_STRIDE;
             attributes[attribute] = face;
             attributes[attribute + 1] = stateId;
+            attributes[attribute + 2] = ao;
             size++;
         }
 
         void compact() {
             coordinates = Arrays.copyOf(coordinates, size * 6);
-            attributes = Arrays.copyOf(attributes, size * 2);
+            attributes = Arrays.copyOf(attributes, size * ATTRIBUTE_STRIDE);
         }
 
         QuadBuffer copy() {
             var copy = new QuadBuffer(Math.max(128, size));
             System.arraycopy(coordinates, 0, copy.coordinates, 0, size * 6);
-            System.arraycopy(attributes, 0, copy.attributes, 0, size * 2);
+            System.arraycopy(attributes, 0, copy.attributes, 0, size * ATTRIBUTE_STRIDE);
             copy.size = size;
             return copy;
         }
 
         private void ensureCapacity(int wanted) {
-            int capacity = attributes.length / 2;
+            int capacity = attributes.length / ATTRIBUTE_STRIDE;
             if (wanted <= capacity) return;
             int grown = Math.max(wanted, capacity + (capacity >> 1));
             coordinates = Arrays.copyOf(coordinates, grown * 6);
-            attributes = Arrays.copyOf(attributes, grown * 2);
+            attributes = Arrays.copyOf(attributes, grown * ATTRIBUTE_STRIDE);
         }
     }
 }

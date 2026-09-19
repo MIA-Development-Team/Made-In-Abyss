@@ -8,6 +8,8 @@ final class CrossDimensionLodColumn {
     private final short[] voxels;
     private volatile CrossDimensionLodMesher.HeightField heightField;
     private volatile CrossDimensionLodMesher.QuadBuffer interior;
+    private boolean interiorAo;
+    private volatile CrossDimensionLodMesher.Side[] sides;
 
     private static final int MAX_RADIUS = 16_384;
     private static final int MAX_HEIGHT_CELLS = 1_024;
@@ -61,7 +63,8 @@ final class CrossDimensionLodColumn {
     short[] voxels() { return voxels; }
 
     CrossDimensionLodMesher.HeightField heightField() {
-        if (cellSize < 4) return null;
+        // Only the far, surface-envelope levels use a height field. Level 4 still renders voxels.
+        if (cellSize < 8) return null;
         var result = heightField;
         if (result != null) return result;
         synchronized (this) {
@@ -70,13 +73,28 @@ final class CrossDimensionLodColumn {
         }
     }
 
-    /** Model-independent CPU geometry only. Owned by this immutable snapshot, never an atlas/GPU cache. */
-    synchronized CrossDimensionLodMesher.QuadBuffer interiorCopy() {
+    CrossDimensionLodMesher.Side[] sides() {
+        var result = sides;
+        if (result != null) return result;
+        synchronized (this) {
+            if (sides == null) {
+                var captured = new CrossDimensionLodMesher.Side[4];
+                for (int side = 0; side < 4; side++) captured[side] = side > 0 && cellSize == 16
+                        ? captured[0] : CrossDimensionLodMesher.Side.capture(this, side);
+                sides = captured;
+            }
+            return sides;
+        }
+    }
+
+    /** Only neighbour-independent geometry is cached; AO rims are built from the page's publication snapshot. */
+    synchronized CrossDimensionLodMesher.QuadBuffer interiorCopy(boolean ao) {
+        if (interiorAo != ao) { interior = null; interiorAo = ao; }
         var result = interior;
         if (result == null) {
-            result = CrossDimensionLodMesher.buildInterior(this);
+            result = CrossDimensionLodMesher.buildInterior(this, ao);
             // No global map retaining old columns. Memoization costs at most the voxel body, capped at 64 KiB.
-            if ((long) result.size * 32 <= Math.min(64 * 1024, voxels.length * 2)) {
+            if ((long) result.size * (6 + CrossDimensionLodMesher.QuadBuffer.ATTRIBUTE_STRIDE) * 4 <= Math.min(64 * 1024, voxels.length * 2)) {
                 result.compact();
                 interior = result;
             } else return result; // Uncached result can be consumed directly, without another huge allocation.

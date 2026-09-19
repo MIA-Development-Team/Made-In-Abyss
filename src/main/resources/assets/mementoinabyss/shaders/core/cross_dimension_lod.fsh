@@ -46,13 +46,9 @@ void main() {
 
     float fade = vertexColor.a * ColorModulator.a;
     float dither = fract(52.9829189 * fract(dot(gl_FragCoord.xy, vec2(0.06711056, 0.00583715))));
-    if (fade >= 0.0) {
-        if (dither > fade) discard;
-    } else {
-        // A negative fade is the outgoing mesh. Its mask is exactly complementary
-        // to the incoming mesh, avoiding both holes and overlapping depth writes.
-        if (dither <= -fade) discard;
-    }
+    // Both directions use opacity. The renderer keeps one complete page/edge snapshot opaque
+    // while revealing or dissolving the other, rather than leaving complementary-mask holes.
+    if (dither >= fade) discard;
 
     vec2 lightOffset = worldHorizontalPosition - LodLightRegion.xy;
     float lightDistance = length(lightOffset);
