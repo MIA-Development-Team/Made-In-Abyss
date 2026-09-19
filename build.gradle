@@ -15,12 +15,13 @@ tasks.named('wrapper', Wrapper).configure {
 
 def release = providers.environmentVariable("RELEASE")
 boolean dev = !release.map { it.toBoolean() }.getOrElse(false)
+String buildNumber = providers.environmentVariable("BUILD_NUMBER").orNull
 
 def gitHash = providers.exec {
     commandLine 'git', 'rev-parse', '--short', 'HEAD'
 }.standardOutput.asText.map { it.trim() }.getOrElse("dev")
 
-version = mod_version
+version = mod_version + (dev && buildNumber != null ? "-${buildNumber}" : "")
 group = mod_group_id
 
 sourceSets.main {
