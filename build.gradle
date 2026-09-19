@@ -1,10 +1,10 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.141'
+    id 'net.neoforged.moddev' version '2.0.147'
     id 'idea'
     id 'net.kyori.blossom' version '2.2.0'
-    id 'me.modmuss50.mod-publish-plugin' version '2.1.1'
+    id 'me.modmuss50.mod-publish-plugin' version '2.2.0'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.4.1'
     id 'io.freefair.lombok' version "9.5.0"
 }

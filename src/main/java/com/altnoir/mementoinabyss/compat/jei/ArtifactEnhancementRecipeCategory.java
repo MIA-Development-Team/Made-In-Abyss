@@ -103,8 +103,8 @@ public final class ArtifactEnhancementRecipeCategory
             RecipeHolder<ArtifactEnhancementRecipe> recipe,
             IFocusGroup focuses
     ) {
-        builder.addRecipePlusSign().setPosition(27, 8);
-        builder.addRecipeArrow().setPosition(ARROW_X, ARROW_Y);
+        builder.addRecipePlusSignWidget().setPosition(27, 8);
+        builder.addRecipeArrowWidget().setPosition(ARROW_X, ARROW_Y);
     }
 
     @Override
