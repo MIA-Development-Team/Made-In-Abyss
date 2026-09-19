@@ -78,7 +78,11 @@ public class MiaTags {
     public enum BiomeTags {
         HAS_ISLAND,
         THE_ABYSS_CLEAR,
-        HAS_STAR_COMPASS_TEMPLE
+        HAS_STAR_COMPASS_TEMPLE,
+        HAS_ABYSSAL_RUINS,
+        HAS_CAVE_RAIDER_HUT,
+        HAS_RUINED_CAVE_RAIDER_HUT,
+        HAS_FISHERMAN_HUT
         ;
 
         public final TagKey<Biome> tag;

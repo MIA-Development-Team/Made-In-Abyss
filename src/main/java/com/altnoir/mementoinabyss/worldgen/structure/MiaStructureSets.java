@@ -13,9 +13,14 @@ import net.minecraft.world.level.levelgen.structure.placement.ConcentricRingsStr
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 
+import java.util.List;
+
 public final class MiaStructureSets {
     public static final ResourceKey<StructureSet> STAR_COMPASS_RUINS = key("star_compass_ruins");
     public static final ResourceKey<StructureSet> ABYSS_STRONGHOLDS = key("abyss_strongholds");
+    public static final ResourceKey<StructureSet> ABYSSAL_RUINS = key("abyssal_ruins");
+    public static final ResourceKey<StructureSet> CAVE_RAIDER_HUTS = key("cave_raider_huts");
+    public static final ResourceKey<StructureSet> FISHERMAN_HUTS = key("fisherman_huts");
 
     public static void bootstrap(BootstrapContext<StructureSet> context) {
         HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
@@ -27,6 +32,25 @@ public final class MiaStructureSets {
                 structures.getOrThrow(MiaStructures.ABYSS_STRONGHOLD),
                 new ConcentricRingsStructurePlacement(32, 11, 64,
                         biomes.getOrThrow(BiomeTags.IS_OVERWORLD))));
+        context.register(ABYSSAL_RUINS, new StructureSet(
+                List.of(
+                        StructureSet.entry(structures.getOrThrow(MiaStructures.ABYSSAL_RUINS_01), 1),
+                        StructureSet.entry(structures.getOrThrow(MiaStructures.ABYSSAL_RUINS_02), 1),
+                        StructureSet.entry(structures.getOrThrow(MiaStructures.ABYSSAL_RUINS_03), 1),
+                        StructureSet.entry(structures.getOrThrow(MiaStructures.ABYSSAL_RUINS_04), 1),
+                        StructureSet.entry(structures.getOrThrow(MiaStructures.ABYSSAL_RUINS_05), 1),
+                        StructureSet.entry(structures.getOrThrow(MiaStructures.ABYSSAL_RUINS_06), 1)
+                ),
+                new RandomSpreadStructurePlacement(16, 4, RandomSpreadType.LINEAR, 70387321)));
+        context.register(CAVE_RAIDER_HUTS, new StructureSet(
+                List.of(
+                        StructureSet.entry(structures.getOrThrow(MiaStructures.CAVE_RAIDER_HUT), 1),
+                        StructureSet.entry(structures.getOrThrow(MiaStructures.RUINED_CAVE_RAIDER_HUT), 1)
+                ),
+                new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 70387322)));
+        context.register(FISHERMAN_HUTS, new StructureSet(
+                structures.getOrThrow(MiaStructures.FISHERMAN_HUT),
+                new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 70387323)));
     }
 
     private static ResourceKey<StructureSet> key(String path) {

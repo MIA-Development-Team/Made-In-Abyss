@@ -6,6 +6,7 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -30,14 +31,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public final class MiaStructures {
-    public static final ResourceKey<Structure> STAR_COMPASS_RUINS = ResourceKey.create(
-            Registries.STRUCTURE,
-            MementoInAbyss.asResource("star_compass_ruins")
-    );
-    public static final ResourceKey<Structure> ABYSS_STRONGHOLD = ResourceKey.create(
-            Registries.STRUCTURE,
-            MementoInAbyss.asResource("abyss_stronghold")
-    );
+    public static final ResourceKey<Structure> STAR_COMPASS_RUINS = key("star_compass_ruins");
+    public static final ResourceKey<Structure> ABYSS_STRONGHOLD = key("abyss_stronghold");
+    public static final ResourceKey<Structure> ABYSSAL_RUINS_01 = key("abyssal_ruins_01");
+    public static final ResourceKey<Structure> ABYSSAL_RUINS_02 = key("abyssal_ruins_02");
+    public static final ResourceKey<Structure> ABYSSAL_RUINS_03 = key("abyssal_ruins_03");
+    public static final ResourceKey<Structure> ABYSSAL_RUINS_04 = key("abyssal_ruins_04");
+    public static final ResourceKey<Structure> ABYSSAL_RUINS_05 = key("abyssal_ruins_05");
+    public static final ResourceKey<Structure> ABYSSAL_RUINS_06 = key("abyssal_ruins_06");
+    public static final ResourceKey<Structure> CAVE_RAIDER_HUT = key("cave_raider_hut");
+    public static final ResourceKey<Structure> RUINED_CAVE_RAIDER_HUT = key("ruined_cave_raider_hut");
+    public static final ResourceKey<Structure> FISHERMAN_HUT = key("fisherman_hut");
 
     public static void bootstrap(BootstrapContext<Structure> context) {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
@@ -73,6 +77,90 @@ public final class MiaStructures {
                 ConstantHeight.of(VerticalAnchor.absolute(-50)), false, Optional.empty(),
                 new JigsawStructure.MaxDistance(230), List.of(), new DimensionPadding(10),
                 LiquidSettings.IGNORE_WATERLOGGING));
+
+        registerCaveFloorStructure(context, biomes, pools, ABYSSAL_RUINS_01,
+                MiaTags.BiomeTags.HAS_ABYSSAL_RUINS.tag, MiaStructurePools.ABYSSAL_RUINS_01, 9);
+        registerCaveFloorStructure(context, biomes, pools, ABYSSAL_RUINS_02,
+                MiaTags.BiomeTags.HAS_ABYSSAL_RUINS.tag, MiaStructurePools.ABYSSAL_RUINS_02, 7);
+        registerCaveFloorStructure(context, biomes, pools, ABYSSAL_RUINS_03,
+                MiaTags.BiomeTags.HAS_ABYSSAL_RUINS.tag, MiaStructurePools.ABYSSAL_RUINS_03, 9);
+        registerCaveFloorStructure(context, biomes, pools, ABYSSAL_RUINS_04,
+                MiaTags.BiomeTags.HAS_ABYSSAL_RUINS.tag, MiaStructurePools.ABYSSAL_RUINS_04, 8);
+        registerCaveFloorStructure(context, biomes, pools, ABYSSAL_RUINS_05,
+                MiaTags.BiomeTags.HAS_ABYSSAL_RUINS.tag, MiaStructurePools.ABYSSAL_RUINS_05, 9);
+        registerCaveFloorStructure(context, biomes, pools, ABYSSAL_RUINS_06,
+                MiaTags.BiomeTags.HAS_ABYSSAL_RUINS.tag, MiaStructurePools.ABYSSAL_RUINS_06, 10);
+        registerCaveFloorStructure(context, biomes, pools, CAVE_RAIDER_HUT,
+                MiaTags.BiomeTags.HAS_CAVE_RAIDER_HUT.tag, MiaStructurePools.CAVE_RAIDER_HUT_START, 10);
+        registerHeightCappedSurfaceStructure(context, biomes, pools, RUINED_CAVE_RAIDER_HUT,
+                MiaTags.BiomeTags.HAS_RUINED_CAVE_RAIDER_HUT.tag, MiaStructurePools.RUINED_CAVE_RAIDER_HUT);
+        registerHeightCappedSurfaceStructure(context, biomes, pools, FISHERMAN_HUT,
+                MiaTags.BiomeTags.HAS_FISHERMAN_HUT.tag, MiaStructurePools.FISHERMAN_HUT);
+    }
+
+    private static void registerCaveFloorStructure(
+            BootstrapContext<Structure> context,
+            HolderGetter<Biome> biomes,
+            HolderGetter<StructureTemplatePool> templatePools,
+            ResourceKey<Structure> structureKey,
+            TagKey<Biome> biomeTag,
+            ResourceKey<StructureTemplatePool> startPool,
+            int clearance
+    ) {
+        context.register(
+                structureKey,
+                new MiaJigsawStructure(
+                        new Structure.StructureSettings.Builder(biomes.getOrThrow(biomeTag))
+                                .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
+                                .terrainAdapation(TerrainAdjustment.BEARD_THIN)
+                                .build(),
+                        templatePools.getOrThrow(startPool),
+                        Optional.empty(),
+                        1,
+                        ConstantHeight.of(VerticalAnchor.absolute(374)),
+                        true,
+                        Optional.empty(),
+                        Optional.of(new CaveFloorSearch(VerticalAnchor.aboveBottom(16), clearance, 16)),
+                        new JigsawStructure.MaxDistance(80),
+                        List.of(),
+                        DimensionPadding.ZERO,
+                        LiquidSettings.APPLY_WATERLOGGING
+                )
+        );
+    }
+
+    private static void registerHeightCappedSurfaceStructure(
+            BootstrapContext<Structure> context,
+            HolderGetter<Biome> biomes,
+            HolderGetter<StructureTemplatePool> templatePools,
+            ResourceKey<Structure> structureKey,
+            TagKey<Biome> biomeTag,
+            ResourceKey<StructureTemplatePool> startPool
+    ) {
+        context.register(
+                structureKey,
+                new MiaJigsawStructure(
+                        new Structure.StructureSettings.Builder(biomes.getOrThrow(biomeTag))
+                                .terrainAdapation(TerrainAdjustment.BEARD_THIN)
+                                .build(),
+                        templatePools.getOrThrow(startPool),
+                        Optional.empty(),
+                        1,
+                        ConstantHeight.of(VerticalAnchor.absolute(0)),
+                        true,
+                        Optional.of(Heightmap.Types.WORLD_SURFACE_WG),
+                        Optional.empty(),
+                        Optional.of(VerticalAnchor.absolute(375)),
+                        new JigsawStructure.MaxDistance(80),
+                        List.of(),
+                        DimensionPadding.ZERO,
+                        LiquidSettings.APPLY_WATERLOGGING
+                )
+        );
+    }
+
+    private static ResourceKey<Structure> key(String path) {
+        return ResourceKey.create(Registries.STRUCTURE, MementoInAbyss.asResource(path));
     }
 
     private MiaStructures() {}

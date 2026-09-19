@@ -7,6 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Pools;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 
@@ -19,6 +20,17 @@ public final class MiaStructurePools {
             key("star_compass_ruins/starts");
     public static final ResourceKey<StructureTemplatePool> ABYSS_STRONGHOLD =
             key("abyss_stronghold/portal_center");
+    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_01 = key("abyssal_ruins_01/starts");
+    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_02 = key("abyssal_ruins_02/starts");
+    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_03 = key("abyssal_ruins_03/starts");
+    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_04 = key("abyssal_ruins_04/starts");
+    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_05 = key("abyssal_ruins_05/starts");
+    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_06 = key("abyssal_ruins_06/starts");
+    public static final ResourceKey<StructureTemplatePool> CAVE_RAIDER_HUT_START = key("cave_raider_hut/start");
+    public static final ResourceKey<StructureTemplatePool> CAVE_RAIDER_HUT_BOTTOM = key("cave_raider_hut/bottom");
+    public static final ResourceKey<StructureTemplatePool> RUINED_CAVE_RAIDER_HUT =
+            key("ruined_cave_raider_hut/starts");
+    public static final ResourceKey<StructureTemplatePool> FISHERMAN_HUT = key("fisherman_hut/starts");
 
     public static void bootstrap(BootstrapContext<StructureTemplatePool> context) {
         Holder<StructureTemplatePool> empty = context.lookup(Registries.TEMPLATE_POOL).getOrThrow(Pools.EMPTY);
@@ -49,6 +61,26 @@ public final class MiaStructurePools {
                 names("abyss_stronghold/main_hall/decryption_room/",
                         "copper_bulb_right1", "copper_bulb_right2", "copper_bulb_right3", "copper_bulb_right4",
                         "copper_bulb_left1", "copper_bulb_left2", "copper_bulb_left3", "copper_bulb_left4"));
+
+        register(context, empty, ABYSSAL_RUINS_01, "abyssal_ruins_01");
+        register(context, empty, ABYSSAL_RUINS_02, "abyssal_ruins_02");
+        register(context, empty, ABYSSAL_RUINS_03, "abyssal_ruins_03");
+        register(context, empty, ABYSSAL_RUINS_04, "abyssal_ruins_04");
+        register(context, empty, ABYSSAL_RUINS_05, "abyssal_ruins_05");
+        register(context, empty, ABYSSAL_RUINS_06, "abyssal_ruins_06");
+        register(context, empty, RUINED_CAVE_RAIDER_HUT, "ruined_cave_raider_hut");
+        register(context, empty, FISHERMAN_HUT, "fisherman_hut");
+        context.register(CAVE_RAIDER_HUT_START, pool(empty, weighted("cave_raider_hut_top", 1)));
+        context.register(CAVE_RAIDER_HUT_BOTTOM, pool(empty,
+                weighted("cave_raider_hut_bottom", 1),
+                Pair.of(StructurePoolElement.empty(), 1)));
+    }
+
+    private static void register(BootstrapContext<StructureTemplatePool> context,
+                                 Holder<StructureTemplatePool> empty,
+                                 ResourceKey<StructureTemplatePool> poolKey,
+                                 String templateName) {
+        context.register(poolKey, pool(empty, weighted(templateName, 1)));
     }
 
     @SafeVarargs
