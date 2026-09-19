@@ -25,6 +25,8 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.ChunkDataEvent;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
@@ -88,6 +90,39 @@ public final class CommonEvents {
     }
 
     @SubscribeEvent
+    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
+        if (event.isCanceled() || !(event.getLevel() instanceof ServerLevel level)) return;
+        MiaLodServer.markBlockDirty(level, event.getPos());
+        if (event instanceof BlockEvent.EntityMultiPlaceEvent multiPlace) {
+            for (var snapshot : multiPlace.getReplacedBlockSnapshots()) {
+                MiaLodServer.markBlockDirty(level, snapshot.getPos());
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onFluidPlace(BlockEvent.FluidPlaceBlockEvent event) {
+        if (!event.isCanceled() && event.getLevel() instanceof ServerLevel level) {
+            MiaLodServer.markBlockDirty(level, event.getPos());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onBlockToolModification(BlockEvent.BlockToolModificationEvent event) {
+        if (!event.isCanceled() && !event.isSimulated()
+                && event.getLevel() instanceof ServerLevel level) {
+            MiaLodServer.markBlockDirty(level, event.getPos());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onFarmlandTrample(BlockEvent.FarmlandTrampleEvent event) {
+        if (!event.isCanceled() && event.getLevel() instanceof ServerLevel level) {
+            MiaLodServer.markBlockDirty(level, event.getPos());
+        }
+    }
+
+    @SubscribeEvent
     public static void onChunkLoad(ChunkEvent.Load event) {
         DelayedCavePillarGenerator.onChunkLoad(event);
         if (event.getLevel() instanceof ServerLevel level) {
@@ -101,6 +136,13 @@ public final class CommonEvents {
         if (event.getLevel() instanceof ServerLevel level) {
             LevelChunk chunk = event.getChunk();
             MiaLodServer.captureIfNeeded(level, chunk);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onChunkSave(ChunkDataEvent.Save event) {
+        if (event.getLevel() instanceof ServerLevel level) {
+            MiaLodServer.captureChanged(level, event.getChunk());
         }
     }
 

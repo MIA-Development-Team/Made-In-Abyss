@@ -42,6 +42,18 @@ public final class CrossDimensionLodDebugEntry implements DebugScreenEntry {
                 "Client: data %d, loose %d, page %d, visible %d, dirty %d, build %d, ready %d",
                 client.data(), client.meshes(), client.pages(), client.visible(), client.dirty(),
                 client.building(), client.ready()));
+        displayer.addLine(String.format(Locale.ROOT,
+                "Client queues: batch %d (%d KiB wire, %d KiB arrays), material %d, mesh retry %d",
+                client.pendingPayloads(), client.pendingPayloadBytes() / 1024, client.pendingArrayBytes() / 1024,
+                client.pendingMaterials(), client.meshRetries()));
+        var view = CrossDimensionLodRenderer.cameraView();
+        if (view != null) displayer.addLine(String.format(Locale.ROOT,
+                "LOD view: camera [%.1f, %.1f, %.1f], target %.0fpx, coarse -> detail",
+                view.x(), view.y(), view.z(), com.altnoir.mementoinabyss.worldgen.lod.MiaLodView.TARGET_CELL_PIXELS));
+        var cache = CrossDimensionLodRenderer.cacheStats();
+        displayer.addLine(String.format(Locale.ROOT,
+                "LOD cache: hit %d, miss %d, probe %d, IO %d, disk %d MiB, errors %d",
+                cache.hits(), cache.misses(), cache.pending(), cache.queued(), cache.bytes() / (1024 * 1024), cache.errors()));
         appendTiming(displayer, "LOD ms", client.lastTiming());
         appendTiming(displayer, "LOD peak/60f", client.peakTiming());
         var spike = client.lastSpike();
@@ -71,12 +83,16 @@ public final class CrossDimensionLodDebugEntry implements DebugScreenEntry {
                 "Last: [%d,%d] %s%s; debug %.1fs old",
                 state.lastX(), state.lastZ(), state.lastResult(), lastDuration, ageSeconds));
         displayer.addLine(String.format(Locale.ROOT,
-                "Stream: queue %d, scheduled %d, sent %d, loading %d, ready %d, known %d, missing %d",
-                state.queued(), state.scheduled(), state.sent(), state.loading(), state.ready(),
+                "Stream: candidates %d, pending %d, unacked %d, loading %d, ready %d, known %d, missing %d",
+                state.candidates(), state.pending(), state.outstanding(), state.loading(), state.ready(),
                 state.known(), state.missing()));
         displayer.addLine(String.format(Locale.ROOT,
-                "CPU: client %d/%d active, %d queued; server %d/%d active, %d queued",
+                "CPU: client %d/%d active, %d queued; worker mesh %.2fms (peak %.2f), page %.2fms (peak %.2f)",
                 client.cpuActive(), client.cpuThreads(), client.cpuQueued(),
+                millis(client.lastMeshWorkNanos()), millis(client.peakMeshWorkNanos()),
+                millis(client.lastPageWorkNanos()), millis(client.peakPageWorkNanos())));
+        displayer.addLine(String.format(Locale.ROOT,
+                "Server CPU: %d/%d active, %d queued",
                 state.cpuActive(), state.cpuThreads(), state.cpuQueued()));
     }
 

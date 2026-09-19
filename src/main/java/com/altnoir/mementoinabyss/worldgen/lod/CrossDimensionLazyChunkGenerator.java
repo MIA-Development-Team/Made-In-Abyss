@@ -8,7 +8,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.GenerationChunkHolder;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.StaticCache2D;
 import net.minecraft.util.Mth;
@@ -43,7 +42,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -52,7 +50,7 @@ import java.util.function.Predicate;
 
 /** Generates terrain-only ProtoChunks for LOD capture without loading them into the server world. */
 final class CrossDimensionLazyChunkGenerator {
-    private static final int GENERATION_INTERVAL_TICKS = 5;
+    private static final int GENERATION_INTERVAL_TICKS = 1;
     private static final int MAX_IN_FLIGHT = 2;
     private static final int MAX_CANDIDATE_CHECKS_PER_TICK = 64;
     private static final Map<CrossDimensionLodLink, State> STATES = new HashMap<>();
@@ -74,11 +72,11 @@ final class CrossDimensionLazyChunkGenerator {
                             && MiaLodSampler.wantsLod(player))) continue;
 
             State state = STATES.computeIfAbsent(link, ignored -> new State());
-            String phase = "center";
-            ChunkPos candidate = state.nextCentral(source);
-            if (candidate == null && state.centralComplete()) {
-                phase = "player-view";
-                candidate = state.nextPlayerVisible(server, link, source);
+            String phase = "camera-view";
+            ChunkPos candidate = MiaLodSampler.generationCandidate(link, pos -> state.needsGeneration(source, pos));
+            if (candidate == null) {
+                phase = "center";
+                candidate = state.nextCentral(source);
             }
             if (candidate == null) continue;
 
@@ -325,7 +323,6 @@ final class CrossDimensionLazyChunkGenerator {
         private final Map<Long, ActiveRequest> activeRequests = new LinkedHashMap<>();
         private int centralCursor;
         private int centralRadius = -1;
-        private final Map<UUID, PlayerScan> playerScans = new HashMap<>();
         private int generated;
         private int failed;
         private ChunkPos lastPos;
@@ -371,42 +368,6 @@ final class CrossDimensionLazyChunkGenerator {
             return null;
         }
 
-        private boolean centralComplete() {
-            int radius = Mth.ceil(centralRadius / 16.0);
-            int diameter = radius * 2 + 1;
-            return centralRadius >= 0 && centralCursor >= diameter * diameter;
-        }
-
-        private ChunkPos nextPlayerVisible(MinecraftServer server, CrossDimensionLodLink link,
-                                           ServerLevel source) {
-            int radius = Mth.ceil(CrossDimensionLodLinks.radius(link) / 16.0);
-            int diameter = radius * 2 + 1;
-            int area = diameter * diameter;
-            int checked = 0;
-            Set<UUID> activePlayers = new HashSet<>();
-            for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                if (!player.level().dimension().equals(link.target())
-                        || !MiaLodSampler.wantsLod(player)) continue;
-                UUID playerId = player.getUUID();
-                activePlayers.add(playerId);
-                ChunkPos center = player.chunkPosition();
-                PlayerScan scan = playerScans.computeIfAbsent(playerId,
-                        ignored -> new PlayerScan(center.x(), center.z()));
-                scan.moveCenter(center.x(), center.z());
-                while (checked++ < MAX_CANDIDATE_CHECKS_PER_TICK) {
-                    ChunkPos offset = squareSpiral(Math.floorMod(scan.cursor++, area));
-                    long offsetX = offset.x() * 16L;
-                    long offsetZ = offset.z() * 16L;
-                    if (offsetX * offsetX + offsetZ * offsetZ
-                            > (long) radius * radius * 16L * 16L) continue;
-                    ChunkPos pos = new ChunkPos(center.x() + offset.x(), center.z() + offset.z());
-                    if (needsGeneration(source, pos)) return pos;
-                }
-            }
-            playerScans.keySet().retainAll(activePlayers);
-            return null;
-        }
-
         private boolean needsGeneration(ServerLevel source, ChunkPos pos) {
             return !requested.contains(ChunkPos.pack(pos.x(), pos.z()))
                     && !MiaLodStorage.contains(source, pos);
@@ -426,23 +387,6 @@ final class CrossDimensionLazyChunkGenerator {
             return new ChunkPos(-ring, ring - offset);
         }
 
-        private static final class PlayerScan {
-            private int centerChunkX;
-            private int centerChunkZ;
-            private int cursor;
-
-            private PlayerScan(int centerChunkX, int centerChunkZ) {
-                this.centerChunkX = centerChunkX;
-                this.centerChunkZ = centerChunkZ;
-            }
-
-            private void moveCenter(int centerChunkX, int centerChunkZ) {
-                if (this.centerChunkX == centerChunkX && this.centerChunkZ == centerChunkZ) return;
-                this.centerChunkX = centerChunkX;
-                this.centerChunkZ = centerChunkZ;
-                this.cursor = 0;
-            }
-        }
     }
 
     private record ActiveRequest(ChunkPos pos, String phase, long startedNanos) {}

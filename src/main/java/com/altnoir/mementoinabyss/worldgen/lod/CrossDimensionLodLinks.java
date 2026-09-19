@@ -16,13 +16,11 @@ public final class CrossDimensionLodLinks {
     public static final CrossDimensionLodLink GREAT_FAULT_BELOW_ABYSS = new CrossDimensionLodLink(
             MementoInAbyss.asResource("great_fault_below_abyss"),
             MiaDimensions.GREAT_FAULT_LEVEL, MiaDimensions.THE_ABYSS_LEVEL,
-            MiaHeight.GREAT_FAULT, MiaHeight.THE_ABYSS.minY() - MiaHeight.GREAT_FAULT.maxY(),
-            CrossDimensionLodLink.DetailProfile.ABYSS_HOLE);
+            MiaHeight.GREAT_FAULT, MiaHeight.THE_ABYSS.minY() - MiaHeight.GREAT_FAULT.maxY());
     public static final CrossDimensionLodLink ABYSS_ABOVE_GREAT_FAULT = new CrossDimensionLodLink(
             MementoInAbyss.asResource("abyss_above_great_fault"),
             MiaDimensions.THE_ABYSS_LEVEL, MiaDimensions.GREAT_FAULT_LEVEL,
-            MiaHeight.THE_ABYSS, MiaHeight.GREAT_FAULT.maxY() - MiaHeight.THE_ABYSS.minY(),
-            CrossDimensionLodLink.DetailProfile.ABYSS_HOLE);
+            MiaHeight.THE_ABYSS, MiaHeight.GREAT_FAULT.maxY() - MiaHeight.THE_ABYSS.minY());
     private static final List<CrossDimensionLodLink> LINKS = List.of(
             GREAT_FAULT_BELOW_ABYSS, ABYSS_ABOVE_GREAT_FAULT);
 
@@ -43,16 +41,6 @@ public final class CrossDimensionLodLinks {
     /** Configured radius of the center-first lazy-generation area. */
     public static int centralGenerationRadius() {
         return Mth.ceil(HopperAbyssHole.abyssRadius());
-    }
-
-    /** Radius controlling fine/medium bands; the rest of the configured view remains coarse. */
-    public static int detailRadius(CrossDimensionLodLink link) {
-        if (link.detailProfile() == CrossDimensionLodLink.DetailProfile.ABYSS_HOLE) {
-            return (int) Math.ceil(Math.max(
-                    MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodMinimumDiameter.get() * .5,
-                    HopperAbyssHole.abyssRadius() + MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodMargin.get()));
-        }
-        return MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodMinimumDiameter.get() / 2;
     }
 
     private CrossDimensionLodLinks() {}

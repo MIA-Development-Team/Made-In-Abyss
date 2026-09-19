@@ -44,24 +44,6 @@ public final class SodiumConfigEntryPoint implements ConfigEntryPoint {
                         units("chunks")))
                 .addOption(integerOption(
                         builder,
-                        "cross_dimension_lod_minimum_diameter",
-                        "crossDimensionLodMinimumDiameter",
-                        config.crossDimensionLodMinimumDiameter,
-                        1024,
-                        256,
-                        8192,
-                        units("blocks")))
-                .addOption(integerOption(
-                        builder,
-                        "cross_dimension_lod_margin",
-                        "crossDimensionLodMargin",
-                        config.crossDimensionLodMargin,
-                        192,
-                        0,
-                        1024,
-                        units("blocks")))
-                .addOption(integerOption(
-                        builder,
                         "cross_dimension_lod_capture_queue_limit",
                         "crossDimensionLodCaptureQueueLimit",
                         config.crossDimensionLodCaptureQueueLimit,

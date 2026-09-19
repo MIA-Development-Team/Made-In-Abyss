@@ -20,7 +20,8 @@ import com.altnoir.mementoinabyss.content.item.RopeItem;
 import com.altnoir.mementoinabyss.network.AdjustRopeLengthPayload;
 import com.altnoir.mementoinabyss.network.CompassTargetPayload;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodDebugPayload;
-import com.altnoir.mementoinabyss.network.CrossDimensionLodPayload;
+import com.altnoir.mementoinabyss.network.CrossDimensionLodCacheOfferPayload;
+import com.altnoir.mementoinabyss.network.CrossDimensionLodBatchPayload;
 import com.altnoir.mementoinabyss.network.RopeSnapshotPayload;
 import com.altnoir.mementoinabyss.init.MiaMenus;
 import com.altnoir.mementoinabyss.init.MiaDataComponents;
@@ -93,7 +94,9 @@ public final class ClientEvent {
 
     @SubscribeEvent
     public static void registerPayloadHandlers(RegisterClientPayloadHandlersEvent event) {
-        event.register(CrossDimensionLodPayload.TYPE,
+        event.register(CrossDimensionLodCacheOfferPayload.TYPE,
+                (payload, context) -> CrossDimensionLodRenderer.accept(payload));
+        event.register(CrossDimensionLodBatchPayload.TYPE,
                 (payload, context) -> CrossDimensionLodRenderer.accept(payload));
         event.register(CrossDimensionLodDebugPayload.TYPE,
                 (payload, context) -> CrossDimensionLodDebugEntry.accept(payload));

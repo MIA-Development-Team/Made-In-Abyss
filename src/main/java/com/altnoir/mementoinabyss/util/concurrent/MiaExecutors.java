@@ -30,9 +30,10 @@ public final class MiaExecutors {
 
     public enum Priority {
         REAL_CHUNK_CAPTURE(0),
-        LOD_MESH(1),
-        LOD_LOAD(2),
-        LOD_PREGEN(2);
+        LOD_PAGE(1),
+        LOD_MESH(2),
+        LOD_LOAD(3),
+        LOD_PREGEN(3);
 
         private final int order;
 

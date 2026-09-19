@@ -10,7 +10,7 @@ public record CrossDimensionLodDebugPayload(
         String linkId, String phase, boolean generating,
         int centralCursor, int centralTotal, int requested, int generated, int failed,
         int activeX, int activeZ, int lastX, int lastZ, long elapsedMillis, String lastResult,
-        int queued, int scheduled, int sent, int loading, int ready, int known, int missing,
+        int candidates, int pending, int outstanding, int loading, int ready, int known, int missing,
         int cpuThreads, int cpuActive, int cpuQueued)
         implements CustomPacketPayload {
     public static final Type<CrossDimensionLodDebugPayload> TYPE =
@@ -33,9 +33,9 @@ public record CrossDimensionLodDebugPayload(
         buffer.writeInt(lastZ);
         buffer.writeVarLong(elapsedMillis);
         buffer.writeUtf(lastResult, 32);
-        buffer.writeVarInt(queued);
-        buffer.writeVarInt(scheduled);
-        buffer.writeVarInt(sent);
+        buffer.writeVarInt(candidates);
+        buffer.writeVarInt(pending);
+        buffer.writeVarInt(outstanding);
         buffer.writeVarInt(loading);
         buffer.writeVarInt(ready);
         buffer.writeVarInt(known);

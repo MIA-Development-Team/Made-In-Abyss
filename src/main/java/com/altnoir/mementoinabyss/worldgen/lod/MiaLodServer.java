@@ -6,6 +6,7 @@ import com.altnoir.mementoinabyss.util.concurrent.MiaExecutors;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -20,6 +21,12 @@ public final class MiaLodServer {
         if (!isEnabled()) return;
         CrossDimensionLodLinks.fromSource(level.dimension())
                 .forEach(link -> MiaLodStorage.enqueueIfMissing(link, level, chunk));
+    }
+
+    public static void captureChanged(ServerLevel level, ChunkAccess chunk) {
+        if (!isEnabled()) return;
+        CrossDimensionLodLinks.fromSource(level.dimension())
+                .forEach(link -> MiaLodStorage.enqueueChanged(link, level, chunk));
     }
 
     public static void tick(MinecraftServer server) {
@@ -38,6 +45,7 @@ public final class MiaLodServer {
             if (!interested) suspendConsumerWork();
         }
         if (interested) {
+            MiaLodStorage.processDirtySections(server);
             MiaLodStorage.processPendingCapture(server);
             CrossDimensionLazyChunkGenerator.tick(server);
         }
@@ -66,9 +74,24 @@ public final class MiaLodServer {
         MiaLodSampler.setClientEnabled(player, active);
     }
 
+    public static void receiveView(ServerPlayer player,
+            com.altnoir.mementoinabyss.network.CrossDimensionLodViewPayload payload) {
+        if (isEnabled()) MiaLodSampler.receiveView(player, payload);
+    }
+
+    public static void receiveLodReceipt(ServerPlayer player,
+            com.altnoir.mementoinabyss.network.CrossDimensionLodReceiptPayload receipt) {
+        if (isEnabled()) MiaLodSampler.receive(player, receipt);
+    }
+
+    public static void markBlockDirty(ServerLevel level, net.minecraft.core.BlockPos pos) {
+        if (isEnabled()) MiaLodStorage.markSectionDirty(level, pos);
+    }
+
     public static void stop() {
         stopWork();
         MiaLodSampler.clearClientPreferences();
+        MiaLodWorldIdentity.clear();
         enabledLastTick = false;
     }
 
@@ -96,7 +119,7 @@ public final class MiaLodServer {
                     link.id().toString(), lazy.phase(), lazy.generating(),
                     lazy.centralCursor(), lazy.centralTotal(), lazy.requested(), lazy.generated(), lazy.failed(),
                     lazy.activeX(), lazy.activeZ(), lazy.lastX(), lazy.lastZ(), lazy.elapsedMillis(), lazy.lastResult(),
-                    stream.queued(), stream.scheduled(), stream.sent(), stream.loading(), stream.ready(),
+                    stream.candidates(), stream.pending(), stream.outstanding(), stream.loading(), stream.ready(),
                     stream.known(), stream.missing(), MiaExecutors.threadCount(),
                     MiaExecutors.activeTaskCount(), MiaExecutors.queuedTaskCount()));
         }
