@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.client.render;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.compat.iris.IrisRenderCompat;
+import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensions;
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
@@ -18,20 +19,24 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.client.renderer.state.level.SkyRenderState;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import net.neoforged.neoforge.client.CustomSkyboxRenderer;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
-/** An untextured sky cube that fades from the current fog color to a white floor. */
+/** An untextured sky cube with independent ceiling/side colors and a white floor. */
 public final class EnvironmentCubeSkyboxRenderer implements CustomSkyboxRenderer {
     public static final Identifier ID = MementoInAbyss.asResource("environment_cube");
     public static final EnvironmentCubeSkyboxRenderer INSTANCE = new EnvironmentCubeSkyboxRenderer();
     private static final float EXTENT = 100.0F;
+    private static final double ABYSS_DARK_SIDE_Y = -90.0;
+    private static final int DARK_SIDE_COLOR = 0xFF1C231E;
     private static final RenderPipeline PIPELINE = RenderPipeline.builder(RenderPipelines.MATRICES_PROJECTION_SNIPPET)
             .withLocation(MementoInAbyss.asResource("pipeline/environment_cube_skybox"))
             .withVertexShader(MementoInAbyss.asResource("core/environment_cube_skybox"))
@@ -53,19 +58,36 @@ public final class EnvironmentCubeSkyboxRenderer implements CustomSkyboxRenderer
         this.ensureBuffers();
         setupFog.run();
 
-        GpuBufferSlice transform = RenderSystem.getDynamicUniforms().writeTransform(
-                new Matrix4f(modelViewMatrix), levelRenderState.cameraRenderState.fogData.color,
-                new Vector3f(), new Matrix4f());
-        GpuTextureView color = Minecraft.getInstance().getMainRenderTarget().getColorTextureView();
-        GpuTextureView depth = Minecraft.getInstance().getMainRenderTarget().getDepthTextureView();
+        Minecraft minecraft = Minecraft.getInstance();
+        var camera = levelRenderState.cameraRenderState;
+        boolean darkSides = minecraft.level != null && (
+                minecraft.level.dimension().equals(MiaDimensions.GREAT_FAULT_LEVEL)
+                        || minecraft.level.dimension().equals(MiaDimensions.THE_ABYSS_LEVEL)
+                        && camera.pos.y < ABYSS_DARK_SIDE_Y);
+        Matrix4f modelView = new Matrix4f(modelViewMatrix);
+        GpuBufferSlice topTransform = RenderSystem.getDynamicUniforms().writeTransform(
+                modelView, camera.fogData.color, new Vector3f(), new Matrix4f());
+        GpuBufferSlice sideTransform = darkSides
+                ? RenderSystem.getDynamicUniforms().writeTransform(
+                        modelView, ARGB.vector4fFromARGB32(DARK_SIDE_COLOR), new Vector3f(), new Matrix4f())
+                : topTransform;
+        GpuBufferSlice bottomTransform = RenderSystem.getDynamicUniforms().writeTransform(
+                modelView, new Vector4f(1.0F), new Vector3f(), new Matrix4f());
+        GpuTextureView color = minecraft.getMainRenderTarget().getColorTextureView();
+        GpuTextureView depth = minecraft.getMainRenderTarget().getDepthTextureView();
 
         try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(
                 () -> "MIA environment cube skybox", color, OptionalInt.empty(), depth, OptionalDouble.empty())) {
             pass.setPipeline(PIPELINE);
             RenderSystem.bindDefaultUniforms(pass);
-            pass.setUniform("DynamicTransforms", transform);
             pass.setVertexBuffer(0, this.cubeBuffer);
-            pass.draw(0, 36);
+            // buildCube emits the ceiling, four sides, then the floor. Only the side tint changes with depth.
+            pass.setUniform("DynamicTransforms", topTransform);
+            pass.draw(0, 6);
+            pass.setUniform("DynamicTransforms", sideTransform);
+            pass.draw(6, 24);
+            pass.setUniform("DynamicTransforms", bottomTransform);
+            pass.draw(30, 6);
         }
         return true;
     }

@@ -68,8 +68,7 @@ public final class MiaDimensionTypes {
                 .set(EnvironmentAttributes.SKY_COLOR, 0xFF8795AA)
                 .set(EnvironmentAttributes.AMBIENT_LIGHT_COLOR, ARGB.colorFromFloat(
                         1.0F, GREAT_FAULT_AMBIENT_LIGHT, GREAT_FAULT_AMBIENT_LIGHT, GREAT_FAULT_AMBIENT_LIGHT))
-                .set(EnvironmentAttributes.CLOUD_COLOR, ARGB.white(0.8F))
-                .set(EnvironmentAttributes.CLOUD_HEIGHT, (float) MiaHeight.GREAT_FAULT.maxY())
+                .set(EnvironmentAttributes.CLOUD_COLOR, 0)
                 .set(EnvironmentAttributes.SUN_ANGLE, 0.0F)
                 .set(EnvironmentAttributes.MOON_ANGLE, 180.0F)
                 .set(EnvironmentAttributes.STAR_ANGLE, 0.0F)
