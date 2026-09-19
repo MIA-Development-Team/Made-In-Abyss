@@ -191,8 +191,10 @@ publishing {
     publications {
         register('mavenJava', MavenPublication) {
             from components.java
+            artifactId = 'MementoInAbyss-1.21.1-NeoForge'
         }
     }
+
     repositories {
         maven {
             url = "https://maven.ringlo.im/releases"
