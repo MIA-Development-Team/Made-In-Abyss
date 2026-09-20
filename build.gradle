@@ -2,9 +2,9 @@ plugins {
     id 'idea'
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.146'
+    id 'net.neoforged.moddev' version '2.0.147'
     id 'net.kyori.blossom' version '2.2.0'
-    id 'me.modmuss50.mod-publish-plugin' version '2.1.1'
+    id 'me.modmuss50.mod-publish-plugin' version '2.2.0'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -191,8 +191,10 @@ publishing {
     publications {
         register('mavenJava', MavenPublication) {
             from components.java
+            artifactId = 'MementoInAbyss-1.21.1-NeoForge'
         }
     }
+
     repositories {
         maven {
             url = "https://maven.ringlo.im/releases"
