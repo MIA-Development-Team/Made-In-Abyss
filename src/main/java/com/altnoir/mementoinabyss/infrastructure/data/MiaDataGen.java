@@ -19,10 +19,12 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.structure.MiaStructure
 import com.altnoir.mementoinabyss.infrastructure.worldgen.structure.MiaStructureSets;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.structure.MiaStructures;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeFeatures;
+import com.altnoir.mementoinabyss.init.MiaTags;
 import com.tterrag.registrate.providers.ProviderType;
 import java.util.function.BiConsumer;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 public class MiaDataGen {
@@ -77,6 +79,12 @@ public class MiaDataGen {
                             provideDefaultLang("interface", langConsumer);
                             provideDefaultLang("tooltips", langConsumer);
                         });
+        MementoInAbyss.registrate()
+                .addDataGenerator(
+                        ProviderType.BLOCK_TAGS,
+                        provider ->
+                                provider.tag(MiaTags.BlockTags.ABYSS_MUD_ORE_REPLACEABLE.tag)
+                                        .add(Blocks.MUD));
     }
 
     private static void provideDefaultLang(String fileName, BiConsumer<String, String> consumer) {

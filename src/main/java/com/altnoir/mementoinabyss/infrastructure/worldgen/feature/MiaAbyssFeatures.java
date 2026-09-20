@@ -43,6 +43,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.DualNoiseProvid
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.material.Fluids;
@@ -404,6 +405,7 @@ public final class MiaAbyssFeatures {
                                 UniformInt.of(16, 32))));
 
         TagMatchTest stone = new TagMatchTest(MiaTags.BlockTags.ABYSS_ANDESITE_ORE_REPLACEABLE.tag);
+        TagMatchTest mud = new TagMatchTest(MiaTags.BlockTags.ABYSS_MUD_ORE_REPLACEABLE.tag);
         ore(context, ORE_DIRT, stone, Blocks.DIRT.defaultBlockState(), 33, 1.0F);
         ore(context, ORE_GRAVEL, stone, Blocks.GRAVEL.defaultBlockState(), 33, 0.0F);
         ore(context, ORE_IRON, stone, MiaBlocks.ABYSS_IRON_ORE.get().defaultBlockState(), 4, 0.0F);
@@ -434,29 +436,29 @@ public final class MiaAbyssFeatures {
                 ORE_DIAMOND,
                 stone,
                 MiaBlocks.ABYSS_DIAMOND_ORE.get().defaultBlockState(),
-                8,
-                1.0F);
+                12,
+                0.0F);
         ore(
                 context,
                 ORE_EMERALD,
                 stone,
                 MiaBlocks.ABYSS_EMERALD_ORE.get().defaultBlockState(),
-                3,
-                1.0F);
+                4,
+                0.0F);
         ore(
                 context,
                 ORE_QUARTZ,
                 stone,
                 MiaBlocks.ABYSS_QUARTZ_ORE.get().defaultBlockState(),
-                14,
+                12,
                 0.0F);
         ore(
                 context,
                 ORE_CHLOROPHYTE,
-                stone,
+                mud,
                 MiaBlocks.ABYSS_CHLOROPHYTE_ORE.get().defaultBlockState(),
-                9,
-                1.0F);
+                6,
+                0.0F);
         fossilTrunk(context, TREES_FOSSILIZED, 2, Direction.UP);
         fossilTrunk(context, TREES_FOSSILIZED_UNDER, 8, Direction.UP);
         fossilTrunk(context, TREES_FOSSILIZED_UNDER_CEILING, 8, Direction.DOWN);
@@ -495,7 +497,7 @@ public final class MiaAbyssFeatures {
     private static void ore(
             BootstrapContext<ConfiguredFeature<?, ?>> context,
             ResourceKey<ConfiguredFeature<?, ?>> key,
-            TagMatchTest rule,
+            RuleTest rule,
             BlockState state,
             int size,
             float discard) {

@@ -322,16 +322,16 @@ public final class MiaAbyssPlacements {
                                         VerticalAnchor.absolute(16), VerticalAnchor.absolute(400)),
                                 BiomeFilter.biome())));
         ore(context, ORE_DIRT, configured.getOrThrow(MiaAbyssFeatures.ORE_DIRT), 7);
-        ore(context, ORE_GRAVEL, configured.getOrThrow(MiaAbyssFeatures.ORE_GRAVEL), 7);
-        ore(context, ORE_IRON, configured.getOrThrow(MiaAbyssFeatures.ORE_IRON), 12);
-        ore(context, ORE_COPPER, configured.getOrThrow(MiaAbyssFeatures.ORE_COPPER), 10);
-        ore(context, ORE_GOLD, configured.getOrThrow(MiaAbyssFeatures.ORE_GOLD), 6);
-        ore(context, ORE_LAPIS, configured.getOrThrow(MiaAbyssFeatures.ORE_LAPIS), 4);
-        ore(context, ORE_REDSTONE, configured.getOrThrow(MiaAbyssFeatures.ORE_REDSTONE), 8);
-        ore(context, ORE_DIAMOND, configured.getOrThrow(MiaAbyssFeatures.ORE_DIAMOND), 3);
-        ore(context, ORE_EMERALD, configured.getOrThrow(MiaAbyssFeatures.ORE_EMERALD), 2);
-        ore(context, ORE_QUARTZ, configured.getOrThrow(MiaAbyssFeatures.ORE_QUARTZ), 7);
-        ore(context, ORE_CHLOROPHYTE, configured.getOrThrow(MiaAbyssFeatures.ORE_CHLOROPHYTE), 4);
+        ore(context, ORE_GRAVEL, configured.getOrThrow(MiaAbyssFeatures.ORE_GRAVEL), 14);
+        ore(context, ORE_IRON, configured.getOrThrow(MiaAbyssFeatures.ORE_IRON), 10);
+        ore(context, ORE_COPPER, configured.getOrThrow(MiaAbyssFeatures.ORE_COPPER), 8);
+        ore(context, ORE_GOLD, configured.getOrThrow(MiaAbyssFeatures.ORE_GOLD), 8);
+        ore(context, ORE_LAPIS, configured.getOrThrow(MiaAbyssFeatures.ORE_LAPIS), 16);
+        ore(context, ORE_REDSTONE, configured.getOrThrow(MiaAbyssFeatures.ORE_REDSTONE), 16);
+        ore(context, ORE_DIAMOND, configured.getOrThrow(MiaAbyssFeatures.ORE_DIAMOND), 12);
+        ore(context, ORE_EMERALD, configured.getOrThrow(MiaAbyssFeatures.ORE_EMERALD), 20);
+        ore(context, ORE_QUARTZ, configured.getOrThrow(MiaAbyssFeatures.ORE_QUARTZ), 16);
+        ore(context, ORE_CHLOROPHYTE, configured.getOrThrow(MiaAbyssFeatures.ORE_CHLOROPHYTE), 21);
         context.register(
                 TREES_SKYFOG,
                 new PlacedFeature(
@@ -424,8 +424,8 @@ public final class MiaAbyssPlacements {
                                 CountPlacement.of(count),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(
-                                        VerticalAnchor.absolute(-240),
-                                        VerticalAnchor.absolute(360)),
+                                        VerticalAnchor.aboveBottom(128),
+                                        VerticalAnchor.belowTop(8)),
                                 BiomeFilter.biome())));
     }
 

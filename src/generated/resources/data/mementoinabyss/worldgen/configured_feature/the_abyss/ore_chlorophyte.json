@@ -1,8 +1,8 @@
 {
   "type": "minecraft:ore",
   "config": {
-    "discard_chance_on_air_exposure": 1.0,
-    "size": 9,
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 6,
     "targets": [
       {
         "state": {
@@ -10,7 +10,7 @@
         },
         "target": {
           "predicate_type": "minecraft:tag_match",
-          "tag": "mementoinabyss:abyss_andesite_ore_replaceable"
+          "tag": "mementoinabyss:abyss_mud_ore_replaceable"
         }
       }
     ]
