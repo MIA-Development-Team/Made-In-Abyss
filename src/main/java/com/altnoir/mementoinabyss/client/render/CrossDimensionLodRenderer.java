@@ -32,8 +32,9 @@ import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.LightCoordsUtil;
@@ -675,7 +676,7 @@ public final class CrossDimensionLodRenderer {
             prepareFadeTransform(fadeTransforms, modelView, incoming);
             prepareFadeTransform(fadeTransforms, modelView, outgoing);
         }
-        var atlas = minecraft.getTextureManager().getTexture(TextureAtlas.LOCATION_BLOCKS);
+        var atlas = minecraft.getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS);
         GpuBufferSlice lodFog = lodFog(viewRadius);
         GpuBufferSlice lodLight = lodLight(activeLink.source());
 
@@ -1405,7 +1406,12 @@ public final class CrossDimensionLodRenderer {
         var state = Block.stateById(stateId);
         var model = modelSet.get(state);
         List<net.minecraft.client.renderer.block.dispatch.BlockStateModelPart> parts = new ArrayList<>();
-        model.collectParts(RandomSource.create(0L), parts);
+        model.collectParts(
+                net.minecraft.client.renderer.block.BlockAndTintGetter.EMPTY,
+                BlockPos.ZERO,
+                state,
+                RandomSource.create(0L),
+                parts);
         // The seeded model parts are the same for all six faces; collect them once per state.
         TextureAtlasSprite fallback = null;
         Direction[] directions = {Direction.WEST, Direction.EAST, Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH};

@@ -2,7 +2,7 @@ package com.altnoir.mementoinabyss.client.render.state;
 
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public final class EndlessCupRenderState extends BlockEntityRenderState {
     public boolean showWater;

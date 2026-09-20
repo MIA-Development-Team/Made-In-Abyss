@@ -54,8 +54,8 @@ public final class ArtifactEnhancementComponent implements ArtifactItemComponent
             double amount = attribute.modifier().amount();
             boolean percentage = attribute.modifier().operation()
                     != net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE
-                    || attribute.attribute().is(MiaAttributes.CRITICAL_HIT)
-                    || attribute.attribute().is(MiaAttributes.CRITICAL_HIT_DAMAGE);
+                    || MiaAttributes.CRITICAL_HIT.unwrapKey().map(attribute.attribute()::is).orElse(false)
+                    || MiaAttributes.CRITICAL_HIT_DAMAGE.unwrapKey().map(attribute.attribute()::is).orElse(false);
             double displayAmount = percentage ? amount * 100.0 : amount;
             String key = amount >= 0.0 ? "attribute.modifier.plus." : "attribute.modifier.take.";
             tooltip.add(Component.translatable(

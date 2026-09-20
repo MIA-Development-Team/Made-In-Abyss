@@ -64,7 +64,7 @@ public final class MiaArtifactEnhancementRecipeProvider extends RecipeProvider {
         output.accept(
                 id,
                 new ArtifactEnhancementRecipe(
-                        material.asItem().builtInRegistryHolder(),
+                        net.minecraft.core.registries.BuiltInRegistries.ITEM.wrapAsHolder(material.asItem()),
                         count,
                         attribute,
                         range,

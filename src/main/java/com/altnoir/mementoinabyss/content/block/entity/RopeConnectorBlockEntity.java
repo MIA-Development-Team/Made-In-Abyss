@@ -6,6 +6,7 @@ import com.altnoir.mementoinabyss.impl.rope.RopeParameters;
 import com.altnoir.mementoinabyss.impl.rope.RopeSimulation;
 import com.altnoir.mementoinabyss.impl.rope.minecraft.MinecraftBlockCollisionResolver;
 import com.altnoir.mementoinabyss.network.RopeSnapshotPayload;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +25,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Set;
@@ -57,10 +58,13 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
             .withCollisionRadius(2.25 / 16.0)
             .withSolver(2, 6);
 
+    @Getter
     private @Nullable BlockPos connectedPos;
     private @Nullable Vec3 freeEnd;
     private @Nullable double[] synchronizedPoints;
+    @Getter
     private double ropeLength;
+    @Getter
     private @Nullable RopeSimulation clientRope;
     private @Nullable RopeSimulation serverRope;
     private int clientGrabbedPoint = -1;
@@ -366,10 +370,6 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
                 || this.connectedPos != null && this.worldPosition.asLong() < this.connectedPos.asLong();
     }
 
-    public @Nullable RopeSimulation getClientRope() {
-        return this.clientRope;
-    }
-
     public @Nullable RopeSimulation getActiveRope() {
         return this.level != null && this.level.isClientSide()
                 ? this.clientRope
@@ -423,20 +423,12 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
         return SERVER_INSTANCES;
     }
 
-    public @Nullable BlockPos getConnectedPos() {
-        return this.connectedPos;
-    }
-
     public boolean isConnected() {
         return this.connectedPos != null || this.freeEnd != null;
     }
 
     public boolean hasFreeEnd() {
         return this.freeEnd != null;
-    }
-
-    public double getRopeLength() {
-        return this.ropeLength;
     }
 
     public boolean grabClientPoint(int point, RopeAnchor anchor) {

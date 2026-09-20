@@ -28,7 +28,7 @@ import com.altnoir.mementoinabyss.worldgen.structure.MiaStructurePools;
 import com.altnoir.mementoinabyss.worldgen.structure.MiaStructureSets;
 import com.altnoir.mementoinabyss.worldgen.structure.MiaStructures;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;

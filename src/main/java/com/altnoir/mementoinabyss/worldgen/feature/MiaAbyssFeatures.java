@@ -163,7 +163,7 @@ public final class MiaAbyssFeatures {
                         ConstantInt.of(3), 1.0F, 5, 0.5F, UniformInt.of(4, 9), 0.1F)));
         context.register(SPRING_WATER, new ConfiguredFeature<>(Feature.SPRING,
                 new SpringConfiguration(Fluids.WATER.defaultFluidState(), true, 4, 1,
-                        HolderSet.direct(net.minecraft.world.level.block.Block::builtInRegistryHolder,
+                        HolderSet.direct(net.minecraft.core.registries.BuiltInRegistries.BLOCK::wrapAsHolder,
                                 Blocks.TUFF, Blocks.DEEPSLATE, MiaBlocks.ABYSS_ANDESITE.get()))));
         context.register(LAKE_WATER, new ConfiguredFeature<>(Feature.LAKE,
                 new LakeFeature.Configuration(BlockStateProvider.simple(Blocks.WATER),

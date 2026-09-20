@@ -15,7 +15,7 @@ import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.OverworldBiomeBuilder;
 import net.minecraft.world.level.levelgen.NoiseRouterData;
 import org.jetbrains.annotations.Nullable;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -115,7 +115,7 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
     }
 
     @Override
-    public @Nullable Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.@NonNull Sampler sampler) {
+    public @Nullable Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.@NotNull Sampler sampler) {
 
         int blockX = QuartPos.toBlock(x);
         int blockZ = QuartPos.toBlock(z);

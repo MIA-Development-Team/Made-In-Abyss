@@ -2,7 +2,6 @@ package com.altnoir.mementoinabyss.content.block.plant;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -23,7 +22,7 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class WaterDoublePlantBlock extends BushBlock implements SimpleWaterloggedBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
@@ -73,5 +72,12 @@ public class WaterDoublePlantBlock extends BushBlock implements SimpleWaterlogge
 
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) { builder.add(HALF, WATERLOGGED); }
     @Override protected FluidState getFluidState(BlockState state) { return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state); }
-    @Override protected long getSeed(BlockState state, BlockPos pos) { return Mth.getSeed(pos.getX(), pos.below(state.getValue(HALF) == DoubleBlockHalf.LOWER ? 0 : 1).getY(), pos.getZ()); }
+
+    @Override
+    protected long getSeed(BlockState state, BlockPos pos) {
+        BlockPos seedPos = pos.below(state.getValue(HALF) == DoubleBlockHalf.LOWER ? 0 : 1);
+        long seed = seedPos.getX() * 3129871L ^ seedPos.getZ() * 116129781L ^ seedPos.getY();
+        seed = seed * seed * 42317861L + seed * 11L;
+        return seed >> 16;
+    }
 }

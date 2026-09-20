@@ -13,7 +13,7 @@ import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ColumnBlock extends Block {
     public static final MapCodec<ColumnBlock> CODEC = simpleCodec(ColumnBlock::new);

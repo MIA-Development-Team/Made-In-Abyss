@@ -38,9 +38,11 @@ public class DreamLicheeBlock extends DoubleBerryBlock {
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
                                 InsideBlockEffectApplier effectApplier, boolean isPrecise) {
-        if (!level.isClientSide() && entity.isAlive() && !entity.isCrouching()
+        if (level instanceof ServerLevel serverLevel
+                && entity.isAlive()
+                && !entity.isCrouching()
                 && (Math.abs(entity.getX() - entity.xOld) >= 0.003 || Math.abs(entity.getZ() - entity.zOld) >= 0.003)) {
-            entity.hurt(level.damageSources().source(DAMAGE_TYPE), 1.0F);
+            entity.hurtServer(serverLevel, serverLevel.damageSources().source(DAMAGE_TYPE), 1.0F);
         }
     }
 }

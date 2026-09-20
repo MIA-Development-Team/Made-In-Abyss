@@ -177,7 +177,7 @@ final class CrossDimensionLazyChunkGenerator {
         for (var section : chunk.getSections()) section.getBiomes().getAll(biomes::add);
         int vegetationStep = GenerationStep.Decoration.VEGETAL_DECORATION.ordinal();
         for (Holder<Biome> biome : biomes) {
-            var features = generator.getBiomeGenerationSettings(biome).features();
+            var features = biome.value().getGenerationSettings().features();
             if (vegetationStep >= features.size()) continue;
             for (Holder<PlacedFeature> feature : features.get(vegetationStep)) {
                 feature.unwrapKey().ifPresent(key -> {

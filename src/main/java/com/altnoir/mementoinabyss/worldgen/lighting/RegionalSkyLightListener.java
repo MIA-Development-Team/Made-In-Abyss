@@ -5,7 +5,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.DataLayer;
 import net.minecraft.world.level.lighting.LayerLightEventListener;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** A read-compatible sky-light listener for light engine replacements such as Starlight. */
 public final class RegionalSkyLightListener implements LayerLightEventListener {

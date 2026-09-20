@@ -67,8 +67,8 @@ public final class ArtifactEnhancementMaterialTooltip {
 
     public static Component modifierLine(ArtifactEnhancementRecipe recipe) {
         boolean percentage = recipe.operation() != AttributeModifier.Operation.ADD_VALUE
-                || recipe.attribute().is(MiaAttributes.CRITICAL_HIT)
-                || recipe.attribute().is(MiaAttributes.CRITICAL_HIT_DAMAGE);
+                || MiaAttributes.CRITICAL_HIT.unwrapKey().map(recipe.attribute()::is).orElse(false)
+                || MiaAttributes.CRITICAL_HIT_DAMAGE.unwrapKey().map(recipe.attribute()::is).orElse(false);
         String range = formatValue(recipe.value().min(), percentage)
                 + " \u2013 "
                 + formatValue(recipe.value().max(), percentage);
