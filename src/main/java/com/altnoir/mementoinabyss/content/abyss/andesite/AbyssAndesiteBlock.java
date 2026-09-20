@@ -10,8 +10,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.FarmlandBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +23,10 @@ public class AbyssAndesiteBlock extends Block implements TillableBlock, Bonemeal
     @Override
     public @Nullable BlockState getTilledState(
             BlockState state, Level level, BlockPos pos, Player player) {
-        return Blocks.FARMLAND.defaultBlockState();
+        return MiaBlocks.HOPPER_FARMLAND
+                .get()
+                .defaultBlockState()
+                .setValue(FarmlandBlock.MOISTURE, 0);
     }
 
     @Override

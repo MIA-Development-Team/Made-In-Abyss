@@ -1,0 +1,9 @@
+{
+  "parent": "mementoinabyss:block/template/hopper_farmland",
+  "textures": {
+    "bottom": "mementoinabyss:block/hopper_farmland_bottom",
+    "particle": "mementoinabyss:block/hopper_farmland_bottom",
+    "side": "mementoinabyss:block/abyss_andesite",
+    "top": "mementoinabyss:block/hopper_farmland"
+  }
+}

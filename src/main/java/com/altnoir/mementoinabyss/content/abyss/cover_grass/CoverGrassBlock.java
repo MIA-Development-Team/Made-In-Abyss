@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.content.abyss.cover_grass;
 
 import com.altnoir.mementoinabyss.content.abyss.base.TillableBlock;
+import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -11,8 +12,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.FarmlandBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.lighting.LightEngine;
@@ -67,7 +68,10 @@ public class CoverGrassBlock extends Block implements TillableBlock, Bonemealabl
 
     @Override
     public BlockState getTilledState(BlockState state, Level level, BlockPos pos, Player player) {
-        return Blocks.FARMLAND.defaultBlockState();
+        return MiaBlocks.HOPPER_FARMLAND
+                .get()
+                .defaultBlockState()
+                .setValue(FarmlandBlock.MOISTURE, 0);
     }
 
     @Override

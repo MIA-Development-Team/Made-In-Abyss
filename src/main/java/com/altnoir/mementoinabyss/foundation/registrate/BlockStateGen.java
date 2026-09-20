@@ -160,6 +160,43 @@ public class BlockStateGen {
 
     public static <B extends Block>
             NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+                    hopperFarmland() {
+        return (ctx, prov) -> {
+            var top = TextureSlot.create("top");
+            var side = TextureSlot.create("side");
+            var bottom = TextureSlot.create("bottom");
+            var sideTex = prov.modBlockTexture("abyss_andesite");
+            var bottomTex = prov.modBlockTexture(ctx.getName() + "_bottom");
+            var dry =
+                    prov.getBuilder()
+                            .parent(prov.modLoc("block/template/hopper_farmland"))
+                            .texture(top, prov.modBlockTexture(ctx.getName()))
+                            .texture(side, sideTex)
+                            .texture(bottom, bottomTex)
+                            .texture(TextureSlot.PARTICLE, bottomTex)
+                            .build(ctx.get());
+            var moist =
+                    prov.getBuilder()
+                            .parent(prov.modLoc("block/template/hopper_farmland"))
+                            .texture(top, prov.modBlockTexture(ctx.getName() + "_moist"))
+                            .texture(side, sideTex)
+                            .texture(bottom, bottomTex)
+                            .texture(TextureSlot.PARTICLE, bottomTex)
+                            .build(prov.modLoc("block/" + ctx.getName() + "_moist"));
+            prov.blockStateOutput.accept(
+                    MultiVariantGenerator.dispatch(ctx.get())
+                            .with(
+                                    BlockModelGenerators.createEmptyOrFullDispatch(
+                                            BlockStateProperties.MOISTURE,
+                                            7,
+                                            BlockModelGenerators.plainVariant(moist),
+                                            BlockModelGenerators.plainVariant(dry))));
+            prov.registerSimpleItemModel(ctx.get(), dry);
+        };
+    }
+
+    public static <B extends Block>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
                     artifactSmithingTable() {
         return (ctx, prov) -> {
             var bottom = prov.modBlockTexture("chiseled_abyss_andesite");

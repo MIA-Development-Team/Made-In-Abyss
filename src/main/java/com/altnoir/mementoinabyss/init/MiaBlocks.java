@@ -4,6 +4,7 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.content.abyss.andesite.AbyssAndesiteBlock;
 import com.altnoir.mementoinabyss.content.abyss.column.ColumnBlock;
 import com.altnoir.mementoinabyss.content.abyss.cover_grass.CoverGrassBlock;
+import com.altnoir.mementoinabyss.content.abyss.farmland.HopperFarmlandBlock;
 import com.altnoir.mementoinabyss.content.abyss.ore.BuddingCaeruliteBlock;
 import com.altnoir.mementoinabyss.content.abyss.ore.BuddingPrasioliteBlock;
 import com.altnoir.mementoinabyss.content.abyss.ore.ChlorophyteOreBlock;
@@ -61,6 +62,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.neoforged.neoforge.common.Tags;
 
 public class MiaBlocks {
     private static final MiaRegistrate REGISTRATE = MementoInAbyss.registrate();
@@ -248,6 +250,38 @@ public class MiaBlocks {
                     .transform(TagGen.pickaxeOnly())
                     .simpleItem()
                     .register();
+
+    static {
+        REGISTRATE.defaultCreativeSection(MiaItemGroups.FUNCTIONAL_BLOCKS);
+    }
+
+    public static final BlockEntry<HopperFarmlandBlock> HOPPER_FARMLAND =
+            REGISTRATE
+                    .object("hopper_farmland")
+                    .block(HopperFarmlandBlock::new)
+                    .properties(
+                            p ->
+                                    p.mapColor(MapColor.DIRT)
+                                            .randomTicks()
+                                            .strength(0.6F)
+                                            .sound(SoundType.DEEPSLATE)
+                                            .isViewBlocking((state, level, pos) -> true)
+                                            .isSuffocating((state, level, pos) -> true))
+                    .transform(TagGen.pickaxeOnly())
+                    .tag(Tags.Blocks.VILLAGER_FARMLANDS)
+                    .blockstate(BlockStateGen::hopperFarmland)
+                    .loot(
+                            (lt, b) ->
+                                    lt.add(
+                                            b,
+                                            lt.createSingleItemTable(ABYSS_COBBLED_ANDESITE.get())))
+                    .lang("Hopper Farmland")
+                    .simpleItem()
+                    .register();
+
+    static {
+        REGISTRATE.defaultCreativeSection(MiaItemGroups.BASE_BUILDING_BLOCKS);
+    }
 
     public static final BlockEntry<StairBlock> ABYSS_COBBLED_ANDESITE_STAIRS =
             stairs(ABYSS_COBBLED_ANDESITE);
