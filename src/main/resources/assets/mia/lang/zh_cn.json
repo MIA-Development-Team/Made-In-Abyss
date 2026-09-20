@@ -8,6 +8,8 @@
     "itemgroup.mia.section.items": "物品",
     "itemgroup.mia.section.artifacts": "遗物",
 
+    "config.jade.plugin_mia.spawner_cooldown": "深渊刷怪笼冷却",
+
     "item.mia.red_whistle": "赤笛",
     "item.mia.blue_whistle": "§b苍笛",
     "item.mia.moon_whistle": "§d月笛",
