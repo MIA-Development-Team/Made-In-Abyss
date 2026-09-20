@@ -1,12 +1,11 @@
 package com.altnoir.mementoinabyss.client.tooltip;
 
-import net.minecraft.world.item.Item;
-
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import net.minecraft.world.item.Item;
 
 public final class TooltipModifierRegistry {
     private static final Map<Item, TooltipModifier> RESOLVED = new IdentityHashMap<>();

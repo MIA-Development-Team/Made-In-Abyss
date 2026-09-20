@@ -12,8 +12,11 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 public record CrossDimensionLodControlPayload(boolean active) implements CustomPacketPayload {
     public static final Type<CrossDimensionLodControlPayload> TYPE =
             new Type<>(MementoInAbyss.asResource("cross_dimension_lod_control"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, CrossDimensionLodControlPayload> STREAM_CODEC =
-            StreamCodec.ofMember(CrossDimensionLodControlPayload::encode, CrossDimensionLodControlPayload::decode);
+    public static final StreamCodec<RegistryFriendlyByteBuf, CrossDimensionLodControlPayload>
+            STREAM_CODEC =
+                    StreamCodec.ofMember(
+                            CrossDimensionLodControlPayload::encode,
+                            CrossDimensionLodControlPayload::decode);
 
     private void encode(RegistryFriendlyByteBuf buffer) {
         buffer.writeBoolean(active);

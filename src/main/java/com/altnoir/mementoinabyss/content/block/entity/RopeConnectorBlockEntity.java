@@ -6,6 +6,10 @@ import com.altnoir.mementoinabyss.impl.rope.RopeParameters;
 import com.altnoir.mementoinabyss.impl.rope.RopeSimulation;
 import com.altnoir.mementoinabyss.impl.rope.minecraft.MinecraftBlockCollisionResolver;
 import com.altnoir.mementoinabyss.network.RopeSnapshotPayload;
+import java.util.Collections;
+import java.util.Set;
+import java.util.UUID;
+import java.util.WeakHashMap;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -15,8 +19,8 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -26,11 +30,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.Set;
-import java.util.WeakHashMap;
-import java.util.UUID;
 
 /**
  * Stores one persistent rope connection. Both endpoints store the peer, while
@@ -49,23 +48,22 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
     private static final String FREE_END_Z_TAG = "free_end_z";
     private static final String ROPE_LENGTH_TAG = "rope_length";
     private static final String ROPE_POINTS_TAG = "rope_points";
-    private static final RopeParameters SERVER_PARAMETERS = RopeParameters.DEFAULT
-            .withSegmentLength(1.0)
-            .withCollisionRadius(2.25 / 16.0)
-            .withSolver(3, 16);
-    private static final RopeParameters CLIENT_PARAMETERS = RopeParameters.DEFAULT
-            .withSegmentLength(1.0)
-            .withCollisionRadius(2.25 / 16.0)
-            .withSolver(2, 6);
+    private static final RopeParameters SERVER_PARAMETERS =
+            RopeParameters.DEFAULT
+                    .withSegmentLength(1.0)
+                    .withCollisionRadius(2.25 / 16.0)
+                    .withSolver(3, 16);
+    private static final RopeParameters CLIENT_PARAMETERS =
+            RopeParameters.DEFAULT
+                    .withSegmentLength(1.0)
+                    .withCollisionRadius(2.25 / 16.0)
+                    .withSolver(2, 6);
 
-    @Getter
-    private @Nullable BlockPos connectedPos;
+    @Getter private @Nullable BlockPos connectedPos;
     private @Nullable Vec3 freeEnd;
     private @Nullable double[] synchronizedPoints;
-    @Getter
-    private double ropeLength;
-    @Getter
-    private @Nullable RopeSimulation clientRope;
+    @Getter private double ropeLength;
+    @Getter private @Nullable RopeSimulation clientRope;
     private @Nullable RopeSimulation serverRope;
     private int clientGrabbedPoint = -1;
     private @Nullable double[] clientCorrectionTarget;
@@ -79,17 +77,15 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
     private double simulatedLength;
 
     public RopeConnectorBlockEntity(
-            BlockEntityType<RopeConnectorBlockEntity> type,
-            BlockPos pos,
-            BlockState state
-    ) {
+            BlockEntityType<RopeConnectorBlockEntity> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
     public static boolean connect(Level level, BlockPos first, BlockPos second, double length) {
         if (first.equals(second)
                 || !(level.getBlockEntity(first) instanceof RopeConnectorBlockEntity firstConnector)
-                || !(level.getBlockEntity(second) instanceof RopeConnectorBlockEntity secondConnector)) {
+                || !(level.getBlockEntity(second)
+                        instanceof RopeConnectorBlockEntity secondConnector)) {
             return false;
         }
 
@@ -101,12 +97,7 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
     }
 
     public static boolean connectFree(
-            Level level,
-            BlockPos connectorPos,
-            Vec3 freeEnd,
-            double length,
-            Vec3 throwVelocity
-    ) {
+            Level level, BlockPos connectorPos, Vec3 freeEnd, double length, Vec3 throwVelocity) {
         if (!(level.getBlockEntity(connectorPos) instanceof RopeConnectorBlockEntity connector)
                 || !isFinite(freeEnd)
                 || !isFinite(throwVelocity)
@@ -131,8 +122,7 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
                             point,
                             throwVelocity.x() * fraction,
                             throwVelocity.y() * fraction,
-                            throwVelocity.z() * fraction
-                    );
+                            throwVelocity.z() * fraction);
                 }
             }
         }
@@ -145,7 +135,8 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
         this.clearConnectionInternal();
         if (oldConnection != null
                 && this.level != null
-                && this.level.getBlockEntity(oldConnection) instanceof RopeConnectorBlockEntity other
+                && this.level.getBlockEntity(oldConnection)
+                        instanceof RopeConnectorBlockEntity other
                 && this.worldPosition.equals(other.connectedPos)) {
             other.clearConnectionInternal();
         }
@@ -184,18 +175,23 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
         }
         boolean connected = this.isConnected();
         if (state.getValue(RopeConnectorBlock.CONNECTED) != connected) {
-            this.level.setBlock(this.worldPosition, state.setValue(RopeConnectorBlock.CONNECTED, connected), Block.UPDATE_CLIENTS);
+            this.level.setBlock(
+                    this.worldPosition,
+                    state.setValue(RopeConnectorBlock.CONNECTED, connected),
+                    Block.UPDATE_CLIENTS);
         }
     }
 
     private void syncChanged() {
         this.setChanged();
         if (this.level != null) {
-            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+            this.level.sendBlockUpdated(
+                    this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
         }
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, RopeConnectorBlockEntity connector) {
+    public static void tick(
+            Level level, BlockPos pos, BlockState state, RopeConnectorBlockEntity connector) {
         if (level.isClientSide()) {
             connector.clientTick();
         } else {
@@ -226,21 +222,18 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
             this.synchronizedPoints = this.serverRope.copyPoints();
             if (this.freeEnd != null) {
                 int last = this.synchronizedPoints.length - 3;
-                this.freeEnd = new Vec3(
-                        this.synchronizedPoints[last],
-                        this.synchronizedPoints[last + 1],
-                        this.synchronizedPoints[last + 2]
-                );
+                this.freeEnd =
+                        new Vec3(
+                                this.synchronizedPoints[last],
+                                this.synchronizedPoints[last + 1],
+                                this.synchronizedPoints[last + 2]);
             }
             if (this.snapshotChanged() || level.getGameTime() % 20L == 0L) {
                 PacketDistributor.sendToPlayersTrackingChunk(
                         level,
                         new ChunkPos(
-                                this.worldPosition.getX() >> 4,
-                                this.worldPosition.getZ() >> 4
-                        ),
-                        new RopeSnapshotPayload(this.worldPosition, this.synchronizedPoints)
-                );
+                                this.worldPosition.getX() >> 4, this.worldPosition.getZ() >> 4),
+                        new RopeSnapshotPayload(this.worldPosition, this.synchronizedPoints));
                 this.lastBroadcastPoints = this.synchronizedPoints.clone();
             }
             if (level.getGameTime() % 20L == 0L) {
@@ -250,10 +243,13 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
     }
 
     private void validateConnection() {
-        if (this.connectedPos == null || this.level == null || !this.level.isLoaded(this.connectedPos)) {
+        if (this.connectedPos == null
+                || this.level == null
+                || !this.level.isLoaded(this.connectedPos)) {
             return;
         }
-        if (!(this.level.getBlockEntity(this.connectedPos) instanceof RopeConnectorBlockEntity other)
+        if (!(this.level.getBlockEntity(this.connectedPos)
+                        instanceof RopeConnectorBlockEntity other)
                 || !this.worldPosition.equals(other.connectedPos)) {
             this.clearConnectionInternal();
         }
@@ -288,9 +284,7 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
     }
 
     private @Nullable RopeSimulation createSimulation(
-            RopeParameters parameters,
-            boolean collisions
-    ) {
+            RopeParameters parameters, boolean collisions) {
         if (this.level == null || this.connectedPos == null && this.freeEnd == null) {
             return null;
         }
@@ -299,39 +293,42 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
         double startY = this.worldPosition.getY() + ATTACHMENT_Y;
         double startZ = this.worldPosition.getZ() + 0.5;
         double endX = this.connectedPos != null ? this.connectedPos.getX() + 0.5 : this.freeEnd.x();
-        double endY = this.connectedPos != null ? this.connectedPos.getY() + ATTACHMENT_Y : this.freeEnd.y();
+        double endY =
+                this.connectedPos != null
+                        ? this.connectedPos.getY() + ATTACHMENT_Y
+                        : this.freeEnd.y();
         double endZ = this.connectedPos != null ? this.connectedPos.getZ() + 0.5 : this.freeEnd.z();
-        double directDistance = Math.sqrt(
-                square(endX - startX) + square(endY - startY) + square(endZ - startZ)
-        );
+        double directDistance =
+                Math.sqrt(square(endX - startX) + square(endY - startY) + square(endZ - startZ));
         double safeLength = Math.max(this.ropeLength, directDistance);
 
         RopeSimulation simulation;
         if (this.synchronizedPoints != null) {
             try {
-                simulation = RopeSimulation.fromPoints(
-                        this.synchronizedPoints, safeLength, parameters);
+                simulation =
+                        RopeSimulation.fromPoints(this.synchronizedPoints, safeLength, parameters);
             } catch (IllegalArgumentException ignored) {
                 this.synchronizedPoints = null;
-                simulation = RopeSimulation.withLength(
-                        startX, startY, startZ, endX, endY, endZ,
-                        safeLength, parameters);
+                simulation =
+                        RopeSimulation.withLength(
+                                startX, startY, startZ, endX, endY, endZ, safeLength, parameters);
             }
         } else {
-            simulation = RopeSimulation.withLength(
-                    startX, startY, startZ, endX, endY, endZ,
-                    safeLength, parameters);
+            simulation =
+                    RopeSimulation.withLength(
+                            startX, startY, startZ, endX, endY, endZ, safeLength, parameters);
         }
         simulation.attachStart(out -> out.set(startX, startY, startZ));
         if (this.connectedPos != null) {
             simulation.attachEnd(out -> out.set(endX, endY, endZ));
             if (collisions) {
-                simulation.collisionResolver(new MinecraftBlockCollisionResolver(
-                        this.level, 1.0, this.worldPosition, this.connectedPos));
+                simulation.collisionResolver(
+                        new MinecraftBlockCollisionResolver(
+                                this.level, 1.0, this.worldPosition, this.connectedPos));
             }
         } else if (collisions) {
-            simulation.collisionResolver(new MinecraftBlockCollisionResolver(
-                    this.level, 1.0, this.worldPosition));
+            simulation.collisionResolver(
+                    new MinecraftBlockCollisionResolver(this.level, 1.0, this.worldPosition));
         }
         return simulation;
     }
@@ -350,7 +347,8 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
             return true;
         }
         for (int index = 0; index < this.synchronizedPoints.length; index++) {
-            if (Math.abs(this.synchronizedPoints[index] - this.lastBroadcastPoints[index]) > 0.0025) {
+            if (Math.abs(this.synchronizedPoints[index] - this.lastBroadcastPoints[index])
+                    > 0.0025) {
                 return true;
             }
         }
@@ -367,13 +365,12 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
 
     private boolean ownsConnection() {
         return this.freeEnd != null
-                || this.connectedPos != null && this.worldPosition.asLong() < this.connectedPos.asLong();
+                || this.connectedPos != null
+                        && this.worldPosition.asLong() < this.connectedPos.asLong();
     }
 
     public @Nullable RopeSimulation getActiveRope() {
-        return this.level != null && this.level.isClientSide()
-                ? this.clientRope
-                : this.serverRope;
+        return this.level != null && this.level.isClientSide() ? this.clientRope : this.serverRope;
     }
 
     public void acceptServerSnapshot(double[] points) {
@@ -401,14 +398,18 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
         double maximumErrorSquared = 0.0;
         for (int point = 0; point < this.clientRope.pointCount(); point++) {
             int offset = point * 3;
-            maximumErrorSquared = Math.max(maximumErrorSquared,
-                    square(this.clientCorrectionTarget[offset] - this.clientRope.x(point))
-                            + square(this.clientCorrectionTarget[offset + 1] - this.clientRope.y(point))
-                            + square(this.clientCorrectionTarget[offset + 2] - this.clientRope.z(point)));
+            maximumErrorSquared =
+                    Math.max(
+                            maximumErrorSquared,
+                            square(this.clientCorrectionTarget[offset] - this.clientRope.x(point))
+                                    + square(
+                                            this.clientCorrectionTarget[offset + 1]
+                                                    - this.clientRope.y(point))
+                                    + square(
+                                            this.clientCorrectionTarget[offset + 2]
+                                                    - this.clientRope.z(point)));
         }
-        double blend = maximumErrorSquared > 4.0 ? 0.35
-                : maximumErrorSquared > 0.25 ? 0.2
-                : 0.1;
+        double blend = maximumErrorSquared > 4.0 ? 0.35 : maximumErrorSquared > 0.25 ? 0.2 : 0.1;
         this.clientRope.applyPoints(this.clientCorrectionTarget, blend);
         if (maximumErrorSquared < 1.0E-5) {
             this.clientCorrectionTarget = null;
@@ -453,7 +454,8 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
     }
 
     public boolean beginServerGrab(ServerPlayer player, int point, Vec3 target) {
-        if (this.freeEnd == null || !isFinite(target)
+        if (this.freeEnd == null
+                || !isFinite(target)
                 || !player.getMainHandItem().isEmpty() && !player.getOffhandItem().isEmpty()) {
             return false;
         }
@@ -463,11 +465,11 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
         if (this.serverRope == null || point <= 0 || point >= this.serverRope.pointCount()) {
             return false;
         }
-        Vec3 node = new Vec3(
-                this.serverRope.x(point),
-                this.serverRope.y(point),
-                this.serverRope.z(point)
-        );
+        Vec3 node =
+                new Vec3(
+                        this.serverRope.x(point),
+                        this.serverRope.y(point),
+                        this.serverRope.z(point));
         if (player.getEyePosition().distanceToSqr(node) > 36.0
                 || player.getEyePosition().distanceToSqr(target) > 9.0) {
             return false;
@@ -477,11 +479,13 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
         this.serverGrabbedPoint = point;
         this.serverGrabPosition = this.clampGrabPosition(this.serverRope, point, node);
         this.serverGrabTarget = target;
-        this.serverRope.attachPoint(point, out -> out.set(
-                this.serverGrabPosition.x(),
-                this.serverGrabPosition.y(),
-                this.serverGrabPosition.z()
-        ));
+        this.serverRope.attachPoint(
+                point,
+                out ->
+                        out.set(
+                                this.serverGrabPosition.x(),
+                                this.serverGrabPosition.y(),
+                                this.serverGrabPosition.z()));
         return true;
     }
 
@@ -503,24 +507,27 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
     }
 
     private void updateServerGrab(ServerLevel level) {
-        if (this.serverGrabber == null || this.serverRope == null
-                || this.serverGrabPosition == null || this.serverGrabTarget == null) {
+        if (this.serverGrabber == null
+                || this.serverRope == null
+                || this.serverGrabPosition == null
+                || this.serverGrabTarget == null) {
             return;
         }
         if (!(level.getPlayerByUUID(this.serverGrabber) instanceof ServerPlayer player)
                 || !player.getMainHandItem().isEmpty() && !player.getOffhandItem().isEmpty()
                 || player.position().distanceTo(Vec3.atCenterOf(this.worldPosition))
-                > this.ropeLength + 6.0) {
+                        > this.ropeLength + 6.0) {
             this.clearServerGrab();
             return;
         }
         Vec3 movement = this.serverGrabTarget.subtract(this.serverGrabPosition);
         double distance = movement.length();
-        Vec3 nextPosition = distance > 0.2
-                ? this.serverGrabPosition.add(movement.scale(0.2 / distance))
-                : this.serverGrabTarget;
-        this.serverGrabPosition = this.clampGrabPosition(
-                this.serverRope, this.serverGrabbedPoint, nextPosition);
+        Vec3 nextPosition =
+                distance > 0.2
+                        ? this.serverGrabPosition.add(movement.scale(0.2 / distance))
+                        : this.serverGrabTarget;
+        this.serverGrabPosition =
+                this.clampGrabPosition(this.serverRope, this.serverGrabbedPoint, nextPosition);
         if (player.getEyePosition().distanceToSqr(this.serverGrabPosition)
                 > GRAB_INTERACTION_DISTANCE_SQUARED) {
             this.clearServerGrab();
@@ -538,8 +545,7 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
         Vec3 offset = target.subtract(origin);
         double maximumDistance = rope.lengthToPoint(point);
         double distanceSquared = offset.lengthSqr();
-        if (distanceSquared <= maximumDistance * maximumDistance
-                || distanceSquared < 1.0E-12) {
+        if (distanceSquared <= maximumDistance * maximumDistance || distanceSquared < 1.0E-12) {
             return target;
         }
         return origin.add(offset.scale(maximumDistance / Math.sqrt(distanceSquared)));
@@ -649,15 +655,19 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
             return;
         }
         Vec3 start = attachment(this.worldPosition);
-        Vec3 end = this.connectedPos != null
-                ? attachment(this.connectedPos)
-                : this.freeEnd;
+        Vec3 end = this.connectedPos != null ? attachment(this.connectedPos) : this.freeEnd;
         double directDistance = start.distanceTo(end);
         double safeLength = Math.max(this.ropeLength, directDistance);
-        this.synchronizedPoints = RopeSimulation.withLength(
-                start.x(), start.y(), start.z(),
-                end.x(), end.y(), end.z(),
-                safeLength, SERVER_PARAMETERS
-        ).copyPoints();
+        this.synchronizedPoints =
+                RopeSimulation.withLength(
+                                start.x(),
+                                start.y(),
+                                start.z(),
+                                end.x(),
+                                end.y(),
+                                end.z(),
+                                safeLength,
+                                SERVER_PARAMETERS)
+                        .copyPoints();
     }
 }

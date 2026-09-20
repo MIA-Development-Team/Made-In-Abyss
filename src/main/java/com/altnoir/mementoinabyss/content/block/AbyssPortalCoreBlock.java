@@ -1,7 +1,6 @@
 package com.altnoir.mementoinabyss.content.block;
 
 import com.altnoir.mementoinabyss.init.MiaArtifactItems;
-import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.worldgen.feature.AbyssPortalFeature;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -27,14 +26,16 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public final class AbyssPortalCoreBlock extends Block {
-    public static final MapCodec<AbyssPortalCoreBlock> CODEC = simpleCodec(AbyssPortalCoreBlock::new);
+    public static final MapCodec<AbyssPortalCoreBlock> CODEC =
+            simpleCodec(AbyssPortalCoreBlock::new);
     public static final BooleanProperty COMPASS = BooleanProperty.create("compass");
     public static final int MAX_STAGE = 12;
     public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, MAX_STAGE);
-    private static final VoxelShape SHAPE = Shapes.or(
-            Block.box(2, 10, 2, 14, 15, 14),
-            Block.box(3, 3, 3, 13, 10, 13),
-            Block.box(0, 0, 0, 16, 3, 16));
+    private static final VoxelShape SHAPE =
+            Shapes.or(
+                    Block.box(2, 10, 2, 14, 15, 14),
+                    Block.box(3, 3, 3, 13, 10, 13),
+                    Block.box(0, 0, 0, 16, 3, 16));
 
     public AbyssPortalCoreBlock(Properties properties) {
         super(properties);
@@ -47,14 +48,22 @@ public final class AbyssPortalCoreBlock extends Block {
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
-                                               Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!stack.is(MiaArtifactItems.STAR_COMPASS.get()) || state.getValue(COMPASS)
+    protected InteractionResult useItemOn(
+            ItemStack stack,
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hitResult) {
+        if (!stack.is(MiaArtifactItems.STAR_COMPASS.get())
+                || state.getValue(COMPASS)
                 || level.dimension() != Level.OVERWORLD) {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
@@ -93,10 +102,14 @@ public final class AbyssPortalCoreBlock extends Block {
         }
         int intensity = MAX_STAGE - state.getValue(STAGE) + 1;
         for (int i = 0; i < intensity * 2; i++) {
-            level.addParticle(ParticleTypes.END_ROD,
-                    pos.getX() + random.nextFloat(), pos.getY() + random.nextFloat() * 0.1,
-                    pos.getZ() + random.nextFloat(), random.nextGaussian() * 0.005,
-                    random.nextGaussian() * 0.05 + intensity * 0.05, random.nextGaussian() * 0.005);
+            level.addParticle(
+                    ParticleTypes.END_ROD,
+                    pos.getX() + random.nextFloat(),
+                    pos.getY() + random.nextFloat() * 0.1,
+                    pos.getZ() + random.nextFloat(),
+                    random.nextGaussian() * 0.005,
+                    random.nextGaussian() * 0.05 + intensity * 0.05,
+                    random.nextGaussian() * 0.005);
         }
     }
 
@@ -111,7 +124,8 @@ public final class AbyssPortalCoreBlock extends Block {
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
+    protected int getAnalogOutputSignal(
+            BlockState state, Level level, BlockPos pos, Direction direction) {
         return state.getValue(COMPASS) ? 15 : 0;
     }
 

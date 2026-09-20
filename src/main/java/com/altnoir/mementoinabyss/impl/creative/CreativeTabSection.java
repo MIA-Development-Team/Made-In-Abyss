@@ -1,5 +1,9 @@
 package com.altnoir.mementoinabyss.impl.creative;
 
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -10,11 +14,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Registration target for one section inside a sectioned creative tab.
@@ -44,8 +43,7 @@ public final class CreativeTabSection {
             ResourceKey<CreativeModeTab> tab,
             Identifier id,
             Component title,
-            @Nullable Identifier bannerSprite
-    ) {
+            @Nullable Identifier bannerSprite) {
         this.tab = tab;
         this.id = id;
         this.title = title;

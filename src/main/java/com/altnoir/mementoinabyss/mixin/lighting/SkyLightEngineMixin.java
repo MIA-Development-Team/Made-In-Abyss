@@ -14,10 +14,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(SkyLightEngine.class)
 public abstract class SkyLightEngineMixin {
-    @Unique
-    private RegionalSkyLight.Region mia$skyLightRegion;
+    @Unique private RegionalSkyLight.Region mia$skyLightRegion;
 
-    @Inject(method = "<init>(Lnet/minecraft/world/level/chunk/LightChunkGetter;Lnet/minecraft/world/level/lighting/SkyLightSectionStorage;)V", at = @At("RETURN"))
+    @Inject(
+            method =
+                    "<init>(Lnet/minecraft/world/level/chunk/LightChunkGetter;Lnet/minecraft/world/level/lighting/SkyLightSectionStorage;)V",
+            at = @At("RETURN"))
     private void mia$resolveSkyLightRegion(
             LightChunkGetter chunkSource, SkyLightSectionStorage storage, CallbackInfo ci) {
         this.mia$skyLightRegion = RegionalSkyLight.resolve(chunkSource);
@@ -46,8 +48,8 @@ public abstract class SkyLightEngineMixin {
         }
     }
 
-    @Unique
-    private boolean mia$intersects(ChunkPos pos) {
-        return this.mia$skyLightRegion == null || this.mia$skyLightRegion.intersectsChunk(pos.x(), pos.z());
+    @Unique private boolean mia$intersects(ChunkPos pos) {
+        return this.mia$skyLightRegion == null
+                || this.mia$skyLightRegion.intersectsChunk(pos.x(), pos.z());
     }
 }

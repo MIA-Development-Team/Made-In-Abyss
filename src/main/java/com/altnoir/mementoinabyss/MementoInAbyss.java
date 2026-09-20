@@ -1,6 +1,5 @@
 package com.altnoir.mementoinabyss;
 
-import com.altnoir.mementoinabyss.compat.MiaMods;
 import com.altnoir.mementoinabyss.data.MiaDataGen;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.init.*;
@@ -24,7 +23,8 @@ public class MementoInAbyss {
     private static final MiaRegistrate REGISTRATE = MiaRegistrate.create(ID);
 
     public MementoInAbyss(IEventBus modEventBus, ModContainer modContainer) {
-        LOGGER.info("{} {}+{} initializing...", NAME, MiaBuildInfo.VERSION, MiaBuildInfo.GIT_COMMIT);
+        LOGGER.info(
+                "{} {}+{} initializing...", NAME, MiaBuildInfo.VERSION, MiaBuildInfo.GIT_COMMIT);
 
         REGISTRATE.registerEventListeners(modEventBus);
 

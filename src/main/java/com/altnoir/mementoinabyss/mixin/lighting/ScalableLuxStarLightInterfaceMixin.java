@@ -19,21 +19,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Pseudo
 @Mixin(targets = "ca.spottedleaf.starlight.common.light.StarLightInterface", remap = false)
 public abstract class ScalableLuxStarLightInterfaceMixin {
-    @Unique
-    private RegionalSkyLight.Region mia$skyLightRegion;
-    @Unique
-    private RegionalSkyLightListener mia$skyReader;
+    @Unique private RegionalSkyLight.Region mia$skyLightRegion;
+    @Unique private RegionalSkyLightListener mia$skyReader;
 
     @Inject(method = "<init>", at = @At("RETURN"), remap = false)
     private void mia$resolveSkyLightRegion(
-            LightChunkGetter lightAccess, boolean hasSkyLight, boolean hasBlockLight,
-            LevelLightEngine lightEngine, CallbackInfo ci) {
+            LightChunkGetter lightAccess,
+            boolean hasSkyLight,
+            boolean hasBlockLight,
+            LevelLightEngine lightEngine,
+            CallbackInfo ci) {
         this.mia$skyLightRegion = RegionalSkyLight.resolve(lightAccess);
     }
 
     @ModifyReturnValue(method = "getSkyLightValue", at = @At("RETURN"), remap = false)
     private int mia$maskSkyLight(int original, BlockPos pos, ChunkAccess chunk) {
-        return this.mia$skyLightRegion == null ? original
+        return this.mia$skyLightRegion == null
+                ? original
                 : this.mia$skyLightRegion.clampSkyLight(pos.getX(), pos.getZ(), original);
     }
 

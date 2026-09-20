@@ -15,7 +15,8 @@ import java.util.Objects;
  */
 public final class RopeSystem {
     private final Map<Long, RopeSimulation> ropes = new LinkedHashMap<>();
-    private final Collection<RopeSimulation> ropesView = Collections.unmodifiableCollection(this.ropes.values());
+    private final Collection<RopeSimulation> ropesView =
+            Collections.unmodifiableCollection(this.ropes.values());
     private long nextId = 1L;
 
     public long add(RopeSimulation rope) {

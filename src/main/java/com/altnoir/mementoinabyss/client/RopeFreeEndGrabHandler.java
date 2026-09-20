@@ -35,8 +35,9 @@ public final class RopeFreeEndGrabHandler {
         grabbedPoint = point;
         grabbedPosition = new Vec3(rope.x(point), rope.y(point), rope.z(point));
         attach(connector);
-        send(RopeNodeGrabPayload.Action.BEGIN, heldPosition(
-                minecraft.player.getEyePosition(), minecraft.player.getLookAngle()));
+        send(
+                RopeNodeGrabPayload.Action.BEGIN,
+                heldPosition(minecraft.player.getEyePosition(), minecraft.player.getLookAngle()));
     }
 
     public static void tick() {
@@ -47,7 +48,8 @@ public final class RopeFreeEndGrabHandler {
         }
         boolean useDown = minecraft.options.keyUse.isDown();
         if (connectorPos == null) {
-            if (useDown && !wasUseDown
+            if (useDown
+                    && !wasUseDown
                     && minecraft.screen == null
                     && minecraft.player.getMainHandItem().isEmpty()) {
                 GrabSelection hit = findLookedAtFreeRope(minecraft);
@@ -58,20 +60,23 @@ public final class RopeFreeEndGrabHandler {
             wasUseDown = useDown;
             return;
         }
-        if (!(minecraft.level.getBlockEntity(connectorPos) instanceof RopeConnectorBlockEntity connector)
+        if (!(minecraft.level.getBlockEntity(connectorPos)
+                        instanceof RopeConnectorBlockEntity connector)
                 || !connector.hasFreeEnd()
                 || connector.getClientRope() == null) {
             clear();
             return;
         }
         if (useDown) {
-            Vec3 desired = heldPosition(
-                    minecraft.player.getEyePosition(), minecraft.player.getLookAngle());
+            Vec3 desired =
+                    heldPosition(
+                            minecraft.player.getEyePosition(), minecraft.player.getLookAngle());
             Vec3 movement = desired.subtract(grabbedPosition);
             double distance = movement.length();
-            Vec3 nextPosition = distance > MAX_NODE_MOVE_PER_TICK
-                    ? grabbedPosition.add(movement.scale(MAX_NODE_MOVE_PER_TICK / distance))
-                    : desired;
+            Vec3 nextPosition =
+                    distance > MAX_NODE_MOVE_PER_TICK
+                            ? grabbedPosition.add(movement.scale(MAX_NODE_MOVE_PER_TICK / distance))
+                            : desired;
             grabbedPosition = connector.clampClientGrabPosition(grabbedPoint, nextPosition);
             if (minecraft.player.getEyePosition().distanceToSqr(grabbedPosition)
                     > GRAB_REACH * GRAB_REACH) {
@@ -95,7 +100,8 @@ public final class RopeFreeEndGrabHandler {
         Minecraft minecraft = Minecraft.getInstance();
         if (connectorPos != null
                 && minecraft.level != null
-                && minecraft.level.getBlockEntity(connectorPos) instanceof RopeConnectorBlockEntity connector) {
+                && minecraft.level.getBlockEntity(connectorPos)
+                        instanceof RopeConnectorBlockEntity connector) {
             connector.releaseClientPoint(grabbedPoint);
         }
         resetState();
@@ -111,13 +117,15 @@ public final class RopeFreeEndGrabHandler {
         grabbedPosition = new Vec3(rope.x(point), rope.y(point), rope.z(point));
         attach(connector);
         Minecraft minecraft = Minecraft.getInstance();
-        send(RopeNodeGrabPayload.Action.BEGIN, heldPosition(
-                minecraft.player.getEyePosition(), minecraft.player.getLookAngle()));
+        send(
+                RopeNodeGrabPayload.Action.BEGIN,
+                heldPosition(minecraft.player.getEyePosition(), minecraft.player.getLookAngle()));
     }
 
     private static void attach(RopeConnectorBlockEntity connector) {
-        connector.grabClientPoint(grabbedPoint, out -> out.set(
-                grabbedPosition.x(), grabbedPosition.y(), grabbedPosition.z()));
+        connector.grabClientPoint(
+                grabbedPoint,
+                out -> out.set(grabbedPosition.x(), grabbedPosition.y(), grabbedPosition.z()));
     }
 
     private static void send(RopeNodeGrabPayload.Action action, Vec3 target) {
@@ -158,10 +166,7 @@ public final class RopeFreeEndGrabHandler {
         return closest;
     }
 
-    private static int findLookedAtNode(
-            RopeConnectorBlockEntity connector,
-            Minecraft minecraft
-    ) {
+    private static int findLookedAtNode(RopeConnectorBlockEntity connector, Minecraft minecraft) {
         RopeSimulation rope = connector.getClientRope();
         if (rope == null) {
             return -1;
@@ -192,12 +197,7 @@ public final class RopeFreeEndGrabHandler {
     }
 
     private record GrabSelection(
-            RopeConnectorBlockEntity connector,
-            int point,
-            double distanceSquared
-    ) {
-    }
+            RopeConnectorBlockEntity connector, int point, double distanceSquared) {}
 
-    private RopeFreeEndGrabHandler() {
-    }
+    private RopeFreeEndGrabHandler() {}
 }

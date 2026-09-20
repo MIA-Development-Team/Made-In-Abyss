@@ -9,13 +9,19 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 public record SparseAquiferGate(int oneIn) implements DensityFunction.SimpleFunction {
     private static final int CELL_WIDTH = 16;
     private static final int CELL_HEIGHT = 12;
+
     /** Prevents an enabled neighboring aquifer sample cell from bleeding back across the radius. */
     private static final int CENTER_GUARD_WIDTH = CELL_WIDTH;
 
-    public static final KeyDispatchDataCodec<SparseAquiferGate> CODEC = KeyDispatchDataCodec.of(
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    Codec.intRange(1, 1024).fieldOf("one_in").forGetter(SparseAquiferGate::oneIn)
-            ).apply(instance, SparseAquiferGate::new)));
+    public static final KeyDispatchDataCodec<SparseAquiferGate> CODEC =
+            KeyDispatchDataCodec.of(
+                    RecordCodecBuilder.mapCodec(
+                            instance ->
+                                    instance.group(
+                                                    Codec.intRange(1, 1024)
+                                                            .fieldOf("one_in")
+                                                            .forGetter(SparseAquiferGate::oneIn))
+                                            .apply(instance, SparseAquiferGate::new)));
 
     @Override
     public double compute(FunctionContext context) {

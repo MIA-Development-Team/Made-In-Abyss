@@ -32,12 +32,11 @@ public final class PedestalBlockEntity extends BlockEntity implements WorldlyCon
     private static final String LEGACY_OUTPUT_INVENTORY = "output_inventory";
 
     @Getter
-    private final NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> items =
+            NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
 
     public PedestalBlockEntity(
-            BlockEntityType<PedestalBlockEntity> type,
-            BlockPos pos,
-            BlockState state) {
+            BlockEntityType<PedestalBlockEntity> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
@@ -190,7 +189,8 @@ public final class PedestalBlockEntity extends BlockEntity implements WorldlyCon
         ContainerHelper.loadAllItems(input.childOrEmpty(LEGACY_INPUT_INVENTORY), legacyInput);
         items.set(INPUT_SLOT, legacyInput.getFirst());
 
-        NonNullList<ItemStack> legacyOutput = NonNullList.withSize(OUTPUT_SLOT_COUNT, ItemStack.EMPTY);
+        NonNullList<ItemStack> legacyOutput =
+                NonNullList.withSize(OUTPUT_SLOT_COUNT, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(input.childOrEmpty(LEGACY_OUTPUT_INVENTORY), legacyOutput);
         for (int slot = 0; slot < legacyOutput.size(); slot++) {
             items.set(OUTPUT_SLOT_START + slot, legacyOutput.get(slot));
@@ -213,7 +213,8 @@ public final class PedestalBlockEntity extends BlockEntity implements WorldlyCon
     }
 
     @Override
-    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction direction) {
+    public boolean canPlaceItemThroughFace(
+            int slot, ItemStack stack, @Nullable Direction direction) {
         return direction != Direction.DOWN && canPlaceItem(slot, stack);
     }
 
@@ -279,7 +280,7 @@ public final class PedestalBlockEntity extends BlockEntity implements WorldlyCon
         ItemStack existing = items.get(INPUT_SLOT);
         return existing.isEmpty()
                 || ItemStack.isSameItemSameComponents(existing, stack)
-                && existing.getCount() < getMaxStackSize(stack);
+                        && existing.getCount() < getMaxStackSize(stack);
     }
 
     @Override

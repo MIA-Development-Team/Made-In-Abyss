@@ -1,6 +1,5 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-
 package com.altnoir.mementoinabyss.content.block.stripped_rotated_pillar;
 
 import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;

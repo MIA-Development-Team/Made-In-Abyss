@@ -4,6 +4,7 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.init.MiaEffects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -23,8 +24,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 
-import java.util.List;
-
 public final class CaveExplorerBeaconBlockEntity extends BlockEntity implements BeaconBeamOwner {
     private List<BeaconBeamOwner.Section> beamSections = Lists.newArrayList();
     private List<BeaconBeamOwner.Section> checkingBeamSections = Lists.newArrayList();
@@ -35,7 +34,8 @@ public final class CaveExplorerBeaconBlockEntity extends BlockEntity implements 
         super(type, pos, state);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, CaveExplorerBeaconBlockEntity beacon) {
+    public static void tick(
+            Level level, BlockPos pos, BlockState state, CaveExplorerBeaconBlockEntity beacon) {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
@@ -48,9 +48,10 @@ public final class CaveExplorerBeaconBlockEntity extends BlockEntity implements 
             checkPos = new BlockPos(x, beacon.lastCheckY + 1, z);
         }
 
-        BeaconBeamOwner.Section lastSection = beacon.checkingBeamSections.isEmpty()
-                ? null
-                : beacon.checkingBeamSections.getLast();
+        BeaconBeamOwner.Section lastSection =
+                beacon.checkingBeamSections.isEmpty()
+                        ? null
+                        : beacon.checkingBeamSections.getLast();
         int surface = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
 
         for (int i = 0; i < 10 && checkPos.getY() <= surface; i++) {
@@ -64,11 +65,14 @@ public final class CaveExplorerBeaconBlockEntity extends BlockEntity implements 
                     if (color == lastSection.getColor()) {
                         lastSection.increaseHeight();
                     } else {
-                        lastSection = new BeaconBeamOwner.Section(ARGB.average(lastSection.getColor(), color));
+                        lastSection =
+                                new BeaconBeamOwner.Section(
+                                        ARGB.average(lastSection.getColor(), color));
                         beacon.checkingBeamSections.add(lastSection);
                     }
                 }
-            } else if (lastSection == null || checked.getLightDampening() >= 15 && !checked.is(Blocks.BEDROCK)) {
+            } else if (lastSection == null
+                    || checked.getLightDampening() >= 15 && !checked.is(Blocks.BEDROCK)) {
                 beacon.checkingBeamSections.clear();
                 beacon.lastCheckY = surface;
                 break;
@@ -115,7 +119,8 @@ public final class CaveExplorerBeaconBlockEntity extends BlockEntity implements 
             boolean complete = true;
             for (int offsetX = x - tier; offsetX <= x + tier && complete; offsetX++) {
                 for (int offsetZ = z - tier; offsetZ <= z + tier; offsetZ++) {
-                    if (!level.getBlockState(new BlockPos(offsetX, layerY, offsetZ)).is(BlockTags.BEACON_BASE_BLOCKS)) {
+                    if (!level.getBlockState(new BlockPos(offsetX, layerY, offsetZ))
+                            .is(BlockTags.BEACON_BASE_BLOCKS)) {
                         complete = false;
                         break;
                     }
@@ -135,13 +140,15 @@ public final class CaveExplorerBeaconBlockEntity extends BlockEntity implements 
 
         var config = MementoInAbyss.CONFIGS.gamePlaySection;
         double horizontal = beaconLevel * config.caveExplorerBeaconHorizontal.get() + 10;
-        double vertical = config.caveExplorerBeaconMaxVertical.get()
-                ? level.getMaxY()
-                : beaconLevel * config.caveExplorerBeaconVertical.get() + 5;
+        double vertical =
+                config.caveExplorerBeaconMaxVertical.get()
+                        ? level.getMaxY()
+                        : beaconLevel * config.caveExplorerBeaconVertical.get() + 5;
         AABB range = new AABB(pos).inflate(horizontal, vertical, horizontal);
         int duration = (9 + beaconLevel * 2) * 20;
         for (Player player : level.getEntitiesOfClass(Player.class, range)) {
-            player.addEffect(new MobEffectInstance(MiaEffects.ABYSS_BLESSING, duration, 0, true, true));
+            player.addEffect(
+                    new MobEffectInstance(MiaEffects.ABYSS_BLESSING, duration, 0, true, true));
         }
     }
 

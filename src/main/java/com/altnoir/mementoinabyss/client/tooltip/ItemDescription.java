@@ -1,5 +1,7 @@
 package com.altnoir.mementoinabyss.client.tooltip;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.CommonComponents;
@@ -8,19 +10,14 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public record ItemDescription(
-        List<Component> defaultLines,
-        List<Component> shiftLines,
-        List<Component> controlLines
-) {
+        List<Component> defaultLines, List<Component> shiftLines, List<Component> controlLines) {
     public static ItemDescription create(Item item, TooltipPalette palette) {
         return create(item, palette, false, false);
     }
 
-    public static ItemDescription create(Item item, TooltipPalette palette, boolean externalControls) {
+    public static ItemDescription create(
+            Item item, TooltipPalette palette, boolean externalControls) {
         return create(item, palette, externalControls, false);
     }
 
@@ -28,8 +25,7 @@ public record ItemDescription(
             Item item,
             TooltipPalette palette,
             boolean externalControls,
-            boolean behavioursInControls
-    ) {
+            boolean behavioursInControls) {
         String translationKey = item.getDescriptionId() + ".tooltip";
         if (!I18n.exists(translationKey + ".summary")) {
             return null;
@@ -45,14 +41,12 @@ public record ItemDescription(
         for (int i = 1; I18n.exists(translationKey + ".condition" + i); i++) {
             builder.behaviour(
                     I18n.get(translationKey + ".condition" + i),
-                    I18n.get(translationKey + ".behaviour" + i)
-            );
+                    I18n.get(translationKey + ".behaviour" + i));
         }
         for (int i = 1; I18n.exists(translationKey + ".control" + i); i++) {
             builder.action(
                     I18n.get(translationKey + ".control" + i),
-                    I18n.get(translationKey + ".action" + i)
-            );
+                    I18n.get(translationKey + ".action" + i));
         }
         return builder.build();
     }
@@ -84,10 +78,7 @@ public record ItemDescription(
         }
 
         public Modifier(
-                TooltipPalette palette,
-                boolean externalControls,
-                boolean behavioursInControls
-        ) {
+                TooltipPalette palette, boolean externalControls, boolean behavioursInControls) {
             this.palette = palette;
             this.externalControls = externalControls;
             this.behavioursInControls = behavioursInControls;
@@ -98,15 +89,16 @@ public record ItemDescription(
             String language = Minecraft.getInstance().getLanguageManager().getSelected();
             if (!language.equals(cachedLanguage)) {
                 cachedLanguage = language;
-                description = create(
-                        event.getItemStack().getItem(),
-                        palette,
-                        externalControls,
-                        behavioursInControls
-                );
+                description =
+                        create(
+                                event.getItemStack().getItem(),
+                                palette,
+                                externalControls,
+                                behavioursInControls);
             }
             if (description != null) {
-                event.getToolTip().addAll(Math.min(1, event.getToolTip().size()), description.currentLines());
+                event.getToolTip()
+                        .addAll(Math.min(1, event.getToolTip().size()), description.currentLines());
             }
         }
     }
@@ -161,14 +153,16 @@ public record ItemDescription(
                 behaviourLines.add(CommonComponents.EMPTY);
             }
             for (Entry behaviour : behaviours) {
-                behaviourLines.add(Component.literal(behaviour.heading()).withStyle(palette.highlight()));
+                behaviourLines.add(
+                        Component.literal(behaviour.heading()).withStyle(palette.highlight()));
                 behaviourLines.addAll(TooltipHelper.wrap(behaviour.body(), palette, 1));
             }
             if (!controlLines.isEmpty() && !actions.isEmpty()) {
                 controlLines.add(CommonComponents.EMPTY);
             }
             for (Entry action : actions) {
-                controlLines.add(Component.literal(action.heading()).withStyle(palette.highlight()));
+                controlLines.add(
+                        Component.literal(action.heading()).withStyle(palette.highlight()));
                 controlLines.addAll(TooltipHelper.wrap(action.body(), palette, 1));
             }
 
@@ -186,10 +180,7 @@ public record ItemDescription(
                 controlLines = List.copyOf(defaultLines);
             }
             return new ItemDescription(
-                    List.copyOf(defaultLines),
-                    List.copyOf(shiftLines),
-                    List.copyOf(controlLines)
-            );
+                    List.copyOf(defaultLines), List.copyOf(shiftLines), List.copyOf(controlLines));
         }
 
         private static void addTabs(
@@ -198,24 +189,25 @@ public record ItemDescription(
                 boolean controlSelected,
                 boolean hasDescription,
                 boolean hasControls,
-                TooltipPalette palette
-        ) {
+                TooltipPalette palette) {
             int index = 0;
             if (hasDescription) {
-                lines.add(index++, tab(
-                        "tooltip.mementoinabyss.hold_for_description",
-                        "tooltip.mementoinabyss.key_shift",
-                        shiftSelected,
-                        palette
-                ));
+                lines.add(
+                        index++,
+                        tab(
+                                "tooltip.mementoinabyss.hold_for_description",
+                                "tooltip.mementoinabyss.key_shift",
+                                shiftSelected,
+                                palette));
             }
             if (hasControls) {
-                lines.add(index++, tab(
-                        "tooltip.mementoinabyss.hold_for_controls",
-                        "tooltip.mementoinabyss.key_control",
-                        controlSelected,
-                        palette
-                ));
+                lines.add(
+                        index++,
+                        tab(
+                                "tooltip.mementoinabyss.hold_for_controls",
+                                "tooltip.mementoinabyss.key_control",
+                                controlSelected,
+                                palette));
             }
             if ((shiftSelected || controlSelected) && index > 0) {
                 lines.add(index, CommonComponents.EMPTY);
@@ -223,13 +215,10 @@ public record ItemDescription(
         }
 
         private static MutableComponent tab(
-                String messageKey,
-                String keyName,
-                boolean selected,
-                TooltipPalette palette
-        ) {
-            Component key = Component.translatable(keyName)
-                    .withStyle(selected ? palette.highlight() : palette.muted());
+                String messageKey, String keyName, boolean selected, TooltipPalette palette) {
+            Component key =
+                    Component.translatable(keyName)
+                            .withStyle(selected ? palette.highlight() : palette.muted());
             return Component.translatable(messageKey, key).withStyle(palette.primary());
         }
 

@@ -1,8 +1,11 @@
 package com.altnoir.mementoinabyss.worldgen.lighting;
 
 import com.altnoir.mementoinabyss.worldgen.density.HopperAbyssHole;
-import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensions;
 import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensionTypes;
+import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensions;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 import net.minecraft.core.SectionPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
@@ -10,10 +13,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.DataLayer;
 import net.minecraft.world.level.chunk.LightChunkGetter;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 
 /**
  * Defines dimensions whose sky light is restricted to a horizontal region.
@@ -23,25 +22,33 @@ import java.util.function.Supplier;
 public final class RegionalSkyLight {
     /** Six chunks give vanilla's 16 sky-light levels enough room to blend without a hard rim. */
     public static final double DEFAULT_FADE_DISTANCE = 96.0;
+
     private static final Map<ResourceKey<Level>, Supplier<? extends Region>> DEFINITIONS =
             new ConcurrentHashMap<>();
     private static final Map<ResourceKey<Level>, Region> RESOLVED = new ConcurrentHashMap<>();
-    private static final Map<ResourceKey<Level>, Float> AMBIENT_BRIGHTNESS = new ConcurrentHashMap<>();
+    private static final Map<ResourceKey<Level>, Float> AMBIENT_BRIGHTNESS =
+            new ConcurrentHashMap<>();
 
     static {
-        Supplier<Region> abyssCenter = () -> circle(
-                0, 0, HopperAbyssHole.abyssRadius(), DEFAULT_FADE_DISTANCE);
+        Supplier<Region> abyssCenter =
+                () -> circle(0, 0, HopperAbyssHole.abyssRadius(), DEFAULT_FADE_DISTANCE);
         register(MiaDimensions.THE_ABYSS_LEVEL, abyssCenter, MiaDimensionTypes.ABYSS_AMBIENT_LIGHT);
-        register(MiaDimensions.GREAT_FAULT_LEVEL, abyssCenter, MiaDimensionTypes.GREAT_FAULT_AMBIENT_LIGHT);
+        register(
+                MiaDimensions.GREAT_FAULT_LEVEL,
+                abyssCenter,
+                MiaDimensionTypes.GREAT_FAULT_AMBIENT_LIGHT);
     }
 
-    public static void register(ResourceKey<Level> dimension, Supplier<? extends Region> definition) {
+    public static void register(
+            ResourceKey<Level> dimension, Supplier<? extends Region> definition) {
         register(dimension, definition, 0.0F);
     }
 
     /** Registers both the sky-light mask and the visual brightness used where sky light is absent. */
-    public static void register(ResourceKey<Level> dimension, Supplier<? extends Region> definition,
-                                float ambientBrightness) {
+    public static void register(
+            ResourceKey<Level> dimension,
+            Supplier<? extends Region> definition,
+            float ambientBrightness) {
         DEFINITIONS.put(dimension, definition);
         AMBIENT_BRIGHTNESS.put(dimension, Mth.clamp(ambientBrightness, 0.0F, 1.0F));
         RESOLVED.remove(dimension);
@@ -64,7 +71,11 @@ public final class RegionalSkyLight {
     public static Region circle(int centerX, int centerZ, double radius, double fadeDistance) {
         double nonNegativeRadius = Math.max(0.0, radius);
         double nonNegativeFade = Math.max(0.0, fadeDistance);
-        return new CircleRegion(centerX, centerZ, nonNegativeRadius, nonNegativeFade,
+        return new CircleRegion(
+                centerX,
+                centerZ,
+                nonNegativeRadius,
+                nonNegativeFade,
                 nonNegativeRadius * nonNegativeRadius,
                 (nonNegativeRadius + nonNegativeFade) * (nonNegativeRadius + nonNegativeFade));
     }
@@ -146,8 +157,14 @@ public final class RegionalSkyLight {
         }
     }
 
-    private record CircleRegion(int centerX, int centerZ, double radius, double fadeDistance,
-                                double radiusSquared, double outerRadiusSquared) implements Region {
+    private record CircleRegion(
+            int centerX,
+            int centerZ,
+            double radius,
+            double fadeDistance,
+            double radiusSquared,
+            double outerRadiusSquared)
+            implements Region {
         @Override
         public int maxSkyLight(int blockX, int blockZ) {
             long dx = (long) blockX - centerX;
@@ -158,8 +175,11 @@ public final class RegionalSkyLight {
             double remaining = (radius + fadeDistance - Math.sqrt(distanceSquared)) / fadeDistance;
             // Quintic smootherstep has a zero first and second derivative at both ends. This
             // avoids a visible ring where the fade enters full light or reaches darkness.
-            double smooth = remaining * remaining * remaining
-                    * (remaining * (remaining * 6.0 - 15.0) + 10.0);
+            double smooth =
+                    remaining
+                            * remaining
+                            * remaining
+                            * (remaining * (remaining * 6.0 - 15.0) + 10.0);
             return Mth.clamp((int) Math.round(smooth * 15.0), 0, 15);
         }
 
@@ -183,15 +203,15 @@ public final class RegionalSkyLight {
         public boolean isFullyLitChunk(int chunkX, int chunkZ) {
             int minX = chunkX << 4;
             int minZ = chunkZ << 4;
-            long farthestX = Math.max(Math.abs((long) minX - centerX), Math.abs((long) minX + 15 - centerX));
-            long farthestZ = Math.max(Math.abs((long) minZ - centerZ), Math.abs((long) minZ + 15 - centerZ));
+            long farthestX =
+                    Math.max(Math.abs((long) minX - centerX), Math.abs((long) minX + 15 - centerX));
+            long farthestZ =
+                    Math.max(Math.abs((long) minZ - centerZ), Math.abs((long) minZ + 15 - centerZ));
             return (double) farthestX * farthestX + (double) farthestZ * farthestZ <= radiusSquared;
         }
     }
 
-    public record RenderMask(float centerX, float centerZ, float radius, float fadeDistance) {
-    }
+    public record RenderMask(float centerX, float centerZ, float radius, float fadeDistance) {}
 
-    private RegionalSkyLight() {
-    }
+    private RegionalSkyLight() {}
 }

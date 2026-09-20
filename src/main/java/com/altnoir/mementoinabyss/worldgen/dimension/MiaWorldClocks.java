@@ -9,8 +9,8 @@ import net.minecraft.world.clock.WorldClock;
 
 /** Dedicated paused clock used by MIA dimensions so overworld time remains independent. */
 public final class MiaWorldClocks {
-    public static final ResourceKey<WorldClock> NOON = ResourceKey.create(
-            Registries.WORLD_CLOCK, MementoInAbyss.asResource("noon"));
+    public static final ResourceKey<WorldClock> NOON =
+            ResourceKey.create(Registries.WORLD_CLOCK, MementoInAbyss.asResource("noon"));
     private static final long NOON_TICKS = 6000L;
 
     public static void bootstrap(BootstrapContext<WorldClock> context) {

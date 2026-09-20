@@ -21,13 +21,15 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public final class CaveExplorerBeaconBlock extends BaseEntityBlock implements BeaconBeamBlock {
-    public static final MapCodec<CaveExplorerBeaconBlock> CODEC = simpleCodec(CaveExplorerBeaconBlock::new);
-    private static final VoxelShape SHAPE = Shapes.or(
-            Block.box(0.0, 0.0, 0.0, 4.0, 4.0, 4.0),
-            Block.box(0.0, 0.0, 12.0, 4.0, 4.0, 16.0),
-            Block.box(12.0, 0.0, 0.0, 16.0, 4.0, 4.0),
-            Block.box(12.0, 0.0, 12.0, 16.0, 4.0, 16.0),
-            Block.box(1.0, 0.0, 1.0, 15.0, 16.0, 15.0));
+    public static final MapCodec<CaveExplorerBeaconBlock> CODEC =
+            simpleCodec(CaveExplorerBeaconBlock::new);
+    private static final VoxelShape SHAPE =
+            Shapes.or(
+                    Block.box(0.0, 0.0, 0.0, 4.0, 4.0, 4.0),
+                    Block.box(0.0, 0.0, 12.0, 4.0, 4.0, 16.0),
+                    Block.box(12.0, 0.0, 0.0, 16.0, 4.0, 4.0),
+                    Block.box(12.0, 0.0, 12.0, 16.0, 4.0, 16.0),
+                    Block.box(1.0, 0.0, 1.0, 15.0, 16.0, 15.0));
 
     public CaveExplorerBeaconBlock(Properties properties) {
         super(properties);
@@ -44,7 +46,8 @@ public final class CaveExplorerBeaconBlock extends BaseEntityBlock implements Be
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
@@ -60,11 +63,10 @@ public final class CaveExplorerBeaconBlock extends BaseEntityBlock implements Be
 
     @Override
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(
-            Level level,
-            BlockState state,
-            BlockEntityType<T> type
-    ) {
+            Level level, BlockState state, BlockEntityType<T> type) {
         return createTickerHelper(
-                type, MiaBlockEntityTypes.CAVE_EXPLORER_BEACON.get(), CaveExplorerBeaconBlockEntity::tick);
+                type,
+                MiaBlockEntityTypes.CAVE_EXPLORER_BEACON.get(),
+                CaveExplorerBeaconBlockEntity::tick);
     }
 }

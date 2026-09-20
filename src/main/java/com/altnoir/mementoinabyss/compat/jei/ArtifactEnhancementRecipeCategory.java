@@ -5,6 +5,8 @@ import com.altnoir.mementoinabyss.impl.artifact.ArtifactApi;
 import com.altnoir.mementoinabyss.impl.artifact.enhancement.ArtifactEnhancementRecipe;
 import com.altnoir.mementoinabyss.impl.artifact.enhancement.ArtifactEnhancementRecipeInput;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
+import java.util.Comparator;
+import java.util.List;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -19,9 +21,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
-import java.util.Comparator;
-import java.util.List;
-
 public final class ArtifactEnhancementRecipeCategory
         implements IRecipeCategory<RecipeHolder<ArtifactEnhancementRecipe>> {
     private static final int ARROW_X = 76;
@@ -31,8 +30,7 @@ public final class ArtifactEnhancementRecipeCategory
 
     public static final IRecipeHolderType<ArtifactEnhancementRecipe> TYPE =
             IRecipeHolderType.create(
-                    com.altnoir.mementoinabyss.MementoInAbyss.asResource("artifact_enhancement")
-            );
+                    com.altnoir.mementoinabyss.MementoInAbyss.asResource("artifact_enhancement"));
 
     private final IDrawable icon;
 
@@ -69,29 +67,30 @@ public final class ArtifactEnhancementRecipeCategory
     public void setRecipe(
             IRecipeLayoutBuilder builder,
             RecipeHolder<ArtifactEnhancementRecipe> holder,
-            IFocusGroup focuses
-    ) {
+            IFocusGroup focuses) {
         ArtifactEnhancementRecipe recipe = holder.value();
         ItemStack material = new ItemStack(recipe.material(), recipe.materialCount());
         List<ItemStack> artifacts = enhanceableArtifacts();
-        List<ItemStack> results = artifacts.stream()
-                .map(artifact -> recipe.assemble(new ArtifactEnhancementRecipeInput(
-                        artifact,
-                        material,
-                        RandomSource.create(holder.id().identifier().hashCode())
-                )))
-                .filter(stack -> !stack.isEmpty())
-                .toList();
+        List<ItemStack> results =
+                artifacts.stream()
+                        .map(
+                                artifact ->
+                                        recipe.assemble(
+                                                new ArtifactEnhancementRecipeInput(
+                                                        artifact,
+                                                        material,
+                                                        RandomSource.create(
+                                                                holder.id()
+                                                                        .identifier()
+                                                                        .hashCode()))))
+                        .filter(stack -> !stack.isEmpty())
+                        .toList();
 
-        var artifactSlot = builder.addInputSlot(1, 6)
-                .setStandardSlotBackground()
-                .addItemStacks(artifacts);
-        builder.addInputSlot(50, 6)
-                .setStandardSlotBackground()
-                .add(material);
-        var resultSlot = builder.addOutputSlot(108, 6)
-                .setStandardSlotBackground()
-                .addItemStacks(results);
+        var artifactSlot =
+                builder.addInputSlot(1, 6).setStandardSlotBackground().addItemStacks(artifacts);
+        builder.addInputSlot(50, 6).setStandardSlotBackground().add(material);
+        var resultSlot =
+                builder.addOutputSlot(108, 6).setStandardSlotBackground().addItemStacks(results);
         if (artifacts.size() == results.size() && !artifacts.isEmpty()) {
             builder.createFocusLink(artifactSlot, resultSlot);
         }
@@ -101,8 +100,7 @@ public final class ArtifactEnhancementRecipeCategory
     public void createRecipeExtras(
             IRecipeExtrasBuilder builder,
             RecipeHolder<ArtifactEnhancementRecipe> recipe,
-            IFocusGroup focuses
-    ) {
+            IFocusGroup focuses) {
         builder.addRecipePlusSignWidget().setPosition(27, 8);
         builder.addRecipeArrowWidget().setPosition(ARROW_X, ARROW_Y);
     }
@@ -113,10 +111,11 @@ public final class ArtifactEnhancementRecipeCategory
             RecipeHolder<ArtifactEnhancementRecipe> recipe,
             mezz.jei.api.gui.ingredient.IRecipeSlotsView recipeSlotsView,
             double mouseX,
-            double mouseY
-    ) {
-        if (mouseX >= ARROW_X && mouseX < ARROW_X + ARROW_WIDTH
-                && mouseY >= ARROW_Y && mouseY < ARROW_Y + ARROW_HEIGHT) {
+            double mouseY) {
+        if (mouseX >= ARROW_X
+                && mouseX < ARROW_X + ARROW_WIDTH
+                && mouseY >= ARROW_Y
+                && mouseY < ARROW_Y + ARROW_HEIGHT) {
             tooltip.add(ArtifactEnhancementMaterialTooltip.modifierLine(recipe.value()));
         }
     }
@@ -125,8 +124,9 @@ public final class ArtifactEnhancementRecipeCategory
         return BuiltInRegistries.ITEM.stream()
                 .map(item -> item.getDefaultInstance())
                 .filter(ArtifactApi::isEnhanceable)
-                .sorted(Comparator.comparing(stack ->
-                        BuiltInRegistries.ITEM.getKey(stack.getItem())))
+                .sorted(
+                        Comparator.comparing(
+                                stack -> BuiltInRegistries.ITEM.getKey(stack.getItem())))
                 .toList();
     }
 }

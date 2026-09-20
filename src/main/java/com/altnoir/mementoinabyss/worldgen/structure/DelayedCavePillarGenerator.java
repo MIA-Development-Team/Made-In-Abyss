@@ -5,6 +5,13 @@ import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaTags;
 import com.altnoir.mementoinabyss.worldgen.density.HopperAbyssHole;
 import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensions;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.FullChunkStatus;
 import net.minecraft.server.level.ServerLevel;
@@ -18,14 +25,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * Places cave pillars after world generation. Chunk load only queues work: actual block access is
@@ -76,19 +75,25 @@ public final class DelayedCavePillarGenerator {
                 return;
             }
             if (placeBatch(level, active, PLACEMENT_OPERATIONS_PER_TICK)) {
-                CavePillarSavedData savedData = level.getDataStorage().computeIfAbsent(CavePillarSavedData.TYPE);
+                CavePillarSavedData savedData =
+                        level.getDataStorage().computeIfAbsent(CavePillarSavedData.TYPE);
                 savedData.markProcessed(active.id);
                 ACTIVE.remove(level, active);
-                MementoInAbyss.LOGGER.debug("Placed delayed cave pillar at {}, {}, mode {}, height {}, blocks {}",
-                        active.candidate.x(), active.candidate.z(), active.pillar.mode(),
-                        active.pillar.ceiling() - active.pillar.floor(), active.placed);
+                MementoInAbyss.LOGGER.debug(
+                        "Placed delayed cave pillar at {}, {}, mode {}, height {}, blocks {}",
+                        active.candidate.x(),
+                        active.candidate.z(),
+                        active.pillar.mode(),
+                        active.pillar.ceiling() - active.pillar.floor(),
+                        active.placed);
             }
             return;
         }
 
         PendingCandidates pending = PENDING.get(level);
         if (pending == null || pending.isEmpty()) return;
-        CavePillarSavedData savedData = level.getDataStorage().computeIfAbsent(CavePillarSavedData.TYPE);
+        CavePillarSavedData savedData =
+                level.getDataStorage().computeIfAbsent(CavePillarSavedData.TYPE);
         int attempts = Math.min(CANDIDATES_PER_TICK, pending.size());
         for (int i = 0; i < attempts; i++) {
             long id = pending.removeFirst();
@@ -130,7 +135,10 @@ public final class DelayedCavePillarGenerator {
         RandomSource random = candidate.random();
         List<Cavity> connectedCavities = cavities.stream().filter(Cavity::isConnected).toList();
         List<Cavity> choices = connectedCavities.isEmpty() ? cavities : connectedCavities;
-        choices = choices.stream().sorted(Comparator.comparingInt(Cavity::height).reversed()).toList();
+        choices =
+                choices.stream()
+                        .sorted(Comparator.comparingInt(Cavity::height).reversed())
+                        .toList();
         Cavity cavity = choices.get(random.nextInt(Math.min(3, choices.size())));
         Pillar pillar = createPillar(candidate, cavity, random);
         if (intersectsCenter(pillar.bounds(), HopperAbyssHole.abyssRadius())) {
@@ -165,9 +173,12 @@ public final class DelayedCavePillarGenerator {
     }
 
     private static Candidate candidate(long worldSeed, int cellX, int cellZ) {
-        long seed = mix64(worldSeed ^ SALT
-                ^ (long)cellX * 341873128712L
-                ^ (long)cellZ * 132897987541L);
+        long seed =
+                mix64(
+                        worldSeed
+                                ^ SALT
+                                ^ (long) cellX * 341873128712L
+                                ^ (long) cellZ * 132897987541L);
         RandomSource random = RandomSource.create(seed);
         int chunkX = cellX * CELL_SIZE_CHUNKS + random.nextInt(CELL_SIZE_CHUNKS);
         int chunkZ = cellZ * CELL_SIZE_CHUNKS + random.nextInt(CELL_SIZE_CHUNKS);
@@ -211,7 +222,12 @@ public final class DelayedCavePillarGenerator {
             int ceiling = hasCeiling ? y : maxY + 1;
             boolean floorCanEmbed = !hasFloor || floor - EMBED_DEPTH >= level.getMinY();
             boolean ceilingCanEmbed = !hasCeiling || ceiling + EMBED_DEPTH < level.getMaxY();
-            Cavity cavity = new Cavity(floor, ceiling, hasFloor && floorCanEmbed, hasCeiling && ceilingCanEmbed);
+            Cavity cavity =
+                    new Cavity(
+                            floor,
+                            ceiling,
+                            hasFloor && floorCanEmbed,
+                            hasCeiling && ceilingCanEmbed);
             if ((cavity.hasFloor() || cavity.hasCeiling())
                     && cavity.height() >= MIN_CAVITY_HEIGHT
                     && matchesMainHeightLimits(level, cavity)) {
@@ -247,22 +263,39 @@ public final class DelayedCavePillarGenerator {
         double upperBluntness = 0.3 + random.nextDouble() * 0.3;
         double lowerBluntness = 0.4 + random.nextDouble() * 0.6;
         int windOriginY = (cavity.floor() + cavity.ceiling()) / 2;
-        int endpointDistance = Math.max(windOriginY - cavity.floor(), cavity.ceiling() - windOriginY);
+        int endpointDistance =
+                Math.max(windOriginY - cavity.floor(), cavity.ceiling() - windOriginY);
         double wind = radius >= 6 ? random.nextDouble() * 0.3 : 0.0;
-        if (endpointDistance > 0) wind = Math.min(wind, MAX_ENDPOINT_DRIFT / (double)endpointDistance);
+        if (endpointDistance > 0)
+            wind = Math.min(wind, MAX_ENDPOINT_DRIFT / (double) endpointDistance);
         double angle = random.nextDouble() * Math.PI * 2.0;
         double windX = Math.cos(angle) * wind;
         double windZ = Math.sin(angle) * wind;
         PillarMode mode;
         if (cavity.isConnected()) {
-            mode = cavity.height() > maxConnectedHeight(radius)
-                    ? PillarMode.DISCONNECTED : PillarMode.CONNECTED;
+            mode =
+                    cavity.height() > maxConnectedHeight(radius)
+                            ? PillarMode.DISCONNECTED
+                            : PillarMode.CONNECTED;
         } else {
             mode = cavity.hasFloor() ? PillarMode.FLOOR_SPIKE : PillarMode.CEILING_SPIKE;
         }
-        Pillar pillar = new Pillar(candidate.x(), candidate.z(), cavity.floor(), cavity.ceiling(), radius,
-                upperScale, lowerScale, upperBluntness, lowerBluntness,
-                windX, windZ, windOriginY, mode, null);
+        Pillar pillar =
+                new Pillar(
+                        candidate.x(),
+                        candidate.z(),
+                        cavity.floor(),
+                        cavity.ceiling(),
+                        radius,
+                        upperScale,
+                        lowerScale,
+                        upperBluntness,
+                        lowerBluntness,
+                        windX,
+                        windZ,
+                        windOriginY,
+                        mode,
+                        null);
         if (mode == PillarMode.FLOOR_SPIKE || mode == PillarMode.CEILING_SPIKE) {
             pillar = toSinglePillar(pillar, mode == PillarMode.CEILING_SPIKE);
         }
@@ -278,29 +311,60 @@ public final class DelayedCavePillarGenerator {
         int height = singlePillarHeight(pillar, ceilingAnchor, availableHeight);
         int floor = ceilingAnchor ? pillar.ceiling() - height : pillar.floor();
         int ceiling = ceilingAnchor ? pillar.ceiling() : pillar.floor() + height;
-        return withBounds(new Pillar(pillar.centerX(), pillar.centerZ(), floor, ceiling, pillar.radius(),
-                pillar.upperScale(), pillar.lowerScale(), pillar.upperBluntness(), pillar.lowerBluntness(),
-                pillar.windX(), pillar.windZ(), pillar.windOriginY(),
-                ceilingAnchor ? PillarMode.CEILING_SPIKE : PillarMode.FLOOR_SPIKE, null));
+        return withBounds(
+                new Pillar(
+                        pillar.centerX(),
+                        pillar.centerZ(),
+                        floor,
+                        ceiling,
+                        pillar.radius(),
+                        pillar.upperScale(),
+                        pillar.lowerScale(),
+                        pillar.upperBluntness(),
+                        pillar.lowerBluntness(),
+                        pillar.windX(),
+                        pillar.windZ(),
+                        pillar.windOriginY(),
+                        ceilingAnchor ? PillarMode.CEILING_SPIKE : PillarMode.FLOOR_SPIKE,
+                        null));
     }
 
     private static Pillar withBounds(Pillar pillar) {
-        int minY = pillar.mode() == PillarMode.CEILING_SPIKE
-                ? pillar.floor() : pillar.floor() - EMBED_DEPTH;
-        int maxY = pillar.mode() == PillarMode.FLOOR_SPIKE
-                ? pillar.ceiling() : pillar.ceiling() + EMBED_DEPTH;
+        int minY =
+                pillar.mode() == PillarMode.CEILING_SPIKE
+                        ? pillar.floor()
+                        : pillar.floor() - EMBED_DEPTH;
+        int maxY =
+                pillar.mode() == PillarMode.FLOOR_SPIKE
+                        ? pillar.ceiling()
+                        : pillar.ceiling() + EMBED_DEPTH;
         int floorX = axisX(pillar, minY);
         int floorZ = axisZ(pillar, minY);
         int ceilingX = axisX(pillar, maxY);
         int ceilingZ = axisZ(pillar, maxY);
-        BoundingBox bounds = new BoundingBox(
-                Math.min(floorX, ceilingX) - pillar.radius(), minY,
-                Math.min(floorZ, ceilingZ) - pillar.radius(),
-                Math.max(floorX, ceilingX) + pillar.radius(), maxY,
-                Math.max(floorZ, ceilingZ) + pillar.radius());
-        return new Pillar(pillar.centerX(), pillar.centerZ(), pillar.floor(), pillar.ceiling(), pillar.radius(),
-                pillar.upperScale(), pillar.lowerScale(), pillar.upperBluntness(), pillar.lowerBluntness(),
-                pillar.windX(), pillar.windZ(), pillar.windOriginY(), pillar.mode(), bounds);
+        BoundingBox bounds =
+                new BoundingBox(
+                        Math.min(floorX, ceilingX) - pillar.radius(),
+                        minY,
+                        Math.min(floorZ, ceilingZ) - pillar.radius(),
+                        Math.max(floorX, ceilingX) + pillar.radius(),
+                        maxY,
+                        Math.max(floorZ, ceilingZ) + pillar.radius());
+        return new Pillar(
+                pillar.centerX(),
+                pillar.centerZ(),
+                pillar.floor(),
+                pillar.ceiling(),
+                pillar.radius(),
+                pillar.upperScale(),
+                pillar.lowerScale(),
+                pillar.upperBluntness(),
+                pillar.lowerBluntness(),
+                pillar.windX(),
+                pillar.windZ(),
+                pillar.windOriginY(),
+                pillar.mode(),
+                bounds);
     }
 
     private static boolean hasEndpointSupport(ServerLevel level, Pillar pillar, boolean ceiling) {
@@ -354,26 +418,37 @@ public final class DelayedCavePillarGenerator {
 
     private static LevelChunk fullChunk(ServerLevel level, int chunkX, int chunkZ) {
         LevelChunk chunk = level.getChunkSource().getChunkNow(chunkX, chunkZ);
-        return chunk != null && chunk.getFullStatus().isOrAfter(FullChunkStatus.FULL) ? chunk : null;
+        return chunk != null && chunk.getFullStatus().isOrAfter(FullChunkStatus.FULL)
+                ? chunk
+                : null;
     }
 
-    private static PlacementTask createPlacementTask(ServerLevel level, long id, Candidate candidate, Pillar pillar) {
+    private static PlacementTask createPlacementTask(
+            ServerLevel level, long id, Candidate candidate, Pillar pillar) {
         List<BlockPos> positions = new ArrayList<>();
-        int minY = pillar.mode() == PillarMode.CEILING_SPIKE
-                ? pillar.floor() : pillar.floor() - EMBED_DEPTH;
-        int maxY = pillar.mode() == PillarMode.FLOOR_SPIKE
-                ? pillar.ceiling() : pillar.ceiling() + EMBED_DEPTH;
-        int[] disconnectedReaches = pillar.mode() == PillarMode.DISCONNECTED
-                ? disconnectedReaches(pillar) : null;
-        int[][] floorTerrainDepths = pillar.mode() != PillarMode.CEILING_SPIKE
-                ? terrainDepths(level, pillar, false) : null;
-        int[][] ceilingTerrainDepths = pillar.mode() != PillarMode.FLOOR_SPIKE
-                ? terrainDepths(level, pillar, true) : null;
+        int minY =
+                pillar.mode() == PillarMode.CEILING_SPIKE
+                        ? pillar.floor()
+                        : pillar.floor() - EMBED_DEPTH;
+        int maxY =
+                pillar.mode() == PillarMode.FLOOR_SPIKE
+                        ? pillar.ceiling()
+                        : pillar.ceiling() + EMBED_DEPTH;
+        int[] disconnectedReaches =
+                pillar.mode() == PillarMode.DISCONNECTED ? disconnectedReaches(pillar) : null;
+        int[][] floorTerrainDepths =
+                pillar.mode() != PillarMode.CEILING_SPIKE
+                        ? terrainDepths(level, pillar, false)
+                        : null;
+        int[][] ceilingTerrainDepths =
+                pillar.mode() != PillarMode.FLOOR_SPIKE ? terrainDepths(level, pillar, true) : null;
         for (int y = minY; y <= maxY; y++) {
             int fromFloor = y - pillar.floor();
             int fromCeiling = pillar.ceiling() - y;
-            boolean floorEmbedded = pillar.mode() != PillarMode.CEILING_SPIKE && y <= pillar.floor();
-            boolean ceilingEmbedded = pillar.mode() != PillarMode.FLOOR_SPIKE && y >= pillar.ceiling();
+            boolean floorEmbedded =
+                    pillar.mode() != PillarMode.CEILING_SPIKE && y <= pillar.floor();
+            boolean ceilingEmbedded =
+                    pillar.mode() != PillarMode.FLOOR_SPIKE && y >= pillar.ceiling();
             boolean embedded = floorEmbedded || ceilingEmbedded;
             int anchorY = floorEmbedded ? pillar.floor() : ceilingEmbedded ? pillar.ceiling() : y;
             int axisX = axisX(pillar, anchorY);
@@ -387,23 +462,51 @@ public final class DelayedCavePillarGenerator {
                     if (radialDistance > layerRadius) continue;
                     if (embedded) {
                         if (radialDistance > convergenceRadius) {
-                            int[][] terrainDepths = floorEmbedded ? floorTerrainDepths : ceilingTerrainDepths;
-                            int terrainDepth = terrainDepths[dx + pillar.radius()][dz + pillar.radius()];
+                            int[][] terrainDepths =
+                                    floorEmbedded ? floorTerrainDepths : ceilingTerrainDepths;
+                            int terrainDepth =
+                                    terrainDepths[dx + pillar.radius()][dz + pillar.radius()];
                             if (terrainDepth < embedDepth) continue;
                         }
                     } else {
-                        int lowerHeight = naturalPillarHeight(candidate, dx, dz, false, radialDistance,
-                                pillar.radius(), pillar.lowerScale(), pillar.lowerBluntness());
-                        int upperHeight = naturalPillarHeight(candidate, dx, dz, true, radialDistance,
-                                pillar.radius(), pillar.upperScale(), pillar.upperBluntness());
-                        boolean place = switch (pillar.mode()) {
-                            case CONNECTED -> radialDistance <= MIN_CONNECTION_RADIUS
-                                    || fromFloor <= lowerHeight || fromCeiling <= upperHeight;
-                            case DISCONNECTED -> fromFloor <= Math.min(lowerHeight, disconnectedReaches[0])
-                                    || fromCeiling <= Math.min(upperHeight, disconnectedReaches[1]);
-                            case FLOOR_SPIKE -> fromFloor <= lowerHeight;
-                            case CEILING_SPIKE -> fromCeiling <= upperHeight;
-                        };
+                        int lowerHeight =
+                                naturalPillarHeight(
+                                        candidate,
+                                        dx,
+                                        dz,
+                                        false,
+                                        radialDistance,
+                                        pillar.radius(),
+                                        pillar.lowerScale(),
+                                        pillar.lowerBluntness());
+                        int upperHeight =
+                                naturalPillarHeight(
+                                        candidate,
+                                        dx,
+                                        dz,
+                                        true,
+                                        radialDistance,
+                                        pillar.radius(),
+                                        pillar.upperScale(),
+                                        pillar.upperBluntness());
+                        boolean place =
+                                switch (pillar.mode()) {
+                                    case CONNECTED ->
+                                            radialDistance <= MIN_CONNECTION_RADIUS
+                                                    || fromFloor <= lowerHeight
+                                                    || fromCeiling <= upperHeight;
+                                    case DISCONNECTED ->
+                                            fromFloor
+                                                            <= Math.min(
+                                                                    lowerHeight,
+                                                                    disconnectedReaches[0])
+                                                    || fromCeiling
+                                                            <= Math.min(
+                                                                    upperHeight,
+                                                                    disconnectedReaches[1]);
+                                    case FLOOR_SPIKE -> fromFloor <= lowerHeight;
+                                    case CEILING_SPIKE -> fromCeiling <= upperHeight;
+                                };
                         if (!place) continue;
                     }
                     positions.add(new BlockPos(axisX + dx, y, axisZ + dz));
@@ -442,11 +545,13 @@ public final class DelayedCavePillarGenerator {
             BlockPos pos = task.positions.get(task.index++);
             int y = pos.getY();
             Pillar pillar = task.pillar;
-            boolean embedded = (pillar.mode() != PillarMode.CEILING_SPIKE && y <= pillar.floor())
-                    || (pillar.mode() != PillarMode.FLOOR_SPIKE && y >= pillar.ceiling());
+            boolean embedded =
+                    (pillar.mode() != PillarMode.CEILING_SPIKE && y <= pillar.floor())
+                            || (pillar.mode() != PillarMode.FLOOR_SPIKE && y >= pillar.ceiling());
             BlockState current = level.getBlockState(pos);
             if (canReplace(current, embedded)
-                    && level.setBlock(pos, state, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE)) {
+                    && level.setBlock(
+                            pos, state, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE)) {
                 task.placed++;
             }
         }
@@ -454,43 +559,58 @@ public final class DelayedCavePillarGenerator {
     }
 
     private static int axisX(Pillar pillar, int y) {
-        return pillar.centerX() + (int)Math.floor(pillar.windX() * (pillar.windOriginY() - y));
+        return pillar.centerX() + (int) Math.floor(pillar.windX() * (pillar.windOriginY() - y));
     }
 
     private static int axisZ(Pillar pillar, int y) {
-        return pillar.centerZ() + (int)Math.floor(pillar.windZ() * (pillar.windOriginY() - y));
+        return pillar.centerZ() + (int) Math.floor(pillar.windZ() * (pillar.windOriginY() - y));
     }
 
     private static int embeddedRadius(Pillar pillar, int y) {
-        int depth = pillar.mode() != PillarMode.CEILING_SPIKE && y <= pillar.floor()
-                ? pillar.floor() - y : y - pillar.ceiling();
-        double progress = Math.min(1.0, depth / (double)EMBED_DEPTH);
+        int depth =
+                pillar.mode() != PillarMode.CEILING_SPIKE && y <= pillar.floor()
+                        ? pillar.floor() - y
+                        : y - pillar.ceiling();
+        double progress = Math.min(1.0, depth / (double) EMBED_DEPTH);
         double smoothProgress = progress * progress * (3.0 - 2.0 * progress);
-        return Math.max(1, (int)Math.ceil(1.0 + (pillar.radius() - 1.0) * (1.0 - smoothProgress)));
+        return Math.max(1, (int) Math.ceil(1.0 + (pillar.radius() - 1.0) * (1.0 - smoothProgress)));
     }
 
-    private static int naturalPillarHeight(Candidate candidate, int dx, int dz, boolean ceiling,
-                                           double distance, int radius, double scale, double bluntness) {
+    private static int naturalPillarHeight(
+            Candidate candidate,
+            int dx,
+            int dz,
+            boolean ceiling,
+            double distance,
+            int radius,
+            double scale,
+            double bluntness) {
         double sampledDistance = Math.max(MIN_CONNECTION_RADIUS, distance);
         int height = pillarHeight(sampledDistance, radius, scale, bluntness);
         if (distance <= MIN_CONNECTION_RADIUS) return height;
 
         long sideSalt = ceiling ? 0x2B992DDFA23249D6L : 0x9E3779B97F4A7C15L;
-        long hash = mix64(candidate.id() ^ sideSalt
-                ^ (long)dx * 341873128712L
-                ^ (long)dz * 132897987541L);
+        long hash =
+                mix64(
+                        candidate.id()
+                                ^ sideSalt
+                                ^ (long) dx * 341873128712L
+                                ^ (long) dz * 132897987541L);
         double chance = (hash & 0xFFFFL) / 65536.0;
         if (chance >= ROUGH_COLUMN_CHANCE) return height;
 
         double variation = ((hash >>> 16) & 0xFFFFL) / 65535.0;
         double heightScale = MIN_ROUGH_COLUMN_SCALE + (1.0 - MIN_ROUGH_COLUMN_SCALE) * variation;
-        return (int)Math.floor(height * heightScale);
+        return (int) Math.floor(height * heightScale);
     }
 
     private static int singlePillarHeight(Pillar pillar, boolean ceiling, int availableHeight) {
         double scale = ceiling ? pillar.upperScale() : pillar.lowerScale();
-        return Math.min(availableHeight, Math.min(MAX_SINGLE_PILLAR_HEIGHT,
-                Math.max(8, (int)Math.ceil(pillar.radius() * scale * 2.0))));
+        return Math.min(
+                availableHeight,
+                Math.min(
+                        MAX_SINGLE_PILLAR_HEIGHT,
+                        Math.max(8, (int) Math.ceil(pillar.radius() * scale * 2.0))));
     }
 
     private static int[] disconnectedReaches(Pillar pillar) {
@@ -499,11 +619,11 @@ public final class DelayedCavePillarGenerator {
         int upper = singlePillarHeight(pillar, true, availableHeight);
         int maxCombinedReach = availableHeight - MIN_DISCONNECTED_GAP - 1;
         if (lower + upper > maxCombinedReach) {
-            double ratio = maxCombinedReach / (double)(lower + upper);
-            lower = Math.max(1, (int)Math.floor(lower * ratio));
+            double ratio = maxCombinedReach / (double) (lower + upper);
+            lower = Math.max(1, (int) Math.floor(lower * ratio));
             upper = Math.max(1, maxCombinedReach - lower);
         }
-        return new int[]{lower, upper};
+        return new int[] {lower, upper};
     }
 
     private static boolean canReplace(BlockState state, boolean embedded) {
@@ -511,13 +631,15 @@ public final class DelayedCavePillarGenerator {
         return embedded && isTerrainSupport(state);
     }
 
-    private static int pillarHeight(double distance, double maxRadius, double scale, double bluntness) {
+    private static int pillarHeight(
+            double distance, double maxRadius, double scale, double bluntness) {
         double sampledRadius = Math.max(distance, bluntness);
         double normalized = sampledRadius / maxRadius * 0.384;
-        double shape = 0.75 * Math.pow(normalized, 4.0 / 3.0)
-                - Math.pow(normalized, 2.0 / 3.0)
-                - Math.log(normalized) / 3.0;
-        return (int)Math.max(0.0, scale * shape / 0.384 * maxRadius);
+        double shape =
+                0.75 * Math.pow(normalized, 4.0 / 3.0)
+                        - Math.pow(normalized, 2.0 / 3.0)
+                        - Math.log(normalized) / 3.0;
+        return (int) Math.max(0.0, scale * shape / 0.384 * maxRadius);
     }
 
     private static boolean isOpen(BlockState state) {
@@ -541,7 +663,11 @@ public final class DelayedCavePillarGenerator {
         return value ^ value >>> 31;
     }
 
-    private enum Result { DONE, RETRY, STARTED }
+    private enum Result {
+        DONE,
+        RETRY,
+        STARTED
+    }
 
     private enum PillarMode {
         CONNECTED,
@@ -566,11 +692,21 @@ public final class DelayedCavePillarGenerator {
         }
     }
 
-    private record Pillar(int centerX, int centerZ, int floor, int ceiling, int radius,
-                          double upperScale, double lowerScale,
-                          double upperBluntness, double lowerBluntness,
-                          double windX, double windZ, int windOriginY,
-                          PillarMode mode, BoundingBox bounds) {}
+    private record Pillar(
+            int centerX,
+            int centerZ,
+            int floor,
+            int ceiling,
+            int radius,
+            double upperScale,
+            double lowerScale,
+            double upperBluntness,
+            double lowerBluntness,
+            double windX,
+            double windZ,
+            int windOriginY,
+            PillarMode mode,
+            BoundingBox bounds) {}
 
     private static final class PlacementTask {
         private final long id;
@@ -580,7 +716,8 @@ public final class DelayedCavePillarGenerator {
         private int index;
         private int placed;
 
-        private PlacementTask(long id, Candidate candidate, Pillar pillar, List<BlockPos> positions) {
+        private PlacementTask(
+                long id, Candidate candidate, Pillar pillar, List<BlockPos> positions) {
             this.id = id;
             this.candidate = candidate;
             this.pillar = pillar;

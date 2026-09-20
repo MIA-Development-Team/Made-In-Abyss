@@ -9,13 +9,13 @@ public final class WhistleKeyMappings {
     public static final KeyMapping.Category CATEGORY =
             new KeyMapping.Category(MementoInAbyss.asResource("whistle"));
 
-    public static final KeyMapping SKILL_DIAL = new KeyMapping(
-            "key.mementoinabyss.whistle_skill_dial",
-            KeyConflictContext.IN_GAME,
-            InputConstants.Type.KEYSYM,
-            InputConstants.KEY_LCONTROL,
-            CATEGORY
-    );
+    public static final KeyMapping SKILL_DIAL =
+            new KeyMapping(
+                    "key.mementoinabyss.whistle_skill_dial",
+                    KeyConflictContext.IN_GAME,
+                    InputConstants.Type.KEYSYM,
+                    InputConstants.KEY_LCONTROL,
+                    CATEGORY);
 
     private WhistleKeyMappings() {}
 }

@@ -47,15 +47,15 @@ public final class StarCompassOverlay {
         int width = graphics.guiWidth();
         int height = graphics.guiHeight();
         float partialTick = deltaTracker.getGameTimeDeltaTicks();
-        float[] projected = project(
-                Vec3.atCenterOf(currentTarget),
-                minecraft.player.getEyePosition(partialTick),
-                minecraft.player.getYRot(),
-                minecraft.player.getXRot(),
-                width,
-                height,
-                minecraft.options.fov().get()
-        );
+        float[] projected =
+                project(
+                        Vec3.atCenterOf(currentTarget),
+                        minecraft.player.getEyePosition(partialTick),
+                        minecraft.player.getYRot(),
+                        minecraft.player.getXRot(),
+                        width,
+                        height,
+                        minecraft.options.fov().get());
 
         float screenX = projected[0];
         float screenY = projected[1];
@@ -80,12 +80,14 @@ public final class StarCompassOverlay {
             }
 
             float margin = ICON_SIZE / 2.0F + 10.0F;
-            float maxX = Math.abs(directionX) < 1.0E-3F
-                    ? Float.POSITIVE_INFINITY
-                    : (width / 2.0F - margin) / Math.abs(directionX);
-            float maxY = Math.abs(directionY) < 1.0E-3F
-                    ? Float.POSITIVE_INFINITY
-                    : (height / 2.0F - margin) / Math.abs(directionY);
+            float maxX =
+                    Math.abs(directionX) < 1.0E-3F
+                            ? Float.POSITIVE_INFINITY
+                            : (width / 2.0F - margin) / Math.abs(directionX);
+            float maxY =
+                    Math.abs(directionY) < 1.0E-3F
+                            ? Float.POSITIVE_INFINITY
+                            : (height / 2.0F - margin) / Math.abs(directionY);
             float edgeDistance = Math.min(maxX, maxY);
             screenX = centerX + directionX * edgeDistance;
             screenY = centerY + directionY * edgeDistance;
@@ -103,19 +105,11 @@ public final class StarCompassOverlay {
             return 1.0F;
         }
         return Math.clamp(
-                1.0F - (float) (elapsedMillis - DISPLAY_MILLIS) / FADE_OUT_MILLIS,
-                0.0F,
-                1.0F
-        );
+                1.0F - (float) (elapsedMillis - DISPLAY_MILLIS) / FADE_OUT_MILLIS, 0.0F, 1.0F);
     }
 
     private static void renderMarker(
-            GuiGraphicsExtractor graphics,
-            int x,
-            int y,
-            float alpha,
-            double distance
-    ) {
+            GuiGraphicsExtractor graphics, int x, int y, float alpha, double distance) {
         graphics.blitSprite(
                 RenderPipelines.GUI_TEXTURED,
                 ICON,
@@ -123,8 +117,7 @@ public final class StarCompassOverlay {
                 y - ICON_SIZE / 2,
                 ICON_SIZE,
                 ICON_SIZE,
-                alpha
-        );
+                alpha);
 
         Minecraft minecraft = Minecraft.getInstance();
         String distanceText = "%.1f m".formatted(distance);
@@ -135,8 +128,7 @@ public final class StarCompassOverlay {
                 x - minecraft.font.width(distanceText) / 2,
                 y + ICON_SIZE / 2 + 5,
                 color,
-                true
-        );
+                true);
     }
 
     private static float[] project(
@@ -146,8 +138,7 @@ public final class StarCompassOverlay {
             float pitch,
             int width,
             int height,
-            float fov
-    ) {
+            float fov) {
         Vec3 relative = worldPosition.subtract(cameraPosition);
         double yawRadians = Math.toRadians(yaw);
         double pitchRadians = Math.toRadians(pitch);
@@ -155,16 +146,18 @@ public final class StarCompassOverlay {
         double cameraX = relative.x * Math.cos(yawRadians) + relative.z * Math.sin(yawRadians);
         double yawDepth = -relative.x * Math.sin(yawRadians) + relative.z * Math.cos(yawRadians);
         double cameraY = relative.y * Math.cos(pitchRadians) + yawDepth * Math.sin(pitchRadians);
-        double cameraDepth = -relative.y * Math.sin(pitchRadians) + yawDepth * Math.cos(pitchRadians);
+        double cameraDepth =
+                -relative.y * Math.sin(pitchRadians) + yawDepth * Math.cos(pitchRadians);
         if (Math.abs(cameraDepth) < 0.01) {
             cameraDepth = Math.copySign(0.01, cameraDepth);
         }
 
         double tanHalfFov = Math.tan(Math.toRadians(fov / 2.0F));
         double aspectRatio = (double) width / height;
-        float screenX = (float) ((-cameraX / (cameraDepth * tanHalfFov * aspectRatio) + 1.0) * width / 2.0);
+        float screenX =
+                (float) ((-cameraX / (cameraDepth * tanHalfFov * aspectRatio) + 1.0) * width / 2.0);
         float screenY = (float) ((-cameraY / (cameraDepth * tanHalfFov) + 1.0) * height / 2.0);
-        return new float[]{screenX, screenY, (float) cameraDepth};
+        return new float[] {screenX, screenY, (float) cameraDepth};
     }
 
     private StarCompassOverlay() {}

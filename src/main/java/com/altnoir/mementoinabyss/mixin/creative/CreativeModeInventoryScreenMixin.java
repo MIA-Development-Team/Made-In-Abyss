@@ -13,11 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CreativeModeInventoryScreen.class)
 public class CreativeModeInventoryScreenMixin {
-    @Shadow
-    private static CreativeModeTab selectedTab;
+    @Shadow private static CreativeModeTab selectedTab;
 
-    @Shadow
-    private float scrollOffs;
+    @Shadow private float scrollOffs;
 
     @Inject(method = "extractBackground", at = @At("TAIL"))
     private void mementoinabyss$extractSectionHeadings(
@@ -25,15 +23,13 @@ public class CreativeModeInventoryScreenMixin {
             int mouseX,
             int mouseY,
             float partialTick,
-            CallbackInfo ci
-    ) {
+            CallbackInfo ci) {
         if (selectedTab instanceof SectionedCreativeModeTab sectionedTab) {
             SectionedCreativeTabRenderer.extract(
                     (CreativeModeInventoryScreen) (Object) this,
                     graphics,
                     sectionedTab,
-                    scrollOffs
-            );
+                    scrollOffs);
         } else {
             SectionedCreativeTabRenderer.clearHeadingSlots();
         }

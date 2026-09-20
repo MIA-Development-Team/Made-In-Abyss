@@ -1,5 +1,9 @@
 package com.altnoir.mementoinabyss.impl.creative;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -7,11 +11,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackLinkedSet;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 /**
  * A creative tab whose contents are split into labelled, scrollable sections.
@@ -36,7 +35,8 @@ public final class SectionedCreativeModeTab extends CreativeModeTab {
 
     public static Builder configure(Builder builder, CreativeTabSection... sections) {
         List<CreativeTabSection> sectionList = List.of(sections);
-        return builder.withTabFactory(tabBuilder -> new SectionedCreativeModeTab(tabBuilder, sectionList));
+        return builder.withTabFactory(
+                tabBuilder -> new SectionedCreativeModeTab(tabBuilder, sectionList));
     }
 
     @Override
@@ -49,7 +49,8 @@ public final class SectionedCreativeModeTab extends CreativeModeTab {
         for (CreativeTabSection section : sections) {
             List<ItemStack> enabledItems = new ArrayList<>();
             for (ItemStack stack : section.itemStacks()) {
-                if (stack.getItem().isEnabled(parameters.enabledFeatures()) && seenDisplayItems.add(stack)) {
+                if (stack.getItem().isEnabled(parameters.enabledFeatures())
+                        && seenDisplayItems.add(stack)) {
                     enabledItems.add(stack);
                     newSearchItems.add(stack);
                 }
@@ -60,7 +61,9 @@ public final class SectionedCreativeModeTab extends CreativeModeTab {
             }
 
             int headingRow = newDisplayItems.size() / COLUMNS;
-            newLayouts.add(new SectionLayout(section.title(), section.bannerSprite().orElse(null), headingRow));
+            newLayouts.add(
+                    new SectionLayout(
+                            section.title(), section.bannerSprite().orElse(null), headingRow));
             addEmptyRow(newDisplayItems);
             newDisplayItems.addAll(enabledItems);
             padToCompleteRow(newDisplayItems);
@@ -96,7 +99,8 @@ public final class SectionedCreativeModeTab extends CreativeModeTab {
     }
 
     public int visibleStartRow(float scrollOffset) {
-        int hiddenRows = Math.max(Mth.positiveCeilDiv(displayItems.size(), COLUMNS) - VISIBLE_ROWS, 0);
+        int hiddenRows =
+                Math.max(Mth.positiveCeilDiv(displayItems.size(), COLUMNS) - VISIBLE_ROWS, 0);
         return Math.max((int) (scrollOffset * hiddenRows + 0.5F), 0);
     }
 
@@ -116,6 +120,6 @@ public final class SectionedCreativeModeTab extends CreativeModeTab {
         }
     }
 
-    public record SectionLayout(Component title, @Nullable Identifier bannerSprite, int headingRow) {
-    }
+    public record SectionLayout(
+            Component title, @Nullable Identifier bannerSprite, int headingRow) {}
 }

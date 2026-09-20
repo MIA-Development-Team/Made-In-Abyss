@@ -13,7 +13,9 @@ public abstract class SkyLightSectionStorageMixin {
     @ModifyReturnValue(method = "getLightValue(JZ)I", at = @At("RETURN"))
     private int mia$maskVisibleSkyLight(int original, long blockNode, boolean updating) {
         RegionalSkyLight.Region region = ((RegionalSkyLightStorage) this).mia$getSkyLightRegion();
-        return region == null ? original : region.clampSkyLight(
-                BlockPos.getX(blockNode), BlockPos.getZ(blockNode), original);
+        return region == null
+                ? original
+                : region.clampSkyLight(
+                        BlockPos.getX(blockNode), BlockPos.getZ(blockNode), original);
     }
 }

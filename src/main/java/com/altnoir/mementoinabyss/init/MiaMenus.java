@@ -15,16 +15,21 @@ public final class MiaMenus {
             DeferredRegister.create(Registries.MENU, MementoInAbyss.ID);
 
     public static final DeferredHolder<MenuType<?>, MenuType<ArtifactEnhancementMenu>>
-            ARTIFACT_ENHANCEMENT = MENUS.register(
-                    "artifact_enhancement",
-                    () -> new MenuType<>(ArtifactEnhancementMenu::new, FeatureFlags.DEFAULT_FLAGS)
-            );
+            ARTIFACT_ENHANCEMENT =
+                    MENUS.register(
+                            "artifact_enhancement",
+                            () ->
+                                    new MenuType<>(
+                                            ArtifactEnhancementMenu::new,
+                                            FeatureFlags.DEFAULT_FLAGS));
 
     public static final DeferredHolder<MenuType<?>, MenuType<WhistleWorkbenchMenu>>
-            WHISTLE_WORKBENCH = MENUS.register(
-                    "whistle_workbench",
-                    () -> new MenuType<>(WhistleWorkbenchMenu::new, FeatureFlags.DEFAULT_FLAGS)
-            );
+            WHISTLE_WORKBENCH =
+                    MENUS.register(
+                            "whistle_workbench",
+                            () ->
+                                    new MenuType<>(
+                                            WhistleWorkbenchMenu::new, FeatureFlags.DEFAULT_FLAGS));
 
     public static void register(IEventBus bus) {
         MENUS.register(bus);

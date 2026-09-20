@@ -2,10 +2,9 @@ package com.altnoir.mementoinabyss.impl.curse.data;
 
 import com.altnoir.mementoinabyss.impl.curse.record.CurseDimension;
 import com.altnoir.mementoinabyss.impl.curse.record.CurseEffect;
-import net.minecraft.resources.Identifier;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.resources.Identifier;
 
 public class CurseBuilder {
     private final Identifier id;
@@ -27,10 +26,6 @@ public class CurseBuilder {
     }
 
     public CurseDimension build() {
-        return new CurseDimension(
-                id,
-                effects,
-                level
-        );
+        return new CurseDimension(id, effects, level);
     }
 }

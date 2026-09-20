@@ -53,11 +53,9 @@ public final class RopeConnectorBlock extends BaseEntityBlock {
 
     @Override
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(
-            Level level,
-            BlockState state,
-            BlockEntityType<T> type
-    ) {
-        return createTickerHelper(type, MiaBlockEntityTypes.ROPE_CONNECTOR.get(), RopeConnectorBlockEntity::tick);
+            Level level, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(
+                type, MiaBlockEntityTypes.ROPE_CONNECTOR.get(), RopeConnectorBlockEntity::tick);
     }
 
     @Override
@@ -68,25 +66,21 @@ public final class RopeConnectorBlock extends BaseEntityBlock {
             BlockPos pos,
             Player player,
             InteractionHand hand,
-            BlockHitResult hit
-    ) {
+            BlockHitResult hit) {
         return super.useItemOn(stack, state, level, pos, player, hand, hit);
     }
 
     @Override
     protected InteractionResult useWithoutItem(
-            BlockState state,
-            Level level,
-            BlockPos pos,
-            Player player,
-            BlockHitResult hit
-    ) {
+            BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (level.getBlockEntity(pos) instanceof RopeConnectorBlockEntity connector
                 && connector.hasFreeEnd()) {
             if (level.isClientSide()) {
                 RopeFreeEndGrabHandler.begin(connector);
             }
-            return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
+            return level.isClientSide()
+                    ? InteractionResult.SUCCESS
+                    : InteractionResult.SUCCESS_SERVER;
         }
         return InteractionResult.PASS;
     }

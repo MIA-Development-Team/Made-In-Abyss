@@ -1,13 +1,12 @@
 package com.altnoir.mementoinabyss.impl.artifact.component;
 
+import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import top.theillusivec4.curios.api.CurioAttributeModifiers;
 import top.theillusivec4.curios.api.SlotContext;
-
-import java.util.List;
 
 public interface ArtifactItemComponent {
     default void applyDefaults(Item.Properties properties) {}
@@ -16,13 +15,10 @@ public interface ArtifactItemComponent {
             ItemStack stack,
             Item.TooltipContext context,
             TooltipFlag flag,
-            List<Component> tooltip
-    ) {}
+            List<Component> tooltip) {}
 
     default void addAttributeModifiers(
-            ItemStack stack,
-            CurioAttributeModifiers.Builder modifiers
-    ) {}
+            ItemStack stack, CurioAttributeModifiers.Builder modifiers) {}
 
     default void curioTick(SlotContext slotContext, ItemStack stack) {}
 

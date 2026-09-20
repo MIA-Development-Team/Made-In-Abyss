@@ -1,17 +1,17 @@
 plugins {
-    id 'java-library'
-    id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.147'
-    id 'idea'
-    id 'net.kyori.blossom' version '2.2.0'
-    id 'me.modmuss50.mod-publish-plugin' version '2.2.0'
-    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.4.1'
-    id 'io.freefair.lombok' version "9.5.0"
-    id 'com.diffplug.spotless' version "8.10.2"
+	id 'java-library'
+	id 'maven-publish'
+	id 'net.neoforged.moddev' version '2.0.147'
+	id 'idea'
+	id 'net.kyori.blossom' version '2.2.0'
+	id 'me.modmuss50.mod-publish-plugin' version '2.2.0'
+	id 'org.jetbrains.gradle.plugin.idea-ext' version '1.4.1'
+	id 'io.freefair.lombok' version "9.5.0"
+	id 'com.diffplug.spotless' version "8.10.2"
 }
 
 tasks.named('wrapper', Wrapper).configure {
-    distributionType = Wrapper.DistributionType.BIN
+	distributionType = Wrapper.DistributionType.BIN
 }
 
 def release = providers.environmentVariable("RELEASE")
@@ -19,36 +19,36 @@ boolean dev = !release.map { it.toBoolean() }.getOrElse(false)
 String buildNumber = providers.environmentVariable("BUILD_NUMBER").orNull
 
 def gitHash = providers.exec {
-    commandLine 'git', 'rev-parse', '--short', 'HEAD'
+	commandLine 'git', 'rev-parse', '--short', 'HEAD'
 }.standardOutput.asText.map { it.trim() }.getOrElse("dev")
 
 version = mod_version + (dev && buildNumber != null ? "-${buildNumber}" : "")
 group = mod_group_id
 
 sourceSets.main {
-    resources {
-        srcDir('src/generated/resources')
-        exclude("**/*.bbmodel") // BlockBench project files
-        exclude("**/.cache") // datagen cache files
-    }
-    blossom.javaSources {
-        property 'version', mod_version
-        property 'gitCommit', gitHash
-    }
+	resources {
+		srcDir('src/generated/resources')
+		exclude("**/*.bbmodel") // BlockBench project files
+		exclude("**/.cache") // datagen cache files
+	}
+	blossom.javaSources {
+		property 'version', mod_version
+		property 'gitCommit', gitHash
+	}
 }
 
 repositories {
-    maven { url = "https://maven.gegy.dev/releases" } // Registrate
-    maven { url = "https://api.modrinth.com/maven" } // Jade
-    maven { url = "https://maven.blamejared.com/" } // JEI, Patchouli
-    maven { url = "https://maven.theillusivec4.top/" } // Curios
-    maven { url = "https://maven.fzzyhmstrs.me/" } // FzzyConfig
-    maven { url = "https://thedarkcolour.github.io/KotlinForForge/" } // KotlinForForge
-    maven { url = "https://maven.caffeinemc.net/releases" } // Sodium
+	maven { url = "https://maven.gegy.dev/releases" } // Registrate
+	maven { url = "https://api.modrinth.com/maven" } // Jade
+	maven { url = "https://maven.blamejared.com/" } // JEI, Patchouli
+	maven { url = "https://maven.theillusivec4.top/" } // Curios
+	maven { url = "https://maven.fzzyhmstrs.me/" } // FzzyConfig
+	maven { url = "https://thedarkcolour.github.io/KotlinForForge/" } // KotlinForForge
+	maven { url = "https://maven.caffeinemc.net/releases" } // Sodium
 }
 
 base {
-    archivesName = mod_id
+	archivesName = mod_id
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
@@ -56,163 +56,176 @@ java.withSourcesJar()
 java.withJavadocJar()
 
 neoForge {
-    version = project.neo_version
-    runs {
-        client {
-            client()
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
+	version = project.neo_version
+	runs {
+		client {
+			client()
+			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+		}
 
-        clientWithZink {
-            client()
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-            jvmArguments.add(
-                    "-javaagent:${file('libs/mesa-loader-windows-26.0.4-x64.jar').absolutePath}=zink"
-            )
-        }
+		clientWithZink {
+			client()
+			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+			jvmArguments.add(
+					"-javaagent:${file('libs/mesa-loader-windows-26.0.4-x64.jar').absolutePath}=zink"
+			)
+		}
 
-        server {
-            server()
-            programArgument '--nogui'
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
+		server {
+			server()
+			programArgument '--nogui'
+			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+		}
 
-        gameTestServer {
-            type = "gameTestServer"
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
+		gameTestServer {
+			type = "gameTestServer"
+			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+		}
 
-        data {
-            clientData()
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-        }
+		data {
+			clientData()
+			programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+		}
 
-        configureEach {
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
-            logLevel = org.slf4j.event.Level.DEBUG
-        }
-    }
+		configureEach {
+			systemProperty 'forge.logging.markers', 'REGISTRIES'
+			logLevel = org.slf4j.event.Level.DEBUG
+		}
+	}
 
-    mods {
-        "${mod_id}" {
-            sourceSet(sourceSets.main)
-        }
-    }
+	mods {
+		"${mod_id}" {
+			sourceSet(sourceSets.main)
+		}
+	}
 }
 
 jar {
-    manifest {
-        attributes([
-                'Specification-Title'     : mod_name,
-                'Specification-Vendor'    : mod_authors,
-                'Specification-Version'   : project.jar.archiveVersion,
-                'Implementation-Title'    : project.name,
-                'Implementation-Version'  : project.jar.archiveVersion,
-                'Implementation-Vendor'   : mod_authors,
-                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'Timestampe'              : System.currentTimeMillis(),
-                'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
-                'Built-On-Minecraft'      : minecraft_version,
-                "MixinConfigs"            : "mia.mixins.json",
-                "Git-Hash"                : gitHash
-        ])
-    }
+	manifest {
+		attributes([
+				'Specification-Title'     : mod_name,
+				'Specification-Vendor'    : mod_authors,
+				'Specification-Version'   : project.jar.archiveVersion,
+				'Implementation-Title'    : project.name,
+				'Implementation-Version'  : project.jar.archiveVersion,
+				'Implementation-Vendor'   : mod_authors,
+				'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+				'Timestampe'              : System.currentTimeMillis(),
+				'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+				'Built-On-Minecraft'      : minecraft_version,
+				"MixinConfigs"            : "mia.mixins.json",
+				"Git-Hash"                : gitHash
+		])
+	}
 }
 
 javadoc {
-    options.addStringOption('Xdoclint:none', '-quiet')
+	options.addStringOption('Xdoclint:none', '-quiet')
 }
 
 tasks.named("sourcesJar", Jar) {
-    manifest.attributes([
-            "Git-Hash": gitHash
-    ])
+	manifest.attributes([
+			"Git-Hash": gitHash
+	])
 }
 
 configurations {
-    runtimeClasspath.extendsFrom localRuntime
+	runtimeClasspath.extendsFrom localRuntime
 }
 
 dependencies {
-    implementation jarJar("com.tterrag.registrate:Registrate:${registrate_version}")
+	implementation jarJar("com.tterrag.registrate:Registrate:${registrate_version}")
 
-    implementation "me.fzzyhmstrs:fzzy_config:${fzzyconfig_version}"
+	implementation "me.fzzyhmstrs:fzzy_config:${fzzyconfig_version}"
 
-    compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
-    runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+	compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
+	runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
-    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
-    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+	compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+	runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
-    implementation "maven.modrinth:jade:${jade_version}"
+	implementation "maven.modrinth:jade:${jade_version}"
 
-    compileOnly "net.caffeinemc:sodium-neoforge-api:${sodium_version}"
-    runtimeOnly "net.caffeinemc:sodium-neoforge:${sodium_version}"
+	compileOnly "net.caffeinemc:sodium-neoforge-api:${sodium_version}"
+	runtimeOnly "net.caffeinemc:sodium-neoforge:${sodium_version}"
 
-    compileOnly "maven.modrinth:iris:${iris_version}"
+	compileOnly "maven.modrinth:iris:${iris_version}"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
-    var replaceProperties = [
-            minecraft_version      : minecraft_version,
-            minecraft_version_range: minecraft_version_range,
-            neo_version            : neo_version,
-            mod_id                 : mod_id,
-            mod_name               : mod_name,
-            mod_authors            : mod_authors,
-            mod_license            : mod_license,
-            mod_version            : mod_version,
-            curios_version         : curios_version,
-            fzzyconfig_version     : fzzyconfig_version,
-    ]
-    inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
+	var replaceProperties = [
+			minecraft_version      : minecraft_version,
+			minecraft_version_range: minecraft_version_range,
+			neo_version            : neo_version,
+			mod_id                 : mod_id,
+			mod_name               : mod_name,
+			mod_authors            : mod_authors,
+			mod_license            : mod_license,
+			mod_version            : mod_version,
+			curios_version         : curios_version,
+			fzzyconfig_version     : fzzyconfig_version,
+	]
+	inputs.properties replaceProperties
+	expand replaceProperties
+	from "src/main/templates"
+	into "build/generated/sources/modMetadata"
 }
 sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
 
 publishing {
-    publications {
-        register('mavenJava', MavenPublication) {
-            from components.java
-            artifactId = 'MementoInAbyss-26.1.2-NeoForge'
-        }
-    }
+	publications {
+		register('mavenJava', MavenPublication) {
+			from components.java
+			artifactId = 'MementoInAbyss-26.1.2-NeoForge'
+		}
+	}
 
-    repositories {
-        maven {
-            url = "https://maven.ringlo.im/releases"
-            credentials {
-                username = providers.environmentVariable("MAVEN_USERNAME").orNull
-                password = providers.environmentVariable("MAVEN_PASSWORD").orNull
-            }
-        }
-    }
+	repositories {
+		maven {
+			url = "https://maven.ringlo.im/releases"
+			credentials {
+				username = providers.environmentVariable("MAVEN_USERNAME").orNull
+				password = providers.environmentVariable("MAVEN_PASSWORD").orNull
+			}
+		}
+	}
 }
 
 publishMods {
-    file = jar.archiveFile
-    type = ALPHA
-    version = "$mod_version+mc$minecraft_version"
-    displayName = "$mod_name $mod_version for mc$minecraft_version"
-    modLoaders.add("neoforge")
+	file = jar.archiveFile
+	type = ALPHA
+	version = "$mod_version+mc$minecraft_version"
+	displayName = "$mod_name $mod_version for mc$minecraft_version"
+	modLoaders.add("neoforge")
 
-    github {
-        repository = "MIA-Development-Team/Made-In-Abyss"
-        accessToken = providers.environmentVariable("GITHUB_TOKEN")
-        commitish = gitHash
-    }
+	github {
+		repository = "MIA-Development-Team/Made-In-Abyss"
+		accessToken = providers.environmentVariable("GITHUB_TOKEN")
+		commitish = gitHash
+	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+	options.encoding = 'UTF-8'
 }
 
 idea {
-    module {
-        downloadSources = true
-        downloadJavadoc = true
-    }
+	module {
+		downloadSources = true
+		downloadJavadoc = true
+	}
+}
+
+spotless {
+	format 'misc', {
+		target '*.gradle', '.gitattributes', '.gitignore'
+		trimTrailingWhitespace()
+		leadingSpacesToTabs()
+		endWithNewline()
+	}
+	java {
+		googleJavaFormat('1.36.1').aosp().reflowLongStrings().skipJavadocFormatting()
+		formatAnnotations()
+	}
 }

@@ -1,6 +1,5 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-
 package com.altnoir.mementoinabyss.worldgen.placement;
 
 import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;

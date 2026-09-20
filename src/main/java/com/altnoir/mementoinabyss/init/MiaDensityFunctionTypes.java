@@ -16,14 +16,21 @@ public final class MiaDensityFunctionTypes {
     private static final DeferredRegister<MapCodec<? extends DensityFunction>> TYPES =
             DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, MementoInAbyss.ID);
 
-    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>> ABYSS_HOLE =
-            TYPES.register("abyss_hole", () -> HopperAbyssHole.CODEC.codec());
-    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>> GENERAL_ABYSS_HOLE =
-            TYPES.register("general_abyss_hole", () -> GeneralAbyssHole.CODEC.codec());
-    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>> NOODLE_ABYSS_HOLE =
-            TYPES.register("noodle_abyss_hole", () -> NoodleAbyssHole.CODEC.codec());
-    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>> SPARSE_AQUIFER_GATE =
-            TYPES.register("sparse_aquifer_gate", () -> SparseAquiferGate.CODEC.codec());
+    public static final DeferredHolder<
+                    MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>>
+            ABYSS_HOLE = TYPES.register("abyss_hole", () -> HopperAbyssHole.CODEC.codec());
+    public static final DeferredHolder<
+                    MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>>
+            GENERAL_ABYSS_HOLE =
+                    TYPES.register("general_abyss_hole", () -> GeneralAbyssHole.CODEC.codec());
+    public static final DeferredHolder<
+                    MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>>
+            NOODLE_ABYSS_HOLE =
+                    TYPES.register("noodle_abyss_hole", () -> NoodleAbyssHole.CODEC.codec());
+    public static final DeferredHolder<
+                    MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>>
+            SPARSE_AQUIFER_GATE =
+                    TYPES.register("sparse_aquifer_gate", () -> SparseAquiferGate.CODEC.codec());
 
     public static DensityFunction hopper() {
         return hopper(0.0F);
@@ -61,6 +68,5 @@ public final class MiaDensityFunctionTypes {
         TYPES.register(bus);
     }
 
-    private MiaDensityFunctionTypes() {
-    }
+    private MiaDensityFunctionTypes() {}
 }

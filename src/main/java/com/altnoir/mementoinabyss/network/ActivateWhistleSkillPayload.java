@@ -11,11 +11,11 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 public record ActivateWhistleSkillPayload(int fragmentIndex) implements CustomPacketPayload {
     public static final Type<ActivateWhistleSkillPayload> TYPE =
             new Type<>(MementoInAbyss.asResource("activate_whistle_skill"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, ActivateWhistleSkillPayload> STREAM_CODEC =
-            StreamCodec.ofMember(
-                    ActivateWhistleSkillPayload::encode,
-                    ActivateWhistleSkillPayload::decode
-            );
+    public static final StreamCodec<RegistryFriendlyByteBuf, ActivateWhistleSkillPayload>
+            STREAM_CODEC =
+                    StreamCodec.ofMember(
+                            ActivateWhistleSkillPayload::encode,
+                            ActivateWhistleSkillPayload::decode);
 
     private void encode(RegistryFriendlyByteBuf buffer) {
         buffer.writeVarInt(fragmentIndex);
@@ -25,10 +25,7 @@ public record ActivateWhistleSkillPayload(int fragmentIndex) implements CustomPa
         return new ActivateWhistleSkillPayload(buffer.readVarInt());
     }
 
-    public static void handle(
-            ActivateWhistleSkillPayload payload,
-            IPayloadContext context
-    ) {
+    public static void handle(ActivateWhistleSkillPayload payload, IPayloadContext context) {
         if (context.player() instanceof ServerPlayer player
                 && payload.fragmentIndex() >= 0
                 && payload.fragmentIndex() < 64) {

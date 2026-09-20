@@ -38,10 +38,11 @@ import org.jetbrains.annotations.Nullable;
 public final class PedestalBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public static final MapCodec<PedestalBlock> CODEC = simpleCodec(PedestalBlock::new);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    private static final VoxelShape SHAPE = Shapes.or(
-            Block.box(4, 6, 4, 12, 9, 12),
-            Block.box(5, 2, 5, 11, 6, 11),
-            Block.box(2, 0, 2, 14, 2, 14));
+    private static final VoxelShape SHAPE =
+            Shapes.or(
+                    Block.box(4, 6, 4, 12, 9, 12),
+                    Block.box(5, 2, 5, 11, 6, 11),
+                    Block.box(2, 0, 2, 14, 2, 14));
 
     public PedestalBlock(Properties properties) {
         super(properties);
@@ -54,7 +55,8 @@ public final class PedestalBlock extends BaseEntityBlock implements SimpleWaterl
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
@@ -64,9 +66,16 @@ public final class PedestalBlock extends BaseEntityBlock implements SimpleWaterl
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
-                                           Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!(level.getBlockEntity(pos) instanceof PedestalBlockEntity pedestal) || stack.isEmpty()) {
+    protected InteractionResult useItemOn(
+            ItemStack stack,
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hitResult) {
+        if (!(level.getBlockEntity(pos) instanceof PedestalBlockEntity pedestal)
+                || stack.isEmpty()) {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
         if (!pedestal.tryInsertItem(stack, level.isClientSide())) {
@@ -74,18 +83,20 @@ public final class PedestalBlock extends BaseEntityBlock implements SimpleWaterl
         }
         if (!level.isClientSide()) {
             stack.setCount(0);
-            level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.5F, 1.0F);
+            level.playSound(
+                    null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.5F, 1.0F);
         }
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
-                                                Player player, BlockHitResult hitResult) {
+    protected InteractionResult useWithoutItem(
+            BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (!(level.getBlockEntity(pos) instanceof PedestalBlockEntity pedestal)) {
             return InteractionResult.PASS;
         }
-        ItemStack extracted = pedestal.tryExtractItem(Item.ABSOLUTE_MAX_STACK_SIZE, level.isClientSide());
+        ItemStack extracted =
+                pedestal.tryExtractItem(Item.ABSOLUTE_MAX_STACK_SIZE, level.isClientSide());
         if (extracted.isEmpty()) {
             return InteractionResult.CONSUME;
         }
@@ -100,23 +111,35 @@ public final class PedestalBlock extends BaseEntityBlock implements SimpleWaterl
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
-        return defaultBlockState().setValue(WATERLOGGED,
-                context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
+        return defaultBlockState()
+                .setValue(
+                        WATERLOGGED,
+                        context.getLevel().getFluidState(context.getClickedPos()).getType()
+                                == Fluids.WATER);
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks,
-                                     BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState,
-                                     RandomSource random) {
+    protected BlockState updateShape(
+            BlockState state,
+            LevelReader level,
+            ScheduledTickAccess ticks,
+            BlockPos pos,
+            Direction direction,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random) {
         if (state.getValue(WATERLOGGED)) {
             ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
+        return super.updateShape(
+                state, level, ticks, pos, direction, neighborPos, neighborState, random);
     }
 
     @Override
     protected FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED)
+                ? Fluids.WATER.getSource(false)
+                : super.getFluidState(state);
     }
 
     @Override

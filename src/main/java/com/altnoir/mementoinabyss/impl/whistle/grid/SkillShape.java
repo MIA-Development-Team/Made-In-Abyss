@@ -13,7 +13,8 @@ public record SkillShape(Set<GridCell> cells) {
 
     public static SkillShape of(int... coordinates) {
         if (coordinates.length == 0 || coordinates.length % 2 != 0) {
-            throw new IllegalArgumentException("Skill shape coordinates must be non-empty x/y pairs");
+            throw new IllegalArgumentException(
+                    "Skill shape coordinates must be non-empty x/y pairs");
         }
         Set<GridCell> cells = new HashSet<>();
         for (int i = 0; i < coordinates.length; i += 2) {
@@ -44,12 +45,8 @@ public record SkillShape(Set<GridCell> cells) {
             for (int left = 0; left < width(); left++) {
                 for (int bottom = top; bottom < height(); bottom++) {
                     for (int right = left; right < width(); right++) {
-                        GridRectangle candidate = new GridRectangle(
-                                left,
-                                top,
-                                right - left + 1,
-                                bottom - top + 1
-                        );
+                        GridRectangle candidate =
+                                new GridRectangle(left, top, right - left + 1, bottom - top + 1);
                         if (isFilled(candidate) && isBetter(candidate, best)) {
                             best = candidate;
                         }

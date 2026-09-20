@@ -1,18 +1,17 @@
 package com.altnoir.mementoinabyss.content.item.artifact;
 
+import com.altnoir.mementoinabyss.impl.artifact.ArtifactProfile;
 import com.altnoir.mementoinabyss.impl.artifact.component.ArtifactEnhancementComponent;
 import com.altnoir.mementoinabyss.impl.artifact.component.ArtifactIdentityComponent;
 import com.altnoir.mementoinabyss.impl.artifact.component.ArtifactItemComponent;
-import com.altnoir.mementoinabyss.impl.artifact.ArtifactProfile;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.CurioAttributeModifiers;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class ArtifactItem extends Item implements ICurioItem {
     private final List<ArtifactItemComponent> components;
@@ -41,10 +40,7 @@ public final class ArtifactItem extends Item implements ICurioItem {
 
     @Override
     public List<Component> getAttributesTooltip(
-            List<Component> tooltips,
-            TooltipContext context,
-            ItemStack stack
-    ) {
+            List<Component> tooltips, TooltipContext context, ItemStack stack) {
         return List.of();
     }
 
@@ -84,7 +80,8 @@ public final class ArtifactItem extends Item implements ICurioItem {
         return canEquip(slotContext, stack);
     }
 
-    private static Properties applyDefaults(Properties properties, List<ArtifactItemComponent> components) {
+    private static Properties applyDefaults(
+            Properties properties, List<ArtifactItemComponent> components) {
         for (ArtifactItemComponent component : components) {
             component.applyDefaults(properties);
         }

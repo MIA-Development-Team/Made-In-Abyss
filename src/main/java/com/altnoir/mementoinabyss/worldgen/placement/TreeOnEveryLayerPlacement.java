@@ -1,16 +1,16 @@
 package com.altnoir.mementoinabyss.worldgen.placement;
 
 import com.altnoir.mementoinabyss.init.MiaPlacementModifiers;
+import com.altnoir.mementoinabyss.init.MiaTags;
 import com.mojang.serialization.MapCodec;
+import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.IntProviders;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.tags.BlockTags;
-import com.altnoir.mementoinabyss.init.MiaTags;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -18,12 +18,11 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
-import java.util.stream.Stream;
-
 public class TreeOnEveryLayerPlacement extends PlacementModifier {
-    public static final MapCodec<TreeOnEveryLayerPlacement> CODEC = IntProviders.codec(0, 256)
-            .fieldOf("count")
-            .xmap(TreeOnEveryLayerPlacement::new, s -> s.count);
+    public static final MapCodec<TreeOnEveryLayerPlacement> CODEC =
+            IntProviders.codec(0, 256)
+                    .fieldOf("count")
+                    .xmap(TreeOnEveryLayerPlacement::new, s -> s.count);
     private final IntProvider count;
 
     public TreeOnEveryLayerPlacement(IntProvider count) {
@@ -39,7 +38,8 @@ public class TreeOnEveryLayerPlacement extends PlacementModifier {
     }
 
     @Override
-    public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos) {
+    public Stream<BlockPos> getPositions(
+            PlacementContext context, RandomSource random, BlockPos pos) {
         Stream.Builder<BlockPos> builder = Stream.builder();
         int i = 0;
 
@@ -51,8 +51,11 @@ public class TreeOnEveryLayerPlacement extends PlacementModifier {
                 int k = random.nextInt(16) + pos.getX();
                 int l = random.nextInt(16) + pos.getZ();
                 int i1 = context.getHeight(Heightmap.Types.MOTION_BLOCKING, k, l);
-                ChunkAccess chunk = context.getLevel().getChunk(
-                        SectionPos.blockToSectionCoord(k), SectionPos.blockToSectionCoord(l));
+                ChunkAccess chunk =
+                        context.getLevel()
+                                .getChunk(
+                                        SectionPos.blockToSectionCoord(k),
+                                        SectionPos.blockToSectionCoord(l));
                 int j1 = findOnGroundYPosition(context, chunk, k, i1, l, i);
                 if (j1 != Integer.MAX_VALUE) {
                     builder.add(new BlockPos(k, j1, l));
@@ -71,8 +74,8 @@ public class TreeOnEveryLayerPlacement extends PlacementModifier {
         return MiaPlacementModifiers.TREE_ON_EVERY_LAYER.get();
     }
 
-    private static int findOnGroundYPosition(PlacementContext context, ChunkAccess chunk,
-                                             int x, int y, int z, int count) {
+    private static int findOnGroundYPosition(
+            PlacementContext context, ChunkAccess chunk, int x, int y, int z, int count) {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(x, y, z);
         int i = 0;
         BlockState blockstate = chunk.getBlockState(blockpos$mutableblockpos);

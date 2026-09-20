@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.worldgen.placement;
 
 import com.altnoir.mementoinabyss.init.MiaPlacementModifiers;
 import com.mojang.serialization.MapCodec;
+import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.util.RandomSource;
@@ -16,12 +17,11 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
-import java.util.stream.Stream;
-
 public class InvertedCountOnEveryLayerPlacement extends PlacementModifier {
-    public static final MapCodec<InvertedCountOnEveryLayerPlacement> CODEC = IntProviders.codec(0, 256)
-            .fieldOf("count")
-            .xmap(InvertedCountOnEveryLayerPlacement::new, p_191611_ -> p_191611_.count);
+    public static final MapCodec<InvertedCountOnEveryLayerPlacement> CODEC =
+            IntProviders.codec(0, 256)
+                    .fieldOf("count")
+                    .xmap(InvertedCountOnEveryLayerPlacement::new, p_191611_ -> p_191611_.count);
     private final IntProvider count;
 
     public InvertedCountOnEveryLayerPlacement(IntProvider count) {
@@ -37,14 +37,18 @@ public class InvertedCountOnEveryLayerPlacement extends PlacementModifier {
     }
 
     @Override
-    public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos) {
+    public Stream<BlockPos> getPositions(
+            PlacementContext context, RandomSource random, BlockPos pos) {
         Stream.Builder<BlockPos> builder = Stream.builder();
         for (int j = 0; j < this.count.sample(random); j++) {
             int x = random.nextInt(16) + pos.getX();
             int z = random.nextInt(16) + pos.getZ();
             int topY = context.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
-            ChunkAccess chunk = context.getLevel().getChunk(
-                    SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z));
+            ChunkAccess chunk =
+                    context.getLevel()
+                            .getChunk(
+                                    SectionPos.blockToSectionCoord(x),
+                                    SectionPos.blockToSectionCoord(z));
             int y = findLowestRootedDirtCeiling(context, chunk, x, topY, z);
             if (y != Integer.MAX_VALUE) builder.add(new BlockPos(x, y, z));
         }
@@ -57,8 +61,8 @@ public class InvertedCountOnEveryLayerPlacement extends PlacementModifier {
         return MiaPlacementModifiers.INVERTED_COUNT_ON_EVERY_LAYER.get();
     }
 
-    private static int findLowestRootedDirtCeiling(PlacementContext context, ChunkAccess chunk,
-                                                   int x, int topY, int z) {
+    private static int findLowestRootedDirtCeiling(
+            PlacementContext context, ChunkAccess chunk, int x, int topY, int z) {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(x, context.getMinY(), z);
         BlockState current = chunk.getBlockState(pos);
         for (int y = context.getMinY(); y < topY; y++) {

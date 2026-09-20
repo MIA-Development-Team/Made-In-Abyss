@@ -1,35 +1,33 @@
 package com.altnoir.mementoinabyss.client.screen;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.content.item.whistle.fragment.WhistleFragmentItem;
 import com.altnoir.mementoinabyss.impl.whistle.WhistleApi;
 import com.altnoir.mementoinabyss.impl.whistle.component.PlacedWhistleFragment;
-import com.altnoir.mementoinabyss.content.item.whistle.fragment.WhistleFragmentItem;
-import com.altnoir.mementoinabyss.impl.whistle.grid.WhistleGrid;
 import com.altnoir.mementoinabyss.impl.whistle.grid.GridCell;
 import com.altnoir.mementoinabyss.impl.whistle.grid.GridRectangle;
 import com.altnoir.mementoinabyss.impl.whistle.grid.GridRotation;
 import com.altnoir.mementoinabyss.impl.whistle.grid.SkillShape;
+import com.altnoir.mementoinabyss.impl.whistle.grid.WhistleGrid;
 import com.altnoir.mementoinabyss.impl.whistle.workbench.WhistleWorkbenchMenu;
 import com.mojang.blaze3d.platform.InputConstants;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-public final class WhistleWorkbenchScreen
-        extends AbstractContainerScreen<WhistleWorkbenchMenu> {
+public final class WhistleWorkbenchScreen extends AbstractContainerScreen<WhistleWorkbenchMenu> {
     private static final Identifier BACKGROUND =
             MementoInAbyss.asResource("textures/gui/container/whistle_workbench.png");
 
@@ -47,11 +45,7 @@ public final class WhistleWorkbenchScreen
 
     private GridRotation rotation = GridRotation.NONE;
 
-    public WhistleWorkbenchScreen(
-            WhistleWorkbenchMenu menu,
-            Inventory inventory,
-            Component title
-    ) {
+    public WhistleWorkbenchScreen(WhistleWorkbenchMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 176, 192);
         this.titleLabelX = 4;
         this.titleLabelY = 2;
@@ -61,11 +55,7 @@ public final class WhistleWorkbenchScreen
 
     @Override
     public void extractBackground(
-            GuiGraphicsExtractor graphics,
-            int mouseX,
-            int mouseY,
-            float partialTick
-    ) {
+            GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
         super.extractBackground(graphics, mouseX, mouseY, partialTick);
         graphics.blit(
                 RenderPipelines.GUI_TEXTURED,
@@ -77,23 +67,18 @@ public final class WhistleWorkbenchScreen
                 imageWidth,
                 imageHeight,
                 256,
-                256
-        );
+                256);
 
         Optional<WhistleGrid> grid = WhistleApi.grid(menu.whistle());
-        grid.ifPresent(value -> {
-            drawGrid(graphics, value, mouseX, mouseY);
-            drawInstalledFragments(graphics);
-            drawPlacementPreview(graphics, value, mouseX, mouseY);
-        });
+        grid.ifPresent(
+                value -> {
+                    drawGrid(graphics, value, mouseX, mouseY);
+                    drawInstalledFragments(graphics);
+                    drawPlacementPreview(graphics, value, mouseX, mouseY);
+                });
     }
 
-    private void drawGrid(
-            GuiGraphicsExtractor graphics,
-            WhistleGrid grid,
-            int mouseX,
-            int mouseY
-    ) {
+    private void drawGrid(GuiGraphicsExtractor graphics, WhistleGrid grid, int mouseX, int mouseY) {
         GridCell hovered = hoveredCell(mouseX, mouseY).orElse(null);
         for (int y = 0; y < grid.height(); y++) {
             for (int x = 0; x < grid.width(); x++) {
@@ -108,16 +93,14 @@ public final class WhistleWorkbenchScreen
                             cellY + 1,
                             cellX + CELL_SIZE - 1,
                             cellY + CELL_SIZE - 1,
-                            SLOT_BLOCKED
-                    );
+                            SLOT_BLOCKED);
                 } else if (cell.equals(hovered)) {
                     graphics.fill(
                             cellX + 1,
                             cellY + 1,
                             cellX + CELL_SIZE - 1,
                             cellY + CELL_SIZE - 1,
-                            SLOT_HOVERED
-                    );
+                            SLOT_HOVERED);
                 }
             }
         }
@@ -141,48 +124,46 @@ public final class WhistleWorkbenchScreen
                     placed.occupiedCells(),
                     0x66000000 | primary & 0x00FFFFFF,
                     primary,
-                    darken(primary)
-            );
+                    darken(primary));
             SkillShape rotatedShape = fragment.getDefinition().shape().rotate(placed.rotation());
             GridRectangle iconArea = rotatedShape.largestRectangle();
             graphics.item(
                     stack,
-                    leftPos + GRID_X
+                    leftPos
+                            + GRID_X
                             + (placed.x() + iconArea.x()) * CELL_SIZE
                             + (iconArea.width() * CELL_SIZE - 16) / 2,
-                    topPos + GRID_Y
+                    topPos
+                            + GRID_Y
                             + (placed.y() + iconArea.y()) * CELL_SIZE
-                            + (iconArea.height() * CELL_SIZE - 16) / 2
-            );
+                            + (iconArea.height() * CELL_SIZE - 16) / 2);
         }
     }
 
     private void drawPlacementPreview(
-            GuiGraphicsExtractor graphics,
-            WhistleGrid grid,
-            int mouseX,
-            int mouseY
-    ) {
+            GuiGraphicsExtractor graphics, WhistleGrid grid, int mouseX, int mouseY) {
         ItemStack held = menu.heldFragment();
         Optional<GridCell> hovered = hoveredCell(mouseX, mouseY);
-        if (grid == null || held.isEmpty() || hovered.isEmpty()
+        if (grid == null
+                || held.isEmpty()
+                || hovered.isEmpty()
                 || !(held.getItem() instanceof WhistleFragmentItem<?> fragment)) {
             return;
         }
 
         GridCell anchor = hovered.get();
-        boolean valid = WhistleApi.canInstall(
-                menu.whistle(),
-                held,
-                anchor.x(),
-                anchor.y(),
-                rotation
-        );
-        Set<GridCell> previewCells = fragment.getDefinition().shape().rotate(rotation).cells().stream()
-                .map(relative -> relative.offset(anchor.x(), anchor.y()))
-                .filter(cell -> cell.x() >= 0 && cell.y() >= 0
-                        && cell.x() < grid.width() && cell.y() < grid.height())
-                .collect(Collectors.toUnmodifiableSet());
+        boolean valid =
+                WhistleApi.canInstall(menu.whistle(), held, anchor.x(), anchor.y(), rotation);
+        Set<GridCell> previewCells =
+                fragment.getDefinition().shape().rotate(rotation).cells().stream()
+                        .map(relative -> relative.offset(anchor.x(), anchor.y()))
+                        .filter(
+                                cell ->
+                                        cell.x() >= 0
+                                                && cell.y() >= 0
+                                                && cell.x() < grid.width()
+                                                && cell.y() < grid.height())
+                        .collect(Collectors.toUnmodifiableSet());
         int color = valid ? VALID_PREVIEW : INVALID_PREVIEW;
         int border = valid ? BORDER_BRIGHT : 0xFFC85A5A;
         drawConnectedShape(graphics, previewCells, color, border, darken(border));
@@ -193,8 +174,7 @@ public final class WhistleWorkbenchScreen
             Set<GridCell> cells,
             int fill,
             int primaryBorder,
-            int mutedBorder
-    ) {
+            int mutedBorder) {
         for (GridCell cell : cells) {
             int x = leftPos + GRID_X + cell.x() * CELL_SIZE;
             int y = topPos + GRID_Y + cell.y() * CELL_SIZE;
@@ -230,12 +210,10 @@ public final class WhistleWorkbenchScreen
         super.extractTooltip(graphics, mouseX, mouseY);
         hoveredCell(mouseX, mouseY)
                 .flatMap(cell -> WhistleApi.fragmentAt(menu.whistle(), cell))
-                .ifPresent(fragment -> graphics.setTooltipForNextFrame(
-                        font,
-                        fragment.createStack(),
-                        mouseX,
-                        mouseY
-                ));
+                .ifPresent(
+                        fragment ->
+                                graphics.setTooltipForNextFrame(
+                                        font, fragment.createStack(), mouseX, mouseY));
     }
 
     @Override
@@ -253,9 +231,11 @@ public final class WhistleWorkbenchScreen
             }
 
             if (buttonId >= 0 && sendButton(buttonId)) {
-                Minecraft.getInstance().getSoundManager().play(
-                        SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F)
-                );
+                Minecraft.getInstance()
+                        .getSoundManager()
+                        .play(
+                                SimpleSoundInstance.forUI(
+                                        SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
                 return true;
             }
         }
@@ -266,16 +246,18 @@ public final class WhistleWorkbenchScreen
     public boolean keyPressed(KeyEvent event) {
         if (event.key() == InputConstants.KEY_R && !menu.heldFragment().isEmpty()) {
             rotation = rotation.next();
-            Minecraft.getInstance().getSoundManager().play(
-                    SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F)
-            );
+            Minecraft.getInstance()
+                    .getSoundManager()
+                    .play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             return true;
         }
         return super.keyPressed(event);
     }
 
     private boolean sendButton(int buttonId) {
-        if (minecraft.player == null || minecraft.gameMode == null || !menu.clickMenuButton(minecraft.player, buttonId)) {
+        if (minecraft.player == null
+                || minecraft.gameMode == null
+                || !menu.clickMenuButton(minecraft.player, buttonId)) {
             return false;
         }
         minecraft.gameMode.handleInventoryButtonClick(menu.containerId, buttonId);
@@ -294,5 +276,4 @@ public final class WhistleWorkbenchScreen
                 .filter(grid -> cellX < grid.width() && cellY < grid.height())
                 .map(grid -> new GridCell(cellX, cellY));
     }
-
 }

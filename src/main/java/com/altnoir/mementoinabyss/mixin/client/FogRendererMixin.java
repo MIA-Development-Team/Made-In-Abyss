@@ -14,9 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class FogRendererMixin {
     @ModifyExpressionValue(
             method = "computeFogColor",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/util/Mth;clamp(FFF)F"))
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;clamp(FFF)F"))
     private float mia$darkenGreatFaultCeiling(
             float bottomDarkness,
             Camera camera,
@@ -30,10 +28,11 @@ public abstract class FogRendererMixin {
         }
 
         float range = level.getLevelData().voidDarknessOnsetRange();
-        float topDarkness = Mth.clamp(
-                (range + (float) camera.position().y - level.getMaxY()) / range,
-                0.0F,
-                1.0F);
+        float topDarkness =
+                Mth.clamp(
+                        (range + (float) camera.position().y - level.getMaxY()) / range,
+                        0.0F,
+                        1.0F);
         return Math.max(bottomDarkness, topDarkness);
     }
 }

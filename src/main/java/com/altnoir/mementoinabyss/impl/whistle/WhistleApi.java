@@ -1,26 +1,25 @@
 package com.altnoir.mementoinabyss.impl.whistle;
 
 import com.altnoir.mementoinabyss.content.item.whistle.WhistleItem;
-import com.altnoir.mementoinabyss.impl.whistle.component.WhistleLoadout;
-import com.altnoir.mementoinabyss.impl.whistle.component.PlacedWhistleFragment;
 import com.altnoir.mementoinabyss.content.item.whistle.fragment.WhistleFragmentItem;
 import com.altnoir.mementoinabyss.content.item.whistle.fragment.amplifier.WhistleAmplifierItem;
-import com.altnoir.mementoinabyss.impl.whistle.grid.WhistleGrid;
+import com.altnoir.mementoinabyss.content.item.whistle.skill.WhistleSkillItem;
+import com.altnoir.mementoinabyss.impl.whistle.component.PlacedWhistleFragment;
+import com.altnoir.mementoinabyss.impl.whistle.component.WhistleLoadout;
 import com.altnoir.mementoinabyss.impl.whistle.grid.GridCell;
 import com.altnoir.mementoinabyss.impl.whistle.grid.GridRotation;
-import com.altnoir.mementoinabyss.content.item.whistle.skill.WhistleSkillItem;
+import com.altnoir.mementoinabyss.impl.whistle.grid.WhistleGrid;
 import com.altnoir.mementoinabyss.impl.whistle.skill.WhistleSkillContext;
 import com.altnoir.mementoinabyss.init.MiaDataComponents;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import top.theillusivec4.curios.api.CuriosApi;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import top.theillusivec4.curios.api.CuriosApi;
 
 public final class WhistleApi {
     public static final String SLOT_ID = "whistle";
@@ -44,35 +43,22 @@ public final class WhistleApi {
     }
 
     public static boolean canInstall(
-            ItemStack whistle,
-            ItemStack fragment,
-            int x,
-            int y,
-            GridRotation rotation
-    ) {
+            ItemStack whistle, ItemStack fragment, int x, int y, GridRotation rotation) {
         if (!isWhistle(whistle) || !isFragment(fragment)) {
             return false;
         }
         return isValid(
-                whistle,
-                loadout(whistle).with(PlacedWhistleFragment.of(fragment, x, y, rotation))
-        );
+                whistle, loadout(whistle).with(PlacedWhistleFragment.of(fragment, x, y, rotation)));
     }
 
     public static boolean install(
-            ItemStack whistle,
-            ItemStack fragment,
-            int x,
-            int y,
-            GridRotation rotation
-    ) {
+            ItemStack whistle, ItemStack fragment, int x, int y, GridRotation rotation) {
         if (!canInstall(whistle, fragment, x, y, rotation)) {
             return false;
         }
         whistle.set(
                 MiaDataComponents.WHISTLE_LOADOUT.get(),
-                loadout(whistle).with(PlacedWhistleFragment.of(fragment, x, y, rotation))
-        );
+                loadout(whistle).with(PlacedWhistleFragment.of(fragment, x, y, rotation)));
         return true;
     }
 
@@ -132,19 +118,15 @@ public final class WhistleApi {
 
             power = Math.max(0.1, Math.min(power, 8.0));
             int cooldownTicks = Math.max(1, Math.min((int) Math.round(cooldown), 72_000));
-            result.add(new SkillActivation(
-                    i,
-                    placed,
-                    skill,
-                    placed.createStack(),
-                    power,
-                    cooldownTicks
-            ));
+            result.add(
+                    new SkillActivation(
+                            i, placed, skill, placed.createStack(), power, cooldownTicks));
         }
         return List.copyOf(result);
     }
 
-    public static Optional<ItemStack> equippedWhistle(net.minecraft.world.entity.LivingEntity entity) {
+    public static Optional<ItemStack> equippedWhistle(
+            net.minecraft.world.entity.LivingEntity entity) {
         var curios = CuriosApi.getCuriosInventory(entity);
         if (curios.isEmpty()) {
             return Optional.empty();
@@ -172,13 +154,15 @@ public final class WhistleApi {
                     || player.getCooldowns().isOnCooldown(activation.stack())) {
                 continue;
             }
-            activation.skill().activate(new WhistleSkillContext(
-                    player,
-                    equipped.get(),
-                    activation.fragment(),
-                    activation.powerMultiplier(),
-                    activation.cooldownTicks()
-            ));
+            activation
+                    .skill()
+                    .activate(
+                            new WhistleSkillContext(
+                                    player,
+                                    equipped.get(),
+                                    activation.fragment(),
+                                    activation.powerMultiplier(),
+                                    activation.cooldownTicks()));
             player.getCooldowns().addCooldown(activation.stack(), activation.cooldownTicks());
             return true;
         }
@@ -194,15 +178,15 @@ public final class WhistleApi {
         Set<GridCell> occupied = new HashSet<>();
         Set<Item> uniqueFragments = new HashSet<>();
         for (PlacedWhistleFragment placed : loadout.fragments()) {
-            if (!(placed.fragment().item().value() instanceof WhistleFragmentItem<?> fragmentItem)) {
+            if (!(placed.fragment().item().value()
+                    instanceof WhistleFragmentItem<?> fragmentItem)) {
                 return false;
             }
             Set<GridCell> cells = placed.occupiedCells();
             if (cells.isEmpty()) {
                 return false;
             }
-            if (fragmentItem.getDefinition().unique()
-                    && !uniqueFragments.add(fragmentItem)) {
+            if (fragmentItem.getDefinition().unique() && !uniqueFragments.add(fragmentItem)) {
                 return false;
             }
             for (GridCell cell : cells) {
@@ -222,10 +206,7 @@ public final class WhistleApi {
         return cells;
     }
 
-    private static boolean areAdjacent(
-            PlacedWhistleFragment first,
-            PlacedWhistleFragment second
-    ) {
+    private static boolean areAdjacent(PlacedWhistleFragment first, PlacedWhistleFragment second) {
         Set<GridCell> secondCells = second.occupiedCells();
         for (GridCell cell : first.occupiedCells()) {
             if (secondCells.contains(cell.offset(1, 0))
@@ -244,8 +225,7 @@ public final class WhistleApi {
             WhistleSkillItem skill,
             ItemStack stack,
             double powerMultiplier,
-            int cooldownTicks
-    ) {}
+            int cooldownTicks) {}
 
     private WhistleApi() {}
 }

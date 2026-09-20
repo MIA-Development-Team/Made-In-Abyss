@@ -1,13 +1,12 @@
 package com.altnoir.mementoinabyss.impl.artifact;
 
 import com.altnoir.mementoinabyss.init.MiaDataComponents;
+import java.util.Optional;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.Optional;
 
 public final class ArtifactApi {
     public static final String SLOT_ID = "artifact";
@@ -21,7 +20,8 @@ public final class ArtifactApi {
     }
 
     public static ArtifactEnhancement enhancement(ItemStack stack) {
-        return stack.getOrDefault(MiaDataComponents.ARTIFACT_ENHANCEMENT.get(), ArtifactEnhancement.EMPTY);
+        return stack.getOrDefault(
+                MiaDataComponents.ARTIFACT_ENHANCEMENT.get(), ArtifactEnhancement.EMPTY);
     }
 
     public static boolean isEnhanceable(ItemStack stack) {
@@ -51,14 +51,12 @@ public final class ArtifactApi {
             Holder<Attribute> attribute,
             Identifier modifierId,
             double amount,
-            AttributeModifier.Operation operation
-    ) {
+            AttributeModifier.Operation operation) {
         ArtifactEnhancement current = enhancement(stack);
         return setEnhancement(
                 stack,
                 current.addAttribute(attribute, modifierId, amount, operation)
-                        .withLevel(current.level() + 1)
-        );
+                        .withLevel(current.level() + 1));
     }
 
     private ArtifactApi() {}

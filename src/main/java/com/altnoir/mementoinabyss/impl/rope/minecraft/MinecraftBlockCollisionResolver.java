@@ -3,16 +3,15 @@ package com.altnoir.mementoinabyss.impl.rope.minecraft;
 import com.altnoir.mementoinabyss.impl.rope.MutableRopePoint;
 import com.altnoir.mementoinabyss.impl.rope.RopeCollisionResolver;
 import com.altnoir.mementoinabyss.impl.rope.RopeSimulation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.CollisionGetter;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.shapes.VoxelShape;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.CollisionGetter;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * One-way collision against Minecraft block shapes.
@@ -44,10 +43,7 @@ public final class MinecraftBlockCollisionResolver implements RopeCollisionResol
      * blocks. This is useful for anchors embedded inside a solid connector.
      */
     public MinecraftBlockCollisionResolver(
-            CollisionGetter level,
-            double queryPadding,
-            BlockPos... ignoredBlocks
-    ) {
+            CollisionGetter level, double queryPadding, BlockPos... ignoredBlocks) {
         this.level = Objects.requireNonNull(level, "level");
         if (!Double.isFinite(queryPadding) || queryPadding < 0.0) {
             throw new IllegalArgumentException("queryPadding must be finite and non-negative");
@@ -82,10 +78,14 @@ public final class MinecraftBlockCollisionResolver implements RopeCollisionResol
         }
 
         double inflation = rope.parameters().collisionRadius() + this.queryPadding;
-        AABB query = new AABB(
-                minX - inflation, minY - inflation, minZ - inflation,
-                maxX + inflation, maxY + inflation, maxZ + inflation
-        );
+        AABB query =
+                new AABB(
+                        minX - inflation,
+                        minY - inflation,
+                        minZ - inflation,
+                        maxX + inflation,
+                        maxY + inflation,
+                        maxZ + inflation);
         for (VoxelShape shape : this.level.getBlockCollisions(null, query)) {
             for (AABB collider : shape.toAabbs()) {
                 if (!this.belongsToIgnoredBlock(collider)) {
@@ -179,10 +179,7 @@ public final class MinecraftBlockCollisionResolver implements RopeCollisionResol
 
     @Override
     public void resolve(
-            MutableRopePoint position,
-            MutableRopePoint previousPosition,
-            double radius
-    ) {
+            MutableRopePoint position, MutableRopePoint previousPosition, double radius) {
         double startX = previousPosition.x();
         double startY = previousPosition.y();
         double startZ = previousPosition.z();
@@ -191,21 +188,17 @@ public final class MinecraftBlockCollisionResolver implements RopeCollisionResol
         double dz = position.z() - startZ;
         double length = Math.sqrt(dx * dx + dy * dy + dz * dz);
         double earliest = Double.POSITIVE_INFINITY;
-        int sampleCount = Math.clamp(
-                (int) Math.ceil(length / Math.max(radius * 0.4, 1.0E-3)),
-                1,
-                128
-        );
+        int sampleCount =
+                Math.clamp((int) Math.ceil(length / Math.max(radius * 0.4, 1.0E-3)), 1, 128);
         for (AABB collider : this.colliders) {
             AABB inflated = collider.inflate(radius);
-            if (this.intersectionFraction(
-                    inflated, startX, startY, startZ, dx, dy, dz)
+            if (this.intersectionFraction(inflated, startX, startY, startZ, dx, dy, dz)
                     == Double.POSITIVE_INFINITY) {
                 continue;
             }
-            double hit = this.sweptSphereIntersection(
-                    collider, startX, startY, startZ,
-                    dx, dy, dz, radius, sampleCount);
+            double hit =
+                    this.sweptSphereIntersection(
+                            collider, startX, startY, startZ, dx, dy, dz, radius, sampleCount);
             if (hit < earliest) {
                 earliest = hit;
             }
@@ -214,11 +207,7 @@ public final class MinecraftBlockCollisionResolver implements RopeCollisionResol
             if (length > 1.0E-9) {
                 earliest = Math.max(0.0, earliest - CONTACT_EPSILON / length);
             }
-            position.set(
-                    startX + dx * earliest,
-                    startY + dy * earliest,
-                    startZ + dz * earliest
-            );
+            position.set(startX + dx * earliest, startY + dy * earliest, startZ + dz * earliest);
         }
         this.resolve(position, radius);
     }
@@ -232,8 +221,7 @@ public final class MinecraftBlockCollisionResolver implements RopeCollisionResol
             double dy,
             double dz,
             double radius,
-            int sampleCount
-    ) {
+            int sampleCount) {
         double outside = 0.0;
         for (int sample = 1; sample <= sampleCount; sample++) {
             double fraction = (double) sample / sampleCount;
@@ -265,12 +253,7 @@ public final class MinecraftBlockCollisionResolver implements RopeCollisionResol
     }
 
     private static boolean sphereIntersects(
-            AABB collider,
-            double x,
-            double y,
-            double z,
-            double radius
-    ) {
+            AABB collider, double x, double y, double z, double radius) {
         double closestX = Math.clamp(x, collider.minX, collider.maxX);
         double closestY = Math.clamp(y, collider.minY, collider.maxY);
         double closestZ = Math.clamp(z, collider.minZ, collider.maxZ);
@@ -278,8 +261,7 @@ public final class MinecraftBlockCollisionResolver implements RopeCollisionResol
         double dy = y - closestY;
         double dz = z - closestZ;
         double penetratingRadius = Math.max(0.0, radius - CONTACT_EPSILON);
-        return dx * dx + dy * dy + dz * dz
-                < penetratingRadius * penetratingRadius;
+        return dx * dx + dy * dy + dz * dz < penetratingRadius * penetratingRadius;
     }
 
     private double intersectionFraction(
@@ -289,24 +271,18 @@ public final class MinecraftBlockCollisionResolver implements RopeCollisionResol
             double startZ,
             double dx,
             double dy,
-            double dz
-    ) {
+            double dz) {
         this.sweepInterval[0] = 0.0;
         this.sweepInterval[1] = 1.0;
         return clipAxis(startX, dx, box.minX, box.maxX, this.sweepInterval)
-                && clipAxis(startY, dy, box.minY, box.maxY, this.sweepInterval)
-                && clipAxis(startZ, dz, box.minZ, box.maxZ, this.sweepInterval)
+                        && clipAxis(startY, dy, box.minY, box.maxY, this.sweepInterval)
+                        && clipAxis(startZ, dz, box.minZ, box.maxZ, this.sweepInterval)
                 ? this.sweepInterval[0]
                 : Double.POSITIVE_INFINITY;
     }
 
     private static boolean clipAxis(
-            double start,
-            double delta,
-            double boxMinimum,
-            double boxMaximum,
-            double[] interval
-    ) {
+            double start, double delta, double boxMinimum, double boxMaximum, double[] interval) {
         if (Math.abs(delta) < 1.0E-12) {
             return start >= boxMinimum && start <= boxMaximum;
         }

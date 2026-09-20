@@ -3,13 +3,12 @@ package com.altnoir.mementoinabyss.client;
 import com.altnoir.mementoinabyss.impl.whistle.WhistleApi;
 import com.altnoir.mementoinabyss.impl.whistle.skill.WhistleNote;
 import com.altnoir.mementoinabyss.network.ActivateWhistleSkillPayload;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvents;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class WhistleComboHandler {
     private static final List<WhistleNote> INPUT = new ArrayList<>();
@@ -64,26 +63,24 @@ public final class WhistleComboHandler {
         rememberDirectionState(minecraft);
     }
 
-    private static void accept(
-            WhistleNote note,
-            List<WhistleApi.SkillActivation> skills
-    ) {
+    private static void accept(WhistleNote note, List<WhistleApi.SkillActivation> skills) {
         Minecraft minecraft = Minecraft.getInstance();
         INPUT.add(note);
 
-        List<WhistleApi.SkillActivation> available = skills.stream()
-                .filter(skill -> !minecraft.player.getCooldowns().isOnCooldown(skill.stack()))
-                .toList();
+        List<WhistleApi.SkillActivation> available =
+                skills.stream()
+                        .filter(
+                                skill ->
+                                        !minecraft
+                                                .player
+                                                .getCooldowns()
+                                                .isOnCooldown(skill.stack()))
+                        .toList();
         for (WhistleApi.SkillActivation activation : available) {
             if (activation.skill().getDefinition().sequence().equals(INPUT)) {
                 ClientPacketDistributor.sendToServer(
-                        new ActivateWhistleSkillPayload(activation.fragmentIndex())
-                );
-                minecraft.player.playSound(
-                        SoundEvents.NOTE_BLOCK_CHIME.value(),
-                        0.8F,
-                        1.2F
-                );
+                        new ActivateWhistleSkillPayload(activation.fragmentIndex()));
+                minecraft.player.playSound(SoundEvents.NOTE_BLOCK_CHIME.value(), 0.8F, 1.2F);
                 INPUT.clear();
                 active = false;
                 waitForRelease = true;
@@ -91,21 +88,19 @@ public final class WhistleComboHandler {
             }
         }
 
-        boolean hasPrefix = available.stream().anyMatch(activation ->
-                startsWith(activation.skill().getDefinition().sequence(), INPUT));
+        boolean hasPrefix =
+                available.stream()
+                        .anyMatch(
+                                activation ->
+                                        startsWith(
+                                                activation.skill().getDefinition().sequence(),
+                                                INPUT));
         if (!hasPrefix) {
-            minecraft.player.playSound(
-                    SoundEvents.NOTE_BLOCK_DIDGERIDOO.value(),
-                    0.5F,
-                    0.8F
-            );
+            minecraft.player.playSound(SoundEvents.NOTE_BLOCK_DIDGERIDOO.value(), 0.5F, 0.8F);
             INPUT.clear();
         } else {
             minecraft.player.playSound(
-                    SoundEvents.NOTE_BLOCK_HAT.value(),
-                    0.5F,
-                    1.0F + INPUT.size() * 0.08F
-            );
+                    SoundEvents.NOTE_BLOCK_HAT.value(), 0.5F, 1.0F + INPUT.size() * 0.08F);
         }
     }
 
@@ -140,10 +135,7 @@ public final class WhistleComboHandler {
         }
     }
 
-    private static boolean startsWith(
-            List<WhistleNote> sequence,
-            List<WhistleNote> prefix
-    ) {
+    private static boolean startsWith(List<WhistleNote> sequence, List<WhistleNote> prefix) {
         if (prefix.size() > sequence.size()) {
             return false;
         }
@@ -163,11 +155,11 @@ public final class WhistleComboHandler {
     }
 
     private static KeyMapping[] directionKeys(Minecraft minecraft) {
-        return new KeyMapping[]{
-                minecraft.options.keyUp,
-                minecraft.options.keyDown,
-                minecraft.options.keyLeft,
-                minecraft.options.keyRight
+        return new KeyMapping[] {
+            minecraft.options.keyUp,
+            minecraft.options.keyDown,
+            minecraft.options.keyLeft,
+            minecraft.options.keyRight
         };
     }
 

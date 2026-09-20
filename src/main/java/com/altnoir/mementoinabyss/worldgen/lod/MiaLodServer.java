@@ -74,12 +74,14 @@ public final class MiaLodServer {
         MiaLodSampler.setClientEnabled(player, active);
     }
 
-    public static void receiveView(ServerPlayer player,
+    public static void receiveView(
+            ServerPlayer player,
             com.altnoir.mementoinabyss.network.CrossDimensionLodViewPayload payload) {
         if (isEnabled()) MiaLodSampler.receiveView(player, payload);
     }
 
-    public static void receiveLodReceipt(ServerPlayer player,
+    public static void receiveLodReceipt(
+            ServerPlayer player,
             com.altnoir.mementoinabyss.network.CrossDimensionLodReceiptPayload receipt) {
         if (isEnabled()) MiaLodSampler.receive(player, receipt);
     }
@@ -102,7 +104,8 @@ public final class MiaLodServer {
     }
 
     private static void refreshPlayer(ServerPlayer player) {
-        if (isEnabled() && CrossDimensionLodLinks.forTarget(player.level().dimension()).isPresent()) {
+        if (isEnabled()
+                && CrossDimensionLodLinks.forTarget(player.level().dimension()).isPresent()) {
             MiaLodSampler.request(player);
         } else {
             MiaLodSampler.remove(player);
@@ -115,13 +118,33 @@ public final class MiaLodServer {
             if (link == null || !MiaLodSampler.wantsLod(player)) continue;
             var lazy = CrossDimensionLazyChunkGenerator.debugSnapshot(link);
             var stream = MiaLodSampler.debugSnapshot(player);
-            PacketDistributor.sendToPlayer(player, new CrossDimensionLodDebugPayload(
-                    link.id().toString(), lazy.phase(), lazy.generating(),
-                    lazy.centralCursor(), lazy.centralTotal(), lazy.requested(), lazy.generated(), lazy.failed(),
-                    lazy.activeX(), lazy.activeZ(), lazy.lastX(), lazy.lastZ(), lazy.elapsedMillis(), lazy.lastResult(),
-                    stream.candidates(), stream.pending(), stream.outstanding(), stream.loading(), stream.ready(),
-                    stream.known(), stream.missing(), MiaExecutors.threadCount(),
-                    MiaExecutors.activeTaskCount(), MiaExecutors.queuedTaskCount()));
+            PacketDistributor.sendToPlayer(
+                    player,
+                    new CrossDimensionLodDebugPayload(
+                            link.id().toString(),
+                            lazy.phase(),
+                            lazy.generating(),
+                            lazy.centralCursor(),
+                            lazy.centralTotal(),
+                            lazy.requested(),
+                            lazy.generated(),
+                            lazy.failed(),
+                            lazy.activeX(),
+                            lazy.activeZ(),
+                            lazy.lastX(),
+                            lazy.lastZ(),
+                            lazy.elapsedMillis(),
+                            lazy.lastResult(),
+                            stream.candidates(),
+                            stream.pending(),
+                            stream.outstanding(),
+                            stream.loading(),
+                            stream.ready(),
+                            stream.known(),
+                            stream.missing(),
+                            MiaExecutors.threadCount(),
+                            MiaExecutors.activeTaskCount(),
+                            MiaExecutors.queuedTaskCount()));
         }
     }
 

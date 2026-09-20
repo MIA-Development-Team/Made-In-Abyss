@@ -8,8 +8,7 @@ public final class MutableRopePoint {
     private double y;
     private double z;
 
-    public MutableRopePoint() {
-    }
+    public MutableRopePoint() {}
 
     public MutableRopePoint(double x, double y, double z) {
         this.set(x, y, z);

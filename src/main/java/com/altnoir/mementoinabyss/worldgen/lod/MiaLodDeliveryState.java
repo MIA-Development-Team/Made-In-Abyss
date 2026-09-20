@@ -2,13 +2,12 @@ package com.altnoir.mementoinabyss.worldgen.lod;
 
 import com.altnoir.mementoinabyss.network.CrossDimensionLodReceiptPayload;
 import com.altnoir.mementoinabyss.network.CrossDimensionLodTransfer;
-
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.LongPredicate;
 
 /** Server-thread delivery ledger. Only an exact ACK for a fully sent batch advances a baseline. */
@@ -22,15 +21,31 @@ final class MiaLodDeliveryState {
     private final Set<CacheAttempt> cacheAttempts = new HashSet<>();
     private long nextId;
 
-    long nextId() { return ++nextId; }
-    int outstandingCount() { return outstanding.size(); }
-    int confirmedCount() { return confirmed.size(); }
+    long nextId() {
+        return ++nextId;
+    }
+
+    int outstandingCount() {
+        return outstanding.size();
+    }
+
+    int confirmedCount() {
+        return confirmed.size();
+    }
+
     int confirmedCellSize(long key) {
         Baseline value = confirmed.get(key);
         return value == null ? 0 : value.cellSize;
     }
-    boolean waiting(long key) { return outstanding.containsKey(key); }
-    boolean coolingDown(long key, long now) { return retryAfter.getOrDefault(key, 0L) > now; }
+
+    boolean waiting(long key) {
+        return outstanding.containsKey(key);
+    }
+
+    boolean coolingDown(long key, long now) {
+        return retryAfter.getOrDefault(key, 0L) > now;
+    }
+
     long baseline(long key, int cellSize) {
         Baseline value = confirmed.get(key);
         return value != null && value.cellSize == cellSize ? value.revision : 0L;
@@ -38,8 +53,12 @@ final class MiaLodDeliveryState {
 
     boolean begin(CrossDimensionLodTransfer transfer, long now) {
         long key = transfer.chunkKey();
-        if (outstanding.size() >= MAX_OUTSTANDING || waiting(key) || coolingDown(key, now)
-                || !transfer.replacement() && transfer.baseRevision() != baseline(key, transfer.cellSize())) return false;
+        if (outstanding.size() >= MAX_OUTSTANDING
+                || waiting(key)
+                || coolingDown(key, now)
+                || !transfer.replacement()
+                        && transfer.baseRevision() != baseline(key, transfer.cellSize()))
+            return false;
         outstanding.put(key, new Outstanding(transfer, Phase.SENDING, Long.MAX_VALUE));
         retryAfter.remove(key);
         return true;
@@ -51,8 +70,10 @@ final class MiaLodDeliveryState {
     }
 
     void sent(CrossDimensionLodTransfer transfer, long now) {
-        if (active(transfer)) outstanding.put(transfer.chunkKey(),
-                new Outstanding(transfer, Phase.AWAITING_ACK, now + ACK_TIMEOUT_TICKS));
+        if (active(transfer))
+            outstanding.put(
+                    transfer.chunkKey(),
+                    new Outstanding(transfer, Phase.AWAITING_ACK, now + ACK_TIMEOUT_TICKS));
     }
 
     boolean cacheCandidate(long key, int cellSize) {
@@ -64,9 +85,12 @@ final class MiaLodDeliveryState {
     }
 
     void offered(CrossDimensionLodTransfer transfer, long now) {
-        if (!active(transfer) || !canOfferCache(transfer)) throw new IllegalStateException("Invalid LOD cache probe");
+        if (!active(transfer) || !canOfferCache(transfer))
+            throw new IllegalStateException("Invalid LOD cache probe");
         cacheAttempts.add(new CacheAttempt(transfer.chunkKey(), transfer.cellSize()));
-        outstanding.put(transfer.chunkKey(), new Outstanding(transfer, Phase.PROBING, now + ACK_TIMEOUT_TICKS));
+        outstanding.put(
+                transfer.chunkKey(),
+                new Outstanding(transfer, Phase.PROBING, now + ACK_TIMEOUT_TICKS));
     }
 
     /** false also covers forged, late, duplicate and premature acknowledgements. */
@@ -102,7 +126,8 @@ final class MiaLodDeliveryState {
 
     List<Long> retries(long now) {
         for (var entry : List.copyOf(outstanding.entrySet())) {
-            if (entry.getValue().phase != Phase.SENDING && now >= entry.getValue().deadline) fail(entry.getKey(), now);
+            if (entry.getValue().phase != Phase.SENDING && now >= entry.getValue().deadline)
+                fail(entry.getKey(), now);
         }
         List<Long> ready = new ArrayList<>();
         var iterator = retryAfter.entrySet().iterator();
@@ -133,7 +158,14 @@ final class MiaLodDeliveryState {
     }
 
     private record Baseline(int cellSize, long revision) {}
-    private enum Phase { SENDING, PROBING, AWAITING_ACK }
+
+    private enum Phase {
+        SENDING,
+        PROBING,
+        AWAITING_ACK
+    }
+
     private record CacheAttempt(long key, int cellSize) {}
+
     private record Outstanding(CrossDimensionLodTransfer transfer, Phase phase, long deadline) {}
 }

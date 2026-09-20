@@ -7,11 +7,18 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.DensityFunction;
 
 public final class GeneralAbyssHole extends AbstractAbyssHole {
-    public static final KeyDispatchDataCodec<GeneralAbyssHole> CODEC = KeyDispatchDataCodec.of(
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    Codec.FLOAT.fieldOf("radius").forGetter(value -> value.radius),
-                    Codec.FLOAT.fieldOf("mul").forGetter(value -> value.multiplier)
-            ).apply(instance, GeneralAbyssHole::new)));
+    public static final KeyDispatchDataCodec<GeneralAbyssHole> CODEC =
+            KeyDispatchDataCodec.of(
+                    RecordCodecBuilder.mapCodec(
+                            instance ->
+                                    instance.group(
+                                                    Codec.FLOAT
+                                                            .fieldOf("radius")
+                                                            .forGetter(value -> value.radius),
+                                                    Codec.FLOAT
+                                                            .fieldOf("mul")
+                                                            .forGetter(value -> value.multiplier))
+                                            .apply(instance, GeneralAbyssHole::new)));
 
     public GeneralAbyssHole(float radius, float multiplier) {
         super(radius, multiplier);

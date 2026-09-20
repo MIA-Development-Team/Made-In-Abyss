@@ -16,12 +16,14 @@ public record VerticalDimensionLink(
 
     public VerticalDimensionLink {
         if (upperDimension.equals(lowerDimension)) {
-            throw new IllegalArgumentException("A vertical dimension link must connect two dimensions");
+            throw new IllegalArgumentException(
+                    "A vertical dimension link must connect two dimensions");
         }
         if (!(entryOffset > 0.0)
                 || entryOffset >= upperHeight.height()
                 || entryOffset >= lowerHeight.height()) {
-            throw new IllegalArgumentException("Invalid vertical dimension entry offset: " + entryOffset);
+            throw new IllegalArgumentException(
+                    "Invalid vertical dimension entry offset: " + entryOffset);
         }
     }
 }

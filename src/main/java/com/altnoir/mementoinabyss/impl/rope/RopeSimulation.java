@@ -47,8 +47,7 @@ public final class RopeSimulation {
             double endY,
             double endZ,
             double ropeLength,
-            RopeParameters parameters
-    ) {
+            RopeParameters parameters) {
         this.parameters = Objects.requireNonNull(parameters, "parameters");
 
         double dx = endX - startX;
@@ -59,7 +58,8 @@ public final class RopeSimulation {
             throw new IllegalArgumentException("ropeLength must be finite and positive");
         }
         if (ropeLength + 1.0E-9 < distance) {
-            throw new IllegalArgumentException("ropeLength cannot be shorter than the endpoint distance");
+            throw new IllegalArgumentException(
+                    "ropeLength cannot be shorter than the endpoint distance");
         }
         this.pointCount = Math.max(2, (int) Math.ceil(ropeLength / parameters.segmentLength()) + 1);
 
@@ -105,14 +105,20 @@ public final class RopeSimulation {
             double endX,
             double endY,
             double endZ,
-            RopeParameters parameters
-    ) {
+            RopeParameters parameters) {
         double dx = endX - startX;
         double dy = endY - startY;
         double dz = endZ - startZ;
         double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        return new RopeSimulation(startX, startY, startZ, endX, endY, endZ,
-                Math.max(distance, parameters.segmentLength()), parameters);
+        return new RopeSimulation(
+                startX,
+                startY,
+                startZ,
+                endX,
+                endY,
+                endZ,
+                Math.max(distance, parameters.segmentLength()),
+                parameters);
     }
 
     /**
@@ -127,8 +133,7 @@ public final class RopeSimulation {
             double endY,
             double endZ,
             double ropeLength,
-            RopeParameters parameters
-    ) {
+            RopeParameters parameters) {
         return new RopeSimulation(startX, startY, startZ, endX, endY, endZ, ropeLength, parameters);
     }
 
@@ -136,20 +141,22 @@ public final class RopeSimulation {
      * Restores a rope from a synchronized node snapshot.
      */
     public static RopeSimulation fromPoints(
-            double[] points,
-            double ropeLength,
-            RopeParameters parameters
-    ) {
+            double[] points, double ropeLength, RopeParameters parameters) {
         Objects.requireNonNull(points, "points");
         if (points.length < 6 || points.length % 3 != 0) {
             throw new IllegalArgumentException("points must contain at least two xyz triples");
         }
         int last = points.length - 3;
-        RopeSimulation rope = new RopeSimulation(
-                points[0], points[1], points[2],
-                points[last], points[last + 1], points[last + 2],
-                ropeLength, parameters
-        );
+        RopeSimulation rope =
+                new RopeSimulation(
+                        points[0],
+                        points[1],
+                        points[2],
+                        points[last],
+                        points[last + 1],
+                        points[last + 2],
+                        ropeLength,
+                        parameters);
         if (rope.pointCount * 3 != points.length) {
             throw new IllegalArgumentException("point count does not match rope length");
         }
@@ -251,7 +258,9 @@ public final class RopeSimulation {
             this.integrate(stepSquared, velocityScale);
             Arrays.fill(this.lambda, 0.0);
 
-            for (int iteration = 0; iteration < this.parameters.constraintIterations(); iteration++) {
+            for (int iteration = 0;
+                    iteration < this.parameters.constraintIterations();
+                    iteration++) {
                 this.solveDistanceConstraints(stepSquared);
                 if ((iteration & 3) == 3
                         || iteration == this.parameters.constraintIterations() - 1) {
@@ -367,8 +376,7 @@ public final class RopeSimulation {
             this.collisionResolver.resolve(
                     this.collisionScratch,
                     this.collisionPreviousScratch,
-                    this.parameters.collisionRadius()
-            );
+                    this.parameters.collisionRadius());
 
             double correctionX = this.collisionScratch.x() - oldX;
             double correctionY = this.collisionScratch.y() - oldY;
@@ -408,10 +416,11 @@ public final class RopeSimulation {
                 double correctionX = this.collisionScratch.x() - sampleX;
                 double correctionY = this.collisionScratch.y() - sampleY;
                 double correctionZ = this.collisionScratch.z() - sampleZ;
-                double correctionLength = Math.sqrt(
-                        correctionX * correctionX
-                                + correctionY * correctionY
-                                + correctionZ * correctionZ);
+                double correctionLength =
+                        Math.sqrt(
+                                correctionX * correctionX
+                                        + correctionY * correctionY
+                                        + correctionZ * correctionZ);
                 double maximumCorrection = this.parameters.collisionRadius();
                 if (correctionLength > maximumCorrection && correctionLength > 1.0E-12) {
                     double scale = maximumCorrection / correctionLength;
@@ -430,7 +439,10 @@ public final class RopeSimulation {
                 this.applyCollisionCorrection(
                         segment, correctionX * scaleA, correctionY * scaleA, correctionZ * scaleA);
                 this.applyCollisionCorrection(
-                        segment + 1, correctionX * scaleB, correctionY * scaleB, correctionZ * scaleB);
+                        segment + 1,
+                        correctionX * scaleB,
+                        correctionY * scaleB,
+                        correctionZ * scaleB);
             }
         }
     }

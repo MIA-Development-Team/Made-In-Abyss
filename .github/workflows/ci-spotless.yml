@@ -1,0 +1,30 @@
+name: CI (Spotless)
+
+on:
+  push:
+    branches:
+      - 26.1.2-NeoForge
+  pull_request:
+    branches:
+      - 26.1.2-NeoForge
+
+jobs:
+  spotless:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+          cache: gradle
+
+      - name: Make gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Spotless check
+        run: ./gradlew spotlessCheck --no-daemon

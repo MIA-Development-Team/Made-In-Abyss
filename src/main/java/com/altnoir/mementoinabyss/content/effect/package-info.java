@@ -1,6 +1,5 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-
 package com.altnoir.mementoinabyss.content.effect;
 
 import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;

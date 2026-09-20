@@ -9,5 +9,4 @@ public record WhistleSkillContext(
         ItemStack whistle,
         PlacedWhistleFragment fragment,
         double powerMultiplier,
-        int cooldownTicks
-) {}
+        int cooldownTicks) {}

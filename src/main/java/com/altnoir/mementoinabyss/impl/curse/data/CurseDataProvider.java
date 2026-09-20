@@ -2,15 +2,13 @@ package com.altnoir.mementoinabyss.impl.curse.data;
 
 import com.altnoir.mementoinabyss.impl.curse.record.CurseDimension;
 import com.mojang.serialization.JsonOps;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.packs.VanillaRecipeProvider;
 import net.minecraft.resources.Identifier;
-
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 public abstract class CurseDataProvider implements DataProvider {
     private final String modId;
@@ -22,10 +20,7 @@ public abstract class CurseDataProvider implements DataProvider {
     private final PackOutput.PathProvider pathProvider;
 
     protected CurseDataProvider(
-            String modId,
-            PackOutput output,
-            CompletableFuture<HolderLookup.Provider> lookup
-    ) {
+            String modId, PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
         this.modId = modId;
         this.output = output;
         this.lookup = lookup;
@@ -46,29 +41,28 @@ public abstract class CurseDataProvider implements DataProvider {
 
     @Override
     public CompletableFuture<?> run(CachedOutput cache) {
-        return lookup.thenCompose(reg -> {
+        return lookup.thenCompose(
+                reg -> {
+                    entries.clear();
+                    generate(reg);
 
-            entries.clear();
-            generate(reg);
+                    List<CompletableFuture<?>> futures = new ArrayList<>();
 
-            List<CompletableFuture<?>> futures = new ArrayList<>();
+                    for (CurseBuilder builder : entries.values()) {
 
-            for (CurseBuilder builder : entries.values()) {
+                        var def = builder.build();
+                        var encoded =
+                                CurseDimension.CODEC
+                                        .encodeStart(JsonOps.INSTANCE, def)
+                                        .getOrThrow();
 
-                var def = builder.build();
-                var encoded = CurseDimension.CODEC
-                        .encodeStart(JsonOps.INSTANCE, def)
-                        .getOrThrow();
+                        var path = pathProvider.json(def.id());
 
-                var path = pathProvider.json(def.id());
+                        futures.add(DataProvider.saveStable(cache, encoded, path));
+                    }
 
-                futures.add(
-                        DataProvider.saveStable(cache, encoded, path)
-                );
-            }
-
-            return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
-        });
+                    return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+                });
     }
 
     @Override

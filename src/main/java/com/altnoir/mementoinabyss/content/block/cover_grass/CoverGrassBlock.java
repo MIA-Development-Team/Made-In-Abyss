@@ -20,12 +20,17 @@ import net.minecraft.world.level.lighting.LightEngine;
 public class CoverGrassBlock extends Block implements TillableBlock, BonemealableBlock {
     public final Block defaultBlock;
 
-    public static final MapCodec<CoverGrassBlock> CODEC = RecordCodecBuilder.mapCodec(instance ->
-            instance.group(
-                    Block.CODEC.fieldOf("defaultBlock").forGetter(block -> block.defaultBlock),
-                    BlockBehaviour.Properties.CODEC.fieldOf("properties").forGetter(block -> block.properties)
-            ).apply(instance, CoverGrassBlock::new)
-    );
+    public static final MapCodec<CoverGrassBlock> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    instance ->
+                            instance.group(
+                                            Block.CODEC
+                                                    .fieldOf("defaultBlock")
+                                                    .forGetter(block -> block.defaultBlock),
+                                            BlockBehaviour.Properties.CODEC
+                                                    .fieldOf("properties")
+                                                    .forGetter(block -> block.properties))
+                                    .apply(instance, CoverGrassBlock::new));
 
     public CoverGrassBlock(Block defaultBlock, Properties properties) {
         super(properties);
@@ -44,14 +49,16 @@ public class CoverGrassBlock extends Block implements TillableBlock, Bonemealabl
                 || blockstate.getFluidState().isFull()) {
             return false;
         } else {
-            var i = LightEngine.getLightBlockInto(
-                    state, blockstate, Direction.UP, blockstate.getLightDampening());
+            var i =
+                    LightEngine.getLightBlockInto(
+                            state, blockstate, Direction.UP, blockstate.getLightDampening());
             return i < 15;
         }
     }
 
     @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    protected void randomTick(
+            BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!canBeGrass(state, level, pos)) {
             if (!level.isAreaLoaded(pos, 1)) return;
             level.setBlockAndUpdate(pos, this.defaultBlock.defaultBlockState());
@@ -64,17 +71,20 @@ public class CoverGrassBlock extends Block implements TillableBlock, Bonemealabl
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+    public boolean isValidBonemealTarget(
+            LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
         return levelReader.getBlockState(blockPos.above()).isAir();
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos blockPos, BlockState blockState) {
+    public boolean isBonemealSuccess(
+            Level level, RandomSource randomSource, BlockPos blockPos, BlockState blockState) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+    public void performBonemeal(
+            ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         var blockpos = pos.above();
 
         for (int i = 0; i < 128; i++) {
@@ -82,14 +92,15 @@ public class CoverGrassBlock extends Block implements TillableBlock, Bonemealabl
             var validPath = true;
 
             for (int j = 0; j < i / 16; j++) {
-                blockpos1 = blockpos1.offset(
-                        random.nextInt(3) - 1,
-                        (random.nextInt(3) - 1) * random.nextInt(3) / 2,
-                        random.nextInt(3) - 1
-                );
+                blockpos1 =
+                        blockpos1.offset(
+                                random.nextInt(3) - 1,
+                                (random.nextInt(3) - 1) * random.nextInt(3) / 2,
+                                random.nextInt(3) - 1);
 
                 if (!level.getBlockState(blockpos1.below()).is(this)
-                        || level.getBlockState(blockpos1).isCollisionShapeFullBlock(level, blockpos1)) {
+                        || level.getBlockState(blockpos1)
+                                .isCollisionShapeFullBlock(level, blockpos1)) {
                     validPath = false;
                     break;
                 }

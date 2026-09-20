@@ -2,6 +2,20 @@ package com.altnoir.mementoinabyss.worldgen.lod;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.util.concurrent.MiaExecutors;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -9,8 +23,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.GenerationChunkHolder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.util.StaticCache2D;
 import net.minecraft.util.Mth;
+import net.minecraft.util.StaticCache2D;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
@@ -33,21 +47,6 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Predicate;
-
 /** Generates terrain-only ProtoChunks for LOD capture without loading them into the server world. */
 final class CrossDimensionLazyChunkGenerator {
     private static final int GENERATION_INTERVAL_TICKS = 1;
@@ -67,13 +66,18 @@ final class CrossDimensionLazyChunkGenerator {
         if (gameTime < nextGenerationTick || IN_FLIGHT.get() >= MAX_IN_FLIGHT) return;
         for (CrossDimensionLodLink link : CrossDimensionLodLinks.all()) {
             ServerLevel source = server.getLevel(link.source());
-            if (source == null || server.getPlayerList().getPlayers().stream().noneMatch(
-                    player -> player.level().dimension().equals(link.target())
-                            && MiaLodSampler.wantsLod(player))) continue;
+            if (source == null
+                    || server.getPlayerList().getPlayers().stream()
+                            .noneMatch(
+                                    player ->
+                                            player.level().dimension().equals(link.target())
+                                                    && MiaLodSampler.wantsLod(player))) continue;
 
             State state = STATES.computeIfAbsent(link, ignored -> new State());
             String phase = "camera-view";
-            ChunkPos candidate = MiaLodSampler.generationCandidate(link, pos -> state.needsGeneration(source, pos));
+            ChunkPos candidate =
+                    MiaLodSampler.generationCandidate(
+                            link, pos -> state.needsGeneration(source, pos));
             if (candidate == null) {
                 phase = "center";
                 candidate = state.nextCentral(source);
@@ -86,92 +90,154 @@ final class CrossDimensionLazyChunkGenerator {
         }
     }
 
-    private static void requestAsync(MinecraftServer server, ServerLevel source,
-                                     CrossDimensionLodLink link, State state, ChunkPos pos, String phase) {
+    private static void requestAsync(
+            MinecraftServer server,
+            ServerLevel source,
+            CrossDimensionLodLink link,
+            State state,
+            ChunkPos pos,
+            String phase) {
         long key = ChunkPos.pack(pos.x(), pos.z());
         state.requested.add(key);
         state.start(pos, phase);
         long generationEpoch = GENERATION_EPOCH.get();
         IN_FLIGHT.incrementAndGet();
-        PREGEN_EXECUTOR.execute(() -> {
-            try {
-                requireActive(generationEpoch);
-                ProtoChunk protoChunk = new ProtoChunk(
-                        pos, UpgradeData.EMPTY, source, source.palettedContainerFactory(), null);
-                ChunkGenerator generator = source.getChunkSource().getGenerator();
-                var randomState = source.getChunkSource().randomState();
-                StructureManager structureManager = terrainOnlyStructureManager(source);
+        PREGEN_EXECUTOR.execute(
+                () -> {
+                    try {
+                        requireActive(generationEpoch);
+                        ProtoChunk protoChunk =
+                                new ProtoChunk(
+                                        pos,
+                                        UpgradeData.EMPTY,
+                                        source,
+                                        source.palettedContainerFactory(),
+                                        null);
+                        ChunkGenerator generator = source.getChunkSource().getGenerator();
+                        var randomState = source.getChunkSource().randomState();
+                        StructureManager structureManager = terrainOnlyStructureManager(source);
 
-                // No ticket, LevelChunk, entities, lighting, server save, or ticking is created.
-                // After surface generation, addTrees runs only this mod's tree placed-features.
-                generator.createBiomes(randomState, Blender.empty(), structureManager, protoChunk)
-                        .thenApply(chunk -> activeChunk(generationEpoch,
-                                advanceStatus(chunk, ChunkStatus.BIOMES)))
-                        .thenCompose(chunk -> generator.fillFromNoise(
-                                Blender.empty(), randomState, structureManager, chunk))
-                        .thenApply(chunk -> activeChunk(generationEpoch,
-                                advanceStatus(chunk, ChunkStatus.NOISE)))
-                        .thenApplyAsync(chunk -> buildSurface(
-                                source, generator, structureManager, randomState,
-                                activeChunk(generationEpoch, chunk)), PREGEN_EXECUTOR)
-                        .thenApplyAsync(chunk -> addTrees(source, generator,
-                                activeChunk(generationEpoch, chunk)), PREGEN_EXECUTOR)
-                        .thenComposeAsync(chunk -> MiaLodStorage.ingest(link, source, chunk, true), PREGEN_EXECUTOR)
-                        .whenComplete((ignored, throwable) -> server.execute(() -> {
-                            if (generationEpoch != GENERATION_EPOCH.get()) return;
-                            try {
-                                if (throwable != null) {
+                        // No ticket, LevelChunk, entities, lighting, server save, or ticking is
+                        // created.
+                        // After surface generation, addTrees runs only this mod's tree
+                        // placed-features.
+                        generator
+                                .createBiomes(
+                                        randomState, Blender.empty(), structureManager, protoChunk)
+                                .thenApply(
+                                        chunk ->
+                                                activeChunk(
+                                                        generationEpoch,
+                                                        advanceStatus(chunk, ChunkStatus.BIOMES)))
+                                .thenCompose(
+                                        chunk ->
+                                                generator.fillFromNoise(
+                                                        Blender.empty(),
+                                                        randomState,
+                                                        structureManager,
+                                                        chunk))
+                                .thenApply(
+                                        chunk ->
+                                                activeChunk(
+                                                        generationEpoch,
+                                                        advanceStatus(chunk, ChunkStatus.NOISE)))
+                                .thenApplyAsync(
+                                        chunk ->
+                                                buildSurface(
+                                                        source,
+                                                        generator,
+                                                        structureManager,
+                                                        randomState,
+                                                        activeChunk(generationEpoch, chunk)),
+                                        PREGEN_EXECUTOR)
+                                .thenApplyAsync(
+                                        chunk ->
+                                                addTrees(
+                                                        source,
+                                                        generator,
+                                                        activeChunk(generationEpoch, chunk)),
+                                        PREGEN_EXECUTOR)
+                                .thenComposeAsync(
+                                        chunk -> MiaLodStorage.ingest(link, source, chunk, true),
+                                        PREGEN_EXECUTOR)
+                                .whenComplete(
+                                        (ignored, throwable) ->
+                                                server.execute(
+                                                        () -> {
+                                                            if (generationEpoch
+                                                                    != GENERATION_EPOCH.get())
+                                                                return;
+                                                            try {
+                                                                if (throwable != null) {
+                                                                    state.requested.remove(key);
+                                                                    state.failed++;
+                                                                    state.lastResult = "failed";
+                                                                    MementoInAbyss.LOGGER.warn(
+                                                                            "Unable to lazily"
+                                                                                + " generate"
+                                                                                + " cross-dimension"
+                                                                                + " LOD terrain {}",
+                                                                            pos,
+                                                                            throwable);
+                                                                } else {
+                                                                    state.generated++;
+                                                                    state.lastResult = "stored";
+                                                                    MiaLodSampler.notifyAvailable(
+                                                                            link, pos);
+                                                                }
+                                                            } finally {
+                                                                state.finish(pos);
+                                                                IN_FLIGHT.decrementAndGet();
+                                                            }
+                                                        }));
+                    } catch (Throwable throwable) {
+                        server.execute(
+                                () -> {
+                                    if (generationEpoch != GENERATION_EPOCH.get()) return;
                                     state.requested.remove(key);
                                     state.failed++;
                                     state.lastResult = "failed";
+                                    state.finish(pos);
+                                    IN_FLIGHT.decrementAndGet();
                                     MementoInAbyss.LOGGER.warn(
-                                            "Unable to lazily generate cross-dimension LOD terrain {}", pos, throwable);
-                                } else {
-                                    state.generated++;
-                                    state.lastResult = "stored";
-                                    MiaLodSampler.notifyAvailable(link, pos);
-                                }
-                            } finally {
-                                state.finish(pos);
-                                IN_FLIGHT.decrementAndGet();
-                            }
-                        }));
-            } catch (Throwable throwable) {
-                server.execute(() -> {
-                    if (generationEpoch != GENERATION_EPOCH.get()) return;
-                    state.requested.remove(key);
-                    state.failed++;
-                    state.lastResult = "failed";
-                    state.finish(pos);
-                    IN_FLIGHT.decrementAndGet();
-                    MementoInAbyss.LOGGER.warn(
-                            "Unable to request lazy cross-dimension chunk {}", pos, throwable);
+                                            "Unable to request lazy cross-dimension chunk {}",
+                                            pos,
+                                            throwable);
+                                });
+                    }
                 });
-            }
-        });
     }
 
-    private static ChunkAccess buildSurface(ServerLevel source, ChunkGenerator generator,
-                                            StructureManager structureManager,
-                                            net.minecraft.world.level.levelgen.RandomState randomState,
-                                            ChunkAccess chunk) {
+    private static ChunkAccess buildSurface(
+            ServerLevel source,
+            ChunkGenerator generator,
+            StructureManager structureManager,
+            net.minecraft.world.level.levelgen.RandomState randomState,
+            ChunkAccess chunk) {
         if (generator instanceof NoiseBasedChunkGenerator noiseGenerator) {
-            noiseGenerator.buildSurface(chunk, new WorldGenerationContext(generator, source), randomState,
-                    structureManager, source.getBiomeManager(),
-                    source.registryAccess().lookupOrThrow(Registries.BIOME), Blender.empty());
+            noiseGenerator.buildSurface(
+                    chunk,
+                    new WorldGenerationContext(generator, source),
+                    randomState,
+                    structureManager,
+                    source.getBiomeManager(),
+                    source.registryAccess().lookupOrThrow(Registries.BIOME),
+                    Blender.empty());
         }
         return advanceStatus(chunk, ChunkStatus.SURFACE);
     }
 
     private static ChunkAccess advanceStatus(ChunkAccess chunk, ChunkStatus status) {
-        if (chunk instanceof ProtoChunk protoChunk && protoChunk.getPersistedStatus().isBefore(status)) {
+        if (chunk instanceof ProtoChunk protoChunk
+                && protoChunk.getPersistedStatus().isBefore(status)) {
             protoChunk.setPersistedStatus(status);
         }
         return chunk;
     }
 
     /** Places only this mod's tree placed-features, without running the rest of FEATURES. */
-    private static ChunkAccess addTrees(ServerLevel source, ChunkGenerator generator, ChunkAccess chunk) {
+    private static ChunkAccess addTrees(
+            ServerLevel source, ChunkGenerator generator, ChunkAccess chunk) {
         Map<String, Holder<PlacedFeature>> trees = new LinkedHashMap<>();
         Set<Holder<Biome>> biomes = new HashSet<>();
         for (var section : chunk.getSections()) section.getBiomes().getAll(biomes::add);
@@ -180,44 +246,67 @@ final class CrossDimensionLazyChunkGenerator {
             var features = biome.value().getGenerationSettings().features();
             if (vegetationStep >= features.size()) continue;
             for (Holder<PlacedFeature> feature : features.get(vegetationStep)) {
-                feature.unwrapKey().ifPresent(key -> {
-                    var id = key.identifier();
-                    String path = id.getPath();
-                    String name = path.substring(path.lastIndexOf('/') + 1);
-                    if (id.getNamespace().equals(MementoInAbyss.ID)
-                            && (name.startsWith("trees_") || name.startsWith("dense_trees_"))) {
-                        trees.putIfAbsent(id.toString(), feature);
-                    }
-                });
+                feature.unwrapKey()
+                        .ifPresent(
+                                key -> {
+                                    var id = key.identifier();
+                                    String path = id.getPath();
+                                    String name = path.substring(path.lastIndexOf('/') + 1);
+                                    if (id.getNamespace().equals(MementoInAbyss.ID)
+                                            && (name.startsWith("trees_")
+                                                    || name.startsWith("dense_trees_"))) {
+                                        trees.putIfAbsent(id.toString(), feature);
+                                    }
+                                });
             }
         }
         if (trees.isEmpty()) return chunk;
 
-        Heightmap.primeHeightmaps(chunk, EnumSet.of(Heightmap.Types.MOTION_BLOCKING,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Heightmap.Types.OCEAN_FLOOR,
-                Heightmap.Types.WORLD_SURFACE));
+        Heightmap.primeHeightmaps(
+                chunk,
+                EnumSet.of(
+                        Heightmap.Types.MOTION_BLOCKING,
+                        Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                        Heightmap.Types.OCEAN_FLOOR,
+                        Heightmap.Types.WORLD_SURFACE));
         ChunkPos center = chunk.getPos();
-        StaticCache2D<GenerationChunkHolder> cache = StaticCache2D.create(center.x(), center.z(), 1,
-                (x, z) -> new TemporaryChunkHolder(x == center.x() && z == center.z()
-                        ? chunk : new ProtoChunk(new ChunkPos(x, z), UpgradeData.EMPTY, source,
-                        source.palettedContainerFactory(), null)));
+        StaticCache2D<GenerationChunkHolder> cache =
+                StaticCache2D.create(
+                        center.x(),
+                        center.z(),
+                        1,
+                        (x, z) ->
+                                new TemporaryChunkHolder(
+                                        x == center.x() && z == center.z()
+                                                ? chunk
+                                                : new ProtoChunk(
+                                                        new ChunkPos(x, z),
+                                                        UpgradeData.EMPTY,
+                                                        source,
+                                                        source.palettedContainerFactory(),
+                                                        null)));
         var featureStep = ChunkPyramid.GENERATION_PYRAMID.getStepTo(ChunkStatus.FEATURES);
         WorldGenRegion region = new TemporaryWorldGenRegion(source, cache, featureStep, chunk);
-        BlockPos origin = new BlockPos(center.getMinBlockX(), source.getMinY(), center.getMinBlockZ());
+        BlockPos origin =
+                new BlockPos(center.getMinBlockX(), source.getMinY(), center.getMinBlockZ());
         WorldgenRandom random = new WorldgenRandom(new XoroshiroRandomSource(0L));
-        long decorationSeed = random.setDecorationSeed(source.getSeed(), origin.getX(), origin.getZ());
+        long decorationSeed =
+                random.setDecorationSeed(source.getSeed(), origin.getX(), origin.getZ());
         List<Map.Entry<String, Holder<PlacedFeature>>> ordered = new ArrayList<>(trees.entrySet());
         ordered.sort(Comparator.comparing(Map.Entry::getKey));
         for (int index = 0; index < ordered.size(); index++) {
             random.setFeatureSeed(decorationSeed, index, vegetationStep);
-            ordered.get(index).getValue().value().placeWithBiomeCheck(region, generator, random, origin);
+            ordered.get(index)
+                    .getValue()
+                    .value()
+                    .placeWithBiomeCheck(region, generator, random, origin);
         }
         return chunk;
     }
 
     private static StructureManager terrainOnlyStructureManager(ServerLevel source) {
-        return new StructureManager(source,
-                source.getServer().getWorldGenSettings().options(), null) {
+        return new StructureManager(
+                source, source.getServer().getWorldGenSettings().options(), null) {
             @Override
             public List<StructureStart> startsForStructure(
                     ChunkPos pos, Predicate<Structure> matcher) {
@@ -252,22 +341,45 @@ final class CrossDimensionLazyChunkGenerator {
         State state = STATES.get(link);
         int radius = Mth.ceil(CrossDimensionLodLinks.centralGenerationRadius() / 16.0);
         int total = (radius * 2 + 1) * (radius * 2 + 1);
-        if (state == null) return new DebugSnapshot("center", false, 0, total,
-                0, 0, 0, 0, 0, 0, 0, 0L, "none");
+        if (state == null)
+            return new DebugSnapshot("center", false, 0, total, 0, 0, 0, 0, 0, 0, 0, 0L, "none");
         ActiveRequest active = state.activeRequest();
         boolean generating = active != null;
-        long elapsed = generating ? (System.nanoTime() - active.startedNanos) / 1_000_000L : state.lastMillis;
+        long elapsed =
+                generating
+                        ? (System.nanoTime() - active.startedNanos) / 1_000_000L
+                        : state.lastMillis;
         String phase = generating ? active.phase : state.lastPhase;
-        return new DebugSnapshot(phase, generating, state.centralCursor, total,
-                state.requested.size(), state.generated, state.failed,
-                generating ? active.pos.x() : 0, generating ? active.pos.z() : 0,
-                state.lastPos == null ? 0 : state.lastPos.x(), state.lastPos == null ? 0 : state.lastPos.z(),
-                elapsed, state.lastResult);
+        return new DebugSnapshot(
+                phase,
+                generating,
+                state.centralCursor,
+                total,
+                state.requested.size(),
+                state.generated,
+                state.failed,
+                generating ? active.pos.x() : 0,
+                generating ? active.pos.z() : 0,
+                state.lastPos == null ? 0 : state.lastPos.x(),
+                state.lastPos == null ? 0 : state.lastPos.z(),
+                elapsed,
+                state.lastResult);
     }
 
-    record DebugSnapshot(String phase, boolean generating, int centralCursor, int centralTotal,
-                         int requested, int generated, int failed, int activeX, int activeZ,
-                         int lastX, int lastZ, long elapsedMillis, String lastResult) {}
+    record DebugSnapshot(
+            String phase,
+            boolean generating,
+            int centralCursor,
+            int centralTotal,
+            int requested,
+            int generated,
+            int failed,
+            int activeX,
+            int activeZ,
+            int lastX,
+            int lastZ,
+            long elapsedMillis,
+            String lastResult) {}
 
     private static final class TemporaryChunkHolder extends GenerationChunkHolder {
         private final ChunkAccess chunk;
@@ -298,14 +410,17 @@ final class CrossDimensionLazyChunkGenerator {
 
     /** Prevents temporary tree placement from touching the real world's POI manager. */
     private static final class TemporaryWorldGenRegion extends WorldGenRegion {
-        private TemporaryWorldGenRegion(ServerLevel level, StaticCache2D<GenerationChunkHolder> cache,
-                                        net.minecraft.world.level.chunk.status.ChunkStep step,
-                                        ChunkAccess center) {
+        private TemporaryWorldGenRegion(
+                ServerLevel level,
+                StaticCache2D<GenerationChunkHolder> cache,
+                net.minecraft.world.level.chunk.status.ChunkStep step,
+                ChunkAccess center) {
             super(level, cache, step, center);
         }
 
         @Override
-        public boolean setBlock(BlockPos pos, BlockState state, @Block.UpdateFlags int flags, int updateLimit) {
+        public boolean setBlock(
+                BlockPos pos, BlockState state, @Block.UpdateFlags int flags, int updateLimit) {
             if (!ensureCanWrite(pos)) return false;
             getChunk(pos).setBlockState(pos, state, flags);
             return true;
@@ -313,7 +428,8 @@ final class CrossDimensionLazyChunkGenerator {
 
         @Override
         public Holder<Biome> getNoiseBiome(int quartX, int quartY, int quartZ) {
-            // Neighbor chunks are write-only placeholders. Resolve biome checks directly from the source.
+            // Neighbor chunks are write-only placeholders. Resolve biome checks directly from the
+            // source.
             return getUncachedNoiseBiome(quartX, quartY, quartZ);
         }
     }
@@ -331,7 +447,8 @@ final class CrossDimensionLazyChunkGenerator {
         private long lastMillis;
 
         private void start(ChunkPos pos, String phase) {
-            activeRequests.put(ChunkPos.pack(pos.x(), pos.z()),
+            activeRequests.put(
+                    ChunkPos.pack(pos.x(), pos.z()),
                     new ActiveRequest(pos, phase, System.nanoTime()));
         }
 
@@ -362,7 +479,8 @@ final class CrossDimensionLazyChunkGenerator {
                 ChunkPos pos = squareSpiral(centralCursor++);
                 long centerX = pos.getMiddleBlockX();
                 long centerZ = pos.getMiddleBlockZ();
-                if (centerX * centerX + centerZ * centerZ > (long) radiusBlocks * radiusBlocks) continue;
+                if (centerX * centerX + centerZ * centerZ > (long) radiusBlocks * radiusBlocks)
+                    continue;
                 if (needsGeneration(source, pos)) return pos;
             }
             return null;
@@ -386,7 +504,6 @@ final class CrossDimensionLazyChunkGenerator {
             offset -= side;
             return new ChunkPos(-ring, ring - offset);
         }
-
     }
 
     private record ActiveRequest(ChunkPos pos, String phase, long startedNanos) {}

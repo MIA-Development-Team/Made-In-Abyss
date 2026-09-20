@@ -1,6 +1,8 @@
 package com.altnoir.mementoinabyss.worldgen.feature;
 
 import com.mojang.serialization.Codec;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -10,9 +12,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Fluids;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class ClusterFeature extends Feature<ClusterConfiguration> {
     private final boolean large;
@@ -30,31 +29,45 @@ public final class ClusterFeature extends Feature<ClusterConfiguration> {
         BlockPos center = context.origin();
         Direction search = large || random.nextBoolean() ? Direction.DOWN : Direction.UP;
         int steps = large ? 64 : 12;
-        for (int i = 0; i < steps && center.getY() > level.getMinY() + 3
-                && center.getY() < level.getMaxY() - 3
-                && !level.isEmptyBlock(center) && !isWater(level, center); i++) center = center.relative(search);
+        for (int i = 0;
+                i < steps
+                        && center.getY() > level.getMinY() + 3
+                        && center.getY() < level.getMaxY() - 3
+                        && !level.isEmptyBlock(center)
+                        && !isWater(level, center);
+                i++) center = center.relative(search);
         if (!level.isEmptyBlock(center) && !isWater(level, center)) return false;
         int passes = large ? 1 : 3;
         boolean generated = false;
         for (int pass = 0; pass < passes; pass++) {
             int radius = random.nextInt(config.size().sample(random)) + (large ? 2 : 1);
             int halfHeight = Math.max(1, config.height().sample(random) / 2);
-            int vertical = random.nextInt(Math.max(1, config.size().sample(random))) + 1 + halfHeight;
+            int vertical =
+                    random.nextInt(Math.max(1, config.size().sample(random))) + 1 + halfHeight;
             generated |= placeEllipsoid(level, center, radius, vertical, config, random);
-            center = center.offset(random.nextInt(3) - 1, -random.nextInt(2), random.nextInt(3) - 1);
+            center =
+                    center.offset(random.nextInt(3) - 1, -random.nextInt(2), random.nextInt(3) - 1);
         }
         return generated;
     }
 
-    private boolean placeEllipsoid(WorldGenLevel level, BlockPos center, int radius, int height,
-                                   ClusterConfiguration config, RandomSource random) {
+    private boolean placeEllipsoid(
+            WorldGenLevel level,
+            BlockPos center,
+            int radius,
+            int height,
+            ClusterConfiguration config,
+            RandomSource random) {
         List<BlockPos> surface = new ArrayList<>();
         boolean generated = false;
-        for (BlockPos pos : BlockPos.betweenClosed(center.offset(-radius, -height, -radius),
-                center.offset(radius, height, radius))) {
-            double distance = Math.abs((pos.getX() - center.getX()) / (double) radius)
-                    + Math.abs((pos.getY() - center.getY()) / (double) height)
-                    + Math.abs((pos.getZ() - center.getZ()) / (double) radius);
+        for (BlockPos pos :
+                BlockPos.betweenClosed(
+                        center.offset(-radius, -height, -radius),
+                        center.offset(radius, height, radius))) {
+            double distance =
+                    Math.abs((pos.getX() - center.getX()) / (double) radius)
+                            + Math.abs((pos.getY() - center.getY()) / (double) height)
+                            + Math.abs((pos.getZ() - center.getZ()) / (double) radius);
             if (distance <= 1.0) {
                 level.setBlock(pos, config.base().getState(level, random, pos), 4);
                 surface.add(pos.immutable());
@@ -69,9 +82,12 @@ public final class ClusterFeature extends Feature<ClusterConfiguration> {
         return generated;
     }
 
-    private boolean placeCrystal(WorldGenLevel level, BlockPos pos, Direction facing,
-                                 net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider provider,
-                                 RandomSource random) {
+    private boolean placeCrystal(
+            WorldGenLevel level,
+            BlockPos pos,
+            Direction facing,
+            net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider provider,
+            RandomSource random) {
         if (!level.isEmptyBlock(pos) && !isWater(level, pos)) return false;
         BlockPos support = pos.relative(facing.getOpposite());
         if (!level.getBlockState(support).isFaceSturdy(level, support, facing)) return false;

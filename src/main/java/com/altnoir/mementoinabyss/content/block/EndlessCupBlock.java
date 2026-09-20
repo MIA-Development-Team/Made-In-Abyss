@@ -40,23 +40,23 @@ public final class EndlessCupBlock extends BaseEntityBlock implements SimpleWate
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final MapCodec<EndlessCupBlock> CODEC = simpleCodec(EndlessCupBlock::new);
 
-    private static final VoxelShape ANGLES = Shapes.or(
-            box(1.0, 0.0, 1.0, 4.0, 4.0, 4.0),
-            box(1.0, 0.0, 12.0, 4.0, 4.0, 15.0),
-            box(12.0, 0.0, 1.0, 15.0, 4.0, 4.0),
-            box(12.0, 0.0, 12.0, 15.0, 4.0, 15.0)
-    );
-    private static final VoxelShape TOP = Shapes.join(
-            box(1.0, 11.0, 1.0, 15.0, 16.0, 15.0),
-            box(3.0, 14.0, 3.0, 13.0, 16.0, 13.0),
-            BooleanOp.ONLY_FIRST
-    );
-    private static final VoxelShape SHAPE = Shapes.or(
-            ANGLES,
-            box(2.0, 0.0, 2.0, 14.0, 3.0, 14.0),
-            box(5.0, 3.0, 5.0, 11.0, 11.0, 11.0),
-            TOP
-    );
+    private static final VoxelShape ANGLES =
+            Shapes.or(
+                    box(1.0, 0.0, 1.0, 4.0, 4.0, 4.0),
+                    box(1.0, 0.0, 12.0, 4.0, 4.0, 15.0),
+                    box(12.0, 0.0, 1.0, 15.0, 4.0, 4.0),
+                    box(12.0, 0.0, 12.0, 15.0, 4.0, 15.0));
+    private static final VoxelShape TOP =
+            Shapes.join(
+                    box(1.0, 11.0, 1.0, 15.0, 16.0, 15.0),
+                    box(3.0, 14.0, 3.0, 13.0, 16.0, 13.0),
+                    BooleanOp.ONLY_FIRST);
+    private static final VoxelShape SHAPE =
+            Shapes.or(
+                    ANGLES,
+                    box(2.0, 0.0, 2.0, 14.0, 3.0, 14.0),
+                    box(5.0, 3.0, 5.0, 11.0, 11.0, 11.0),
+                    TOP);
 
     public EndlessCupBlock(Properties properties) {
         super(properties);
@@ -69,7 +69,8 @@ public final class EndlessCupBlock extends BaseEntityBlock implements SimpleWate
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
@@ -85,23 +86,35 @@ public final class EndlessCupBlock extends BaseEntityBlock implements SimpleWate
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
-        return defaultBlockState().setValue(WATERLOGGED,
-                context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
+        return defaultBlockState()
+                .setValue(
+                        WATERLOGGED,
+                        context.getLevel().getFluidState(context.getClickedPos()).getType()
+                                == Fluids.WATER);
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks,
-                                     BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState,
-                                     RandomSource random) {
+    protected BlockState updateShape(
+            BlockState state,
+            LevelReader level,
+            ScheduledTickAccess ticks,
+            BlockPos pos,
+            Direction direction,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random) {
         if (state.getValue(WATERLOGGED)) {
             ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
+        return super.updateShape(
+                state, level, ticks, pos, direction, neighborPos, neighborState, random);
     }
 
     @Override
     protected FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED)
+                ? Fluids.WATER.getSource(false)
+                : super.getFluidState(state);
     }
 
     @Override
@@ -110,12 +123,19 @@ public final class EndlessCupBlock extends BaseEntityBlock implements SimpleWate
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
-                                           Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected InteractionResult useItemOn(
+            ItemStack stack,
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hitResult) {
         if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
-        FluidUtil.interactWithFluidHandler(player, hand, level, pos, hitResult.getDirection(), null);
+        FluidUtil.interactWithFluidHandler(
+                player, hand, level, pos, hitResult.getDirection(), null);
         return InteractionResult.SUCCESS_SERVER;
     }
 
@@ -124,6 +144,7 @@ public final class EndlessCupBlock extends BaseEntityBlock implements SimpleWate
             Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide()
                 ? null
-                : createTickerHelper(type, MiaBlockEntityTypes.ENDLESS_CUP.get(), EndlessCupBlockEntity::tick);
+                : createTickerHelper(
+                        type, MiaBlockEntityTypes.ENDLESS_CUP.get(), EndlessCupBlockEntity::tick);
     }
 }

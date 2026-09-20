@@ -4,6 +4,9 @@ import com.altnoir.mementoinabyss.impl.artifact.ArtifactApi;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaMenus;
 import com.altnoir.mementoinabyss.init.MiaRecipes;
+import java.util.Comparator;
+import java.util.List;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,14 +16,9 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
-
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
 
 public final class ArtifactEnhancementMenu extends AbstractContainerMenu {
     public static final int STATUS_INSERT_ARTIFACT = 0;
@@ -54,52 +52,53 @@ public final class ArtifactEnhancementMenu extends AbstractContainerMenu {
     }
 
     public ArtifactEnhancementMenu(
-            int containerId,
-            Inventory inventory,
-            ContainerLevelAccess access
-    ) {
+            int containerId, Inventory inventory, ContainerLevelAccess access) {
         super(MiaMenus.ARTIFACT_ENHANCEMENT.get(), containerId);
         this.access = access;
         this.player = inventory.player;
         this.status.set(STATUS_INSERT_ARTIFACT);
         this.selectedRecipeIndex.set(-1);
 
-        this.artifactSlot = addSlot(new Slot(artifactContainer, 0, 20, 33) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return ArtifactApi.isEnhanceable(stack);
-            }
+        this.artifactSlot =
+                addSlot(
+                        new Slot(artifactContainer, 0, 20, 33) {
+                            @Override
+                            public boolean mayPlace(ItemStack stack) {
+                                return ArtifactApi.isEnhanceable(stack);
+                            }
 
-            @Override
-            public int getMaxStackSize() {
-                return 1;
-            }
-        });
+                            @Override
+                            public int getMaxStackSize() {
+                                return 1;
+                            }
+                        });
         this.materialSlot = addSlot(new Slot(materialContainer, 0, 20, 66));
-        this.resultSlot = addSlot(new Slot(resultContainer, 0, 143, 37) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return false;
-            }
+        this.resultSlot =
+                addSlot(
+                        new Slot(resultContainer, 0, 143, 37) {
+                            @Override
+                            public boolean mayPlace(ItemStack stack) {
+                                return false;
+                            }
 
-            @Override
-            public boolean mayPickup(Player player) {
-                return hasItem();
-            }
+                            @Override
+                            public boolean mayPickup(Player player) {
+                                return hasItem();
+                            }
 
-            @Override
-            public void onTake(Player player, ItemStack stack) {
-                RecipeHolder<ArtifactEnhancementRecipe> recipe = selectedRecipe;
-                if (recipe == null) return;
-                int materialCount = recipe.value().materialCount();
-                materialSlot.remove(materialCount);
-                artifactSlot.set(ItemStack.EMPTY);
-                player.onEnchantmentPerformed(stack, 0);
-                stack.onCraftedBy(player, stack.getCount());
-                super.onTake(player, stack);
-                updateResult();
-            }
-        });
+                            @Override
+                            public void onTake(Player player, ItemStack stack) {
+                                RecipeHolder<ArtifactEnhancementRecipe> recipe = selectedRecipe;
+                                if (recipe == null) return;
+                                int materialCount = recipe.value().materialCount();
+                                materialSlot.remove(materialCount);
+                                artifactSlot.set(ItemStack.EMPTY);
+                                player.onEnchantmentPerformed(stack, 0);
+                                stack.onCraftedBy(player, stack.getCount());
+                                super.onTake(player, stack);
+                                updateResult();
+                            }
+                        });
 
         addStandardInventorySlots(inventory, 8, 102);
         addDataSlot(status);
@@ -140,7 +139,9 @@ public final class ArtifactEnhancementMenu extends AbstractContainerMenu {
             List<RecipeHolder<ArtifactEnhancementRecipe>> recipes = recipes();
             for (int i = 0; i < recipes.size(); i++) {
                 RecipeHolder<ArtifactEnhancementRecipe> candidate = recipes.get(i);
-                if (candidate.value().matches(createInput(RandomSource.create(0L)), player.level())) {
+                if (candidate
+                        .value()
+                        .matches(createInput(RandomSource.create(0L)), player.level())) {
                     selectedRecipe = candidate;
                     selectedRecipeIndex.set(i);
                     break;
@@ -149,9 +150,8 @@ public final class ArtifactEnhancementMenu extends AbstractContainerMenu {
             if (selectedRecipe == null) {
                 status.set(STATUS_INVALID_MATERIAL);
             } else {
-                ItemStack result = selectedRecipe.value().assemble(
-                        createInput(lockedRandom(selectedRecipe))
-                );
+                ItemStack result =
+                        selectedRecipe.value().assemble(createInput(lockedRandom(selectedRecipe)));
                 if (!result.isEmpty()) {
                     resultContainer.setRecipeUsed(selectedRecipe);
                     resultSlot.set(result);
@@ -168,10 +168,7 @@ public final class ArtifactEnhancementMenu extends AbstractContainerMenu {
 
     private ArtifactEnhancementRecipeInput createInput(RandomSource random) {
         return new ArtifactEnhancementRecipeInput(
-                artifactSlot.getItem(),
-                materialSlot.getItem(),
-                random
-        );
+                artifactSlot.getItem(), materialSlot.getItem(), random);
     }
 
     private RandomSource lockedRandom(RecipeHolder<ArtifactEnhancementRecipe> recipe) {
@@ -183,7 +180,11 @@ public final class ArtifactEnhancementMenu extends AbstractContainerMenu {
     private List<RecipeHolder<ArtifactEnhancementRecipe>> recipes() {
         var server = player.level().getServer();
         if (server == null) return java.util.List.of();
-        return server.getRecipeManager().recipeMap().byType(MiaRecipes.ARTIFACT_ENHANCEMENT_TYPE.get()).stream()
+        return server
+                .getRecipeManager()
+                .recipeMap()
+                .byType(MiaRecipes.ARTIFACT_ENHANCEMENT_TYPE.get())
+                .stream()
                 .sorted(Comparator.comparing(holder -> holder.id().identifier()))
                 .toList();
     }
@@ -201,8 +202,10 @@ public final class ArtifactEnhancementMenu extends AbstractContainerMenu {
     }
 
     public boolean hasMaterial(ArtifactEnhancementRecipe recipe) {
-        int found = materialSlot.getItem().is(recipe.material())
-                ? materialSlot.getItem().getCount() : 0;
+        int found =
+                materialSlot.getItem().is(recipe.material())
+                        ? materialSlot.getItem().getCount()
+                        : 0;
         for (int i = 0; i < Inventory.INVENTORY_SIZE && found < recipe.materialCount(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
             if (stack.is(recipe.material())) {
@@ -239,10 +242,7 @@ public final class ArtifactEnhancementMenu extends AbstractContainerMenu {
             materialSlot.set(ItemStack.EMPTY);
             int remaining = takeMaterialFromInventory(recipe, recipe.materialCount());
             player.getInventory().placeItemBackInInventory(returned);
-            materialSlot.set(new ItemStack(
-                    recipe.material(),
-                    recipe.materialCount() - remaining
-            ));
+            materialSlot.set(new ItemStack(recipe.material(), recipe.materialCount() - remaining));
             player.getInventory().setChanged();
             broadcastChanges();
             return remaining == 0;
@@ -264,10 +264,7 @@ public final class ArtifactEnhancementMenu extends AbstractContainerMenu {
         return toTake == 0;
     }
 
-    private int takeMaterialFromInventory(
-            ArtifactEnhancementRecipe recipe,
-            int toTake
-    ) {
+    private int takeMaterialFromInventory(ArtifactEnhancementRecipe recipe, int toTake) {
         for (int i = 0; i < Inventory.INVENTORY_SIZE && toTake > 0; i++) {
             ItemStack stack = player.getInventory().getItem(i);
             if (!stack.is(recipe.material())) {
@@ -280,10 +277,7 @@ public final class ArtifactEnhancementMenu extends AbstractContainerMenu {
         return toTake;
     }
 
-    private boolean canReturnCurrentMaterial(
-            ArtifactEnhancementRecipe recipe,
-            ItemStack current
-    ) {
+    private boolean canReturnCurrentMaterial(ArtifactEnhancementRecipe recipe, ItemStack current) {
         int targetRemaining = recipe.materialCount();
         int returnCapacity = 0;
         for (int i = 0; i < Inventory.INVENTORY_SIZE; i++) {
@@ -346,7 +340,8 @@ public final class ArtifactEnhancementMenu extends AbstractContainerMenu {
                 if (!moveItemStackTo(stack, HOTBAR_START, HOTBAR_END, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (index >= HOTBAR_START && index < HOTBAR_END
+            } else if (index >= HOTBAR_START
+                    && index < HOTBAR_END
                     && !moveItemStackTo(stack, INVENTORY_START, INVENTORY_END, false)) {
                 return ItemStack.EMPTY;
             }
@@ -368,9 +363,10 @@ public final class ArtifactEnhancementMenu extends AbstractContainerMenu {
     public void removed(Player player) {
         super.removed(player);
         resultContainer.removeItemNoUpdate(0);
-        access.execute((level, pos) -> {
-            clearContainer(player, artifactContainer);
-            clearContainer(player, materialContainer);
-        });
+        access.execute(
+                (level, pos) -> {
+                    clearContainer(player, artifactContainer);
+                    clearContainer(player, materialContainer);
+                });
     }
 }

@@ -15,8 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 public final class RopeConnectorRenderer
         implements BlockEntityRenderer<RopeConnectorBlockEntity, RopeConnectorRenderState> {
-    public RopeConnectorRenderer(BlockEntityRendererProvider.Context context) {
-    }
+    public RopeConnectorRenderer(BlockEntityRendererProvider.Context context) {}
 
     @Override
     public RopeConnectorRenderState createRenderState() {
@@ -29,8 +28,7 @@ public final class RopeConnectorRenderer
             RopeConnectorRenderState state,
             float partialTicks,
             Vec3 cameraPosition,
-            ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress
-    ) {
+            ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
         BlockEntityRenderer.super.extractRenderState(
                 connector, state, partialTicks, cameraPosition, breakProgress);
         RopeSimulation rope = connector.getClientRope();
@@ -40,9 +38,8 @@ public final class RopeConnectorRenderer
         }
 
         int pointCount = rope.pointCount();
-        float[] points = state.points.length == pointCount * 3
-                ? state.points
-                : new float[pointCount * 3];
+        float[] points =
+                state.points.length == pointCount * 3 ? state.points : new float[pointCount * 3];
         double originX = connector.getBlockPos().getX();
         double originY = connector.getBlockPos().getY();
         double originZ = connector.getBlockPos().getZ();
@@ -59,8 +56,7 @@ public final class RopeConnectorRenderer
             RopeConnectorRenderState state,
             PoseStack poseStack,
             SubmitNodeCollector submitNodeCollector,
-            CameraRenderState camera
-    ) {
+            CameraRenderState camera) {
         if (state.points.length < 6) {
             return;
         }
@@ -69,9 +65,8 @@ public final class RopeConnectorRenderer
         submitNodeCollector.submitCustomGeometry(
                 poseStack,
                 RenderTypes.entityCutout(RopeLineRenderer.TEXTURE, false),
-                (pose, consumer) -> RopeLineRenderer.renderPoints(
-                        pose, consumer, points, 15_728_880)
-        );
+                (pose, consumer) ->
+                        RopeLineRenderer.renderPoints(pose, consumer, points, 15_728_880));
     }
 
     @Override

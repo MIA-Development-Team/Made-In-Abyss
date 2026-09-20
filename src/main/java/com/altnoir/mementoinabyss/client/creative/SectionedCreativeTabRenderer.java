@@ -24,8 +24,7 @@ public final class SectionedCreativeTabRenderer {
             CreativeModeInventoryScreen screen,
             GuiGraphicsExtractor graphics,
             SectionedCreativeModeTab tab,
-            float scrollOffset
-    ) {
+            float scrollOffset) {
         int firstVisibleRow = tab.visibleStartRow(scrollOffset);
         int left = screen.getLeftPos() + GRID_LEFT;
         int top = screen.getTopPos() + GRID_TOP;
@@ -47,8 +46,7 @@ public final class SectionedCreativeTabRenderer {
                         left,
                         y,
                         GRID_WIDTH,
-                        ROW_HEIGHT
-                );
+                        ROW_HEIGHT);
             } else {
                 extractDefaultBanner(graphics, left, y);
             }
@@ -58,8 +56,7 @@ public final class SectionedCreativeTabRenderer {
                     left + 7,
                     y + 5,
                     TEXT_HIGHLIGHT,
-                    false
-            );
+                    false);
         }
         visibleHeadingRows = headingRows;
     }
@@ -78,17 +75,12 @@ public final class SectionedCreativeTabRenderer {
     private static void extractDefaultBanner(GuiGraphicsExtractor graphics, int left, int top) {
         graphics.fill(left, top, left + GRID_WIDTH, top + ROW_HEIGHT, BACKGROUND);
         graphics.fill(left, top, left + 1, top + ROW_HEIGHT, BORDER_MUTED);
-        graphics.fill(left + GRID_WIDTH - 1, top, left + GRID_WIDTH, top + ROW_HEIGHT, BORDER_MUTED);
+        graphics.fill(
+                left + GRID_WIDTH - 1, top, left + GRID_WIDTH, top + ROW_HEIGHT, BORDER_MUTED);
         graphics.fill(left + 1, top, left + GRID_WIDTH, top + 1, BORDER_PRIMARY);
         graphics.fill(
-                left + 1,
-                top + ROW_HEIGHT - 1,
-                left + GRID_WIDTH,
-                top + ROW_HEIGHT,
-                BORDER_MUTED
-        );
+                left + 1, top + ROW_HEIGHT - 1, left + GRID_WIDTH, top + ROW_HEIGHT, BORDER_MUTED);
     }
 
-    private SectionedCreativeTabRenderer() {
-    }
+    private SectionedCreativeTabRenderer() {}
 }

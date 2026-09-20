@@ -21,9 +21,12 @@ public final class LongVinesFeature extends Feature<LongVinesConfiguration> {
         if (!level.isEmptyBlock(origin)) return false;
 
         for (Direction direction : Direction.Plane.HORIZONTAL) {
-            if (!VineBlock.isAcceptableNeighbour(level, origin.relative(direction), direction)) continue;
-            var vine = Blocks.VINE.defaultBlockState()
-                    .setValue(VineBlock.getPropertyForFace(direction), true);
+            if (!VineBlock.isAcceptableNeighbour(level, origin.relative(direction), direction))
+                continue;
+            var vine =
+                    Blocks.VINE
+                            .defaultBlockState()
+                            .setValue(VineBlock.getPropertyForFace(direction), true);
             int height = context.config().height().sample(context.random());
             BlockPos.MutableBlockPos cursor = origin.mutable();
             for (int i = 0; i <= height && level.isEmptyBlock(cursor); i++) {

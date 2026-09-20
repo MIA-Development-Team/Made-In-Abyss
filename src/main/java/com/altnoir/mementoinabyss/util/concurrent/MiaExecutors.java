@@ -1,7 +1,6 @@
 package com.altnoir.mementoinabyss.util.concurrent;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-
 import java.util.concurrent.Executor;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -11,17 +10,23 @@ import java.util.concurrent.atomic.AtomicLong;
 /** Shared CPU pool for MIA work. Lower priority values are executed first. */
 public final class MiaExecutors {
     private static final int RESERVED_PROCESSORS = 6;
-    private static final int CPU_THREADS = Math.max(
-            1, Runtime.getRuntime().availableProcessors() - RESERVED_PROCESSORS);
+    private static final int CPU_THREADS =
+            Math.max(1, Runtime.getRuntime().availableProcessors() - RESERVED_PROCESSORS);
     private static final AtomicLong NEXT_SEQUENCE = new AtomicLong();
-    private static final ThreadPoolExecutor CPU = new ThreadPoolExecutor(
-            CPU_THREADS, CPU_THREADS, 0L, TimeUnit.MILLISECONDS,
-            new PriorityBlockingQueue<>(), runnable -> {
-                Thread thread = new Thread(runnable, "MIA CPU worker");
-                thread.setDaemon(true);
-                thread.setPriority(Thread.NORM_PRIORITY - 1);
-                return thread;
-            }, new ThreadPoolExecutor.AbortPolicy());
+    private static final ThreadPoolExecutor CPU =
+            new ThreadPoolExecutor(
+                    CPU_THREADS,
+                    CPU_THREADS,
+                    0L,
+                    TimeUnit.MILLISECONDS,
+                    new PriorityBlockingQueue<>(),
+                    runnable -> {
+                        Thread thread = new Thread(runnable, "MIA CPU worker");
+                        thread.setDaemon(true);
+                        thread.setPriority(Thread.NORM_PRIORITY - 1);
+                        return thread;
+                    },
+                    new ThreadPoolExecutor.AbortPolicy());
 
     static {
         // Force every submission through the priority queue, including the first burst.
@@ -82,8 +87,11 @@ public final class MiaExecutors {
     /** Drops queued work of one kind without disturbing integrated-server tasks in the same JVM. */
     public static int discardQueuedTasks(Priority priority) {
         int before = CPU.getQueue().size();
-        CPU.getQueue().removeIf(runnable ->
-                runnable instanceof PrioritizedTask task && task.priority == priority);
+        CPU.getQueue()
+                .removeIf(
+                        runnable ->
+                                runnable instanceof PrioritizedTask task
+                                        && task.priority == priority);
         return before - CPU.getQueue().size();
     }
 

@@ -17,9 +17,9 @@ public class StrippedRotatedPillarBlock extends RotatedPillarBlock implements St
         this.strippedBlock = strippedBlock;
     }
 
-
     @Override
-    public @Nullable BlockState getStrippedState(BlockState state, Level level, BlockPos pos, Player player) {
+    public @Nullable BlockState getStrippedState(
+            BlockState state, Level level, BlockPos pos, Player player) {
         return strippedBlock.defaultBlockState().trySetValue(AXIS, state.getValue(AXIS));
     }
 }

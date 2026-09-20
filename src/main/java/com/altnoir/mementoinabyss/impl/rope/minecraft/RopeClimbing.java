@@ -20,8 +20,7 @@ public final class RopeClimbing {
             Player player,
             Iterable<RopeConnectorBlockEntity> connectors,
             boolean jump,
-            boolean shift
-    ) {
+            boolean shift) {
         if (player.isSpectator()
                 || player.getAbilities().flying
                 || player.isPassenger()
@@ -40,16 +39,13 @@ public final class RopeClimbing {
         player.setDeltaMovement(
                 Math.clamp(movement.x(), -MAX_HORIZONTAL_SPEED, MAX_HORIZONTAL_SPEED),
                 vertical,
-                Math.clamp(movement.z(), -MAX_HORIZONTAL_SPEED, MAX_HORIZONTAL_SPEED)
-        );
+                Math.clamp(movement.z(), -MAX_HORIZONTAL_SPEED, MAX_HORIZONTAL_SPEED));
     }
 
     private static boolean touchesRope(
-            Player player,
-            Iterable<RopeConnectorBlockEntity> connectors
-    ) {
-        AABB contactBox = player.getBoundingBox().inflate(
-                ROPE_CONTACT_RADIUS, 0.08, ROPE_CONTACT_RADIUS);
+            Player player, Iterable<RopeConnectorBlockEntity> connectors) {
+        AABB contactBox =
+                player.getBoundingBox().inflate(ROPE_CONTACT_RADIUS, 0.08, ROPE_CONTACT_RADIUS);
         for (RopeConnectorBlockEntity connector : connectors) {
             if (connector.isRemoved() || connector.getLevel() != player.level()) {
                 continue;
@@ -61,8 +57,12 @@ public final class RopeClimbing {
             for (int segment = 0; segment < rope.pointCount() - 1; segment++) {
                 if (intersects(
                         contactBox,
-                        rope.x(segment), rope.y(segment), rope.z(segment),
-                        rope.x(segment + 1), rope.y(segment + 1), rope.z(segment + 1))) {
+                        rope.x(segment),
+                        rope.y(segment),
+                        rope.z(segment),
+                        rope.x(segment + 1),
+                        rope.y(segment + 1),
+                        rope.z(segment + 1))) {
                     return true;
                 }
             }
@@ -71,10 +71,7 @@ public final class RopeClimbing {
     }
 
     private static boolean intersects(
-            AABB box,
-            double ax, double ay, double az,
-            double bx, double by, double bz
-    ) {
+            AABB box, double ax, double ay, double az, double bx, double by, double bz) {
         double minimum = 0.0;
         double maximum = 1.0;
         double[] start = {ax, ay, az};
@@ -104,6 +101,5 @@ public final class RopeClimbing {
         return true;
     }
 
-    private RopeClimbing() {
-    }
+    private RopeClimbing() {}
 }

@@ -20,37 +20,45 @@ import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
 public class MiaBlockEntityTypes {
     private static final MiaRegistrate REGISTRATE = MementoInAbyss.registrate();
 
-    public static final BlockEntityEntry<PedestalBlockEntity> PEDESTAL = REGISTRATE
-            .blockEntity("pedestal_entity", PedestalBlockEntity::new)
-            .validBlock(MiaBlocks.PEDESTAL)
-            .renderer(() -> PedestalRenderer::new)
-            .registerCapability(event -> event.registerBlockEntity(
-                    Capabilities.Item.BLOCK,
-                    MiaBlockEntityTypes.PEDESTAL.get(),
-                    WorldlyContainerWrapper::new))
-            .register();
+    public static final BlockEntityEntry<PedestalBlockEntity> PEDESTAL =
+            REGISTRATE
+                    .blockEntity("pedestal_entity", PedestalBlockEntity::new)
+                    .validBlock(MiaBlocks.PEDESTAL)
+                    .renderer(() -> PedestalRenderer::new)
+                    .registerCapability(
+                            event ->
+                                    event.registerBlockEntity(
+                                            Capabilities.Item.BLOCK,
+                                            MiaBlockEntityTypes.PEDESTAL.get(),
+                                            WorldlyContainerWrapper::new))
+                    .register();
 
-    public static final BlockEntityEntry<EndlessCupBlockEntity> ENDLESS_CUP = REGISTRATE
-            .blockEntity("endless_cup_entity", EndlessCupBlockEntity::new)
-            .validBlock(MiaBlocks.ENDLESS_CUP)
-            .renderer(() -> EndlessCupRenderer::new)
-            .registerCapability(event -> event.registerBlockEntity(
-                    Capabilities.Fluid.BLOCK,
-                    MiaBlockEntityTypes.ENDLESS_CUP.get(),
-                    (blockEntity, side) -> blockEntity.fluidHandler))
-            .register();
+    public static final BlockEntityEntry<EndlessCupBlockEntity> ENDLESS_CUP =
+            REGISTRATE
+                    .blockEntity("endless_cup_entity", EndlessCupBlockEntity::new)
+                    .validBlock(MiaBlocks.ENDLESS_CUP)
+                    .renderer(() -> EndlessCupRenderer::new)
+                    .registerCapability(
+                            event ->
+                                    event.registerBlockEntity(
+                                            Capabilities.Fluid.BLOCK,
+                                            MiaBlockEntityTypes.ENDLESS_CUP.get(),
+                                            (blockEntity, side) -> blockEntity.fluidHandler))
+                    .register();
 
-    public static final BlockEntityEntry<RopeConnectorBlockEntity> ROPE_CONNECTOR = REGISTRATE
-            .blockEntity("rope_connector_entity", RopeConnectorBlockEntity::new)
-            .validBlock(MiaBlocks.ROPE_CONNECTOR)
-            .renderer(() -> RopeConnectorRenderer::new)
-            .register();
+    public static final BlockEntityEntry<RopeConnectorBlockEntity> ROPE_CONNECTOR =
+            REGISTRATE
+                    .blockEntity("rope_connector_entity", RopeConnectorBlockEntity::new)
+                    .validBlock(MiaBlocks.ROPE_CONNECTOR)
+                    .renderer(() -> RopeConnectorRenderer::new)
+                    .register();
 
-    public static final BlockEntityEntry<CaveExplorerBeaconBlockEntity> CAVE_EXPLORER_BEACON = REGISTRATE
-            .blockEntity("cave_explorer_beacon_entity", CaveExplorerBeaconBlockEntity::new)
-            .validBlock(MiaBlocks.CAVE_EXPLORER_BEACON)
-            .renderer(() -> CaveExplorerBeaconRenderer::new)
-            .register();
+    public static final BlockEntityEntry<CaveExplorerBeaconBlockEntity> CAVE_EXPLORER_BEACON =
+            REGISTRATE
+                    .blockEntity("cave_explorer_beacon_entity", CaveExplorerBeaconBlockEntity::new)
+                    .validBlock(MiaBlocks.CAVE_EXPLORER_BEACON)
+                    .renderer(() -> CaveExplorerBeaconRenderer::new)
+                    .register();
 
     public static void register(IEventBus bus) {
         bus.addListener(MiaBlockEntityTypes::addValidBlocks);

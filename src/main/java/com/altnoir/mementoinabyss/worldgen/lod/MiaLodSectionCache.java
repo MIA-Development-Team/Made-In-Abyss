@@ -23,14 +23,18 @@ final class MiaLodSectionCache {
         synchronized (this) {
             startedGeneration = generation;
             previous = trees.get(path);
-            if (previous != null && previous.revision() == source.revision()
+            if (previous != null
+                    && previous.revision() == source.revision()
                     && previous.matchesLayout(source)) return previous;
         }
-        MiaLodSectionTree result = previous != null && previous.revision() < source.revision()
-                ? previous.update(source) : MiaLodSectionTree.from(source);
+        MiaLodSectionTree result =
+                previous != null && previous.revision() < source.revision()
+                        ? previous.update(source)
+                        : MiaLodSectionTree.from(source);
         synchronized (this) {
             MiaLodSectionTree current = trees.get(path);
-            if (generation == startedGeneration && (current == null || current.revision() < result.revision())) {
+            if (generation == startedGeneration
+                    && (current == null || current.revision() < result.revision())) {
                 trees.put(path, result);
                 while (trees.size() > capacity) trees.remove(trees.keySet().iterator().next());
             }

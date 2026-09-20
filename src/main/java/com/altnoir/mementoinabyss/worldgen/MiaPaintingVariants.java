@@ -1,12 +1,11 @@
 package com.altnoir.mementoinabyss.worldgen;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import java.util.Optional;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.decoration.painting.PaintingVariant;
-
-import java.util.Optional;
 
 public final class MiaPaintingVariants {
     public static final ResourceKey<PaintingVariant> ABYSS_MAP = key("abyss_map");
@@ -23,16 +22,20 @@ public final class MiaPaintingVariants {
         register(context, FORTITUDE_FLOWER, 2, 1);
     }
 
-    private static void register(BootstrapContext<PaintingVariant> context,
-                                 ResourceKey<PaintingVariant> key, int width, int height) {
-        context.register(key, new PaintingVariant(width, height, key.identifier(),
-                Optional.empty(), Optional.empty()));
+    private static void register(
+            BootstrapContext<PaintingVariant> context,
+            ResourceKey<PaintingVariant> key,
+            int width,
+            int height) {
+        context.register(
+                key,
+                new PaintingVariant(
+                        width, height, key.identifier(), Optional.empty(), Optional.empty()));
     }
 
     private static ResourceKey<PaintingVariant> key(String path) {
         return ResourceKey.create(Registries.PAINTING_VARIANT, MementoInAbyss.asResource(path));
     }
 
-    private MiaPaintingVariants() {
-    }
+    private MiaPaintingVariants() {}
 }

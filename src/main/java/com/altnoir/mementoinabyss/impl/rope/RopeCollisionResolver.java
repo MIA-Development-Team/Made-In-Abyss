@@ -9,15 +9,13 @@ package com.altnoir.mementoinabyss.impl.rope;
  */
 @FunctionalInterface
 public interface RopeCollisionResolver {
-    RopeCollisionResolver NONE = (position, radius) -> {
-    };
+    RopeCollisionResolver NONE = (position, radius) -> {};
 
     /**
      * Called once before a rope tick. Resolvers may use this to cache nearby
      * collision geometry before the iterative solver starts.
      */
-    default void prepare(RopeSimulation rope) {
-    }
+    default void prepare(RopeSimulation rope) {}
 
     void resolve(MutableRopePoint position, double radius);
 
@@ -26,10 +24,7 @@ public interface RopeCollisionResolver {
      * for swept collision detection; the default retains discrete behavior.
      */
     default void resolve(
-            MutableRopePoint position,
-            MutableRopePoint previousPosition,
-            double radius
-    ) {
+            MutableRopePoint position, MutableRopePoint previousPosition, double radius) {
         this.resolve(position, radius);
     }
 }

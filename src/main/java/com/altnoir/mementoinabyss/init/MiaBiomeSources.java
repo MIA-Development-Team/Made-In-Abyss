@@ -20,6 +20,5 @@ public final class MiaBiomeSources {
         SOURCES.register(bus);
     }
 
-    private MiaBiomeSources() {
-    }
+    private MiaBiomeSources() {}
 }

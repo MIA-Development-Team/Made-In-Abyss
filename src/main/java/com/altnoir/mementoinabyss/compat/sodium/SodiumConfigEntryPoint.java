@@ -23,39 +23,48 @@ public final class SodiumConfigEntryPoint implements ConfigEntryPoint {
         var config = MementoInAbyss.CONFIGS.graphsSection;
         Identifier enabledId = id("cross_dimension_lod_enabled");
 
-        OptionGroupBuilder lodGroup = builder.createOptionGroup()
-                .setName(Component.translatable(CONFIG_KEY_PREFIX + "crossDimensionLodGroup"))
-                .addOption(builder.createBooleanOption(enabledId)
-                        .setName(name("crossDimensionLodEnabled"))
-                        .setTooltip(tooltip("cross_dimension_lod_enabled"))
-                        .setStorageHandler(STORAGE)
-                        .setBinding(
-                                value -> config.crossDimensionLodEnabled.validateAndSet(value),
-                                config.crossDimensionLodEnabled::get)
-                        .setDefaultValue(true))
-                .addOption(integerOption(
-                        builder,
-                        "cross_dimension_lod_view_distance",
-                        "crossDimensionLodViewDistance",
-                        config.crossDimensionLodViewDistance,
-                        32,
-                        16,
-                        128,
-                        units("chunks")))
-                .addOption(integerOption(
-                        builder,
-                        "cross_dimension_lod_capture_queue_limit",
-                        "crossDimensionLodCaptureQueueLimit",
-                        config.crossDimensionLodCaptureQueueLimit,
-                        1024,
-                        64,
-                        16384,
-                        units("entries")));
+        OptionGroupBuilder lodGroup =
+                builder.createOptionGroup()
+                        .setName(
+                                Component.translatable(
+                                        CONFIG_KEY_PREFIX + "crossDimensionLodGroup"))
+                        .addOption(
+                                builder.createBooleanOption(enabledId)
+                                        .setName(name("crossDimensionLodEnabled"))
+                                        .setTooltip(tooltip("cross_dimension_lod_enabled"))
+                                        .setStorageHandler(STORAGE)
+                                        .setBinding(
+                                                value ->
+                                                        config.crossDimensionLodEnabled
+                                                                .validateAndSet(value),
+                                                config.crossDimensionLodEnabled::get)
+                                        .setDefaultValue(true))
+                        .addOption(
+                                integerOption(
+                                        builder,
+                                        "cross_dimension_lod_view_distance",
+                                        "crossDimensionLodViewDistance",
+                                        config.crossDimensionLodViewDistance,
+                                        32,
+                                        16,
+                                        128,
+                                        units("chunks")))
+                        .addOption(
+                                integerOption(
+                                        builder,
+                                        "cross_dimension_lod_capture_queue_limit",
+                                        "crossDimensionLodCaptureQueueLimit",
+                                        config.crossDimensionLodCaptureQueueLimit,
+                                        1024,
+                                        64,
+                                        16384,
+                                        units("entries")));
 
         builder.registerOwnModOptions()
-                .addPage(builder.createOptionPage()
-                        .setName(Component.translatable(SODIUM_KEY_PREFIX + "lod_page"))
-                        .addOptionGroup(lodGroup));
+                .addPage(
+                        builder.createOptionPage()
+                                .setName(Component.translatable(SODIUM_KEY_PREFIX + "lod_page"))
+                                .addOptionGroup(lodGroup));
     }
 
     private static IntegerOptionBuilder integerOption(

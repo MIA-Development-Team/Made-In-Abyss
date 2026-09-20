@@ -1,23 +1,49 @@
 package com.altnoir.mementoinabyss.network;
 
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import java.nio.charset.StandardCharsets;
 import java.util.zip.CRC32;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 
 /** Shared envelope for all bounded parts of an atomic column update. */
 public record CrossDimensionLodTransfer(
-        String linkId, int displayYOffset, int radius, long streamEpoch, long transferId,
-        long baseRevision, long targetRevision, int chunkX, int chunkZ, int cellSize,
-        int minY, int sectionCount, int updateCount, CrossDimensionLodCacheScope cacheScope) {
+        String linkId,
+        int displayYOffset,
+        int radius,
+        long streamEpoch,
+        long transferId,
+        long baseRevision,
+        long targetRevision,
+        int chunkX,
+        int chunkZ,
+        int cellSize,
+        int minY,
+        int sectionCount,
+        int updateCount,
+        CrossDimensionLodCacheScope cacheScope) {
     public CrossDimensionLodTransfer {
-        if (cacheScope == null || linkId == null || linkId.isBlank() || linkId.length() > 256
-                || displayYOffset < -65_536 || displayYOffset > 65_536
-                || radius <= 0 || radius > 16_384 || streamEpoch <= 0 || transferId <= 0
-                || baseRevision < 0 || targetRevision <= 0 || targetRevision < baseRevision
-                || cellSize < 1 || cellSize > 16 || Integer.bitCount(cellSize) != 1
-                || minY < -65_536 || minY > 65_536 || minY % 16 != 0
-                || sectionCount <= 0 || sectionCount > 1024
-                || updateCount < 0 || updateCount > sectionCount
+        if (cacheScope == null
+                || linkId == null
+                || linkId.isBlank()
+                || linkId.length() > 256
+                || displayYOffset < -65_536
+                || displayYOffset > 65_536
+                || radius <= 0
+                || radius > 16_384
+                || streamEpoch <= 0
+                || transferId <= 0
+                || baseRevision < 0
+                || targetRevision <= 0
+                || targetRevision < baseRevision
+                || cellSize < 1
+                || cellSize > 16
+                || Integer.bitCount(cellSize) != 1
+                || minY < -65_536
+                || minY > 65_536
+                || minY % 16 != 0
+                || sectionCount <= 0
+                || sectionCount > 1024
+                || updateCount < 0
+                || updateCount > sectionCount
                 || baseRevision == 0 && updateCount != sectionCount) {
             throw new IllegalArgumentException("Invalid LOD transfer envelope");
         }
@@ -45,24 +71,57 @@ public record CrossDimensionLodTransfer(
     }
 
     static CrossDimensionLodTransfer decode(RegistryFriendlyByteBuf buffer) {
-        return new CrossDimensionLodTransfer(buffer.readUtf(256), buffer.readInt(), buffer.readVarInt(),
-                buffer.readLong(), buffer.readLong(), buffer.readLong(), buffer.readLong(),
-                buffer.readInt(), buffer.readInt(), buffer.readVarInt(), buffer.readInt(),
-                buffer.readVarInt(), buffer.readVarInt(), CrossDimensionLodCacheScope.decode(buffer));
+        return new CrossDimensionLodTransfer(
+                buffer.readUtf(256),
+                buffer.readInt(),
+                buffer.readVarInt(),
+                buffer.readLong(),
+                buffer.readLong(),
+                buffer.readLong(),
+                buffer.readLong(),
+                buffer.readInt(),
+                buffer.readInt(),
+                buffer.readVarInt(),
+                buffer.readInt(),
+                buffer.readVarInt(),
+                buffer.readVarInt(),
+                CrossDimensionLodCacheScope.decode(buffer));
     }
 
     int encodedSize() {
         int utfBytes = linkId.getBytes(StandardCharsets.UTF_8).length;
-        return varIntSize(utfBytes) + utfBytes + 4 + varIntSize(radius) + 32 + 8
-                + varIntSize(cellSize) + 4 + varIntSize(sectionCount) + varIntSize(updateCount) + cacheScope.encodedSize();
+        return varIntSize(utfBytes)
+                + utfBytes
+                + 4
+                + varIntSize(radius)
+                + 32
+                + 8
+                + varIntSize(cellSize)
+                + 4
+                + varIntSize(sectionCount)
+                + varIntSize(updateCount)
+                + cacheScope.encodedSize();
     }
 
     void checksum(CRC32 crc) {
         byte[] bytes = linkId.getBytes(StandardCharsets.UTF_8);
         update(crc, bytes.length);
         crc.update(bytes);
-        for (long field : new long[]{displayYOffset, radius, streamEpoch, transferId, baseRevision,
-                targetRevision, chunkX, chunkZ, cellSize, minY, sectionCount, updateCount}) update(crc, field);
+        for (long field :
+                new long[] {
+                    displayYOffset,
+                    radius,
+                    streamEpoch,
+                    transferId,
+                    baseRevision,
+                    targetRevision,
+                    chunkX,
+                    chunkZ,
+                    cellSize,
+                    minY,
+                    sectionCount,
+                    updateCount
+                }) update(crc, field);
         cacheScope.checksum(crc);
     }
 
@@ -72,11 +131,17 @@ public record CrossDimensionLodTransfer(
 
     static int varIntSize(int value) {
         int bytes = 1;
-        while ((value & ~127) != 0) { bytes++; value >>>= 7; }
+        while ((value & ~127) != 0) {
+            bytes++;
+            value >>>= 7;
+        }
         return bytes;
     }
 
-    public boolean replacement() { return baseRevision == 0; }
+    public boolean replacement() {
+        return baseRevision == 0;
+    }
+
     public long chunkKey() {
         return com.altnoir.mementoinabyss.worldgen.lod.CrossDimensionLodKey.pack(chunkX, chunkZ);
     }

@@ -41,48 +41,73 @@ public final class AbyssPortalBlock extends Block implements Portal {
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
-                                InsideBlockEffectApplier effectApplier, boolean isPrecise) {
+    protected void entityInside(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Entity entity,
+            InsideBlockEffectApplier effectApplier,
+            boolean isPrecise) {
         if (entity.canUsePortal(false)
                 && Shapes.joinIsNotEmpty(
-                Shapes.create(entity.getBoundingBox().move(-pos.getX(), -pos.getY(), -pos.getZ())),
-                state.getShape(level, pos), BooleanOp.AND)) {
+                        Shapes.create(
+                                entity.getBoundingBox()
+                                        .move(-pos.getX(), -pos.getY(), -pos.getZ())),
+                        state.getShape(level, pos),
+                        BooleanOp.AND)) {
             entity.setAsInsidePortal(this, pos);
         }
     }
 
     @Override
-    public @Nullable TeleportTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos portalEntryPos) {
+    public @Nullable TeleportTransition getPortalDestination(
+            ServerLevel level, Entity entity, BlockPos portalEntryPos) {
         boolean enteringAbyss = level.dimension() != MiaDimensions.THE_ABYSS_LEVEL;
-        ServerLevel destination = level.getServer().getLevel(
-                enteringAbyss ? MiaDimensions.THE_ABYSS_LEVEL : Level.OVERWORLD);
+        ServerLevel destination =
+                level.getServer()
+                        .getLevel(enteringAbyss ? MiaDimensions.THE_ABYSS_LEVEL : Level.OVERWORLD);
         if (destination == null) {
             return null;
         }
 
         if (!enteringAbyss && entity instanceof ServerPlayer player) {
-            return player.findRespawnPositionAndUseSpawnBlock(false, AbyssPortalBlock::afterTeleport);
+            return player.findRespawnPositionAndUseSpawnBlock(
+                    false, AbyssPortalBlock::afterTeleport);
         }
 
-        BlockPos target = enteringAbyss
-                ? findSuitablePosition(destination, nearestAbyssPosition(entity.getX(), entity.getZ()))
-                : destination.getRespawnData().pos();
+        BlockPos target =
+                enteringAbyss
+                        ? findSuitablePosition(
+                                destination, nearestAbyssPosition(entity.getX(), entity.getZ()))
+                        : destination.getRespawnData().pos();
         Vec3 position = entity.adjustSpawnLocation(destination, target).getBottomCenter();
-        return new TeleportTransition(destination, position, entity.getDeltaMovement(),
-                entity.getYRot(), entity.getXRot(),
+        return new TeleportTransition(
+                destination,
+                position,
+                entity.getDeltaMovement(),
+                entity.getYRot(),
+                entity.getXRot(),
                 AbyssPortalBlock::afterTeleport);
     }
 
     private static void afterTeleport(Entity entity) {
         entity.placePortalTicket(BlockPos.containing(entity.position()));
-        if (entity instanceof ServerPlayer player && player.level().dimension() == Level.OVERWORLD) {
-            player.level().playSound(null, player.blockPosition(), MiaSoundEvents.ABYSS_PORTAL_TRAVEL.get(),
-                    SoundSource.BLOCKS, 1.0F, 1.0F);
+        if (entity instanceof ServerPlayer player
+                && player.level().dimension() == Level.OVERWORLD) {
+            player.level()
+                    .playSound(
+                            null,
+                            player.blockPosition(),
+                            MiaSoundEvents.ABYSS_PORTAL_TRAVEL.get(),
+                            SoundSource.BLOCKS,
+                            1.0F,
+                            1.0F);
         }
     }
 
@@ -120,11 +145,17 @@ public final class AbyssPortalBlock extends Block implements Portal {
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         if (random.nextInt(100) == 0) {
             float[] pitches = {0.4F, 0.6F, 1.0F, 1.2F, 1.5F};
-            level.playLocalSound(pos, MiaSoundEvents.ABYSS_PORTAL_AMBIENT.get(), SoundSource.BLOCKS,
-                    0.5F, pitches[random.nextInt(pitches.length)], false);
+            level.playLocalSound(
+                    pos,
+                    MiaSoundEvents.ABYSS_PORTAL_AMBIENT.get(),
+                    SoundSource.BLOCKS,
+                    0.5F,
+                    pitches[random.nextInt(pitches.length)],
+                    false);
         }
         for (int i = 0; i < 4; i++) {
-            level.addParticle(ParticleTypes.GLOW,
+            level.addParticle(
+                    ParticleTypes.GLOW,
                     pos.getX() + random.nextDouble(),
                     pos.getY() + random.nextDouble(),
                     pos.getZ() + random.nextDouble(),

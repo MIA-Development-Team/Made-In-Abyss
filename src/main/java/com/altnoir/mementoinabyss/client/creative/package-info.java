@@ -1,6 +1,5 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-
 package com.altnoir.mementoinabyss.client.creative;
 
 import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;

@@ -1,14 +1,14 @@
 package com.altnoir.mementoinabyss.impl.event;
 
+import com.altnoir.mementoinabyss.content.block.entity.RopeConnectorBlockEntity;
 import com.altnoir.mementoinabyss.impl.curse.CurseEvent;
 import com.altnoir.mementoinabyss.impl.curse.CurseManager;
+import com.altnoir.mementoinabyss.impl.rope.minecraft.RopeClimbing;
 import com.altnoir.mementoinabyss.impl.strippable.StripEvent;
 import com.altnoir.mementoinabyss.impl.tillable.TillEvent;
-import com.altnoir.mementoinabyss.impl.rope.minecraft.RopeClimbing;
-import com.altnoir.mementoinabyss.content.block.entity.RopeConnectorBlockEntity;
-import com.altnoir.mementoinabyss.init.MiaSoundEvents;
 import com.altnoir.mementoinabyss.init.MiaAttributes;
 import com.altnoir.mementoinabyss.init.MiaRecipes;
+import com.altnoir.mementoinabyss.init.MiaSoundEvents;
 import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensions;
 import com.altnoir.mementoinabyss.worldgen.dimension.MiaWorldClocks;
 import com.altnoir.mementoinabyss.worldgen.dimension.VerticalDimensionTeleporter;
@@ -21,10 +21,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ChunkDataEvent;
 import net.neoforged.neoforge.event.level.ChunkEvent;
@@ -45,10 +45,12 @@ public final class CommonEvents {
     public static void onCriticalHit(CriticalHitEvent event) {
         if (event.getEntity().level().isClientSide() || event.isCriticalHit()) return;
         double chance = event.getEntity().getAttributeValue(MiaAttributes.CRITICAL_HIT);
-        if (chance <= 0.0 || event.getEntity().getRandom().nextDouble() >= Math.min(chance, 1.0)) return;
+        if (chance <= 0.0 || event.getEntity().getRandom().nextDouble() >= Math.min(chance, 1.0))
+            return;
 
-        double multiplier = event.getEntity().getAttributeValue(MiaAttributes.CRITICAL_HIT_DAMAGE)
-                + Math.max(0.0, chance - 1.0);
+        double multiplier =
+                event.getEntity().getAttributeValue(MiaAttributes.CRITICAL_HIT_DAMAGE)
+                        + Math.max(0.0, chance - 1.0);
         event.setCriticalHit(true);
         event.setDamageMultiplier((float) multiplier);
     }
@@ -57,8 +59,11 @@ public final class CommonEvents {
     public static void onEntityTick(EntityTickEvent.Pre event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             var input = player.getLastClientInput();
-            RopeClimbing.tick(player, RopeConnectorBlockEntity.serverInstances(),
-                    input.jump(), input.shift());
+            RopeClimbing.tick(
+                    player,
+                    RopeConnectorBlockEntity.serverInstances(),
+                    input.jump(),
+                    input.shift());
         }
     }
 
@@ -109,7 +114,8 @@ public final class CommonEvents {
 
     @SubscribeEvent
     public static void onBlockToolModification(BlockEvent.BlockToolModificationEvent event) {
-        if (!event.isCanceled() && !event.isSimulated()
+        if (!event.isCanceled()
+                && !event.isSimulated()
                 && event.getLevel() instanceof ServerLevel level) {
             MiaLodServer.markBlockDirty(level, event.getPos());
         }
@@ -169,16 +175,16 @@ public final class CommonEvents {
     public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             if (event.getTo().equals(MiaDimensions.THE_ABYSS_LEVEL)) {
-                player.connection.send(new ClientboundSoundPacket(
-                        MiaSoundEvents.ABYSS_PORTAL_TRAVEL,
-                        SoundSource.AMBIENT,
-                        player.getX(),
-                        player.getY(),
-                        player.getZ(),
-                        0.25F,
-                        player.getRandom().nextFloat() * 0.4F + 0.8F,
-                        player.getRandom().nextLong()
-                ));
+                player.connection.send(
+                        new ClientboundSoundPacket(
+                                MiaSoundEvents.ABYSS_PORTAL_TRAVEL,
+                                SoundSource.AMBIENT,
+                                player.getX(),
+                                player.getY(),
+                                player.getZ(),
+                                0.25F,
+                                player.getRandom().nextFloat() * 0.4F + 0.8F,
+                                player.getRandom().nextLong()));
             }
             MiaLodServer.onPlayerChangedDimension(player);
         }

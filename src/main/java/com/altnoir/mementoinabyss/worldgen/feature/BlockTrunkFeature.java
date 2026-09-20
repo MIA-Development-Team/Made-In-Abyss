@@ -38,13 +38,20 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
             return false;
         } else {
             BlockPos.MutableBlockPos blockpos$mutableblockpos1 = context.origin().mutable();
-            BlockPos.MutableBlockPos blockpos$mutableblockpos = blockpos$mutableblockpos1.mutable().move(blockConfiguration.direction());
-            BlockState directionState = worldgenlevel.getBlockState(context.origin().relative(blockConfiguration.direction().getOpposite()));
-            if (!directionState.is(BlockTags.DIRT) && !directionState.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag)) {
+            BlockPos.MutableBlockPos blockpos$mutableblockpos =
+                    blockpos$mutableblockpos1.mutable().move(blockConfiguration.direction());
+            BlockState directionState =
+                    worldgenlevel.getBlockState(
+                            context.origin()
+                                    .relative(blockConfiguration.direction().getOpposite()));
+            if (!directionState.is(BlockTags.DIRT)
+                    && !directionState.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag)) {
                 return false;
             }
             for (int l = 0; l < j; l++) {
-                if (!blockConfiguration.allowedPlacement().test(worldgenlevel, blockpos$mutableblockpos)) {
+                if (!blockConfiguration
+                        .allowedPlacement()
+                        .test(worldgenlevel, blockpos$mutableblockpos)) {
                     truncate(aint, j, l, blockConfiguration.prioritizeTip());
                     break;
                 }
@@ -57,14 +64,24 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
                 if (i1 != 0) {
                     BlockTrunkConfiguration.Layer layer = blockConfiguration.layers().get(k1);
                     for (int j1 = 0; j1 < i1; j1++) {
-                        BlockState targetState = layer.state().getState(worldgenlevel, randomsource, blockpos$mutableblockpos1);
+                        BlockState targetState =
+                                layer.state()
+                                        .getState(
+                                                worldgenlevel,
+                                                randomsource,
+                                                blockpos$mutableblockpos1);
 
-                        if (!worldgenlevel.getBlockState(blockpos$mutableblockpos1).is(Blocks.WATER) || !(targetState.getBlock() instanceof CarpetBlock)) {
-                            worldgenlevel.setBlock(
-                                    blockpos$mutableblockpos1, targetState, 2
-                            );
-                            if (posHeight < j - 2 && targetState.isSolidRender() && randomsource.nextFloat() < context.config().decChance()) {
-                                setDecoration(worldgenlevel, blockpos$mutableblockpos1, blockConfiguration, randomsource);
+                        if (!worldgenlevel.getBlockState(blockpos$mutableblockpos1).is(Blocks.WATER)
+                                || !(targetState.getBlock() instanceof CarpetBlock)) {
+                            worldgenlevel.setBlock(blockpos$mutableblockpos1, targetState, 2);
+                            if (posHeight < j - 2
+                                    && targetState.isSolidRender()
+                                    && randomsource.nextFloat() < context.config().decChance()) {
+                                setDecoration(
+                                        worldgenlevel,
+                                        blockpos$mutableblockpos1,
+                                        blockConfiguration,
+                                        randomsource);
                             }
                         }
 
@@ -78,7 +95,11 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
         }
     }
 
-    private void setDecoration(WorldGenLevel worldGenLevel, BlockPos pos, BlockTrunkConfiguration bc, RandomSource random) {
+    private void setDecoration(
+            WorldGenLevel worldGenLevel,
+            BlockPos pos,
+            BlockTrunkConfiguration bc,
+            RandomSource random) {
         var dec = bc.dec().state();
         int length = bc.dec().height().sample(random);
         var decFace = bc.decFace().state();
@@ -88,7 +109,8 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
         BlockPos newPos = pos.relative(dir);
 
         for (int i = 0; i < length; i++) {
-            if (worldGenLevel.getBlockState(newPos).isEmpty() || worldGenLevel.getBlockState(newPos).is(Blocks.WATER)) {
+            if (worldGenLevel.getBlockState(newPos).isEmpty()
+                    || worldGenLevel.getBlockState(newPos).is(Blocks.WATER)) {
                 BlockState state = dec.getState(worldGenLevel, random, newPos);
 
                 if (state.hasProperty(BlockStateProperties.FACING)) {
@@ -100,7 +122,8 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
                 worldGenLevel.setBlock(newPos, state, 2);
                 if (worldGenLevel.getBlockState(newPos.mutable().move(Direction.UP)).isEmpty()) {
                     BlockPos topPos = newPos.above();
-                    worldGenLevel.setBlock(topPos, decFace.getState(worldGenLevel, random, topPos), 2);
+                    worldGenLevel.setBlock(
+                            topPos, decFace.getState(worldGenLevel, random, topPos), 2);
                 }
             } else {
                 break;
@@ -110,7 +133,8 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
         }
     }
 
-    private static void truncate(int[] layerHeights, int totalHeight, int currentHeight, boolean prioritizeTip) {
+    private static void truncate(
+            int[] layerHeights, int totalHeight, int currentHeight, boolean prioritizeTip) {
         int i = totalHeight - currentHeight;
         int j = prioritizeTip ? 1 : -1;
         int k = prioritizeTip ? 0 : layerHeights.length - 1;

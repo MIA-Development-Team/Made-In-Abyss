@@ -35,7 +35,8 @@ public final class RopeItem extends Item {
         if (player == null) {
             return InteractionResult.PASS;
         }
-        if (!(level.getBlockEntity(clickedPos) instanceof RopeConnectorBlockEntity clickedConnector)) {
+        if (!(level.getBlockEntity(clickedPos)
+                instanceof RopeConnectorBlockEntity clickedConnector)) {
             if (selection == null) {
                 return InteractionResult.PASS;
             }
@@ -54,15 +55,14 @@ public final class RopeItem extends Item {
                 clickedConnector.disconnect();
             }
             int initialLength = initialLength(player, stack, clickedPos);
-            stack.set(MiaDataComponents.ROPE_ENDPOINT.get(), new RopeEndpointSelection(
-                    level.dimension().identifier(),
-                    clickedPos,
-                    initialLength
-            ));
+            stack.set(
+                    MiaDataComponents.ROPE_ENDPOINT.get(),
+                    new RopeEndpointSelection(
+                            level.dimension().identifier(), clickedPos, initialLength));
             reserveInitialLength(player, stack, initialLength);
             notify(player, "rope.endpoint_picked");
-            level.playSound(null, clickedPos, SoundEvents.LEAD_UNTIED,
-                    SoundSource.BLOCKS, 0.7F, 1.0F);
+            level.playSound(
+                    null, clickedPos, SoundEvents.LEAD_UNTIED, SoundSource.BLOCKS, 0.7F, 1.0F);
             return InteractionResult.SUCCESS_SERVER;
         }
 
@@ -72,21 +72,23 @@ public final class RopeItem extends Item {
         }
 
         if (!selection.dimension().equals(level.dimension().identifier())) {
-            stack.set(MiaDataComponents.ROPE_ENDPOINT.get(), new RopeEndpointSelection(
-                    level.dimension().identifier(),
-                    clickedPos,
-                    initialLength(player, stack, clickedPos)
-            ));
+            stack.set(
+                    MiaDataComponents.ROPE_ENDPOINT.get(),
+                    new RopeEndpointSelection(
+                            level.dimension().identifier(),
+                            clickedPos,
+                            initialLength(player, stack, clickedPos)));
             notify(player, "rope.wrong_dimension");
             return InteractionResult.SUCCESS_SERVER;
         }
 
         if (!(level.getBlockEntity(selection.connector()) instanceof RopeConnectorBlockEntity)) {
-            stack.set(MiaDataComponents.ROPE_ENDPOINT.get(), new RopeEndpointSelection(
-                    level.dimension().identifier(),
-                    clickedPos,
-                    initialLength(player, stack, clickedPos)
-            ));
+            stack.set(
+                    MiaDataComponents.ROPE_ENDPOINT.get(),
+                    new RopeEndpointSelection(
+                            level.dimension().identifier(),
+                            clickedPos,
+                            initialLength(player, stack, clickedPos)));
             notify(player, "rope.missing_endpoint");
             return InteractionResult.SUCCESS_SERVER;
         }
@@ -104,7 +106,8 @@ public final class RopeItem extends Item {
             return InteractionResult.FAIL;
         }
 
-        if (!RopeConnectorBlockEntity.connect(level, selection.connector(), clickedPos, targetLength)) {
+        if (!RopeConnectorBlockEntity.connect(
+                level, selection.connector(), clickedPos, targetLength)) {
             return InteractionResult.FAIL;
         }
 
@@ -112,8 +115,7 @@ public final class RopeItem extends Item {
         stack.remove(MiaDataComponents.ROPE_ENDPOINT.get());
         stack.consume(1, player);
         notify(player, "rope.connected");
-        level.playSound(null, clickedPos, SoundEvents.LEAD_TIED,
-                SoundSource.BLOCKS, 0.8F, 1.0F);
+        level.playSound(null, clickedPos, SoundEvents.LEAD_TIED, SoundSource.BLOCKS, 0.8F, 1.0F);
         return InteractionResult.SUCCESS_SERVER;
     }
 
@@ -129,8 +131,13 @@ public final class RopeItem extends Item {
                 stack.remove(MiaDataComponents.ROPE_ENDPOINT.get());
                 refundReservedLength(player, stack, selection);
                 notify(player, "rope.endpoint_released");
-                level.playSound(null, player.blockPosition(), SoundEvents.LEAD_UNTIED,
-                        SoundSource.PLAYERS, 0.7F, 0.9F);
+                level.playSound(
+                        null,
+                        player.blockPosition(),
+                        SoundEvents.LEAD_UNTIED,
+                        SoundSource.PLAYERS,
+                        0.7F,
+                        0.9F);
             }
             return level.isClientSide()
                     ? InteractionResult.SUCCESS
@@ -150,7 +157,8 @@ public final class RopeItem extends Item {
     }
 
     @Override
-    public boolean releaseUsing(ItemStack stack, Level level, LivingEntity entity, int remainingTime) {
+    public boolean releaseUsing(
+            ItemStack stack, Level level, LivingEntity entity, int remainingTime) {
         if (!(entity instanceof Player player) || level.isClientSide()) {
             return false;
         }
@@ -176,10 +184,18 @@ public final class RopeItem extends Item {
         if (!(stack.getItem() instanceof RopeItem) || selection == null || direction == 0) {
             return false;
         }
-        int configuredMaximum = Math.max(1,
-                (int) Math.floor(MementoInAbyss.CONFIGS.gamePlaySection.hookMaxDistance.get()));
-        int adjusted = Math.clamp(selection.length() + Integer.signum(direction), 1, configuredMaximum);
-        if (!player.hasInfiniteMaterials() && adjusted > selection.length() && stack.getCount() <= 1) {
+        int configuredMaximum =
+                Math.max(
+                        1,
+                        (int)
+                                Math.floor(
+                                        MementoInAbyss.CONFIGS.gamePlaySection.hookMaxDistance
+                                                .get()));
+        int adjusted =
+                Math.clamp(selection.length() + Integer.signum(direction), 1, configuredMaximum);
+        if (!player.hasInfiniteMaterials()
+                && adjusted > selection.length()
+                && stack.getCount() <= 1) {
             return false;
         }
         if (adjusted == selection.length()) {
@@ -202,24 +218,22 @@ public final class RopeItem extends Item {
             Player player,
             ItemStack stack,
             RopeEndpointSelection selection,
-            net.minecraft.world.phys.Vec3 end
-    ) {
+            net.minecraft.world.phys.Vec3 end) {
         if (!(level.getBlockEntity(selection.connector()) instanceof RopeConnectorBlockEntity)) {
             stack.remove(MiaDataComponents.ROPE_ENDPOINT.get());
             refundReservedLength(player, stack, selection);
             notify(player, "rope.missing_endpoint");
             return InteractionResult.FAIL;
         }
-        double distance = net.minecraft.world.phys.Vec3.atCenterOf(selection.connector()).distanceTo(end);
+        double distance =
+                net.minecraft.world.phys.Vec3.atCenterOf(selection.connector()).distanceTo(end);
         double maximumDistance = MementoInAbyss.CONFIGS.gamePlaySection.hookMaxDistance.get();
-        if (distance > selection.length() + 1.0E-6
-                || selection.length() > maximumDistance) {
+        if (distance > selection.length() + 1.0E-6 || selection.length() > maximumDistance) {
             notify(player, "rope.not_enough_length", selection.length());
             return InteractionResult.FAIL;
         }
-        net.minecraft.world.phys.Vec3 throwVelocity = player.getLookAngle()
-                .scale(THROW_SPEED)
-                .add(player.getDeltaMovement().scale(20.0));
+        net.minecraft.world.phys.Vec3 throwVelocity =
+                player.getLookAngle().scale(THROW_SPEED).add(player.getDeltaMovement().scale(20.0));
         if (!RopeConnectorBlockEntity.connectFree(
                 level, selection.connector(), end, selection.length(), throwVelocity)) {
             return InteractionResult.FAIL;
@@ -227,18 +241,36 @@ public final class RopeItem extends Item {
         stack.remove(MiaDataComponents.ROPE_ENDPOINT.get());
         stack.consume(1, player);
         notify(player, "rope.free_end_placed");
-        level.playSound(null, BlockPos.containing(end), SoundEvents.LEAD_UNTIED,
-                SoundSource.BLOCKS, 0.7F, 1.0F);
+        level.playSound(
+                null,
+                BlockPos.containing(end),
+                SoundEvents.LEAD_UNTIED,
+                SoundSource.BLOCKS,
+                0.7F,
+                1.0F);
         return InteractionResult.SUCCESS_SERVER;
     }
 
     private static int initialLength(Player player, ItemStack stack, BlockPos connector) {
-        int needed = (int) Math.ceil(net.minecraft.world.phys.Vec3.atCenterOf(connector)
-                .distanceTo(heldPosition(player)));
-        int maximum = Math.max(1, player.hasInfiniteMaterials()
-                ? (int) Math.floor(MementoInAbyss.CONFIGS.gamePlaySection.hookMaxDistance.get())
-                : Math.min(stack.getCount(),
-                        (int) Math.floor(MementoInAbyss.CONFIGS.gamePlaySection.hookMaxDistance.get())));
+        int needed =
+                (int)
+                        Math.ceil(
+                                net.minecraft.world.phys.Vec3.atCenterOf(connector)
+                                        .distanceTo(heldPosition(player)));
+        int maximum =
+                Math.max(
+                        1,
+                        player.hasInfiniteMaterials()
+                                ? (int)
+                                        Math.floor(
+                                                MementoInAbyss.CONFIGS.gamePlaySection
+                                                        .hookMaxDistance.get())
+                                : Math.min(
+                                        stack.getCount(),
+                                        (int)
+                                                Math.floor(
+                                                        MementoInAbyss.CONFIGS.gamePlaySection
+                                                                .hookMaxDistance.get())));
         return Math.clamp(needed, 1, maximum);
     }
 
@@ -249,11 +281,7 @@ public final class RopeItem extends Item {
     }
 
     private static void resizeReservedLength(
-            Player player,
-            ItemStack stack,
-            int oldLength,
-            int newLength
-    ) {
+            Player player, ItemStack stack, int oldLength, int newLength) {
         if (player.hasInfiniteMaterials()) {
             return;
         }
@@ -265,19 +293,14 @@ public final class RopeItem extends Item {
     }
 
     private static void refundReservedLength(
-            Player player,
-            ItemStack stack,
-            RopeEndpointSelection selection
-    ) {
+            Player player, ItemStack stack, RopeEndpointSelection selection) {
         if (!player.hasInfiniteMaterials() && selection.length() > 1) {
             stack.grow(selection.length() - 1);
         }
     }
 
     private static net.minecraft.world.phys.Vec3 heldPosition(Player player) {
-        return player.getEyePosition()
-                .add(player.getLookAngle().scale(0.55))
-                .add(0.0, -0.35, 0.0);
+        return player.getEyePosition().add(player.getLookAngle().scale(0.55)).add(0.0, -0.35, 0.0);
     }
 
     private static void notify(Player player, String key, Object... arguments) {

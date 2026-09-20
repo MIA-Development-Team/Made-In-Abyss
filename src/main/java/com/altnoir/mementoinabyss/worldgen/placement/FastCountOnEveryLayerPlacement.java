@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.worldgen.placement;
 
 import com.altnoir.mementoinabyss.init.MiaPlacementModifiers;
 import com.mojang.serialization.MapCodec;
+import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.util.RandomSource;
@@ -16,16 +17,15 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
-import java.util.stream.Stream;
-
 /**
  * Equivalent to vanilla's count-on-every-layer placement, but resolves the
  * containing chunk once per vertical scan instead of once per block lookup.
  */
 public final class FastCountOnEveryLayerPlacement extends PlacementModifier {
-    public static final MapCodec<FastCountOnEveryLayerPlacement> CODEC = IntProviders.codec(0, 256)
-            .fieldOf("count")
-            .xmap(FastCountOnEveryLayerPlacement::new, placement -> placement.count);
+    public static final MapCodec<FastCountOnEveryLayerPlacement> CODEC =
+            IntProviders.codec(0, 256)
+                    .fieldOf("count")
+                    .xmap(FastCountOnEveryLayerPlacement::new, placement -> placement.count);
 
     private final IntProvider count;
 
@@ -38,7 +38,8 @@ public final class FastCountOnEveryLayerPlacement extends PlacementModifier {
     }
 
     @Override
-    public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos origin) {
+    public Stream<BlockPos> getPositions(
+            PlacementContext context, RandomSource random, BlockPos origin) {
         Stream.Builder<BlockPos> positions = Stream.builder();
         int layer = 0;
         boolean foundAny;
@@ -49,8 +50,11 @@ public final class FastCountOnEveryLayerPlacement extends PlacementModifier {
                 int x = origin.getX() + random.nextInt(16);
                 int z = origin.getZ() + random.nextInt(16);
                 int topY = context.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
-                ChunkAccess chunk = context.getLevel().getChunk(
-                        SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z));
+                ChunkAccess chunk =
+                        context.getLevel()
+                                .getChunk(
+                                        SectionPos.blockToSectionCoord(x),
+                                        SectionPos.blockToSectionCoord(z));
                 int y = findOnGroundYPosition(context, chunk, x, topY, z, layer);
                 if (y != Integer.MAX_VALUE) {
                     positions.add(new BlockPos(x, y, z));
@@ -63,8 +67,8 @@ public final class FastCountOnEveryLayerPlacement extends PlacementModifier {
         return positions.build();
     }
 
-    private static int findOnGroundYPosition(PlacementContext context, ChunkAccess chunk,
-                                             int x, int topY, int z, int targetLayer) {
+    private static int findOnGroundYPosition(
+            PlacementContext context, ChunkAccess chunk, int x, int topY, int z, int targetLayer) {
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos(x, topY, z);
         BlockState current = chunk.getBlockState(cursor);
         int layer = 0;
@@ -82,7 +86,10 @@ public final class FastCountOnEveryLayerPlacement extends PlacementModifier {
 
     private static boolean isEmpty(BlockState state) {
         // Treat replaceable plants as empty so layers sit on real ground, not on other plants.
-        return state.isAir() || state.is(Blocks.WATER) || state.is(Blocks.LAVA) || state.canBeReplaced();
+        return state.isAir()
+                || state.is(Blocks.WATER)
+                || state.is(Blocks.LAVA)
+                || state.canBeReplaced();
     }
 
     @Override

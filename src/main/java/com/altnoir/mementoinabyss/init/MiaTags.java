@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import java.util.Locale;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
@@ -9,12 +10,9 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Locale;
-
 public class MiaTags {
     public enum NameSpaces {
-        MOD(MementoInAbyss.ID)
-        ;
+        MOD(MementoInAbyss.ID);
 
         public final String id;
 
@@ -27,7 +25,8 @@ public class MiaTags {
         }
 
         public Identifier id(Enum<?> entry, @Nullable String pathOverride) {
-            return this.id(pathOverride != null ? pathOverride : entry.name().toLowerCase(Locale.ROOT));
+            return this.id(
+                    pathOverride != null ? pathOverride : entry.name().toLowerCase(Locale.ROOT));
         }
     }
 
@@ -39,13 +38,12 @@ public class MiaTags {
         ABYSS_DRIPSTONE_UNREPLACEABLE,
         NEED_PRASIOLITE_TOOL,
         INCORRECT_FOR_PRASIOLITE_TOOL,
-        MINEABLE_WITH_COMPOSITE
-        ;
+        MINEABLE_WITH_COMPOSITE;
 
         public final TagKey<Block> tag;
 
         BlockTags() {
-			this(NameSpaces.MOD);
+            this(NameSpaces.MOD);
         }
 
         BlockTags(NameSpaces namespace) {
@@ -82,8 +80,7 @@ public class MiaTags {
         HAS_ABYSSAL_RUINS,
         HAS_CAVE_RAIDER_HUT,
         HAS_RUINED_CAVE_RAIDER_HUT,
-        HAS_FISHERMAN_HUT
-        ;
+        HAS_FISHERMAN_HUT;
 
         public final TagKey<Biome> tag;
 

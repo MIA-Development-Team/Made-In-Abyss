@@ -15,15 +15,25 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class GloomBerryBlock extends DoubleBerryBlock {
-    public GloomBerryBlock(Properties properties) { super(properties); }
+    public GloomBerryBlock(Properties properties) {
+        super(properties);
+    }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(
+            BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (state.getValue(AGE) <= 1) return super.useWithoutItem(state, level, pos, player, hit);
         popResource(level, pos, new ItemStack(MiaItems.GLOOM_BERRY.get()));
-        level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.getRandom().nextFloat() * 0.4F);
+        level.playSound(
+                null,
+                pos,
+                SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES,
+                SoundSource.BLOCKS,
+                1.0F,
+                0.8F + level.getRandom().nextFloat() * 0.4F);
         if (level instanceof ServerLevel server) setAge(server, pos, state, 1);
-        level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state.setValue(AGE, 1)));
+        level.gameEvent(
+                GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state.setValue(AGE, 1)));
         return InteractionResult.SUCCESS;
     }
 

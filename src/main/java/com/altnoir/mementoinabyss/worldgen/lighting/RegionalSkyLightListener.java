@@ -12,7 +12,8 @@ public final class RegionalSkyLightListener implements LayerLightEventListener {
     private final LayerLightEventListener delegate;
     private final RegionalSkyLight.Region region;
 
-    public RegionalSkyLightListener(LayerLightEventListener delegate, RegionalSkyLight.Region region) {
+    public RegionalSkyLightListener(
+            LayerLightEventListener delegate, RegionalSkyLight.Region region) {
         this.delegate = delegate;
         this.region = region;
     }
@@ -24,14 +25,14 @@ public final class RegionalSkyLightListener implements LayerLightEventListener {
     @Override
     public @Nullable DataLayer getDataLayerData(SectionPos pos) {
         DataLayer source = this.delegate.getDataLayerData(pos);
-        if (source == null) return this.region.intersectsChunk(pos.x(), pos.z()) ? null : new DataLayer();
+        if (source == null)
+            return this.region.intersectsChunk(pos.x(), pos.z()) ? null : new DataLayer();
         return RegionalSkyLight.maskDataLayer(this.region, pos, source);
     }
 
     @Override
     public int getLightValue(BlockPos pos) {
-        return this.region.clampSkyLight(
-                pos.getX(), pos.getZ(), this.delegate.getLightValue(pos));
+        return this.region.clampSkyLight(pos.getX(), pos.getZ(), this.delegate.getLightValue(pos));
     }
 
     @Override

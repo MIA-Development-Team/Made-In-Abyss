@@ -7,16 +7,38 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /** Low-frequency server state used only by the F3 cross-dimension LOD entry. */
 public record CrossDimensionLodDebugPayload(
-        String linkId, String phase, boolean generating,
-        int centralCursor, int centralTotal, int requested, int generated, int failed,
-        int activeX, int activeZ, int lastX, int lastZ, long elapsedMillis, String lastResult,
-        int candidates, int pending, int outstanding, int loading, int ready, int known, int missing,
-        int cpuThreads, int cpuActive, int cpuQueued)
+        String linkId,
+        String phase,
+        boolean generating,
+        int centralCursor,
+        int centralTotal,
+        int requested,
+        int generated,
+        int failed,
+        int activeX,
+        int activeZ,
+        int lastX,
+        int lastZ,
+        long elapsedMillis,
+        String lastResult,
+        int candidates,
+        int pending,
+        int outstanding,
+        int loading,
+        int ready,
+        int known,
+        int missing,
+        int cpuThreads,
+        int cpuActive,
+        int cpuQueued)
         implements CustomPacketPayload {
     public static final Type<CrossDimensionLodDebugPayload> TYPE =
             new Type<>(MementoInAbyss.asResource("cross_dimension_lod_debug"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, CrossDimensionLodDebugPayload> STREAM_CODEC =
-            StreamCodec.ofMember(CrossDimensionLodDebugPayload::encode, CrossDimensionLodDebugPayload::decode);
+    public static final StreamCodec<RegistryFriendlyByteBuf, CrossDimensionLodDebugPayload>
+            STREAM_CODEC =
+                    StreamCodec.ofMember(
+                            CrossDimensionLodDebugPayload::encode,
+                            CrossDimensionLodDebugPayload::decode);
 
     private void encode(RegistryFriendlyByteBuf buffer) {
         buffer.writeUtf(linkId, 256);
@@ -47,12 +69,30 @@ public record CrossDimensionLodDebugPayload(
 
     private static CrossDimensionLodDebugPayload decode(RegistryFriendlyByteBuf buffer) {
         return new CrossDimensionLodDebugPayload(
-                buffer.readUtf(256), buffer.readUtf(32), buffer.readBoolean(),
-                buffer.readVarInt(), buffer.readVarInt(), buffer.readVarInt(), buffer.readVarInt(),
-                buffer.readVarInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(),
-                buffer.readVarLong(), buffer.readUtf(32), buffer.readVarInt(), buffer.readVarInt(),
-                buffer.readVarInt(), buffer.readVarInt(), buffer.readVarInt(), buffer.readVarInt(),
-                buffer.readVarInt(), buffer.readVarInt(), buffer.readVarInt(), buffer.readVarInt());
+                buffer.readUtf(256),
+                buffer.readUtf(32),
+                buffer.readBoolean(),
+                buffer.readVarInt(),
+                buffer.readVarInt(),
+                buffer.readVarInt(),
+                buffer.readVarInt(),
+                buffer.readVarInt(),
+                buffer.readInt(),
+                buffer.readInt(),
+                buffer.readInt(),
+                buffer.readInt(),
+                buffer.readVarLong(),
+                buffer.readUtf(32),
+                buffer.readVarInt(),
+                buffer.readVarInt(),
+                buffer.readVarInt(),
+                buffer.readVarInt(),
+                buffer.readVarInt(),
+                buffer.readVarInt(),
+                buffer.readVarInt(),
+                buffer.readVarInt(),
+                buffer.readVarInt(),
+                buffer.readVarInt());
     }
 
     @Override

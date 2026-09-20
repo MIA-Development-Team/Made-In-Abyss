@@ -8,8 +8,7 @@ import net.minecraft.network.chat.MutableComponent;
 public class MiaLang {
     private MutableComponent component;
 
-    public MiaLang() {
-    }
+    public MiaLang() {}
 
     public MiaLang text(String text) {
         return add(Component.literal(text));
@@ -24,10 +23,8 @@ public class MiaLang {
     }
 
     public MiaLang add(Component comp) {
-        if (component == null)
-            component = comp.copy();
-        else
-            component.append(comp);
+        if (component == null) component = comp.copy();
+        else component.append(comp);
         return this;
     }
 
@@ -53,14 +50,12 @@ public class MiaLang {
     }
 
     private void check() {
-        if (component == null)
-            throw new IllegalStateException("Empty LangBuilder");
+        if (component == null) throw new IllegalStateException("Empty LangBuilder");
     }
 
     private static Object[] resolve(Object[] args) {
         for (int i = 0; i < args.length; i++) {
-            if (args[i] instanceof MiaLang lb)
-                args[i] = lb.build();
+            if (args[i] instanceof MiaLang lb) args[i] = lb.build();
         }
         return args;
     }

@@ -12,21 +12,13 @@ import net.neoforged.neoforge.common.util.ValueIOSerializable;
 import org.jetbrains.annotations.Nullable;
 
 public class CurseAttachment implements ValueIOSerializable {
-    @Getter
-    @Nullable
-    private final LivingEntity owner;
+    @Getter @Nullable private final LivingEntity owner;
 
-    @Getter
-    @Setter
-    private int minY = 0;
+    @Getter @Setter private int minY = 0;
 
-    @Getter
-    @Setter
-    private int level = 0;
+    @Getter @Setter private int level = 0;
 
-    @Getter
-    @Setter
-    private int maxLevel = 10;
+    @Getter @Setter private int maxLevel = 10;
 
     public static final StreamCodec<ByteBuf, CurseAttachment> STREAM_CODEC =
             StreamCodec.ofMember(CurseAttachment::encode, CurseAttachment::new);
@@ -39,7 +31,8 @@ public class CurseAttachment implements ValueIOSerializable {
     }
 
     public CurseAttachment(IAttachmentHolder attachmentHolder) {
-        this.owner = attachmentHolder instanceof LivingEntity ? (LivingEntity) attachmentHolder : null;
+        this.owner =
+                attachmentHolder instanceof LivingEntity ? (LivingEntity) attachmentHolder : null;
     }
 
     @Override

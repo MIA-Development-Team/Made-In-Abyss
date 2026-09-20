@@ -17,20 +17,18 @@ public class CurseEvent {
     }
 
     public static void onEntityTick(EntityTickEvent.Post event) {
-        if (!(event.getEntity() instanceof LivingEntity livingEntity))
-            return;
+        if (!(event.getEntity() instanceof LivingEntity livingEntity)) return;
 
-        if (livingEntity.level().isClientSide())
-            return;
+        if (livingEntity.level().isClientSide()) return;
 
-        if (livingEntity instanceof Player player && player.isCreative() && !MementoInAbyss.CONFIGS.gamePlaySection.enableCurseCreative.get())
-            return;
+        if (livingEntity instanceof Player player
+                && player.isCreative()
+                && !MementoInAbyss.CONFIGS.gamePlaySection.enableCurseCreative.get()) return;
 
         var dimIdentifier = livingEntity.level().dimension().identifier();
 
         var curseOpt = CurseManager.get(dimIdentifier);
-        if (curseOpt.isEmpty())
-            return;
+        if (curseOpt.isEmpty()) return;
 
         var curseDimension = curseOpt.get();
         var data = livingEntity.getData(MiaDataAttachments.CURSE);
@@ -48,21 +46,21 @@ public class CurseEvent {
         int level = y - minY;
         data.setLevel(level);
 
-        if (level < data.getMaxLevel())
-            return;
+        if (level < data.getMaxLevel()) return;
 
         for (var element : curseDimension.effects()) {
             var holder = BuiltInRegistries.MOB_EFFECT.get(element.effect());
 
-            holder.ifPresent(mobEffect -> {
-                livingEntity.addEffect(new MobEffectInstance(
-                        mobEffect,
-                        element.duration(),
-                        element.amplifier(),
-                        false,
-                        true
-                ));
-            });
+            holder.ifPresent(
+                    mobEffect -> {
+                        livingEntity.addEffect(
+                                new MobEffectInstance(
+                                        mobEffect,
+                                        element.duration(),
+                                        element.amplifier(),
+                                        false,
+                                        true));
+                    });
         }
 
         data.setLevel(0);
@@ -71,7 +69,9 @@ public class CurseEvent {
 
     public static void onClone(PlayerEvent.Clone event) {
         if (event.isWasDeath() && event.getOriginal().hasData(MiaDataAttachments.CURSE)) {
-             event.getEntity().getData(MiaDataAttachments.CURSE).copyFrom(event.getOriginal().getData(MiaDataAttachments.CURSE));
+            event.getEntity()
+                    .getData(MiaDataAttachments.CURSE)
+                    .copyFrom(event.getOriginal().getData(MiaDataAttachments.CURSE));
         }
     }
 }

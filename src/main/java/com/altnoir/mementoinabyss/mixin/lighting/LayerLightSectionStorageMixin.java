@@ -23,8 +23,7 @@ public abstract class LayerLightSectionStorageMixin implements RegionalSkyLightS
     @Shadow @Final private LightLayer layer;
     @Shadow @Final protected LightChunkGetter chunkSource;
 
-    @Unique
-    private RegionalSkyLight.Region mia$skyLightRegion;
+    @Unique private RegionalSkyLight.Region mia$skyLightRegion;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void mia$resolveSkyLightRegion(CallbackInfo ci) {
@@ -40,19 +39,23 @@ public abstract class LayerLightSectionStorageMixin implements RegionalSkyLightS
 
     @ModifyReturnValue(method = "getStoredLevel", at = @At("RETURN"))
     private int mia$maskStoredSkyLight(int original, long blockNode) {
-        return this.mia$skyLightRegion == null ? original : this.mia$skyLightRegion.clampSkyLight(
-                BlockPos.getX(blockNode), BlockPos.getZ(blockNode), original);
+        return this.mia$skyLightRegion == null
+                ? original
+                : this.mia$skyLightRegion.clampSkyLight(
+                        BlockPos.getX(blockNode), BlockPos.getZ(blockNode), original);
     }
 
     @Inject(method = "setStoredLevel", at = @At("HEAD"), cancellable = true)
-    private void mia$preventStoredSkyLightOutsideRegion(long blockNode, int level, CallbackInfo ci) {
+    private void mia$preventStoredSkyLightOutsideRegion(
+            long blockNode, int level, CallbackInfo ci) {
         if (!mia$allows(blockNode)) {
             ci.cancel();
         }
     }
 
     @Inject(method = "updateSectionStatus", at = @At("HEAD"), cancellable = true)
-    private void mia$skipSectionsOutsideRegion(long sectionNode, boolean sectionEmpty, CallbackInfo ci) {
+    private void mia$skipSectionsOutsideRegion(
+            long sectionNode, boolean sectionEmpty, CallbackInfo ci) {
         if (!mia$intersectsSection(sectionNode)) {
             ci.cancel();
         }
@@ -66,28 +69,30 @@ public abstract class LayerLightSectionStorageMixin implements RegionalSkyLightS
     }
 
     @Inject(method = "queueSectionData", at = @At("HEAD"), cancellable = true)
-    private void mia$discardQueuedSkyLightOutsideRegion(long sectionNode, @Nullable DataLayer data, CallbackInfo ci) {
+    private void mia$discardQueuedSkyLightOutsideRegion(
+            long sectionNode, @Nullable DataLayer data, CallbackInfo ci) {
         if (data != null && !mia$intersectsSection(sectionNode)) {
             ci.cancel();
         }
     }
 
     @Inject(method = "retainData", at = @At("HEAD"), cancellable = true)
-    private void mia$skipRetainedSkyLightOutsideRegion(long zeroNode, boolean retain, CallbackInfo ci) {
+    private void mia$skipRetainedSkyLightOutsideRegion(
+            long zeroNode, boolean retain, CallbackInfo ci) {
         if (retain && !mia$intersectsSection(zeroNode)) {
             ci.cancel();
         }
     }
 
-    @Unique
-    private boolean mia$allows(long blockNode) {
+    @Unique private boolean mia$allows(long blockNode) {
         return this.mia$skyLightRegion == null
-                || this.mia$skyLightRegion.allowsSkyLight(BlockPos.getX(blockNode), BlockPos.getZ(blockNode));
+                || this.mia$skyLightRegion.allowsSkyLight(
+                        BlockPos.getX(blockNode), BlockPos.getZ(blockNode));
     }
 
-    @Unique
-    private boolean mia$intersectsSection(long sectionNode) {
+    @Unique private boolean mia$intersectsSection(long sectionNode) {
         return this.mia$skyLightRegion == null
-                || this.mia$skyLightRegion.intersectsChunk(SectionPos.x(sectionNode), SectionPos.z(sectionNode));
+                || this.mia$skyLightRegion.intersectsChunk(
+                        SectionPos.x(sectionNode), SectionPos.z(sectionNode));
     }
 }

@@ -1,7 +1,7 @@
 package com.altnoir.mementoinabyss.impl.registrate;
 
-import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
+import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.world.item.Item;
 
@@ -12,8 +12,7 @@ public class MiaItemBuilder<T extends Item, P> extends ItemBuilder<T, P> {
             P parent,
             String name,
             BuilderCallback callback,
-            NonNullFunction<Item.Properties, T> factory
-    ) {
+            NonNullFunction<Item.Properties, T> factory) {
         super(owner, parent, name, callback, factory);
     }
 
@@ -22,8 +21,7 @@ public class MiaItemBuilder<T extends Item, P> extends ItemBuilder<T, P> {
             P parent,
             String name,
             BuilderCallback callback,
-            NonNullFunction<Item.Properties, T> factory
-    ) {
+            NonNullFunction<Item.Properties, T> factory) {
         MiaItemBuilder<T, P> builder = new MiaItemBuilder<>(owner, parent, name, callback, factory);
         builder.defaultModel().defaultLang();
         return builder;

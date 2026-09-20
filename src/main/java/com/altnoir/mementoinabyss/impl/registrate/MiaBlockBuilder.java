@@ -13,8 +13,7 @@ public class MiaBlockBuilder<T extends Block, P> extends BlockBuilder<T, P> {
             P parent,
             String name,
             BuilderCallback callback,
-            NonNullFunction<BlockBehaviour.Properties, T> factory
-    ) {
+            NonNullFunction<BlockBehaviour.Properties, T> factory) {
         super(owner, parent, name, callback, factory, BlockBehaviour.Properties::of);
     }
 
@@ -23,9 +22,9 @@ public class MiaBlockBuilder<T extends Block, P> extends BlockBuilder<T, P> {
             P parent,
             String name,
             BuilderCallback callback,
-            NonNullFunction<BlockBehaviour.Properties, T> factory
-    ) {
-        MiaBlockBuilder<T, P> builder = new MiaBlockBuilder<>(owner, parent, name, callback, factory);
+            NonNullFunction<BlockBehaviour.Properties, T> factory) {
+        MiaBlockBuilder<T, P> builder =
+                new MiaBlockBuilder<>(owner, parent, name, callback, factory);
         builder.defaultBlockstate().defaultLoot().defaultLang();
         return builder;
     }

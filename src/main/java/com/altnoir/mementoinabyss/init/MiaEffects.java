@@ -13,9 +13,10 @@ public final class MiaEffects {
     private static final DeferredRegister<MobEffect> EFFECTS =
             DeferredRegister.create(Registries.MOB_EFFECT, MementoInAbyss.ID);
 
-    public static final Holder<MobEffect> ABYSS_BLESSING = EFFECTS.register(
-            "abyss_blessing",
-            () -> new AbyssBlessingEffect(MobEffectCategory.BENEFICIAL, 0xA6E467));
+    public static final Holder<MobEffect> ABYSS_BLESSING =
+            EFFECTS.register(
+                    "abyss_blessing",
+                    () -> new AbyssBlessingEffect(MobEffectCategory.BENEFICIAL, 0xA6E467));
 
     public static void register(IEventBus bus) {
         EFFECTS.register(bus);

@@ -14,12 +14,8 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
  * Client input for a server-authoritative node grab. No simulated node
  * positions are accepted from the client.
  */
-public record RopeNodeGrabPayload(
-        BlockPos connector,
-        int point,
-        Action action,
-        Vec3 target
-) implements CustomPacketPayload {
+public record RopeNodeGrabPayload(BlockPos connector, int point, Action action, Vec3 target)
+        implements CustomPacketPayload {
     public enum Action {
         BEGIN,
         UPDATE,
@@ -55,14 +51,13 @@ public record RopeNodeGrabPayload(
                 connector,
                 point,
                 Action.values()[action],
-                new Vec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble())
-        );
+                new Vec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble()));
     }
 
     public static void handle(RopeNodeGrabPayload payload, IPayloadContext context) {
         if (!(context.player() instanceof ServerPlayer player)
                 || !(player.level().getBlockEntity(payload.connector)
-                instanceof RopeConnectorBlockEntity connector)) {
+                        instanceof RopeConnectorBlockEntity connector)) {
             return;
         }
         switch (payload.action) {

@@ -15,17 +15,27 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 
 public final class GreatFaultPlacements {
-    public static final ResourceKey<PlacedFeature> CAERULITE_GEODE = ResourceKey.create(
-            Registries.PLACED_FEATURE, MementoInAbyss.asResource("great_fault/caerulite_geode"));
+    public static final ResourceKey<PlacedFeature> CAERULITE_GEODE =
+            ResourceKey.create(
+                    Registries.PLACED_FEATURE,
+                    MementoInAbyss.asResource("great_fault/caerulite_geode"));
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
-        HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
-        Holder<ConfiguredFeature<?, ?>> geode = features.getOrThrow(GreatFaultFeatures.CAERULITE_GEODE);
-        context.register(CAERULITE_GEODE, new PlacedFeature(geode, java.util.List.of(
-                RarityFilter.onAverageOnceEvery(24),
-                InSquarePlacement.spread(),
-                HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(16), VerticalAnchor.belowTop(16)),
-                BiomeFilter.biome())));
+        HolderGetter<ConfiguredFeature<?, ?>> features =
+                context.lookup(Registries.CONFIGURED_FEATURE);
+        Holder<ConfiguredFeature<?, ?>> geode =
+                features.getOrThrow(GreatFaultFeatures.CAERULITE_GEODE);
+        context.register(
+                CAERULITE_GEODE,
+                new PlacedFeature(
+                        geode,
+                        java.util.List.of(
+                                RarityFilter.onAverageOnceEvery(24),
+                                InSquarePlacement.spread(),
+                                HeightRangePlacement.uniform(
+                                        VerticalAnchor.aboveBottom(16),
+                                        VerticalAnchor.belowTop(16)),
+                                BiomeFilter.biome())));
     }
 
     private GreatFaultPlacements() {}

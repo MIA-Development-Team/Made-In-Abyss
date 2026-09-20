@@ -20,6 +20,7 @@ public final class StarCompassItem extends Item {
     private static final int SEARCH_RADIUS_BLOCKS = 12_800;
     private static final int SEARCH_RADIUS_CHUNKS = SEARCH_RADIUS_BLOCKS / 16;
     private static final int COOLDOWN_TICKS = 600;
+
     public StarCompassItem(Properties properties) {
         super(properties.stacksTo(1));
     }
@@ -27,31 +28,50 @@ public final class StarCompassItem extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (!(level instanceof ServerLevel serverLevel) || !(player instanceof ServerPlayer serverPlayer)) {
+        if (!(level instanceof ServerLevel serverLevel)
+                || !(player instanceof ServerPlayer serverPlayer)) {
             return InteractionResult.SUCCESS;
         }
 
-        var structure = serverLevel.registryAccess()
-                .lookupOrThrow(Registries.STRUCTURE)
-                .get(MiaStructures.ABYSS_STRONGHOLD);
-        var result = structure
-                .map(holder -> serverLevel.getChunkSource().getGenerator().findNearestMapStructure(
-                        serverLevel,
-                        HolderSet.direct(holder),
-                        player.blockPosition(),
-                        SEARCH_RADIUS_CHUNKS,
-                        false
-                ))
-                .orElse(null);
+        var structure =
+                serverLevel
+                        .registryAccess()
+                        .lookupOrThrow(Registries.STRUCTURE)
+                        .get(MiaStructures.ABYSS_STRONGHOLD);
+        var result =
+                structure
+                        .map(
+                                holder ->
+                                        serverLevel
+                                                .getChunkSource()
+                                                .getGenerator()
+                                                .findNearestMapStructure(
+                                                        serverLevel,
+                                                        HolderSet.direct(holder),
+                                                        player.blockPosition(),
+                                                        SEARCH_RADIUS_CHUNKS,
+                                                        false))
+                        .orElse(null);
 
         if (result != null) {
-            PacketDistributor.sendToPlayer(serverPlayer, new CompassTargetPayload(result.getFirst()));
-            level.playSound(null, player.blockPosition(), SoundEvents.END_PORTAL_FRAME_FILL,
-                    SoundSource.PLAYERS, 1.0F, 1.0F);
+            PacketDistributor.sendToPlayer(
+                    serverPlayer, new CompassTargetPayload(result.getFirst()));
+            level.playSound(
+                    null,
+                    player.blockPosition(),
+                    SoundEvents.END_PORTAL_FRAME_FILL,
+                    SoundSource.PLAYERS,
+                    1.0F,
+                    1.0F);
         } else {
             PacketDistributor.sendToPlayer(serverPlayer, new CompassTargetPayload(null));
-            level.playSound(null, player.blockPosition(), SoundEvents.FIRE_EXTINGUISH,
-                    SoundSource.PLAYERS, 0.5F, 1.0F);
+            level.playSound(
+                    null,
+                    player.blockPosition(),
+                    SoundEvents.FIRE_EXTINGUISH,
+                    SoundSource.PLAYERS,
+                    0.5F,
+                    1.0F);
         }
 
         player.getCooldowns().addCooldown(stack, COOLDOWN_TICKS);

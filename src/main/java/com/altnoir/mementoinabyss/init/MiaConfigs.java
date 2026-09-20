@@ -16,8 +16,7 @@ public class MiaConfigs extends Config {
         super(MementoInAbyss.asResource("config"));
     }
 
-    @NonSync
-    public GraphsSection graphsSection = new GraphsSection();
+    @NonSync public GraphsSection graphsSection = new GraphsSection();
 
     public GamePlaySection gamePlaySection = new GamePlaySection();
     public WorldGenSection worldGenSection = new WorldGenSection();
@@ -28,19 +27,23 @@ public class MiaConfigs extends Config {
         }
 
         public ConfigGroup performanceGroup = new ConfigGroup("performance");
+
         @ConfigGroup.Pop
-        public ValidatedInt miaCpuThreadLimit = new ValidatedInt(
-                Math.max(1, Runtime.getRuntime().availableProcessors() - 6),
-                Math.max(1, Runtime.getRuntime().availableProcessors()),
-                1,
-                ValidatedInt.WidgetType.TEXTBOX);
+        public ValidatedInt miaCpuThreadLimit =
+                new ValidatedInt(
+                        Math.max(1, Runtime.getRuntime().availableProcessors() - 6),
+                        Math.max(1, Runtime.getRuntime().availableProcessors()),
+                        1,
+                        ValidatedInt.WidgetType.TEXTBOX);
 
         public ConfigGroup crossDimensionLodGroup = new ConfigGroup("cross_dimension_lod");
         public ValidatedBoolean crossDimensionLodEnabled = new ValidatedBoolean(true);
-        public ValidatedInt crossDimensionLodCaptureQueueLimit = new ValidatedInt(
-                1024, 16384, 64, ValidatedInt.WidgetType.TEXTBOX);
+        public ValidatedInt crossDimensionLodCaptureQueueLimit =
+                new ValidatedInt(1024, 16384, 64, ValidatedInt.WidgetType.TEXTBOX);
+
         @ConfigGroup.Pop
-        public ValidatedInt crossDimensionLodViewDistance = new ValidatedInt(32, 128, 16, ValidatedInt.WidgetType.TEXTBOX);
+        public ValidatedInt crossDimensionLodViewDistance =
+                new ValidatedInt(32, 128, 16, ValidatedInt.WidgetType.TEXTBOX);
     }
 
     public static class GamePlaySection extends ConfigSection {
@@ -50,11 +53,11 @@ public class MiaConfigs extends Config {
 
         public ConfigGroup curseGroup = new ConfigGroup("curse");
         public ValidatedBoolean enableCurse = new ValidatedBoolean(true);
-        @ConfigGroup.Pop
-        public ValidatedBoolean enableCurseCreative = new ValidatedBoolean(false);
+        @ConfigGroup.Pop public ValidatedBoolean enableCurseCreative = new ValidatedBoolean(false);
 
         public ConfigGroup blazeReapGroup = new ConfigGroup("blaze_reap");
         public ValidatedInt blazeReapExplosionCount = new ValidatedInt(4, 64, 1);
+
         @ConfigGroup.Pop
         public ValidatedDouble blazeReapExplosionRadius = new ValidatedDouble(2, 20, 0.1);
 
@@ -65,12 +68,12 @@ public class MiaConfigs extends Config {
         public ValidatedDouble hookStopPullDistance = new ValidatedDouble(1.41421, 10, 1);
         public ValidatedDouble hookRetractVelocity = new ValidatedDouble(0.75, 5, 0.1);
         public ValidatedDouble hookRetractDistance = new ValidatedDouble(4, 16, 1);
-        @ConfigGroup.Pop
-        public ValidatedDouble hookJumpBoost = new ValidatedDouble(1.25, 3, 1);
+        @ConfigGroup.Pop public ValidatedDouble hookJumpBoost = new ValidatedDouble(1.25, 3, 1);
 
         public ConfigGroup caveExplorerBeacon = new ConfigGroup("cave_explorer_beacon");
         public ValidatedInt caveExplorerBeaconHorizontal = new ValidatedInt(10, 1024, 1);
         public ValidatedInt caveExplorerBeaconVertical = new ValidatedInt(5, 1024, 1);
+
         @ConfigGroup.Pop
         public ValidatedBoolean caveExplorerBeaconMaxVertical = new ValidatedBoolean(false);
     }
@@ -80,7 +83,8 @@ public class MiaConfigs extends Config {
             super();
         }
 
-        public ValidatedInt abyssRadius =  new ValidatedInt(160, 10240, 64, ValidatedInt.WidgetType.TEXTBOX);
+        public ValidatedInt abyssRadius =
+                new ValidatedInt(160, 10240, 64, ValidatedInt.WidgetType.TEXTBOX);
     }
 
     @Override

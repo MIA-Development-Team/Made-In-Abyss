@@ -3,11 +3,10 @@ package com.altnoir.mementoinabyss.client.render;
 import com.altnoir.mementoinabyss.client.WhistleComboHandler;
 import com.altnoir.mementoinabyss.impl.whistle.WhistleApi;
 import com.altnoir.mementoinabyss.impl.whistle.skill.WhistleNote;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-
-import java.util.List;
 
 public final class WhistleComboOverlay {
     private static final int LEFT = 10;
@@ -40,8 +39,7 @@ public final class WhistleComboOverlay {
                 LEFT + 5,
                 TOP + 5,
                 HIGHLIGHT,
-                false
-        );
+                false);
 
         for (int i = 0; i < skills.size(); i++) {
             WhistleApi.SkillActivation activation = skills.get(i);
@@ -50,23 +48,20 @@ public final class WhistleComboOverlay {
 
             boolean cooldown = minecraft.player.getCooldowns().isOnCooldown(activation.stack());
             if (cooldown) {
-                float fraction = minecraft.player.getCooldowns()
-                        .getCooldownPercent(activation.stack(), 0.0F);
-                int seconds = Math.max(
-                        1,
-                        (int) Math.ceil(fraction * activation.cooldownTicks() / 20.0)
-                );
+                float fraction =
+                        minecraft
+                                .player
+                                .getCooldowns()
+                                .getCooldownPercent(activation.stack(), 0.0F);
+                int seconds =
+                        Math.max(1, (int) Math.ceil(fraction * activation.cooldownTicks() / 20.0));
                 graphics.text(
                         minecraft.font,
-                        Component.translatable(
-                                "gui.mementoinabyss.whistle.cooldown",
-                                seconds
-                        ),
+                        Component.translatable("gui.mementoinabyss.whistle.cooldown", seconds),
                         LEFT + 23,
                         y + 5,
                         MUTED,
-                        false
-                );
+                        false);
                 continue;
             }
 

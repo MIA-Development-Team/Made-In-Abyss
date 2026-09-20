@@ -6,6 +6,10 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 public sealed interface CrossDimensionLodStreamPayload extends CustomPacketPayload
         permits CrossDimensionLodBatchPayload, CrossDimensionLodCacheOfferPayload {
     CrossDimensionLodTransfer transfer();
+
     int encodedSize();
-    default int retainedBytes() { return encodedSize(); }
+
+    default int retainedBytes() {
+        return encodedSize();
+    }
 }

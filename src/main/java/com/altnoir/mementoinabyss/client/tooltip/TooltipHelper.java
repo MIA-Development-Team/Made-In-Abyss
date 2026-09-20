@@ -1,13 +1,12 @@
 package com.altnoir.mementoinabyss.client.tooltip;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 public final class TooltipHelper {
     public static final int MAX_WIDTH_PER_LINE = 200;
@@ -49,8 +48,9 @@ public final class TooltipHelper {
             boolean highlighted = false;
             String[] sections = line.split("_", -1);
             for (int i = 0; i < sections.length; i++) {
-                formatted.append(Component.literal(sections[i])
-                        .withStyle(highlighted ? palette.highlight() : palette.primary()));
+                formatted.append(
+                        Component.literal(sections[i])
+                                .withStyle(highlighted ? palette.highlight() : palette.primary()));
                 if (i < sections.length - 1) {
                     highlighted = !highlighted;
                 }

@@ -15,25 +15,27 @@ public final class MiaRecipes {
     private static final DeferredRegister<RecipeType<?>> TYPES =
             DeferredRegister.create(Registries.RECIPE_TYPE, MementoInAbyss.ID);
 
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ArtifactEnhancementRecipe>>
-            ARTIFACT_ENHANCEMENT_SERIALIZER = SERIALIZERS.register(
-                    "artifact_enhancement",
-                    () -> new RecipeSerializer<>(
-                            ArtifactEnhancementRecipe.CODEC,
-                            ArtifactEnhancementRecipe.STREAM_CODEC
-                    )
-            );
+    public static final DeferredHolder<
+                    RecipeSerializer<?>, RecipeSerializer<ArtifactEnhancementRecipe>>
+            ARTIFACT_ENHANCEMENT_SERIALIZER =
+                    SERIALIZERS.register(
+                            "artifact_enhancement",
+                            () ->
+                                    new RecipeSerializer<>(
+                                            ArtifactEnhancementRecipe.CODEC,
+                                            ArtifactEnhancementRecipe.STREAM_CODEC));
 
     public static final DeferredHolder<RecipeType<?>, RecipeType<ArtifactEnhancementRecipe>>
-            ARTIFACT_ENHANCEMENT_TYPE = TYPES.register(
-                    "artifact_enhancement",
-                    () -> new RecipeType<>() {
-                        @Override
-                        public String toString() {
-                            return MementoInAbyss.ID + ":artifact_enhancement";
-                        }
-                    }
-            );
+            ARTIFACT_ENHANCEMENT_TYPE =
+                    TYPES.register(
+                            "artifact_enhancement",
+                            () ->
+                                    new RecipeType<>() {
+                                        @Override
+                                        public String toString() {
+                                            return MementoInAbyss.ID + ":artifact_enhancement";
+                                        }
+                                    });
 
     public static void register(IEventBus bus) {
         SERIALIZERS.register(bus);

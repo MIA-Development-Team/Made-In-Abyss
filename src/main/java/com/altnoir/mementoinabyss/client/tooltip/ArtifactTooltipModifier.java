@@ -2,13 +2,12 @@ package com.altnoir.mementoinabyss.client.tooltip;
 
 import com.altnoir.mementoinabyss.content.item.artifact.ArtifactItem;
 import com.altnoir.mementoinabyss.impl.artifact.component.ArtifactItemComponent;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class ArtifactTooltipModifier implements TooltipModifier {
     public static final ArtifactTooltipModifier INSTANCE = new ArtifactTooltipModifier();
@@ -22,11 +21,7 @@ public final class ArtifactTooltipModifier implements TooltipModifier {
         List<Component> lines = new ArrayList<>();
         for (ArtifactItemComponent component : artifact.artifactComponents()) {
             component.appendTooltip(
-                    event.getItemStack(),
-                    event.getContext(),
-                    event.getFlags(),
-                    lines
-            );
+                    event.getItemStack(), event.getContext(), event.getFlags(), lines);
         }
         if (!lines.isEmpty()
                 && !event.getToolTip().isEmpty()

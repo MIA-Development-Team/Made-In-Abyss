@@ -6,13 +6,21 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 public record SlabRuinsConfiguration(
-        BlockStateProvider slabStateProvider,
-        BlockStateProvider blockStateProvider) implements FeatureConfiguration {
-    public static final Codec<SlabRuinsConfiguration> CODEC = RecordCodecBuilder.create(instance ->
-            instance.group(
-                    BlockStateProvider.CODEC.fieldOf("slab_state_provider")
-                            .forGetter(SlabRuinsConfiguration::slabStateProvider),
-                    BlockStateProvider.CODEC.fieldOf("block_state_provider")
-                            .forGetter(SlabRuinsConfiguration::blockStateProvider)
-            ).apply(instance, SlabRuinsConfiguration::new));
+        BlockStateProvider slabStateProvider, BlockStateProvider blockStateProvider)
+        implements FeatureConfiguration {
+    public static final Codec<SlabRuinsConfiguration> CODEC =
+            RecordCodecBuilder.create(
+                    instance ->
+                            instance.group(
+                                            BlockStateProvider.CODEC
+                                                    .fieldOf("slab_state_provider")
+                                                    .forGetter(
+                                                            SlabRuinsConfiguration
+                                                                    ::slabStateProvider),
+                                            BlockStateProvider.CODEC
+                                                    .fieldOf("block_state_provider")
+                                                    .forGetter(
+                                                            SlabRuinsConfiguration
+                                                                    ::blockStateProvider))
+                                    .apply(instance, SlabRuinsConfiguration::new));
 }

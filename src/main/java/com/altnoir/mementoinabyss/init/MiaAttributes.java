@@ -14,24 +14,26 @@ public final class MiaAttributes {
     private static final DeferredRegister<Attribute> ATTRIBUTES =
             DeferredRegister.create(Registries.ATTRIBUTE, MementoInAbyss.ID);
 
-    public static final Holder<Attribute> CRITICAL_HIT = ATTRIBUTES.register(
-            "critical_hit",
-            () -> new RangedAttribute(
-                    "attribute.name.mementoinabyss.critical_hit",
-                    0.0,
-                    0.0,
-                    1024.0
-            ).setSyncable(true)
-    );
-    public static final Holder<Attribute> CRITICAL_HIT_DAMAGE = ATTRIBUTES.register(
-            "critical_hit_damage",
-            () -> new RangedAttribute(
-                    "attribute.name.mementoinabyss.critical_hit_damage",
-                    1.5,
-                    0.0,
-                    1024.0
-            ).setSyncable(true)
-    );
+    public static final Holder<Attribute> CRITICAL_HIT =
+            ATTRIBUTES.register(
+                    "critical_hit",
+                    () ->
+                            new RangedAttribute(
+                                            "attribute.name.mementoinabyss.critical_hit",
+                                            0.0,
+                                            0.0,
+                                            1024.0)
+                                    .setSyncable(true));
+    public static final Holder<Attribute> CRITICAL_HIT_DAMAGE =
+            ATTRIBUTES.register(
+                    "critical_hit_damage",
+                    () ->
+                            new RangedAttribute(
+                                            "attribute.name.mementoinabyss.critical_hit_damage",
+                                            1.5,
+                                            0.0,
+                                            1024.0)
+                                    .setSyncable(true));
 
     public static void register(IEventBus bus) {
         ATTRIBUTES.register(bus);

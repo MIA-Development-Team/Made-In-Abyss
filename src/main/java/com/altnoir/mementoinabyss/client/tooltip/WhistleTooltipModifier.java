@@ -16,28 +16,55 @@ public final class WhistleTooltipModifier implements TooltipModifier {
                 || !Minecraft.getInstance().hasControlDown()) {
             return;
         }
-        WhistleApi.grid(event.getItemStack()).ifPresent(grid -> {
-            event.getToolTip().add(CommonComponents.EMPTY);
-            event.getToolTip().add(Component.translatable(
-                    "tooltip.mementoinabyss.whistle.grid_usage",
-                    Component.literal(Integer.toString(WhistleApi.usedCells(event.getItemStack())))
-                            .withStyle(TooltipPalette.MIA.highlight()),
-                    Component.literal(Integer.toString(grid.usableCells()))
-                            .withStyle(TooltipPalette.MIA.highlight())
-            ).withStyle(TooltipPalette.MIA.primary()));
+        WhistleApi.grid(event.getItemStack())
+                .ifPresent(
+                        grid -> {
+                            event.getToolTip().add(CommonComponents.EMPTY);
+                            event.getToolTip()
+                                    .add(
+                                            Component.translatable(
+                                                            "tooltip.mementoinabyss.whistle.grid_usage",
+                                                            Component.literal(
+                                                                            Integer.toString(
+                                                                                    WhistleApi
+                                                                                            .usedCells(
+                                                                                                    event
+                                                                                                            .getItemStack())))
+                                                                    .withStyle(
+                                                                            TooltipPalette.MIA
+                                                                                    .highlight()),
+                                                            Component.literal(
+                                                                            Integer.toString(
+                                                                                    grid
+                                                                                            .usableCells()))
+                                                                    .withStyle(
+                                                                            TooltipPalette.MIA
+                                                                                    .highlight()))
+                                                    .withStyle(TooltipPalette.MIA.primary()));
 
-            if (!WhistleApi.loadout(event.getItemStack()).fragments().isEmpty()) {
-                event.getToolTip().add(Component.translatable(
-                        "tooltip.mementoinabyss.whistle.installed_fragments"
-                ).withStyle(TooltipPalette.MIA.highlight()));
-                for (PlacedWhistleFragment fragment : WhistleApi.loadout(event.getItemStack()).fragments()) {
-                    event.getToolTip().add(Component.literal(" \u2022 ")
-                            .withStyle(TooltipPalette.MIA.muted())
-                            .append(fragment.createStack().getHoverName().copy()
-                                    .withStyle(TooltipPalette.MIA.primary())));
-                }
-            }
-        });
+                            if (!WhistleApi.loadout(event.getItemStack()).fragments().isEmpty()) {
+                                event.getToolTip()
+                                        .add(
+                                                Component.translatable(
+                                                                "tooltip.mementoinabyss.whistle.installed_fragments")
+                                                        .withStyle(TooltipPalette.MIA.highlight()));
+                                for (PlacedWhistleFragment fragment :
+                                        WhistleApi.loadout(event.getItemStack()).fragments()) {
+                                    event.getToolTip()
+                                            .add(
+                                                    Component.literal(" \u2022 ")
+                                                            .withStyle(TooltipPalette.MIA.muted())
+                                                            .append(
+                                                                    fragment.createStack()
+                                                                            .getHoverName()
+                                                                            .copy()
+                                                                            .withStyle(
+                                                                                    TooltipPalette
+                                                                                            .MIA
+                                                                                            .primary())));
+                                }
+                            }
+                        });
     }
 
     private WhistleTooltipModifier() {}

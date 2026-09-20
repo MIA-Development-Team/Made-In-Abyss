@@ -19,6 +19,5 @@ public final class MiaStructureTypes {
         TYPES.register(bus);
     }
 
-    private MiaStructureTypes() {
-    }
+    private MiaStructureTypes() {}
 }

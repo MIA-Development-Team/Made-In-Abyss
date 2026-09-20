@@ -2,7 +2,6 @@ package com.altnoir.mementoinabyss.impl.whistle.skill;
 
 import com.altnoir.mementoinabyss.impl.whistle.fragment.WhistleFragmentDefinition;
 import com.altnoir.mementoinabyss.impl.whistle.grid.SkillShape;
-
 import java.util.List;
 
 public record WhistleSkillDefinition(
@@ -10,8 +9,8 @@ public record WhistleSkillDefinition(
         WhistleSkillCategory category,
         boolean unique,
         List<WhistleNote> sequence,
-        int cooldownTicks
-) implements WhistleFragmentDefinition {
+        int cooldownTicks)
+        implements WhistleFragmentDefinition {
     public WhistleSkillDefinition {
         sequence = List.copyOf(sequence);
         if (sequence.isEmpty()) {

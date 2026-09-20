@@ -4,6 +4,7 @@ import com.altnoir.mementoinabyss.client.render.state.PedestalRenderState;
 import com.altnoir.mementoinabyss.content.block.entity.PedestalBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import java.util.ArrayList;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -16,8 +17,6 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
 
 public final class PedestalRenderer
         implements BlockEntityRenderer<PedestalBlockEntity, PedestalRenderState> {
@@ -45,15 +44,16 @@ public final class PedestalRenderer
         BlockEntityRenderer.super.extractRenderState(
                 pedestal, state, partialTicks, cameraPosition, breakProgress);
 
-        state.animationTime = (pedestal.getLevel() == null ? 0 : pedestal.getLevel().getGameTime())
-                + partialTicks;
+        state.animationTime =
+                (pedestal.getLevel() == null ? 0 : pedestal.getLevel().getGameTime())
+                        + partialTicks;
         int seed = Long.hashCode(pedestal.getBlockPos().asLong());
         state.inputItem = resolve(pedestal.getItem(PedestalBlockEntity.INPUT_SLOT), pedestal, seed);
 
         var outputItems = new ArrayList<ItemStackRenderState>();
         for (int slot = PedestalBlockEntity.OUTPUT_SLOT_START;
-             slot < pedestal.getContainerSize();
-             slot++) {
+                slot < pedestal.getContainerSize();
+                slot++) {
             ItemStack stack = pedestal.getItem(slot);
             if (!stack.isEmpty()) {
                 outputItems.add(resolve(stack, pedestal, seed + slot));
@@ -65,12 +65,7 @@ public final class PedestalRenderer
     private ItemStackRenderState resolve(ItemStack stack, PedestalBlockEntity pedestal, int seed) {
         var state = new ItemStackRenderState();
         itemModelResolver.updateForTopItem(
-                state,
-                stack,
-                ItemDisplayContext.FIXED,
-                pedestal.getLevel(),
-                null,
-                seed);
+                state, stack, ItemDisplayContext.FIXED, pedestal.getLevel(), null, seed);
         return state;
     }
 
@@ -98,11 +93,7 @@ public final class PedestalRenderer
         poseStack.scale(INPUT_SCALE, INPUT_SCALE, INPUT_SCALE);
         poseStack.mulPose(Axis.YN.rotationDegrees(state.animationTime * 4.0F));
         state.inputItem.submit(
-                poseStack,
-                submitNodeCollector,
-                state.lightCoords,
-                OverlayTexture.NO_OVERLAY,
-                0);
+                poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
     }
 
@@ -121,8 +112,8 @@ public final class PedestalRenderer
                 float bob = (float) Math.sin(state.animationTime * 0.1F) * 0.05F;
                 poseStack.translate(0.5F, 0.3F + bob, 0.5F);
             } else {
-                double angle = Math.TAU * index / count
-                        + Math.toRadians(state.animationTime * 2.0F);
+                double angle =
+                        Math.TAU * index / count + Math.toRadians(state.animationTime * 2.0F);
                 poseStack.translate(
                         0.5F + (float) Math.cos(angle) * OUTPUT_RADIUS,
                         0.3F,
@@ -130,12 +121,14 @@ public final class PedestalRenderer
             }
             poseStack.scale(OUTPUT_SCALE, OUTPUT_SCALE, OUTPUT_SCALE);
             poseStack.mulPose(Axis.YN.rotationDegrees(state.animationTime * 6.0F));
-            state.outputItems.get(index).submit(
-                    poseStack,
-                    submitNodeCollector,
-                    state.lightCoords,
-                    OverlayTexture.NO_OVERLAY,
-                    0);
+            state.outputItems
+                    .get(index)
+                    .submit(
+                            poseStack,
+                            submitNodeCollector,
+                            state.lightCoords,
+                            OverlayTexture.NO_OVERLAY,
+                            0);
             poseStack.popPose();
         }
     }

@@ -5,7 +5,6 @@ import com.altnoir.mementoinabyss.impl.whistle.grid.GridCell;
 import com.altnoir.mementoinabyss.impl.whistle.grid.GridRotation;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaMenus;
-import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -33,31 +32,30 @@ public final class WhistleWorkbenchMenu extends AbstractContainerMenu {
         this(containerId, inventory, ContainerLevelAccess.NULL);
     }
 
-    public WhistleWorkbenchMenu(
-            int containerId,
-            Inventory inventory,
-            ContainerLevelAccess access
-    ) {
+    public WhistleWorkbenchMenu(int containerId, Inventory inventory, ContainerLevelAccess access) {
         super(MiaMenus.WHISTLE_WORKBENCH.get(), containerId);
         this.access = access;
-        this.whistleContainer = new SimpleContainer(1) {
-            @Override
-            public void setChanged() {
-                super.setChanged();
-                WhistleWorkbenchMenu.this.slotsChanged(this);
-            }
-        };
-        this.whistleSlot = addSlot(new Slot(whistleContainer, 0, 18, 28) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return WhistleApi.isWhistle(stack);
-            }
+        this.whistleContainer =
+                new SimpleContainer(1) {
+                    @Override
+                    public void setChanged() {
+                        super.setChanged();
+                        WhistleWorkbenchMenu.this.slotsChanged(this);
+                    }
+                };
+        this.whistleSlot =
+                addSlot(
+                        new Slot(whistleContainer, 0, 18, 28) {
+                            @Override
+                            public boolean mayPlace(ItemStack stack) {
+                                return WhistleApi.isWhistle(stack);
+                            }
 
-            @Override
-            public int getMaxStackSize() {
-                return 1;
-            }
-        });
+                            @Override
+                            public int getMaxStackSize() {
+                                return 1;
+                            }
+                        });
 
         addStandardInventorySlots(inventory, 8, 108);
     }
@@ -71,10 +69,7 @@ public final class WhistleWorkbenchMenu extends AbstractContainerMenu {
     }
 
     public static int placeButton(int x, int y, GridRotation rotation) {
-        return ACTION_PLACE
-                | (rotation.ordinal() & 3) << 8
-                | (y & 15) << 4
-                | (x & 15);
+        return ACTION_PLACE | (rotation.ordinal() & 3) << 8 | (y & 15) << 4 | (x & 15);
     }
 
     public static int removeButton(int x, int y) {
@@ -86,23 +81,20 @@ public final class WhistleWorkbenchMenu extends AbstractContainerMenu {
         int action = buttonId & ACTION_MASK;
         int x = buttonId & 15;
         int y = buttonId >> 4 & 15;
-        if ((action != ACTION_PLACE && action != ACTION_REMOVE)
-                || !validCellCoordinates(x, y)) {
+        if ((action != ACTION_PLACE && action != ACTION_REMOVE) || !validCellCoordinates(x, y)) {
             return false;
         }
         if (player.level().isClientSide()) {
             return true;
         }
 
-        boolean changed = switch (action) {
-            case ACTION_PLACE -> placeHeldFragment(
-                    x,
-                    y,
-                    GridRotation.values()[buttonId >> 8 & 3]
-            );
-            case ACTION_REMOVE -> removeFragment(x, y);
-            default -> false;
-        };
+        boolean changed =
+                switch (action) {
+                    case ACTION_PLACE ->
+                            placeHeldFragment(x, y, GridRotation.values()[buttonId >> 8 & 3]);
+                    case ACTION_REMOVE -> removeFragment(x, y);
+                    default -> false;
+                };
         if (changed) {
             whistleSlot.setChanged();
             broadcastChanges();
@@ -127,10 +119,11 @@ public final class WhistleWorkbenchMenu extends AbstractContainerMenu {
             return false;
         }
         return WhistleApi.removeAt(whistle(), new GridCell(x, y))
-                .map(stack -> {
-                    setCarried(stack);
-                    return true;
-                })
+                .map(
+                        stack -> {
+                            setCarried(stack);
+                            return true;
+                        })
                 .orElse(false);
     }
 
@@ -166,7 +159,8 @@ public final class WhistleWorkbenchMenu extends AbstractContainerMenu {
             if (!moveItemStackTo(stack, HOTBAR_START, HOTBAR_END, false)) {
                 return ItemStack.EMPTY;
             }
-        } else if (index >= HOTBAR_START && index < HOTBAR_END
+        } else if (index >= HOTBAR_START
+                && index < HOTBAR_END
                 && !moveItemStackTo(stack, INVENTORY_START, INVENTORY_END, false)) {
             return ItemStack.EMPTY;
         }

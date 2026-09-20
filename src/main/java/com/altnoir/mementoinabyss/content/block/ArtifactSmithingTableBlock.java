@@ -32,23 +32,15 @@ public final class ArtifactSmithingTableBlock extends CraftingTableBlock {
     @Override
     protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
         return new SimpleMenuProvider(
-                (containerId, inventory, player) -> new ArtifactEnhancementMenu(
-                        containerId,
-                        inventory,
-                        ContainerLevelAccess.create(level, pos)
-                ),
-                TITLE
-        );
+                (containerId, inventory, player) ->
+                        new ArtifactEnhancementMenu(
+                                containerId, inventory, ContainerLevelAccess.create(level, pos)),
+                TITLE);
     }
 
     @Override
     protected InteractionResult useWithoutItem(
-            BlockState state,
-            Level level,
-            BlockPos pos,
-            Player player,
-            BlockHitResult hit
-    ) {
+            BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (!level.isClientSide()) {
             player.openMenu(getMenuProvider(state, level, pos));
         }

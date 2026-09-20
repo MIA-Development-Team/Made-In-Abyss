@@ -1,15 +1,17 @@
 package com.altnoir.mementoinabyss.network;
 
-import net.minecraft.network.RegistryFriendlyByteBuf;
-
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.zip.CRC32;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 
 /** Persistent world identity, independent of player, address, link offset and stream epoch. */
 public record CrossDimensionLodCacheScope(UUID worldId, String dimension) {
     public CrossDimensionLodCacheScope {
-        if (worldId == null || dimension == null || dimension.isBlank() || dimension.length() > 256) {
+        if (worldId == null
+                || dimension == null
+                || dimension.isBlank()
+                || dimension.length() > 256) {
             throw new IllegalArgumentException("Invalid LOD cache scope");
         }
     }

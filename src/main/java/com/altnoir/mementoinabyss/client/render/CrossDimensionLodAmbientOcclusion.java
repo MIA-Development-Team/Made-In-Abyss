@@ -15,8 +15,17 @@ final class CrossDimensionLodAmbientOcclusion {
             this(chunkX, chunkZ, width, columns, null);
         }
 
-        private View(int chunkX, int chunkZ, int width, Side[][] columns, CrossDimensionLodColumn local) {
-            this.chunkX = chunkX; this.chunkZ = chunkZ; this.width = width; this.columns = columns; this.local = local;
+        private View(
+                int chunkX,
+                int chunkZ,
+                int width,
+                Side[][] columns,
+                CrossDimensionLodColumn local) {
+            this.chunkX = chunkX;
+            this.chunkZ = chunkZ;
+            this.width = width;
+            this.columns = columns;
+            this.local = local;
         }
 
         View withSource(CrossDimensionLodColumn source) {
@@ -24,7 +33,8 @@ final class CrossDimensionLodAmbientOcclusion {
         }
 
         Side[] column(int x, int z) {
-            x -= chunkX; z -= chunkZ;
+            x -= chunkX;
+            z -= chunkZ;
             return x < 0 || z < 0 || x >= width || z >= width ? null : columns[z * width + x];
         }
 
@@ -36,7 +46,8 @@ final class CrossDimensionLodAmbientOcclusion {
                 if (cell > 4) return false;
                 int y = Math.floorDiv(worldY - local.minY() - local.displayYOffset(), cell);
                 if (y < 0 || y >= local.yCells()) return false;
-                return local.voxels()[((z / cell) * (16 / cell) + x / cell) * local.yCells() + y] != 0;
+                return local.voxels()[((z / cell) * (16 / cell) + x / cell) * local.yCells() + y]
+                        != 0;
             }
             Side[] sides = column(cx, cz);
             if (sides == null || sides[0].cellSize() > 4) return false;
@@ -70,21 +81,28 @@ final class CrossDimensionLodAmbientOcclusion {
     }
 
     private static boolean sample(View view, int face, int normal, int u, int v) {
-        return face < 2 ? view.occupied(normal, v, u)
+        return face < 2
+                ? view.occupied(normal, v, u)
                 : face < 4 ? view.occupied(u, normal, v) : view.occupied(u, v, normal);
     }
 
-    static boolean constantU(int ao) { return (ao & 3) == (ao >> 2 & 3) && (ao >> 6 & 3) == (ao >> 4 & 3); }
-    static boolean constantV(int ao) { return (ao & 3) == (ao >> 6 & 3) && (ao >> 2 & 3) == (ao >> 4 & 3); }
+    static boolean constantU(int ao) {
+        return (ao & 3) == (ao >> 2 & 3) && (ao >> 6 & 3) == (ao >> 4 & 3);
+    }
+
+    static boolean constantV(int ao) {
+        return (ao & 3) == (ao >> 6 & 3) && (ao >> 2 & 3) == (ao >> 4 & 3);
+    }
 
     static int outwardOrder(int face, int ao) {
-        int order = switch (face) {
-            case 0, 5 -> 0x39; // 1,2,3,0
-            case 1, 4 -> 0x6C; // 0,3,2,1
-            case 2 -> 0xE4;    // 0,1,2,3
-            case 3 -> 0x1B;    // 3,2,1,0
-            default -> throw new IllegalArgumentException("Invalid LOD face");
-        };
+        int order =
+                switch (face) {
+                    case 0, 5 -> 0x39; // 1,2,3,0
+                    case 1, 4 -> 0x6C; // 0,3,2,1
+                    case 2 -> 0xE4; // 0,1,2,3
+                    case 3 -> 0x1B; // 3,2,1,0
+                    default -> throw new IllegalArgumentException("Invalid LOD face");
+                };
         int result = 0;
         for (int i = 0; i < 4; i++) result |= (ao >> ((order >> (i * 2) & 3) * 2) & 3) << (i * 2);
         return result;
@@ -94,7 +112,9 @@ final class CrossDimensionLodAmbientOcclusion {
         return (ao & 3) + (ao >> 4 & 3) > (ao >> 2 & 3) + (ao >> 6 & 3);
     }
 
-    static float shade(int ao, int corner) { return .55F + (ao >> (corner * 2) & 3) * .15F; }
+    static float shade(int ao, int corner) {
+        return .55F + (ao >> (corner * 2) & 3) * .15F;
+    }
 
     private CrossDimensionLodAmbientOcclusion() {}
 }

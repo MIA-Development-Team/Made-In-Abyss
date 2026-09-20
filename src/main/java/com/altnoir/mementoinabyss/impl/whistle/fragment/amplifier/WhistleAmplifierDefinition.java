@@ -4,11 +4,8 @@ import com.altnoir.mementoinabyss.impl.whistle.fragment.WhistleFragmentDefinitio
 import com.altnoir.mementoinabyss.impl.whistle.grid.SkillShape;
 
 public record WhistleAmplifierDefinition(
-        SkillShape shape,
-        boolean unique,
-        double powerMultiplier,
-        double cooldownMultiplier
-) implements WhistleFragmentDefinition {
+        SkillShape shape, boolean unique, double powerMultiplier, double cooldownMultiplier)
+        implements WhistleFragmentDefinition {
     public WhistleAmplifierDefinition {
         if (!Double.isFinite(powerMultiplier) || powerMultiplier <= 0.0) {
             throw new IllegalArgumentException("Power multiplier must be finite and positive");

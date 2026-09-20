@@ -22,19 +22,9 @@ public record RopeParameters(
         double velocityRetention,
         double compliance,
         int substeps,
-        int constraintIterations
-) {
-    public static final RopeParameters DEFAULT = new RopeParameters(
-            1.0,
-            0.0625,
-            0.0,
-            -9.81,
-            0.0,
-            0.96,
-            0.0,
-            2,
-            8
-    );
+        int constraintIterations) {
+    public static final RopeParameters DEFAULT =
+            new RopeParameters(1.0, 0.0625, 0.0, -9.81, 0.0, 0.96, 0.0, 2, 8);
 
     public RopeParameters {
         if (!Double.isFinite(segmentLength) || segmentLength <= 0.0) {
@@ -43,10 +33,14 @@ public record RopeParameters(
         if (!Double.isFinite(collisionRadius) || collisionRadius < 0.0) {
             throw new IllegalArgumentException("collisionRadius must be finite and non-negative");
         }
-        if (!Double.isFinite(gravityX) || !Double.isFinite(gravityY) || !Double.isFinite(gravityZ)) {
+        if (!Double.isFinite(gravityX)
+                || !Double.isFinite(gravityY)
+                || !Double.isFinite(gravityZ)) {
             throw new IllegalArgumentException("gravity must be finite");
         }
-        if (!Double.isFinite(velocityRetention) || velocityRetention < 0.0 || velocityRetention > 1.0) {
+        if (!Double.isFinite(velocityRetention)
+                || velocityRetention < 0.0
+                || velocityRetention > 1.0) {
             throw new IllegalArgumentException("velocityRetention must be in [0, 1]");
         }
         if (!Double.isFinite(compliance) || compliance < 0.0) {
@@ -61,23 +55,54 @@ public record RopeParameters(
     }
 
     public RopeParameters withSegmentLength(double value) {
-        return new RopeParameters(value, this.collisionRadius, this.gravityX, this.gravityY, this.gravityZ,
-                this.velocityRetention, this.compliance, this.substeps, this.constraintIterations);
+        return new RopeParameters(
+                value,
+                this.collisionRadius,
+                this.gravityX,
+                this.gravityY,
+                this.gravityZ,
+                this.velocityRetention,
+                this.compliance,
+                this.substeps,
+                this.constraintIterations);
     }
 
     public RopeParameters withCollisionRadius(double value) {
-        return new RopeParameters(this.segmentLength, value, this.gravityX, this.gravityY, this.gravityZ,
-                this.velocityRetention, this.compliance, this.substeps, this.constraintIterations);
+        return new RopeParameters(
+                this.segmentLength,
+                value,
+                this.gravityX,
+                this.gravityY,
+                this.gravityZ,
+                this.velocityRetention,
+                this.compliance,
+                this.substeps,
+                this.constraintIterations);
     }
 
     public RopeParameters withGravity(double x, double y, double z) {
-        return new RopeParameters(this.segmentLength, this.collisionRadius, x, y, z,
-                this.velocityRetention, this.compliance, this.substeps, this.constraintIterations);
+        return new RopeParameters(
+                this.segmentLength,
+                this.collisionRadius,
+                x,
+                y,
+                z,
+                this.velocityRetention,
+                this.compliance,
+                this.substeps,
+                this.constraintIterations);
     }
 
     public RopeParameters withSolver(int substeps, int constraintIterations) {
-        return new RopeParameters(this.segmentLength, this.collisionRadius,
-                this.gravityX, this.gravityY, this.gravityZ,
-                this.velocityRetention, this.compliance, substeps, constraintIterations);
+        return new RopeParameters(
+                this.segmentLength,
+                this.collisionRadius,
+                this.gravityX,
+                this.gravityY,
+                this.gravityZ,
+                this.velocityRetention,
+                this.compliance,
+                substeps,
+                constraintIterations);
     }
 }

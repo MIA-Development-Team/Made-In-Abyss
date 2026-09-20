@@ -7,7 +7,12 @@ import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 public record LongVinesConfiguration(IntProvider height) implements FeatureConfiguration {
-    public static final Codec<LongVinesConfiguration> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            IntProviders.codec(0, 256).fieldOf("height").forGetter(LongVinesConfiguration::height)
-    ).apply(instance, LongVinesConfiguration::new));
+    public static final Codec<LongVinesConfiguration> CODEC =
+            RecordCodecBuilder.create(
+                    instance ->
+                            instance.group(
+                                            IntProviders.codec(0, 256)
+                                                    .fieldOf("height")
+                                                    .forGetter(LongVinesConfiguration::height))
+                                    .apply(instance, LongVinesConfiguration::new));
 }

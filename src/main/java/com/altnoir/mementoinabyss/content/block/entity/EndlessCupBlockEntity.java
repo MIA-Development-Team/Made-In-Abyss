@@ -23,15 +23,17 @@ import org.jetbrains.annotations.Nullable;
 public final class EndlessCupBlockEntity extends BlockEntity {
     public static final int CAPACITY = Integer.MAX_VALUE;
 
-    public final FluidStacksResourceHandler fluidHandler = new FluidStacksResourceHandler(1, CAPACITY) {
-        @Override
-        protected void onContentsChanged(int index, FluidStack previousContents) {
-            setChanged();
-            if (level instanceof ServerLevel serverLevel) {
-                serverLevel.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-            }
-        }
-    };
+    public final FluidStacksResourceHandler fluidHandler =
+            new FluidStacksResourceHandler(1, CAPACITY) {
+                @Override
+                protected void onContentsChanged(int index, FluidStack previousContents) {
+                    setChanged();
+                    if (level instanceof ServerLevel serverLevel) {
+                        serverLevel.sendBlockUpdated(
+                                getBlockPos(), getBlockState(), getBlockState(), 3);
+                    }
+                }
+            };
 
     public EndlessCupBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -59,7 +61,8 @@ public final class EndlessCupBlockEntity extends BlockEntity {
         return saveWithoutMetadata(registries);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, EndlessCupBlockEntity blockEntity) {
+    public static void tick(
+            Level level, BlockPos pos, BlockState state, EndlessCupBlockEntity blockEntity) {
         try (Transaction transaction = Transaction.openRoot()) {
             blockEntity.fluidHandler.insert(FluidResource.of(Fluids.WATER), CAPACITY, transaction);
             transaction.commit();

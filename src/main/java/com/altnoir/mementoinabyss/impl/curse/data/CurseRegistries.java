@@ -11,10 +11,6 @@ public class CurseRegistries {
             ResourceKey.createRegistryKey(MementoInAbyss.asResource("curse"));
 
     public static void register(DataPackRegistryEvent.NewRegistry event) {
-        event.dataPackRegistry(
-                CURSE,
-                CurseDimension.CODEC,
-                CurseDimension.CODEC
-        );
+        event.dataPackRegistry(CURSE, CurseDimension.CODEC, CurseDimension.CODEC);
     }
 }

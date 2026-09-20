@@ -23,25 +23,20 @@ public final class MiaJeiPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-        registration.addRecipeCategories(new ArtifactEnhancementRecipeCategory(
-                registration.getJeiHelpers().getGuiHelper()
-        ));
+        registration.addRecipeCategories(
+                new ArtifactEnhancementRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         registration.addRecipes(
-                ArtifactEnhancementRecipeCategory.TYPE,
-                ArtifactEnhancementClientRecipes.all()
-        );
+                ArtifactEnhancementRecipeCategory.TYPE, ArtifactEnhancementClientRecipes.all());
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addCraftingStation(
-                ArtifactEnhancementRecipeCategory.TYPE,
-                MiaBlocks.ARTIFACT_SMITHING_TABLE.get()
-        );
+                ArtifactEnhancementRecipeCategory.TYPE, MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
     }
 
     @Override
@@ -52,7 +47,6 @@ public final class MiaJeiPlugin implements IModPlugin {
                 32,
                 28,
                 24,
-                ArtifactEnhancementRecipeCategory.TYPE
-        );
+                ArtifactEnhancementRecipeCategory.TYPE);
     }
 }
