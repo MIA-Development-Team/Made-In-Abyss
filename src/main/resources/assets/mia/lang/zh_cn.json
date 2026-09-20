@@ -2,6 +2,12 @@
     "itemgroup.mia": "深渊遗忆",
     "itemgroup.mia_artifact": "深渊遗忆: 遗物",
 
+    "itemgroup.mia.section.building": "建筑方块",
+    "itemgroup.mia.section.natural": "自然方块",
+    "itemgroup.mia.section.functional": "功能方块",
+    "itemgroup.mia.section.items": "物品",
+    "itemgroup.mia.section.artifacts": "遗物",
+
     "item.mia.red_whistle": "赤笛",
     "item.mia.blue_whistle": "§b苍笛",
     "item.mia.moon_whistle": "§d月笛",

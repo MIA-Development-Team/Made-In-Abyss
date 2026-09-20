@@ -4,6 +4,12 @@
     "itemgroup.mia": "Memento In Abyss",
     "itemgroup.mia_artifact": "Memento In Abyss: Artifact",
 
+    "itemgroup.mia.section.building": "Building Blocks",
+    "itemgroup.mia.section.natural": "Natural Blocks",
+    "itemgroup.mia.section.functional": "Functional Blocks",
+    "itemgroup.mia.section.items": "Items",
+    "itemgroup.mia.section.artifacts": "Artifacts",
+
     "gui.mia.disconnect": "Quit?",
 
     "subtitle.mia.abyss_portal_ambient": "Abyss Portal: Ambient",

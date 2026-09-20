@@ -23,7 +23,8 @@ public class MiaLootTableProvider {
                 output,
                 Collections.emptySet(),
                 List.of(
-                        new LootTableProvider.SubProviderEntry(MiaBlockLootTable::new, LootContextParamSets.BLOCK),
+                        // 方块战利品表已经全部由 Reginth 的 ReginthBlockLootProvider 生成
+                        // （每个方块声明上的 .loot(...)），这里不再注册 MIA 自己的方块子 provider。
                         new LootTableProvider.SubProviderEntry(MiaCheatLootTable::new, LootContextParamSets.CHEST),
                         new LootTableProvider.SubProviderEntry(MiaArchaeologyLoot::new, LootContextParamSets.ARCHAEOLOGY)
                 ),
