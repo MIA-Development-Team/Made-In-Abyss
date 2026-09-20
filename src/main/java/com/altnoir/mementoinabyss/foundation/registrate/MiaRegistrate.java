@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.foundation.registrate;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.foundation.transfer.heat.HeatType;
 import com.altnoir.mementoinabyss.impl.creative.CreativeTabSection;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BlockBuilder;
@@ -9,10 +10,12 @@ import com.tterrag.registrate.builders.NoConfigBuilder;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
@@ -21,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.neoforged.neoforge.registries.RegistryBuilder;
 
 public class MiaRegistrate extends AbstractRegistrate<MiaRegistrate> {
     private final Set<String> ignoredCreativeTabEntries = new HashSet<>();
@@ -111,6 +115,36 @@ public class MiaRegistrate extends AbstractRegistrate<MiaRegistrate> {
     public <T extends Block, P> MiaBlockBuilder<T, P> block(
             P parent, NonNullFunction<BlockBehaviour.Properties, T> factory) {
         return block(parent, currentName(), factory);
+    }
+
+    public ResourceKey<Registry<HeatType>> makeHeatTypeRegistry() {
+        return makeRegistry(
+                HeatType.REGISTRY_KEY.identifier().getPath(),
+                key ->
+                        new RegistryBuilder<>(key)
+                                .sync(true)
+                                .defaultKey(MementoInAbyss.asResource("empty")));
+    }
+
+    public NoConfigBuilder<HeatType, HeatType, MiaRegistrate> heatType(
+            NonNullSupplier<HeatType> factory) {
+        return heatType(self(), currentName(), factory);
+    }
+
+    public NoConfigBuilder<HeatType, HeatType, MiaRegistrate> heatType(
+            String name, NonNullSupplier<HeatType> factory) {
+        return heatType(self(), name, factory);
+    }
+
+    public <P> NoConfigBuilder<HeatType, HeatType, P> heatType(
+            P parent, NonNullSupplier<HeatType> factory) {
+        return heatType(parent, currentName(), factory);
+    }
+
+    public <P> NoConfigBuilder<HeatType, HeatType, P> heatType(
+            P parent, String name, NonNullSupplier<HeatType> factory) {
+        return generic(parent, name, HeatType.REGISTRY_KEY, factory)
+                .lang(HeatType::getDescriptionId);
     }
 
     void ignoreCreativeTab(String name) {

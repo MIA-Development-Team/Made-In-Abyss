@@ -29,6 +29,9 @@ public class MementoInAbyss {
 
         REGISTRATE.registerEventListeners(modEventBus);
 
+        MiaHeatTypes.register();
+        MiaCapabilities.register();
+
         MiaDataComponents.register(modEventBus);
         MiaDataAttachments.register(modEventBus);
         MiaEffects.register(modEventBus);

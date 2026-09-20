@@ -141,6 +141,8 @@
   "effect.mementoinabyss.abyss_blessing": "Abyss Blessing",
   "gui.mementoinabyss.whistle.cooldown": "Cooldown: %s s",
   "gui.mementoinabyss.whistle.skills": "Whistle Skills",
+  "heat_type.mementoinabyss.empty": "Empty",
+  "heat_type.mementoinabyss.heat": "Heat",
   "item.mementoinabyss.caerulite_shard": "Caerulite Shard",
   "item.mementoinabyss.dream_lichee": "Dream Lichee",
   "item.mementoinabyss.echo_reed": "Echo Reed",
