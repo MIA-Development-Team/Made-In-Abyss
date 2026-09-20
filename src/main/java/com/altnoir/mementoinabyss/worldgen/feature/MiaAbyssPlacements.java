@@ -1,40 +1,45 @@
 package com.altnoir.mementoinabyss.worldgen.feature;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.init.MiaBlocks;
+import com.altnoir.mementoinabyss.worldgen.placement.FastCountOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.worldgen.placement.InvertedCountOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.worldgen.placement.TreeOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.worldgen.placement.WaterOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.worldgen.tree.MiaTreeFeatures;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.valueproviders.ClampedInt;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
-import com.altnoir.mementoinabyss.worldgen.placement.FastCountOnEveryLayerPlacement;
 import net.minecraft.world.level.levelgen.placement.EnvironmentScanPlacement;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.HeightmapPlacement;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.world.level.levelgen.placement.NoiseThresholdCountPlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.RandomOffsetPlacement;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
-import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-import net.minecraft.core.Direction;
-import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.util.valueproviders.UniformInt;
 
 import java.util.List;
-import com.altnoir.mementoinabyss.worldgen.tree.MiaTreeFeatures;
-import com.altnoir.mementoinabyss.worldgen.placement.TreeOnEveryLayerPlacement;
-import com.altnoir.mementoinabyss.worldgen.placement.InvertedCountOnEveryLayerPlacement;
-import com.altnoir.mementoinabyss.worldgen.placement.WaterOnEveryLayerPlacement;
 
 public final class MiaAbyssPlacements {
-    public static final ResourceKey<PlacedFeature> PATCH_MARGINAL_WEED = key("patch_marginal_weed");
-    public static final ResourceKey<PlacedFeature> PATCH_BALLOON_PLANT = key("patch_balloon_plant");
-    public static final ResourceKey<PlacedFeature> PATCH_LANTERN_PLANT = key("patch_lantern_plant");
-    public static final ResourceKey<PlacedFeature> PATCH_GREEN_PERILLA = key("patch_green_perilla");
+    public static final ResourceKey<PlacedFeature> MARGINAL_WEED_BONEMEAL = key("marginal_weed_bonemeal");
     public static final ResourceKey<PlacedFeature> PATCH_GRASS_PLAIN = key("patch_grass_plain");
     public static final ResourceKey<PlacedFeature> PATCH_GRASS_FERN = key("patch_grass_fern");
     public static final ResourceKey<PlacedFeature> PATCH_LARGE_FERN = key("patch_large_fern");
@@ -80,23 +85,50 @@ public final class MiaAbyssPlacements {
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configured = context.lookup(Registries.CONFIGURED_FEATURE);
-        plant(context, PATCH_MARGINAL_WEED, configured.getOrThrow(MiaAbyssFeatures.PATCH_MARGINAL_WEED), 10);
-        plant(context, PATCH_BALLOON_PLANT, configured.getOrThrow(MiaAbyssFeatures.PATCH_BALLOON_PLANT), 5);
-        plant(context, PATCH_LANTERN_PLANT, configured.getOrThrow(MiaAbyssFeatures.PATCH_LANTERN_PLANT), 3);
-        plant(context, PATCH_GREEN_PERILLA, configured.getOrThrow(MiaAbyssFeatures.PATCH_GREEN_PERILLA), 5);
-        everyLayer(context, PATCH_GRASS_PLAIN, configured.getOrThrow(vanillaConfigured("grass")), 1);
-        everyLayer(context, PATCH_GRASS_FERN, configured.getOrThrow(vanillaConfigured("taiga_grass")), 1);
+
+        context.register(MARGINAL_WEED_BONEMEAL, new PlacedFeature(
+                configured.getOrThrow(MiaAbyssFeatures.SINGLE_PIECE_OF_MARGINAL_WEED),
+                List.of(PlacementUtils.isEmpty())));
+
+        context.register(PATCH_GRASS_PLAIN, new PlacedFeature(configured.getOrThrow(vanillaConfigured("grass")),
+                patchOnEveryLayer(NoiseThresholdCountPlacement.of(-0.8, 5, 10), 1, 32, 7, 3)));
+        context.register(PATCH_GRASS_FERN, new PlacedFeature(configured.getOrThrow(vanillaConfigured("taiga_grass")),
+                patchOnEveryLayer(NoiseThresholdCountPlacement.of(-0.8, 5, 10), 1, 32, 7, 3)));
         context.register(PATCH_LARGE_FERN, new PlacedFeature(configured.getOrThrow(vanillaConfigured("large_fern")),
-                List.of(RarityFilter.onAverageOnceEvery(5), FastCountOnEveryLayerPlacement.of(1), BiomeFilter.biome())));
-        everyLayer(context, PATCH_DENSE_LARGE_FERN, configured.getOrThrow(vanillaConfigured("large_fern")), 2);
+                patchOnEveryLayer(RarityFilter.onAverageOnceEvery(5), 1, 32, 7, 3)));
+        context.register(PATCH_DENSE_LARGE_FERN, new PlacedFeature(configured.getOrThrow(vanillaConfigured("large_fern")),
+                patchOnEveryLayer(null, 2, 32, 7, 3)));
+
         context.register(PATCH_SUNFLOWER, new PlacedFeature(configured.getOrThrow(vanillaConfigured("sunflower")),
-                List.of(RarityFilter.onAverageOnceEvery(2), InSquarePlacement.spread(), BiomeFilter.biome())));
+                List.of(
+                        RarityFilter.onAverageOnceEvery(2),
+                        InSquarePlacement.spread(),
+                        PlacementUtils.HEIGHTMAP,
+                        BiomeFilter.biome(),
+                        CountPlacement.of(96),
+                        RandomOffsetPlacement.ofTriangle(7, 3),
+                        BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE))));
+
         ceilingPlant(context, CAVE_VINES, configured.getOrThrow(vanillaConfigured("cave_vine")), 47, 12);
         ceilingPlant(context, SPORE_BLOSSOM, configured.getOrThrow(vanillaConfigured("spore_blossom")), 25, 12);
-        everyLayer(context, FLOWER_MEADOW_LAYER1, configured.getOrThrow(MiaAbyssFeatures.FLOWER_MEADOW_LAYER1), 24);
-        everyLayer(context, FLOWER_MEADOW_LAYER2, configured.getOrThrow(MiaAbyssFeatures.FLOWER_MEADOW_LAYER2), 24);
-        context.register(FOREST_FLOWERS, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.FOREST_FLOWERS),
-                List.of(RarityFilter.onAverageOnceEvery(2), FastCountOnEveryLayerPlacement.of(16), BiomeFilter.biome())));
+
+        context.register(FLOWER_MEADOW_LAYER1, new PlacedFeature(
+                configured.getOrThrow(MiaAbyssFeatures.FLOWER_MEADOW_LAYER1),
+                patchOnEveryLayer(null, 1, 96, 6, 2)));
+        context.register(FLOWER_MEADOW_LAYER2, new PlacedFeature(
+                configured.getOrThrow(MiaAbyssFeatures.FLOWER_MEADOW_LAYER2),
+                patchOnEveryLayer(null, 1, 96, 6, 2)));
+        context.register(FOREST_FLOWERS, new PlacedFeature(
+                configured.getOrThrow(MiaAbyssFeatures.FOREST_FLOWERS),
+                List.of(
+                        RarityFilter.onAverageOnceEvery(2),
+                        FastCountOnEveryLayerPlacement.of(1),
+                        CountPlacement.of(ClampedInt.of(UniformInt.of(-3, 1), 0, 1)),
+                        CountPlacement.of(96),
+                        RandomOffsetPlacement.ofTriangle(6, 2),
+                        BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE),
+                        BiomeFilter.biome())));
+
         context.register(LONG_VINES, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.LONG_VINES), List.of(
                 CountPlacement.of(127), CountPlacement.of(5), InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(128), VerticalAnchor.belowTop(8)),
@@ -105,9 +137,28 @@ public final class MiaAbyssPlacements {
                 CountPlacement.of(UniformInt.of(157, 250)),
                 HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(128), VerticalAnchor.belowTop(64)),
                 InSquarePlacement.spread(), BiomeFilter.biome())));
+
         context.register(PATCH_WATERLILY, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.PATCH_WATERLILY),
-                List.of(WaterOnEveryLayerPlacement.of(2), BiomeFilter.biome())));
-        everyLayer(context, PATCH_GLOOM_BERRY, configured.getOrThrow(MiaAbyssFeatures.PATCH_GLOOM_BERRY), 2);
+                List.of(
+                        WaterOnEveryLayerPlacement.of(2),
+                        CountPlacement.of(96),
+                        RandomOffsetPlacement.ofTriangle(7, 3),
+                        BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE),
+                        BiomeFilter.biome())));
+
+        context.register(PATCH_GLOOM_BERRY, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.PATCH_GLOOM_BERRY),
+                List.of(
+                        NoiseThresholdCountPlacement.of(-0.8, 1, 5),
+                        RarityFilter.onAverageOnceEvery(2),
+                        FastCountOnEveryLayerPlacement.of(1),
+                        CountPlacement.of(5),
+                        RandomOffsetPlacement.ofTriangle(7, 3),
+                        BlockPredicateFilter.forPredicate(BlockPredicate.allOf(
+                                BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                BlockPredicate.wouldSurvive(
+                                        MiaBlocks.GLOOM_BERRY_PLANT.get().defaultBlockState(), BlockPos.ZERO))),
+                        BiomeFilter.biome())));
+
         ceilingPlant(context, CAVES_CEILING_VEGETATION,
                 configured.getOrThrow(vanillaConfigured("moss_patch_ceiling")), 125, 12);
         context.register(POOL_WITH_REED, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.POOL_WITH_REED), List.of(
@@ -169,10 +220,21 @@ public final class MiaAbyssPlacements {
                 List.of(InvertedCountOnEveryLayerPlacement.of(6), BiomeFilter.biome())));
     }
 
-    private static void everyLayer(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key,
-                                   Holder<ConfiguredFeature<?, ?>> configured, int count) {
-        context.register(key, new PlacedFeature(configured,
-                List.of(FastCountOnEveryLayerPlacement.of(count), BiomeFilter.biome())));
+    /**
+     * 26.1 replacement for RandomPatch: layer anchor → N tries → triangle scatter → only air.
+     */
+    private static List<PlacementModifier> patchOnEveryLayer(PlacementModifier prefix, int layerCount,
+                                                             int tries, int xzSpread, int ySpread) {
+        java.util.ArrayList<PlacementModifier> modifiers = new java.util.ArrayList<>();
+        if (prefix != null) {
+            modifiers.add(prefix);
+        }
+        modifiers.add(FastCountOnEveryLayerPlacement.of(layerCount));
+        modifiers.add(CountPlacement.of(tries));
+        modifiers.add(RandomOffsetPlacement.ofTriangle(xzSpread, ySpread));
+        modifiers.add(BlockPredicateFilter.forPredicate(BlockPredicate.ONLY_IN_AIR_PREDICATE));
+        modifiers.add(BiomeFilter.biome());
+        return List.copyOf(modifiers);
     }
 
     private static void ceilingPlant(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key,
@@ -183,14 +245,6 @@ public final class MiaAbyssPlacements {
                 EnvironmentScanPlacement.scanningFor(Direction.UP,
                         BlockPredicate.hasSturdyFace(Direction.DOWN), BlockPredicate.ONLY_IN_AIR_PREDICATE, scanDistance),
                 RandomOffsetPlacement.vertical(ConstantInt.of(-1)), BiomeFilter.biome())));
-    }
-
-    private static void plant(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key,
-                              Holder<ConfiguredFeature<?, ?>> configured, int count) {
-        context.register(key, new PlacedFeature(configured, List.of(
-                CountPlacement.of(count), InSquarePlacement.spread(),
-                HeightRangePlacement.uniform(VerticalAnchor.absolute(-240), VerticalAnchor.absolute(360)),
-                BiomeFilter.biome())));
     }
 
     private static void ore(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key,
@@ -206,8 +260,7 @@ public final class MiaAbyssPlacements {
     }
 
     private static ResourceKey<ConfiguredFeature<?, ?>> vanillaConfigured(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE,
-                net.minecraft.resources.Identifier.withDefaultNamespace(name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.withDefaultNamespace(name));
     }
 
     private MiaAbyssPlacements() {}

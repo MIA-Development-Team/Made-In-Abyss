@@ -1,56 +1,55 @@
 package com.altnoir.mementoinabyss.worldgen.feature;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.content.block.plant.DoubleBerryBlock;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaTags;
 import com.altnoir.mementoinabyss.init.MiaWorldgenFeatures;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
-import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
-import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.InclusiveRange;
 import net.minecraft.util.random.WeightedList;
-import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.util.valueproviders.WeightedListInt;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBedBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockColumnConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.VegetationPatchConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.SpringConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockPileConfiguration;
-import net.minecraft.world.level.levelgen.feature.LakeFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.GeodeConfiguration;
 import net.minecraft.world.level.levelgen.GeodeBlockSettings;
-import net.minecraft.world.level.levelgen.GeodeLayerSettings;
 import net.minecraft.world.level.levelgen.GeodeCrackSettings;
+import net.minecraft.world.level.levelgen.GeodeLayerSettings;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.LakeFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockColumnConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockPileConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.GeodeConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.SpringConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.VegetationPatchConfiguration;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.DualNoiseProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.material.Fluids;
-import com.altnoir.mementoinabyss.content.block.plant.DoubleBerryBlock;
 
 import java.util.List;
 
 public final class MiaAbyssFeatures {
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_MARGINAL_WEED = key("patch_marginal_weed");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_BALLOON_PLANT = key("patch_balloon_plant");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_LANTERN_PLANT = key("patch_lantern_plant");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_GREEN_PERILLA = key("patch_green_perilla");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SINGLE_PIECE_OF_MARGINAL_WEED = key("single_piece_of_marginal_weed");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW_LAYER1 = key("flower_meadow_layer1");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW_LAYER2 = key("flower_meadow_layer2");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_FLOWERS = key("forest_flowers");
@@ -83,25 +82,44 @@ public final class MiaAbyssFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED_UNDER_CEILING = key("trees_fossilized_under_ceiling");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        patch(context, PATCH_MARGINAL_WEED, MiaBlocks.MARGINAL_WEED.get(), 64);
-        patch(context, PATCH_BALLOON_PLANT, MiaBlocks.BALLOON_PLANT.get(), 32);
-        patch(context, PATCH_LANTERN_PLANT, MiaBlocks.LANTERN_PLANT.get(), 24);
-        patch(context, PATCH_GREEN_PERILLA, MiaBlocks.GREEN_PERILLA.get(), 32);
-        flowerPatch(context, FLOWER_MEADOW_LAYER1, WeightedList.<BlockState>builder()
-                .add(Blocks.BIG_DRIPLEAF.defaultBlockState(), 1)
-                .add(MiaBlocks.BALLOON_PLANT.get().defaultBlockState(), 1)
-                .add(MiaBlocks.LANTERN_PLANT.get().defaultBlockState(), 1)
-                .add(MiaBlocks.GREEN_PERILLA.get().defaultBlockState(), 1)
-                .add(MiaBlocks.SCORCHLEAF.get().defaultBlockState(), 1)
-                .add(Blocks.TORCHFLOWER.defaultBlockState(), 1)
-                .add(MiaBlocks.MARGINAL_WEED.get().defaultBlockState(), 1).build());
-        flowerPatch(context, FLOWER_MEADOW_LAYER2, WeightedList.<BlockState>builder()
-                .add(Blocks.BIG_DRIPLEAF.defaultBlockState(), 1)
-                .add(MiaBlocks.BALLOON_PLANT.get().defaultBlockState(), 1)
-                .add(MiaBlocks.LANTERN_PLANT.get().defaultBlockState(), 1)
-                .add(MiaBlocks.SILVEAF_FUNGUS.get().defaultBlockState(), 1)
-                .add(MiaBlocks.KONJAC_ROOT.get().defaultBlockState(), 1)
-                .add(MiaBlocks.CRIMSON_VEILGRASS.get().defaultBlockState(), 1).build());
+        context.register(SINGLE_PIECE_OF_MARGINAL_WEED, new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
+                new SimpleBlockConfiguration(BlockStateProvider.simple(MiaBlocks.MARGINAL_WEED.get()))));
+
+        // 26.1 dropped Feature.FLOWER / RANDOM_PATCH; DualNoise + placement patch spread matches main.
+        context.register(FLOWER_MEADOW_LAYER1, new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
+                new SimpleBlockConfiguration(new DualNoiseProvider(
+                        new InclusiveRange<>(1, 3),
+                        new NormalNoise.NoiseParameters(-5, 1.0),
+                        1.0F,
+                        2345L,
+                        new NormalNoise.NoiseParameters(-3, 1.0),
+                        1.0F,
+                        List.of(
+                                Blocks.BIG_DRIPLEAF.defaultBlockState(),
+                                MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
+                                MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
+                                MiaBlocks.GREEN_PERILLA.get().defaultBlockState(),
+                                MiaBlocks.SCORCHLEAF.get().defaultBlockState(),
+                                Blocks.TORCHFLOWER.defaultBlockState(),
+                                MiaBlocks.MARGINAL_WEED.get().defaultBlockState()
+                        )))));
+        context.register(FLOWER_MEADOW_LAYER2, new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
+                new SimpleBlockConfiguration(new DualNoiseProvider(
+                        new InclusiveRange<>(1, 3),
+                        new NormalNoise.NoiseParameters(-5, 1.0),
+                        1.0F,
+                        2345L,
+                        new NormalNoise.NoiseParameters(-3, 1.0),
+                        1.0F,
+                        List.of(
+                                Blocks.BIG_DRIPLEAF.defaultBlockState(),
+                                MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
+                                MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
+                                MiaBlocks.SILVEAF_FUNGUS.get().defaultBlockState(),
+                                MiaBlocks.KONJAC_ROOT.get().defaultBlockState(),
+                                MiaBlocks.CRIMSON_VEILGRASS.get().defaultBlockState()
+                        )))));
+
         WeightedList.Builder<BlockState> fortitude = WeightedList.builder();
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             for (int amount = 1; amount <= 4; amount++) {
@@ -110,7 +128,9 @@ public final class MiaAbyssFeatures {
                         .setValue(FlowerBedBlock.AMOUNT, amount), 1);
             }
         }
-        flowerPatch(context, FOREST_FLOWERS, fortitude.build());
+        context.register(FOREST_FLOWERS, new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
+                new SimpleBlockConfiguration(new WeightedStateProvider(fortitude.build()))));
+
         context.register(LONG_VINES, new ConfiguredFeature<>(MiaWorldgenFeatures.LONG_VINES.get(),
                 new LongVinesConfiguration(UniformInt.of(4, 16))));
         context.register(PATCH_WATERLILY, new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
@@ -207,18 +227,6 @@ public final class MiaAbyssFeatures {
         fossilTrunk(context, TREES_FOSSILIZED_UNDER_CEILING, 8, Direction.DOWN);
     }
 
-    private static void patch(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key,
-                              net.minecraft.world.level.block.Block block, int tries) {
-        context.register(key, new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
-                new SimpleBlockConfiguration(BlockStateProvider.simple(block))));
-    }
-
-    private static void flowerPatch(BootstrapContext<ConfiguredFeature<?, ?>> context,
-                                    ResourceKey<ConfiguredFeature<?, ?>> key, WeightedList<BlockState> states) {
-        context.register(key, new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
-                new SimpleBlockConfiguration(new WeightedStateProvider(states))));
-    }
-
     private static WeightedStateProvider prasioliteCrystals(Direction facing) {
         return new WeightedStateProvider(WeightedList.<BlockState>builder()
                 .add(MiaBlocks.SMALL_PRASIOLITE_BUD.get().defaultBlockState().setValue(BlockStateProperties.FACING, facing), 1)
@@ -229,7 +237,7 @@ public final class MiaAbyssFeatures {
     }
 
     private static void ore(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key,
-                            TagMatchTest rule, net.minecraft.world.level.block.state.BlockState state, int size, float discard) {
+                            TagMatchTest rule, BlockState state, int size, float discard) {
         context.register(key, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(rule, state, size, discard)));
     }
 

@@ -81,7 +81,8 @@ public final class FastCountOnEveryLayerPlacement extends PlacementModifier {
     }
 
     private static boolean isEmpty(BlockState state) {
-        return state.isAir() || state.is(Blocks.WATER) || state.is(Blocks.LAVA);
+        // Treat replaceable plants as empty so layers sit on real ground, not on other plants.
+        return state.isAir() || state.is(Blocks.WATER) || state.is(Blocks.LAVA) || state.canBeReplaced();
     }
 
     @Override

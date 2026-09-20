@@ -78,30 +78,30 @@ public final class MiaBiomes {
             }
             case SKYFOG_FOREST -> {
                 addSlabRuins(generationBuilder);
-                addGeode(generationBuilder); addCustomPlants(generationBuilder); addLayerOneMeadow(generationBuilder);
+                addGeode(generationBuilder); addLayerOneMeadow(generationBuilder);
                 addRawIron(generationBuilder); addLargeFern(generationBuilder); addCaveVines(generationBuilder);
                 addTree(generationBuilder, MiaAbyssPlacements.TREES_SKYFOG);
             }
             case DENSE_SKYFOG_FOREST -> {
                 addSlabRuins(generationBuilder);
-                addGeode(generationBuilder); addCustomPlants(generationBuilder); addDenseMeadow(generationBuilder);
+                addGeode(generationBuilder); addDenseMeadow(generationBuilder);
                 addCaveVines(generationBuilder); addTree(generationBuilder, MiaAbyssPlacements.DENSE_TREES_SKYFOG);
             }
             case FOSSILIZED_FOREST -> {
                 addSlabRuins(generationBuilder);
-                addGeode(generationBuilder); addCustomPlants(generationBuilder); addLayerOneMeadow(generationBuilder);
+                addGeode(generationBuilder); addLayerOneMeadow(generationBuilder);
                 addRawIron(generationBuilder); addLargeFern(generationBuilder); addCaveVines(generationBuilder);
                 addTree(generationBuilder, MiaAbyssPlacements.TREES_FOSSILIZED);
             }
             case RICH_FOSSILIZED_FOREST -> {
                 addSlabRuins(generationBuilder);
-                addGeode(generationBuilder); addCustomPlants(generationBuilder); addPlainGrass(generationBuilder);
+                addGeode(generationBuilder); addPlainGrass(generationBuilder);
                 addCaveVines(generationBuilder); addTree(generationBuilder, MiaAbyssPlacements.TREES_FOSSILIZED);
                 generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.POOL_WITH_REED);
             }
             case UNDER_FOSSILIZED_FOREST -> {
                 addSlabRuins(generationBuilder);
-                addGeode(generationBuilder); addCustomPlants(generationBuilder); addLayerOneMeadow(generationBuilder);
+                addGeode(generationBuilder); addLayerOneMeadow(generationBuilder);
                 addRawIron(generationBuilder); addLargeFern(generationBuilder); addCaveVines(generationBuilder);
                 generationBuilder
                         .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.CAVES_CEILING_VEGETATION)
@@ -111,12 +111,12 @@ public final class MiaBiomes {
             }
             case ABYSS_PLAINS -> {
                 addSlabRuins(generationBuilder);
-                addGeode(generationBuilder); addCustomPlants(generationBuilder); addLayerOneMeadow(generationBuilder);
+                addGeode(generationBuilder); addLayerOneMeadow(generationBuilder);
                 addRawIron(generationBuilder); addLargeFern(generationBuilder); addCaveVines(generationBuilder);
             }
             case PRASIOLITE_CAVES -> {
                 addSlabRuins(generationBuilder);
-                addCustomPlants(generationBuilder); addLayerOneMeadow(generationBuilder); addLargeFern(generationBuilder);
+                addLayerOneMeadow(generationBuilder); addLargeFern(generationBuilder);
                 addTree(generationBuilder, MiaAbyssPlacements.TREES_SKYFOG);
                 generationBuilder
                         .addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, MiaAbyssPlacements.PRASIOLITE_CLUSTER)
@@ -124,21 +124,21 @@ public final class MiaBiomes {
             }
             case ABYSS_LUSH_CAVES -> {
                 addSlabRuins(generationBuilder);
-                addGeode(generationBuilder); addCustomPlants(generationBuilder); addLayerOneMeadow(generationBuilder);
+                addGeode(generationBuilder); addLayerOneMeadow(generationBuilder);
                 addTree(generationBuilder, MiaAbyssPlacements.TREES_SKYFOG);
             }
             case ABYSS_DRIPSTONE_CAVES -> {
                 addSlabRuins(generationBuilder);
-                addGeode(generationBuilder); addCustomPlants(generationBuilder); addLayerOneMeadow(generationBuilder);
+                addGeode(generationBuilder); addLayerOneMeadow(generationBuilder);
             }
             case TEMPTATION_FOREST -> {
                 addSlabRuins(generationBuilder);
-                addGeode(generationBuilder); addCustomPlants(generationBuilder); addLayerTwoMeadow(generationBuilder);
+                addGeode(generationBuilder); addLayerTwoMeadow(generationBuilder);
                 addRawIron(generationBuilder); addLargeFern(generationBuilder); addCaveVines(generationBuilder);
                 addTree(generationBuilder, MiaAbyssPlacements.TREES_VERDANT_FUNGUS);
             }
             case INVERTED_FOREST -> {
-                addGeode(generationBuilder); addCustomPlants(generationBuilder); addLayerTwoMeadow(generationBuilder);
+                addGeode(generationBuilder); addLayerTwoMeadow(generationBuilder);
                 addCaveVines(generationBuilder); addTree(generationBuilder, MiaAbyssPlacements.TREES_INVERTED);
             }
         }
@@ -205,14 +205,6 @@ public final class MiaBiomes {
         builder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, MiaAbyssPlacements.RAW_IRON);
     }
 
-    private static void addCustomPlants(BiomeGenerationSettings.Builder builder) {
-        builder
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.PATCH_MARGINAL_WEED)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.PATCH_BALLOON_PLANT)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.PATCH_LANTERN_PLANT)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.PATCH_GREEN_PERILLA);
-    }
-
     private static void addPlainGrass(BiomeGenerationSettings.Builder builder) {
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.PATCH_GRASS_PLAIN);
     }
@@ -220,9 +212,9 @@ public final class MiaBiomes {
     private static void addLayerOneMeadow(BiomeGenerationSettings.Builder builder) {
         addPlainGrass(builder);
         builder
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.PATCH_GLOOM_BERRY)
                 .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.FLOWER_MEADOW_LAYER1)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.FOREST_FLOWERS)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.PATCH_GLOOM_BERRY);
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.FOREST_FLOWERS);
     }
 
     private static void addLayerTwoMeadow(BiomeGenerationSettings.Builder builder) {
@@ -236,9 +228,8 @@ public final class MiaBiomes {
         builder
                 .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.PATCH_GRASS_FERN)
                 .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.PATCH_DENSE_LARGE_FERN)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.FLOWER_MEADOW_LAYER1)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.FOREST_FLOWERS)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.PATCH_GLOOM_BERRY);
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.PATCH_GLOOM_BERRY)
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.FOREST_FLOWERS);
     }
 
     private static void addLargeFern(BiomeGenerationSettings.Builder builder) {

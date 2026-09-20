@@ -2,55 +2,53 @@
   "type": "minecraft:simple_block",
   "config": {
     "to_place": {
-      "type": "minecraft:weighted_state_provider",
-      "entries": [
+      "type": "minecraft:dual_noise_provider",
+      "noise": {
+        "amplitudes": [
+          1.0
+        ],
+        "firstOctave": -3
+      },
+      "scale": 1.0,
+      "seed": 2345,
+      "slow_noise": {
+        "amplitudes": [
+          1.0
+        ],
+        "firstOctave": -5
+      },
+      "slow_scale": 1.0,
+      "states": [
         {
-          "data": {
-            "Name": "minecraft:big_dripleaf",
-            "Properties": {
-              "facing": "north",
-              "tilt": "none",
-              "waterlogged": "false"
-            }
-          },
-          "weight": 1
+          "Name": "minecraft:big_dripleaf",
+          "Properties": {
+            "facing": "north",
+            "tilt": "none",
+            "waterlogged": "false"
+          }
         },
         {
-          "data": {
-            "Name": "mementoinabyss:balloon_plant"
-          },
-          "weight": 1
+          "Name": "mementoinabyss:balloon_plant"
         },
         {
-          "data": {
-            "Name": "mementoinabyss:lantern_plant"
-          },
-          "weight": 1
+          "Name": "mementoinabyss:lantern_plant"
         },
         {
-          "data": {
-            "Name": "mementoinabyss:green_perilla"
-          },
-          "weight": 1
+          "Name": "mementoinabyss:green_perilla"
         },
         {
-          "data": {
-            "Name": "mementoinabyss:scorchleaf"
-          },
-          "weight": 1
+          "Name": "mementoinabyss:scorchleaf"
         },
         {
-          "data": {
-            "Name": "minecraft:torchflower"
-          },
-          "weight": 1
+          "Name": "minecraft:torchflower"
         },
         {
-          "data": {
-            "Name": "mementoinabyss:marginal_weed"
-          },
-          "weight": 1
+          "Name": "mementoinabyss:marginal_weed"
         }
+      ],
+      "variety": [
+        1,
+        3
       ]
     }
   }
