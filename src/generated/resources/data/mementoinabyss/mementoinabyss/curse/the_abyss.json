@@ -1,0 +1,16 @@
+{
+  "effects": [
+    {
+      "amplifier": 1,
+      "duration": 200,
+      "effect": "minecraft:hunger"
+    },
+    {
+      "amplifier": 1,
+      "duration": 200,
+      "effect": "minecraft:nausea"
+    }
+  ],
+  "id": "mementoinabyss:the_abyss",
+  "level": 1
+}
