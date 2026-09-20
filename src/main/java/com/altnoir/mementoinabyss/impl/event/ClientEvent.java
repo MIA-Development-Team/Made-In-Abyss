@@ -5,6 +5,7 @@ import com.altnoir.mementoinabyss.client.render.sky.EnvironmentCubeSkyboxRendere
 import com.altnoir.mementoinabyss.client.tooltip.ArtifactEnhancementMaterialTooltip;
 import com.altnoir.mementoinabyss.client.tooltip.TooltipModifierRegistry;
 import com.altnoir.mementoinabyss.content.artifact.client.ArtifactEnhancementScreen;
+import com.altnoir.mementoinabyss.content.beacon.client.CaveExplorerBeaconRenderTypes;
 import com.altnoir.mementoinabyss.content.equipment.client.StarCompassOverlay;
 import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlockEntity;
 import com.altnoir.mementoinabyss.content.rope.RopeItem;
@@ -64,6 +65,7 @@ public final class ClientEvent {
     public static void registerRenderPipelines(RegisterRenderPipelinesEvent event) {
         CrossDimensionLodRenderTypes.registerPipelines(event);
         EnvironmentCubeSkyboxRenderer.registerPipeline(event);
+        CaveExplorerBeaconRenderTypes.registerPipelines(event);
     }
 
     @SubscribeEvent

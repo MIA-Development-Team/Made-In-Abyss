@@ -5,6 +5,7 @@ import com.altnoir.mementoinabyss.init.MiaEffects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import java.util.List;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -25,9 +26,13 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 
 public final class CaveExplorerBeaconBlockEntity extends BlockEntity implements BeaconBeamOwner {
+    public static final int MAX_LEVELS = 4;
+    private static final float GLOW_SMOOTHING = 0.25F;
     private List<BeaconBeamOwner.Section> beamSections = Lists.newArrayList();
     private List<BeaconBeamOwner.Section> checkingBeamSections = Lists.newArrayList();
-    private int levels;
+    @Getter private int levels;
+    @Getter private float glow;
+    private float lastGlowTime = -1.0F;
     private int lastCheckY = Integer.MIN_VALUE;
 
     public CaveExplorerBeaconBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -110,7 +115,7 @@ public final class CaveExplorerBeaconBlockEntity extends BlockEntity implements 
 
     private static int updateBase(Level level, int x, int y, int z) {
         int levels = 0;
-        for (int tier = 1; tier <= 4; levels = tier++) {
+        for (int tier = 1; tier <= MAX_LEVELS; levels = tier++) {
             int layerY = y - tier;
             if (layerY < level.getMinY()) {
                 break;
@@ -140,10 +145,7 @@ public final class CaveExplorerBeaconBlockEntity extends BlockEntity implements 
 
         var config = MementoInAbyss.CONFIGS.gamePlaySection;
         double horizontal = beaconLevel * config.caveExplorerBeaconHorizontal.get() + 10;
-        double vertical =
-                config.caveExplorerBeaconMaxVertical.get()
-                        ? level.getMaxY()
-                        : beaconLevel * config.caveExplorerBeaconVertical.get() + 5;
+        double vertical = effectVertical(level, beaconLevel);
         AABB range = new AABB(pos).inflate(horizontal, vertical, horizontal);
         int duration = (9 + beaconLevel * 2) * 20;
         for (Player player : level.getEntitiesOfClass(Player.class, range)) {
@@ -156,6 +158,37 @@ public final class CaveExplorerBeaconBlockEntity extends BlockEntity implements 
         if (!level.isClientSide()) {
             level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
+    }
+
+    public void updateClientGlow(float time, boolean active) {
+        if (lastGlowTime < 0.0F) {
+            lastGlowTime = time;
+            return;
+        }
+
+        float delta = Math.max(0.0F, time - lastGlowTime);
+        lastGlowTime = time;
+        if (delta <= 0.0F) {
+            return;
+        }
+
+        float factor = 1.0F - (float) Math.exp(-delta * GLOW_SMOOTHING);
+        glow += ((active ? 1.0F : 0.0F) - glow) * factor;
+    }
+
+    public static double effectVertical(Level level, int beaconLevel) {
+        var config = MementoInAbyss.CONFIGS.gamePlaySection;
+        return config.caveExplorerBeaconMaxVertical.get()
+                ? level.getMaxY()
+                : beaconLevel * config.caveExplorerBeaconVertical.get() + 5.0;
+    }
+
+    public float getEffectBeamLength() {
+        Level level = getLevel();
+        if (levels <= 0 || level == null) {
+            return 0.0F;
+        }
+        return (float) effectVertical(level, levels);
     }
 
     @Override
