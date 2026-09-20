@@ -1,6 +1,6 @@
 package com.altnoir.mementoinabyss.impl.strippable;
 
-import com.altnoir.mementoinabyss.content.block.base.StrippableBlock;
+import com.altnoir.mementoinabyss.content.abyss.base.StrippableBlock;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;

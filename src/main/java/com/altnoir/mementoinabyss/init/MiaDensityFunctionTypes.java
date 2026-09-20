@@ -1,10 +1,10 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.worldgen.density.GeneralAbyssHole;
-import com.altnoir.mementoinabyss.worldgen.density.HopperAbyssHole;
-import com.altnoir.mementoinabyss.worldgen.density.NoodleAbyssHole;
-import com.altnoir.mementoinabyss.worldgen.density.SparseAquiferGate;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.GeneralAbyssHole;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.HopperAbyssHole;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.NoodleAbyssHole;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.SparseAquiferGate;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.DensityFunction;

@@ -1,7 +1,7 @@
 package com.altnoir.mementoinabyss.network;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.content.block.entity.RopeConnectorBlockEntity;
+import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;

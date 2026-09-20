@@ -1,6 +1,6 @@
 package com.altnoir.mementoinabyss.client.tooltip;
 
-import com.altnoir.mementoinabyss.client.ArtifactEnhancementClientRecipes;
+import com.altnoir.mementoinabyss.content.artifact.client.ArtifactEnhancementClientRecipes;
 import com.altnoir.mementoinabyss.impl.artifact.enhancement.ArtifactEnhancementRecipe;
 import com.altnoir.mementoinabyss.init.MiaAttributes;
 import java.math.BigDecimal;

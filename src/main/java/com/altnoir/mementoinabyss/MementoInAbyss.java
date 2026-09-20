@@ -1,7 +1,8 @@
 package com.altnoir.mementoinabyss;
 
-import com.altnoir.mementoinabyss.data.MiaDataGen;
-import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
+import com.altnoir.mementoinabyss.foundation.registrate.MiaRegistrate;
+import com.altnoir.mementoinabyss.infrastructure.config.MiaConfigs;
+import com.altnoir.mementoinabyss.infrastructure.data.MiaDataGen;
 import com.altnoir.mementoinabyss.init.*;
 import com.altnoir.mementoinabyss.network.MiaNetwork;
 import com.mojang.logging.LogUtils;

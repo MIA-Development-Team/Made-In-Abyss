@@ -1,9 +1,9 @@
 package com.altnoir.mementoinabyss.impl.whistle;
 
-import com.altnoir.mementoinabyss.content.item.whistle.WhistleItem;
-import com.altnoir.mementoinabyss.content.item.whistle.fragment.WhistleFragmentItem;
-import com.altnoir.mementoinabyss.content.item.whistle.fragment.amplifier.WhistleAmplifierItem;
-import com.altnoir.mementoinabyss.content.item.whistle.skill.WhistleSkillItem;
+import com.altnoir.mementoinabyss.content.whistle.WhistleItem;
+import com.altnoir.mementoinabyss.content.whistle.fragment.WhistleFragmentItem;
+import com.altnoir.mementoinabyss.content.whistle.fragment.amplifier.WhistleAmplifierItem;
+import com.altnoir.mementoinabyss.content.whistle.skill.WhistleSkillItem;
 import com.altnoir.mementoinabyss.impl.whistle.component.PlacedWhistleFragment;
 import com.altnoir.mementoinabyss.impl.whistle.component.WhistleLoadout;
 import com.altnoir.mementoinabyss.impl.whistle.grid.GridCell;

@@ -1,19 +1,19 @@
 package com.altnoir.mementoinabyss.impl.event;
 
-import com.altnoir.mementoinabyss.content.block.entity.RopeConnectorBlockEntity;
+import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlockEntity;
 import com.altnoir.mementoinabyss.impl.curse.CurseEvent;
 import com.altnoir.mementoinabyss.impl.curse.CurseManager;
+import com.altnoir.mementoinabyss.impl.lod.server.MiaLodServer;
 import com.altnoir.mementoinabyss.impl.rope.minecraft.RopeClimbing;
 import com.altnoir.mementoinabyss.impl.strippable.StripEvent;
 import com.altnoir.mementoinabyss.impl.tillable.TillEvent;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaWorldClocks;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.VerticalDimensionTeleporter;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.structure.DelayedCavePillarGenerator;
 import com.altnoir.mementoinabyss.init.MiaAttributes;
 import com.altnoir.mementoinabyss.init.MiaRecipes;
 import com.altnoir.mementoinabyss.init.MiaSoundEvents;
-import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensions;
-import com.altnoir.mementoinabyss.worldgen.dimension.MiaWorldClocks;
-import com.altnoir.mementoinabyss.worldgen.dimension.VerticalDimensionTeleporter;
-import com.altnoir.mementoinabyss.worldgen.lod.MiaLodServer;
-import com.altnoir.mementoinabyss.worldgen.structure.DelayedCavePillarGenerator;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;

@@ -1,7 +1,7 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.worldgen.structure.MiaJigsawStructure;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.structure.MiaJigsawStructure;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.neoforged.bus.api.IEventBus;

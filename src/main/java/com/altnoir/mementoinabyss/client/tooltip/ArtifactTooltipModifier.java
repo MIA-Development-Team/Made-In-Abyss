@@ -1,6 +1,6 @@
 package com.altnoir.mementoinabyss.client.tooltip;
 
-import com.altnoir.mementoinabyss.content.item.artifact.ArtifactItem;
+import com.altnoir.mementoinabyss.content.artifact.ArtifactItem;
 import com.altnoir.mementoinabyss.impl.artifact.component.ArtifactItemComponent;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.altnoir.mementoinabyss.client.tooltip;
 
-import com.altnoir.mementoinabyss.content.item.whistle.fragment.WhistleFragmentItem;
+import com.altnoir.mementoinabyss.content.whistle.fragment.WhistleFragmentItem;
 import com.altnoir.mementoinabyss.impl.whistle.fragment.amplifier.WhistleAmplifierDefinition;
 import com.altnoir.mementoinabyss.impl.whistle.grid.GridCell;
 import com.altnoir.mementoinabyss.impl.whistle.grid.SkillShape;

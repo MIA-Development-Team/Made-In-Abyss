@@ -1,6 +1,6 @@
 package com.altnoir.mementoinabyss.mixin.client;
 
-import com.altnoir.mementoinabyss.worldgen.dimension.MiaDimensions;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;

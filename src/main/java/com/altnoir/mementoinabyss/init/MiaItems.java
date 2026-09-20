@@ -1,8 +1,8 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.content.item.RopeItem;
-import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
+import com.altnoir.mementoinabyss.content.rope.RopeItem;
+import com.altnoir.mementoinabyss.foundation.registrate.MiaRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;

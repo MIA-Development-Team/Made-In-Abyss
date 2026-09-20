@@ -1,10 +1,10 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.worldgen.placement.FastCountOnEveryLayerPlacement;
-import com.altnoir.mementoinabyss.worldgen.placement.InvertedCountOnEveryLayerPlacement;
-import com.altnoir.mementoinabyss.worldgen.placement.TreeOnEveryLayerPlacement;
-import com.altnoir.mementoinabyss.worldgen.placement.WaterOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.FastCountOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.InvertedCountOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.TreeOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.WaterOnEveryLayerPlacement;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.neoforged.bus.api.IEventBus;

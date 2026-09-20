@@ -1,8 +1,8 @@
 package com.altnoir.mementoinabyss.compat.jei;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.client.ArtifactEnhancementClientRecipes;
-import com.altnoir.mementoinabyss.client.screen.ArtifactEnhancementScreen;
+import com.altnoir.mementoinabyss.content.artifact.client.ArtifactEnhancementClientRecipes;
+import com.altnoir.mementoinabyss.content.artifact.client.ArtifactEnhancementScreen;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;

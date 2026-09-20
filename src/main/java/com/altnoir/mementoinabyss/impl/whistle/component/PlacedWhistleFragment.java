@@ -1,6 +1,6 @@
 package com.altnoir.mementoinabyss.impl.whistle.component;
 
-import com.altnoir.mementoinabyss.content.item.whistle.fragment.WhistleFragmentItem;
+import com.altnoir.mementoinabyss.content.whistle.fragment.WhistleFragmentItem;
 import com.altnoir.mementoinabyss.impl.whistle.grid.GridCell;
 import com.altnoir.mementoinabyss.impl.whistle.grid.GridRotation;
 import com.mojang.serialization.Codec;

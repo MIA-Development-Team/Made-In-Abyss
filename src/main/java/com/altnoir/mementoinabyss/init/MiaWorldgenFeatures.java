@@ -1,15 +1,15 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.worldgen.feature.BlockTrunkConfiguration;
-import com.altnoir.mementoinabyss.worldgen.feature.BlockTrunkFeature;
-import com.altnoir.mementoinabyss.worldgen.feature.ClusterConfiguration;
-import com.altnoir.mementoinabyss.worldgen.feature.ClusterFeature;
-import com.altnoir.mementoinabyss.worldgen.feature.LongVinesConfiguration;
-import com.altnoir.mementoinabyss.worldgen.feature.LongVinesFeature;
-import com.altnoir.mementoinabyss.worldgen.feature.SlabRuinsConfiguration;
-import com.altnoir.mementoinabyss.worldgen.feature.SlabRuinsFeature;
-import com.altnoir.mementoinabyss.worldgen.tree.InvertedTreeFeature;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.BlockTrunkConfiguration;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.BlockTrunkFeature;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.ClusterConfiguration;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.ClusterFeature;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.LongVinesConfiguration;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.LongVinesFeature;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.SlabRuinsConfiguration;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.SlabRuinsFeature;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.InvertedTreeFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;

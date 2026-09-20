@@ -1,10 +1,10 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.content.item.whistle.WhistleItem;
-import com.altnoir.mementoinabyss.content.item.whistle.fragment.amplifier.WhistleAmplifierItem;
-import com.altnoir.mementoinabyss.content.item.whistle.skill.EchoReedItem;
-import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
+import com.altnoir.mementoinabyss.content.whistle.WhistleItem;
+import com.altnoir.mementoinabyss.content.whistle.fragment.amplifier.WhistleAmplifierItem;
+import com.altnoir.mementoinabyss.content.whistle.skill.EchoReedItem;
+import com.altnoir.mementoinabyss.foundation.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.impl.whistle.fragment.amplifier.WhistleAmplifierDefinition;
 import com.altnoir.mementoinabyss.impl.whistle.grid.SkillShape;
 import com.altnoir.mementoinabyss.impl.whistle.grid.WhistleGrid;

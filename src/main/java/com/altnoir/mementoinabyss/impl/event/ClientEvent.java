@@ -1,30 +1,30 @@
 package com.altnoir.mementoinabyss.impl.event;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.client.RopeFreeEndGrabHandler;
-import com.altnoir.mementoinabyss.client.WhistleComboHandler;
-import com.altnoir.mementoinabyss.client.WhistleKeyMappings;
-import com.altnoir.mementoinabyss.client.render.CrossDimensionLodDebugEntry;
-import com.altnoir.mementoinabyss.client.render.CrossDimensionLodRenderTypes;
-import com.altnoir.mementoinabyss.client.render.CrossDimensionLodRenderer;
-import com.altnoir.mementoinabyss.client.render.EnvironmentCubeSkyboxRenderer;
-import com.altnoir.mementoinabyss.client.render.StarCompassOverlay;
-import com.altnoir.mementoinabyss.client.render.WhistleComboOverlay;
-import com.altnoir.mementoinabyss.client.screen.ArtifactEnhancementScreen;
-import com.altnoir.mementoinabyss.client.screen.WhistleWorkbenchScreen;
+import com.altnoir.mementoinabyss.client.render.sky.EnvironmentCubeSkyboxRenderer;
 import com.altnoir.mementoinabyss.client.tooltip.ArtifactEnhancementMaterialTooltip;
 import com.altnoir.mementoinabyss.client.tooltip.TooltipModifierRegistry;
-import com.altnoir.mementoinabyss.content.block.entity.RopeConnectorBlockEntity;
-import com.altnoir.mementoinabyss.content.item.RopeItem;
+import com.altnoir.mementoinabyss.content.artifact.client.ArtifactEnhancementScreen;
+import com.altnoir.mementoinabyss.content.equipment.client.StarCompassOverlay;
+import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlockEntity;
+import com.altnoir.mementoinabyss.content.rope.RopeItem;
+import com.altnoir.mementoinabyss.content.rope.client.RopeFreeEndGrabHandler;
+import com.altnoir.mementoinabyss.content.whistle.client.WhistleComboHandler;
+import com.altnoir.mementoinabyss.content.whistle.client.WhistleComboOverlay;
+import com.altnoir.mementoinabyss.content.whistle.client.WhistleKeyMappings;
+import com.altnoir.mementoinabyss.content.whistle.client.WhistleWorkbenchScreen;
+import com.altnoir.mementoinabyss.impl.lod.client.CrossDimensionLodDebugEntry;
+import com.altnoir.mementoinabyss.impl.lod.client.CrossDimensionLodRenderTypes;
+import com.altnoir.mementoinabyss.impl.lod.client.CrossDimensionLodRenderer;
+import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodBatchPayload;
+import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodCacheOfferPayload;
+import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodDebugPayload;
 import com.altnoir.mementoinabyss.impl.rope.minecraft.RopeClimbing;
 import com.altnoir.mementoinabyss.init.MiaDataComponents;
 import com.altnoir.mementoinabyss.init.MiaMenus;
 import com.altnoir.mementoinabyss.init.MiaRecipes;
 import com.altnoir.mementoinabyss.network.AdjustRopeLengthPayload;
 import com.altnoir.mementoinabyss.network.CompassTargetPayload;
-import com.altnoir.mementoinabyss.network.CrossDimensionLodBatchPayload;
-import com.altnoir.mementoinabyss.network.CrossDimensionLodCacheOfferPayload;
-import com.altnoir.mementoinabyss.network.CrossDimensionLodDebugPayload;
 import com.altnoir.mementoinabyss.network.RopeSnapshotPayload;
 import net.minecraft.client.gui.components.debug.DebugScreenEntryStatus;
 import net.minecraft.client.gui.components.debug.DebugScreenProfile;
@@ -117,10 +117,7 @@ public final class ClientEvent {
                     var level = net.minecraft.client.Minecraft.getInstance().level;
                     if (level != null
                             && level.getBlockEntity(payload.connector())
-                                    instanceof
-                                    com.altnoir.mementoinabyss.content.block.entity
-                                                    .RopeConnectorBlockEntity
-                                            connector) {
+                                    instanceof RopeConnectorBlockEntity connector) {
                         connector.acceptServerSnapshot(payload.points());
                     }
                 });

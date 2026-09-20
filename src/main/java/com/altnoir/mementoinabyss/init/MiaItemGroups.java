@@ -1,9 +1,9 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.foundation.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.impl.creative.CreativeTabSection;
 import com.altnoir.mementoinabyss.impl.creative.SectionedCreativeModeTab;
-import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;

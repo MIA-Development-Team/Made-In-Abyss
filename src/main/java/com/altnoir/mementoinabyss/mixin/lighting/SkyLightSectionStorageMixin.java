@@ -1,7 +1,7 @@
 package com.altnoir.mementoinabyss.mixin.lighting;
 
-import com.altnoir.mementoinabyss.worldgen.lighting.RegionalSkyLight;
-import com.altnoir.mementoinabyss.worldgen.lighting.RegionalSkyLightStorage;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.lighting.RegionalSkyLight;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.lighting.RegionalSkyLightStorage;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.lighting.SkyLightSectionStorage;

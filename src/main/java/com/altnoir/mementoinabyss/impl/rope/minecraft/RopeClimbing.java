@@ -1,6 +1,6 @@
 package com.altnoir.mementoinabyss.impl.rope.minecraft;
 
-import com.altnoir.mementoinabyss.content.block.entity.RopeConnectorBlockEntity;
+import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlockEntity;
 import com.altnoir.mementoinabyss.impl.rope.RopeSimulation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;

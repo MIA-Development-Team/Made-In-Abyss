@@ -1,6 +1,6 @@
 package com.altnoir.mementoinabyss.impl.tillable;
 
-import com.altnoir.mementoinabyss.content.block.base.TillableBlock;
+import com.altnoir.mementoinabyss.content.abyss.base.TillableBlock;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;

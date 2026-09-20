@@ -1,15 +1,15 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.client.render.CaveExplorerBeaconRenderer;
-import com.altnoir.mementoinabyss.client.render.EndlessCupRenderer;
-import com.altnoir.mementoinabyss.client.render.PedestalRenderer;
-import com.altnoir.mementoinabyss.client.render.rope.RopeConnectorRenderer;
-import com.altnoir.mementoinabyss.content.block.entity.CaveExplorerBeaconBlockEntity;
-import com.altnoir.mementoinabyss.content.block.entity.EndlessCupBlockEntity;
-import com.altnoir.mementoinabyss.content.block.entity.PedestalBlockEntity;
-import com.altnoir.mementoinabyss.content.block.entity.RopeConnectorBlockEntity;
-import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
+import com.altnoir.mementoinabyss.content.beacon.CaveExplorerBeaconBlockEntity;
+import com.altnoir.mementoinabyss.content.beacon.client.CaveExplorerBeaconRenderer;
+import com.altnoir.mementoinabyss.content.cup.EndlessCupBlockEntity;
+import com.altnoir.mementoinabyss.content.cup.client.EndlessCupRenderer;
+import com.altnoir.mementoinabyss.content.pedestal.PedestalBlockEntity;
+import com.altnoir.mementoinabyss.content.pedestal.client.PedestalRenderer;
+import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlockEntity;
+import com.altnoir.mementoinabyss.content.rope.client.RopeConnectorRenderer;
+import com.altnoir.mementoinabyss.foundation.registrate.MiaRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;

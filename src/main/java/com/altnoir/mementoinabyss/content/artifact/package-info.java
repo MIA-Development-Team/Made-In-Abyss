@@ -1,0 +1,6 @@
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+package com.altnoir.mementoinabyss.content.artifact;
+
+import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;
+import javax.annotation.ParametersAreNonnullByDefault;

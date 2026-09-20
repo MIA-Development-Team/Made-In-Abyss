@@ -1,7 +1,7 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.worldgen.biome.AbyssNoiseBiomeSource;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.AbyssNoiseBiomeSource;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.biome.BiomeSource;

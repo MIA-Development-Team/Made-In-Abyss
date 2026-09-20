@@ -1,6 +1,6 @@
 package com.altnoir.mementoinabyss.mixin.lighting;
 
-import com.altnoir.mementoinabyss.worldgen.lighting.RegionalSkyLight;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.lighting.RegionalSkyLight;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LightChunkGetter;
