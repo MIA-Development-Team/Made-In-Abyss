@@ -94,6 +94,18 @@ public class BlockStateGen {
         };
     }
 
+    public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> endlessCup() {
+        return (ctx, prov) -> {
+            var all = TextureSlot.create("all");
+            var model = prov.getBuilder()
+                    .parent(prov.modLoc("block/template/endless_cup"))
+                    .texture(all, prov.modBlockTexture("model/endless_cup"))
+                    .texture(TextureSlot.PARTICLE, prov.modBlockTexture("endless_cup_particle"))
+                    .build(ctx.get());
+            prov.create(ctx.get(), model);
+        };
+    }
+
     public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
     artifactSmithingTable() {
         return (ctx, prov) -> {

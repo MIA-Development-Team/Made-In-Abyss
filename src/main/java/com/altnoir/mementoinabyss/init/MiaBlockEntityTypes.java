@@ -2,9 +2,11 @@ package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.client.render.CaveExplorerBeaconRenderer;
+import com.altnoir.mementoinabyss.client.render.EndlessCupRenderer;
 import com.altnoir.mementoinabyss.client.render.PedestalRenderer;
 import com.altnoir.mementoinabyss.client.render.rope.RopeConnectorRenderer;
 import com.altnoir.mementoinabyss.content.block.entity.CaveExplorerBeaconBlockEntity;
+import com.altnoir.mementoinabyss.content.block.entity.EndlessCupBlockEntity;
 import com.altnoir.mementoinabyss.content.block.entity.PedestalBlockEntity;
 import com.altnoir.mementoinabyss.content.block.entity.RopeConnectorBlockEntity;
 import com.altnoir.mementoinabyss.impl.registrate.MiaRegistrate;
@@ -26,6 +28,16 @@ public class MiaBlockEntityTypes {
                     Capabilities.Item.BLOCK,
                     MiaBlockEntityTypes.PEDESTAL.get(),
                     WorldlyContainerWrapper::new))
+            .register();
+
+    public static final BlockEntityEntry<EndlessCupBlockEntity> ENDLESS_CUP = REGISTRATE
+            .blockEntity("endless_cup_entity", EndlessCupBlockEntity::new)
+            .validBlock(MiaBlocks.ENDLESS_CUP)
+            .renderer(() -> EndlessCupRenderer::new)
+            .registerCapability(event -> event.registerBlockEntity(
+                    Capabilities.Fluid.BLOCK,
+                    MiaBlockEntityTypes.ENDLESS_CUP.get(),
+                    (blockEntity, side) -> blockEntity.fluidHandler))
             .register();
 
     public static final BlockEntityEntry<RopeConnectorBlockEntity> ROPE_CONNECTOR = REGISTRATE

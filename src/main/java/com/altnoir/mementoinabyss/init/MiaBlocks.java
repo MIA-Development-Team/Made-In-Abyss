@@ -18,6 +18,7 @@ import com.altnoir.mementoinabyss.content.block.ore.BuddingCaeruliteBlock;
 import com.altnoir.mementoinabyss.content.block.AbyssPortalBlock;
 import com.altnoir.mementoinabyss.content.block.AbyssPortalCoreBlock;
 import com.altnoir.mementoinabyss.content.block.CaveExplorerBeaconBlock;
+import com.altnoir.mementoinabyss.content.block.EndlessCupBlock;
 import com.altnoir.mementoinabyss.content.block.PedestalBlock;
 import com.altnoir.mementoinabyss.content.block.ArtifactSmithingTableBlock;
 import com.altnoir.mementoinabyss.content.block.WhistleWorkbenchBlock;
@@ -102,6 +103,20 @@ public class MiaBlocks {
                     .sound(SoundType.DEEPSLATE).noOcclusion())
             .transform(TagGen.pickaxeOnly())
             .blockstate(BlockStateGen::pedestal)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<EndlessCupBlock> ENDLESS_CUP = REGISTRATE.object("endless_cup")
+            .block(EndlessCupBlock::new)
+            .properties(p -> p.mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .requiresCorrectToolForDrops()
+                    .strength(3.0F, 6.0F)
+                    .sound(SoundType.STONE)
+                    .noOcclusion())
+            .transform(TagGen.pickaxeOnly())
+            .blockstate(BlockStateGen::endlessCup)
+            .lang("Endless Cup")
             .simpleItem()
             .register();
 

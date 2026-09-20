@@ -1,0 +1,7 @@
+{
+  "parent": "mementoinabyss:block/template/endless_cup",
+  "textures": {
+    "all": "mementoinabyss:block/model/endless_cup",
+    "particle": "mementoinabyss:block/endless_cup_particle"
+  }
+}
