@@ -2,6 +2,10 @@
   "feature": "mementoinabyss:the_abyss/big_prasiolite_cluster",
   "placement": [
     {
+      "type": "minecraft:rarity_filter",
+      "chance": 10
+    },
+    {
       "type": "minecraft:count",
       "count": {
         "type": "minecraft:uniform",

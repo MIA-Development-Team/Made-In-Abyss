@@ -182,15 +182,15 @@ public final class MiaAbyssPlacements {
                 RarityFilter.onAverageOnceEvery(5), FastCountOnEveryLayerPlacement.of(1), BiomeFilter.biome())));
         ceilingPlant(context, SUN_STONE, configured.getOrThrow(MiaAbyssFeatures.SUN_STONE), 2, 12);
         context.register(PRASIOLITE_GEODE, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.PRASIOLITE_GEODE), List.of(
-                RarityFilter.onAverageOnceEvery(24), InSquarePlacement.spread(),
+                RarityFilter.onAverageOnceEvery(240), InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(128), VerticalAnchor.belowTop(64)),
                 BiomeFilter.biome())));
         context.register(PRASIOLITE_CLUSTER, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.PRASIOLITE_CLUSTER), List.of(
-                CountPlacement.of(UniformInt.of(32, 64)), InSquarePlacement.spread(),
+                CountPlacement.of(UniformInt.of(3, 6)), InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(450)),
                 BiomeFilter.biome())));
         context.register(BIG_PRASIOLITE_CLUSTER, new PlacedFeature(configured.getOrThrow(MiaAbyssFeatures.BIG_PRASIOLITE_CLUSTER), List.of(
-                CountPlacement.of(UniformInt.of(1, 2)), InSquarePlacement.spread(),
+                RarityFilter.onAverageOnceEvery(10), CountPlacement.of(UniformInt.of(1, 2)), InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(16), VerticalAnchor.absolute(400)),
                 BiomeFilter.biome())));
         ore(context, ORE_DIRT, configured.getOrThrow(MiaAbyssFeatures.ORE_DIRT), 7);
