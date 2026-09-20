@@ -16,7 +16,7 @@ public final class SectionedCreativeTabRenderer {
     private static final int BACKGROUND = 0xFF182115;
     private static final int BORDER_MUTED = 0xFF64843A;
     private static final int BORDER_PRIMARY = 0xFF8CBA51;
-    private static final int TEXT_HIGHLIGHT = 0xFFB7D986;
+    private static final int TEXT_HIGHLIGHT = 0xFFD797DC;
 
     private static int visibleHeadingRows;
 

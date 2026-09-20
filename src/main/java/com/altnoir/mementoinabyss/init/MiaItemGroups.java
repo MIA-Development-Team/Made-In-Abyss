@@ -19,19 +19,24 @@ public class MiaItemGroups {
             ResourceKey.create(Registries.CREATIVE_MODE_TAB, MementoInAbyss.asResource("artifact"));
 
     public static final CreativeTabSection BASE_BUILDING_BLOCKS = section(
-            BASE_KEY, "base/building_blocks", "itemGroup.mementoinabyss.base.section.building_blocks"
+            BASE_KEY, "base/building_blocks", "itemGroup.mementoinabyss.base.section.building_blocks",
+            "creative_inventory/section/building_blocks"
     );
     public static final CreativeTabSection BASE_NATURE_BLOCKS = section(
-            BASE_KEY, "base/nature_blocks", "itemGroup.mementoinabyss.base.section.nature_blocks"
+            BASE_KEY, "base/nature_blocks", "itemGroup.mementoinabyss.base.section.nature_blocks",
+            "creative_inventory/section/nature_blocks"
     );
     public static final CreativeTabSection BASE_ITEMS = section(
-            BASE_KEY, "base/items", "itemGroup.mementoinabyss.base.section.items"
+            BASE_KEY, "base/items", "itemGroup.mementoinabyss.base.section.items",
+            "creative_inventory/section/items"
     );
     public static final CreativeTabSection ARTIFACTS = section(
-            ARTIFACT_KEY, "artifact/artifacts", "itemGroup.mementoinabyss.artifact.section.artifacts"
+            ARTIFACT_KEY, "artifact/artifacts", "itemGroup.mementoinabyss.artifact.section.artifacts",
+            "creative_inventory/section/artifacts"
     );
     public static final CreativeTabSection FUNCTIONAL_BLOCKS = section(
-            ARTIFACT_KEY, "artifact/functional_blocks", "itemGroup.mementoinabyss.artifact.section.functional_blocks"
+            ARTIFACT_KEY, "artifact/functional_blocks", "itemGroup.mementoinabyss.artifact.section.functional_blocks",
+            "creative_inventory/section/functional_blocks"
     );
 
     public static final RegistryEntry<CreativeModeTab, CreativeModeTab> BASE = REGISTRATE.object("base")
@@ -56,8 +61,14 @@ public class MiaItemGroups {
     private static CreativeTabSection section(
             ResourceKey<CreativeModeTab> tab,
             String id,
-            String translationKey
+            String translationKey,
+            String bannerSprite
     ) {
-        return new CreativeTabSection(tab, MementoInAbyss.asResource(id), Component.translatable(translationKey));
+        return new CreativeTabSection(
+                tab,
+                MementoInAbyss.asResource(id),
+                Component.translatable(translationKey),
+                MementoInAbyss.asResource(bannerSprite)
+        );
     }
 }
