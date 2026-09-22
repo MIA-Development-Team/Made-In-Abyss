@@ -127,6 +127,16 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
                 MiaBlocks.INVERTED_STAIRS.get(), MiaBlocks.INVERTED_SLAB.get(), MiaBlocks.INVERTED_FENCE.get(), MiaBlocks.INVERTED_FENCE_GATE.get(),
                 MiaBlocks.INVERTED_DOOR.get(), MiaBlocks.INVERTED_TRAPDOOR.get(), MiaBlocks.INVERTED_PRESSURE_PLATE.get(), MiaBlocks.INVERTED_BUTTON.get());
 
+        // 太初菌（移植自 PoopSky 的 primoWoodRecipes）。
+        // 原模组另有 primo_vertical_slab / primo_boat / primo_chest_boat 三条，按需求本次不移植，
+        // 所以这里比原模组少 3 条配方。
+        planksFromLog(recipeOutput, MiaBlocks.PRIMO_PLANKS.get(), MiaTags.Items.PRIMO_STEMS, 4);
+        twoByTwoPacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.PRIMO_HYPHAE.get(), MiaBlocks.PRIMO_STEM.get(), 3);
+        twoByTwoPacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MiaBlocks.STRIPPED_PRIMO_HYPHAE.get(), MiaBlocks.STRIPPED_PRIMO_STEM.get(), 3);
+        woodBlocks(recipeOutput, MiaBlocks.PRIMO_PLANKS.get(),
+                MiaBlocks.PRIMO_STAIRS.get(), MiaBlocks.PRIMO_SLAB.get(), MiaBlocks.PRIMO_FENCE.get(), MiaBlocks.PRIMO_FENCE_GATE.get(),
+                MiaBlocks.PRIMO_DOOR.get(), MiaBlocks.PRIMO_TRAPDOOR.get(), MiaBlocks.PRIMO_PRESSURE_PLATE.get(), MiaBlocks.PRIMO_BUTTON.get());
+
 
         // 模组工作台
         lampTube(recipeOutput, Items.STONE, 2, Items.DEEPSLATE);

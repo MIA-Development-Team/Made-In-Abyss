@@ -1,0 +1,78 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#all",
+          "uv": [
+            6.0,
+            6.0,
+            0.0,
+            12.0
+          ]
+        },
+        "east": {
+          "texture": "#all",
+          "uv": [
+            6.0,
+            3.0,
+            12.0,
+            6.0
+          ]
+        },
+        "north": {
+          "texture": "#all",
+          "uv": [
+            6.0,
+            0.0,
+            12.0,
+            3.0
+          ]
+        },
+        "south": {
+          "texture": "#all",
+          "uv": [
+            6.0,
+            0.0,
+            12.0,
+            3.0
+          ]
+        },
+        "up": {
+          "texture": "#all",
+          "uv": [
+            6.0,
+            6.0,
+            0.0,
+            0.0
+          ]
+        },
+        "west": {
+          "texture": "#all",
+          "uv": [
+            6.0,
+            3.0,
+            12.0,
+            6.0
+          ]
+        }
+      },
+      "from": [
+        2,
+        8,
+        2
+      ],
+      "to": [
+        14,
+        14,
+        14
+      ]
+    }
+  ],
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "all": "mia:block/mushroom/glow_primo_fungus",
+    "particle": "mia:block/glow_primo_cap"
+  }
+}

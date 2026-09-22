@@ -51,6 +51,10 @@ public class MiaFeatures {
             "abyss_portal", () -> new AbyssPortalFeature(NoneFeatureConfiguration.CODEC)
     );
 
+    public static final DeferredHolder<Feature<?>, PrimoHugeFungusFeature> HUGE_PRIMO_FUNGUS = FEATURE.register(
+            "huge_primo_fungus", () -> new PrimoHugeFungusFeature(PrimoHugeFungusConfiguration.CODEC)
+    );
+
     public static void register(IEventBus eventBus) {
         FEATURE.register(eventBus);
     }

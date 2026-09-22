@@ -8,6 +8,7 @@ import com.altnoir.mia.common.block.*;
 import com.altnoir.mia.common.item.RopeItem;
 import com.altnoir.mia.datagen.BlockStateGen;
 import com.altnoir.mia.datagen.MiaLootGen;
+import com.altnoir.mia.worldgen.PrimoFeatures;
 import com.altnoir.mia.worldgen.feature.tree.MiaTreeFeatures;
 import com.altnoir.mia.worldgen.feature.tree.MiaTreeGrowers;
 import net.minecraft.core.BlockPos;
@@ -881,6 +882,171 @@ public class MiaBlocks {
             .model(BlockStateGen::bushItem)
             .build()
             .register();
+    // ==================== 太初菌 / 菌丝（移植自 PoopSky） ====================
+    // 命名与原模组一一对应；贴图、模型、掉落、特性均按原实现还原。
+    // 注意 primo_stem / primo_hyphae 用的是原版 RotatedPillarBlock 而不是 MiaWoodBlock：
+    // 前者是"下界木"性质（SoundType.STEM / NETHER_WOOD、不可燃），MiaWoodBlock 会带可燃性。
+
+    public static final BlockEntry<MiaMyceliumBlock> MYCELIUM_BLOCK = REGINTH.object("mycelium_block")
+            .block(MiaMyceliumBlock::new)
+            .properties(p -> p.mapColor(MapColor.COLOR_PURPLE).strength(0.1F).sound(SoundType.MOSS).pushReaction(PushReaction.DESTROY))
+            .blockstate(BlockStateGen::rotationYCubeAll)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<MyceliumMatBlock> MYCELIUM_MAT = REGINTH.object("mycelium_mat")
+            .block(MyceliumMatBlock::new)
+            .properties(p -> p.mapColor(MapColor.COLOR_PURPLE).replaceable().noCollission().strength(0.2F).sound(SoundType.GLOW_LICHEN).lightLevel(GlowLichenBlock.emission(3)).ignitedByLava().pushReaction(PushReaction.DESTROY))
+            .blockstate(BlockStateGen::multifaceMat)
+            .item()
+            .model(BlockStateGen::bushItem)
+            .build()
+            .register();
+
+    public static final BlockEntry<PinkPetalsBlock> MUSHROOM_BED = REGINTH.object("mushroom_bed")
+            .block(PinkPetalsBlock::new)
+            .properties(p -> p.mapColor(MapColor.TERRACOTTA_RED).noCollission().sound(SoundType.PINK_PETALS).pushReaction(PushReaction.DESTROY))
+            .blockstate(BlockStateGen::flowerBed)
+            .loot((tables, block) -> tables.add(block, tables.createPetalsDrops(block)))
+            .item()
+            .model(BlockStateGen::aloneItem)
+            .build()
+            .register();
+
+    // 菌柄/菌核用 StrippedRotatedPillarBlock：它只加"斧头去皮"（映射见该类的 getStrippables），
+    // 不像 MiaWoodBlock 那样额外加可燃性 —— 原模组的太初木是"下界木"性质，不可燃。
+    public static final BlockEntry<StrippedRotatedPillarBlock> PRIMO_STEM = REGINTH.object("primo_stem")
+            .block(StrippedRotatedPillarBlock::new)
+            .properties(p -> p.mapColor(MapColor.COLOR_ORANGE).strength(2.0F).sound(SoundType.STEM).instrument(NoteBlockInstrument.BASS))
+            .blockstate(BlockStateGen::log)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StrippedRotatedPillarBlock> PRIMO_HYPHAE = REGINTH.object("primo_hyphae")
+            .block(StrippedRotatedPillarBlock::new)
+            .properties(p -> p.mapColor(MapColor.COLOR_ORANGE).strength(2.0F).sound(SoundType.STEM).instrument(NoteBlockInstrument.BASS))
+            .blockstate((ctx, prov) -> BlockStateGen.wood(ctx, prov, MiaBlocks.PRIMO_STEM.get()))
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_PRIMO_STEM = REGINTH.object("stripped_primo_stem")
+            .block(RotatedPillarBlock::new)
+            .properties(p -> p.mapColor(MapColor.COLOR_ORANGE).strength(2.0F).sound(SoundType.STEM).instrument(NoteBlockInstrument.BASS))
+            .blockstate(BlockStateGen::log)
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_PRIMO_HYPHAE = REGINTH.object("stripped_primo_hyphae")
+            .block(RotatedPillarBlock::new)
+            .properties(p -> p.mapColor(MapColor.COLOR_ORANGE).strength(2.0F).sound(SoundType.STEM).instrument(NoteBlockInstrument.BASS))
+            .blockstate((ctx, prov) -> BlockStateGen.wood(ctx, prov, MiaBlocks.STRIPPED_PRIMO_STEM.get()))
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<Block> PRIMO_PLANKS = REGINTH.object("primo_planks")
+            .block(Block::new)
+            .properties(p -> p.mapColor(MapColor.COLOR_ORANGE).instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.NETHER_WOOD))
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<StairBlock> PRIMO_STAIRS = REGINTH.object("primo_stairs")
+            .block(p -> new StairBlock(PRIMO_PLANKS.get().defaultBlockState(), p))
+            .properties(p -> BlockBehaviour.Properties.ofFullCopy(PRIMO_PLANKS.get()))
+            .blockstate((ctx, prov) -> BlockStateGen.stairs(ctx, prov, MiaBlocks.PRIMO_PLANKS.get()))
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<SlabBlock> PRIMO_SLAB = REGINTH.object("primo_slab")
+            .block(SlabBlock::new)
+            .properties(p -> BlockBehaviour.Properties.ofFullCopy(PRIMO_PLANKS.get()))
+            .blockstate((ctx, prov) -> BlockStateGen.slab(ctx, prov, MiaBlocks.PRIMO_PLANKS.get()))
+            .loot((tables, block) -> tables.add(block, tables.createSlabItemTable(block)))
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<FenceBlock> PRIMO_FENCE = REGINTH.object("primo_fence")
+            .block(FenceBlock::new)
+            .properties(p -> BlockBehaviour.Properties.ofFullCopy(Blocks.CRIMSON_FENCE).mapColor(MapColor.COLOR_ORANGE))
+            .blockstate((ctx, prov) -> BlockStateGen.fence(ctx, prov, MiaBlocks.PRIMO_PLANKS.get()))
+            .item()
+            .model((ctx, prov) -> BlockStateGen.fenceItem(ctx, prov, MiaBlocks.PRIMO_PLANKS.get()))
+            .build()
+            .register();
+
+    public static final BlockEntry<FenceGateBlock> PRIMO_FENCE_GATE = REGINTH.object("primo_fence_gate")
+            .block(p -> new FenceGateBlock(WoodType.CRIMSON, p))
+            .properties(p -> BlockBehaviour.Properties.ofFullCopy(Blocks.CRIMSON_FENCE_GATE).mapColor(MapColor.COLOR_ORANGE))
+            .blockstate((ctx, prov) -> BlockStateGen.fenceGate(ctx, prov, MiaBlocks.PRIMO_PLANKS.get()))
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<DoorBlock> PRIMO_DOOR = REGINTH.object("primo_door")
+            .block(p -> new DoorBlock(BlockSetType.CRIMSON, p))
+            .properties(p -> BlockBehaviour.Properties.ofFullCopy(Blocks.CRIMSON_DOOR).mapColor(MapColor.COLOR_YELLOW))
+            .blockstate(BlockStateGen::door)
+            .loot((tables, block) -> tables.add(block, tables.createDoorTable(block)))
+            .item()
+            .model(BlockStateGen::doorItem)
+            .build()
+            .register();
+
+    public static final BlockEntry<TrapDoorBlock> PRIMO_TRAPDOOR = REGINTH.object("primo_trapdoor")
+            .block(p -> new TrapDoorBlock(BlockSetType.CRIMSON, p))
+            .properties(p -> BlockBehaviour.Properties.ofFullCopy(Blocks.CRIMSON_TRAPDOOR).mapColor(MapColor.COLOR_YELLOW))
+            .blockstate(BlockStateGen::trapdoor)
+            .item()
+            .model(BlockStateGen::trapdoorItem)
+            .build()
+            .register();
+
+    public static final BlockEntry<PressurePlateBlock> PRIMO_PRESSURE_PLATE = REGINTH.object("primo_pressure_plate")
+            .block(p -> new PressurePlateBlock(BlockSetType.CRIMSON, p))
+            .properties(p -> BlockBehaviour.Properties.ofFullCopy(Blocks.CRIMSON_PRESSURE_PLATE))
+            .blockstate((ctx, prov) -> BlockStateGen.pressurePlate(ctx, prov, MiaBlocks.PRIMO_PLANKS.get()))
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<ButtonBlock> PRIMO_BUTTON = REGINTH.object("primo_button")
+            .block(p -> new ButtonBlock(BlockSetType.CRIMSON, 30, p))
+            .properties(p -> BlockBehaviour.Properties.ofFullCopy(Blocks.CRIMSON_BUTTON))
+            .blockstate((ctx, prov) -> BlockStateGen.button(ctx, prov, MiaBlocks.PRIMO_PLANKS.get()))
+            .item()
+            .model((ctx, prov) -> BlockStateGen.buttonItem(ctx, prov, MiaBlocks.PRIMO_PLANKS.get()))
+            .build()
+            .register();
+
+    public static final BlockEntry<PrimoCapBlock> PRIMO_CAP = REGINTH.object("primo_cap")
+            .block(PrimoCapBlock::new)
+            .properties(p -> p.mapColor(MapColor.COLOR_YELLOW).strength(1.0F).sound(SoundType.WART_BLOCK))
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<GlowPrimoCapBlock> GLOW_PRIMO_CAP = REGINTH.object("glow_primo_cap")
+            .block(GlowPrimoCapBlock::new)
+            .properties(p -> p.mapColor(MapColor.COLOR_BLUE).strength(1.0F).sound(SoundType.WART_BLOCK).noOcclusion().lightLevel(state -> 12))
+            .blockstate(BlockStateGen::translucentCubeAll)
+            .simpleItem()
+            .register();
+
+    // 注意：这两个真菌**故意不加 noCollission**（原实现如此）——菌盖可以站上去并被弹起。
+    public static final BlockEntry<PrimoFungusBlock> PRIMO_FUNGUS = REGINTH.object("primo_fungus")
+            .block(p -> new PrimoFungusBlock(PrimoFeatures.PRIMO_FUNGUS, p))
+            .properties(p -> p.mapColor(MapColor.COLOR_ORANGE).instabreak().sound(SoundType.FUNGUS).pushReaction(PushReaction.DESTROY))
+            .blockstate((ctx, prov) -> BlockStateGen.mushroomFungus(ctx, prov, MiaBlocks.PRIMO_PLANKS.get()))
+            .item()
+            .model(BlockStateGen::aloneItem)
+            .build()
+            .register();
+
+    public static final BlockEntry<PrimoFungusBlock> GLOW_PRIMO_FUNGUS = REGINTH.object("glow_primo_fungus")
+            .block(p -> new PrimoFungusBlock(PrimoFeatures.GLOW_PRIMO_FUNGUS, p))
+            .properties(p -> p.mapColor(MapColor.COLOR_ORANGE).instabreak().lightLevel(state -> 7).sound(SoundType.FUNGUS).pushReaction(PushReaction.DESTROY))
+            .blockstate((ctx, prov) -> BlockStateGen.glowMushroomFungus(ctx, prov, MiaBlocks.GLOW_PRIMO_CAP.get()))
+            .item()
+            .model(BlockStateGen::aloneItem)
+            .build()
+            .register();
+
     //倒悬树
     // converted (closure): old provider helper = logBlockWithItem
     public static final BlockEntry<MiaWoodBlock> INVERTED_LOG = REGINTH.object("inverted_log")

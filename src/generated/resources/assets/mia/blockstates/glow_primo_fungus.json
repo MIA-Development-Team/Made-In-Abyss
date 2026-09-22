@@ -1,0 +1,14 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "mia:block/glow_primo_fungus_bottom"
+      }
+    },
+    {
+      "apply": {
+        "model": "mia:block/glow_primo_fungus_top"
+      }
+    }
+  ]
+}

@@ -15,6 +15,9 @@ public class MiaTags {
         public static final TagKey<Block> ABYSS_MUD_ORE_REPLACEABLES = create("abyss_mud_ore_replaceables");
         public static final TagKey<Block> COVERGRASS = create("covergrass");
         public static final TagKey<Block> ABYSS_DRIPSTONE_UNREPLACEABLE = create("abyss_dripstone_replaceable");
+        // 太初菌
+        public static final TagKey<Block> MYCELIUM_REPLACEABLE = create("mycelium_replaceable");
+        public static final TagKey<Block> PRIMO_STEMS = create("primo_stems");
         // 用于tooltip
         public static final TagKey<Block> NEED_PRASIOLITE_TOOL = create("need_prasiolite_tool");
         public static final TagKey<Block> INCORRECT_FOR_PRASIOLITE_TOOL = create("incorrect_for_prasiolite_tool");
@@ -40,6 +43,7 @@ public class MiaTags {
         public static final TagKey<Item> STRIPPED_FOSSILIZED_LOGS = create("stripped_fossilized_logs");
         public static final TagKey<Item> SKYFOG_LOGS = create("skyfog_logs");
         public static final TagKey<Item> INVERTED_LOGS = create("inverted_logs");
+        public static final TagKey<Item> PRIMO_STEMS = create("primo_stems");
         // 用于tooltip
         public static final TagKey<Item> ARTIFACT_MODIFIERS_MATERIAL = create("artifact_modifiers_material");
 

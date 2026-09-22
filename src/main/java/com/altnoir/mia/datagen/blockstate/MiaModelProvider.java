@@ -172,6 +172,39 @@ public class MiaModelProvider {
         return locations;
     }
 
+    /**
+     * 普通 cube_all 模型（六个面同一张贴图）。
+     * <p>
+     * 与 {@link #mirroredBlockModel} 同类：由模型侧负责<b>生成</b>模型文件，
+     * {@code BlockStateGen} 那边再用 {@code getExistingFile} 去引用它 —— 两边顺序不能颠倒。
+     */
+    public ModelFile cubeAllModel(BlockStateProvider p, Block block) {
+        String blockPath = MiaUtil.getBlockPath(block);
+        return p.models().withExistingParent(blockPath, p.mcLoc("block/cube_all"))
+                .texture("all", p.modLoc("block/" + blockPath));
+    }
+
+    /**
+     * 多面附着方块（菌痕）的单面模型：与发光地衣同款 —— 一张贴图贴在 0.1 厚度的一张面上，
+     * 六个朝向由方块状态的 multipart 各转一次复用同一个模型。
+     * <p>
+     * {@code ao(false)} 与 {@code cutout} 都是必要的：没有 AO 才不会有朝向导致的明暗差，
+     * 植被类贴图也必须是 cutout 而不是默认的 solid。
+     */
+    public ModelFile multifaceModel(BlockStateProvider p, Block block) {
+        String blockPath = MiaUtil.getBlockPath(block);
+        ResourceLocation texture = p.modLoc("block/" + blockPath);
+        return p.models().getBuilder(blockPath).renderType("cutout")
+                .ao(false)
+                .texture("particle", texture)
+                .texture("multiface", texture)
+                .element()
+                .from(0, 0, 0.1F).to(16, 16, 0.1F)
+                .face(Direction.NORTH).uvs(16, 0, 0, 16).texture("#multiface").end()
+                .face(Direction.SOUTH).uvs(0, 0, 16, 16).texture("#multiface").end()
+                .end();
+    }
+
     public void mirroredBlockModel(BlockStateProvider p, Block block) {
         String blockPath = MiaUtil.getBlockPath(block);
         p.models().withExistingParent(blockPath, p.mcLoc("block/cube_all"))

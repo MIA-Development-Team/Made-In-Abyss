@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/flowerbed_2",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "flowerbed": "mia:block/mushroom_bed",
+    "stem": "mia:block/mushroom_bed_stem"
+  }
+}

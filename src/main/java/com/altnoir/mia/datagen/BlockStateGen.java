@@ -14,12 +14,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -351,7 +353,24 @@ public final class BlockStateGen {
     }
 
     /**
+     * 多面附着方块的六个面及其模型旋转（与原版发光地衣的取向一致）。
+     */
+    private static final List<MultifaceFace> MULTIFACE_FACES = List.of(
+            new MultifaceFace(BlockStateProperties.NORTH, 0, 0),
+            new MultifaceFace(BlockStateProperties.EAST, 0, 90),
+            new MultifaceFace(BlockStateProperties.SOUTH, 0, 180),
+            new MultifaceFace(BlockStateProperties.WEST, 0, 270),
+            new MultifaceFace(BlockStateProperties.UP, 270, 0),
+            new MultifaceFace(BlockStateProperties.DOWN, 90, 0)
+    );
+
+    /**
      * 旧 {@code rotationYBlockState}：0/90/180/270 四个变体。
+     * <p>
+     * <b>它只引用模型，不生成模型</b> —— 走的是 {@code models().getExistingFile(...)}，
+     * 所以调用方必须自己先把 {@code mia:block/<名字>} 建出来（例如 {@link #coverGrass} 就是先建
+     * {@code template/cube_tsb} 那一份，再调本方法）。需要"cube_all + 四向旋转"的话用
+     * {@link #rotationYCubeAll}，那个会自己建模型。
      */
     public static <B extends Block> void rotationY(DataGenContext<Block, B> ctx, ReginthBlockstateProvider prov) {
         rotationY(prov, ctx.getEntry());
@@ -520,6 +539,119 @@ public final class BlockStateGen {
     }
 
     /**
+     * cube_all + 四个 Y 轴旋转变体（对应 PoopSky 的 {@code rotationYblockWithItem}）。
+     * <p>
+     * 与 {@link #rotationY} 的区别是它会**先生成** cube_all 模型
+     * （{@link MiaModelProvider#cubeAllModel}），所以调用方不用另外建模型。
+     */
+    public static <B extends Block> void rotationYCubeAll(DataGenContext<Block, B> ctx, ReginthBlockstateProvider prov) {
+        Block block = ctx.getEntry();
+        ModelFile model = MODELS.cubeAllModel(prov, block);
+        prov.getVariantBuilder(block).partialState().addModels(
+                new ConfiguredModel(model),
+                new ConfiguredModel(model, 0, 90, false),
+                new ConfiguredModel(model, 0, 180, false),
+                new ConfiguredModel(model, 0, 270, false)
+        );
+    }
+
+    /**
+     * 菌痕（多面附着方块，移植自 PoopSky 的 {@code multifaceBlock}）。
+     * <p>
+     * 单面模型复用 {@link MiaModelProvider#multifaceModel}；六个朝向各出两个 part ——
+     * 一个在该面为 {@code true} 时生效，一个在<b>六面全 false</b> 时生效
+     * （后者对应"只有 {@code waterlogged} 而没有附着面"的状态，缺了它那条状态就没有模型）。
+     */
+    public static <B extends Block> void multifaceMat(DataGenContext<Block, B> ctx, ReginthBlockstateProvider prov) {
+        Block block = ctx.getEntry();
+        ModelFile model = MODELS.multifaceModel(prov, block);
+        var builder = prov.getMultipartBuilder(block);
+        for (MultifaceFace face : MULTIFACE_FACES) {
+            boolean locked = face.rotationX() != 0 || face.rotationY() != 0;
+            builder.part().modelFile(model)
+                    .rotationX(face.rotationX()).rotationY(face.rotationY()).uvLock(locked)
+                    .addModel().condition(face.property(), true).end();
+
+            var noFace = builder.part().modelFile(model)
+                    .rotationX(face.rotationX()).rotationY(face.rotationY()).uvLock(locked)
+                    .addModel();
+            MULTIFACE_FACES.forEach(entry -> noFace.condition(entry.property(), false));
+            noFace.end();
+        }
+    }
+
+    /**
+     * 太初菌（移植自 PoopSky 的 {@code primoFungusModel}）。
+     * <p>
+     * 它不是十字模型，而是拿一块手写的 Blockbench 模型 {@code mia:block/mushroom}
+     * 当 parent（菌伞 + 菌柄两段），贴图取 {@code mia:block/mushroom/<注册名>}。
+     */
+    public static <B extends Block> void mushroomFungus(DataGenContext<Block, B> ctx, ReginthBlockstateProvider prov,
+                                                        Block particle) {
+        Block block = ctx.getEntry();
+        String path = MiaUtil.getBlockPath(block);
+        prov.simpleBlock(block, prov.models()
+                .withExistingParent(path, prov.modLoc("block/mushroom"))
+                .texture("all", prov.modLoc("block/mushroom/" + path))
+                .texture("particle", prov.blockTexture(particle)));
+    }
+
+    /**
+     * 发光太初菌（移植自 PoopSky 的 {@code glowPrimoFungusModel}）。
+     * <p>
+     * 拆成 {@code _bottom}（菌柄，不透明）与 {@code _top}（菌伞，{@code translucent}）两个模型，
+     * 由 multipart 同时叠加 —— 这样只有菌伞是半透明的，菌柄仍然正常遮挡。
+     */
+    public static <B extends Block> void glowMushroomFungus(DataGenContext<Block, B> ctx, ReginthBlockstateProvider prov,
+                                                            Block cap) {
+        Block block = ctx.getEntry();
+        String path = MiaUtil.getBlockPath(block);
+        ResourceLocation texture = prov.modLoc("block/mushroom/" + path);
+        ResourceLocation particle = prov.blockTexture(cap);
+
+        ModelFile bottom = prov.models().withExistingParent(path + "_bottom", prov.mcLoc("block/block"))
+                .texture("all", texture)
+                .texture("particle", particle)
+                .element().from(5, 0, 5).to(11, 8, 11)
+                .face(Direction.NORTH).uvs(6, 9, 9, 13).texture("#all").end()
+                .face(Direction.EAST).uvs(6, 9, 9, 13).texture("#all").end()
+                .face(Direction.SOUTH).uvs(6, 9, 9, 13).texture("#all").end()
+                .face(Direction.WEST).uvs(6, 9, 9, 13).texture("#all").end()
+                .face(Direction.UP).uvs(6, 6, 9, 9).texture("#all").end()
+                .face(Direction.DOWN).uvs(9, 6, 6, 9).texture("#all").end()
+                .end();
+
+        ModelFile top = prov.models().withExistingParent(path + "_top", prov.mcLoc("block/block"))
+                .texture("all", texture)
+                .texture("particle", particle)
+                .renderType("translucent")
+                .element().from(2, 8, 2).to(14, 14, 14)
+                .face(Direction.NORTH).uvs(6, 0, 12, 3).texture("#all").end()
+                .face(Direction.EAST).uvs(6, 3, 12, 6).texture("#all").end()
+                .face(Direction.SOUTH).uvs(6, 0, 12, 3).texture("#all").end()
+                .face(Direction.WEST).uvs(6, 3, 12, 6).texture("#all").end()
+                .face(Direction.UP).uvs(6, 6, 0, 0).texture("#all").end()
+                .face(Direction.DOWN).uvs(6, 6, 0, 12).texture("#all").end()
+                .end();
+
+        prov.getMultipartBuilder(block)
+                .part().modelFile(bottom).addModel().end()
+                .part().modelFile(top).addModel().end();
+    }
+
+    /**
+     * 半透明 cubeAll（发光太初菌伞）：与 {@link #base} 的唯一区别是 {@code translucent} 渲染层。
+     * <p>
+     * 注意这里只出方块状态，物品模型仍交给 {@code .simpleItem()}（parent 指向同一个模型）。
+     */
+    public static <B extends Block> void translucentCubeAll(DataGenContext<Block, B> ctx, ReginthBlockstateProvider prov) {
+        Block block = ctx.getEntry();
+        prov.simpleBlock(block, prov.models()
+                .cubeAll(MiaUtil.getBlockPath(block), prov.blockTexture(block))
+                .renderType("translucent"));
+    }
+
+    /**
      * 旧 {@code createBrushableBlock}：按 {@code DUSTED} 切 {@code cubeAll} 模型。
      */
     public static <B extends Block> void brushable(DataGenContext<Block, B> ctx, ReginthBlockstateProvider prov) {
@@ -531,6 +663,9 @@ public final class BlockStateGen {
                     prov.modLoc("block/" + MiaUtil.getBlockPath(block) + suffix));
             return ConfiguredModel.builder().modelFile(model).build();
         });
+    }
+
+    private record MultifaceFace(BooleanProperty property, int rotationX, int rotationY) {
     }
 
     /**

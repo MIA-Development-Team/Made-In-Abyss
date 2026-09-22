@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    {
+      "tag": "mia:primo_stems"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "mia:primo_planks"
+  }
+}

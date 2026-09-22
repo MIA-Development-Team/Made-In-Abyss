@@ -1,5 +1,10 @@
 {
   "values": [
-    "mia:verdant_leaves"
+    "mia:verdant_leaves",
+    "mia:mycelium_block",
+    "mia:mycelium_mat",
+    "mia:mushroom_bed",
+    "mia:primo_cap",
+    "mia:glow_primo_cap"
   ]
 }

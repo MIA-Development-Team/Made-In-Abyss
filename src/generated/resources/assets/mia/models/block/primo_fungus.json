@@ -1,0 +1,7 @@
+{
+  "parent": "mia:block/mushroom",
+  "textures": {
+    "all": "mia:block/mushroom/primo_fungus",
+    "particle": "mia:block/primo_planks"
+  }
+}

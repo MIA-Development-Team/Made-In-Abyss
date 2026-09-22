@@ -221,6 +221,22 @@ public class MiaItemGroups {
         SECTION_BUILDING.add(MiaBlocks.INVERTED_DOOR);
         SECTION_BUILDING.add(MiaBlocks.INVERTED_TRAPDOOR);
 
+        // 太初菌（移植自 PoopSky）
+        SECTION_BUILDING.add(MiaBlocks.MYCELIUM_BLOCK);
+        SECTION_BUILDING.add(MiaBlocks.PRIMO_STEM);
+        SECTION_BUILDING.add(MiaBlocks.PRIMO_HYPHAE);
+        SECTION_BUILDING.add(MiaBlocks.STRIPPED_PRIMO_STEM);
+        SECTION_BUILDING.add(MiaBlocks.STRIPPED_PRIMO_HYPHAE);
+        SECTION_BUILDING.add(MiaBlocks.PRIMO_PLANKS);
+        SECTION_BUILDING.add(MiaBlocks.PRIMO_STAIRS);
+        SECTION_BUILDING.add(MiaBlocks.PRIMO_SLAB);
+        SECTION_BUILDING.add(MiaBlocks.PRIMO_FENCE);
+        SECTION_BUILDING.add(MiaBlocks.PRIMO_FENCE_GATE);
+        SECTION_BUILDING.add(MiaBlocks.PRIMO_DOOR);
+        SECTION_BUILDING.add(MiaBlocks.PRIMO_TRAPDOOR);
+        SECTION_BUILDING.add(MiaBlocks.PRIMO_CAP);
+        SECTION_BUILDING.add(MiaBlocks.GLOW_PRIMO_CAP);
+
         // 矿物块
         SECTION_BUILDING.add(MiaBlocks.CHLOROPHYTE_BLOCK);
         SECTION_BUILDING.add(MiaBlocks.RAW_CHLOROPHYTE_BLOCK);
@@ -260,6 +276,11 @@ public class MiaItemGroups {
         SECTION_NATURAL.add(MiaBlocks.SKYFOG_SAPLING);
         SECTION_NATURAL.add(MiaBlocks.VERDANT_FUNGUS);
         SECTION_NATURAL.add(MiaBlocks.INVERTED_SAPLING);
+        // 太初菌（移植自 PoopSky）
+        SECTION_NATURAL.add(MiaBlocks.PRIMO_FUNGUS);
+        SECTION_NATURAL.add(MiaBlocks.GLOW_PRIMO_FUNGUS);
+        SECTION_NATURAL.add(MiaBlocks.MYCELIUM_MAT);
+        SECTION_NATURAL.add(MiaBlocks.MUSHROOM_BED);
 
         // 植物
         SECTION_NATURAL.add(MiaBlocks.MARGINAL_WEED);
@@ -292,6 +313,9 @@ public class MiaItemGroups {
         SECTION_FUNCTIONAL.add(MiaBlocks.VERDANT_BUTTON);
         SECTION_FUNCTIONAL.add(MiaBlocks.INVERTED_PRESSURE_PLATE);
         SECTION_FUNCTIONAL.add(MiaBlocks.INVERTED_BUTTON);
+        // 太初菌（移植自 PoopSky）
+        SECTION_FUNCTIONAL.add(MiaBlocks.PRIMO_PRESSURE_PLATE);
+        SECTION_FUNCTIONAL.add(MiaBlocks.PRIMO_BUTTON);
 
         // 深渊结构相关
         SECTION_FUNCTIONAL.add(MiaBlocks.ABYSS_PORTAL_CORE);

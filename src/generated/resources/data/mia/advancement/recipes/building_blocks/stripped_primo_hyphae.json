@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stripped_primo_stem": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mia:stripped_primo_stem"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mia:stripped_primo_hyphae"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_stripped_primo_stem"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mia:stripped_primo_hyphae"
+    ]
+  }
+}
