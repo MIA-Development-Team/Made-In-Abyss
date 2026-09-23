@@ -1,0 +1,117 @@
+{
+  "carvers": {},
+  "downfall": 0.8,
+  "effects": {
+    "additions_sound": {
+      "sound": "minecraft:ambient.basalt_deltas.additions",
+      "tick_chance": 0.0111
+    },
+    "fog_color": 6184048,
+    "grass_color": 11335504,
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000
+    },
+    "music": {
+      "max_delay": 24000,
+      "min_delay": 12000,
+      "replace_current_music": false,
+      "sound": "mia:music.the_abyss.dim"
+    },
+    "particle": {
+      "options": {
+        "type": "minecraft:white_ash"
+      },
+      "probability": 0.118093334
+    },
+    "sky_color": 8888490,
+    "water_color": 6141935,
+    "water_fog_color": 6141935
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [
+      "mia:the_abyss/monster_cheat",
+      "mia:the_abyss/slab_ruins",
+      "mia:the_abyss/sun_stone"
+    ],
+    [],
+    [],
+    [
+      "mia:the_abyss/ore_dirt",
+      "mia:the_abyss/ore_gravel",
+      "mia:the_abyss/ore_iron",
+      "mia:the_abyss/ore_copper",
+      "mia:the_abyss/ore_gold",
+      "mia:the_abyss/ore_lapis",
+      "mia:the_abyss/ore_redstone",
+      "mia:the_abyss/ore_diamond",
+      "mia:the_abyss/ore_emerald",
+      "mia:the_abyss/ore_quartz",
+      "mia:the_abyss/ore_chlorophyte",
+      "minecraft:underwater_magma",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel"
+    ],
+    [],
+    [
+      "mia:the_abyss/spring_water"
+    ],
+    [
+      "mia:the_abyss/vines",
+      "mia:the_abyss/patch_waterlily",
+      "mia:the_abyss/glow_lichen",
+      "mia:the_abyss/trees_primo_fungus",
+      "mia:the_abyss/mycelium_patch",
+      "mia:the_abyss/patch_large_fern",
+      "mia:the_abyss/cave_vines",
+      "minecraft:brown_mushroom_normal",
+      "minecraft:red_mushroom_normal"
+    ]
+  ],
+  "has_precipitation": true,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [
+      {
+        "type": "minecraft:mooshroom",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      }
+    ],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [
+      {
+        "type": "minecraft:glow_squid",
+        "maxCount": 6,
+        "minCount": 4,
+        "weight": 10
+      }
+    ],
+    "water_ambient": [
+      {
+        "type": "minecraft:tropical_fish",
+        "maxCount": 8,
+        "minCount": 8,
+        "weight": 25
+      },
+      {
+        "type": "minecraft:cod",
+        "maxCount": 6,
+        "minCount": 3,
+        "weight": 25
+      }
+    ],
+    "water_creature": []
+  },
+  "temperature": 0.8
+}

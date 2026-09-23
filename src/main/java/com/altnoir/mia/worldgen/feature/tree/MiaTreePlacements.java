@@ -19,6 +19,8 @@ public class MiaTreePlacements {
     public static final ResourceKey<PlacedFeature> MEGA_SKYFOG = treeKey("maga_skyfog");
     public static final ResourceKey<PlacedFeature> SKYFOG_BUSH = treeKey("skyfog_bush");
 
+    public static final ResourceKey<PlacedFeature> PRIMO_FUNGUS = treeKey("primo_fungus");
+    public static final ResourceKey<PlacedFeature> GLOW_PRIMO_FUNGUS = treeKey("glow_primo_fungus");
     public static final ResourceKey<PlacedFeature> VERDANT_FUNGUS = treeKey("verdant_fungus");
     public static final ResourceKey<PlacedFeature> INVERTED = treeKey("inverted");
     public static final ResourceKey<PlacedFeature> MAGA_INVERTED = treeKey("maga_inverted");
@@ -32,6 +34,8 @@ public class MiaTreePlacements {
         Holder<ConfiguredFeature<?, ?>> maga_skyfog = holdergetter.getOrThrow(MiaTreeFeatures.MEGA_SKYFOG_TREE);
         Holder<ConfiguredFeature<?, ?>> skyfog_bush = holdergetter.getOrThrow(MiaTreeFeatures.SKYFOG_BUSH);
 
+        Holder<ConfiguredFeature<?, ?>> primo = holdergetter.getOrThrow(MiaTreeFeatures.PRIMO_FUNGUS);
+        Holder<ConfiguredFeature<?, ?>> glow_primo = holdergetter.getOrThrow(MiaTreeFeatures.GLOW_PRIMO_FUNGUS);
         Holder<ConfiguredFeature<?, ?>> verdant_fungus = holdergetter.getOrThrow(MiaTreeFeatures.VERDANT_FUNGUS);
         Holder<ConfiguredFeature<?, ?>> inverted = holdergetter.getOrThrow(MiaTreeFeatures.INVERTED_TREE);
         Holder<ConfiguredFeature<?, ?>> maga_inverted = holdergetter.getOrThrow(MiaTreeFeatures.MEGA_INVERTED_TREE);
@@ -42,6 +46,8 @@ public class MiaTreePlacements {
         MiaPlacementUtils.register(context, MEGA_SKYFOG, maga_skyfog, MiaPlacementUtils.filteredByBlockSurvival(MiaBlocks.SKYFOG_SAPLING.get()));
         MiaPlacementUtils.register(context, SKYFOG_BUSH, skyfog_bush, MiaPlacementUtils.filteredByBlockSurvival(MiaBlocks.SKYFOG_SAPLING.get()));
 
+        MiaPlacementUtils.register(context, PRIMO_FUNGUS, primo, MiaPlacementUtils.filteredByBlockSurvival(MiaBlocks.PRIMO_FUNGUS.get()));
+        MiaPlacementUtils.register(context, GLOW_PRIMO_FUNGUS, glow_primo, MiaPlacementUtils.filteredByBlockSurvival(MiaBlocks.GLOW_PRIMO_FUNGUS.get()));
         MiaPlacementUtils.register(context, VERDANT_FUNGUS, verdant_fungus, MiaPlacementUtils.filteredByBlockSurvival(MiaBlocks.VERDANT_FUNGUS.get()));
         MiaPlacementUtils.register(context, INVERTED, inverted, MiaPlacementUtils.filteredByBlockSurvival(MiaBlocks.INVERTED_SAPLING.get()));
         MiaPlacementUtils.register(context, MAGA_INVERTED, maga_inverted, MiaPlacementUtils.filteredByBlockSurvival(MiaBlocks.INVERTED_SAPLING.get()));

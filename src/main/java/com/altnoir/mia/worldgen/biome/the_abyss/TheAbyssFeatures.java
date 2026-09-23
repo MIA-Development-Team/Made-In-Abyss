@@ -15,6 +15,7 @@ import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.*;
@@ -66,6 +67,11 @@ public class TheAbyssFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED_UNDER2 = theAbyssKey("trees_fossilized_under2");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_REED = theAbyssKey("patch_reed");
     public static final ResourceKey<ConfiguredFeature<?, ?>> POOL_WITH_REED = theAbyssKey("pool_with_reed");
+
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_PRIMO_FUNGUS = theAbyssKey("trees_primo_fungus");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIUM_VEGETATION = MiaFeatureUtils.resourceKey("mycelium_vegetation");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIUM_PATCH = MiaFeatureUtils.resourceKey("mycelium_patch");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIUM_PATCH_BONEMEAL = MiaFeatureUtils.resourceKey("mycelium_patch_bonemeal");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_VERDANT_FUNGUS = theAbyssKey("trees_verdant_fungus");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_INVERTED = theAbyssKey("trees_inverted");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_CLUSTER = theAbyssKey("prasiolite_cluster");
@@ -94,6 +100,9 @@ public class TheAbyssFeatures {
         Holder<PlacedFeature> fancy_skyfog_bee = holdergetter1.getOrThrow(MiaTreePlacements.FANCY_SKYFOG_BEES_002);
         Holder<PlacedFeature> maga_skyfog = holdergetter1.getOrThrow(MiaTreePlacements.MEGA_SKYFOG);
         Holder<PlacedFeature> skyfog_bush = holdergetter1.getOrThrow(MiaTreePlacements.SKYFOG_BUSH);
+
+        Holder<PlacedFeature> primo = holdergetter1.getOrThrow(MiaTreePlacements.PRIMO_FUNGUS);
+        Holder<PlacedFeature> glow_primo = holdergetter1.getOrThrow(MiaTreePlacements.GLOW_PRIMO_FUNGUS);
         Holder<PlacedFeature> verdant_fungus = holdergetter1.getOrThrow(MiaTreePlacements.VERDANT_FUNGUS);
         Holder<PlacedFeature> inverted = holdergetter1.getOrThrow(MiaTreePlacements.INVERTED);
         Holder<PlacedFeature> maga_inverted = holdergetter1.getOrThrow(MiaTreePlacements.MAGA_INVERTED);
@@ -380,6 +389,38 @@ public class TheAbyssFeatures {
                         0.1F
                 )
         );
+
+        MiaFeatureUtils.register(
+                context, TREES_PRIMO_FUNGUS, Feature.RANDOM_SELECTOR,
+                new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(glow_primo, 0.3F)), primo)
+        );
+        for (int i = 1; i <= 4; i++) {
+            for (Direction direction : Direction.Plane.HORIZONTAL) {
+                builder.add(MiaBlocks.MUSHROOM_BED.get().defaultBlockState()
+                        .setValue(PinkPetalsBlock.AMOUNT, i)
+                        .setValue(PinkPetalsBlock.FACING, direction), 2);
+            }
+        }
+        MiaFeatureUtils.register(context, MYCELIUM_VEGETATION, Feature.SIMPLE_BLOCK,
+                new SimpleBlockConfiguration(
+                        new WeightedStateProvider(builder
+                                .add(MiaBlocks.GLOW_PRIMO_FUNGUS.get().defaultBlockState(), 8)
+                                .add(MiaBlocks.PRIMO_FUNGUS.get().defaultBlockState(), 12)
+                                .add(MiaBlocks.MYCELIUM_MAT.get().defaultBlockState()
+                                        .setValue(BlockStateProperties.DOWN, true), 25)
+                                .add(Blocks.BROWN_MUSHROOM.defaultBlockState(), 4)
+                                .add(Blocks.RED_MUSHROOM.defaultBlockState(), 4)
+                        )
+                ));
+
+        MiaFeatureUtils.register(context, MYCELIUM_PATCH, Feature.VEGETATION_PATCH,
+                vegetationPatch(MiaTags.Blocks.MYCELIUM_REPLACEABLE, MiaBlocks.MYCELIUM_BLOCK.get(),
+                        holdergetter.getOrThrow(MYCELIUM_VEGETATION), 0.8F, 0.75F));
+
+        MiaFeatureUtils.register(context, MYCELIUM_PATCH_BONEMEAL, Feature.VEGETATION_PATCH,
+                vegetationPatch(MiaTags.Blocks.MYCELIUM_REPLACEABLE, MiaBlocks.MYCELIUM_BLOCK.get(),
+                        holdergetter.getOrThrow(MYCELIUM_VEGETATION), 0.6F, 0.75F));
+
         MiaFeatureUtils.register(
                 context, TREES_VERDANT_FUNGUS, Feature.RANDOM_SELECTOR,
                 new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(fancy_skyfog_bee, 0.1F)), verdant_fungus)
@@ -564,6 +605,20 @@ public class TheAbyssFeatures {
                     .add(MiaBlocks.SMALL_PRASIOLITE_BUD.get().defaultBlockState(), 1);
         }
         return builder;
+    }
+
+    private static VegetationPatchConfiguration vegetationPatch(
+            TagKey<Block> replaceable, Block ground, Holder<ConfiguredFeature<?, ?>> feature,
+            float grow, float infection
+    ) {
+        return new VegetationPatchConfiguration(
+                replaceable,
+                BlockStateProvider.simple(ground),
+                PlacementUtils.inlinePlaced(feature),
+                CaveSurface.FLOOR,
+                ConstantInt.of(1), 0.0F, 5,
+                grow, UniformInt.of(1, 2), infection
+        );
     }
 
     private static ResourceKey<ConfiguredFeature<?, ?>> theAbyssKey(String name) {

@@ -1,6 +1,6 @@
 package com.altnoir.mia.common.block;
 
-import com.altnoir.mia.worldgen.PrimoFeatures;
+import com.altnoir.mia.worldgen.biome.the_abyss.TheAbyssFeatures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
@@ -12,22 +12,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-/**
- * 菌丝块（移植自 PoopSky 的 {@code MyceliumBlock}）。
- * <p>
- * 特性：随机冒菌丝粒子；骨粉后向相邻的可替换方块蔓延出菌丝植被
- * （{@link PrimoFeatures#MYCELIUM_PATCH_BONEMEAL}）。
- * <p>
- * <b>类名前缀 {@code Mia} 是必须的</b>：1.21.1 的原版也有
- * {@code net.minecraft.world.level.block.MyceliumBlock}，而 {@code MiaBlocks} 同时通配导入了
- * 原版与本模组的 {@code block} 包，直接叫 {@code MyceliumBlock} 会"引用不明确"编译失败。
- * 注册名仍然是 {@code mia:mycelium_block}，与原模组一致。
- * <p>
- * 之所以能蔓延，是因为它同时被放进了 {@code minecraft:dirt} 与
- * {@code mia:mycelium_replaceable} 标签 —— 见 {@code MiaBlockTagProvider}。
- */
-public class MiaMyceliumBlock extends Block implements BonemealableBlock {
-    public MiaMyceliumBlock(Properties properties) {
+public class MyceliumBlock extends Block implements BonemealableBlock {
+    public MyceliumBlock(Properties properties) {
         super(properties);
     }
 
@@ -61,7 +47,7 @@ public class MiaMyceliumBlock extends Block implements BonemealableBlock {
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         level.registryAccess()
                 .registry(Registries.CONFIGURED_FEATURE)
-                .flatMap(holder -> holder.getHolder(PrimoFeatures.MYCELIUM_PATCH_BONEMEAL))
+                .flatMap(holder -> holder.getHolder(TheAbyssFeatures.MYCELIUM_PATCH_BONEMEAL))
                 .ifPresent(reference -> reference.value()
                         .place(level, level.getChunkSource().getGenerator(), random, pos.above()));
     }

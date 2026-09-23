@@ -33,6 +33,8 @@ public class MiaBiomes {
     public static final ResourceKey<Biome> ABYSS_LUSH_CAVES = abyssEdgeKey("abyss_lush_caves");
     public static final ResourceKey<Biome> ABYSS_DRIPSTONE_CAVES = abyssEdgeKey("abyss_dripstone_caves");
     // Layer 2
+
+    public static final ResourceKey<Biome> PRIMO_FOREST = abyssEdgeKey("primo_forest");
     public static final ResourceKey<Biome> TEMPTATION_FOREST = abyssEdgeKey("temptation_forest");
     public static final ResourceKey<Biome> INVERTED_FOREST = abyssEdgeKey("inverted_forest");
     // Layer 3
@@ -52,6 +54,7 @@ public class MiaBiomes {
         register(ABYSS_LUSH_CAVES, TheAbyssBiomes.abyssLushCaves(context), context);
         register(ABYSS_DRIPSTONE_CAVES, TheAbyssBiomes.abyssDripstoneCaves(context), context);
         // Layer 2
+        register(PRIMO_FOREST, TheAbyssBiomes.primoForest(context), context);
         register(TEMPTATION_FOREST, TheAbyssBiomes.temptationForest(context), context);
         register(INVERTED_FOREST, TheAbyssBiomes.invertedForest(context), context);
         // Layer 3

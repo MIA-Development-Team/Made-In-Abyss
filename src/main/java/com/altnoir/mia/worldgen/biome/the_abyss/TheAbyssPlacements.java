@@ -54,6 +54,9 @@ public class TheAbyssPlacements {
     public static final ResourceKey<PlacedFeature> CAVES_CEILING_VEGETATION = theAbyssKey("caves_ceiling_vegetation");
     public static final ResourceKey<PlacedFeature> SPORE_BLOSSOM = theAbyssKey("spore_blossom");
     public static final ResourceKey<PlacedFeature> POOL_WITH_REED = theAbyssKey("pool_with_reed");
+
+    public static final ResourceKey<PlacedFeature> TREES_PRIMO_FUNGUS = theAbyssKey("trees_primo_fungus");
+    public static final ResourceKey<PlacedFeature> MYCELIUM_PATCH = theAbyssKey("mycelium_patch");
     public static final ResourceKey<PlacedFeature> TREES_VERDANT_FUNGUS = theAbyssKey("trees_verdant_fungus");
     public static final ResourceKey<PlacedFeature> TREES_INVERTED = theAbyssKey("trees_inverted");
     public static final ResourceKey<PlacedFeature> PRASIOLITE_CLUSTER = theAbyssKey("prasiolite_cluster");
@@ -106,6 +109,9 @@ public class TheAbyssPlacements {
         Holder<ConfiguredFeature<?, ?>> cave_vine_ceiling = holdergetter.getOrThrow(CaveFeatures.MOSS_PATCH_CEILING);
         Holder<ConfiguredFeature<?, ?>> spore_blossom = holdergetter.getOrThrow(CaveFeatures.SPORE_BLOSSOM);
         Holder<ConfiguredFeature<?, ?>> pool_with_reed = holdergetter.getOrThrow(TheAbyssFeatures.POOL_WITH_REED);
+
+        Holder<ConfiguredFeature<?, ?>> primo = holdergetter.getOrThrow(TheAbyssFeatures.TREES_PRIMO_FUNGUS);
+        Holder<ConfiguredFeature<?, ?>> mycelium = holdergetter.getOrThrow(TheAbyssFeatures.MYCELIUM_PATCH);
         Holder<ConfiguredFeature<?, ?>> verdant_fungus = holdergetter.getOrThrow(TheAbyssFeatures.TREES_VERDANT_FUNGUS);
         Holder<ConfiguredFeature<?, ?>> inverted = holdergetter.getOrThrow(TheAbyssFeatures.TREES_INVERTED);
         Holder<ConfiguredFeature<?, ?>> prasiolite_cluster = holdergetter.getOrThrow(TheAbyssFeatures.PRASIOLITE_CLUSTER);
@@ -352,12 +358,29 @@ public class TheAbyssPlacements {
                 BiomeFilter.biome()
         );
         MiaPlacementUtils.register(
+                context, TREES_PRIMO_FUNGUS, primo,
+                abyssTreePlace(8)
+        );
+        MiaPlacementUtils.register(
                 context, TREES_VERDANT_FUNGUS, verdant_fungus,
                 abyssTreePlace(8)
         );
         MiaPlacementUtils.register(
                 context, TREES_INVERTED, inverted,
                 abyssInvertedTreePlace(6)
+        );
+
+        PlacementUtils.register(
+                context,
+                MYCELIUM_PATCH,
+                mycelium,
+                CountPlacement.of(188),
+                CountPlacement.of(2),
+                InSquarePlacement.spread(),
+                PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
+                EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.ONLY_IN_AIR_PREDICATE, 12),
+                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                BiomeFilter.biome()
         );
 
         MiaPlacementUtils.register(

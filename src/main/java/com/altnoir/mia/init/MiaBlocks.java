@@ -5,10 +5,10 @@ import com.altnoir.abysslib.reginth.providers.loot.ReginthBlockLootTables;
 import com.altnoir.abysslib.reginth.util.entry.BlockEntry;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.common.block.*;
+import com.altnoir.mia.common.block.MyceliumBlock;
 import com.altnoir.mia.common.item.RopeItem;
 import com.altnoir.mia.datagen.BlockStateGen;
 import com.altnoir.mia.datagen.MiaLootGen;
-import com.altnoir.mia.worldgen.PrimoFeatures;
 import com.altnoir.mia.worldgen.feature.tree.MiaTreeFeatures;
 import com.altnoir.mia.worldgen.feature.tree.MiaTreeGrowers;
 import net.minecraft.core.BlockPos;
@@ -887,8 +887,8 @@ public class MiaBlocks {
     // 注意 primo_stem / primo_hyphae 用的是原版 RotatedPillarBlock 而不是 MiaWoodBlock：
     // 前者是"下界木"性质（SoundType.STEM / NETHER_WOOD、不可燃），MiaWoodBlock 会带可燃性。
 
-    public static final BlockEntry<MiaMyceliumBlock> MYCELIUM_BLOCK = REGINTH.object("mycelium_block")
-            .block(MiaMyceliumBlock::new)
+    public static final BlockEntry<MyceliumBlock> MYCELIUM_BLOCK = REGINTH.object("mycelium_block")
+            .block(MyceliumBlock::new)
             .properties(p -> p.mapColor(MapColor.COLOR_PURPLE).strength(0.1F).sound(SoundType.MOSS).pushReaction(PushReaction.DESTROY))
             .blockstate(BlockStateGen::rotationYCubeAll)
             .simpleItem()
@@ -1030,7 +1030,7 @@ public class MiaBlocks {
 
     // 注意：这两个真菌**故意不加 noCollission**（原实现如此）——菌盖可以站上去并被弹起。
     public static final BlockEntry<PrimoFungusBlock> PRIMO_FUNGUS = REGINTH.object("primo_fungus")
-            .block(p -> new PrimoFungusBlock(PrimoFeatures.PRIMO_FUNGUS, p))
+            .block(p -> new PrimoFungusBlock(MiaTreeFeatures.PRIMO_FUNGUS, p))
             .properties(p -> p.mapColor(MapColor.COLOR_ORANGE).instabreak().sound(SoundType.FUNGUS).pushReaction(PushReaction.DESTROY))
             .blockstate((ctx, prov) -> BlockStateGen.mushroomFungus(ctx, prov, MiaBlocks.PRIMO_PLANKS.get()))
             .item()
@@ -1039,7 +1039,7 @@ public class MiaBlocks {
             .register();
 
     public static final BlockEntry<PrimoFungusBlock> GLOW_PRIMO_FUNGUS = REGINTH.object("glow_primo_fungus")
-            .block(p -> new PrimoFungusBlock(PrimoFeatures.GLOW_PRIMO_FUNGUS, p))
+            .block(p -> new PrimoFungusBlock(MiaTreeFeatures.GLOW_PRIMO_FUNGUS, p))
             .properties(p -> p.mapColor(MapColor.COLOR_ORANGE).instabreak().lightLevel(state -> 7).sound(SoundType.FUNGUS).pushReaction(PushReaction.DESTROY))
             .blockstate((ctx, prov) -> BlockStateGen.glowMushroomFungus(ctx, prov, MiaBlocks.GLOW_PRIMO_CAP.get()))
             .item()

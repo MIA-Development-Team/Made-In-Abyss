@@ -21,6 +21,7 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
     private static final SurfaceRules.RuleSource COVERGRASS_ABYSS_ANDESITE = makeStateRule(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
     private static final SurfaceRules.RuleSource COVERGRASS_TUFF = makeStateRule(MiaBlocks.COVERGRASS_TUFF.get());
     // Layer 2
+    private static final SurfaceRules.RuleSource MYCELTUM = makeStateRule(MiaBlocks.MYCELIUM_BLOCK.get());
     private static final SurfaceRules.RuleSource MUD = makeStateRule(Blocks.MUD);
 
     private static SurfaceRules.RuleSource makeStateRule(Block block) {
@@ -84,6 +85,15 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
                         )
                 ),
                 // Layer 2
+                SurfaceRules.ifTrue(
+                        SurfaceRules.isBiome(
+                                MiaBiomes.PRIMO_FOREST
+                        ),
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
+                                MYCELTUM
+                        )
+                ),
                 SurfaceRules.ifTrue(
                         SurfaceRules.isBiome(
                                 MiaBiomes.TEMPTATION_FOREST

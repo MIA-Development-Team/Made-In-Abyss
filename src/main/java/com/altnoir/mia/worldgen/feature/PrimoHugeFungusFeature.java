@@ -14,12 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-/**
- * 太初巨型菌的生成特征（移植自 PoopSky 的 {@code PoHugeFungusFeature}）。
- * <p>
- * 与 {@code mia:inverted_tree} 一样是自研特征，而不是原版的 {@code huge_fungus}：
- * 菌柄高度 4~13（1/12 概率翻倍），菌伞半径按高度分 1/2/3 三档，装饰块概率分内圈/角落/边缘三档。
- */
 public class PrimoHugeFungusFeature extends Feature<PrimoHugeFungusConfiguration> {
     public PrimoHugeFungusFeature(Codec<PrimoHugeFungusConfiguration> codec) {
         super(codec);
@@ -76,7 +70,7 @@ public class PrimoHugeFungusFeature extends Feature<PrimoHugeFungusConfiguration
             blockPos.setWithOffset(surfaceOrigin, 0, dy, 0);
             if (isReplaceable(level, blockPos, config, true)) {
                 if (!level.getBlockState(blockPos.below()).isAir()) {
-                    level.destroyBlock(blockPos, true);
+                    level.removeBlock(blockPos, false);
                 }
                 level.setBlock(blockPos, stem, 3);
             }
@@ -111,7 +105,7 @@ public class PrimoHugeFungusFeature extends Feature<PrimoHugeFungusConfiguration
 
                     if (isReplaceable(level, blockPos, config, false)) {
                         if (!level.getBlockState(blockPos.below()).isAir()) {
-                            level.destroyBlock(blockPos, true);
+                            level.removeBlock(blockPos, false);
                         }
 
                         if (isHatBottom) {

@@ -6,6 +6,166 @@
       "entries": [
         {
           "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "north",
+              "flower_amount": "1"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "east",
+              "flower_amount": "1"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "south",
+              "flower_amount": "1"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "west",
+              "flower_amount": "1"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "north",
+              "flower_amount": "2"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "east",
+              "flower_amount": "2"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "south",
+              "flower_amount": "2"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "west",
+              "flower_amount": "2"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "north",
+              "flower_amount": "3"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "east",
+              "flower_amount": "3"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "south",
+              "flower_amount": "3"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "west",
+              "flower_amount": "3"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "north",
+              "flower_amount": "4"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "east",
+              "flower_amount": "4"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "south",
+              "flower_amount": "4"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "mia:fortitude_flower",
+            "Properties": {
+              "facing": "west",
+              "flower_amount": "4"
+            }
+          },
+          "weight": 1
+        },
+        {
+          "data": {
             "Name": "mia:mushroom_bed",
             "Properties": {
               "facing": "north",

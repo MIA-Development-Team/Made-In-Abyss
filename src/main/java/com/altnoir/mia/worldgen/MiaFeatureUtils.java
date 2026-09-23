@@ -18,7 +18,6 @@ public class MiaFeatureUtils {
         MiaTreeFeatures.bootstrap(context);
         TheAbyssFeatures.bootstrap(context);
         GreatFaultFeatures.bootstrap(context);
-        PrimoFeatures.bootstrap(context);
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> resourceKey(String name) {
