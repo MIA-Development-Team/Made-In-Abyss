@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "mementoinabyss:block/verdant_slab"
+    },
+    "type=double": {
+      "model": "mementoinabyss:block/verdant_planks"
+    },
+    "type=top": {
+      "model": "mementoinabyss:block/verdant_slab_top"
+    }
+  }
+}

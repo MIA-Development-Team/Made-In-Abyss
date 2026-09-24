@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    "#mementoinabyss:skyfog_logs"
+  ],
+  "result": {
+    "count": 4,
+    "id": "mementoinabyss:skyfog_planks"
+  }
+}

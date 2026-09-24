@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    "mementoinabyss:inverted_planks"
+  ],
+  "result": {
+    "id": "mementoinabyss:inverted_button"
+  }
+}

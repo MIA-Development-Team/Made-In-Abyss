@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "mementoinabyss:skyfog_planks"
+  },
+  "pattern": [
+    "##"
+  ],
+  "result": {
+    "id": "mementoinabyss:skyfog_pressure_plate"
+  }
+}

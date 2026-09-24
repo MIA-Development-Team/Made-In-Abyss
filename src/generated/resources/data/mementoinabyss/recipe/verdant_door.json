@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "wooden_door",
+  "key": {
+    "X": "mementoinabyss:verdant_planks"
+  },
+  "pattern": [
+    "XX",
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "count": 3,
+    "id": "mementoinabyss:verdant_door"
+  }
+}

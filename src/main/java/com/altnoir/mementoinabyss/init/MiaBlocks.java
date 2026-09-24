@@ -31,6 +31,7 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeFeatures;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeGrowers;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.generators.RegistrateItemModelGenerator;
+import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import java.util.Optional;
@@ -40,20 +41,25 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -766,6 +772,7 @@ public class MiaBlocks {
                                     (ctx, prov) ->
                                             prov.woodProvider(STRIPPED_SKYFOG_LOG.get())
                                                     .wood(ctx.get()))
+                    .recipe((ctx, prov) -> prov.woodFromLogs(ctx.get(), STRIPPED_SKYFOG_LOG.get()))
                     .simpleItem()
                     .register();
 
@@ -789,6 +796,7 @@ public class MiaBlocks {
                             () ->
                                     (ctx, prov) ->
                                             prov.woodProvider(SKYFOG_LOG.get()).wood(ctx.get()))
+                    .recipe((ctx, prov) -> prov.woodFromLogs(ctx.get(), SKYFOG_LOG.get()))
                     .simpleItem()
                     .register();
 
@@ -816,6 +824,9 @@ public class MiaBlocks {
                                     (ctx, prov) ->
                                             prov.woodProvider(STRIPPED_VERDANT_STEM.get())
                                                     .wood(ctx.get()))
+                    .recipe(
+                            (ctx, prov) ->
+                                    prov.woodFromLogs(ctx.get(), STRIPPED_VERDANT_STEM.get()))
                     .simpleItem()
                     .register();
 
@@ -842,6 +853,7 @@ public class MiaBlocks {
                             () ->
                                     (ctx, prov) ->
                                             prov.woodProvider(VERDANT_STEM.get()).wood(ctx.get()))
+                    .recipe((ctx, prov) -> prov.woodFromLogs(ctx.get(), VERDANT_STEM.get()))
                     .simpleItem()
                     .register();
 
@@ -866,6 +878,9 @@ public class MiaBlocks {
                                     (ctx, prov) ->
                                             prov.woodProvider(STRIPPED_INVERTED_LOG.get())
                                                     .wood(ctx.get()))
+                    .recipe(
+                            (ctx, prov) ->
+                                    prov.woodFromLogs(ctx.get(), STRIPPED_INVERTED_LOG.get()))
                     .simpleItem()
                     .register();
 
@@ -889,8 +904,65 @@ public class MiaBlocks {
                             () ->
                                     (ctx, prov) ->
                                             prov.woodProvider(INVERTED_LOG.get()).wood(ctx.get()))
+                    .recipe((ctx, prov) -> prov.woodFromLogs(ctx.get(), INVERTED_LOG.get()))
                     .simpleItem()
                     .register();
+
+    public static final BlockEntry<Block> SKYFOG_PLANKS =
+            planks("skyfog_planks", MapColor.COLOR_GREEN, MiaTags.ItemTags.SKYFOG_LOGS.tag);
+    public static final BlockEntry<StairBlock> SKYFOG_STAIRS =
+            woodenStairs("skyfog_stairs", SKYFOG_PLANKS);
+    public static final BlockEntry<SlabBlock> SKYFOG_SLAB = woodenSlab("skyfog_slab", SKYFOG_PLANKS);
+    public static final BlockEntry<FenceBlock> SKYFOG_FENCE =
+            woodenFence("skyfog_fence", SKYFOG_PLANKS);
+    public static final BlockEntry<FenceGateBlock> SKYFOG_FENCE_GATE =
+            woodenFenceGate("skyfog_fence_gate", WoodType.BAMBOO, SKYFOG_PLANKS);
+    public static final BlockEntry<DoorBlock> SKYFOG_DOOR =
+            woodenDoor("skyfog_door", BlockSetType.BAMBOO, SKYFOG_PLANKS);
+    public static final BlockEntry<TrapDoorBlock> SKYFOG_TRAPDOOR =
+            woodenTrapdoor("skyfog_trapdoor", BlockSetType.BAMBOO, SKYFOG_PLANKS);
+    public static final BlockEntry<PressurePlateBlock> SKYFOG_PRESSURE_PLATE =
+            woodenPressurePlate("skyfog_pressure_plate", BlockSetType.BAMBOO, SKYFOG_PLANKS);
+    public static final BlockEntry<ButtonBlock> SKYFOG_BUTTON =
+            woodenButton("skyfog_button", BlockSetType.BAMBOO, SKYFOG_PLANKS);
+
+    public static final BlockEntry<Block> VERDANT_PLANKS =
+            planks("verdant_planks", MapColor.TERRACOTTA_YELLOW, MiaTags.ItemTags.VERDANT_STEMS.tag);
+    public static final BlockEntry<StairBlock> VERDANT_STAIRS =
+            woodenStairs("verdant_stairs", VERDANT_PLANKS);
+    public static final BlockEntry<SlabBlock> VERDANT_SLAB =
+            woodenSlab("verdant_slab", VERDANT_PLANKS);
+    public static final BlockEntry<FenceBlock> VERDANT_FENCE =
+            woodenFence("verdant_fence", VERDANT_PLANKS);
+    public static final BlockEntry<FenceGateBlock> VERDANT_FENCE_GATE =
+            woodenFenceGate("verdant_fence_gate", WoodType.BAMBOO, VERDANT_PLANKS);
+    public static final BlockEntry<DoorBlock> VERDANT_DOOR =
+            woodenDoor("verdant_door", BlockSetType.BAMBOO, VERDANT_PLANKS);
+    public static final BlockEntry<TrapDoorBlock> VERDANT_TRAPDOOR =
+            woodenTrapdoor("verdant_trapdoor", BlockSetType.BAMBOO, VERDANT_PLANKS);
+    public static final BlockEntry<PressurePlateBlock> VERDANT_PRESSURE_PLATE =
+            woodenPressurePlate("verdant_pressure_plate", BlockSetType.BAMBOO, VERDANT_PLANKS);
+    public static final BlockEntry<ButtonBlock> VERDANT_BUTTON =
+            woodenButton("verdant_button", BlockSetType.BAMBOO, VERDANT_PLANKS);
+
+    public static final BlockEntry<Block> INVERTED_PLANKS =
+            planks("inverted_planks", MapColor.COLOR_GREEN, MiaTags.ItemTags.INVERTED_LOGS.tag);
+    public static final BlockEntry<StairBlock> INVERTED_STAIRS =
+            woodenStairs("inverted_stairs", INVERTED_PLANKS);
+    public static final BlockEntry<SlabBlock> INVERTED_SLAB =
+            woodenSlab("inverted_slab", INVERTED_PLANKS);
+    public static final BlockEntry<FenceBlock> INVERTED_FENCE =
+            woodenFence("inverted_fence", INVERTED_PLANKS);
+    public static final BlockEntry<FenceGateBlock> INVERTED_FENCE_GATE =
+            woodenFenceGate("inverted_fence_gate", WoodType.CHERRY, INVERTED_PLANKS);
+    public static final BlockEntry<DoorBlock> INVERTED_DOOR =
+            woodenDoor("inverted_door", BlockSetType.CHERRY, INVERTED_PLANKS);
+    public static final BlockEntry<TrapDoorBlock> INVERTED_TRAPDOOR =
+            woodenTrapdoor("inverted_trapdoor", BlockSetType.CHERRY, INVERTED_PLANKS);
+    public static final BlockEntry<PressurePlateBlock> INVERTED_PRESSURE_PLATE =
+            woodenPressurePlate("inverted_pressure_plate", BlockSetType.CHERRY, INVERTED_PLANKS);
+    public static final BlockEntry<ButtonBlock> INVERTED_BUTTON =
+            woodenButton("inverted_button", BlockSetType.CHERRY, INVERTED_PLANKS);
 
     static {
         REGISTRATE.defaultCreativeSection(MiaItemGroups.BASE_NATURE_BLOCKS);
@@ -1335,6 +1407,247 @@ public class MiaBlocks {
                     .transform(TagGen.pickaxeOnly())
                     .simpleItem()
                     .register();
+
+    private static BlockEntry<Block> planks(
+            String name, MapColor color, TagKey<Item> logs) {
+        return REGISTRATE
+                .object(name)
+                .block(Block::new)
+                .properties(
+                        p ->
+                                p.mapColor(color)
+                                        .instrument(NoteBlockInstrument.BASS)
+                                        .strength(2.0F, 3.0F)
+                                        .sound(SoundType.WOOD)
+                                        .ignitedByLava())
+                .tag(BlockTags.PLANKS)
+                .transform(TagGen.axeOnly())
+                .recipe(
+                        (ctx, prov) ->
+                                prov.planks(
+                                        DataIngredient.ingredient(prov.tag(logs), logs),
+                                        RecipeCategory.BUILDING_BLOCKS,
+                                        ctx::get))
+                .item()
+                .tag(ItemTags.PLANKS)
+                .build()
+                .register();
+    }
+
+    private static DataIngredient plankIngredient(BlockEntry<? extends Block> planks) {
+        return DataIngredient.items(planks.get());
+    }
+
+    private static BlockEntry<StairBlock> woodenStairs(
+            String name, BlockEntry<? extends Block> planks) {
+        return REGISTRATE
+                .object(name)
+                .block(p -> new StairBlock(planks.get().defaultBlockState(), p))
+                .initialProperties(planks)
+                .tag(BlockTags.STAIRS, BlockTags.WOODEN_STAIRS)
+                .transform(TagGen.axeOnly())
+                .blockstate(
+                        () ->
+                                (ctx, prov) ->
+                                        prov.generateStairsBlock(
+                                                ctx.get(), prov.blockTexture(planks.get())))
+                .recipe(
+                        (ctx, prov) ->
+                                prov.stairs(
+                                        plankIngredient(planks),
+                                        RecipeCategory.BUILDING_BLOCKS,
+                                        ctx::get,
+                                        "wooden_stairs",
+                                        false))
+                .item()
+                .tag(ItemTags.STAIRS, ItemTags.WOODEN_STAIRS)
+                .build()
+                .register();
+    }
+
+    private static BlockEntry<SlabBlock> woodenSlab(
+            String name, BlockEntry<? extends Block> planks) {
+        return REGISTRATE
+                .object(name)
+                .block(SlabBlock::new)
+                .initialProperties(planks)
+                .tag(BlockTags.SLABS, BlockTags.WOODEN_SLABS)
+                .transform(TagGen.axeOnly())
+                .blockstate(
+                        () ->
+                                (ctx, prov) ->
+                                        prov.generateSlabBlock(
+                                                ctx.get(),
+                                                BlockModelGenerators.plainVariant(
+                                                        prov.blockTexture(planks.get()).sprite()),
+                                                prov.blockTexture(planks.get())))
+                .recipe(
+                        (ctx, prov) ->
+                                prov.slab(
+                                        plankIngredient(planks),
+                                        RecipeCategory.BUILDING_BLOCKS,
+                                        ctx::get,
+                                        "wooden_slab",
+                                        false))
+                .item()
+                .tag(ItemTags.SLABS, ItemTags.WOODEN_SLABS)
+                .build()
+                .register();
+    }
+
+    private static BlockEntry<FenceBlock> woodenFence(
+            String name, BlockEntry<? extends Block> planks) {
+        return REGISTRATE
+                .object(name)
+                .block(p -> new FenceBlock(p.forceSolidOn()))
+                .initialProperties(planks)
+                .tag(BlockTags.FENCES, BlockTags.WOODEN_FENCES)
+                .transform(TagGen.axeOnly())
+                .blockstate(() -> BlockStateGen.woodenFence(planks))
+                .recipe(
+                        (ctx, prov) ->
+                                prov.fence(
+                                        plankIngredient(planks),
+                                        RecipeCategory.DECORATIONS,
+                                        ctx::get,
+                                        "wooden_fence"))
+                .item()
+                .tag(ItemTags.FENCES, ItemTags.WOODEN_FENCES)
+                .build()
+                .register();
+    }
+
+    private static BlockEntry<FenceGateBlock> woodenFenceGate(
+            String name, WoodType type, BlockEntry<? extends Block> planks) {
+        return REGISTRATE
+                .object(name)
+                .block(p -> new FenceGateBlock(type, p.forceSolidOn()))
+                .initialProperties(planks)
+                .tag(BlockTags.FENCE_GATES)
+                .transform(TagGen.axeOnly())
+                .blockstate(() -> BlockStateGen.woodenFenceGate(planks))
+                .recipe(
+                        (ctx, prov) ->
+                                prov.fenceGate(
+                                        plankIngredient(planks),
+                                        RecipeCategory.REDSTONE,
+                                        ctx::get,
+                                        "wooden_fence_gate"))
+                .simpleItem()
+                .register();
+    }
+
+    private static BlockEntry<DoorBlock> woodenDoor(
+            String name, BlockSetType type, BlockEntry<? extends Block> planks) {
+        return REGISTRATE
+                .object(name)
+                .block(
+                        p ->
+                                new DoorBlock(
+                                        type,
+                                        p.mapColor(planks.get().defaultMapColor())
+                                                .instrument(NoteBlockInstrument.BASS)
+                                                .strength(3.0F)
+                                                .noOcclusion()
+                                                .ignitedByLava()
+                                                .pushReaction(PushReaction.DESTROY)))
+                .tag(BlockTags.DOORS, BlockTags.WOODEN_DOORS)
+                .transform(TagGen.axeOnly())
+                .blockstate(() -> (ctx, prov) -> prov.createDoor(ctx.get()))
+                .loot((lt, b) -> lt.add(b, lt.createDoorTable(b)))
+                .recipe(
+                        (ctx, prov) ->
+                                prov.door(
+                                        plankIngredient(planks),
+                                        RecipeCategory.REDSTONE,
+                                        ctx::get,
+                                        "wooden_door"))
+                .item()
+                .tag(ItemTags.DOORS, ItemTags.WOODEN_DOORS)
+                .build()
+                .register();
+    }
+
+    private static BlockEntry<TrapDoorBlock> woodenTrapdoor(
+            String name, BlockSetType type, BlockEntry<? extends Block> planks) {
+        return REGISTRATE
+                .object(name)
+                .block(
+                        p ->
+                                new TrapDoorBlock(
+                                        type,
+                                        p.mapColor(planks.get().defaultMapColor())
+                                                .instrument(NoteBlockInstrument.BASS)
+                                                .strength(3.0F)
+                                                .noOcclusion()
+                                                .isValidSpawn(Blocks::never)
+                                                .ignitedByLava()))
+                .tag(BlockTags.TRAPDOORS, BlockTags.WOODEN_TRAPDOORS)
+                .transform(TagGen.axeOnly())
+                .blockstate(() -> (ctx, prov) -> prov.createOrientableTrapdoor(ctx.get()))
+                .recipe(
+                        (ctx, prov) ->
+                                prov.trapDoor(
+                                        plankIngredient(planks),
+                                        RecipeCategory.REDSTONE,
+                                        ctx::get,
+                                        "wooden_trapdoor"))
+                .item()
+                .tag(ItemTags.TRAPDOORS, ItemTags.WOODEN_TRAPDOORS)
+                .build()
+                .register();
+    }
+
+    private static BlockEntry<PressurePlateBlock> woodenPressurePlate(
+            String name, BlockSetType type, BlockEntry<? extends Block> planks) {
+        return REGISTRATE
+                .object(name)
+                .block(
+                        p ->
+                                new PressurePlateBlock(
+                                        type,
+                                        p.mapColor(planks.get().defaultMapColor())
+                                                .forceSolidOn()
+                                                .instrument(NoteBlockInstrument.BASS)
+                                                .noCollision()
+                                                .strength(0.5F)
+                                                .ignitedByLava()
+                                                .pushReaction(PushReaction.DESTROY)))
+                .tag(BlockTags.PRESSURE_PLATES, BlockTags.WOODEN_PRESSURE_PLATES)
+                .transform(TagGen.axeOnly())
+                .blockstate(() -> BlockStateGen.woodenPressurePlate(planks))
+                .recipe((ctx, prov) -> prov.pressurePlate(ctx.get(), planks.get()))
+                .item()
+                .tag(ItemTags.WOODEN_PRESSURE_PLATES)
+                .build()
+                .register();
+    }
+
+    private static BlockEntry<ButtonBlock> woodenButton(
+            String name, BlockSetType type, BlockEntry<? extends Block> planks) {
+        return REGISTRATE
+                .object(name)
+                .block(
+                        p ->
+                                new ButtonBlock(
+                                        type,
+                                        30,
+                                        p.noCollision()
+                                                .strength(0.5F)
+                                                .pushReaction(PushReaction.DESTROY)))
+                .tag(BlockTags.BUTTONS, BlockTags.WOODEN_BUTTONS)
+                .transform(TagGen.axeOnly())
+                .blockstate(() -> BlockStateGen.woodenButton(planks))
+                .recipe(
+                        (ctx, prov) ->
+                                prov.buttonBuilder(ctx.get(), Ingredient.of(planks.get()))
+                                        .unlockedBy("has_planks", prov.has(planks.get()))
+                                        .save(prov))
+                .item()
+                .tag(ItemTags.BUTTONS, ItemTags.WOODEN_BUTTONS)
+                .build()
+                .register();
+    }
 
     public static BlockEntry<StairBlock> stairs(BlockEntry<? extends Block> base) {
         var name = base.getId().getPath() + "_stairs";

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "mementoinabyss:block/inverted_planks",
+    "side": "mementoinabyss:block/inverted_planks",
+    "top": "mementoinabyss:block/inverted_planks"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "values": [
+    "mementoinabyss:skyfog_planks",
+    "mementoinabyss:skyfog_stairs",
+    "mementoinabyss:skyfog_slab",
+    "mementoinabyss:skyfog_fence",
+    "mementoinabyss:skyfog_fence_gate",
+    "mementoinabyss:skyfog_door",
+    "mementoinabyss:skyfog_trapdoor",
+    "mementoinabyss:skyfog_pressure_plate",
+    "mementoinabyss:skyfog_button",
+    "mementoinabyss:verdant_planks",
+    "mementoinabyss:verdant_stairs",
+    "mementoinabyss:verdant_slab",
+    "mementoinabyss:verdant_fence",
+    "mementoinabyss:verdant_fence_gate",
+    "mementoinabyss:verdant_door",
+    "mementoinabyss:verdant_trapdoor",
+    "mementoinabyss:verdant_pressure_plate",
+    "mementoinabyss:verdant_button",
+    "mementoinabyss:inverted_planks",
+    "mementoinabyss:inverted_stairs",
+    "mementoinabyss:inverted_slab",
+    "mementoinabyss:inverted_fence",
+    "mementoinabyss:inverted_fence_gate",
+    "mementoinabyss:inverted_door",
+    "mementoinabyss:inverted_trapdoor",
+    "mementoinabyss:inverted_pressure_plate",
+    "mementoinabyss:inverted_button"
+  ]
+}

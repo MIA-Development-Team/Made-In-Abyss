@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    "#mementoinabyss:verdant_stems"
+  ],
+  "result": {
+    "count": 4,
+    "id": "mementoinabyss:verdant_planks"
+  }
+}

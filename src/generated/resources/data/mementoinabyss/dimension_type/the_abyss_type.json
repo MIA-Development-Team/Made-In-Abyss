@@ -1,6 +1,10 @@
 {
   "ambient_light": 0.12,
   "attributes": {
+    "mementoinabyss:vertical_below": {
+      "dimension": "mementoinabyss:great_fault",
+      "entry_offset": 8.0
+    },
     "minecraft:audio/ambient_sounds": {
       "mood": {
         "block_search_extent": 8,

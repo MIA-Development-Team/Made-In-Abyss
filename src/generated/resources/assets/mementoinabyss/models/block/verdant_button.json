@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/button",
+  "textures": {
+    "texture": "mementoinabyss:block/verdant_planks"
+  }
+}

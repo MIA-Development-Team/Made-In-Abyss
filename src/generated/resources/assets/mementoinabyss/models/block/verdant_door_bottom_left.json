@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom_left",
+  "textures": {
+    "bottom": "mementoinabyss:block/verdant_door_bottom",
+    "top": "mementoinabyss:block/verdant_door_top"
+  }
+}

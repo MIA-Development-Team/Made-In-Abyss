@@ -490,4 +490,86 @@ public class BlockStateGen {
                 .put(TextureSlot.BOTTOM, bottom)
                 .put(TextureSlot.TOP, top);
     }
+
+    public static <B extends Block>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> woodenFence(
+                    BlockEntry<? extends Block> planks) {
+        return (ctx, prov) -> {
+            var mapping = TextureMapping.cube(planks.get());
+            var post = ModelTemplates.FENCE_POST.create(ctx.get(), mapping, prov.modelOutput);
+            var side = ModelTemplates.FENCE_SIDE.create(ctx.get(), mapping, prov.modelOutput);
+            prov.blockStateOutput.accept(
+                    BlockModelGenerators.createFence(
+                            ctx.get(),
+                            BlockModelGenerators.plainVariant(post),
+                            BlockModelGenerators.plainVariant(side)));
+            prov.registerSimpleItemModel(
+                    ctx.get(),
+                    ModelTemplates.FENCE_INVENTORY.create(ctx.get(), mapping, prov.modelOutput));
+        };
+    }
+
+    public static <B extends Block>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+                    woodenFenceGate(BlockEntry<? extends Block> planks) {
+        return (ctx, prov) -> {
+            var mapping = TextureMapping.cube(planks.get());
+            var open =
+                    BlockModelGenerators.plainVariant(
+                            ModelTemplates.FENCE_GATE_OPEN.create(
+                                    ctx.get(), mapping, prov.modelOutput));
+            var closed =
+                    BlockModelGenerators.plainVariant(
+                            ModelTemplates.FENCE_GATE_CLOSED.create(
+                                    ctx.get(), mapping, prov.modelOutput));
+            var openWall =
+                    BlockModelGenerators.plainVariant(
+                            ModelTemplates.FENCE_GATE_WALL_OPEN.create(
+                                    ctx.get(), mapping, prov.modelOutput));
+            var closedWall =
+                    BlockModelGenerators.plainVariant(
+                            ModelTemplates.FENCE_GATE_WALL_CLOSED.create(
+                                    ctx.get(), mapping, prov.modelOutput));
+            prov.blockStateOutput.accept(
+                    BlockModelGenerators.createFenceGate(
+                            ctx.get(), open, closed, openWall, closedWall, true));
+        };
+    }
+
+    public static <B extends Block>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+                    woodenPressurePlate(BlockEntry<? extends Block> planks) {
+        return (ctx, prov) -> {
+            var mapping = TextureMapping.cube(planks.get());
+            var up =
+                    BlockModelGenerators.plainVariant(
+                            ModelTemplates.PRESSURE_PLATE_UP.create(
+                                    ctx.get(), mapping, prov.modelOutput));
+            var down =
+                    BlockModelGenerators.plainVariant(
+                            ModelTemplates.PRESSURE_PLATE_DOWN.create(
+                                    ctx.get(), mapping, prov.modelOutput));
+            prov.blockStateOutput.accept(BlockModelGenerators.createPressurePlate(ctx.get(), up, down));
+        };
+    }
+
+    public static <B extends Block>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> woodenButton(
+                    BlockEntry<? extends Block> planks) {
+        return (ctx, prov) -> {
+            var mapping = TextureMapping.cube(planks.get());
+            var unpressed =
+                    BlockModelGenerators.plainVariant(
+                            ModelTemplates.BUTTON.create(ctx.get(), mapping, prov.modelOutput));
+            var pressed =
+                    BlockModelGenerators.plainVariant(
+                            ModelTemplates.BUTTON_PRESSED.create(
+                                    ctx.get(), mapping, prov.modelOutput));
+            prov.blockStateOutput.accept(
+                    BlockModelGenerators.createButton(ctx.get(), unpressed, pressed));
+            prov.registerSimpleItemModel(
+                    ctx.get(),
+                    ModelTemplates.BUTTON_INVENTORY.create(ctx.get(), mapping, prov.modelOutput));
+        };
+    }
 }

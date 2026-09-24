@@ -56,7 +56,9 @@ public class MiaTags {
     }
 
     public enum ItemTags {
-        ;
+        SKYFOG_LOGS,
+        VERDANT_STEMS,
+        INVERTED_LOGS;
 
         public final TagKey<Item> tag;
 
