@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "X": "mementoinabyss:stripped_fossilized_wood_bricks"
+  },
+  "pattern": [
+    "XXX"
+  ],
+  "result": {
+    "count": 6,
+    "id": "mementoinabyss:stripped_fossilized_wood_bricks_slab"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "mementoinabyss:mossy_abyss_andesite_bricks",
+  "result": {
+    "count": 2,
+    "id": "mementoinabyss:mossy_abyss_andesite_bricks_slab"
+  }
+}

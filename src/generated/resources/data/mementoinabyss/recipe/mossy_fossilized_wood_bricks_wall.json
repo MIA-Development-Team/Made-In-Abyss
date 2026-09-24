@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "mementoinabyss:mossy_fossilized_wood_bricks"
+  },
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "count": 6,
+    "id": "mementoinabyss:mossy_fossilized_wood_bricks_wall"
+  }
+}

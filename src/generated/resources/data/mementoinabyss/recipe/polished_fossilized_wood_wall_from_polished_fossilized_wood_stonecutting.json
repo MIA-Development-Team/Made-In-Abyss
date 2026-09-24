@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "mementoinabyss:polished_fossilized_wood",
+  "result": {
+    "id": "mementoinabyss:polished_fossilized_wood_wall"
+  }
+}

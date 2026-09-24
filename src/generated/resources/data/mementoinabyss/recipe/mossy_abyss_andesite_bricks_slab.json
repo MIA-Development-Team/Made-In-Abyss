@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "X": "mementoinabyss:mossy_abyss_andesite_bricks"
+  },
+  "pattern": [
+    "XXX"
+  ],
+  "result": {
+    "count": 6,
+    "id": "mementoinabyss:mossy_abyss_andesite_bricks_slab"
+  }
+}

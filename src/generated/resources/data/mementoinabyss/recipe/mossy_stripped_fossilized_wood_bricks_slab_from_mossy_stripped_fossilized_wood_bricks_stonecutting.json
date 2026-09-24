@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "mementoinabyss:mossy_stripped_fossilized_wood_bricks",
+  "result": {
+    "count": 2,
+    "id": "mementoinabyss:mossy_stripped_fossilized_wood_bricks_slab"
+  }
+}

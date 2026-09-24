@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "mementoinabyss:polished_abyss_andesite",
+  "result": {
+    "id": "mementoinabyss:polished_abyss_andesite_stairs"
+  }
+}

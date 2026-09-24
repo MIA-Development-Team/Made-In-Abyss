@@ -25,49 +25,32 @@ import com.altnoir.mementoinabyss.content.portal.AbyssPortalCoreBlock;
 import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlock;
 import com.altnoir.mementoinabyss.content.whistle.WhistleWorkbenchBlock;
 import com.altnoir.mementoinabyss.foundation.registrate.BlockStateGen;
+import com.altnoir.mementoinabyss.foundation.registrate.BuilderTransformers;
+import com.altnoir.mementoinabyss.foundation.registrate.BuildingBlockFamily;
+import com.altnoir.mementoinabyss.foundation.registrate.BuildingBlockVariant;
+import com.altnoir.mementoinabyss.foundation.registrate.LootGen;
 import com.altnoir.mementoinabyss.foundation.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.foundation.registrate.TagGen;
+import com.altnoir.mementoinabyss.foundation.registrate.WoodBlockFamily;
+import com.altnoir.mementoinabyss.foundation.registrate.WoodBlockFamily.PillarProperties;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeFeatures;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeGrowers;
-import com.tterrag.registrate.providers.DataGenContext;
-import com.tterrag.registrate.providers.generators.RegistrateItemModelGenerator;
-import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
-import java.util.Optional;
-import net.minecraft.advancements.criterion.StatePropertiesPredicate;
-import net.minecraft.client.data.models.BlockModelGenerators;
-import net.minecraft.client.data.models.model.ModelTemplates;
-import net.minecraft.client.data.models.model.TextureMapping;
-import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
-import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.neoforge.common.Tags;
 
 public class MiaBlocks {
@@ -121,7 +104,6 @@ public class MiaBlocks {
                                             .strength(100.0F, 1200.0F)
                                             .sound(SoundType.NETHERITE_BLOCK))
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(BlockStateGen::abyssPortalFrame)
                     .simpleItem()
                     .register();
 
@@ -243,9 +225,14 @@ public class MiaBlocks {
                     .simpleItem()
                     .register();
 
-    public static final BlockEntry<StairBlock> ABYSS_ANDESITE_STAIRS = stairs(ABYSS_ANDESITE);
-    public static final BlockEntry<SlabBlock> ABYSS_ANDESITE_SLAB = slab(ABYSS_ANDESITE);
-    public static final BlockEntry<WallBlock> ABYSS_ANDESITE_WALL = wall(ABYSS_ANDESITE);
+    private static final BuildingBlockFamily ABYSS_ANDESITE_FAMILY =
+            BuildingBlockFamily.stone(REGISTRATE, ABYSS_ANDESITE).register();
+    public static final BlockEntry<StairBlock> ABYSS_ANDESITE_STAIRS =
+            ABYSS_ANDESITE_FAMILY.get(BuildingBlockVariant.STAIRS);
+    public static final BlockEntry<SlabBlock> ABYSS_ANDESITE_SLAB =
+            ABYSS_ANDESITE_FAMILY.get(BuildingBlockVariant.SLAB);
+    public static final BlockEntry<WallBlock> ABYSS_ANDESITE_WALL =
+            ABYSS_ANDESITE_FAMILY.get(BuildingBlockVariant.WALL);
 
     public static final BlockEntry<Block> ABYSS_COBBLED_ANDESITE =
             REGISTRATE
@@ -289,27 +276,32 @@ public class MiaBlocks {
         REGISTRATE.defaultCreativeSection(MiaItemGroups.BASE_BUILDING_BLOCKS);
     }
 
+    private static final BuildingBlockFamily ABYSS_COBBLED_ANDESITE_FAMILY =
+            BuildingBlockFamily.stone(REGISTRATE, ABYSS_COBBLED_ANDESITE).register();
     public static final BlockEntry<StairBlock> ABYSS_COBBLED_ANDESITE_STAIRS =
-            stairs(ABYSS_COBBLED_ANDESITE);
+            ABYSS_COBBLED_ANDESITE_FAMILY.get(BuildingBlockVariant.STAIRS);
     public static final BlockEntry<SlabBlock> ABYSS_COBBLED_ANDESITE_SLAB =
-            slab(ABYSS_COBBLED_ANDESITE);
+            ABYSS_COBBLED_ANDESITE_FAMILY.get(BuildingBlockVariant.SLAB);
     public static final BlockEntry<WallBlock> ABYSS_COBBLED_ANDESITE_WALL =
-            wall(ABYSS_COBBLED_ANDESITE);
+            ABYSS_COBBLED_ANDESITE_FAMILY.get(BuildingBlockVariant.WALL);
 
     public static final BlockEntry<Block> MOSSY_ABYSS_COBBLED_ANDESITE =
             REGISTRATE
                     .object("mossy_abyss_cobbled_andesite")
                     .block(Block::new)
                     .initialProperties(ABYSS_COBBLED_ANDESITE)
+                    .transform(BuilderTransformers.stone())
                     .simpleItem()
                     .register();
 
+    private static final BuildingBlockFamily MOSSY_ABYSS_COBBLED_ANDESITE_FAMILY =
+            BuildingBlockFamily.stone(REGISTRATE, MOSSY_ABYSS_COBBLED_ANDESITE).register();
     public static final BlockEntry<StairBlock> MOSSY_ABYSS_COBBLED_ANDESITE_STAIRS =
-            stairs(MOSSY_ABYSS_COBBLED_ANDESITE);
+            MOSSY_ABYSS_COBBLED_ANDESITE_FAMILY.get(BuildingBlockVariant.STAIRS);
     public static final BlockEntry<SlabBlock> MOSSY_ABYSS_COBBLED_ANDESITE_SLAB =
-            slab(MOSSY_ABYSS_COBBLED_ANDESITE);
+            MOSSY_ABYSS_COBBLED_ANDESITE_FAMILY.get(BuildingBlockVariant.SLAB);
     public static final BlockEntry<WallBlock> MOSSY_ABYSS_COBBLED_ANDESITE_WALL =
-            wall(MOSSY_ABYSS_COBBLED_ANDESITE);
+            MOSSY_ABYSS_COBBLED_ANDESITE_FAMILY.get(BuildingBlockVariant.WALL);
 
     public static final BlockEntry<Block> POLISHED_ABYSS_ANDESITE =
             REGISTRATE
@@ -317,15 +309,18 @@ public class MiaBlocks {
                     .block(Block::new)
                     .initialProperties(ABYSS_COBBLED_ANDESITE)
                     .properties(p -> p.sound(SoundType.POLISHED_DEEPSLATE))
+                    .transform(BuilderTransformers.stone())
                     .simpleItem()
                     .register();
 
+    private static final BuildingBlockFamily POLISHED_ABYSS_ANDESITE_FAMILY =
+            BuildingBlockFamily.stone(REGISTRATE, POLISHED_ABYSS_ANDESITE).register();
     public static final BlockEntry<StairBlock> POLISHED_ABYSS_ANDESITE_STAIRS =
-            stairs(POLISHED_ABYSS_ANDESITE);
+            POLISHED_ABYSS_ANDESITE_FAMILY.get(BuildingBlockVariant.STAIRS);
     public static final BlockEntry<SlabBlock> POLISHED_ABYSS_ANDESITE_SLAB =
-            slab(POLISHED_ABYSS_ANDESITE);
+            POLISHED_ABYSS_ANDESITE_FAMILY.get(BuildingBlockVariant.SLAB);
     public static final BlockEntry<WallBlock> POLISHED_ABYSS_ANDESITE_WALL =
-            wall(POLISHED_ABYSS_ANDESITE);
+            POLISHED_ABYSS_ANDESITE_FAMILY.get(BuildingBlockVariant.WALL);
 
     public static final BlockEntry<RotatedPillarBlock> ABYSS_ANDESITE_PILLAR =
             REGISTRATE
@@ -378,12 +373,14 @@ public class MiaBlocks {
                     .simpleItem()
                     .register();
 
+    private static final BuildingBlockFamily ABYSS_ANDESITE_BRICKS_FAMILY =
+            BuildingBlockFamily.stone(REGISTRATE, ABYSS_ANDESITE_BRICKS).register();
     public static final BlockEntry<StairBlock> ABYSS_ANDESITE_BRICKS_STAIRS =
-            stairs(ABYSS_ANDESITE_BRICKS);
+            ABYSS_ANDESITE_BRICKS_FAMILY.get(BuildingBlockVariant.STAIRS);
     public static final BlockEntry<SlabBlock> ABYSS_ANDESITE_BRICKS_SLAB =
-            slab(ABYSS_ANDESITE_BRICKS);
+            ABYSS_ANDESITE_BRICKS_FAMILY.get(BuildingBlockVariant.SLAB);
     public static final BlockEntry<WallBlock> ABYSS_ANDESITE_BRICKS_WALL =
-            wall(ABYSS_ANDESITE_BRICKS);
+            ABYSS_ANDESITE_BRICKS_FAMILY.get(BuildingBlockVariant.WALL);
 
     public static final BlockEntry<Block> MOSSY_ABYSS_ANDESITE_BRICKS =
             REGISTRATE
@@ -394,12 +391,14 @@ public class MiaBlocks {
                     .simpleItem()
                     .register();
 
+    private static final BuildingBlockFamily MOSSY_ABYSS_ANDESITE_BRICKS_FAMILY =
+            BuildingBlockFamily.stone(REGISTRATE, MOSSY_ABYSS_ANDESITE_BRICKS).register();
     public static final BlockEntry<StairBlock> MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS =
-            stairs(MOSSY_ABYSS_ANDESITE_BRICKS);
+            MOSSY_ABYSS_ANDESITE_BRICKS_FAMILY.get(BuildingBlockVariant.STAIRS);
     public static final BlockEntry<SlabBlock> MOSSY_ABYSS_ANDESITE_BRICKS_SLAB =
-            slab(MOSSY_ABYSS_ANDESITE_BRICKS);
+            MOSSY_ABYSS_ANDESITE_BRICKS_FAMILY.get(BuildingBlockVariant.SLAB);
     public static final BlockEntry<WallBlock> MOSSY_ABYSS_ANDESITE_BRICKS_WALL =
-            wall(MOSSY_ABYSS_ANDESITE_BRICKS);
+            MOSSY_ABYSS_ANDESITE_BRICKS_FAMILY.get(BuildingBlockVariant.WALL);
 
     public static final BlockEntry<CoverGrassBlock> COVERGRASS_ABYSS_ANDESITE =
             REGISTRATE
@@ -411,13 +410,7 @@ public class MiaBlocks {
                     .tag(MiaTags.BlockTags.COVERGRASS.tag, BlockTags.DIRT)
                     .tag(MiaTags.BlockTags.BASE_STONE_ABYSS.tag)
                     .transform(TagGen.pickaxeOnly())
-                    .loot(
-                            (lt, b) -> {
-                                lt.add(
-                                        b,
-                                        lt.createSilkTouchDispatchTable(
-                                                b, LootItem.lootTableItem(ABYSS_ANDESITE.get())));
-                            })
+                    .loot(LootGen.silkTouchOr(ABYSS_ANDESITE))
                     .simpleItem()
                     .register();
 
@@ -430,13 +423,7 @@ public class MiaBlocks {
                     .blockstate(BlockStateGen::coverGrass)
                     .tag(MiaTags.BlockTags.COVERGRASS.tag, BlockTags.DIRT)
                     .transform(TagGen.pickaxeOnly())
-                    .loot(
-                            (lt, b) -> {
-                                lt.add(
-                                        b,
-                                        lt.createSilkTouchDispatchTable(
-                                                b, LootItem.lootTableItem(Blocks.TUFF)));
-                            })
+                    .loot(LootGen.silkTouchOr(() -> Blocks.TUFF))
                     .simpleItem()
                     .register();
 
@@ -460,12 +447,7 @@ public class MiaBlocks {
                     .transform(TagGen.pickaxeOnly())
                     .blockstate(BlockStateGen::suspiciousAbyssAndesite)
                     .item()
-                    .model(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.createWithExistingModel(
-                                                    ctx.getEntry(),
-                                                    prov.modLoc("block/" + ctx.getName() + "_0")))
+                    .model(() -> (ctx, prov) -> prov.generateBlockItem(ctx.get(), "_0"))
                     .build()
                     .register();
 
@@ -480,6 +462,7 @@ public class MiaBlocks {
                                             .requiresCorrectToolForDrops()
                                             .strength(3.5F, 8.0F)
                                             .sound(SoundType.CALCITE))
+                    .transform(BuilderTransformers.stone())
                     .simpleItem()
                     .register();
 
@@ -499,18 +482,9 @@ public class MiaBlocks {
                                             .requiresCorrectToolForDrops()
                                             .strength(2.0F, 4.2F)
                                             .sound(SoundType.BASALT))
-                    .blockstate(
-                            () ->
-                                    BlockStateGen.variantAxisBlock(
-                                            null, 5, Optional.of(new int[] {12, 1, 1, 1, 1})))
-                    .item()
-                    .model(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.createWithExistingModel(
-                                                    ctx.getEntry(),
-                                                    prov.modLoc("block/" + ctx.getName() + "0")))
-                    .build()
+                    .transform(BuilderTransformers.stone())
+                    .blockstate(() -> BlockStateGen.variantLog(12, 1, 1, 1, 1))
+                    .simpleItem()
                     .register();
 
     public static final BlockEntry<RotatedPillarBlock> STRIPPED_FOSSILIZED_WOOD =
@@ -519,20 +493,12 @@ public class MiaBlocks {
                     .block(RotatedPillarBlock::new)
                     .initialProperties(STRIPPED_FOSSILIZED_LOG)
                     .properties(p -> p.mapColor(MapColor.PODZOL).strength(3.0F, 4.2F))
+                    .transform(BuilderTransformers.stone())
                     .blockstate(
                             () ->
-                                    BlockStateGen.variantAxisBlock(
-                                            STRIPPED_FOSSILIZED_LOG,
-                                            5,
-                                            Optional.of(new int[] {12, 1, 1, 1, 1})))
-                    .item()
-                    .model(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.createWithExistingModel(
-                                                    ctx.getEntry(),
-                                                    prov.modLoc("block/" + ctx.getName() + "0")))
-                    .build()
+                                    BlockStateGen.variantWood(
+                                            STRIPPED_FOSSILIZED_LOG, 12, 1, 1, 1, 1))
+                    .simpleItem()
                     .register();
 
     public static final BlockEntry<StrippedRotatedPillarBlock> FOSSILIZED_LOG =
@@ -540,18 +506,9 @@ public class MiaBlocks {
                     .object("fossilized_log")
                     .block(p -> new StrippedRotatedPillarBlock(STRIPPED_FOSSILIZED_LOG.get(), p))
                     .initialProperties(STRIPPED_FOSSILIZED_LOG)
-                    .blockstate(
-                            () ->
-                                    BlockStateGen.variantAxisBlock(
-                                            null, 3, Optional.of(new int[] {12, 1, 1})))
-                    .item()
-                    .model(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.createWithExistingModel(
-                                                    ctx.getEntry(),
-                                                    prov.modLoc("block/" + ctx.getName() + "0")))
-                    .build()
+                    .transform(BuilderTransformers.stone())
+                    .blockstate(() -> BlockStateGen.variantLog(12, 1, 1))
+                    .simpleItem()
                     .register();
 
     public static final BlockEntry<StrippedRotatedPillarBlock> FOSSILIZED_WOOD =
@@ -559,18 +516,9 @@ public class MiaBlocks {
                     .object("fossilized_wood")
                     .block(p -> new StrippedRotatedPillarBlock(STRIPPED_FOSSILIZED_WOOD.get(), p))
                     .initialProperties(STRIPPED_FOSSILIZED_WOOD)
-                    .blockstate(
-                            () ->
-                                    BlockStateGen.variantAxisBlock(
-                                            FOSSILIZED_LOG, 3, Optional.of(new int[] {12, 1, 1})))
-                    .item()
-                    .model(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.createWithExistingModel(
-                                                    ctx.getEntry(),
-                                                    prov.modLoc("block/" + ctx.getName() + "0")))
-                    .build()
+                    .transform(BuilderTransformers.stone())
+                    .blockstate(() -> BlockStateGen.variantWood(FOSSILIZED_LOG, 12, 1, 1))
+                    .simpleItem()
                     .register();
 
     public static final BlockEntry<StrippedRotatedPillarBlock> MOSSY_FOSSILIZED_LOG =
@@ -578,18 +526,9 @@ public class MiaBlocks {
                     .object("mossy_fossilized_log")
                     .block(p -> new StrippedRotatedPillarBlock(FOSSILIZED_LOG.get(), p))
                     .initialProperties(FOSSILIZED_LOG)
-                    .blockstate(
-                            () ->
-                                    BlockStateGen.variantAxisBlock(
-                                            null, 4, Optional.of(new int[] {12, 1, 1, 1})))
-                    .item()
-                    .model(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.createWithExistingModel(
-                                                    ctx.getEntry(),
-                                                    prov.modLoc("block/" + ctx.getName() + "0")))
-                    .build()
+                    .transform(BuilderTransformers.stone())
+                    .blockstate(() -> BlockStateGen.variantLog(12, 1, 1, 1))
+                    .simpleItem()
                     .register();
 
     public static final BlockEntry<StrippedRotatedPillarBlock> MOSSY_FOSSILIZED_WOOD =
@@ -597,20 +536,9 @@ public class MiaBlocks {
                     .object("mossy_fossilized_wood")
                     .block(p -> new StrippedRotatedPillarBlock(FOSSILIZED_WOOD.get(), p))
                     .initialProperties(FOSSILIZED_WOOD)
-                    .blockstate(
-                            () ->
-                                    BlockStateGen.variantAxisBlock(
-                                            MOSSY_FOSSILIZED_LOG,
-                                            4,
-                                            Optional.of(new int[] {12, 1, 1, 1})))
-                    .item()
-                    .model(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.createWithExistingModel(
-                                                    ctx.getEntry(),
-                                                    prov.modLoc("block/" + ctx.getName() + "0")))
-                    .build()
+                    .transform(BuilderTransformers.stone())
+                    .blockstate(() -> BlockStateGen.variantWood(MOSSY_FOSSILIZED_LOG, 12, 1, 1, 1))
+                    .simpleItem()
                     .register();
 
     public static final BlockEntry<StrippedRotatedPillarBlock> MOSSY_STRIPPED_FOSSILIZED_LOG =
@@ -618,18 +546,9 @@ public class MiaBlocks {
                     .object("mossy_stripped_fossilized_log")
                     .block(p -> new StrippedRotatedPillarBlock(FOSSILIZED_WOOD.get(), p))
                     .initialProperties(STRIPPED_FOSSILIZED_LOG)
-                    .blockstate(
-                            () ->
-                                    BlockStateGen.variantAxisBlock(
-                                            null, 5, Optional.of(new int[] {12, 1, 1, 1, 1})))
-                    .item()
-                    .model(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.createWithExistingModel(
-                                                    ctx.getEntry(),
-                                                    prov.modLoc("block/" + ctx.getName() + "0")))
-                    .build()
+                    .transform(BuilderTransformers.stone())
+                    .blockstate(() -> BlockStateGen.variantLog(12, 1, 1, 1, 1))
+                    .simpleItem()
                     .register();
 
     public static final BlockEntry<StrippedRotatedPillarBlock> MOSSY_STRIPPED_FOSSILIZED_WOOD =
@@ -637,20 +556,12 @@ public class MiaBlocks {
                     .object("mossy_stripped_fossilized_wood")
                     .block(p -> new StrippedRotatedPillarBlock(FOSSILIZED_WOOD.get(), p))
                     .initialProperties(STRIPPED_FOSSILIZED_WOOD)
+                    .transform(BuilderTransformers.stone())
                     .blockstate(
                             () ->
-                                    BlockStateGen.variantAxisBlock(
-                                            MOSSY_STRIPPED_FOSSILIZED_LOG,
-                                            5,
-                                            Optional.of(new int[] {12, 1, 1, 1, 1})))
-                    .item()
-                    .model(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.createWithExistingModel(
-                                                    ctx.getEntry(),
-                                                    prov.modLoc("block/" + ctx.getName() + "0")))
-                    .build()
+                                    BlockStateGen.variantWood(
+                                            MOSSY_STRIPPED_FOSSILIZED_LOG, 12, 1, 1, 1, 1))
+                    .simpleItem()
                     .register();
 
     public static final BlockEntry<Block> POLISHED_FOSSILIZED_WOOD =
@@ -658,36 +569,43 @@ public class MiaBlocks {
                     .object("polished_fossilized_wood")
                     .block(Block::new)
                     .initialProperties(FOSSILIZED_WOOD)
+                    .transform(BuilderTransformers.stone())
                     .simpleItem()
                     .register();
 
+    private static final BuildingBlockFamily POLISHED_FOSSILIZED_WOOD_FAMILY =
+            BuildingBlockFamily.stone(REGISTRATE, POLISHED_FOSSILIZED_WOOD).register();
     public static final BlockEntry<StairBlock> POLISHED_FOSSILIZED_WOOD_STAIRS =
-            stairs(POLISHED_FOSSILIZED_WOOD);
+            POLISHED_FOSSILIZED_WOOD_FAMILY.get(BuildingBlockVariant.STAIRS);
     public static final BlockEntry<SlabBlock> POLISHED_FOSSILIZED_WOOD_SLAB =
-            slab(POLISHED_FOSSILIZED_WOOD);
+            POLISHED_FOSSILIZED_WOOD_FAMILY.get(BuildingBlockVariant.SLAB);
     public static final BlockEntry<WallBlock> POLISHED_FOSSILIZED_WOOD_WALL =
-            wall(POLISHED_FOSSILIZED_WOOD);
+            POLISHED_FOSSILIZED_WOOD_FAMILY.get(BuildingBlockVariant.WALL);
 
     public static final BlockEntry<Block> POLISHED_STRIPPED_FOSSILIZED_WOOD =
             REGISTRATE
                     .object("polished_stripped_fossilized_wood")
                     .block(Block::new)
                     .initialProperties(STRIPPED_FOSSILIZED_WOOD)
+                    .transform(BuilderTransformers.stone())
                     .simpleItem()
                     .register();
 
+    private static final BuildingBlockFamily POLISHED_STRIPPED_FOSSILIZED_WOOD_FAMILY =
+            BuildingBlockFamily.stone(REGISTRATE, POLISHED_STRIPPED_FOSSILIZED_WOOD).register();
     public static final BlockEntry<StairBlock> POLISHED_STRIPPED_FOSSILIZED_WOOD_STAIRS =
-            stairs(POLISHED_STRIPPED_FOSSILIZED_WOOD);
+            POLISHED_STRIPPED_FOSSILIZED_WOOD_FAMILY.get(BuildingBlockVariant.STAIRS);
     public static final BlockEntry<SlabBlock> POLISHED_STRIPPED_FOSSILIZED_WOOD_SLAB =
-            slab(POLISHED_STRIPPED_FOSSILIZED_WOOD);
+            POLISHED_STRIPPED_FOSSILIZED_WOOD_FAMILY.get(BuildingBlockVariant.SLAB);
     public static final BlockEntry<WallBlock> POLISHED_STRIPPED_FOSSILIZED_WOOD_WALL =
-            wall(POLISHED_STRIPPED_FOSSILIZED_WOOD);
+            POLISHED_STRIPPED_FOSSILIZED_WOOD_FAMILY.get(BuildingBlockVariant.WALL);
 
     public static final BlockEntry<Block> CHISLED_STRIPPED_FOSSILIZED_WOOD =
             REGISTRATE
                     .object("chiseled_stripped_fossilized_wood")
                     .block(Block::new)
                     .initialProperties(STRIPPED_FOSSILIZED_WOOD)
+                    .transform(BuilderTransformers.stone())
                     .simpleItem()
                     .register();
 
@@ -696,273 +614,199 @@ public class MiaBlocks {
                     .object("fossilized_wood_bricks")
                     .block(Block::new)
                     .initialProperties(FOSSILIZED_WOOD)
+                    .transform(BuilderTransformers.stone())
                     .simpleItem()
                     .register();
 
+    private static final BuildingBlockFamily FOSSILIZED_WOOD_BRICKS_FAMILY =
+            BuildingBlockFamily.stone(REGISTRATE, FOSSILIZED_WOOD_BRICKS).register();
     public static final BlockEntry<StairBlock> FOSSILIZED_WOOD_BRICKS_STAIRS =
-            stairs(FOSSILIZED_WOOD_BRICKS);
+            FOSSILIZED_WOOD_BRICKS_FAMILY.get(BuildingBlockVariant.STAIRS);
     public static final BlockEntry<SlabBlock> FOSSILIZED_WOOD_BRICKS_SLAB =
-            slab(FOSSILIZED_WOOD_BRICKS);
+            FOSSILIZED_WOOD_BRICKS_FAMILY.get(BuildingBlockVariant.SLAB);
     public static final BlockEntry<WallBlock> FOSSILIZED_WOOD_BRICKS_WALL =
-            wall(FOSSILIZED_WOOD_BRICKS);
+            FOSSILIZED_WOOD_BRICKS_FAMILY.get(BuildingBlockVariant.WALL);
 
     public static final BlockEntry<Block> STRIPPED_FOSSILIZED_WOOD_BRICKS =
             REGISTRATE
                     .object("stripped_fossilized_wood_bricks")
                     .block(Block::new)
                     .initialProperties(STRIPPED_FOSSILIZED_WOOD)
+                    .transform(BuilderTransformers.stone())
                     .simpleItem()
                     .register();
 
+    private static final BuildingBlockFamily STRIPPED_FOSSILIZED_WOOD_BRICKS_FAMILY =
+            BuildingBlockFamily.stone(REGISTRATE, STRIPPED_FOSSILIZED_WOOD_BRICKS).register();
     public static final BlockEntry<StairBlock> STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS =
-            stairs(STRIPPED_FOSSILIZED_WOOD_BRICKS);
+            STRIPPED_FOSSILIZED_WOOD_BRICKS_FAMILY.get(BuildingBlockVariant.STAIRS);
     public static final BlockEntry<SlabBlock> STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB =
-            slab(STRIPPED_FOSSILIZED_WOOD_BRICKS);
+            STRIPPED_FOSSILIZED_WOOD_BRICKS_FAMILY.get(BuildingBlockVariant.SLAB);
     public static final BlockEntry<WallBlock> STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL =
-            wall(STRIPPED_FOSSILIZED_WOOD_BRICKS);
+            STRIPPED_FOSSILIZED_WOOD_BRICKS_FAMILY.get(BuildingBlockVariant.WALL);
 
     public static final BlockEntry<Block> MOSSY_FOSSILIZED_WOOD_BRICKS =
             REGISTRATE
                     .object("mossy_fossilized_wood_bricks")
                     .block(Block::new)
                     .initialProperties(FOSSILIZED_WOOD)
+                    .transform(BuilderTransformers.stone())
                     .simpleItem()
                     .register();
 
+    private static final BuildingBlockFamily MOSSY_FOSSILIZED_WOOD_BRICKS_FAMILY =
+            BuildingBlockFamily.stone(REGISTRATE, MOSSY_FOSSILIZED_WOOD_BRICKS).register();
     public static final BlockEntry<StairBlock> MOSSY_FOSSILIZED_WOOD_BRICKS_STAIRS =
-            stairs(MOSSY_FOSSILIZED_WOOD_BRICKS);
+            MOSSY_FOSSILIZED_WOOD_BRICKS_FAMILY.get(BuildingBlockVariant.STAIRS);
     public static final BlockEntry<SlabBlock> MOSSY_FOSSILIZED_WOOD_BRICKS_SLAB =
-            slab(MOSSY_FOSSILIZED_WOOD_BRICKS);
+            MOSSY_FOSSILIZED_WOOD_BRICKS_FAMILY.get(BuildingBlockVariant.SLAB);
     public static final BlockEntry<WallBlock> MOSSY_FOSSILIZED_WOOD_BRICKS_WALL =
-            wall(MOSSY_FOSSILIZED_WOOD_BRICKS);
+            MOSSY_FOSSILIZED_WOOD_BRICKS_FAMILY.get(BuildingBlockVariant.WALL);
 
     public static final BlockEntry<Block> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS =
             REGISTRATE
                     .object("mossy_stripped_fossilized_wood_bricks")
                     .block(Block::new)
                     .initialProperties(FOSSILIZED_WOOD)
+                    .transform(BuilderTransformers.stone())
                     .simpleItem()
                     .register();
 
+    private static final BuildingBlockFamily MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_FAMILY =
+            BuildingBlockFamily.stone(REGISTRATE, MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS).register();
     public static final BlockEntry<StairBlock> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS =
-            stairs(MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+            MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_FAMILY.get(BuildingBlockVariant.STAIRS);
     public static final BlockEntry<SlabBlock> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB =
-            slab(MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+            MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_FAMILY.get(BuildingBlockVariant.SLAB);
     public static final BlockEntry<WallBlock> MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL =
-            wall(MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+            MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_FAMILY.get(BuildingBlockVariant.WALL);
 
+    private static final WoodBlockFamily SKYFOG_FAMILY =
+            new WoodBlockFamily(
+                    "skyfog",
+                    "log",
+                    "wood",
+                    new PillarProperties(MapColor.WOOD, MapColor.PODZOL, SoundType.WOOD),
+                    new PillarProperties(MapColor.WOOD, MapColor.WOOD, SoundType.WOOD),
+                    MapColor.COLOR_GREEN,
+                    WoodType.BAMBOO,
+                    true,
+                    MiaTags.ItemTags.SKYFOG_LOGS.tag);
+    private static final WoodBlockFamily.Logs SKYFOG_LOG_FAMILY =
+            SKYFOG_FAMILY.registerLogs(REGISTRATE);
     public static final BlockEntry<RotatedPillarBlock> STRIPPED_SKYFOG_LOG =
-            REGISTRATE
-                    .object("stripped_skyfog_log")
-                    .block(RotatedPillarBlock::new)
-                    .properties(p -> treeLogProperties(p, MapColor.WOOD, MapColor.WOOD))
-                    .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-                    .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
-                    .simpleItem()
-                    .register();
-
+            SKYFOG_LOG_FAMILY.strippedLog();
     public static final BlockEntry<RotatedPillarBlock> STRIPPED_SKYFOG_WOOD =
-            REGISTRATE
-                    .object("stripped_skyfog_wood")
-                    .block(RotatedPillarBlock::new)
-                    .initialProperties(STRIPPED_SKYFOG_LOG)
-                    .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-                    .blockstate(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.woodProvider(STRIPPED_SKYFOG_LOG.get())
-                                                    .wood(ctx.get()))
-                    .recipe((ctx, prov) -> prov.woodFromLogs(ctx.get(), STRIPPED_SKYFOG_LOG.get()))
-                    .simpleItem()
-                    .register();
-
-    public static final BlockEntry<StrippedRotatedPillarBlock> SKYFOG_LOG =
-            REGISTRATE
-                    .object("skyfog_log")
-                    .block(p -> new StrippedRotatedPillarBlock(STRIPPED_SKYFOG_LOG.get(), p))
-                    .properties(p -> treeLogProperties(p, MapColor.WOOD, MapColor.PODZOL))
-                    .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-                    .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
-                    .simpleItem()
-                    .register();
-
+            SKYFOG_LOG_FAMILY.strippedWood();
+    public static final BlockEntry<StrippedRotatedPillarBlock> SKYFOG_LOG = SKYFOG_LOG_FAMILY.log();
     public static final BlockEntry<StrippedRotatedPillarBlock> SKYFOG_WOOD =
-            REGISTRATE
-                    .object("skyfog_wood")
-                    .block(p -> new StrippedRotatedPillarBlock(STRIPPED_SKYFOG_WOOD.get(), p))
-                    .initialProperties(SKYFOG_LOG)
-                    .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-                    .blockstate(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.woodProvider(SKYFOG_LOG.get()).wood(ctx.get()))
-                    .recipe((ctx, prov) -> prov.woodFromLogs(ctx.get(), SKYFOG_LOG.get()))
-                    .simpleItem()
-                    .register();
+            SKYFOG_LOG_FAMILY.wood();
 
+    private static final WoodBlockFamily VERDANT_FAMILY =
+            new WoodBlockFamily(
+                    "verdant",
+                    "stem",
+                    "hyphae",
+                    new PillarProperties(MapColor.TERRACOTTA_YELLOW, MapColor.WOOD, SoundType.STEM),
+                    new PillarProperties(MapColor.TERRACOTTA_RED, MapColor.WOOD, SoundType.STEM),
+                    MapColor.TERRACOTTA_YELLOW,
+                    WoodType.BAMBOO,
+                    false,
+                    MiaTags.ItemTags.VERDANT_STEMS.tag);
+    private static final WoodBlockFamily.Logs VERDANT_LOG_FAMILY =
+            VERDANT_FAMILY.registerLogs(REGISTRATE);
     public static final BlockEntry<RotatedPillarBlock> STRIPPED_VERDANT_STEM =
-            REGISTRATE
-                    .object("stripped_verdant_stem")
-                    .block(RotatedPillarBlock::new)
-                    .properties(
-                            p ->
-                                    treeLogProperties(p, MapColor.TERRACOTTA_RED, MapColor.WOOD)
-                                            .sound(SoundType.STEM))
-                    .tag(BlockTags.LOGS)
-                    .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
-                    .simpleItem()
-                    .register();
-
+            VERDANT_LOG_FAMILY.strippedLog();
     public static final BlockEntry<RotatedPillarBlock> STRIPPED_VERDANT_HYPHAE =
-            REGISTRATE
-                    .object("stripped_verdant_hyphae")
-                    .block(RotatedPillarBlock::new)
-                    .initialProperties(STRIPPED_VERDANT_STEM)
-                    .tag(BlockTags.LOGS)
-                    .blockstate(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.woodProvider(STRIPPED_VERDANT_STEM.get())
-                                                    .wood(ctx.get()))
-                    .recipe(
-                            (ctx, prov) ->
-                                    prov.woodFromLogs(ctx.get(), STRIPPED_VERDANT_STEM.get()))
-                    .simpleItem()
-                    .register();
-
+            VERDANT_LOG_FAMILY.strippedWood();
     public static final BlockEntry<StrippedRotatedPillarBlock> VERDANT_STEM =
-            REGISTRATE
-                    .object("verdant_stem")
-                    .block(p -> new StrippedRotatedPillarBlock(STRIPPED_VERDANT_STEM.get(), p))
-                    .properties(
-                            p ->
-                                    treeLogProperties(p, MapColor.TERRACOTTA_YELLOW, MapColor.WOOD)
-                                            .sound(SoundType.STEM))
-                    .tag(BlockTags.LOGS)
-                    .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
-                    .simpleItem()
-                    .register();
-
+            VERDANT_LOG_FAMILY.log();
     public static final BlockEntry<StrippedRotatedPillarBlock> VERDANT_HYPHAE =
-            REGISTRATE
-                    .object("verdant_hyphae")
-                    .block(p -> new StrippedRotatedPillarBlock(STRIPPED_VERDANT_HYPHAE.get(), p))
-                    .initialProperties(VERDANT_STEM)
-                    .tag(BlockTags.LOGS)
-                    .blockstate(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.woodProvider(VERDANT_STEM.get()).wood(ctx.get()))
-                    .recipe((ctx, prov) -> prov.woodFromLogs(ctx.get(), VERDANT_STEM.get()))
-                    .simpleItem()
-                    .register();
+            VERDANT_LOG_FAMILY.wood();
 
+    private static final WoodBlockFamily INVERTED_FAMILY =
+            new WoodBlockFamily(
+                    "inverted",
+                    "log",
+                    "wood",
+                    new PillarProperties(MapColor.WOOD, MapColor.PODZOL, SoundType.WOOD),
+                    new PillarProperties(MapColor.WOOD, MapColor.WOOD, SoundType.WOOD),
+                    MapColor.COLOR_GREEN,
+                    WoodType.CHERRY,
+                    true,
+                    MiaTags.ItemTags.INVERTED_LOGS.tag);
+    private static final WoodBlockFamily.Logs INVERTED_LOG_FAMILY =
+            INVERTED_FAMILY.registerLogs(REGISTRATE);
     public static final BlockEntry<RotatedPillarBlock> STRIPPED_INVERTED_LOG =
-            REGISTRATE
-                    .object("stripped_inverted_log")
-                    .block(RotatedPillarBlock::new)
-                    .properties(p -> treeLogProperties(p, MapColor.WOOD, MapColor.WOOD))
-                    .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-                    .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
-                    .simpleItem()
-                    .register();
-
+            INVERTED_LOG_FAMILY.strippedLog();
     public static final BlockEntry<RotatedPillarBlock> STRIPPED_INVERTED_WOOD =
-            REGISTRATE
-                    .object("stripped_inverted_wood")
-                    .block(RotatedPillarBlock::new)
-                    .initialProperties(STRIPPED_INVERTED_LOG)
-                    .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-                    .blockstate(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.woodProvider(STRIPPED_INVERTED_LOG.get())
-                                                    .wood(ctx.get()))
-                    .recipe(
-                            (ctx, prov) ->
-                                    prov.woodFromLogs(ctx.get(), STRIPPED_INVERTED_LOG.get()))
-                    .simpleItem()
-                    .register();
-
+            INVERTED_LOG_FAMILY.strippedWood();
     public static final BlockEntry<StrippedRotatedPillarBlock> INVERTED_LOG =
-            REGISTRATE
-                    .object("inverted_log")
-                    .block(p -> new StrippedRotatedPillarBlock(STRIPPED_INVERTED_LOG.get(), p))
-                    .properties(p -> treeLogProperties(p, MapColor.WOOD, MapColor.PODZOL))
-                    .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-                    .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get()))
-                    .simpleItem()
-                    .register();
-
+            INVERTED_LOG_FAMILY.log();
     public static final BlockEntry<StrippedRotatedPillarBlock> INVERTED_WOOD =
-            REGISTRATE
-                    .object("inverted_wood")
-                    .block(p -> new StrippedRotatedPillarBlock(STRIPPED_INVERTED_WOOD.get(), p))
-                    .initialProperties(INVERTED_LOG)
-                    .tag(BlockTags.LOGS, BlockTags.LOGS_THAT_BURN)
-                    .blockstate(
-                            () ->
-                                    (ctx, prov) ->
-                                            prov.woodProvider(INVERTED_LOG.get()).wood(ctx.get()))
-                    .recipe((ctx, prov) -> prov.woodFromLogs(ctx.get(), INVERTED_LOG.get()))
-                    .simpleItem()
-                    .register();
+            INVERTED_LOG_FAMILY.wood();
 
-    public static final BlockEntry<Block> SKYFOG_PLANKS =
-            planks("skyfog_planks", MapColor.COLOR_GREEN, MiaTags.ItemTags.SKYFOG_LOGS.tag);
+    public static final BlockEntry<Block> SKYFOG_PLANKS = SKYFOG_FAMILY.registerPlanks(REGISTRATE);
+    private static final BuildingBlockFamily SKYFOG_BUILDING_FAMILY =
+            SKYFOG_FAMILY.buildingBlocks(REGISTRATE, SKYFOG_PLANKS).register();
     public static final BlockEntry<StairBlock> SKYFOG_STAIRS =
-            woodenStairs("skyfog_stairs", SKYFOG_PLANKS);
-    public static final BlockEntry<SlabBlock> SKYFOG_SLAB = woodenSlab("skyfog_slab", SKYFOG_PLANKS);
+            SKYFOG_BUILDING_FAMILY.get(BuildingBlockVariant.STAIRS);
+    public static final BlockEntry<SlabBlock> SKYFOG_SLAB =
+            SKYFOG_BUILDING_FAMILY.get(BuildingBlockVariant.SLAB);
     public static final BlockEntry<FenceBlock> SKYFOG_FENCE =
-            woodenFence("skyfog_fence", SKYFOG_PLANKS);
+            SKYFOG_BUILDING_FAMILY.get(BuildingBlockVariant.FENCE);
     public static final BlockEntry<FenceGateBlock> SKYFOG_FENCE_GATE =
-            woodenFenceGate("skyfog_fence_gate", WoodType.BAMBOO, SKYFOG_PLANKS);
+            SKYFOG_BUILDING_FAMILY.get(BuildingBlockVariant.FENCE_GATE);
     public static final BlockEntry<DoorBlock> SKYFOG_DOOR =
-            woodenDoor("skyfog_door", BlockSetType.BAMBOO, SKYFOG_PLANKS);
+            SKYFOG_BUILDING_FAMILY.get(BuildingBlockVariant.DOOR);
     public static final BlockEntry<TrapDoorBlock> SKYFOG_TRAPDOOR =
-            woodenTrapdoor("skyfog_trapdoor", BlockSetType.BAMBOO, SKYFOG_PLANKS);
+            SKYFOG_BUILDING_FAMILY.get(BuildingBlockVariant.TRAPDOOR);
     public static final BlockEntry<PressurePlateBlock> SKYFOG_PRESSURE_PLATE =
-            woodenPressurePlate("skyfog_pressure_plate", BlockSetType.BAMBOO, SKYFOG_PLANKS);
+            SKYFOG_BUILDING_FAMILY.get(BuildingBlockVariant.PRESSURE_PLATE);
     public static final BlockEntry<ButtonBlock> SKYFOG_BUTTON =
-            woodenButton("skyfog_button", BlockSetType.BAMBOO, SKYFOG_PLANKS);
+            SKYFOG_BUILDING_FAMILY.get(BuildingBlockVariant.BUTTON);
 
     public static final BlockEntry<Block> VERDANT_PLANKS =
-            planks("verdant_planks", MapColor.TERRACOTTA_YELLOW, MiaTags.ItemTags.VERDANT_STEMS.tag);
+            VERDANT_FAMILY.registerPlanks(REGISTRATE);
+    private static final BuildingBlockFamily VERDANT_BUILDING_FAMILY =
+            VERDANT_FAMILY.buildingBlocks(REGISTRATE, VERDANT_PLANKS).register();
     public static final BlockEntry<StairBlock> VERDANT_STAIRS =
-            woodenStairs("verdant_stairs", VERDANT_PLANKS);
+            VERDANT_BUILDING_FAMILY.get(BuildingBlockVariant.STAIRS);
     public static final BlockEntry<SlabBlock> VERDANT_SLAB =
-            woodenSlab("verdant_slab", VERDANT_PLANKS);
+            VERDANT_BUILDING_FAMILY.get(BuildingBlockVariant.SLAB);
     public static final BlockEntry<FenceBlock> VERDANT_FENCE =
-            woodenFence("verdant_fence", VERDANT_PLANKS);
+            VERDANT_BUILDING_FAMILY.get(BuildingBlockVariant.FENCE);
     public static final BlockEntry<FenceGateBlock> VERDANT_FENCE_GATE =
-            woodenFenceGate("verdant_fence_gate", WoodType.BAMBOO, VERDANT_PLANKS);
+            VERDANT_BUILDING_FAMILY.get(BuildingBlockVariant.FENCE_GATE);
     public static final BlockEntry<DoorBlock> VERDANT_DOOR =
-            woodenDoor("verdant_door", BlockSetType.BAMBOO, VERDANT_PLANKS);
+            VERDANT_BUILDING_FAMILY.get(BuildingBlockVariant.DOOR);
     public static final BlockEntry<TrapDoorBlock> VERDANT_TRAPDOOR =
-            woodenTrapdoor("verdant_trapdoor", BlockSetType.BAMBOO, VERDANT_PLANKS);
+            VERDANT_BUILDING_FAMILY.get(BuildingBlockVariant.TRAPDOOR);
     public static final BlockEntry<PressurePlateBlock> VERDANT_PRESSURE_PLATE =
-            woodenPressurePlate("verdant_pressure_plate", BlockSetType.BAMBOO, VERDANT_PLANKS);
+            VERDANT_BUILDING_FAMILY.get(BuildingBlockVariant.PRESSURE_PLATE);
     public static final BlockEntry<ButtonBlock> VERDANT_BUTTON =
-            woodenButton("verdant_button", BlockSetType.BAMBOO, VERDANT_PLANKS);
+            VERDANT_BUILDING_FAMILY.get(BuildingBlockVariant.BUTTON);
 
     public static final BlockEntry<Block> INVERTED_PLANKS =
-            planks("inverted_planks", MapColor.COLOR_GREEN, MiaTags.ItemTags.INVERTED_LOGS.tag);
+            INVERTED_FAMILY.registerPlanks(REGISTRATE);
+    private static final BuildingBlockFamily INVERTED_BUILDING_FAMILY =
+            INVERTED_FAMILY.buildingBlocks(REGISTRATE, INVERTED_PLANKS).register();
     public static final BlockEntry<StairBlock> INVERTED_STAIRS =
-            woodenStairs("inverted_stairs", INVERTED_PLANKS);
+            INVERTED_BUILDING_FAMILY.get(BuildingBlockVariant.STAIRS);
     public static final BlockEntry<SlabBlock> INVERTED_SLAB =
-            woodenSlab("inverted_slab", INVERTED_PLANKS);
+            INVERTED_BUILDING_FAMILY.get(BuildingBlockVariant.SLAB);
     public static final BlockEntry<FenceBlock> INVERTED_FENCE =
-            woodenFence("inverted_fence", INVERTED_PLANKS);
+            INVERTED_BUILDING_FAMILY.get(BuildingBlockVariant.FENCE);
     public static final BlockEntry<FenceGateBlock> INVERTED_FENCE_GATE =
-            woodenFenceGate("inverted_fence_gate", WoodType.CHERRY, INVERTED_PLANKS);
+            INVERTED_BUILDING_FAMILY.get(BuildingBlockVariant.FENCE_GATE);
     public static final BlockEntry<DoorBlock> INVERTED_DOOR =
-            woodenDoor("inverted_door", BlockSetType.CHERRY, INVERTED_PLANKS);
+            INVERTED_BUILDING_FAMILY.get(BuildingBlockVariant.DOOR);
     public static final BlockEntry<TrapDoorBlock> INVERTED_TRAPDOOR =
-            woodenTrapdoor("inverted_trapdoor", BlockSetType.CHERRY, INVERTED_PLANKS);
+            INVERTED_BUILDING_FAMILY.get(BuildingBlockVariant.TRAPDOOR);
     public static final BlockEntry<PressurePlateBlock> INVERTED_PRESSURE_PLATE =
-            woodenPressurePlate("inverted_pressure_plate", BlockSetType.CHERRY, INVERTED_PLANKS);
+            INVERTED_BUILDING_FAMILY.get(BuildingBlockVariant.PRESSURE_PLATE);
     public static final BlockEntry<ButtonBlock> INVERTED_BUTTON =
-            woodenButton("inverted_button", BlockSetType.CHERRY, INVERTED_PLANKS);
+            INVERTED_BUILDING_FAMILY.get(BuildingBlockVariant.BUTTON);
 
     static {
         REGISTRATE.defaultCreativeSection(MiaItemGroups.BASE_NATURE_BLOCKS);
@@ -975,7 +819,7 @@ public class MiaBlocks {
                     .properties(MiaBlocks::plantProperties)
                     .blockstate(BlockStateGen::crossPlant)
                     .item()
-                    .model(() -> flatPlantItem("block/marginal_weed"))
+                    .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                     .build()
                     .register();
 
@@ -990,7 +834,7 @@ public class MiaBlocks {
                                             .sound(SoundType.ROOTS))
                     .blockstate(BlockStateGen::crossPlant)
                     .item()
-                    .model(() -> flatPlantItem("block/crimson_veilgrass"))
+                    .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                     .build()
                     .register();
 
@@ -1005,7 +849,7 @@ public class MiaBlocks {
                                             .sound(SoundType.NETHER_SPROUTS))
                     .blockstate(BlockStateGen::crossPlant)
                     .item()
-                    .model(() -> flatPlantItem("block/scorchleaf"))
+                    .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                     .build()
                     .register();
 
@@ -1029,37 +873,9 @@ public class MiaBlocks {
                     .block(WaterTallFlowerBlock::new)
                     .properties(MiaBlocks::plantProperties)
                     .blockstate(BlockStateGen::doublePlant)
-                    .loot(
-                            (lt, b) ->
-                                    lt.add(
-                                            b,
-                                            LootTable.lootTable()
-                                                    .withPool(
-                                                            LootPool.lootPool()
-                                                                    .setRolls(
-                                                                            ConstantValue.exactly(
-                                                                                    1.0F))
-                                                                    .when(
-                                                                            ExplosionCondition
-                                                                                    .survivesExplosion())
-                                                                    .add(
-                                                                            LootItem.lootTableItem(
-                                                                                            b)
-                                                                                    .when(
-                                                                                            LootItemBlockStatePropertyCondition
-                                                                                                    .hasBlockStateProperties(
-                                                                                                            b)
-                                                                                                    .setProperties(
-                                                                                                            StatePropertiesPredicate
-                                                                                                                    .Builder
-                                                                                                                    .properties()
-                                                                                                                    .hasProperty(
-                                                                                                                            DoublePlantBlock
-                                                                                                                                    .HALF,
-                                                                                                                            DoubleBlockHalf
-                                                                                                                                    .LOWER)))))))
+                    .loot(LootGen.lowerHalf())
                     .item()
-                    .model(() -> flatPlantItem("block/reed_top"))
+                    .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get(), "_top"))
                     .build()
                     .register();
 
@@ -1073,37 +889,7 @@ public class MiaBlocks {
                                             .randomTicks()
                                             .lightLevel(GloomBerryBlock::getLightLevel))
                     .blockstate(BlockStateGen::doubleBerry)
-                    .loot(
-                            (lt, b) ->
-                                    lt.add(
-                                            b,
-                                            LootTable.lootTable()
-                                                    .withPool(
-                                                            LootPool.lootPool()
-                                                                    .setRolls(
-                                                                            ConstantValue.exactly(
-                                                                                    1.0F))
-                                                                    .when(
-                                                                            ExplosionCondition
-                                                                                    .survivesExplosion())
-                                                                    .add(
-                                                                            LootItem.lootTableItem(
-                                                                                            MiaItems
-                                                                                                    .GLOOM_BERRY
-                                                                                                    .get())
-                                                                                    .when(
-                                                                                            LootItemBlockStatePropertyCondition
-                                                                                                    .hasBlockStateProperties(
-                                                                                                            b)
-                                                                                                    .setProperties(
-                                                                                                            StatePropertiesPredicate
-                                                                                                                    .Builder
-                                                                                                                    .properties()
-                                                                                                                    .hasProperty(
-                                                                                                                            BlockStateProperties
-                                                                                                                                    .DOUBLE_BLOCK_HALF,
-                                                                                                                            DoubleBlockHalf
-                                                                                                                                    .LOWER)))))))
+                    .loot(LootGen.lowerHalf(() -> MiaItems.GLOOM_BERRY.get()))
                     .register();
 
     public static final BlockEntry<DreamLicheeBlock> DREAM_LICHEE_PLANT =
@@ -1112,37 +898,7 @@ public class MiaBlocks {
                     .block(DreamLicheeBlock::new)
                     .properties(p -> plantProperties(p).randomTicks())
                     .blockstate(BlockStateGen::doubleBerry)
-                    .loot(
-                            (lt, b) ->
-                                    lt.add(
-                                            b,
-                                            LootTable.lootTable()
-                                                    .withPool(
-                                                            LootPool.lootPool()
-                                                                    .setRolls(
-                                                                            ConstantValue.exactly(
-                                                                                    1.0F))
-                                                                    .when(
-                                                                            ExplosionCondition
-                                                                                    .survivesExplosion())
-                                                                    .add(
-                                                                            LootItem.lootTableItem(
-                                                                                            MiaItems
-                                                                                                    .DREAM_LICHEE
-                                                                                                    .get())
-                                                                                    .when(
-                                                                                            LootItemBlockStatePropertyCondition
-                                                                                                    .hasBlockStateProperties(
-                                                                                                            b)
-                                                                                                    .setProperties(
-                                                                                                            StatePropertiesPredicate
-                                                                                                                    .Builder
-                                                                                                                    .properties()
-                                                                                                                    .hasProperty(
-                                                                                                                            BlockStateProperties
-                                                                                                                                    .DOUBLE_BLOCK_HALF,
-                                                                                                                            DoubleBlockHalf
-                                                                                                                                    .LOWER)))))))
+                    .loot(LootGen.lowerHalf(() -> MiaItems.DREAM_LICHEE.get()))
                     .register();
 
     public static final BlockEntry<FlowerBlock> BALLOON_PLANT =
@@ -1162,17 +918,7 @@ public class MiaBlocks {
                     .block(p -> new GreenParticleLeavesBlock(0.01F, p))
                     .initialProperties(() -> Blocks.AZALEA_LEAVES)
                     .tag(BlockTags.LEAVES)
-                    .loot(
-                            (lt, b) ->
-                                    lt.add(
-                                            b,
-                                            lt.createLeavesDrops(
-                                                    b,
-                                                    MiaBlocks.SKYFOG_SAPLING.get(),
-                                                    0.05F,
-                                                    0.0625F,
-                                                    0.083333336F,
-                                                    0.1F)))
+                    .loot(LootGen.leaves(() -> MiaBlocks.SKYFOG_SAPLING.get()))
                     .simpleItem()
                     .register();
 
@@ -1182,17 +928,7 @@ public class MiaBlocks {
                     .block(p -> new FruitingSkyfogLeavesBlock(0.01F, p))
                     .initialProperties(SKYFOG_LEAVES)
                     .tag(BlockTags.LEAVES)
-                    .loot(
-                            (lt, b) ->
-                                    lt.add(
-                                            b,
-                                            lt.createLeavesDrops(
-                                                    b,
-                                                    MiaBlocks.SKYFOG_SAPLING.get(),
-                                                    0.05F,
-                                                    0.0625F,
-                                                    0.083333336F,
-                                                    0.1F)))
+                    .loot(LootGen.leaves(() -> MiaBlocks.SKYFOG_SAPLING.get()))
                     .simpleItem()
                     .register();
 
@@ -1205,7 +941,7 @@ public class MiaBlocks {
                     .tag(BlockTags.SAPLINGS)
                     .blockstate(BlockStateGen::crossPlant)
                     .item()
-                    .model(() -> flatPlantItem("block/skyfog_sapling"))
+                    .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                     .build()
                     .register();
 
@@ -1234,7 +970,7 @@ public class MiaBlocks {
                                             .sound(SoundType.CHERRY_SAPLING))
                     .blockstate(BlockStateGen::crossPlant)
                     .item()
-                    .model(() -> flatPlantItem("block/verdant_fungus"))
+                    .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                     .build()
                     .register();
 
@@ -1244,17 +980,7 @@ public class MiaBlocks {
                     .block(p -> new GreenParticleLeavesBlock(0.01F, p))
                     .initialProperties(() -> Blocks.CHERRY_LEAVES)
                     .tag(BlockTags.LEAVES)
-                    .loot(
-                            (lt, b) ->
-                                    lt.add(
-                                            b,
-                                            lt.createLeavesDrops(
-                                                    b,
-                                                    MiaBlocks.INVERTED_SAPLING.get(),
-                                                    0.05F,
-                                                    0.0625F,
-                                                    0.083333336F,
-                                                    0.1F)))
+                    .loot(LootGen.leaves(() -> MiaBlocks.INVERTED_SAPLING.get()))
                     .simpleItem()
                     .register();
 
@@ -1267,7 +993,7 @@ public class MiaBlocks {
                     .tag(BlockTags.SAPLINGS)
                     .blockstate(BlockStateGen::crossPlant)
                     .item()
-                    .model(() -> flatPlantItem("block/inverted_sapling"))
+                    .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                     .build()
                     .register();
 
@@ -1408,318 +1134,6 @@ public class MiaBlocks {
                     .simpleItem()
                     .register();
 
-    private static BlockEntry<Block> planks(
-            String name, MapColor color, TagKey<Item> logs) {
-        return REGISTRATE
-                .object(name)
-                .block(Block::new)
-                .properties(
-                        p ->
-                                p.mapColor(color)
-                                        .instrument(NoteBlockInstrument.BASS)
-                                        .strength(2.0F, 3.0F)
-                                        .sound(SoundType.WOOD)
-                                        .ignitedByLava())
-                .tag(BlockTags.PLANKS)
-                .transform(TagGen.axeOnly())
-                .recipe(
-                        (ctx, prov) ->
-                                prov.planks(
-                                        DataIngredient.ingredient(prov.tag(logs), logs),
-                                        RecipeCategory.BUILDING_BLOCKS,
-                                        ctx::get))
-                .item()
-                .tag(ItemTags.PLANKS)
-                .build()
-                .register();
-    }
-
-    private static DataIngredient plankIngredient(BlockEntry<? extends Block> planks) {
-        return DataIngredient.items(planks.get());
-    }
-
-    private static BlockEntry<StairBlock> woodenStairs(
-            String name, BlockEntry<? extends Block> planks) {
-        return REGISTRATE
-                .object(name)
-                .block(p -> new StairBlock(planks.get().defaultBlockState(), p))
-                .initialProperties(planks)
-                .tag(BlockTags.STAIRS, BlockTags.WOODEN_STAIRS)
-                .transform(TagGen.axeOnly())
-                .blockstate(
-                        () ->
-                                (ctx, prov) ->
-                                        prov.generateStairsBlock(
-                                                ctx.get(), prov.blockTexture(planks.get())))
-                .recipe(
-                        (ctx, prov) ->
-                                prov.stairs(
-                                        plankIngredient(planks),
-                                        RecipeCategory.BUILDING_BLOCKS,
-                                        ctx::get,
-                                        "wooden_stairs",
-                                        false))
-                .item()
-                .tag(ItemTags.STAIRS, ItemTags.WOODEN_STAIRS)
-                .build()
-                .register();
-    }
-
-    private static BlockEntry<SlabBlock> woodenSlab(
-            String name, BlockEntry<? extends Block> planks) {
-        return REGISTRATE
-                .object(name)
-                .block(SlabBlock::new)
-                .initialProperties(planks)
-                .tag(BlockTags.SLABS, BlockTags.WOODEN_SLABS)
-                .transform(TagGen.axeOnly())
-                .blockstate(
-                        () ->
-                                (ctx, prov) ->
-                                        prov.generateSlabBlock(
-                                                ctx.get(),
-                                                BlockModelGenerators.plainVariant(
-                                                        prov.blockTexture(planks.get()).sprite()),
-                                                prov.blockTexture(planks.get())))
-                .recipe(
-                        (ctx, prov) ->
-                                prov.slab(
-                                        plankIngredient(planks),
-                                        RecipeCategory.BUILDING_BLOCKS,
-                                        ctx::get,
-                                        "wooden_slab",
-                                        false))
-                .item()
-                .tag(ItemTags.SLABS, ItemTags.WOODEN_SLABS)
-                .build()
-                .register();
-    }
-
-    private static BlockEntry<FenceBlock> woodenFence(
-            String name, BlockEntry<? extends Block> planks) {
-        return REGISTRATE
-                .object(name)
-                .block(p -> new FenceBlock(p.forceSolidOn()))
-                .initialProperties(planks)
-                .tag(BlockTags.FENCES, BlockTags.WOODEN_FENCES)
-                .transform(TagGen.axeOnly())
-                .blockstate(() -> BlockStateGen.woodenFence(planks))
-                .recipe(
-                        (ctx, prov) ->
-                                prov.fence(
-                                        plankIngredient(planks),
-                                        RecipeCategory.DECORATIONS,
-                                        ctx::get,
-                                        "wooden_fence"))
-                .item()
-                .tag(ItemTags.FENCES, ItemTags.WOODEN_FENCES)
-                .build()
-                .register();
-    }
-
-    private static BlockEntry<FenceGateBlock> woodenFenceGate(
-            String name, WoodType type, BlockEntry<? extends Block> planks) {
-        return REGISTRATE
-                .object(name)
-                .block(p -> new FenceGateBlock(type, p.forceSolidOn()))
-                .initialProperties(planks)
-                .tag(BlockTags.FENCE_GATES)
-                .transform(TagGen.axeOnly())
-                .blockstate(() -> BlockStateGen.woodenFenceGate(planks))
-                .recipe(
-                        (ctx, prov) ->
-                                prov.fenceGate(
-                                        plankIngredient(planks),
-                                        RecipeCategory.REDSTONE,
-                                        ctx::get,
-                                        "wooden_fence_gate"))
-                .simpleItem()
-                .register();
-    }
-
-    private static BlockEntry<DoorBlock> woodenDoor(
-            String name, BlockSetType type, BlockEntry<? extends Block> planks) {
-        return REGISTRATE
-                .object(name)
-                .block(
-                        p ->
-                                new DoorBlock(
-                                        type,
-                                        p.mapColor(planks.get().defaultMapColor())
-                                                .instrument(NoteBlockInstrument.BASS)
-                                                .strength(3.0F)
-                                                .noOcclusion()
-                                                .ignitedByLava()
-                                                .pushReaction(PushReaction.DESTROY)))
-                .tag(BlockTags.DOORS, BlockTags.WOODEN_DOORS)
-                .transform(TagGen.axeOnly())
-                .blockstate(() -> (ctx, prov) -> prov.createDoor(ctx.get()))
-                .loot((lt, b) -> lt.add(b, lt.createDoorTable(b)))
-                .recipe(
-                        (ctx, prov) ->
-                                prov.door(
-                                        plankIngredient(planks),
-                                        RecipeCategory.REDSTONE,
-                                        ctx::get,
-                                        "wooden_door"))
-                .item()
-                .tag(ItemTags.DOORS, ItemTags.WOODEN_DOORS)
-                .build()
-                .register();
-    }
-
-    private static BlockEntry<TrapDoorBlock> woodenTrapdoor(
-            String name, BlockSetType type, BlockEntry<? extends Block> planks) {
-        return REGISTRATE
-                .object(name)
-                .block(
-                        p ->
-                                new TrapDoorBlock(
-                                        type,
-                                        p.mapColor(planks.get().defaultMapColor())
-                                                .instrument(NoteBlockInstrument.BASS)
-                                                .strength(3.0F)
-                                                .noOcclusion()
-                                                .isValidSpawn(Blocks::never)
-                                                .ignitedByLava()))
-                .tag(BlockTags.TRAPDOORS, BlockTags.WOODEN_TRAPDOORS)
-                .transform(TagGen.axeOnly())
-                .blockstate(() -> (ctx, prov) -> prov.createOrientableTrapdoor(ctx.get()))
-                .recipe(
-                        (ctx, prov) ->
-                                prov.trapDoor(
-                                        plankIngredient(planks),
-                                        RecipeCategory.REDSTONE,
-                                        ctx::get,
-                                        "wooden_trapdoor"))
-                .item()
-                .tag(ItemTags.TRAPDOORS, ItemTags.WOODEN_TRAPDOORS)
-                .build()
-                .register();
-    }
-
-    private static BlockEntry<PressurePlateBlock> woodenPressurePlate(
-            String name, BlockSetType type, BlockEntry<? extends Block> planks) {
-        return REGISTRATE
-                .object(name)
-                .block(
-                        p ->
-                                new PressurePlateBlock(
-                                        type,
-                                        p.mapColor(planks.get().defaultMapColor())
-                                                .forceSolidOn()
-                                                .instrument(NoteBlockInstrument.BASS)
-                                                .noCollision()
-                                                .strength(0.5F)
-                                                .ignitedByLava()
-                                                .pushReaction(PushReaction.DESTROY)))
-                .tag(BlockTags.PRESSURE_PLATES, BlockTags.WOODEN_PRESSURE_PLATES)
-                .transform(TagGen.axeOnly())
-                .blockstate(() -> BlockStateGen.woodenPressurePlate(planks))
-                .recipe((ctx, prov) -> prov.pressurePlate(ctx.get(), planks.get()))
-                .item()
-                .tag(ItemTags.WOODEN_PRESSURE_PLATES)
-                .build()
-                .register();
-    }
-
-    private static BlockEntry<ButtonBlock> woodenButton(
-            String name, BlockSetType type, BlockEntry<? extends Block> planks) {
-        return REGISTRATE
-                .object(name)
-                .block(
-                        p ->
-                                new ButtonBlock(
-                                        type,
-                                        30,
-                                        p.noCollision()
-                                                .strength(0.5F)
-                                                .pushReaction(PushReaction.DESTROY)))
-                .tag(BlockTags.BUTTONS, BlockTags.WOODEN_BUTTONS)
-                .transform(TagGen.axeOnly())
-                .blockstate(() -> BlockStateGen.woodenButton(planks))
-                .recipe(
-                        (ctx, prov) ->
-                                prov.buttonBuilder(ctx.get(), Ingredient.of(planks.get()))
-                                        .unlockedBy("has_planks", prov.has(planks.get()))
-                                        .save(prov))
-                .item()
-                .tag(ItemTags.BUTTONS, ItemTags.WOODEN_BUTTONS)
-                .build()
-                .register();
-    }
-
-    public static BlockEntry<StairBlock> stairs(BlockEntry<? extends Block> base) {
-        var name = base.getId().getPath() + "_stairs";
-        return REGISTRATE
-                .object(name)
-                .block(p -> new StairBlock(base.get().defaultBlockState(), p))
-                .initialProperties(base)
-                .tag(BlockTags.STAIRS)
-                .transform(TagGen.pickaxeOnly())
-                .blockstate(
-                        () ->
-                                (ctx, prov) ->
-                                        prov.generateStairsBlock(
-                                                ctx.get(), prov.blockTexture(base.get())))
-                .item()
-                .tag(ItemTags.STAIRS)
-                .build()
-                .register();
-    }
-
-    public static BlockEntry<SlabBlock> slab(BlockEntry<? extends Block> base) {
-        var name = base.getId().getPath() + "_slab";
-        return REGISTRATE
-                .object(name)
-                .block(SlabBlock::new)
-                .initialProperties(base)
-                .tag(BlockTags.SLABS)
-                .transform(TagGen.pickaxeOnly())
-                .blockstate(
-                        () ->
-                                (ctx, prov) ->
-                                        prov.generateSlabBlock(
-                                                ctx.get(),
-                                                BlockModelGenerators.plainVariant(
-                                                        prov.blockTexture(base.get()).sprite()),
-                                                prov.blockTexture(base.get())))
-                .item()
-                .tag(ItemTags.SLABS)
-                .build()
-                .register();
-    }
-
-    public static BlockEntry<WallBlock> wall(BlockEntry<? extends Block> base) {
-        var name = base.getId().getPath() + "_wall";
-        return REGISTRATE
-                .object(name)
-                .block(WallBlock::new)
-                .initialProperties(base)
-                .tag(BlockTags.WALLS)
-                .transform(TagGen.pickaxeOnly())
-                .blockstate(
-                        () ->
-                                (ctx, prov) ->
-                                        prov.generateWallBlock(
-                                                ctx.get(), prov.blockTexture(base.get())))
-                .item()
-                .tag(ItemTags.WALLS)
-                .model(
-                        () ->
-                                (ctx, prov) -> {
-                                    var textures =
-                                            TextureMapping.cube(
-                                                    prov.modBlockTexture(base.getId().getPath()));
-                                    var itemModel =
-                                            ModelTemplates.WALL_INVENTORY.create(
-                                                    ctx.get(), textures, prov.modelOutput);
-                                    prov.createWithExistingModel(ctx.get(), itemModel);
-                                })
-                .build()
-                .register();
-    }
-
     private static BlockBehaviour.Properties plantProperties(BlockBehaviour.Properties properties) {
         return properties
                 .mapColor(MapColor.PLANT)
@@ -1730,20 +1144,6 @@ public class MiaBlocks {
                 .offsetType(BlockBehaviour.OffsetType.XZ)
                 .ignitedByLava()
                 .pushReaction(PushReaction.DESTROY);
-    }
-
-    private static BlockBehaviour.Properties treeLogProperties(
-            BlockBehaviour.Properties properties, MapColor top, MapColor side) {
-        return properties
-                .mapColor(
-                        state ->
-                                state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y
-                                        ? top
-                                        : side)
-                .instrument(NoteBlockInstrument.BASS)
-                .strength(2.0F)
-                .sound(SoundType.WOOD)
-                .ignitedByLava();
     }
 
     private static BlockEntry<DropExperienceBlock> ore(
@@ -1813,22 +1213,9 @@ public class MiaBlocks {
                 .properties(p -> plantProperties(p).sound(sound).lightLevel(_ -> light))
                 .blockstate(BlockStateGen::crossPlant)
                 .item()
-                .model(() -> flatPlantItem("block/" + name))
+                .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                 .build()
                 .register();
-    }
-
-    private static <T extends Item>
-            NonNullBiConsumer<DataGenContext<Item, T>, RegistrateItemModelGenerator> flatPlantItem(
-                    String texture) {
-        return (ctx, prov) -> {
-            var model =
-                    ModelTemplates.FLAT_ITEM.create(
-                            ctx.get(),
-                            TextureMapping.layer0(new Material(prov.modLoc(texture))),
-                            prov.modelOutput);
-            prov.createWithExistingModel(ctx.getEntry(), model);
-        };
     }
 
     public static void register() {}

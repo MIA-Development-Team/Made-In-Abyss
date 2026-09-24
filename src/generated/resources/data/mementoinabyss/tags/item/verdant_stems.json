@@ -1,8 +1,8 @@
 {
   "values": [
-    "mementoinabyss:verdant_stem",
-    "mementoinabyss:verdant_hyphae",
     "mementoinabyss:stripped_verdant_stem",
-    "mementoinabyss:stripped_verdant_hyphae"
+    "mementoinabyss:stripped_verdant_hyphae",
+    "mementoinabyss:verdant_stem",
+    "mementoinabyss:verdant_hyphae"
   ]
 }

@@ -9,11 +9,11 @@ import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.generators.RegistrateBlockModelGenerator;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
-import java.util.Optional;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
@@ -23,7 +23,14 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BrushableBlock;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import org.jetbrains.annotations.Nullable;
@@ -92,19 +99,6 @@ public class BlockStateGen {
                                     TextureSlot.PARTICLE,
                                     prov.modBlockTexture("abyss_portal_frame"))
                             .build(ctx.get());
-            prov.create(ctx.get(), model);
-        };
-    }
-
-    public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
-                    abyssPortalFrame() {
-        return (ctx, prov) -> {
-            var model =
-                    ModelTemplates.CUBE_ALL.create(
-                            ctx.get(),
-                            TextureMapping.cube(prov.modBlockTexture(ctx.getName())),
-                            prov.modelOutput);
             prov.create(ctx.get(), model);
         };
     }
@@ -301,58 +295,55 @@ public class BlockStateGen {
     }
 
     public static <B extends RotatedPillarBlock>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> variantLog(
+                    int... weights) {
+        return variantAxisBlock(null, weights);
+    }
+
+    public static <B extends RotatedPillarBlock>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> variantWood(
+                    BlockEntry<? extends Block> barkSource, int... weights) {
+        return variantAxisBlock(barkSource, weights);
+    }
+
+    /** Generates weighted axis models and uses the first vertical model for the block item. */
+    private static <B extends RotatedPillarBlock>
             NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
                     variantAxisBlock(
-                            @Nullable BlockEntry<? extends Block> end,
-                            int variants,
-                            Optional<int[]> optionalWeights) {
-        if (variants < 1) {
-            throw new IllegalArgumentException("variants must be positive");
+                            @Nullable BlockEntry<? extends Block> barkSource, int[] weights) {
+        if (weights.length == 0)
+            throw new IllegalArgumentException("At least one variant is required");
+        int[] variantWeights = weights.clone();
+        for (int weight : variantWeights) {
+            if (weight < 1) throw new IllegalArgumentException("Weights must be positive");
         }
-        optionalWeights.ifPresent(
-                weights -> {
-                    if (weights.length != variants) {
-                        throw new IllegalArgumentException("weights length must match variants");
-                    }
-                    for (int weight : weights) {
-                        if (weight < 1) {
-                            throw new IllegalArgumentException("weights must be positive");
-                        }
-                    }
-                });
-
         return (ctx, prov) -> {
-            var weights = optionalWeights.orElse(null);
             var blockPath = ctx.getName();
             WeightedList.Builder<Variant> verticalBuilder = WeightedList.builder();
             WeightedList.Builder<Variant> horizontalBuilder = WeightedList.builder();
 
-            for (int i = 0; i < variants; i++) {
-                // Wood blocks have bark on every face and reuse the corresponding log
-                // side variant. Logs use their own side variants and a shared top texture.
+            for (int i = 0; i < variantWeights.length; i++) {
                 var sideTexture =
-                        (end != null)
-                                ? prov.blockTexture(end.get(), Integer.toString(i))
+                        barkSource != null
+                                ? prov.blockTexture(barkSource.get(), Integer.toString(i))
                                 : prov.modBlockTexture(blockPath + i);
                 var endTexture =
-                        (end != null) ? sideTexture : prov.modBlockTexture(blockPath + "_top");
-
+                        barkSource != null ? sideTexture : prov.modBlockTexture(blockPath + "_top");
+                var mapping = TextureMapping.column(sideTexture, endTexture);
                 var verticalModel =
                         ModelTemplates.CUBE_COLUMN.create(
-                                prov.modLoc("block/" + blockPath + i),
-                                TextureMapping.column(sideTexture, endTexture),
-                                prov.modelOutput);
+                                prov.modLoc("block/" + blockPath + i), mapping, prov.modelOutput);
                 var horizontalModel =
                         ModelTemplates.CUBE_COLUMN_HORIZONTAL.create(
                                 prov.modLoc("block/" + blockPath + "_horizontal" + i),
-                                TextureMapping.column(sideTexture, endTexture),
+                                mapping,
                                 prov.modelOutput);
-
-                int weight = (weights != null) ? weights[i] : 1;
-                verticalBuilder.add(BlockModelGenerators.plainModel(verticalModel), weight);
-                horizontalBuilder.add(BlockModelGenerators.plainModel(horizontalModel), weight);
+                verticalBuilder.add(
+                        BlockModelGenerators.plainModel(verticalModel), variantWeights[i]);
+                horizontalBuilder.add(
+                        BlockModelGenerators.plainModel(horizontalModel), variantWeights[i]);
+                if (i == 0) prov.registerSimpleItemModel(ctx.get(), verticalModel);
             }
-
             prov.generateAxisBlock(
                     ctx.get(),
                     new MultiVariant(verticalBuilder.build()),
@@ -484,92 +475,71 @@ public class BlockStateGen {
         };
     }
 
+    public static <B extends StairBlock>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> stairs(
+                    BlockEntry<? extends Block> base) {
+        return (ctx, prov) -> prov.generateStairsBlock(ctx.get(), prov.blockTexture(base.get()));
+    }
+
+    public static <B extends SlabBlock>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> slab(
+                    BlockEntry<? extends Block> base) {
+        return (ctx, prov) ->
+                prov.generateSlabBlock(
+                        ctx.get(),
+                        BlockModelGenerators.plainVariant(
+                                ModelLocationUtils.getModelLocation(base.get())),
+                        prov.blockTexture(base.get()));
+    }
+
+    public static <B extends WallBlock>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> wall(
+                    BlockEntry<? extends Block> base) {
+        return (ctx, prov) -> {
+            prov.generateWallBlock(ctx.get(), prov.blockTexture(base.get()));
+            prov.registerSimpleItemModel(
+                    ctx.get(),
+                    ModelTemplates.WALL_INVENTORY.create(
+                            ctx.get().asItem(),
+                            TextureMapping.singleSlot(
+                                    TextureSlot.WALL, prov.blockTexture(base.get())),
+                            prov.modelOutput));
+        };
+    }
+
+    public static <B extends FenceBlock>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> fence(
+                    BlockEntry<? extends Block> base) {
+        return (ctx, prov) ->
+                prov.new BlockFamilyProvider(TextureMapping.cube(base.get())).fence(ctx.get());
+    }
+
+    public static <B extends FenceGateBlock>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> fenceGate(
+                    BlockEntry<? extends Block> base) {
+        return (ctx, prov) ->
+                prov.new BlockFamilyProvider(TextureMapping.cube(base.get())).fenceGate(ctx.get());
+    }
+
+    public static <B extends PressurePlateBlock>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+                    pressurePlate(BlockEntry<? extends Block> base) {
+        return (ctx, prov) ->
+                prov.new BlockFamilyProvider(TextureMapping.cube(base.get()))
+                        .pressurePlate(ctx.get());
+    }
+
+    public static <B extends ButtonBlock>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> button(
+                    BlockEntry<? extends Block> base) {
+        return (ctx, prov) ->
+                prov.new BlockFamilyProvider(TextureMapping.cube(base.get())).button(ctx.get());
+    }
+
     private static TextureMapping sideBottomTop(Material side, Material bottom, Material top) {
         return new TextureMapping()
                 .put(TextureSlot.SIDE, side)
                 .put(TextureSlot.BOTTOM, bottom)
                 .put(TextureSlot.TOP, top);
-    }
-
-    public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> woodenFence(
-                    BlockEntry<? extends Block> planks) {
-        return (ctx, prov) -> {
-            var mapping = TextureMapping.cube(planks.get());
-            var post = ModelTemplates.FENCE_POST.create(ctx.get(), mapping, prov.modelOutput);
-            var side = ModelTemplates.FENCE_SIDE.create(ctx.get(), mapping, prov.modelOutput);
-            prov.blockStateOutput.accept(
-                    BlockModelGenerators.createFence(
-                            ctx.get(),
-                            BlockModelGenerators.plainVariant(post),
-                            BlockModelGenerators.plainVariant(side)));
-            prov.registerSimpleItemModel(
-                    ctx.get(),
-                    ModelTemplates.FENCE_INVENTORY.create(ctx.get(), mapping, prov.modelOutput));
-        };
-    }
-
-    public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
-                    woodenFenceGate(BlockEntry<? extends Block> planks) {
-        return (ctx, prov) -> {
-            var mapping = TextureMapping.cube(planks.get());
-            var open =
-                    BlockModelGenerators.plainVariant(
-                            ModelTemplates.FENCE_GATE_OPEN.create(
-                                    ctx.get(), mapping, prov.modelOutput));
-            var closed =
-                    BlockModelGenerators.plainVariant(
-                            ModelTemplates.FENCE_GATE_CLOSED.create(
-                                    ctx.get(), mapping, prov.modelOutput));
-            var openWall =
-                    BlockModelGenerators.plainVariant(
-                            ModelTemplates.FENCE_GATE_WALL_OPEN.create(
-                                    ctx.get(), mapping, prov.modelOutput));
-            var closedWall =
-                    BlockModelGenerators.plainVariant(
-                            ModelTemplates.FENCE_GATE_WALL_CLOSED.create(
-                                    ctx.get(), mapping, prov.modelOutput));
-            prov.blockStateOutput.accept(
-                    BlockModelGenerators.createFenceGate(
-                            ctx.get(), open, closed, openWall, closedWall, true));
-        };
-    }
-
-    public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
-                    woodenPressurePlate(BlockEntry<? extends Block> planks) {
-        return (ctx, prov) -> {
-            var mapping = TextureMapping.cube(planks.get());
-            var up =
-                    BlockModelGenerators.plainVariant(
-                            ModelTemplates.PRESSURE_PLATE_UP.create(
-                                    ctx.get(), mapping, prov.modelOutput));
-            var down =
-                    BlockModelGenerators.plainVariant(
-                            ModelTemplates.PRESSURE_PLATE_DOWN.create(
-                                    ctx.get(), mapping, prov.modelOutput));
-            prov.blockStateOutput.accept(BlockModelGenerators.createPressurePlate(ctx.get(), up, down));
-        };
-    }
-
-    public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> woodenButton(
-                    BlockEntry<? extends Block> planks) {
-        return (ctx, prov) -> {
-            var mapping = TextureMapping.cube(planks.get());
-            var unpressed =
-                    BlockModelGenerators.plainVariant(
-                            ModelTemplates.BUTTON.create(ctx.get(), mapping, prov.modelOutput));
-            var pressed =
-                    BlockModelGenerators.plainVariant(
-                            ModelTemplates.BUTTON_PRESSED.create(
-                                    ctx.get(), mapping, prov.modelOutput));
-            prov.blockStateOutput.accept(
-                    BlockModelGenerators.createButton(ctx.get(), unpressed, pressed));
-            prov.registerSimpleItemModel(
-                    ctx.get(),
-                    ModelTemplates.BUTTON_INVENTORY.create(ctx.get(), mapping, prov.modelOutput));
-        };
     }
 }

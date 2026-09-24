@@ -19,19 +19,15 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.structure.MiaStructure
 import com.altnoir.mementoinabyss.infrastructure.worldgen.structure.MiaStructureSets;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.structure.MiaStructures;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeFeatures;
-import com.altnoir.mementoinabyss.init.MiaBlocks;
-import com.altnoir.mementoinabyss.init.MiaTags;
 import com.tterrag.registrate.providers.ProviderType;
 import java.util.function.BiConsumer;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 public class MiaDataGen {
     public static void gatherDataHighPriority(GatherDataEvent.Client event) {
-        if (event.getModContainer().getModId().contains(MementoInAbyss.ID))
-            addExtraRegistrateData();
+        if (event.getModContainer().getModId().equals(MementoInAbyss.ID)) addExtraRegistrateData();
     }
 
     public static void gatherData(GatherDataEvent.Client event) {
@@ -80,35 +76,7 @@ public class MiaDataGen {
                             provideDefaultLang("interface", langConsumer);
                             provideDefaultLang("tooltips", langConsumer);
                         });
-        MementoInAbyss.registrate()
-                .addDataGenerator(
-                        ProviderType.BLOCK_TAGS,
-                        provider ->
-                                provider.tag(MiaTags.BlockTags.ABYSS_MUD_ORE_REPLACEABLE.tag)
-                                        .add(Blocks.MUD));
-        MementoInAbyss.registrate()
-                .addDataGenerator(
-                        ProviderType.ITEM_TAGS,
-                        provider -> {
-                            provider.tag(MiaTags.ItemTags.SKYFOG_LOGS.tag)
-                                    .add(
-                                            MiaBlocks.SKYFOG_LOG.asItem(),
-                                            MiaBlocks.SKYFOG_WOOD.asItem(),
-                                            MiaBlocks.STRIPPED_SKYFOG_LOG.asItem(),
-                                            MiaBlocks.STRIPPED_SKYFOG_WOOD.asItem());
-                            provider.tag(MiaTags.ItemTags.VERDANT_STEMS.tag)
-                                    .add(
-                                            MiaBlocks.VERDANT_STEM.asItem(),
-                                            MiaBlocks.VERDANT_HYPHAE.asItem(),
-                                            MiaBlocks.STRIPPED_VERDANT_STEM.asItem(),
-                                            MiaBlocks.STRIPPED_VERDANT_HYPHAE.asItem());
-                            provider.tag(MiaTags.ItemTags.INVERTED_LOGS.tag)
-                                    .add(
-                                            MiaBlocks.INVERTED_LOG.asItem(),
-                                            MiaBlocks.INVERTED_WOOD.asItem(),
-                                            MiaBlocks.STRIPPED_INVERTED_LOG.asItem(),
-                                            MiaBlocks.STRIPPED_INVERTED_WOOD.asItem());
-                        });
+        MiaRegistrateTags.addGenerators();
     }
 
     private static void provideDefaultLang(String fileName, BiConsumer<String, String> consumer) {

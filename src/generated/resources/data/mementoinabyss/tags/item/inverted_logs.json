@@ -1,8 +1,8 @@
 {
   "values": [
-    "mementoinabyss:inverted_log",
-    "mementoinabyss:inverted_wood",
     "mementoinabyss:stripped_inverted_log",
-    "mementoinabyss:stripped_inverted_wood"
+    "mementoinabyss:stripped_inverted_wood",
+    "mementoinabyss:inverted_log",
+    "mementoinabyss:inverted_wood"
   ]
 }

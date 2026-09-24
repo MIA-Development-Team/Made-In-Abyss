@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "mementoinabyss:mossy_fossilized_wood_bricks",
+  "result": {
+    "id": "mementoinabyss:mossy_fossilized_wood_bricks_wall"
+  }
+}
