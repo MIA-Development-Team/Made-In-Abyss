@@ -7,11 +7,10 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import java.util.List;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class LampTubeEmiRecipe implements EmiRecipe {
     private final ResourceLocation id;
@@ -20,10 +19,11 @@ public class LampTubeEmiRecipe implements EmiRecipe {
 
     public LampTubeEmiRecipe(RecipeHolder<LampTubeRecipe> recipe) {
         this.id = recipe.id();
-        this.input = List.of(EmiIngredient.of(
-                recipe.value().getIngredients().getFirst(),
-                recipe.value().ingredient().count()
-        ));
+        this.input =
+                List.of(
+                        EmiIngredient.of(
+                                recipe.value().getIngredients().getFirst(),
+                                recipe.value().ingredient().count()));
         this.output = List.of(EmiStack.of(recipe.value().getResultItem(null)));
     }
 

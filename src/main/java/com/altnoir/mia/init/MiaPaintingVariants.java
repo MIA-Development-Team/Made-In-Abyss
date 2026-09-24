@@ -1,13 +1,12 @@
 package com.altnoir.mia.init;
 
 import com.altnoir.mia.util.MiaUtil;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.decoration.PaintingVariant;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MiaPaintingVariants {
     public static final List<ResourceKey<PaintingVariant>> PAINTING_VARIANTS = new ArrayList<>();
@@ -26,7 +25,11 @@ public class MiaPaintingVariants {
         register(context, FORTITUDE_FLOWER, 2, 1);
     }
 
-    private static void register(BootstrapContext<PaintingVariant> context, ResourceKey<PaintingVariant> key, int width, int height) {
+    private static void register(
+            BootstrapContext<PaintingVariant> context,
+            ResourceKey<PaintingVariant> key,
+            int width,
+            int height) {
         PAINTING_VARIANTS.add(key);
         context.register(key, new PaintingVariant(width, height, key.location()));
     }

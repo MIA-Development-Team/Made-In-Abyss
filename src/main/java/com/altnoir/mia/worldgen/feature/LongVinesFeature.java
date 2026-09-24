@@ -26,17 +26,29 @@ public class LongVinesFeature extends Feature<LongVinesConfiguration> {
             return false;
         } else {
             for (Direction direction : Direction.values()) {
-                if (direction != Direction.UP && direction != Direction.DOWN && VineBlock.isAcceptableNeighbour(worldgenlevel, blockpos.relative(direction), direction)) {
+                if (direction != Direction.UP
+                        && direction != Direction.DOWN
+                        && VineBlock.isAcceptableNeighbour(
+                                worldgenlevel, blockpos.relative(direction), direction)) {
                     worldgenlevel.setBlock(
-                            blockpos, Blocks.VINE.defaultBlockState().setValue(VineBlock.getPropertyForFace(direction), Boolean.TRUE), 2
-                    );
+                            blockpos,
+                            Blocks.VINE
+                                    .defaultBlockState()
+                                    .setValue(
+                                            VineBlock.getPropertyForFace(direction), Boolean.TRUE),
+                            2);
 
                     BlockPos belowPos = blockpos.below();
                     for (int i = 0; i <= height; i++) {
                         if (worldgenlevel.isEmptyBlock(belowPos)) {
                             worldgenlevel.setBlock(
-                                    belowPos, Blocks.VINE.defaultBlockState().setValue(VineBlock.getPropertyForFace(direction), Boolean.valueOf(true)), 2
-                            );
+                                    belowPos,
+                                    Blocks.VINE
+                                            .defaultBlockState()
+                                            .setValue(
+                                                    VineBlock.getPropertyForFace(direction),
+                                                    Boolean.valueOf(true)),
+                                    2);
                             belowPos = belowPos.below();
                         } else {
                             break;

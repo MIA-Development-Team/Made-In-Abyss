@@ -34,22 +34,22 @@ import org.jetbrains.annotations.Nullable;
 
 public class PedestalBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final VoxelShape SHAPE = Shapes.or(
-            Block.box(4.0, 6.0, 4.0, 12.0, 9.0, 12.0),
-            Block.box(5, 2, 5, 11, 6, 11),
-            Block.box(2, 0, 2, 14, 2, 14)
-    );
+    public static final VoxelShape SHAPE =
+            Shapes.or(
+                    Block.box(4.0, 6.0, 4.0, 12.0, 9.0, 12.0),
+                    Block.box(5, 2, 5, 11, 6, 11),
+                    Block.box(2, 0, 2, 14, 2, 14));
     public static final MapCodec<PedestalBlock> CODEC = simpleCodec(PedestalBlock::new);
 
     public PedestalBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any()
-                .setValue(WATERLOGGED, Boolean.valueOf(false))
-        );
+        this.registerDefaultState(
+                this.stateDefinition.any().setValue(WATERLOGGED, Boolean.valueOf(false)));
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
@@ -73,11 +73,19 @@ public class PedestalBlock extends BaseEntityBlock implements SimpleWaterloggedB
         BlockPos blockpos = context.getClickedPos();
         Level level = context.getLevel();
         return this.defaultBlockState()
-                .setValue(WATERLOGGED, Boolean.valueOf(level.getFluidState(blockpos).getType() == Fluids.WATER));
+                .setValue(
+                        WATERLOGGED,
+                        Boolean.valueOf(level.getFluidState(blockpos).getType() == Fluids.WATER));
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    protected BlockState updateShape(
+            BlockState state,
+            Direction direction,
+            BlockState neighborState,
+            LevelAccessor level,
+            BlockPos pos,
+            BlockPos neighborPos) {
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
@@ -86,7 +94,9 @@ public class PedestalBlock extends BaseEntityBlock implements SimpleWaterloggedB
 
     @Override
     protected FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED)
+                ? Fluids.WATER.getSource(false)
+                : super.getFluidState(state);
     }
 
     @Override
@@ -95,21 +105,34 @@ public class PedestalBlock extends BaseEntityBlock implements SimpleWaterloggedB
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected ItemInteractionResult useItemOn(
+            ItemStack stack,
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof PedestalBlockEntity blockEntity) {
             if (stack.isEmpty()) {
                 var outStack = blockEntity.tryExtractItem(Item.ABSOLUTE_MAX_STACK_SIZE, false);
 
-                if (outStack.isEmpty())
-                    return ItemInteractionResult.CONSUME;
+                if (outStack.isEmpty()) return ItemInteractionResult.CONSUME;
 
                 player.setItemInHand(hand, outStack);
-                level.playSound(player, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.5F, 1.0F);
+                level.playSound(
+                        player, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.5F, 1.0F);
                 return ItemInteractionResult.SUCCESS;
             }
             if (blockEntity.tryInsertItem(stack.copy(), false)) {
                 stack.setCount(0);
-                level.playSound(player, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.5F, 1.0F);
+                level.playSound(
+                        player,
+                        pos,
+                        SoundEvents.ITEM_FRAME_ADD_ITEM,
+                        SoundSource.BLOCKS,
+                        0.5F,
+                        1.0F);
                 return ItemInteractionResult.SUCCESS;
             }
         }
@@ -117,7 +140,12 @@ public class PedestalBlock extends BaseEntityBlock implements SimpleWaterloggedB
     }
 
     @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+    protected void onRemove(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            BlockState newState,
+            boolean movedByPiston) {
         if (!state.is(newState.getBlock())) {
             if (level.getBlockEntity(pos) instanceof PedestalBlockEntity blockEntity) {
                 blockEntity.drops();

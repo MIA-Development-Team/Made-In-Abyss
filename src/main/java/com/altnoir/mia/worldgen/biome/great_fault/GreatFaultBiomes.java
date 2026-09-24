@@ -18,7 +18,8 @@ public class GreatFaultBiomes {
 
         BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
 
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GreatFaultPlacements.ABYSS_LIGHT);
+        generationBuilder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, GreatFaultPlacements.ABYSS_LIGHT);
 
         return baseBiome(generationBuilder, spawnBuilder).build();
     }
@@ -30,30 +31,46 @@ public class GreatFaultBiomes {
 
         BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
 
-        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, GreatFaultPlacements.CAERULITE_GEODE);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_LARGE_FERN);
+        generationBuilder.addFeature(
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+                GreatFaultPlacements.CAERULITE_GEODE);
+        generationBuilder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_LARGE_FERN);
 
         return baseBiome(generationBuilder, spawnBuilder).build();
     }
 
-    public static Biome.BiomeBuilder baseBiome(BiomeGenerationSettings.Builder generationBuilder, MobSpawnSettings.Builder spawnBuilder) {
-        return new Biome.BiomeBuilder().hasPrecipitation(true).downfall(0.8F).temperature(0.8F)
+    public static Biome.BiomeBuilder baseBiome(
+            BiomeGenerationSettings.Builder generationBuilder,
+            MobSpawnSettings.Builder spawnBuilder) {
+        return new Biome.BiomeBuilder()
+                .hasPrecipitation(true)
+                .downfall(0.8F)
+                .temperature(0.8F)
                 .generationSettings(generationBuilder.build())
                 .mobSpawnSettings(spawnBuilder.build())
-                .specialEffects((new BiomeSpecialEffects.Builder())
-                        .waterColor(6141935)
-                        .waterFogColor(6141935)
-                        .skyColor(8888490)
-                        .fogColor(8888490)
-                        .grassColorOverride(11335504)
-                        .ambientLoopSound(SoundEvents.AMBIENT_BASALT_DELTAS_LOOP)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .ambientAdditionsSound(new AmbientAdditionsSettings(SoundEvents.AMBIENT_BASALT_DELTAS_ADDITIONS, 0.0111))
-                        .backgroundMusic(Musics.createGameMusic(MiaSounds.MUSIC_THE_ABYSS_DIM))
-                        .build());
+                .specialEffects(
+                        (new BiomeSpecialEffects.Builder())
+                                .waterColor(6141935)
+                                .waterFogColor(6141935)
+                                .skyColor(8888490)
+                                .fogColor(8888490)
+                                .grassColorOverride(11335504)
+                                .ambientLoopSound(SoundEvents.AMBIENT_BASALT_DELTAS_LOOP)
+                                .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+                                .ambientAdditionsSound(
+                                        new AmbientAdditionsSettings(
+                                                SoundEvents.AMBIENT_BASALT_DELTAS_ADDITIONS,
+                                                0.0111))
+                                .backgroundMusic(
+                                        Musics.createGameMusic(MiaSounds.MUSIC_THE_ABYSS_DIM))
+                                .build());
     }
 
-    private static BiomeGenerationSettings.Builder createGenerationBuilder(BootstrapContext<Biome> context) {
-        return new BiomeGenerationSettings.Builder(context.lookup(Registries.PLACED_FEATURE), context.lookup(Registries.CONFIGURED_CARVER));
+    private static BiomeGenerationSettings.Builder createGenerationBuilder(
+            BootstrapContext<Biome> context) {
+        return new BiomeGenerationSettings.Builder(
+                context.lookup(Registries.PLACED_FEATURE),
+                context.lookup(Registries.CONFIGURED_CARVER));
     }
 }

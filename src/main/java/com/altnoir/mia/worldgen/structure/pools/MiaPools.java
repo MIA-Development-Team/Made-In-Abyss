@@ -11,7 +11,10 @@ public class MiaPools {
         return ResourceKey.create(Registries.TEMPLATE_POOL, MiaUtil.miaId(name));
     }
 
-    public static void register(BootstrapContext<StructureTemplatePool> context, String name, StructureTemplatePool pool) {
+    public static void register(
+            BootstrapContext<StructureTemplatePool> context,
+            String name,
+            StructureTemplatePool pool) {
         context.register(createKey(name), pool);
     }
 

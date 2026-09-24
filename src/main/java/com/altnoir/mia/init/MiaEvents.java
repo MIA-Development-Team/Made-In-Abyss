@@ -4,7 +4,6 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.core.event.common.*;
 import com.altnoir.mia.datagen.DataGenerators;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -40,7 +39,12 @@ public class MiaEvents {
     }
 
     public static void gatherData(GatherDataEvent event) {
-        DataGenerators.gatherData(event.getGenerator(), event.getExistingFileHelper(), event.getLookupProvider(), event.includeServer(), event.includeClient());
+        DataGenerators.gatherData(
+                event.getGenerator(),
+                event.getExistingFileHelper(),
+                event.getLookupProvider(),
+                event.includeServer(),
+                event.includeClient());
     }
 
     public static void addPackFinders(AddPackFindersEvent event) {
@@ -57,7 +61,12 @@ public class MiaEvents {
     }
 
     public static void onBonemealUse(BonemealEvent event) {
-        BonemealUseEvent.onBonemealUse(event.getState(), event.getPos(), event.getStack(), event.getLevel(), event.getPlayer());
+        BonemealUseEvent.onBonemealUse(
+                event.getState(),
+                event.getPos(),
+                event.getStack(),
+                event.getLevel(),
+                event.getPlayer());
     }
 
     public static void onBrewingRecipe(RegisterBrewingRecipesEvent event) {

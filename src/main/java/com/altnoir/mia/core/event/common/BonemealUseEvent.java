@@ -3,6 +3,7 @@ package com.altnoir.mia.core.event.common;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaTags;
 import com.google.common.collect.ImmutableMap.Builder;
+import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -13,22 +14,23 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-import java.util.Map;
-
 public class BonemealUseEvent {
-    public static final Map<Block, Block> COVERGRASS_BLOCKS = new Builder<Block, Block>()
-            .put(Blocks.DIRT, Blocks.GRASS_BLOCK)
-            .put(Blocks.TUFF, MiaBlocks.COVERGRASS_TUFF.get())
-            .build();
+    public static final Map<Block, Block> COVERGRASS_BLOCKS =
+            new Builder<Block, Block>()
+                    .put(Blocks.DIRT, Blocks.GRASS_BLOCK)
+                    .put(Blocks.TUFF, MiaBlocks.COVERGRASS_TUFF.get())
+                    .build();
 
-    public static void onBonemealUse(BlockState state, BlockPos pos, ItemStack stack, Level level, Player player) {
+    public static void onBonemealUse(
+            BlockState state, BlockPos pos, ItemStack stack, Level level, Player player) {
         Block block = state.getBlock();
 
         if (COVERGRASS_BLOCKS.containsKey(block)) {
             Block coverGrassBlock = COVERGRASS_BLOCKS.get(block);
             boolean flag = false;
 
-            for (BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
+            for (BlockPos blockpos :
+                    BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
                 BlockState blockstate = level.getBlockState(blockpos);
                 if (blockstate.is(MiaTags.Blocks.COVERGRASS)) {
                     flag = true;

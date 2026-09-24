@@ -63,27 +63,32 @@ public class LakeFeature extends Feature<LakeFeature.Configuration> {
                 }
             }
 
-            BlockState blockstate1 = lakefeature$configuration.fluid().getState(randomsource, blockpos);
+            BlockState blockstate1 =
+                    lakefeature$configuration.fluid().getState(randomsource, blockpos);
 
             for (int k1 = 0; k1 < 16; k1++) {
                 for (int k = 0; k < 16; k++) {
                     for (int l2 = 0; l2 < 8; l2++) {
-                        boolean flag = !aboolean[(k1 * 16 + k) * 8 + l2]
-                                && (
-                                k1 < 15 && aboolean[((k1 + 1) * 16 + k) * 8 + l2]
-                                        || k1 > 0 && aboolean[((k1 - 1) * 16 + k) * 8 + l2]
-                                        || k < 15 && aboolean[(k1 * 16 + k + 1) * 8 + l2]
-                                        || k > 0 && aboolean[(k1 * 16 + (k - 1)) * 8 + l2]
-                                        || l2 < 7 && aboolean[(k1 * 16 + k) * 8 + l2 + 1]
-                                        || l2 > 0 && aboolean[(k1 * 16 + k) * 8 + (l2 - 1)]
-                        );
+                        boolean flag =
+                                !aboolean[(k1 * 16 + k) * 8 + l2]
+                                        && (k1 < 15 && aboolean[((k1 + 1) * 16 + k) * 8 + l2]
+                                                || k1 > 0 && aboolean[((k1 - 1) * 16 + k) * 8 + l2]
+                                                || k < 15 && aboolean[(k1 * 16 + k + 1) * 8 + l2]
+                                                || k > 0 && aboolean[(k1 * 16 + (k - 1)) * 8 + l2]
+                                                || l2 < 7 && aboolean[(k1 * 16 + k) * 8 + l2 + 1]
+                                                || l2 > 0
+                                                        && aboolean[(k1 * 16 + k) * 8 + (l2 - 1)]);
                         if (flag) {
-                            BlockState blockstate3 = worldgenlevel.getBlockState(blockpos.offset(k1, l2, k));
+                            BlockState blockstate3 =
+                                    worldgenlevel.getBlockState(blockpos.offset(k1, l2, k));
                             if (l2 >= 4 && blockstate3.liquid()) {
                                 return false;
                             }
 
-                            if (l2 < 4 && !blockstate3.isSolid() && worldgenlevel.getBlockState(blockpos.offset(k1, l2, k)) != blockstate1) {
+                            if (l2 < 4
+                                    && !blockstate3.isSolid()
+                                    && worldgenlevel.getBlockState(blockpos.offset(k1, l2, k))
+                                            != blockstate1) {
                                 return false;
                             }
                         }
@@ -109,22 +114,31 @@ public class LakeFeature extends Feature<LakeFeature.Configuration> {
                 }
             }
 
-            BlockState blockstate2 = lakefeature$configuration.barrier().getState(randomsource, blockpos);
+            BlockState blockstate2 =
+                    lakefeature$configuration.barrier().getState(randomsource, blockpos);
             if (!blockstate2.isAir()) {
                 for (int j2 = 0; j2 < 16; j2++) {
                     for (int j3 = 0; j3 < 16; j3++) {
                         for (int l3 = 0; l3 < 8; l3++) {
-                            boolean flag2 = !aboolean[(j2 * 16 + j3) * 8 + l3]
-                                    && (
-                                    j2 < 15 && aboolean[((j2 + 1) * 16 + j3) * 8 + l3]
-                                            || j2 > 0 && aboolean[((j2 - 1) * 16 + j3) * 8 + l3]
-                                            || j3 < 15 && aboolean[(j2 * 16 + j3 + 1) * 8 + l3]
-                                            || j3 > 0 && aboolean[(j2 * 16 + (j3 - 1)) * 8 + l3]
-                                            || l3 < 7 && aboolean[(j2 * 16 + j3) * 8 + l3 + 1]
-                                            || l3 > 0 && aboolean[(j2 * 16 + j3) * 8 + (l3 - 1)]
-                            );
+                            boolean flag2 =
+                                    !aboolean[(j2 * 16 + j3) * 8 + l3]
+                                            && (j2 < 15 && aboolean[((j2 + 1) * 16 + j3) * 8 + l3]
+                                                    || j2 > 0
+                                                            && aboolean[
+                                                                    ((j2 - 1) * 16 + j3) * 8 + l3]
+                                                    || j3 < 15
+                                                            && aboolean[(j2 * 16 + j3 + 1) * 8 + l3]
+                                                    || j3 > 0
+                                                            && aboolean[
+                                                                    (j2 * 16 + (j3 - 1)) * 8 + l3]
+                                                    || l3 < 7
+                                                            && aboolean[(j2 * 16 + j3) * 8 + l3 + 1]
+                                                    || l3 > 0
+                                                            && aboolean[
+                                                                    (j2 * 16 + j3) * 8 + (l3 - 1)]);
                             if (flag2 && (l3 < 4 || randomsource.nextInt(2) != 0)) {
-                                BlockState blockstate = worldgenlevel.getBlockState(blockpos.offset(j2, l3, j3));
+                                BlockState blockstate =
+                                        worldgenlevel.getBlockState(blockpos.offset(j2, l3, j3));
                                 if (blockstate.isSolid() && !blockstate.is(BlockTags.LOGS)) {
                                     BlockPos blockpos3 = blockpos.offset(j2, l3, j3);
                                     worldgenlevel.setBlock(blockpos3, blockstate2, 2);
@@ -144,14 +158,20 @@ public class LakeFeature extends Feature<LakeFeature.Configuration> {
         return !state.is(BlockTags.FEATURES_CANNOT_REPLACE);
     }
 
-    public static record Configuration(BlockStateProvider fluid,
-                                       BlockStateProvider barrier) implements FeatureConfiguration {
-        public static final Codec<LakeFeature.Configuration> CODEC = RecordCodecBuilder.create(
-                instance -> instance.group(
-                                BlockStateProvider.CODEC.fieldOf("fluid").forGetter(LakeFeature.Configuration::fluid),
-                                BlockStateProvider.CODEC.fieldOf("barrier").forGetter(LakeFeature.Configuration::barrier)
-                        )
-                        .apply(instance, LakeFeature.Configuration::new)
-        );
+    public static record Configuration(BlockStateProvider fluid, BlockStateProvider barrier)
+            implements FeatureConfiguration {
+        public static final Codec<LakeFeature.Configuration> CODEC =
+                RecordCodecBuilder.create(
+                        instance ->
+                                instance.group(
+                                                BlockStateProvider.CODEC
+                                                        .fieldOf("fluid")
+                                                        .forGetter(
+                                                                LakeFeature.Configuration::fluid),
+                                                BlockStateProvider.CODEC
+                                                        .fieldOf("barrier")
+                                                        .forGetter(
+                                                                LakeFeature.Configuration::barrier))
+                                        .apply(instance, LakeFeature.Configuration::new));
     }
 }

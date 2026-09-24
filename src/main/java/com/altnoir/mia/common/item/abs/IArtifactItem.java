@@ -1,14 +1,13 @@
 package com.altnoir.mia.common.item.abs;
 
+import java.util.List;
+import java.util.function.UnaryOperator;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
-
-import java.util.List;
-import java.util.function.UnaryOperator;
 
 /**
  * 继承关系
@@ -41,9 +40,14 @@ public interface IArtifactItem extends ICurioItem, IMiaTooltip {
     public default void appendTooltip(ItemStack stack, List<Component> tooltip) {
         tooltip.add(1, Component.translatable(getGradeTranslatable()).withStyle(getGradeStyle()));
         if (stack.getItem() instanceof IBundleable) {
-            tooltip.add(2,
-                    Component.translatable(TOOLTIP_ARTIFACT_WEIGHT,
-                                    Component.literal(Integer.toString(((IBundleable) stack.getItem()).getWeight()))
+            tooltip.add(
+                    2,
+                    Component.translatable(
+                                    TOOLTIP_ARTIFACT_WEIGHT,
+                                    Component.literal(
+                                                    Integer.toString(
+                                                            ((IBundleable) stack.getItem())
+                                                                    .getWeight()))
                                             .withStyle(ChatFormatting.YELLOW))
                             .withStyle(style -> style.withColor(ChatFormatting.GOLD)));
         }

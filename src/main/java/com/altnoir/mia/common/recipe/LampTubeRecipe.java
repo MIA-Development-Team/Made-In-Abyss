@@ -15,7 +15,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 
-public record LampTubeRecipe(SizedIngredient ingredient, ItemStack result) implements Recipe<LampTubeRecipeInput> {
+public record LampTubeRecipe(SizedIngredient ingredient, ItemStack result)
+        implements Recipe<LampTubeRecipeInput> {
     @Override
     public NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> ingredients = NonNullList.create();
@@ -56,17 +57,24 @@ public record LampTubeRecipe(SizedIngredient ingredient, ItemStack result) imple
     }
 
     public static class Serializer implements RecipeSerializer<LampTubeRecipe> {
-        public static final MapCodec<LampTubeRecipe> CODEC = RecordCodecBuilder.mapCodec(builder ->
-                builder.group(
-                        SizedIngredient.FLAT_CODEC.fieldOf("ingredient").forGetter(LampTubeRecipe::ingredient),
-                        ItemStack.CODEC.fieldOf("result").forGetter(LampTubeRecipe::result)
-                ).apply(builder, LampTubeRecipe::new)
-        );
-        public static final StreamCodec<RegistryFriendlyByteBuf, LampTubeRecipe> STREAM_CODEC = StreamCodec.composite(
-                SizedIngredient.STREAM_CODEC, LampTubeRecipe::ingredient,
-                ItemStack.STREAM_CODEC, LampTubeRecipe::result,
-                LampTubeRecipe::new
-        );
+        public static final MapCodec<LampTubeRecipe> CODEC =
+                RecordCodecBuilder.mapCodec(
+                        builder ->
+                                builder.group(
+                                                SizedIngredient.FLAT_CODEC
+                                                        .fieldOf("ingredient")
+                                                        .forGetter(LampTubeRecipe::ingredient),
+                                                ItemStack.CODEC
+                                                        .fieldOf("result")
+                                                        .forGetter(LampTubeRecipe::result))
+                                        .apply(builder, LampTubeRecipe::new));
+        public static final StreamCodec<RegistryFriendlyByteBuf, LampTubeRecipe> STREAM_CODEC =
+                StreamCodec.composite(
+                        SizedIngredient.STREAM_CODEC,
+                        LampTubeRecipe::ingredient,
+                        ItemStack.STREAM_CODEC,
+                        LampTubeRecipe::result,
+                        LampTubeRecipe::new);
 
         @Override
         public MapCodec<LampTubeRecipe> codec() {

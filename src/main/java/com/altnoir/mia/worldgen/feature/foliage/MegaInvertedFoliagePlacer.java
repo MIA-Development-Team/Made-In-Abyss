@@ -12,11 +12,15 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 public class MegaInvertedFoliagePlacer extends FoliagePlacer {
-    public static final MapCodec<MegaInvertedFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> foliagePlacerParts(instance)
-                    .and(Codec.intRange(0, 16).fieldOf("height").forGetter(placer -> placer.height))
-                    .apply(instance, MegaInvertedFoliagePlacer::new)
-    );
+    public static final MapCodec<MegaInvertedFoliagePlacer> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    instance ->
+                            foliagePlacerParts(instance)
+                                    .and(
+                                            Codec.intRange(0, 16)
+                                                    .fieldOf("height")
+                                                    .forGetter(placer -> placer.height))
+                                    .apply(instance, MegaInvertedFoliagePlacer::new));
     protected final int height;
 
     public MegaInvertedFoliagePlacer(IntProvider radius, IntProvider offset, int height) {
@@ -39,13 +43,20 @@ public class MegaInvertedFoliagePlacer extends FoliagePlacer {
             FoliagePlacer.FoliageAttachment attachment,
             int foliageHeight,
             int foliageRadius,
-            int offset
-    ) {
+            int offset) {
         int i = attachment.doubleTrunk() ? foliageHeight : 1 + random.nextInt(2);
 
         for (int j = offset; j >= offset - i; j--) {
             int k = foliageRadius + attachment.radiusOffset() + 1 - j;
-            this.placeLeavesRow(level, blockSetter, random, config, attachment.pos(), k, -j, attachment.doubleTrunk());
+            this.placeLeavesRow(
+                    level,
+                    blockSetter,
+                    random,
+                    config,
+                    attachment.pos(),
+                    k,
+                    -j,
+                    attachment.doubleTrunk());
         }
     }
 
@@ -55,7 +66,8 @@ public class MegaInvertedFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected boolean shouldSkipLocation(RandomSource random, int localX, int localY, int localZ, int range, boolean large) {
+    protected boolean shouldSkipLocation(
+            RandomSource random, int localX, int localY, int localZ, int range, boolean large) {
         return localX + localZ >= 7 ? true : localX * localX + localZ * localZ > range * range;
     }
 }

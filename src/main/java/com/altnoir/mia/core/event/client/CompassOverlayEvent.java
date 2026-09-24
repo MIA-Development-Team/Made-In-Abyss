@@ -2,6 +2,7 @@ package com.altnoir.mia.core.event.client;
 
 import com.altnoir.mia.util.MiaUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
+import javax.annotation.Nullable;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -13,15 +14,13 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-import javax.annotation.Nullable;
-
 @OnlyIn(Dist.CLIENT)
 public class CompassOverlayEvent {
-    private static final ResourceLocation COMPASS_ICON = MiaUtil.miaId("textures/gui/sprites/world/compass_icon.png");
+    private static final ResourceLocation COMPASS_ICON =
+            MiaUtil.miaId("textures/gui/sprites/world/compass_icon.png");
     private static final int ICON_SIZE = 16;
 
-    @Nullable
-    private static BlockPos targetPosition = null;
+    @Nullable private static BlockPos targetPosition = null;
 
     private static long lastTargetTime = 0;
     private static final long FADE_IN_DURATION = 800;
@@ -69,7 +68,11 @@ public class CompassOverlayEvent {
         var screenY = result[1];
         var isBehind = result[2] < 0;
 
-        if (isBehind || screenX < 0 || screenX > screenWidth || screenY < 0 || screenY > screenHeight) {
+        if (isBehind
+                || screenX < 0
+                || screenX > screenWidth
+                || screenY < 0
+                || screenY > screenHeight) {
             var centerX = screenWidth / 2f;
             var centerY = screenHeight / 2f;
             var dirX = screenX - centerX;
@@ -107,16 +110,17 @@ public class CompassOverlayEvent {
 
         // 距离计算
         var playerPos = mc.player.blockPosition();
-        var distance = Math.sqrt(
-                Math.pow(targetPosition.getX() - playerPos.getX(), 2) +
-                        Math.pow(targetPosition.getY() - playerPos.getY(), 2) +
-                        Math.pow(targetPosition.getZ() - playerPos.getZ(), 2)
-        );
+        var distance =
+                Math.sqrt(
+                        Math.pow(targetPosition.getX() - playerPos.getX(), 2)
+                                + Math.pow(targetPosition.getY() - playerPos.getY(), 2)
+                                + Math.pow(targetPosition.getZ() - playerPos.getZ(), 2));
 
         renderIcon(guiGraphics, (int) screenX, (int) screenY, alpha, distance);
     }
 
-    private static void renderIcon(GuiGraphics graphics, int x, int y, float alpha, double distance) {
+    private static void renderIcon(
+            GuiGraphics graphics, int x, int y, float alpha, double distance) {
         int iconX = x - ICON_SIZE / 2;
         int iconY = y - ICON_SIZE / 2;
 
@@ -140,8 +144,13 @@ public class CompassOverlayEvent {
         RenderSystem.disableBlend();
     }
 
-    private static float[] projectToScreen(Vec3 worldPos, Vec3 cameraPos, float yaw, float pitch,
-                                           int screenWidth, int screenHeight) {
+    private static float[] projectToScreen(
+            Vec3 worldPos,
+            Vec3 cameraPos,
+            float yaw,
+            float pitch,
+            int screenWidth,
+            int screenHeight) {
         var relative = worldPos.subtract(cameraPos);
         var yawRad = Math.toRadians(yaw);
         var pitchRad = Math.toRadians(pitch);
@@ -160,9 +169,10 @@ public class CompassOverlayEvent {
 
         if (Math.abs(z2) < 0.01) z2 = 0.01;
 
-        var screenX = (-x1 / (z2 * tanHalfFov * aspect)) * (screenWidth / 2.0) + (screenWidth / 2.0);
+        var screenX =
+                (-x1 / (z2 * tanHalfFov * aspect)) * (screenWidth / 2.0) + (screenWidth / 2.0);
         var screenY = (-y2 / (z2 * tanHalfFov)) * (screenHeight / 2.0) + (screenHeight / 2.0);
 
-        return new float[]{(float) screenX, (float) screenY, (float) z2};
+        return new float[] {(float) screenX, (float) screenY, (float) z2};
     }
 }

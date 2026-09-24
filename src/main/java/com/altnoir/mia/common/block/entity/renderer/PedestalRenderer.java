@@ -3,6 +3,7 @@ package com.altnoir.mia.common.block.entity.renderer;
 import com.altnoir.mia.common.block.entity.PedestalBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -11,16 +12,17 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.ArrayList;
-
 public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity> {
-    public PedestalRenderer(BlockEntityRendererProvider.Context context) {
-
-    }
+    public PedestalRenderer(BlockEntityRendererProvider.Context context) {}
 
     @Override
-    public void render(PedestalBlockEntity blockEntity, float partialTick, PoseStack poseStack,
-                       MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(
+            PedestalBlockEntity blockEntity,
+            float partialTick,
+            PoseStack poseStack,
+            MultiBufferSource bufferSource,
+            int packedLight,
+            int packedOverlay) {
         var itemRenderer = Minecraft.getInstance().getItemRenderer();
         var level = blockEntity.getLevel();
         if (level == null) return;
@@ -38,8 +40,15 @@ public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity
             var inputAngle = time * 4 % 360;
             poseStack.mulPose(Axis.YN.rotationDegrees(inputAngle));
 
-            itemRenderer.renderStatic(inputStack, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY,
-                    poseStack, bufferSource, level, 0);
+            itemRenderer.renderStatic(
+                    inputStack,
+                    ItemDisplayContext.FIXED,
+                    packedLight,
+                    OverlayTexture.NO_OVERLAY,
+                    poseStack,
+                    bufferSource,
+                    level,
+                    0);
             poseStack.popPose();
         }
         var slots = blockEntity.getOutputSlots();
@@ -76,8 +85,15 @@ public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity
             var itemAngle = time * 6 % 360;
             poseStack.mulPose(Axis.YN.rotationDegrees(itemAngle));
 
-            itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY,
-                    poseStack, bufferSource, level, 0);
+            itemRenderer.renderStatic(
+                    stack,
+                    ItemDisplayContext.FIXED,
+                    packedLight,
+                    OverlayTexture.NO_OVERLAY,
+                    poseStack,
+                    bufferSource,
+                    level,
+                    0);
 
             poseStack.popPose();
         }

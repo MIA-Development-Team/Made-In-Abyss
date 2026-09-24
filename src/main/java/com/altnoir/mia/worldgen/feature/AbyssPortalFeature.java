@@ -26,11 +26,20 @@ public class AbyssPortalFeature extends Feature<NoneFeatureConfiguration> {
         basePortalStructure(level, pos, Blocks.AIR, Blocks.AIR, height, 8, true);
     }
 
-    public static void createPortalStructure(ServerLevelAccessor level, BlockPos pos, Block block, int height) {
-        basePortalStructure(level, pos, block, MiaBlocks.ABYSS_PORTAL_FRAME.get(), height, 8, false);
+    public static void createPortalStructure(
+            ServerLevelAccessor level, BlockPos pos, Block block, int height) {
+        basePortalStructure(
+                level, pos, block, MiaBlocks.ABYSS_PORTAL_FRAME.get(), height, 8, false);
     }
 
-    public static void basePortalStructure(ServerLevelAccessor level, BlockPos pos, Block block, Block frameBlock, int height, int radius, boolean dropBlocks) {
+    public static void basePortalStructure(
+            ServerLevelAccessor level,
+            BlockPos pos,
+            Block block,
+            Block frameBlock,
+            int height,
+            int radius,
+            boolean dropBlocks) {
         BlockPos.MutableBlockPos mutablePos = pos.mutable();
         final double radiusSquared = radius * radius;
         final int wallRadius = radius + 1;
@@ -47,10 +56,11 @@ public class AbyssPortalFeature extends Feature<NoneFeatureConfiguration> {
                 // 判断是否应该放置墙壁块
                 boolean shouldPlaceWall = false;
                 if (!isInsideCircle) {
-                    shouldPlaceWall = (xSquared + (z - 1) * (z - 1) < radiusSquared) // 前
-                            || ((x - 1) * (x - 1) + z * z < radiusSquared) // 左
-                            || (xSquared + (z + 1) * (z + 1) < radiusSquared) // 后
-                            || ((x + 1) * (x + 1) + z * z < radiusSquared); // 右
+                    shouldPlaceWall =
+                            (xSquared + (z - 1) * (z - 1) < radiusSquared) // 前
+                                    || ((x - 1) * (x - 1) + z * z < radiusSquared) // 左
+                                    || (xSquared + (z + 1) * (z + 1) < radiusSquared) // 后
+                                    || ((x + 1) * (x + 1) + z * z < radiusSquared); // 右
                 }
                 final BlockState blockState;
                 boolean isCenterColumn = (x == 0 && z == 0);
@@ -68,11 +78,12 @@ public class AbyssPortalFeature extends Feature<NoneFeatureConfiguration> {
                 } else if (shouldPlaceWall) {
                     var random = level.getRandom().nextInt(3);
                     if (frameBlock == Blocks.AIR) {
-                        blockState = switch (random) {
-                            case 0 -> MiaBlocks.FOSSILIZED_WOOD.get().defaultBlockState();
-                            case 1 -> Blocks.POLISHED_TUFF.defaultBlockState();
-                            default -> Blocks.TUFF.defaultBlockState();
-                        };
+                        blockState =
+                                switch (random) {
+                                    case 0 -> MiaBlocks.FOSSILIZED_WOOD.get().defaultBlockState();
+                                    case 1 -> Blocks.POLISHED_TUFF.defaultBlockState();
+                                    default -> Blocks.TUFF.defaultBlockState();
+                                };
                     } else {
                         blockState = frameBlock.defaultBlockState();
                     }

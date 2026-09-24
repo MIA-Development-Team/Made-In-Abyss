@@ -17,21 +17,22 @@ public record DoubleRange(double min, double max) {
         return new DoubleRange(min, max);
     }
 
-    public static final Codec<DoubleRange> CODEC = RecordCodecBuilder.create(codec ->
-            codec.group(
-                    Codec.DOUBLE.fieldOf("min").forGetter(DoubleRange::min),
-                    Codec.DOUBLE.fieldOf("max").forGetter(DoubleRange::max)
-            ).apply(codec, DoubleRange::new)
-    );
+    public static final Codec<DoubleRange> CODEC =
+            RecordCodecBuilder.create(
+                    codec ->
+                            codec.group(
+                                            Codec.DOUBLE.fieldOf("min").forGetter(DoubleRange::min),
+                                            Codec.DOUBLE.fieldOf("max").forGetter(DoubleRange::max))
+                                    .apply(codec, DoubleRange::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, DoubleRange> STREAM_CODEC = StreamCodec.of(
-            (buffer, range) -> {
-                ByteBufCodecs.DOUBLE.encode(buffer, range.min);
-                ByteBufCodecs.DOUBLE.encode(buffer, range.max);
-            },
-            buffer -> new DoubleRange(
-                    ByteBufCodecs.DOUBLE.decode(buffer),
-                    ByteBufCodecs.DOUBLE.decode(buffer)
-            )
-    );
+    public static final StreamCodec<RegistryFriendlyByteBuf, DoubleRange> STREAM_CODEC =
+            StreamCodec.of(
+                    (buffer, range) -> {
+                        ByteBufCodecs.DOUBLE.encode(buffer, range.min);
+                        ByteBufCodecs.DOUBLE.encode(buffer, range.max);
+                    },
+                    buffer ->
+                            new DoubleRange(
+                                    ByteBufCodecs.DOUBLE.decode(buffer),
+                                    ByteBufCodecs.DOUBLE.decode(buffer)));
 }

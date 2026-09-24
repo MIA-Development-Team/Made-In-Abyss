@@ -1,7 +1,7 @@
 package com.altnoir.mia.common.block.abs;
 
-import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.common.item.PrasioliteHoeItem;
+import com.altnoir.mia.init.MiaBlocks;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,10 +15,14 @@ public abstract class AbsCanFarmBlock extends Block {
     }
 
     @Override
-    public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
+    public @Nullable BlockState getToolModifiedState(
+            BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
         if (context.getItemInHand().getItem() instanceof PrasioliteHoeItem) {
             if (state.is(this)) {
-                return MiaBlocks.HOPPER_FARMLAND.get().defaultBlockState().setValue(BlockStateProperties.MOISTURE, 0);
+                return MiaBlocks.HOPPER_FARMLAND
+                        .get()
+                        .defaultBlockState()
+                        .setValue(BlockStateProperties.MOISTURE, 0);
             }
         }
         return super.getToolModifiedState(state, context, itemAbility, simulate);

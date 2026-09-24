@@ -1,7 +1,7 @@
 package com.altnoir.mia.common.block.entity.renderer;
 
-import com.altnoir.mia.common.block.entity.AbyssSpawnerBlockEntity;
 import com.altnoir.mia.client.render.MiaRenderType;
+import com.altnoir.mia.common.block.entity.AbyssSpawnerBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -23,11 +23,16 @@ public class AbyssSpawnerRenderer implements BlockEntityRenderer<AbyssSpawnerBlo
     private static final int CORE_COLOR = FastColor.ARGB32.color(250, 120, 60, 160);
     private static final int OUTER_COLOR = FastColor.ARGB32.color(100, 160, 100, 220);
 
-    public AbyssSpawnerRenderer(BlockEntityRendererProvider.Context context) {
-    }
+    public AbyssSpawnerRenderer(BlockEntityRendererProvider.Context context) {}
 
     @Override
-    public void render(AbyssSpawnerBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(
+            AbyssSpawnerBlockEntity blockEntity,
+            float partialTick,
+            PoseStack poseStack,
+            MultiBufferSource bufferSource,
+            int packedLight,
+            int packedOverlay) {
         var level = blockEntity.getLevel();
         if (level == null) {
             return;
@@ -56,13 +61,18 @@ public class AbyssSpawnerRenderer implements BlockEntityRenderer<AbyssSpawnerBlo
         renderDistortedSphere(poseStack, bufferSource, radius, time, packedLight);
         poseStack.scale(1.1f, 1.1f, 1.1f);
         renderDistortedSphere(poseStack, bufferSource, radius, time * 0.5f, packedLight);
-        //poseStack.scale(0.75f, 0.75f, 0.75f);
-        //renderGlowingSphere(poseStack, bufferSource, radius * 0.8f, time);
+        // poseStack.scale(0.75f, 0.75f, 0.75f);
+        // renderGlowingSphere(poseStack, bufferSource, radius * 0.8f, time);
 
         poseStack.popPose();
     }
 
-    private void renderDistortedSphere(PoseStack poseStack, MultiBufferSource bufferSource, float radius, float time, int packedLight) {
+    private void renderDistortedSphere(
+            PoseStack poseStack,
+            MultiBufferSource bufferSource,
+            float radius,
+            float time,
+            int packedLight) {
         VertexConsumer buffer = bufferSource.getBuffer(MiaRenderType.ABYSS_ORB);
         Matrix4f matrix = poseStack.last().pose();
 
@@ -103,7 +113,8 @@ public class AbyssSpawnerRenderer implements BlockEntityRenderer<AbyssSpawnerBlo
         }
     }
 
-    private void renderGlowingSphere(PoseStack poseStack, MultiBufferSource bufferSource, float radius, float time) {
+    private void renderGlowingSphere(
+            PoseStack poseStack, MultiBufferSource bufferSource, float radius, float time) {
         VertexConsumer buffer = bufferSource.getBuffer(MiaRenderType.ABYSS_ORB_GLOW);
         Matrix4f matrix = poseStack.last().pose();
 
@@ -148,10 +159,9 @@ public class AbyssSpawnerRenderer implements BlockEntityRenderer<AbyssSpawnerBlo
         return new Vector3f(x, y, z);
     }
 
-    private void addVertex(VertexConsumer buffer, Matrix4f matrix, Vector3f pos, int color, int light) {
-        buffer.addVertex(matrix, pos.x, pos.y, pos.z)
-                .setColor(color)
-                .setLight(light);
+    private void addVertex(
+            VertexConsumer buffer, Matrix4f matrix, Vector3f pos, int color, int light) {
+        buffer.addVertex(matrix, pos.x, pos.y, pos.z).setColor(color).setLight(light);
     }
 
     private int lerpColor(int color1, int color2, float t) {

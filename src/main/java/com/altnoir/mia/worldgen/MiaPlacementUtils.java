@@ -5,6 +5,7 @@ import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.worldgen.biome.great_fault.GreatFaultPlacements;
 import com.altnoir.mia.worldgen.biome.the_abyss.TheAbyssPlacements;
 import com.altnoir.mia.worldgen.feature.tree.MiaTreePlacements;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -16,8 +17,6 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-
-import java.util.List;
 
 public class MiaPlacementUtils {
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
@@ -34,8 +33,7 @@ public class MiaPlacementUtils {
             BootstrapContext<PlacedFeature> context,
             ResourceKey<PlacedFeature> key,
             Holder<ConfiguredFeature<?, ?>> configuration,
-            List<PlacementModifier> modifiers
-    ) {
+            List<PlacementModifier> modifiers) {
         context.register(key, new PlacedFeature(configuration, List.copyOf(modifiers)));
     }
 
@@ -43,12 +41,12 @@ public class MiaPlacementUtils {
             BootstrapContext<PlacedFeature> context,
             ResourceKey<PlacedFeature> key,
             Holder<ConfiguredFeature<?, ?>> configuredFeature,
-            PlacementModifier... placements
-    ) {
+            PlacementModifier... placements) {
         register(context, key, configuredFeature, List.of(placements));
     }
 
     public static BlockPredicateFilter filteredByBlockSurvival(Block block) {
-        return BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(block.defaultBlockState(), BlockPos.ZERO));
+        return BlockPredicateFilter.forPredicate(
+                BlockPredicate.wouldSurvive(block.defaultBlockState(), BlockPos.ZERO));
     }
 }

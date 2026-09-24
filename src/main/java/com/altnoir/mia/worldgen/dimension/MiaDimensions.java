@@ -6,6 +6,7 @@ import com.altnoir.mia.worldgen.biome.MiaBiomes;
 import com.altnoir.mia.worldgen.biomesource.AbyssNoiseBiomeSource;
 import com.altnoir.mia.worldgen.noise_setting.MiaNoiseGeneratorSettings;
 import com.mojang.datafixers.util.Pair;
+import java.util.List;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -19,182 +20,208 @@ import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 
-import java.util.List;
-
 public class MiaDimensions {
-    public static final ResourceKey<LevelStem> THE_ABYSS = ResourceKey.create(Registries.LEVEL_STEM,
-            MiaUtil.id(MIA.MOD_ID, "the_abyss"));
-    public static final ResourceKey<Level> THE_ABYSS_LEVEL = ResourceKey.create(Registries.DIMENSION,
-            MiaUtil.id(MIA.MOD_ID, "the_abyss"));
+    public static final ResourceKey<LevelStem> THE_ABYSS =
+            ResourceKey.create(Registries.LEVEL_STEM, MiaUtil.id(MIA.MOD_ID, "the_abyss"));
+    public static final ResourceKey<Level> THE_ABYSS_LEVEL =
+            ResourceKey.create(Registries.DIMENSION, MiaUtil.id(MIA.MOD_ID, "the_abyss"));
 
-    public static final ResourceKey<LevelStem> GREAT_FAULT = ResourceKey.create(Registries.LEVEL_STEM,
-            MiaUtil.id(MIA.MOD_ID, "great_fault"));
-    public static final ResourceKey<Level> GREAT_FAULT_LEVEL = ResourceKey.create(Registries.DIMENSION,
-            MiaUtil.id(MIA.MOD_ID, "great_fault"));
+    public static final ResourceKey<LevelStem> GREAT_FAULT =
+            ResourceKey.create(Registries.LEVEL_STEM, MiaUtil.id(MIA.MOD_ID, "great_fault"));
+    public static final ResourceKey<Level> GREAT_FAULT_LEVEL =
+            ResourceKey.create(Registries.DIMENSION, MiaUtil.id(MIA.MOD_ID, "great_fault"));
 
     public static void bootstrapStem(BootstrapContext<LevelStem> context) {
         HolderGetter<Biome> biomeRegistry = context.lookup(Registries.BIOME);
         HolderGetter<DimensionType> dimensionTypes = context.lookup(Registries.DIMENSION_TYPE);
-        HolderGetter<NoiseGeneratorSettings> noiseGenSettings = context.lookup(Registries.NOISE_SETTINGS);
+        HolderGetter<NoiseGeneratorSettings> noiseGenSettings =
+                context.lookup(Registries.NOISE_SETTINGS);
 
-        NoiseBasedChunkGenerator the_abyss = new NoiseBasedChunkGenerator(
-                AbyssNoiseBiomeSource.createFromList(272,
-                        new Climate.ParameterList<>(List.of(
-                                // 地表
-                                biomePair(
-                                        Climate.Parameter.span(-0.5F, 0.5F),
-                                        Climate.Parameter.point(0.0F),
-                                        Climate.Parameter.span(0.3F, 0.5F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-0.5F, 0.5F),
-                                        Climate.Parameter.point(0.0F),
-                                        Climate.Parameter.span(0.5F, 0.8F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.DENSE_SKYFOG_FOREST)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-1.0F, 0.0F),
-                                        Climate.Parameter.point(0.0F),
-                                        Climate.Parameter.span(-0.6F, -0.4F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.FOSSILIZED_FOREST)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-1.0F, 0.0F),
-                                        Climate.Parameter.point(0.0F),
-                                        Climate.Parameter.span(-0.9F, -0.6F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.RICH_FOSSILIZED_FOREST)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-1.0F, 0.5F),
-                                        Climate.Parameter.point(0.0F),
-                                        Climate.Parameter.point(0.0F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.ABYSS_PLAINS)
-                                ),
+        NoiseBasedChunkGenerator the_abyss =
+                new NoiseBasedChunkGenerator(
+                        AbyssNoiseBiomeSource.createFromList(
+                                272,
+                                new Climate.ParameterList<>(
+                                        List.of(
+                                                // 地表
+                                                biomePair(
+                                                        Climate.Parameter.span(-0.5F, 0.5F),
+                                                        Climate.Parameter.point(0.0F),
+                                                        Climate.Parameter.span(0.3F, 0.5F),
+                                                        0.0F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.SKYFOG_FOREST)),
+                                                biomePair(
+                                                        Climate.Parameter.span(-0.5F, 0.5F),
+                                                        Climate.Parameter.point(0.0F),
+                                                        Climate.Parameter.span(0.5F, 0.8F),
+                                                        0.0F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.DENSE_SKYFOG_FOREST)),
+                                                biomePair(
+                                                        Climate.Parameter.span(-1.0F, 0.0F),
+                                                        Climate.Parameter.point(0.0F),
+                                                        Climate.Parameter.span(-0.6F, -0.4F),
+                                                        0.0F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.FOSSILIZED_FOREST)),
+                                                biomePair(
+                                                        Climate.Parameter.span(-1.0F, 0.0F),
+                                                        Climate.Parameter.point(0.0F),
+                                                        Climate.Parameter.span(-0.9F, -0.6F),
+                                                        0.0F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.RICH_FOSSILIZED_FOREST)),
+                                                biomePair(
+                                                        Climate.Parameter.span(-1.0F, 0.5F),
+                                                        Climate.Parameter.point(0.0F),
+                                                        Climate.Parameter.point(0.0F),
+                                                        0.0F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.ABYSS_PLAINS)),
 
-                                // 第一层洞穴
-                                biomePair(
-                                        Climate.Parameter.span(-0.5F, 0.0F),
-                                        Climate.Parameter.span(0.2F, 1.5F),
-                                        Climate.Parameter.span(0.3F, 0.5F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.SKYFOG_FOREST)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-0.5F, 0.0F),
-                                        Climate.Parameter.span(0.2F, 1.5F),
-                                        Climate.Parameter.span(0.5F, 0.8F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.DENSE_SKYFOG_FOREST)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-0.5F, 0.5F),
-                                        Climate.Parameter.span(0.2F, 1.5F),
-                                        Climate.Parameter.span(-0.6F, -0.4F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.UNDER_FOSSILIZED_FOREST)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-0.5F, 0.5F),
-                                        Climate.Parameter.span(0.2F, 1.5F),
-                                        Climate.Parameter.span(-0.9F, -0.6F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.RICH_FOSSILIZED_FOREST)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(0.0F, 0.5F),
-                                        Climate.Parameter.span(0.0F, 0.8F),
-                                        Climate.Parameter.point(0.0F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.ABYSS_PLAINS)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-0.5F, 0.5F),
-                                        Climate.Parameter.span(0.1F, 0.7F),
-                                        Climate.Parameter.point(0.0F),
-                                        0.175F, biomeRegistry.getOrThrow(MiaBiomes.ABYSS_LUSH_CAVES)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-0.5F, 0.0F),
-                                        Climate.Parameter.span(0.4F, 1.0F),
-                                        Climate.Parameter.point(0.0F),
-                                        0.25F, biomeRegistry.getOrThrow(MiaBiomes.ABYSS_DRIPSTONE_CAVES)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-0.3F, 0.5F),
-                                        Climate.Parameter.span(0.7F, 1.5F),
-                                        Climate.Parameter.point(0.0F),
-                                        0.375F, biomeRegistry.getOrThrow(MiaBiomes.PRASIOLITE_CAVES)
-                                ),
+                                                // 第一层洞穴
+                                                biomePair(
+                                                        Climate.Parameter.span(-0.5F, 0.0F),
+                                                        Climate.Parameter.span(0.2F, 1.5F),
+                                                        Climate.Parameter.span(0.3F, 0.5F),
+                                                        0.0F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.SKYFOG_FOREST)),
+                                                biomePair(
+                                                        Climate.Parameter.span(-0.5F, 0.0F),
+                                                        Climate.Parameter.span(0.2F, 1.5F),
+                                                        Climate.Parameter.span(0.5F, 0.8F),
+                                                        0.0F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.DENSE_SKYFOG_FOREST)),
+                                                biomePair(
+                                                        Climate.Parameter.span(-0.5F, 0.5F),
+                                                        Climate.Parameter.span(0.2F, 1.5F),
+                                                        Climate.Parameter.span(-0.6F, -0.4F),
+                                                        0.0F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.UNDER_FOSSILIZED_FOREST)),
+                                                biomePair(
+                                                        Climate.Parameter.span(-0.5F, 0.5F),
+                                                        Climate.Parameter.span(0.2F, 1.5F),
+                                                        Climate.Parameter.span(-0.9F, -0.6F),
+                                                        0.0F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.RICH_FOSSILIZED_FOREST)),
+                                                biomePair(
+                                                        Climate.Parameter.span(0.0F, 0.5F),
+                                                        Climate.Parameter.span(0.0F, 0.8F),
+                                                        Climate.Parameter.point(0.0F),
+                                                        0.0F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.ABYSS_PLAINS)),
+                                                biomePair(
+                                                        Climate.Parameter.span(-0.5F, 0.5F),
+                                                        Climate.Parameter.span(0.1F, 0.7F),
+                                                        Climate.Parameter.point(0.0F),
+                                                        0.175F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.ABYSS_LUSH_CAVES)),
+                                                biomePair(
+                                                        Climate.Parameter.span(-0.5F, 0.0F),
+                                                        Climate.Parameter.span(0.4F, 1.0F),
+                                                        Climate.Parameter.point(0.0F),
+                                                        0.25F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.ABYSS_DRIPSTONE_CAVES)),
+                                                biomePair(
+                                                        Climate.Parameter.span(-0.3F, 0.5F),
+                                                        Climate.Parameter.span(0.7F, 1.5F),
+                                                        Climate.Parameter.point(0.0F),
+                                                        0.375F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.PRASIOLITE_CAVES)),
 
-                                // 第二层洞穴
-                                biomePair(
-                                        Climate.Parameter.span(-0.5F, 0.5F),
-                                        Climate.Parameter.point(1.9F),
-                                        Climate.Parameter.span(-0.5F, 0.5F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.TEMPTATION_FOREST)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-0.5F, 0.5F),
-                                        Climate.Parameter.point(2.0F),
-                                        Climate.Parameter.span(-0.5F, 0.5F),
-                                        0.0F, biomeRegistry.getOrThrow(MiaBiomes.INVERTED_FOREST)
-                                )
-                        )),
-                        new Climate.ParameterList<>(List.of(
-                                biomePair(
-                                        Climate.Parameter.span(-1.0F, 1.0F),
-                                        Climate.Parameter.span(0.0F, 1.9F),
-                                        biomeRegistry.getOrThrow(MiaBiomes.THE_ABYSS)
-                                ),
-                                biomePair(
-                                        Climate.Parameter.span(-1.0F, 1.0F),
-                                        Climate.Parameter.point(2.0F),
-                                        biomeRegistry.getOrThrow(MiaBiomes.INVERTED_FOREST)
-                                )
-                        ))
-                ),
-                noiseGenSettings.getOrThrow(MiaNoiseGeneratorSettings.THE_ABYSS)
-        );
-        NoiseBasedChunkGenerator great_fault = new NoiseBasedChunkGenerator(
-                AbyssNoiseBiomeSource.createFromList(112,
-                        new Climate.ParameterList<>(List.of(
-                                biomePair(
-                                        Climate.Parameter.span(-1.0F, 1.0F),
-                                        Climate.Parameter.point(0.0F),
-                                        biomeRegistry.getOrThrow(MiaBiomes.GREAT_FAULT)
-                                )
-                        )),
-                        biomeRegistry.getOrThrow(MiaBiomes.THE_GREAT_FAULT)
-                ),
-                noiseGenSettings.getOrThrow(MiaNoiseGeneratorSettings.GREAT_FAULT)
-        );
+                                                // 第二层洞穴
+                                                biomePair(
+                                                        Climate.Parameter.span(-0.5F, 0.5F),
+                                                        Climate.Parameter.point(1.9F),
+                                                        Climate.Parameter.span(-0.5F, 0.5F),
+                                                        0.0F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.TEMPTATION_FOREST)),
+                                                biomePair(
+                                                        Climate.Parameter.span(-0.5F, 0.5F),
+                                                        Climate.Parameter.point(2.0F),
+                                                        Climate.Parameter.span(-0.5F, 0.5F),
+                                                        0.0F,
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.INVERTED_FOREST)))),
+                                new Climate.ParameterList<>(
+                                        List.of(
+                                                biomePair(
+                                                        Climate.Parameter.span(-1.0F, 1.0F),
+                                                        Climate.Parameter.span(0.0F, 1.9F),
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.THE_ABYSS)),
+                                                biomePair(
+                                                        Climate.Parameter.span(-1.0F, 1.0F),
+                                                        Climate.Parameter.point(2.0F),
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.INVERTED_FOREST))))),
+                        noiseGenSettings.getOrThrow(MiaNoiseGeneratorSettings.THE_ABYSS));
+        NoiseBasedChunkGenerator great_fault =
+                new NoiseBasedChunkGenerator(
+                        AbyssNoiseBiomeSource.createFromList(
+                                112,
+                                new Climate.ParameterList<>(
+                                        List.of(
+                                                biomePair(
+                                                        Climate.Parameter.span(-1.0F, 1.0F),
+                                                        Climate.Parameter.point(0.0F),
+                                                        biomeRegistry.getOrThrow(
+                                                                MiaBiomes.GREAT_FAULT)))),
+                                biomeRegistry.getOrThrow(MiaBiomes.THE_GREAT_FAULT)),
+                        noiseGenSettings.getOrThrow(MiaNoiseGeneratorSettings.GREAT_FAULT));
 
-        LevelStem the_abyss_stem = new LevelStem(dimensionTypes.getOrThrow(MiaDimensionTypes.THE_ABYSS_TYPE), the_abyss);
-        LevelStem great_fault_stem = new LevelStem(dimensionTypes.getOrThrow(MiaDimensionTypes.GREAT_FAULT_TYPE), great_fault);
+        LevelStem the_abyss_stem =
+                new LevelStem(
+                        dimensionTypes.getOrThrow(MiaDimensionTypes.THE_ABYSS_TYPE), the_abyss);
+        LevelStem great_fault_stem =
+                new LevelStem(
+                        dimensionTypes.getOrThrow(MiaDimensionTypes.GREAT_FAULT_TYPE), great_fault);
 
         context.register(THE_ABYSS, the_abyss_stem);
         context.register(GREAT_FAULT, great_fault_stem);
     }
 
     private static Pair<Climate.ParameterPoint, Holder<Biome>> biomePair(
-            Climate.Parameter humidity, Climate.Parameter depth, Climate.Parameter weirdness, float offset, Holder<Biome> biome) {
+            Climate.Parameter humidity,
+            Climate.Parameter depth,
+            Climate.Parameter weirdness,
+            float offset,
+            Holder<Biome> biome) {
 
-        return Pair.of(Climate.parameters(
-                Climate.Parameter.point(0.8F),
-                humidity,
-                Climate.Parameter.point(0.0F),
-                Climate.Parameter.point(0.0F),
-                depth,
-                weirdness,
-                offset), biome);
+        return Pair.of(
+                Climate.parameters(
+                        Climate.Parameter.point(0.8F),
+                        humidity,
+                        Climate.Parameter.point(0.0F),
+                        Climate.Parameter.point(0.0F),
+                        depth,
+                        weirdness,
+                        offset),
+                biome);
     }
 
     private static Pair<Climate.ParameterPoint, Holder<Biome>> biomePair(
             Climate.Parameter humidity, Climate.Parameter depth, Holder<Biome> biome) {
 
-        return Pair.of(Climate.parameters(
-                Climate.Parameter.point(0.8F),
-                humidity,
-                Climate.Parameter.point(0.0F),
-                Climate.Parameter.point(0.0F),
-                depth,
-                Climate.Parameter.point(0.0F),
-                0.0F), biome);
+        return Pair.of(
+                Climate.parameters(
+                        Climate.Parameter.point(0.8F),
+                        humidity,
+                        Climate.Parameter.point(0.0F),
+                        Climate.Parameter.point(0.0F),
+                        depth,
+                        Climate.Parameter.point(0.0F),
+                        0.0F),
+                biome);
     }
 }

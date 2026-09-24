@@ -25,18 +25,17 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class CaveExplorerBeaconBlock extends BaseEntityBlock {
-    public static final MapCodec<CaveExplorerBeaconBlock> CODEC = simpleCodec(CaveExplorerBeaconBlock::new);
+    public static final MapCodec<CaveExplorerBeaconBlock> CODEC =
+            simpleCodec(CaveExplorerBeaconBlock::new);
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
-    protected static final VoxelShape ANGLES = Shapes.or(
-            box(0.0, 0.0, 0.0, 4.0, 4.0, 4.0),
-            box(0.0, 0.0, 12.0, 4.0, 4.0, 16.0),
-            box(12.0, 0.0, 0.0, 16.0, 4.0, 4.0),
-            box(12.0, 0.0, 12.0, 16.0, 4.0, 16.0)
-    );
-    protected static final VoxelShape SHAPE = Shapes.or(
-            ANGLES,
-            box(1.0, 0.0, 1.0, 15.0, 16.0, 15.0)
-    );
+    protected static final VoxelShape ANGLES =
+            Shapes.or(
+                    box(0.0, 0.0, 0.0, 4.0, 4.0, 4.0),
+                    box(0.0, 0.0, 12.0, 4.0, 4.0, 16.0),
+                    box(12.0, 0.0, 0.0, 16.0, 4.0, 4.0),
+                    box(12.0, 0.0, 12.0, 16.0, 4.0, 16.0));
+    protected static final VoxelShape SHAPE =
+            Shapes.or(ANGLES, box(1.0, 0.0, 1.0, 15.0, 16.0, 15.0));
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
@@ -50,11 +49,21 @@ public class CaveExplorerBeaconBlock extends BaseEntityBlock {
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(LIT, Boolean.valueOf(context.getLevel().hasNeighborSignal(context.getClickedPos())));
+        return this.defaultBlockState()
+                .setValue(
+                        LIT,
+                        Boolean.valueOf(
+                                context.getLevel().hasNeighborSignal(context.getClickedPos())));
     }
 
     @Override
-    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+    protected void neighborChanged(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Block neighborBlock,
+            BlockPos neighborPos,
+            boolean movedByPiston) {
         if (!level.isClientSide) {
             boolean flag = state.getValue(LIT);
             if (flag != level.hasNeighborSignal(pos)) {
@@ -80,7 +89,8 @@ public class CaveExplorerBeaconBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
@@ -90,8 +100,12 @@ public class CaveExplorerBeaconBlock extends BaseEntityBlock {
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return createTickerHelper(blockEntityType, MiaBlockEntities.CAVE_EXPLORER_BEACON_ENTITY.get(), CaveExplorerBeaconBlockEntity::tick);
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(
+            Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        return createTickerHelper(
+                blockEntityType,
+                MiaBlockEntities.CAVE_EXPLORER_BEACON_ENTITY.get(),
+                CaveExplorerBeaconBlockEntity::tick);
     }
 
     @Override

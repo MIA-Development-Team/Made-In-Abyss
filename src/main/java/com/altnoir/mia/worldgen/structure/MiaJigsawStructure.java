@@ -5,6 +5,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.List;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -22,36 +24,81 @@ import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasBinding
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 
-import java.util.List;
-import java.util.Optional;
-
 public class MiaJigsawStructure extends Structure {
     public static final DimensionPadding DEFAULT_DIMENSION_PADDING = DimensionPadding.ZERO;
     public static final LiquidSettings DEFAULT_LIQUID_SETTINGS = LiquidSettings.APPLY_WATERLOGGING;
     public static final int MAX_TOTAL_STRUCTURE_RANGE = 256;
     public static final int MIN_DEPTH = 0;
     public static final int MAX_DEPTH = 20;
-    public static final MapCodec<MiaJigsawStructure> CODEC = RecordCodecBuilder.<MiaJigsawStructure>mapCodec(
-                    instance -> instance.group(
-                                    settingsCodec(instance),
-                                    StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(jigsaw -> jigsaw.startPool),
-                                    ResourceLocation.CODEC.optionalFieldOf("start_jigsaw_name").forGetter(jigsaw -> jigsaw.startJigsawName),
-                                    Codec.intRange(0, 20).fieldOf("size").forGetter(jigsaw -> jigsaw.maxDepth),
-                                    HeightProvider.CODEC.fieldOf("start_height").forGetter(jigsaw -> jigsaw.startHeight),
-                                    Codec.BOOL.fieldOf("use_expansion_hack").forGetter(jigsaw -> jigsaw.useExpansionHack),
-                                    Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(jigsaw -> jigsaw.projectStartToHeightmap),
-                                    CaveFloorSearch.CODEC.optionalFieldOf("cave_floor_search").forGetter(jigsaw -> jigsaw.caveFloorSearch),
-                                    VerticalAnchor.CODEC.optionalFieldOf("max_start_y_exclusive").forGetter(jigsaw -> jigsaw.maxStartYExclusive),
-                                    Codec.intRange(1, 256).fieldOf("max_distance_from_center").forGetter(jigsaw -> jigsaw.maxDistanceFromCenter),
-                                    Codec.list(PoolAliasBinding.CODEC).optionalFieldOf("pool_aliases", List.of()).forGetter(jigsaw -> jigsaw.poolAliases),
-                                    DimensionPadding.CODEC
-                                            .optionalFieldOf("dimension_padding", DEFAULT_DIMENSION_PADDING)
-                                            .forGetter(p_348455_ -> p_348455_.dimensionPadding),
-                                    LiquidSettings.CODEC.optionalFieldOf("liquid_settings", DEFAULT_LIQUID_SETTINGS).forGetter(jigsaw -> jigsaw.liquidSettings)
-                            )
-                            .apply(instance, MiaJigsawStructure::new)
-            )
-            .validate(MiaJigsawStructure::verifyRange);
+    public static final MapCodec<MiaJigsawStructure> CODEC =
+            RecordCodecBuilder.<MiaJigsawStructure>mapCodec(
+                            instance ->
+                                    instance.group(
+                                                    settingsCodec(instance),
+                                                    StructureTemplatePool.CODEC
+                                                            .fieldOf("start_pool")
+                                                            .forGetter(jigsaw -> jigsaw.startPool),
+                                                    ResourceLocation.CODEC
+                                                            .optionalFieldOf("start_jigsaw_name")
+                                                            .forGetter(
+                                                                    jigsaw ->
+                                                                            jigsaw.startJigsawName),
+                                                    Codec.intRange(0, 20)
+                                                            .fieldOf("size")
+                                                            .forGetter(jigsaw -> jigsaw.maxDepth),
+                                                    HeightProvider.CODEC
+                                                            .fieldOf("start_height")
+                                                            .forGetter(
+                                                                    jigsaw -> jigsaw.startHeight),
+                                                    Codec.BOOL
+                                                            .fieldOf("use_expansion_hack")
+                                                            .forGetter(
+                                                                    jigsaw ->
+                                                                            jigsaw.useExpansionHack),
+                                                    Heightmap.Types.CODEC
+                                                            .optionalFieldOf(
+                                                                    "project_start_to_heightmap")
+                                                            .forGetter(
+                                                                    jigsaw ->
+                                                                            jigsaw.projectStartToHeightmap),
+                                                    CaveFloorSearch.CODEC
+                                                            .optionalFieldOf("cave_floor_search")
+                                                            .forGetter(
+                                                                    jigsaw ->
+                                                                            jigsaw.caveFloorSearch),
+                                                    VerticalAnchor.CODEC
+                                                            .optionalFieldOf(
+                                                                    "max_start_y_exclusive")
+                                                            .forGetter(
+                                                                    jigsaw ->
+                                                                            jigsaw.maxStartYExclusive),
+                                                    Codec.intRange(1, 256)
+                                                            .fieldOf("max_distance_from_center")
+                                                            .forGetter(
+                                                                    jigsaw ->
+                                                                            jigsaw.maxDistanceFromCenter),
+                                                    Codec.list(PoolAliasBinding.CODEC)
+                                                            .optionalFieldOf(
+                                                                    "pool_aliases", List.of())
+                                                            .forGetter(
+                                                                    jigsaw -> jigsaw.poolAliases),
+                                                    DimensionPadding.CODEC
+                                                            .optionalFieldOf(
+                                                                    "dimension_padding",
+                                                                    DEFAULT_DIMENSION_PADDING)
+                                                            .forGetter(
+                                                                    p_348455_ ->
+                                                                            p_348455_
+                                                                                    .dimensionPadding),
+                                                    LiquidSettings.CODEC
+                                                            .optionalFieldOf(
+                                                                    "liquid_settings",
+                                                                    DEFAULT_LIQUID_SETTINGS)
+                                                            .forGetter(
+                                                                    jigsaw ->
+                                                                            jigsaw.liquidSettings))
+                                            .apply(instance, MiaJigsawStructure::new))
+                    .validate(MiaJigsawStructure::verifyRange);
     private final Holder<StructureTemplatePool> startPool;
     private final Optional<ResourceLocation> startJigsawName;
     private final int maxDepth;
@@ -66,12 +113,14 @@ public class MiaJigsawStructure extends Structure {
     private final LiquidSettings liquidSettings;
 
     private static DataResult<MiaJigsawStructure> verifyRange(MiaJigsawStructure structure) {
-        int i = switch (structure.terrainAdaptation()) {
-            case NONE -> 0;
-            case BURY, BEARD_THIN, BEARD_BOX, ENCAPSULATE -> 12;
-        };
+        int i =
+                switch (structure.terrainAdaptation()) {
+                    case NONE -> 0;
+                    case BURY, BEARD_THIN, BEARD_BOX, ENCAPSULATE -> 12;
+                };
         return structure.maxDistanceFromCenter + i > MAX_TOTAL_STRUCTURE_RANGE
-                ? DataResult.error(() -> "Structure size including terrain adaptation must not exceed 256")
+                ? DataResult.error(
+                        () -> "Structure size including terrain adaptation must not exceed 256")
                 : DataResult.success(structure);
     }
 
@@ -88,8 +137,7 @@ public class MiaJigsawStructure extends Structure {
             int maxDistanceFromCenter,
             List<PoolAliasBinding> poolAliases,
             DimensionPadding dimensionPadding,
-            LiquidSettings liquidSettings
-    ) {
+            LiquidSettings liquidSettings) {
         super(settings);
         this.startPool = startPool;
         this.startJigsawName = startJigsawName;
@@ -117,8 +165,7 @@ public class MiaJigsawStructure extends Structure {
             int maxDistanceFromCenter,
             List<PoolAliasBinding> poolAliases,
             DimensionPadding dimensionPadding,
-            LiquidSettings liquidSettings
-    ) {
+            LiquidSettings liquidSettings) {
         this(
                 settings,
                 startPool,
@@ -132,8 +179,7 @@ public class MiaJigsawStructure extends Structure {
                 maxDistanceFromCenter,
                 poolAliases,
                 dimensionPadding,
-                liquidSettings
-        );
+                liquidSettings);
     }
 
     public MiaJigsawStructure(
@@ -147,8 +193,7 @@ public class MiaJigsawStructure extends Structure {
             int maxDistanceFromCenter,
             List<PoolAliasBinding> poolAliases,
             DimensionPadding dimensionPadding,
-            LiquidSettings liquidSettings
-    ) {
+            LiquidSettings liquidSettings) {
         this(
                 settings,
                 startPool,
@@ -161,8 +206,7 @@ public class MiaJigsawStructure extends Structure {
                 maxDistanceFromCenter,
                 poolAliases,
                 dimensionPadding,
-                liquidSettings
-        );
+                liquidSettings);
     }
 
     public MiaJigsawStructure(
@@ -171,8 +215,7 @@ public class MiaJigsawStructure extends Structure {
             int maxDepth,
             HeightProvider startHeight,
             boolean useExpansionHack,
-            Heightmap.Types projectStartToHeightmap
-    ) {
+            Heightmap.Types projectStartToHeightmap) {
         this(
                 settings,
                 startPool,
@@ -185,13 +228,15 @@ public class MiaJigsawStructure extends Structure {
                 80,
                 List.of(),
                 DEFAULT_DIMENSION_PADDING,
-                DEFAULT_LIQUID_SETTINGS
-        );
+                DEFAULT_LIQUID_SETTINGS);
     }
 
     public MiaJigsawStructure(
-            Structure.StructureSettings settings, Holder<StructureTemplatePool> startPool, int maxDepth, HeightProvider startHeight, boolean useExpansionHack
-    ) {
+            Structure.StructureSettings settings,
+            Holder<StructureTemplatePool> startPool,
+            int maxDepth,
+            HeightProvider startHeight,
+            boolean useExpansionHack) {
         this(
                 settings,
                 startPool,
@@ -204,35 +249,38 @@ public class MiaJigsawStructure extends Structure {
                 80,
                 List.of(),
                 DEFAULT_DIMENSION_PADDING,
-                DEFAULT_LIQUID_SETTINGS
-        );
+                DEFAULT_LIQUID_SETTINGS);
     }
 
     @Override
-    public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
+    public Optional<Structure.GenerationStub> findGenerationPoint(
+            Structure.GenerationContext context) {
         ChunkPos chunkpos = context.chunkPos();
-        WorldGenerationContext heightContext = new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor());
+        WorldGenerationContext heightContext =
+                new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor());
         int i = this.startHeight.sample(context.random(), heightContext);
-        Optional<BlockPos> start = this.caveFloorSearch.isPresent()
-                ? this.caveFloorSearch.get().findStart(context, i)
-                : Optional.of(new BlockPos(chunkpos.getMinBlockX(), i, chunkpos.getMinBlockZ()));
+        Optional<BlockPos> start =
+                this.caveFloorSearch.isPresent()
+                        ? this.caveFloorSearch.get().findStart(context, i)
+                        : Optional.of(
+                                new BlockPos(chunkpos.getMinBlockX(), i, chunkpos.getMinBlockZ()));
         if (start.isEmpty()) {
             return Optional.empty();
         }
         BlockPos blockpos = start.get();
-        Optional<Structure.GenerationStub> generation = JigsawPlacement.addPieces(
-                context,
-                this.startPool,
-                this.startJigsawName,
-                this.maxDepth,
-                blockpos,
-                this.useExpansionHack,
-                this.projectStartToHeightmap,
-                this.maxDistanceFromCenter,
-                PoolAliasLookup.create(this.poolAliases, blockpos, context.seed()),
-                this.dimensionPadding,
-                this.liquidSettings
-        );
+        Optional<Structure.GenerationStub> generation =
+                JigsawPlacement.addPieces(
+                        context,
+                        this.startPool,
+                        this.startJigsawName,
+                        this.maxDepth,
+                        blockpos,
+                        this.useExpansionHack,
+                        this.projectStartToHeightmap,
+                        this.maxDistanceFromCenter,
+                        PoolAliasLookup.create(this.poolAliases, blockpos, context.seed()),
+                        this.dimensionPadding,
+                        this.liquidSettings);
         if (this.maxStartYExclusive.isEmpty()) {
             return generation;
         }

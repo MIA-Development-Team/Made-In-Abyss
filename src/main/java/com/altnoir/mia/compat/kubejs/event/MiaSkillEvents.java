@@ -8,11 +8,10 @@ import net.minecraft.world.item.ItemStack;
 
 public class MiaSkillEvents {
     public static final EventGroup GROUP = EventGroup.of("MiaSkillEvents");
-    public static final EventHandler TRIGGERED = GROUP.server("triggered", () ->
-            TriggeredEventJS.class).hasResult();
+    public static final EventHandler TRIGGERED =
+            GROUP.server("triggered", () -> TriggeredEventJS.class).hasResult();
 
     public static final EventHandler triggered = TRIGGERED;
-
 
     public static class TriggeredEventJS implements KubeEvent {
         private final Player player;

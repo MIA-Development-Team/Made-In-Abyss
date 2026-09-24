@@ -4,6 +4,8 @@ import com.altnoir.mia.common.block.MiaBrushableBlock;
 import com.altnoir.mia.init.MiaBlockEntities;
 import com.mojang.logging.LogUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.util.Objects;
+import javax.annotation.Nullable;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,9 +34,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
 
-import javax.annotation.Nullable;
-import java.util.Objects;
-
 public class MiaBrushableBlockEntity extends BlockEntity {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final String LOOT_TABLE_TAG = "LootTable";
@@ -48,10 +47,8 @@ public class MiaBrushableBlockEntity extends BlockEntity {
     private long brushCountResetsAtTick;
     private long coolDownEndsAtTick;
     private ItemStack item = ItemStack.EMPTY;
-    @Nullable
-    private Direction hitDirection;
-    @Nullable
-    private ResourceKey<LootTable> lootTable;
+    @Nullable private Direction hitDirection;
+    @Nullable private ResourceKey<LootTable> lootTable;
     private long lootTableSeed;
 
     public MiaBrushableBlockEntity(BlockPos pos, BlockState blockState) {
@@ -76,7 +73,8 @@ public class MiaBrushableBlockEntity extends BlockEntity {
                 int j = this.getCompletionState();
                 if (i != j) {
                     BlockState blockstate = this.getBlockState();
-                    BlockState blockstate1 = blockstate.setValue(BlockStateProperties.DUSTED, Integer.valueOf(j));
+                    BlockState blockstate1 =
+                            blockstate.setValue(BlockStateProperties.DUSTED, Integer.valueOf(j));
                     this.level.setBlock(this.getBlockPos(), blockstate1, 3);
                 }
 
@@ -88,27 +86,38 @@ public class MiaBrushableBlockEntity extends BlockEntity {
     }
 
     public void unpackLootTable(Player player) {
-        if (this.lootTable != null && this.level != null && !this.level.isClientSide() && this.level.getServer() != null) {
-            LootTable loottable = this.level.getServer().reloadableRegistries().getLootTable(this.lootTable);
+        if (this.lootTable != null
+                && this.level != null
+                && !this.level.isClientSide()
+                && this.level.getServer() != null) {
+            LootTable loottable =
+                    this.level.getServer().reloadableRegistries().getLootTable(this.lootTable);
             if (player instanceof ServerPlayer serverplayer) {
                 CriteriaTriggers.GENERATE_LOOT.trigger(serverplayer, this.lootTable);
             }
 
-            LootParams lootparams = new LootParams.Builder((ServerLevel) this.level)
-                    .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.worldPosition))
-                    .withLuck(player.getLuck())
-                    .withParameter(LootContextParams.THIS_ENTITY, player)
-                    .create(LootContextParamSets.CHEST);
-            ObjectArrayList<ItemStack> objectarraylist = loottable.getRandomItems(lootparams, this.lootTableSeed);
+            LootParams lootparams =
+                    new LootParams.Builder((ServerLevel) this.level)
+                            .withParameter(
+                                    LootContextParams.ORIGIN, Vec3.atCenterOf(this.worldPosition))
+                            .withLuck(player.getLuck())
+                            .withParameter(LootContextParams.THIS_ENTITY, player)
+                            .create(LootContextParamSets.CHEST);
+            ObjectArrayList<ItemStack> objectarraylist =
+                    loottable.getRandomItems(lootparams, this.lootTableSeed);
 
-            this.item = switch (objectarraylist.size()) {
-                case 0 -> ItemStack.EMPTY;
-                case 1 -> (ItemStack) objectarraylist.get(0);
-                default -> {
-                    LOGGER.warn("Expected max 1 loot from loot table {}, but got {}", this.lootTable.location(), objectarraylist.size());
-                    yield objectarraylist.get(0);
-                }
-            };
+            this.item =
+                    switch (objectarraylist.size()) {
+                        case 0 -> ItemStack.EMPTY;
+                        case 1 -> (ItemStack) objectarraylist.get(0);
+                        default -> {
+                            LOGGER.warn(
+                                    "Expected max 1 loot from loot table {}, but got {}",
+                                    this.lootTable.location(),
+                                    objectarraylist.size());
+                            yield objectarraylist.get(0);
+                        }
+                    };
             this.lootTable = null;
             this.setChanged();
         }
@@ -121,7 +130,13 @@ public class MiaBrushableBlockEntity extends BlockEntity {
             BlockState blockstate = this.getBlockState();
 
             if (blockstate.getBlock() instanceof MiaBrushableBlock brushable) {
-                this.level.playLocalSound(this.getBlockPos(), brushable.getBrushCompletedSound(), SoundSource.PLAYERS, 1.0F, 1.0F, false);
+                this.level.playLocalSound(
+                        this.getBlockPos(),
+                        brushable.getBrushCompletedSound(),
+                        SoundSource.PLAYERS,
+                        1.0F,
+                        1.0F,
+                        false);
                 block = brushable.getTurnsInto();
             } else {
                 block = Blocks.AIR;
@@ -141,9 +156,18 @@ public class MiaBrushableBlockEntity extends BlockEntity {
                 Direction direction = Objects.requireNonNullElse(this.hitDirection, Direction.UP);
                 BlockPos blockpos = this.worldPosition.relative(direction, 1);
                 double d3 = (double) blockpos.getX() + 0.5 * d1 + d2;
-                double d4 = (double) blockpos.getY() + 0.5 + (double) (EntityType.ITEM.getHeight() / 2.0F);
+                double d4 =
+                        (double) blockpos.getY()
+                                + 0.5
+                                + (double) (EntityType.ITEM.getHeight() / 2.0F);
                 double d5 = (double) blockpos.getZ() + 0.5 * d1 + d2;
-                ItemEntity itementity = new ItemEntity(this.level, d3, d4, d5, this.item.split(this.level.random.nextInt(21) + 10));
+                ItemEntity itementity =
+                        new ItemEntity(
+                                this.level,
+                                d3,
+                                d4,
+                                d5,
+                                this.item.split(this.level.random.nextInt(21) + 10));
                 itementity.setDeltaMovement(Vec3.ZERO);
                 this.level.addFreshEntity(itementity);
                 this.item = ItemStack.EMPTY;
@@ -158,7 +182,11 @@ public class MiaBrushableBlockEntity extends BlockEntity {
                 this.brushCount = Math.max(0, this.brushCount - 2);
                 int j = this.getCompletionState();
                 if (i != j) {
-                    this.level.setBlock(this.getBlockPos(), this.getBlockState().setValue(BlockStateProperties.DUSTED, Integer.valueOf(j)), 3);
+                    this.level.setBlock(
+                            this.getBlockPos(),
+                            this.getBlockState()
+                                    .setValue(BlockStateProperties.DUSTED, Integer.valueOf(j)),
+                            3);
                 }
 
                 int k = 4;
@@ -177,7 +205,10 @@ public class MiaBrushableBlockEntity extends BlockEntity {
 
     private boolean tryLoadLootTable(CompoundTag tag) {
         if (tag.contains("LootTable", 8)) {
-            this.lootTable = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.parse(tag.getString("LootTable")));
+            this.lootTable =
+                    ResourceKey.create(
+                            Registries.LOOT_TABLE,
+                            ResourceLocation.parse(tag.getString("LootTable")));
             this.lootTableSeed = tag.getLong("LootTableSeed");
             return true;
         } else {
@@ -220,7 +251,8 @@ public class MiaBrushableBlockEntity extends BlockEntity {
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         if (!this.tryLoadLootTable(tag) && tag.contains("item")) {
-            this.item = ItemStack.parse(registries, tag.getCompound("item")).orElse(ItemStack.EMPTY);
+            this.item =
+                    ItemStack.parse(registries, tag.getCompound("item")).orElse(ItemStack.EMPTY);
         } else {
             this.item = ItemStack.EMPTY;
         }
@@ -253,8 +285,7 @@ public class MiaBrushableBlockEntity extends BlockEntity {
         }
     }
 
-    @Nullable
-    public Direction getHitDirection() {
+    @Nullable public Direction getHitDirection() {
         return this.hitDirection;
     }
 

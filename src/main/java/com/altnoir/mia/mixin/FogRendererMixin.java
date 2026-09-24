@@ -11,11 +11,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = FogRenderer.class)
 public class FogRendererMixin {
-    @Inject(method = "setupFog", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/util/Mth;clamp(FFF)F", ordinal = 0,
-            shift = At.Shift.AFTER),
+    @Inject(
+            method = "setupFog",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target = "Lnet/minecraft/util/Mth;clamp(FFF)F",
+                            ordinal = 0,
+                            shift = At.Shift.AFTER),
             cancellable = true)
-    private static void setupFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, boolean shouldCreateFog, float partialTick, CallbackInfo ci) {
+    private static void setupFog(
+            Camera camera,
+            FogRenderer.FogMode fogMode,
+            float farPlaneDistance,
+            boolean shouldCreateFog,
+            float partialTick,
+            CallbackInfo ci) {
         var dim = camera.getEntity().level().dimension();
 
         if (dim.equals(MiaDimensions.THE_ABYSS_LEVEL)) {

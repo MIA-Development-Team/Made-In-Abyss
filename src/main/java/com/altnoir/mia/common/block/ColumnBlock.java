@@ -17,21 +17,22 @@ import org.jetbrains.annotations.Nullable;
 
 public class ColumnBlock extends Block {
     public static final MapCodec<ColumnBlock> CODEC = simpleCodec(ColumnBlock::new);
-    public static final EnumProperty<ColumnSide> COLUMN = EnumProperty.create("column", ColumnSide.class);
-    protected static final VoxelShape SHAPE_TOP = Shapes.or(
-            Block.box(2.0, 13.0, 2.0, 14.0, 16.0, 14.0),
-            Block.box(4.0, 0.0, 4.0, 12.0, 13.0, 12.0)
-    );
+    public static final EnumProperty<ColumnSide> COLUMN =
+            EnumProperty.create("column", ColumnSide.class);
+    protected static final VoxelShape SHAPE_TOP =
+            Shapes.or(
+                    Block.box(2.0, 13.0, 2.0, 14.0, 16.0, 14.0),
+                    Block.box(4.0, 0.0, 4.0, 12.0, 13.0, 12.0));
     protected static final VoxelShape SHAPE_MIDDLE = Block.box(4.0, 0.0, 4.0, 12.0, 16.0, 12.0);
-    protected static final VoxelShape SHAPE_BOTTOM = Shapes.or(
-            Block.box(2.0, 0.0, 2.0, 14.0, 3.0, 14.0),
-            Block.box(4.0, 3.0, 4.0, 12.0, 16.0, 12.0)
-    );
-    protected static final VoxelShape SHAPE = Shapes.or(
-            Block.box(2.0, 13.0, 2.0, 14.0, 16.0, 14.0),
-            Block.box(4.0, 3.0, 4.0, 12.0, 13.0, 12.0),
-            Block.box(2.0, 0.0, 2.0, 14.0, 3.0, 14.0)
-    );
+    protected static final VoxelShape SHAPE_BOTTOM =
+            Shapes.or(
+                    Block.box(2.0, 0.0, 2.0, 14.0, 3.0, 14.0),
+                    Block.box(4.0, 3.0, 4.0, 12.0, 16.0, 12.0));
+    protected static final VoxelShape SHAPE =
+            Shapes.or(
+                    Block.box(2.0, 13.0, 2.0, 14.0, 16.0, 14.0),
+                    Block.box(4.0, 3.0, 4.0, 12.0, 13.0, 12.0),
+                    Block.box(2.0, 0.0, 2.0, 14.0, 3.0, 14.0));
 
     @Override
     protected MapCodec<? extends Block> codec() {
@@ -44,7 +45,8 @@ public class ColumnBlock extends Block {
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         ColumnSide side = state.getValue(COLUMN);
         return switch (side) {
             case TOP -> SHAPE_TOP;
@@ -59,10 +61,10 @@ public class ColumnBlock extends Block {
         boolean hasBelow = level.getBlockState(pos.below()).getBlock() == this;
         int stateKey = (hasAbove ? 1 : 0) << 1 | (hasBelow ? 1 : 0);
         return switch (stateKey) {
-            case 3 -> ColumnSide.MIDDLE;  // 11: 上下都有
-            case 2 -> ColumnSide.BOTTOM;  // 10: 只有上方
-            case 1 -> ColumnSide.TOP;     // 01: 只有下方
-            case 0 -> ColumnSide.NONE;    // 00: 都没有
+            case 3 -> ColumnSide.MIDDLE; // 11: 上下都有
+            case 2 -> ColumnSide.BOTTOM; // 10: 只有上方
+            case 1 -> ColumnSide.TOP; // 01: 只有下方
+            case 0 -> ColumnSide.NONE; // 00: 都没有
             default -> ColumnSide.NONE;
         };
     }
@@ -74,7 +76,13 @@ public class ColumnBlock extends Block {
     }
 
     @Override
-    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+    protected void neighborChanged(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Block neighborBlock,
+            BlockPos neighborPos,
+            boolean movedByPiston) {
         if (neighborPos.equals(pos.above()) || neighborPos.equals(pos.below())) {
             ColumnSide side = getColumnState(level, pos);
 

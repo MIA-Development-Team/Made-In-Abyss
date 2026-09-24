@@ -14,11 +14,16 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class AbyssPortalCoreRenderer implements BlockEntityRenderer<AbyssPortalCoreBlockEntity> {
-    public AbyssPortalCoreRenderer(BlockEntityRendererProvider.Context context) {
-    }
+    public AbyssPortalCoreRenderer(BlockEntityRendererProvider.Context context) {}
 
     @Override
-    public void render(AbyssPortalCoreBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(
+            AbyssPortalCoreBlockEntity blockEntity,
+            float partialTick,
+            PoseStack poseStack,
+            MultiBufferSource bufferSource,
+            int packedLight,
+            int packedOverlay) {
         var itemRenderer = Minecraft.getInstance().getItemRenderer();
         var level = blockEntity.getLevel();
         if (level == null) return;
@@ -39,8 +44,15 @@ public class AbyssPortalCoreRenderer implements BlockEntityRenderer<AbyssPortalC
                 poseStack.mulPose(Axis.YN.rotationDegrees(angle));
             }
 
-            itemRenderer.renderStatic(new ItemStack(MiaItems.STAR_COMPASS.get()), ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY,
-                    poseStack, bufferSource, level, 0);
+            itemRenderer.renderStatic(
+                    new ItemStack(MiaItems.STAR_COMPASS.get()),
+                    ItemDisplayContext.FIXED,
+                    packedLight,
+                    OverlayTexture.NO_OVERLAY,
+                    poseStack,
+                    bufferSource,
+                    level,
+                    0);
             poseStack.popPose();
         }
     }

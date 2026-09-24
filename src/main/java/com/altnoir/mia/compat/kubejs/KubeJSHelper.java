@@ -8,7 +8,8 @@ public class KubeJSHelper {
     public static void skillTriggerEvent(Player player, ItemStack itemStack) {
         try {
             if (MiaSkillEvents.TRIGGERED.hasListeners()) {
-                MiaSkillEvents.TRIGGERED.post(new MiaSkillEvents.TriggeredEventJS(player, itemStack));
+                MiaSkillEvents.TRIGGERED.post(
+                        new MiaSkillEvents.TriggeredEventJS(player, itemStack));
             }
         } catch (Exception ignored) {
         }

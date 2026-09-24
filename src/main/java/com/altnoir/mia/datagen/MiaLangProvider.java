@@ -4,18 +4,16 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.*;
 import com.altnoir.mia.util.FilesHelper;
 import com.altnoir.mia.worldgen.biome.MiaBiomes;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.level.biome.Biome;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
-
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class MiaLangProvider extends LanguageProvider {
     public MiaLangProvider(PackOutput output) {
@@ -30,38 +28,62 @@ public class MiaLangProvider extends LanguageProvider {
 
         add("config.jade.plugin_mia.spawner_cooldown", "Spawner Cooldown");
 
-        MiaBiomes.BIOMES.forEach(biome -> {
-            add("biome.mia." + biome.location().getPath(), formatName(biome));
-        });
+        MiaBiomes.BIOMES.forEach(
+                biome -> {
+                    add("biome.mia." + biome.location().getPath(), formatName(biome));
+                });
 
-        MiaPaintingVariants.PAINTING_VARIANTS.forEach(paintingVariant -> {
-            add("painting.mia." + paintingVariant.location().getPath() + ".title", formatName(paintingVariant.location().getPath()));
-            add("painting.mia." + paintingVariant.location().getPath() + ".author", "Memento In Abyss");
-        });
+        MiaPaintingVariants.PAINTING_VARIANTS.forEach(
+                paintingVariant -> {
+                    add(
+                            "painting.mia." + paintingVariant.location().getPath() + ".title",
+                            formatName(paintingVariant.location().getPath()));
+                    add(
+                            "painting.mia." + paintingVariant.location().getPath() + ".author",
+                            "Memento In Abyss");
+                });
 
         MiaItems.ITEMS.getEntries().stream()
                 .map(DeferredHolder::get)
-                .filter(item -> {
-                    if (item instanceof BlockItem) {
-                        return item instanceof ItemNameBlockItem;
-                    }
-                    return true;
-                })
-                .forEach(item -> add(item, formatName(BuiltInRegistries.ITEM.getKey(item).getPath())));
+                .filter(
+                        item -> {
+                            if (item instanceof BlockItem) {
+                                return item instanceof ItemNameBlockItem;
+                            }
+                            return true;
+                        })
+                .forEach(
+                        item ->
+                                add(
+                                        item,
+                                        formatName(BuiltInRegistries.ITEM.getKey(item).getPath())));
 
         MiaBlocks.BLOCKS.getEntries().stream()
                 .map(DeferredHolder::get)
-                .forEach(block -> add(block, formatName(BuiltInRegistries.BLOCK.getKey(block).getPath())));
+                .forEach(
+                        block ->
+                                add(
+                                        block,
+                                        formatName(
+                                                BuiltInRegistries.BLOCK.getKey(block).getPath())));
 
-        MiaPotions.POTIONS.getEntries().forEach(holder -> {
-            String name = holder.getId().getPath();
-            addPotions(name);
-        });
+        MiaPotions.POTIONS
+                .getEntries()
+                .forEach(
+                        holder -> {
+                            String name = holder.getId().getPath();
+                            addPotions(name);
+                        });
 
-        MiaStats.CUSTOM_STATS.getEntries().forEach(holder -> {
-            String name = holder.getId().getPath();
-            add("stat.mia.interact_with_" + name, "Interactions with " + formatName(name));
-        });
+        MiaStats.CUSTOM_STATS
+                .getEntries()
+                .forEach(
+                        holder -> {
+                            String name = holder.getId().getPath();
+                            add(
+                                    "stat.mia.interact_with_" + name,
+                                    "Interactions with " + formatName(name));
+                        });
 
         // Tags start
         add("tag.item.curios.whistle", "Whistle");
@@ -85,7 +107,8 @@ public class MiaLangProvider extends LanguageProvider {
         var path = "assets/mia/lang/default/" + fileName + ".json";
         var jsonElement = FilesHelper.loadJsonResource(path);
         if (jsonElement == null) {
-            throw new IllegalStateException(String.format("Could not find default lang file: %s", path));
+            throw new IllegalStateException(
+                    String.format("Could not find default lang file: %s", path));
         }
         var jsonObject = jsonElement.getAsJsonObject();
         for (var entry : jsonObject.entrySet()) {
@@ -108,10 +131,10 @@ public class MiaLangProvider extends LanguageProvider {
     private String formatName(String name) {
         return Arrays.stream(name.split("_"))
                 .filter(word -> !word.isEmpty())
-                .map(word ->
-                        Character.toUpperCase(word.charAt(0)) +
-                                word.substring(1).toLowerCase()
-                )
+                .map(
+                        word ->
+                                Character.toUpperCase(word.charAt(0))
+                                        + word.substring(1).toLowerCase())
                 .collect(Collectors.joining(" "));
     }
 }

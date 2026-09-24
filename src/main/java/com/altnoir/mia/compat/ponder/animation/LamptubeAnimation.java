@@ -32,16 +32,21 @@ public class LamptubeAnimation {
         Class<PedestalBlockEntity> type = PedestalBlockEntity.class;
         scene.world().modifyBlockEntity(pedestal, type, b -> b.setItem(0, stone));
         scene.idle(20);
-        scene.world().modifyBlock(lamptube, b -> b.setValue(AbsCrystalTubeBlock.POWERED, true), false);
+        scene.world()
+                .modifyBlock(lamptube, b -> b.setValue(AbsCrystalTubeBlock.POWERED, true), false);
         scene.idle(5);
-        scene.world().modifyBlock(lamptube, b -> b.setValue(AbsCrystalTubeBlock.POWERED, false), false);
+        scene.world()
+                .modifyBlock(lamptube, b -> b.setValue(AbsCrystalTubeBlock.POWERED, false), false);
         scene.idle(5);
 
         Vec3 lamptubeTop = util.vector().topOf(lamptube);
-        scene.overlay().showText(60).attachKeyFrame()
+        scene.overlay()
+                .showText(60)
+                .attachKeyFrame()
                 .text("text.mia.ponder.amethyst_lamptube.text1")
                 .colored(PonderPalette.GREEN)
-                .pointAt(lamptubeTop).placeNearTarget();
+                .pointAt(lamptubeTop)
+                .placeNearTarget();
         scene.idle(70);
         scene.markAsFinished();
     }
@@ -62,16 +67,21 @@ public class LamptubeAnimation {
         scene.rotateCameraY(-30);
         scene.idle(10);
 
-        scene.world().modifyBlock(lamptube, b -> b.setValue(AbsCrystalTubeBlock.POWERED, true), false);
+        scene.world()
+                .modifyBlock(lamptube, b -> b.setValue(AbsCrystalTubeBlock.POWERED, true), false);
         scene.idle(5);
-        scene.world().modifyBlock(lamptube, b -> b.setValue(AbsCrystalTubeBlock.POWERED, false), false);
+        scene.world()
+                .modifyBlock(lamptube, b -> b.setValue(AbsCrystalTubeBlock.POWERED, false), false);
         scene.idle(5);
 
         Vec3 lamptubeTop = util.vector().topOf(lamptube);
-        scene.overlay().showText(60).attachKeyFrame()
+        scene.overlay()
+                .showText(60)
+                .attachKeyFrame()
                 .text("text.mia.ponder.amethyst_lamptube.text1")
                 .colored(PonderPalette.GREEN)
-                .pointAt(lamptubeTop).placeNearTarget();
+                .pointAt(lamptubeTop)
+                .placeNearTarget();
         scene.idle(70);
         scene.markAsFinished();
     }

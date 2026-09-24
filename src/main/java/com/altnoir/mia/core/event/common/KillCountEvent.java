@@ -1,7 +1,7 @@
 package com.altnoir.mia.core.event.common;
 
-import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.common.item.GrowSwordItem;
+import com.altnoir.mia.init.MiaComponents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;

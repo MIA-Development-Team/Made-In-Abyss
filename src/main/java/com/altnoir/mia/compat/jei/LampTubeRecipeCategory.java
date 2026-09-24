@@ -1,7 +1,7 @@
 package com.altnoir.mia.compat.jei;
 
-import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.common.recipe.LampTubeRecipe;
+import com.altnoir.mia.init.MiaBlocks;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
@@ -47,7 +47,10 @@ public class LampTubeRecipeCategory implements IRecipeCategory<RecipeHolder<Lamp
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<LampTubeRecipe> recipe, IFocusGroup focuses) {
+    public void setRecipe(
+            IRecipeLayoutBuilder builder,
+            RecipeHolder<LampTubeRecipe> recipe,
+            IFocusGroup focuses) {
         builder.addInputSlot(1, 9)
                 .setStandardSlotBackground()
                 .addIngredients(recipe.value().getIngredients().getFirst());
@@ -58,7 +61,10 @@ public class LampTubeRecipeCategory implements IRecipeCategory<RecipeHolder<Lamp
     }
 
     @Override
-    public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<LampTubeRecipe> recipe, IFocusGroup focuses) {
+    public void createRecipeExtras(
+            IRecipeExtrasBuilder builder,
+            RecipeHolder<LampTubeRecipe> recipe,
+            IFocusGroup focuses) {
         builder.addRecipeArrow().setPosition(26, 9);
     }
 

@@ -1,9 +1,9 @@
 package com.altnoir.mia.common.block;
 
 import com.altnoir.mia.common.block.abs.AbsCanFarmBlock;
+import com.altnoir.mia.common.item.PrasioliteHoeItem;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaTags;
-import com.altnoir.mia.common.item.PrasioliteHoeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -23,11 +23,13 @@ public class AbyssAndesiteBlock extends AbsCanFarmBlock implements BonemealableB
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, @NotNull BlockState state) {
+    public boolean isValidBonemealTarget(
+            LevelReader level, BlockPos pos, @NotNull BlockState state) {
         if (!level.getBlockState(pos.above()).propagatesSkylightDown(level, pos)) {
             return false;
         } else {
-            for (BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
+            for (BlockPos blockpos :
+                    BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
                 if (level.getBlockState(blockpos).is(MiaTags.Blocks.COVERGRASS)) {
                     return true;
                 }
@@ -37,25 +39,32 @@ public class AbyssAndesiteBlock extends AbsCanFarmBlock implements BonemealableB
     }
 
     @Override
-    public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
+    public @Nullable BlockState getToolModifiedState(
+            BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
         if (context.getItemInHand().getItem() instanceof PrasioliteHoeItem) {
             if (state.is(this)) {
-                return MiaBlocks.HOPPER_FARMLAND.get().defaultBlockState().setValue(BlockStateProperties.MOISTURE, 0);
+                return MiaBlocks.HOPPER_FARMLAND
+                        .get()
+                        .defaultBlockState()
+                        .setValue(BlockStateProperties.MOISTURE, 0);
             }
         }
         return super.getToolModifiedState(state, context, itemAbility, simulate);
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(
+            Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+    public void performBonemeal(
+            ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         boolean flag = false;
 
-        for (BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
+        for (BlockPos blockpos :
+                BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
             BlockState blockstate = level.getBlockState(blockpos);
 
             if (blockstate.is(MiaTags.Blocks.COVERGRASS)) {

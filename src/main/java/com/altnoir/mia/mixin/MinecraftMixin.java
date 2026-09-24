@@ -1,6 +1,7 @@
 package com.altnoir.mia.mixin;
 
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;
+import java.util.Set;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
@@ -16,11 +17,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Set;
-
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
-    @Inject(method = "getSituationalMusic", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;player:Lnet/minecraft/client/player/LocalPlayer;", opcode = Opcodes.GETFIELD), cancellable = true)
+    @Inject(
+            method = "getSituationalMusic",
+            at =
+                    @At(
+                            value = "FIELD",
+                            target =
+                                    "Lnet/minecraft/client/Minecraft;player:Lnet/minecraft/client/player/LocalPlayer;",
+                            opcode = Opcodes.GETFIELD),
+            cancellable = true)
     private void modifyDimensionCheck(CallbackInfoReturnable<Music> cir) {
         Minecraft minecraft = (Minecraft) (Object) this;
         Player player = minecraft.player;
@@ -34,11 +41,7 @@ public class MinecraftMixin {
     }
 
     // 禁用创造背景音乐的维度
-    @Unique
-    private Set<ResourceKey<Level>> mia$getExcludedDimensions() {
-        return Set.of(
-                MiaDimensions.THE_ABYSS_LEVEL,
-                MiaDimensions.GREAT_FAULT_LEVEL
-        );
+    @Unique private Set<ResourceKey<Level>> mia$getExcludedDimensions() {
+        return Set.of(MiaDimensions.THE_ABYSS_LEVEL, MiaDimensions.GREAT_FAULT_LEVEL);
     }
 }

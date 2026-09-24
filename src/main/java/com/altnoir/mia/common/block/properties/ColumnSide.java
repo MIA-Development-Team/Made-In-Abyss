@@ -6,7 +6,8 @@ public enum ColumnSide implements StringRepresentable {
     NONE("none"),
     BOTTOM("bottom"),
     MIDDLE("middle"),
-    TOP("top");;
+    TOP("top");
+    ;
     private final String name;
 
     ColumnSide(String name) {

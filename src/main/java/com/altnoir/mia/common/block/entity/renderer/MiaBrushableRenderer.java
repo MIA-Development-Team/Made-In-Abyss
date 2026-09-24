@@ -24,7 +24,13 @@ public class MiaBrushableRenderer implements BlockEntityRenderer<MiaBrushableBlo
     }
 
     @Override
-    public void render(MiaBrushableBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(
+            MiaBrushableBlockEntity blockEntity,
+            float partialTick,
+            PoseStack poseStack,
+            MultiBufferSource bufferSource,
+            int packedLight,
+            int packedOverlay) {
         if (blockEntity.getLevel() != null) {
             int i = blockEntity.getBlockState().getValue(BlockStateProperties.DUSTED);
             if (i > 0) {
@@ -40,9 +46,20 @@ public class MiaBrushableRenderer implements BlockEntityRenderer<MiaBrushableBlo
                         boolean flag = direction == Direction.EAST || direction == Direction.WEST;
                         poseStack.mulPose(Axis.YP.rotationDegrees((float) ((flag ? 90 : 0) + 11)));
                         poseStack.scale(0.5F, 0.5F, 0.5F);
-                        int j = LevelRenderer.getLightColor(blockEntity.getLevel(), blockEntity.getBlockState(), blockEntity.getBlockPos().relative(direction));
-                        this.itemRenderer
-                                .renderStatic(itemstack, ItemDisplayContext.FIXED, j, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 0);
+                        int j =
+                                LevelRenderer.getLightColor(
+                                        blockEntity.getLevel(),
+                                        blockEntity.getBlockState(),
+                                        blockEntity.getBlockPos().relative(direction));
+                        this.itemRenderer.renderStatic(
+                                itemstack,
+                                ItemDisplayContext.FIXED,
+                                j,
+                                OverlayTexture.NO_OVERLAY,
+                                poseStack,
+                                bufferSource,
+                                blockEntity.getLevel(),
+                                0);
                         poseStack.popPose();
                     }
                 }
@@ -51,7 +68,7 @@ public class MiaBrushableRenderer implements BlockEntityRenderer<MiaBrushableBlo
     }
 
     private float[] translations(Direction direction, int dustedLevel) {
-        float[] afloat = new float[]{0.5F, 0.0F, 0.5F};
+        float[] afloat = new float[] {0.5F, 0.0F, 0.5F};
         float f = (float) dustedLevel / 10.0F * 0.75F;
         switch (direction) {
             case EAST:
@@ -79,6 +96,12 @@ public class MiaBrushableRenderer implements BlockEntityRenderer<MiaBrushableBlo
     @Override
     public AABB getRenderBoundingBox(MiaBrushableBlockEntity blockEntity) {
         BlockPos pos = blockEntity.getBlockPos();
-        return new net.minecraft.world.phys.AABB(pos.getX() - .25, pos.getY() - .25, pos.getZ() - .25, pos.getX() + 1.25, pos.getY() + 1.25, pos.getZ() + 1.25);
+        return new net.minecraft.world.phys.AABB(
+                pos.getX() - .25,
+                pos.getY() - .25,
+                pos.getZ() - .25,
+                pos.getX() + 1.25,
+                pos.getY() + 1.25,
+                pos.getZ() + 1.25);
     }
 }

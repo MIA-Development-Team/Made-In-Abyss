@@ -15,27 +15,18 @@ public class MiaNetworking {
         registrar.playToClient(
                 CurseCapabilityPayload.TYPE,
                 CurseCapabilityPayload.CODEC,
-                CurseCapabilityPayload::handle
-        );
+                CurseCapabilityPayload::handle);
         registrar.playToClient(
                 CompassTargetPayload.TYPE,
                 CompassTargetPayload.CODEC,
-                CompassTargetPayload::handle
-        );
+                CompassTargetPayload::handle);
         registrar.playToServer(
                 SkillCooldownPayload.TYPE,
                 SkillCooldownPayload.CODEC,
-                SkillCooldownPayload::handle
-        );
+                SkillCooldownPayload::handle);
         registrar.playToServer(
-                SkillPlayPayload.TYPE,
-                SkillPlayPayload.CODEC,
-                SkillPlayPayload::handle
-        );
+                SkillPlayPayload.TYPE, SkillPlayPayload.CODEC, SkillPlayPayload::handle);
         registrar.playToServer(
-                RetractHookPayload.TYPE,
-                RetractHookPayload.CODEC,
-                RetractHookPayload::handle
-        );
+                RetractHookPayload.TYPE, RetractHookPayload.CODEC, RetractHookPayload::handle);
     }
 }

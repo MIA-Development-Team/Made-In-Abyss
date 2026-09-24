@@ -7,7 +7,5 @@ import net.neoforged.neoforge.capabilities.EntityCapability;
 
 public class MiaCapabilities {
     public static EntityCapability<ICurse, Void> CURSE =
-            EntityCapability.createVoid(
-                    MiaUtil.id(MIA.MOD_ID, "curse"),
-                    ICurse.class);
+            EntityCapability.createVoid(MiaUtil.id(MIA.MOD_ID, "curse"), ICurse.class);
 }

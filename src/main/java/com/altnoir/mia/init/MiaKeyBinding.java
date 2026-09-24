@@ -11,11 +11,11 @@ public class MiaKeyBinding {
 
     private static final String CATEGORY = KEY_CATEGORIES_MIA;
 
-    public static final KeyMapping SKILL_DIAL = new KeyMapping(
-            KEY_SKILL_DIAL,
-            KeyConflictContext.IN_GAME,
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_LEFT_CONTROL,
-            CATEGORY
-    );
+    public static final KeyMapping SKILL_DIAL =
+            new KeyMapping(
+                    KEY_SKILL_DIAL,
+                    KeyConflictContext.IN_GAME,
+                    InputConstants.Type.KEYSYM,
+                    GLFW.GLFW_KEY_LEFT_CONTROL,
+                    CATEGORY);
 }

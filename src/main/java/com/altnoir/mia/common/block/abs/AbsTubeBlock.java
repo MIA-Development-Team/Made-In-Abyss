@@ -26,13 +26,16 @@ public abstract class AbsTubeBlock extends DirectionalBlock implements SimpleWat
 
     protected AbsTubeBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any()
-                .setValue(FACING, Direction.UP)
-                .setValue(WATERLOGGED, Boolean.valueOf(false)));
+        this.registerDefaultState(
+                this.stateDefinition
+                        .any()
+                        .setValue(FACING, Direction.UP)
+                        .setValue(WATERLOGGED, Boolean.valueOf(false)));
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext collisionContext) {
+    protected VoxelShape getShape(
+            BlockState state, BlockGetter getter, BlockPos pos, CollisionContext collisionContext) {
         switch (state.getValue(FACING).getAxis()) {
             case X:
             default:
@@ -52,19 +55,27 @@ public abstract class AbsTubeBlock extends DirectionalBlock implements SimpleWat
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         var direction = context.getNearestLookingDirection().getOpposite();
-        var fluidState = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
+        var fluidState =
+                context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
 
         var player = context.getPlayer();
         boolean isSneaking = player != null && player.isShiftKeyDown();
-        var defaultState = this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluidState));
+        var defaultState =
+                this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluidState));
 
-        return isSneaking ? defaultState.setValue(FACING, direction.getOpposite()) : defaultState.setValue(FACING, direction);
+        return isSneaking
+                ? defaultState.setValue(FACING, direction.getOpposite())
+                : defaultState.setValue(FACING, direction);
     }
 
     @Override
     protected @NotNull BlockState updateShape(
-            BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos
-    ) {
+            BlockState state,
+            @NotNull Direction direction,
+            @NotNull BlockState neighborState,
+            @NotNull LevelAccessor level,
+            @NotNull BlockPos pos,
+            @NotNull BlockPos neighborPos) {
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
@@ -74,7 +85,9 @@ public abstract class AbsTubeBlock extends DirectionalBlock implements SimpleWat
 
     @Override
     protected @NotNull FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED)
+                ? Fluids.WATER.getSource(false)
+                : super.getFluidState(state);
     }
 
     @Override
@@ -92,4 +105,3 @@ public abstract class AbsTubeBlock extends DirectionalBlock implements SimpleWat
         return false;
     }
 }
-

@@ -26,7 +26,13 @@ public abstract class InvertedBushBlock extends Block {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    protected BlockState updateShape(
+            BlockState state,
+            Direction direction,
+            BlockState neighborState,
+            LevelAccessor level,
+            BlockPos pos,
+            BlockPos neighborPos) {
         return !state.canSurvive(level, pos)
                 ? Blocks.AIR.defaultBlockState()
                 : super.updateShape(state, direction, neighborState, level, pos, neighborPos);
@@ -36,13 +42,16 @@ public abstract class InvertedBushBlock extends Block {
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos blockpos = pos.above();
         BlockState aboveBlockState = level.getBlockState(blockpos);
-        TriState soilDecision = aboveBlockState.canSustainPlant(level, blockpos, Direction.DOWN, state);
+        TriState soilDecision =
+                aboveBlockState.canSustainPlant(level, blockpos, Direction.DOWN, state);
         if (!soilDecision.isDefault()) return soilDecision.isTrue();
         return this.mayPlaceOn(aboveBlockState);
     }
 
     @Override
     protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
-        return pathComputationType == PathComputationType.AIR && !this.hasCollision ? true : super.isPathfindable(state, pathComputationType);
+        return pathComputationType == PathComputationType.AIR && !this.hasCollision
+                ? true
+                : super.isPathfindable(state, pathComputationType);
     }
 }

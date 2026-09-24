@@ -5,6 +5,8 @@ import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.worldgen.biome.the_abyss.TheAbyssPlacements;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.List;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -20,16 +22,18 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
-import java.util.List;
-import java.util.Optional;
-
 public class CoverGrassBlock extends AbsCoverGrassBlock implements BonemealableBlock {
-    public static final MapCodec<CoverGrassBlock> CODEC = RecordCodecBuilder.mapCodec(instance ->
-            instance.group(
-                    Block.CODEC.fieldOf("defaultBlock").forGetter(block -> block.defaultBlock),
-                    BlockBehaviour.Properties.CODEC.fieldOf("properties").forGetter(block -> block.properties)
-            ).apply(instance, CoverGrassBlock::new)
-    );
+    public static final MapCodec<CoverGrassBlock> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    instance ->
+                            instance.group(
+                                            Block.CODEC
+                                                    .fieldOf("defaultBlock")
+                                                    .forGetter(block -> block.defaultBlock),
+                                            BlockBehaviour.Properties.CODEC
+                                                    .fieldOf("properties")
+                                                    .forGetter(block -> block.properties))
+                                    .apply(instance, CoverGrassBlock::new));
 
     @Override
     public MapCodec<CoverGrassBlock> codec() {
@@ -46,38 +50,52 @@ public class CoverGrassBlock extends AbsCoverGrassBlock implements BonemealableB
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(
+            Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+    public void performBonemeal(
+            ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         BlockPos blockpos = pos.above();
         BlockState blockstate = MiaBlocks.MARGINAL_WEED.get().defaultBlockState();
-        Optional<Holder.Reference<PlacedFeature>> optional = level.registryAccess()
-                .registryOrThrow(Registries.PLACED_FEATURE)
-                .getHolder(TheAbyssPlacements.MARGINAL_WEED_BONEMEAL);
+        Optional<Holder.Reference<PlacedFeature>> optional =
+                level.registryAccess()
+                        .registryOrThrow(Registries.PLACED_FEATURE)
+                        .getHolder(TheAbyssPlacements.MARGINAL_WEED_BONEMEAL);
 
         label49:
         for (int i = 0; i < 128; i++) {
             BlockPos blockpos1 = blockpos;
 
             for (int j = 0; j < i / 16; j++) {
-                blockpos1 = blockpos1.offset(random.nextInt(3) - 1, (random.nextInt(3) - 1) * random.nextInt(3) / 2, random.nextInt(3) - 1);
-                if (!level.getBlockState(blockpos1.below()).is(this) || level.getBlockState(blockpos1).isCollisionShapeFullBlock(level, blockpos1)) {
+                blockpos1 =
+                        blockpos1.offset(
+                                random.nextInt(3) - 1,
+                                (random.nextInt(3) - 1) * random.nextInt(3) / 2,
+                                random.nextInt(3) - 1);
+                if (!level.getBlockState(blockpos1.below()).is(this)
+                        || level.getBlockState(blockpos1)
+                                .isCollisionShapeFullBlock(level, blockpos1)) {
                     continue label49;
                 }
             }
 
             BlockState blockstate1 = level.getBlockState(blockpos1);
             if (blockstate1.is(blockstate.getBlock()) && random.nextInt(10) == 0) {
-                ((BonemealableBlock) blockstate.getBlock()).performBonemeal(level, random, blockpos1, blockstate1);
+                ((BonemealableBlock) blockstate.getBlock())
+                        .performBonemeal(level, random, blockpos1, blockstate1);
             }
 
             if (blockstate1.isAir()) {
                 Holder<PlacedFeature> holder;
                 if (random.nextInt(8) == 0) {
-                    List<ConfiguredFeature<?, ?>> list = level.getBiome(blockpos1).value().getGenerationSettings().getFlowerFeatures();
+                    List<ConfiguredFeature<?, ?>> list =
+                            level.getBiome(blockpos1)
+                                    .value()
+                                    .getGenerationSettings()
+                                    .getFlowerFeatures();
                     if (list.isEmpty()) {
                         continue;
                     }
@@ -91,7 +109,8 @@ public class CoverGrassBlock extends AbsCoverGrassBlock implements BonemealableB
                     holder = optional.get();
                 }
 
-                holder.value().place(level, level.getChunkSource().getGenerator(), random, blockpos1);
+                holder.value()
+                        .place(level, level.getChunkSource().getGenerator(), random, blockpos1);
             }
         }
     }

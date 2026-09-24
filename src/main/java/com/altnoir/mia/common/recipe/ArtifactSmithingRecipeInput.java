@@ -4,8 +4,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;
 
-public record ArtifactSmithingRecipeInput(ItemStack base, ItemStack material,
-                                          RandomSource random) implements RecipeInput {
+public record ArtifactSmithingRecipeInput(ItemStack base, ItemStack material, RandomSource random)
+        implements RecipeInput {
     public ArtifactSmithingRecipeInput(ItemStack base, ItemStack material) {
         this(base, material, null);
     }

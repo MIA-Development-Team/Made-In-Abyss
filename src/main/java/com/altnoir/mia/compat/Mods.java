@@ -1,14 +1,13 @@
 package com.altnoir.mia.compat;
 
+import java.util.Locale;
+import java.util.Optional;
+import java.util.function.Supplier;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.fml.loading.LoadingModList;
-
-import java.util.Locale;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 public enum Mods {
     PONDER;
@@ -40,7 +39,6 @@ public enum Mods {
         return BuiltInRegistries.ITEM.get(rl(id));
     }
 
-
     /**
      * @return a boolean of whether the mod is loaded or not based on mod id
      */
@@ -55,8 +53,7 @@ public enum Mods {
      * @return Optional.empty() if the mod is not loaded, otherwise an Optional of the return value of the given supplier
      */
     public <T> Optional<T> runIfInstalled(Supplier<Supplier<T>> toRun) {
-        if (isLoaded())
-            return Optional.of(toRun.get().get());
+        if (isLoaded()) return Optional.of(toRun.get().get());
         return Optional.empty();
     }
 

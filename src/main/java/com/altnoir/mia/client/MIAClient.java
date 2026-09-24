@@ -20,6 +20,7 @@ public class MIAClient {
         MIAClient.addModEventBus(modEventBus);
         MIAClient.addGameEventBus(gameEventBus);
     }
+
     public static void addModEventBus(IEventBus modEventBus) {
         modEventBus.addListener(MiaClientEvents::modLoad);
         modEventBus.addListener(MiaClientEvents::onClientSetup);
@@ -38,6 +39,6 @@ public class MIAClient {
         gameEventBus.addListener(MiaClientEvents::onScreenInitPost);
         gameEventBus.addListener(MiaClientEvents::onTooltip);
         gameEventBus.addListener(MiaClientEvents::onRenderNameTag);
-        //gameEventBus.addListener(MiaClientEvents::onCameraAngles);
+        // gameEventBus.addListener(MiaClientEvents::onCameraAngles);
     }
 }

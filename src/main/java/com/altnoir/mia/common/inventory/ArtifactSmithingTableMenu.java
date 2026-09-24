@@ -9,6 +9,8 @@ import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.init.MiaMenus;
 import com.altnoir.mia.init.MiaRecipes;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -18,9 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
     private static final int ARTIFACT_SLOT_INDEX = 0;
@@ -52,7 +51,8 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
         this(containerId, playerInventory, ContainerLevelAccess.NULL);
     }
 
-    public ArtifactSmithingTableMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access) {
+    public ArtifactSmithingTableMenu(
+            int containerId, Inventory playerInventory, ContainerLevelAccess access) {
         super(MiaMenus.ARTIFACT_ENHANCEMENT_TABLE.get(), containerId);
         this.access = access;
         this.player = playerInventory.player;
@@ -62,52 +62,65 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
         this.unavailableRecipes = new ArrayList<>();
         this.selectedRecipeIndex = DataSlot.standalone();
         this.selectedRecipeIndex.set(-1);
-        this.slotUpdateListener = () -> {
-        };
+        this.slotUpdateListener = () -> {};
         this.artifactContainer = new TransientCraftingContainer(this, 1, 1);
         this.materialContainer = new TransientCraftingContainer(this, 1, 1);
         this.resultContainer = new ResultContainer();
-        this.artifactSlot = this.addSlot(new Slot(this.artifactContainer, 0, 20, 33) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                // 动态检查配方
-                var recipes = level.getRecipeManager().getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get());
-                return recipes.stream().anyMatch(recipe -> recipe.value().isArtifactIngredient(stack));
-            }
+        this.artifactSlot =
+                this.addSlot(
+                        new Slot(this.artifactContainer, 0, 20, 33) {
+                            @Override
+                            public boolean mayPlace(ItemStack stack) {
+                                // 动态检查配方
+                                var recipes =
+                                        level.getRecipeManager()
+                                                .getAllRecipesFor(
+                                                        MiaRecipes.ARTIFACT_SMITHING_TYPE.get());
+                                return recipes.stream()
+                                        .anyMatch(
+                                                recipe ->
+                                                        recipe.value().isArtifactIngredient(stack));
+                            }
 
-            @Override
-            public int getMaxStackSize() {
-                return 1;
-            }
-        });
-        this.materialSlot = this.addSlot(new Slot(this.materialContainer, 0, 20, 66) {
-            @Override
-            public void onTake(Player player, ItemStack stack) {
-                tryMatchRecipe();
-            }
-        });
-        this.resultSlot = this.addSlot(new Slot(this.resultContainer, 0, 143, 37) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return false;
-            }
+                            @Override
+                            public int getMaxStackSize() {
+                                return 1;
+                            }
+                        });
+        this.materialSlot =
+                this.addSlot(
+                        new Slot(this.materialContainer, 0, 20, 66) {
+                            @Override
+                            public void onTake(Player player, ItemStack stack) {
+                                tryMatchRecipe();
+                            }
+                        });
+        this.resultSlot =
+                this.addSlot(
+                        new Slot(this.resultContainer, 0, 143, 37) {
+                            @Override
+                            public boolean mayPlace(ItemStack stack) {
+                                return false;
+                            }
 
-            @Override
-            public void onTake(Player player, ItemStack stack) {
-                ItemStack materialStack = materialSlot.getItem();
-                RecipeHolder<ArtifactSmithingRecipe> recipe = availableRecipes.get(selectedRecipeIndex.get());
-                if (!materialStack.isEmpty() && recipe != null) {
-                    int recipeCount = recipe.value().getMaterial().getCount();
-                    materialStack.shrink(recipeCount);
-                }
-                artifactSlot.set(ItemStack.EMPTY);
-            }
+                            @Override
+                            public void onTake(Player player, ItemStack stack) {
+                                ItemStack materialStack = materialSlot.getItem();
+                                RecipeHolder<ArtifactSmithingRecipe> recipe =
+                                        availableRecipes.get(selectedRecipeIndex.get());
+                                if (!materialStack.isEmpty() && recipe != null) {
+                                    int recipeCount = recipe.value().getMaterial().getCount();
+                                    materialStack.shrink(recipeCount);
+                                }
+                                artifactSlot.set(ItemStack.EMPTY);
+                            }
 
-            @Override
-            public boolean mayPickup(Player player) {
-                return selectedRecipeIndex.get() >= 0 && selectedRecipeIndex.get() < availableRecipes.size();
-            }
-        });
+                            @Override
+                            public boolean mayPickup(Player player) {
+                                return selectedRecipeIndex.get() >= 0
+                                        && selectedRecipeIndex.get() < availableRecipes.size();
+                            }
+                        });
 
         int k;
         for (k = 0; k < 3; ++k) {
@@ -123,7 +136,8 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
 
     @Override
     public boolean clickMenuButton(Player player, int recipeIndex) {
-        if (recipeIndex >= 0 && recipeIndex < this.availableRecipes.size()
+        if (recipeIndex >= 0
+                && recipeIndex < this.availableRecipes.size()
                 && recipeIndex != this.selectedRecipeIndex.get()) {
             if (playerHasMaterial(this.availableRecipes.get(recipeIndex).value())) {
                 this.selectedRecipeIndex.set(recipeIndex);
@@ -157,7 +171,10 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
         MIA.LOGGER.debug("fetch");
 
         if (!artifact.isEmpty() && inputHasSmithingRecipe()) {
-            var recipes = this.level.getRecipeManager().getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get());
+            var recipes =
+                    this.level
+                            .getRecipeManager()
+                            .getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get());
             for (RecipeHolder<ArtifactSmithingRecipe> recipe : recipes) {
                 if (recipe.value().isArtifactIngredient(artifact)) {
                     if (playerHasMaterial(recipe.value())) {
@@ -189,14 +206,18 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
     }
 
     private void setupResultSlot() {
-        if (!this.availableRecipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {
-            RecipeHolder<ArtifactSmithingRecipe> recipeholder = this.availableRecipes
-                    .get(this.selectedRecipeIndex.get());
+        if (!this.availableRecipes.isEmpty()
+                && this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {
+            RecipeHolder<ArtifactSmithingRecipe> recipeholder =
+                    this.availableRecipes.get(this.selectedRecipeIndex.get());
             ItemStack materialStack = this.materialSlot.getItem();
             ItemStack requiredMaterial = recipeholder.value().getMaterial();
 
             if (materialStack.getCount() >= requiredMaterial.getCount()) {
-                ItemStack itemstack = recipeholder.value().assemble(createRecipeInput(), this.level.registryAccess());
+                ItemStack itemstack =
+                        recipeholder
+                                .value()
+                                .assemble(createRecipeInput(), this.level.registryAccess());
                 if (itemstack.isItemEnabled(this.level.enabledFeatures())) {
                     this.resultContainer.setRecipeUsed(recipeholder);
                     this.resultSlot.set(itemstack);
@@ -237,18 +258,22 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
                     return ItemStack.EMPTY;
                 }
             } else if (canMoveIntoArtifactSlots(selectedStack)) {
-                if (!this.moveItemStackTo(selectedStack, ARTIFACT_SLOT_INDEX, ARTIFACT_SLOT_INDEX + 1, false)) {
+                if (!this.moveItemStackTo(
+                        selectedStack, ARTIFACT_SLOT_INDEX, ARTIFACT_SLOT_INDEX + 1, false)) {
                     return ItemStack.EMPTY;
                 }
             } else if (canMoveIntoMaterialSlot(selectedStack)) {
-                if (!this.moveItemStackTo(selectedStack, MATERIAL_SLOT_INDEX, MATERIAL_SLOT_INDEX + 1, false)) {
+                if (!this.moveItemStackTo(
+                        selectedStack, MATERIAL_SLOT_INDEX, MATERIAL_SLOT_INDEX + 1, false)) {
                     return ItemStack.EMPTY;
                 }
             } else if (index >= INV_SLOT_START && index < INV_SLOT_END) {
-                if (!this.moveItemStackTo(selectedStack, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
+                if (!this.moveItemStackTo(
+                        selectedStack, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (index >= USE_ROW_SLOT_START && index < USE_ROW_SLOT_END
+            } else if (index >= USE_ROW_SLOT_START
+                    && index < USE_ROW_SLOT_END
                     && !this.moveItemStackTo(selectedStack, INV_SLOT_START, INV_SLOT_END, false)) {
                 return ItemStack.EMPTY;
             }
@@ -270,13 +295,19 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
     }
 
     public boolean canMoveIntoArtifactSlots(ItemStack stack) {
-        var recipes = this.level.getRecipeManager().getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get());
-        return recipes.stream().map(RecipeHolder::value).anyMatch(recipe -> recipe.isArtifactIngredient(stack));
+        var recipes =
+                this.level
+                        .getRecipeManager()
+                        .getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get());
+        return recipes.stream()
+                .map(RecipeHolder::value)
+                .anyMatch(recipe -> recipe.isArtifactIngredient(stack));
     }
 
     public boolean canMoveIntoMaterialSlot(ItemStack stack) {
         return this.availableRecipes.stream()
-                .map(RecipeHolder::value).anyMatch(recipe -> recipe.isMaterialIngredient(stack));
+                .map(RecipeHolder::value)
+                .anyMatch(recipe -> recipe.isMaterialIngredient(stack));
     }
 
     @Override
@@ -285,7 +316,8 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
     }
 
     private ArtifactSmithingRecipeInput createRecipeInput() {
-        return new ArtifactSmithingRecipeInput(this.artifactSlot.getItem(), this.materialSlot.getItem(), this.level.random);
+        return new ArtifactSmithingRecipeInput(
+                this.artifactSlot.getItem(), this.materialSlot.getItem(), this.level.random);
     }
 
     public void registerUpdateListener(Runnable listener) {
@@ -301,7 +333,8 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
     }
 
     public RecipeHolder<ArtifactSmithingRecipe> getSelectedRecipe() {
-        if (this.getSelectedRecipeIndex() == -1 || this.getSelectedRecipeIndex() >= this.availableRecipes.size()) {
+        if (this.getSelectedRecipeIndex() == -1
+                || this.getSelectedRecipeIndex() >= this.availableRecipes.size()) {
             return null;
         }
         return this.availableRecipes.get(this.selectedRecipeIndex.get());
@@ -321,12 +354,16 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
             return false;
         }
         if (artifactSlotItem.getItem() instanceof IEArtifact artifactType) {
-            var recipes = this.level.getRecipeManager().getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get());
-            if (!recipes.stream().anyMatch(recipe -> recipe.value().isArtifactIngredient(artifactSlotItem))) {
+            var recipes =
+                    this.level
+                            .getRecipeManager()
+                            .getAllRecipesFor(MiaRecipes.ARTIFACT_SMITHING_TYPE.get());
+            if (!recipes.stream()
+                    .anyMatch(recipe -> recipe.value().isArtifactIngredient(artifactSlotItem))) {
                 return false;
             }
-            if (artifactSlotItem
-                    .get(MiaComponents.ARTIFACT_ENHANCEMENT.get()) instanceof ArtifactEnhancementComponent stats
+            if (artifactSlotItem.get(MiaComponents.ARTIFACT_ENHANCEMENT.get())
+                            instanceof ArtifactEnhancementComponent stats
                     && stats.getLevel() < artifactType.getMaxLevel()) {
                 return true;
             }
@@ -341,8 +378,11 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return this.access.evaluate((level, pos) -> level.getBlockState(pos).is(MiaBlocks.ARTIFACT_SMITHING_TABLE)
-                && player.canInteractWithBlock(pos, 4.0), true);
+        return this.access.evaluate(
+                (level, pos) ->
+                        level.getBlockState(pos).is(MiaBlocks.ARTIFACT_SMITHING_TABLE)
+                                && player.canInteractWithBlock(pos, 4.0),
+                true);
     }
 
     private boolean playerHasMaterial(ArtifactSmithingRecipe recipe) {
@@ -402,9 +442,10 @@ public class ArtifactSmithingTableMenu extends AbstractContainerMenu {
     public void removed(Player player) {
         super.removed(player);
         this.resultContainer.removeItemNoUpdate(1);
-        this.access.execute((level, pos) -> {
-            this.clearContainer(player, this.artifactContainer);
-            this.clearContainer(player, this.materialContainer);
-        });
+        this.access.execute(
+                (level, pos) -> {
+                    this.clearContainer(player, this.artifactContainer);
+                    this.clearContainer(player, this.materialContainer);
+                });
     }
 }

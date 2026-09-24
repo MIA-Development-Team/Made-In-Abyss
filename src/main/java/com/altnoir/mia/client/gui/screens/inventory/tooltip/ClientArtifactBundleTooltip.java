@@ -1,6 +1,7 @@
 package com.altnoir.mia.client.gui.screens.inventory.tooltip;
 
 import com.altnoir.mia.common.component.ArtifactBundleInventoryComponent;
+import java.util.List;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -8,8 +9,6 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-
-import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientArtifactBundleTooltip implements ClientTooltipComponent {
@@ -26,10 +25,10 @@ public class ClientArtifactBundleTooltip implements ClientTooltipComponent {
         if (component instanceof ArtifactBundleInventoryComponent bundleComponent) {
             return new ClientArtifactBundleTooltip(bundleComponent);
         }
-        var result = net.neoforged.neoforge.client.gui.ClientTooltipComponentManager
-                .createClientTooltipComponent(component);
-        if (result != null)
-            return result;
+        var result =
+                net.neoforged.neoforge.client.gui.ClientTooltipComponentManager
+                        .createClientTooltipComponent(component);
+        if (result != null) return result;
         throw new IllegalArgumentException("Unknown TooltipComponent");
     }
 

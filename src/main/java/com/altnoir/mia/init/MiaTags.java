@@ -11,20 +11,23 @@ public class MiaTags {
     public static class Blocks {
         // 用于worldgen
         public static final TagKey<Block> BASE_STONE_ABYSS = create("base_stone_abyss");
-        public static final TagKey<Block> ABYSS_ANDESITE_ORE_REPLACEABLES = create("abyss_andesite_ore_replaceables");
-        public static final TagKey<Block> ABYSS_MUD_ORE_REPLACEABLES = create("abyss_mud_ore_replaceables");
+        public static final TagKey<Block> ABYSS_ANDESITE_ORE_REPLACEABLES =
+                create("abyss_andesite_ore_replaceables");
+        public static final TagKey<Block> ABYSS_MUD_ORE_REPLACEABLES =
+                create("abyss_mud_ore_replaceables");
         public static final TagKey<Block> COVERGRASS = create("covergrass");
-        public static final TagKey<Block> ABYSS_DRIPSTONE_UNREPLACEABLE = create("abyss_dripstone_replaceable");
+        public static final TagKey<Block> ABYSS_DRIPSTONE_UNREPLACEABLE =
+                create("abyss_dripstone_replaceable");
         // 用于tooltip
         public static final TagKey<Block> NEED_PRASIOLITE_TOOL = create("need_prasiolite_tool");
-        public static final TagKey<Block> INCORRECT_FOR_PRASIOLITE_TOOL = create("incorrect_for_prasiolite_tool");
+        public static final TagKey<Block> INCORRECT_FOR_PRASIOLITE_TOOL =
+                create("incorrect_for_prasiolite_tool");
         public static final TagKey<Block> MINEABLE_WITH_COMPOSITE = create("mineable/composite");
 
         private static TagKey<Block> create(String name) {
             return TagKey.create(Registries.BLOCK, MiaUtil.miaId(name));
         }
     }
-
 
     public static class Items {
         public static final TagKey<Item> ARTIFACT_GRADE_D = create("artifact_grade_d");
@@ -36,12 +39,15 @@ public class MiaTags {
         // 用于合成
         public static final TagKey<Item> SMITHING_ARTIFACT = create("smithing_artifact");
         public static final TagKey<Item> FOSSILIZED_LOGS = create("fossilized_logs");
-        public static final TagKey<Item> UNSTRIPPED_FOSSILIZED_LOGS = create("unstripped_fossilized_logs");
-        public static final TagKey<Item> STRIPPED_FOSSILIZED_LOGS = create("stripped_fossilized_logs");
+        public static final TagKey<Item> UNSTRIPPED_FOSSILIZED_LOGS =
+                create("unstripped_fossilized_logs");
+        public static final TagKey<Item> STRIPPED_FOSSILIZED_LOGS =
+                create("stripped_fossilized_logs");
         public static final TagKey<Item> SKYFOG_LOGS = create("skyfog_logs");
         public static final TagKey<Item> INVERTED_LOGS = create("inverted_logs");
         // 用于tooltip
-        public static final TagKey<Item> ARTIFACT_MODIFIERS_MATERIAL = create("artifact_modifiers_material");
+        public static final TagKey<Item> ARTIFACT_MODIFIERS_MATERIAL =
+                create("artifact_modifiers_material");
 
         private static TagKey<Item> create(String name) {
             return TagKey.create(Registries.ITEM, MiaUtil.miaId(name));
@@ -51,16 +57,22 @@ public class MiaTags {
     public static class Biomes {
         public static final TagKey<Biome> HAS_ISLAND = create("has_island");
         public static final TagKey<Biome> THE_ABYSS_CLEAR = create("the_abyss_clear");
-        public static final TagKey<Biome> HAS_ANCIENT_BABYLON_COMPASS_RUINS = create("has_ancient_babylon_compass_ruins");
-        public static final TagKey<Biome> HAS_ANCIENT_MAYA_COMPASS_RUINS = create("has_ancient_maya_compass_ruins");
-        public static final TagKey<Biome> HAS_ANCIENT_ROMAN_COMPASS_RUINS = create("has_ancient_roman_compass_ruins");
-        public static final TagKey<Biome> HAS_ANCIENT_TRIAL_COMPASS_RUINS = create("has_ancient_trial_compass_ruins");
-        public static final TagKey<Biome> HAS_ANCIENT_ANGKOR_COMPASS_RUINS = create("has_ancient_angkor_compass_ruins");
+        public static final TagKey<Biome> HAS_ANCIENT_BABYLON_COMPASS_RUINS =
+                create("has_ancient_babylon_compass_ruins");
+        public static final TagKey<Biome> HAS_ANCIENT_MAYA_COMPASS_RUINS =
+                create("has_ancient_maya_compass_ruins");
+        public static final TagKey<Biome> HAS_ANCIENT_ROMAN_COMPASS_RUINS =
+                create("has_ancient_roman_compass_ruins");
+        public static final TagKey<Biome> HAS_ANCIENT_TRIAL_COMPASS_RUINS =
+                create("has_ancient_trial_compass_ruins");
+        public static final TagKey<Biome> HAS_ANCIENT_ANGKOR_COMPASS_RUINS =
+                create("has_ancient_angkor_compass_ruins");
         public static final TagKey<Biome> HAS_PETRIFIED_SHIP = create("has_petrified_ship");
         public static final TagKey<Biome> HAS_ABYSS_WINDMILL = create("has_abyss_windmill");
         public static final TagKey<Biome> HAS_ABYSSAL_RUINS = create("has_abyssal_ruins");
         public static final TagKey<Biome> HAS_CAVE_RAIDER_HUT = create("has_cave_raider_hut");
-        public static final TagKey<Biome> HAS_RUINED_CAVE_RAIDER_HUT = create("has_ruined_cave_raider_hut");
+        public static final TagKey<Biome> HAS_RUINED_CAVE_RAIDER_HUT =
+                create("has_ruined_cave_raider_hut");
         public static final TagKey<Biome> HAS_FISHERMAN_HUT = create("has_fisherman_hut");
 
         private static TagKey<Biome> create(String name) {

@@ -1,8 +1,8 @@
 package com.altnoir.mia.client.renderer;
 
 import com.altnoir.mia.client.render.MiaRenderType;
-import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.core.MiaHeight;
+import com.altnoir.mia.util.MiaUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Camera;
@@ -18,7 +18,8 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 public class TheAbyssDimEffects extends DimensionSpecialEffects {
-    protected static final ResourceLocation THE_ABYSS = MiaUtil.miaId("textures/skybox/the_abyss.png");
+    protected static final ResourceLocation THE_ABYSS =
+            MiaUtil.miaId("textures/skybox/the_abyss.png");
 
     public static final float SIZE = 2048.0F;
     public static final float HEIGHT = 1536.0F;
@@ -31,10 +32,8 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
     private int prevCloudZ = Integer.MIN_VALUE;
     private Vec3 prevCloudColor = Vec3.ZERO;
     private boolean generateClouds = true;
-    @Nullable
-    private CloudStatus prevCloudsType;
-    @Nullable
-    private VertexBuffer cloudBuffer;
+    @Nullable private CloudStatus prevCloudsType;
+    @Nullable private VertexBuffer cloudBuffer;
 
     public TheAbyssDimEffects() {
         super(Float.NaN, true, SkyType.NONE, false, false);
@@ -42,7 +41,8 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
 
     @Override
     public @NotNull Vec3 getBrightnessDependentFogColor(Vec3 fogColor, float brightness) {
-        return fogColor.multiply(brightness * 0.94F + 0.06F, brightness * 0.94F + 0.06F, brightness * 0.91F + 0.09F);
+        return fogColor.multiply(
+                brightness * 0.94F + 0.06F, brightness * 0.94F + 0.06F, brightness * 0.91F + 0.09F);
     }
 
     @Override
@@ -56,7 +56,15 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
     }
 
     @Override
-    public boolean renderSky(ClientLevel level, int ticks, float partialTick, Matrix4f modelViewMatrix, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
+    public boolean renderSky(
+            ClientLevel level,
+            int ticks,
+            float partialTick,
+            Matrix4f modelViewMatrix,
+            Camera camera,
+            Matrix4f projectionMatrix,
+            boolean isFoggy,
+            Runnable setupFog) {
         var oldProjectionMatrix = RenderSystem.getProjectionMatrix();
         var projection = new Matrix4f(oldProjectionMatrix);
 
@@ -87,7 +95,8 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
 
         Matrix4f pose = poseStack.last().pose();
         Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        BufferBuilder bufferbuilder =
+                tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
         bufferbuilder.addVertex(pose, -SIZE - playerX, height, -SIZE - playerZ).setUv(0.0F, 0.0F);
         bufferbuilder.addVertex(pose, SIZE - playerX, height, -SIZE - playerZ).setUv(1.0F, 0.0F);
@@ -103,20 +112,52 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
     }
 
     @Override
-    public boolean renderClouds(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, double camX, double camY, double camZ, Matrix4f modelViewMatrix, Matrix4f projectionMatrix) {
+    public boolean renderClouds(
+            ClientLevel level,
+            int ticks,
+            float partialTick,
+            PoseStack poseStack,
+            double camX,
+            double camY,
+            double camZ,
+            Matrix4f modelViewMatrix,
+            Matrix4f projectionMatrix) {
         float[] cloudHeights = {CLOUD_0, CLOUD_1, CLOUD_2};
         float[] cloudScales = {1.0F, 4.0F, 1.0F};
         int[] cloudOffsets = {0, 0, -128};
 
         for (int i = 0; i < cloudHeights.length; i++) {
-            cloudsRender(poseStack, modelViewMatrix, projectionMatrix, partialTick, camX, camY, camZ, level, ticks, cloudHeights[i], cloudScales[i], cloudOffsets[i]);
+            cloudsRender(
+                    poseStack,
+                    modelViewMatrix,
+                    projectionMatrix,
+                    partialTick,
+                    camX,
+                    camY,
+                    camZ,
+                    level,
+                    ticks,
+                    cloudHeights[i],
+                    cloudScales[i],
+                    cloudOffsets[i]);
         }
 
         return true;
     }
 
-    private void cloudsRender(PoseStack poseStack, Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, double camX, double camY, double camZ,
-                              ClientLevel level, int ticks, float cloudY, float cloudScale, int cloudOffset) {
+    private void cloudsRender(
+            PoseStack poseStack,
+            Matrix4f frustumMatrix,
+            Matrix4f projectionMatrix,
+            float partialTick,
+            double camX,
+            double camY,
+            double camZ,
+            ClientLevel level,
+            int ticks,
+            float cloudY,
+            float cloudScale,
+            int cloudOffset) {
 
         double d1 = ((float) ticks + partialTick) * 0.03F;
 
@@ -132,7 +173,11 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
         int i = (int) Math.floor(d2);
         int j = (int) Math.floor(d3 / 4.0);
         int k = (int) Math.floor(d4);
-        if (i != this.prevCloudX || j != this.prevCloudY || k != this.prevCloudZ || Minecraft.getInstance().options.getCloudsType() != this.prevCloudsType || this.prevCloudColor.distanceToSqr(vec3) > 2.0E-4) {
+        if (i != this.prevCloudX
+                || j != this.prevCloudY
+                || k != this.prevCloudZ
+                || Minecraft.getInstance().options.getCloudsType() != this.prevCloudsType
+                || this.prevCloudColor.distanceToSqr(vec3) > 2.0E-4) {
             this.prevCloudX = i;
             this.prevCloudY = j;
             this.prevCloudZ = k;
@@ -163,13 +208,16 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
             int l = this.prevCloudsType == CloudStatus.FANCY ? 0 : 1;
 
             for (int i1 = l; i1 < 2; i1++) {
-                RenderType vanRendertype = i1 == 0 ? RenderType.cloudsDepthOnly() : RenderType.clouds();
-                RenderType modRendertype = i1 == 0 ? MiaRenderType.cloudsDepthOnly() : MiaRenderType.clouds();
+                RenderType vanRendertype =
+                        i1 == 0 ? RenderType.cloudsDepthOnly() : RenderType.clouds();
+                RenderType modRendertype =
+                        i1 == 0 ? MiaRenderType.cloudsDepthOnly() : MiaRenderType.clouds();
                 RenderType rendertype = cloudScale != 1.0F ? modRendertype : vanRendertype;
 
                 rendertype.setupRenderState();
                 ShaderInstance shaderinstance = RenderSystem.getShader();
-                this.cloudBuffer.drawWithShader(poseStack.last().pose(), projectionMatrix, shaderinstance);
+                this.cloudBuffer.drawWithShader(
+                        poseStack.last().pose(), projectionMatrix, shaderinstance);
                 rendertype.clearRenderState();
             }
 
@@ -178,7 +226,8 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
         poseStack.popPose();
     }
 
-    private MeshData buildClouds(Tesselator tesselator, double x, double y, double z, Vec3 cloudColor) {
+    private MeshData buildClouds(
+            Tesselator tesselator, double x, double y, double z, Vec3 cloudColor) {
         float f = 4.0F;
         float f1 = 0.00390625F;
         int i = 8;
@@ -198,7 +247,9 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
         float f14 = f5 * 0.8F;
         float f15 = f6 * 0.8F;
         float f16 = f7 * 0.8F;
-        BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR_NORMAL);
+        BufferBuilder bufferbuilder =
+                tesselator.begin(
+                        VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR_NORMAL);
         float f17 = (float) Math.floor(y / 4.0) * 4.0F;
         if (this.prevCloudsType == CloudStatus.FANCY) {
             for (int k = -3; k <= 4; k++) {
@@ -206,59 +257,95 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
                     float f18 = (float) (k * 8);
                     float f19 = (float) (l * 8);
                     if (f17 > -5.0F) {
-                        bufferbuilder.addVertex(f18 + 0.0F, f17 + 0.0F, f19 + 8.0F)
-                                .setUv((f18 + 0.0F) * 0.00390625F + f3, (f19 + 8.0F) * 0.00390625F + f4)
+                        bufferbuilder
+                                .addVertex(f18 + 0.0F, f17 + 0.0F, f19 + 8.0F)
+                                .setUv(
+                                        (f18 + 0.0F) * 0.00390625F + f3,
+                                        (f19 + 8.0F) * 0.00390625F + f4)
                                 .setColor(f11, f12, f13, 0.8F)
                                 .setNormal(0.0F, -1.0F, 0.0F);
-                        bufferbuilder.addVertex(f18 + 8.0F, f17 + 0.0F, f19 + 8.0F)
-                                .setUv((f18 + 8.0F) * 0.00390625F + f3, (f19 + 8.0F) * 0.00390625F + f4)
+                        bufferbuilder
+                                .addVertex(f18 + 8.0F, f17 + 0.0F, f19 + 8.0F)
+                                .setUv(
+                                        (f18 + 8.0F) * 0.00390625F + f3,
+                                        (f19 + 8.0F) * 0.00390625F + f4)
                                 .setColor(f11, f12, f13, 0.8F)
                                 .setNormal(0.0F, -1.0F, 0.0F);
-                        bufferbuilder.addVertex(f18 + 8.0F, f17 + 0.0F, f19 + 0.0F)
-                                .setUv((f18 + 8.0F) * 0.00390625F + f3, (f19 + 0.0F) * 0.00390625F + f4)
+                        bufferbuilder
+                                .addVertex(f18 + 8.0F, f17 + 0.0F, f19 + 0.0F)
+                                .setUv(
+                                        (f18 + 8.0F) * 0.00390625F + f3,
+                                        (f19 + 0.0F) * 0.00390625F + f4)
                                 .setColor(f11, f12, f13, 0.8F)
                                 .setNormal(0.0F, -1.0F, 0.0F);
-                        bufferbuilder.addVertex(f18 + 0.0F, f17 + 0.0F, f19 + 0.0F)
-                                .setUv((f18 + 0.0F) * 0.00390625F + f3, (f19 + 0.0F) * 0.00390625F + f4)
+                        bufferbuilder
+                                .addVertex(f18 + 0.0F, f17 + 0.0F, f19 + 0.0F)
+                                .setUv(
+                                        (f18 + 0.0F) * 0.00390625F + f3,
+                                        (f19 + 0.0F) * 0.00390625F + f4)
                                 .setColor(f11, f12, f13, 0.8F)
                                 .setNormal(0.0F, -1.0F, 0.0F);
                     }
 
                     if (f17 <= 5.0F) {
-                        bufferbuilder.addVertex(f18 + 0.0F, f17 + 4.0F - 9.765625E-4F, f19 + 8.0F)
-                                .setUv((f18 + 0.0F) * 0.00390625F + f3, (f19 + 8.0F) * 0.00390625F + f4)
+                        bufferbuilder
+                                .addVertex(f18 + 0.0F, f17 + 4.0F - 9.765625E-4F, f19 + 8.0F)
+                                .setUv(
+                                        (f18 + 0.0F) * 0.00390625F + f3,
+                                        (f19 + 8.0F) * 0.00390625F + f4)
                                 .setColor(f5, f6, f7, 0.8F)
                                 .setNormal(0.0F, 1.0F, 0.0F);
-                        bufferbuilder.addVertex(f18 + 8.0F, f17 + 4.0F - 9.765625E-4F, f19 + 8.0F)
-                                .setUv((f18 + 8.0F) * 0.00390625F + f3, (f19 + 8.0F) * 0.00390625F + f4)
+                        bufferbuilder
+                                .addVertex(f18 + 8.0F, f17 + 4.0F - 9.765625E-4F, f19 + 8.0F)
+                                .setUv(
+                                        (f18 + 8.0F) * 0.00390625F + f3,
+                                        (f19 + 8.0F) * 0.00390625F + f4)
                                 .setColor(f5, f6, f7, 0.8F)
                                 .setNormal(0.0F, 1.0F, 0.0F);
-                        bufferbuilder.addVertex(f18 + 8.0F, f17 + 4.0F - 9.765625E-4F, f19 + 0.0F)
-                                .setUv((f18 + 8.0F) * 0.00390625F + f3, (f19 + 0.0F) * 0.00390625F + f4)
+                        bufferbuilder
+                                .addVertex(f18 + 8.0F, f17 + 4.0F - 9.765625E-4F, f19 + 0.0F)
+                                .setUv(
+                                        (f18 + 8.0F) * 0.00390625F + f3,
+                                        (f19 + 0.0F) * 0.00390625F + f4)
                                 .setColor(f5, f6, f7, 0.8F)
                                 .setNormal(0.0F, 1.0F, 0.0F);
-                        bufferbuilder.addVertex(f18 + 0.0F, f17 + 4.0F - 9.765625E-4F, f19 + 0.0F)
-                                .setUv((f18 + 0.0F) * 0.00390625F + f3, (f19 + 0.0F) * 0.00390625F + f4)
+                        bufferbuilder
+                                .addVertex(f18 + 0.0F, f17 + 4.0F - 9.765625E-4F, f19 + 0.0F)
+                                .setUv(
+                                        (f18 + 0.0F) * 0.00390625F + f3,
+                                        (f19 + 0.0F) * 0.00390625F + f4)
                                 .setColor(f5, f6, f7, 0.8F)
                                 .setNormal(0.0F, 1.0F, 0.0F);
                     }
 
                     if (k > -1) {
                         for (int i1 = 0; i1 < 8; i1++) {
-                            bufferbuilder.addVertex(f18 + (float) i1 + 0.0F, f17 + 0.0F, f19 + 8.0F)
-                                    .setUv((f18 + (float) i1 + 0.5F) * 0.00390625F + f3, (f19 + 8.0F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(f18 + (float) i1 + 0.0F, f17 + 0.0F, f19 + 8.0F)
+                                    .setUv(
+                                            (f18 + (float) i1 + 0.5F) * 0.00390625F + f3,
+                                            (f19 + 8.0F) * 0.00390625F + f4)
                                     .setColor(f8, f9, f10, 0.8F)
                                     .setNormal(-1.0F, 0.0F, 0.0F);
-                            bufferbuilder.addVertex(f18 + (float) i1 + 0.0F, f17 + 4.0F, f19 + 8.0F)
-                                    .setUv((f18 + (float) i1 + 0.5F) * 0.00390625F + f3, (f19 + 8.0F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(f18 + (float) i1 + 0.0F, f17 + 4.0F, f19 + 8.0F)
+                                    .setUv(
+                                            (f18 + (float) i1 + 0.5F) * 0.00390625F + f3,
+                                            (f19 + 8.0F) * 0.00390625F + f4)
                                     .setColor(f8, f9, f10, 0.8F)
                                     .setNormal(-1.0F, 0.0F, 0.0F);
-                            bufferbuilder.addVertex(f18 + (float) i1 + 0.0F, f17 + 4.0F, f19 + 0.0F)
-                                    .setUv((f18 + (float) i1 + 0.5F) * 0.00390625F + f3, (f19 + 0.0F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(f18 + (float) i1 + 0.0F, f17 + 4.0F, f19 + 0.0F)
+                                    .setUv(
+                                            (f18 + (float) i1 + 0.5F) * 0.00390625F + f3,
+                                            (f19 + 0.0F) * 0.00390625F + f4)
                                     .setColor(f8, f9, f10, 0.8F)
                                     .setNormal(-1.0F, 0.0F, 0.0F);
-                            bufferbuilder.addVertex(f18 + (float) i1 + 0.0F, f17 + 0.0F, f19 + 0.0F)
-                                    .setUv((f18 + (float) i1 + 0.5F) * 0.00390625F + f3, (f19 + 0.0F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(f18 + (float) i1 + 0.0F, f17 + 0.0F, f19 + 0.0F)
+                                    .setUv(
+                                            (f18 + (float) i1 + 0.5F) * 0.00390625F + f3,
+                                            (f19 + 0.0F) * 0.00390625F + f4)
                                     .setColor(f8, f9, f10, 0.8F)
                                     .setNormal(-1.0F, 0.0F, 0.0F);
                         }
@@ -266,20 +353,44 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
 
                     if (k <= 1) {
                         for (int j2 = 0; j2 < 8; j2++) {
-                            bufferbuilder.addVertex(f18 + (float) j2 + 1.0F - 9.765625E-4F, f17 + 0.0F, f19 + 8.0F)
-                                    .setUv((f18 + (float) j2 + 0.5F) * 0.00390625F + f3, (f19 + 8.0F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(
+                                            f18 + (float) j2 + 1.0F - 9.765625E-4F,
+                                            f17 + 0.0F,
+                                            f19 + 8.0F)
+                                    .setUv(
+                                            (f18 + (float) j2 + 0.5F) * 0.00390625F + f3,
+                                            (f19 + 8.0F) * 0.00390625F + f4)
                                     .setColor(f8, f9, f10, 0.8F)
                                     .setNormal(1.0F, 0.0F, 0.0F);
-                            bufferbuilder.addVertex(f18 + (float) j2 + 1.0F - 9.765625E-4F, f17 + 4.0F, f19 + 8.0F)
-                                    .setUv((f18 + (float) j2 + 0.5F) * 0.00390625F + f3, (f19 + 8.0F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(
+                                            f18 + (float) j2 + 1.0F - 9.765625E-4F,
+                                            f17 + 4.0F,
+                                            f19 + 8.0F)
+                                    .setUv(
+                                            (f18 + (float) j2 + 0.5F) * 0.00390625F + f3,
+                                            (f19 + 8.0F) * 0.00390625F + f4)
                                     .setColor(f8, f9, f10, 0.8F)
                                     .setNormal(1.0F, 0.0F, 0.0F);
-                            bufferbuilder.addVertex(f18 + (float) j2 + 1.0F - 9.765625E-4F, f17 + 4.0F, f19 + 0.0F)
-                                    .setUv((f18 + (float) j2 + 0.5F) * 0.00390625F + f3, (f19 + 0.0F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(
+                                            f18 + (float) j2 + 1.0F - 9.765625E-4F,
+                                            f17 + 4.0F,
+                                            f19 + 0.0F)
+                                    .setUv(
+                                            (f18 + (float) j2 + 0.5F) * 0.00390625F + f3,
+                                            (f19 + 0.0F) * 0.00390625F + f4)
                                     .setColor(f8, f9, f10, 0.8F)
                                     .setNormal(1.0F, 0.0F, 0.0F);
-                            bufferbuilder.addVertex(f18 + (float) j2 + 1.0F - 9.765625E-4F, f17 + 0.0F, f19 + 0.0F)
-                                    .setUv((f18 + (float) j2 + 0.5F) * 0.00390625F + f3, (f19 + 0.0F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(
+                                            f18 + (float) j2 + 1.0F - 9.765625E-4F,
+                                            f17 + 0.0F,
+                                            f19 + 0.0F)
+                                    .setUv(
+                                            (f18 + (float) j2 + 0.5F) * 0.00390625F + f3,
+                                            (f19 + 0.0F) * 0.00390625F + f4)
                                     .setColor(f8, f9, f10, 0.8F)
                                     .setNormal(1.0F, 0.0F, 0.0F);
                         }
@@ -287,20 +398,32 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
 
                     if (l > -1) {
                         for (int k2 = 0; k2 < 8; k2++) {
-                            bufferbuilder.addVertex(f18 + 0.0F, f17 + 4.0F, f19 + (float) k2 + 0.0F)
-                                    .setUv((f18 + 0.0F) * 0.00390625F + f3, (f19 + (float) k2 + 0.5F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(f18 + 0.0F, f17 + 4.0F, f19 + (float) k2 + 0.0F)
+                                    .setUv(
+                                            (f18 + 0.0F) * 0.00390625F + f3,
+                                            (f19 + (float) k2 + 0.5F) * 0.00390625F + f4)
                                     .setColor(f14, f15, f16, 0.8F)
                                     .setNormal(0.0F, 0.0F, -1.0F);
-                            bufferbuilder.addVertex(f18 + 8.0F, f17 + 4.0F, f19 + (float) k2 + 0.0F)
-                                    .setUv((f18 + 8.0F) * 0.00390625F + f3, (f19 + (float) k2 + 0.5F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(f18 + 8.0F, f17 + 4.0F, f19 + (float) k2 + 0.0F)
+                                    .setUv(
+                                            (f18 + 8.0F) * 0.00390625F + f3,
+                                            (f19 + (float) k2 + 0.5F) * 0.00390625F + f4)
                                     .setColor(f14, f15, f16, 0.8F)
                                     .setNormal(0.0F, 0.0F, -1.0F);
-                            bufferbuilder.addVertex(f18 + 8.0F, f17 + 0.0F, f19 + (float) k2 + 0.0F)
-                                    .setUv((f18 + 8.0F) * 0.00390625F + f3, (f19 + (float) k2 + 0.5F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(f18 + 8.0F, f17 + 0.0F, f19 + (float) k2 + 0.0F)
+                                    .setUv(
+                                            (f18 + 8.0F) * 0.00390625F + f3,
+                                            (f19 + (float) k2 + 0.5F) * 0.00390625F + f4)
                                     .setColor(f14, f15, f16, 0.8F)
                                     .setNormal(0.0F, 0.0F, -1.0F);
-                            bufferbuilder.addVertex(f18 + 0.0F, f17 + 0.0F, f19 + (float) k2 + 0.0F)
-                                    .setUv((f18 + 0.0F) * 0.00390625F + f3, (f19 + (float) k2 + 0.5F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(f18 + 0.0F, f17 + 0.0F, f19 + (float) k2 + 0.0F)
+                                    .setUv(
+                                            (f18 + 0.0F) * 0.00390625F + f3,
+                                            (f19 + (float) k2 + 0.5F) * 0.00390625F + f4)
                                     .setColor(f14, f15, f16, 0.8F)
                                     .setNormal(0.0F, 0.0F, -1.0F);
                         }
@@ -308,20 +431,44 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
 
                     if (l <= 1) {
                         for (int l2 = 0; l2 < 8; l2++) {
-                            bufferbuilder.addVertex(f18 + 0.0F, f17 + 4.0F, f19 + (float) l2 + 1.0F - 9.765625E-4F)
-                                    .setUv((f18 + 0.0F) * 0.00390625F + f3, (f19 + (float) l2 + 0.5F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(
+                                            f18 + 0.0F,
+                                            f17 + 4.0F,
+                                            f19 + (float) l2 + 1.0F - 9.765625E-4F)
+                                    .setUv(
+                                            (f18 + 0.0F) * 0.00390625F + f3,
+                                            (f19 + (float) l2 + 0.5F) * 0.00390625F + f4)
                                     .setColor(f14, f15, f16, 0.8F)
                                     .setNormal(0.0F, 0.0F, 1.0F);
-                            bufferbuilder.addVertex(f18 + 8.0F, f17 + 4.0F, f19 + (float) l2 + 1.0F - 9.765625E-4F)
-                                    .setUv((f18 + 8.0F) * 0.00390625F + f3, (f19 + (float) l2 + 0.5F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(
+                                            f18 + 8.0F,
+                                            f17 + 4.0F,
+                                            f19 + (float) l2 + 1.0F - 9.765625E-4F)
+                                    .setUv(
+                                            (f18 + 8.0F) * 0.00390625F + f3,
+                                            (f19 + (float) l2 + 0.5F) * 0.00390625F + f4)
                                     .setColor(f14, f15, f16, 0.8F)
                                     .setNormal(0.0F, 0.0F, 1.0F);
-                            bufferbuilder.addVertex(f18 + 8.0F, f17 + 0.0F, f19 + (float) l2 + 1.0F - 9.765625E-4F)
-                                    .setUv((f18 + 8.0F) * 0.00390625F + f3, (f19 + (float) l2 + 0.5F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(
+                                            f18 + 8.0F,
+                                            f17 + 0.0F,
+                                            f19 + (float) l2 + 1.0F - 9.765625E-4F)
+                                    .setUv(
+                                            (f18 + 8.0F) * 0.00390625F + f3,
+                                            (f19 + (float) l2 + 0.5F) * 0.00390625F + f4)
                                     .setColor(f14, f15, f16, 0.8F)
                                     .setNormal(0.0F, 0.0F, 1.0F);
-                            bufferbuilder.addVertex(f18 + 0.0F, f17 + 0.0F, f19 + (float) l2 + 1.0F - 9.765625E-4F)
-                                    .setUv((f18 + 0.0F) * 0.00390625F + f3, (f19 + (float) l2 + 0.5F) * 0.00390625F + f4)
+                            bufferbuilder
+                                    .addVertex(
+                                            f18 + 0.0F,
+                                            f17 + 0.0F,
+                                            f19 + (float) l2 + 1.0F - 9.765625E-4F)
+                                    .setUv(
+                                            (f18 + 0.0F) * 0.00390625F + f3,
+                                            (f19 + (float) l2 + 0.5F) * 0.00390625F + f4)
                                     .setColor(f14, f15, f16, 0.8F)
                                     .setNormal(0.0F, 0.0F, 1.0F);
                         }
@@ -334,20 +481,32 @@ public class TheAbyssDimEffects extends DimensionSpecialEffects {
 
             for (int l1 = -32; l1 < 32; l1 += 32) {
                 for (int i2 = -32; i2 < 32; i2 += 32) {
-                    bufferbuilder.addVertex((float) (l1 + 0), f17, (float) (i2 + 32))
-                            .setUv((float) (l1 + 0) * 0.00390625F + f3, (float) (i2 + 32) * 0.00390625F + f4)
+                    bufferbuilder
+                            .addVertex((float) (l1 + 0), f17, (float) (i2 + 32))
+                            .setUv(
+                                    (float) (l1 + 0) * 0.00390625F + f3,
+                                    (float) (i2 + 32) * 0.00390625F + f4)
                             .setColor(f5, f6, f7, 0.8F)
                             .setNormal(0.0F, -1.0F, 0.0F);
-                    bufferbuilder.addVertex((float) (l1 + 32), f17, (float) (i2 + 32))
-                            .setUv((float) (l1 + 32) * 0.00390625F + f3, (float) (i2 + 32) * 0.00390625F + f4)
+                    bufferbuilder
+                            .addVertex((float) (l1 + 32), f17, (float) (i2 + 32))
+                            .setUv(
+                                    (float) (l1 + 32) * 0.00390625F + f3,
+                                    (float) (i2 + 32) * 0.00390625F + f4)
                             .setColor(f5, f6, f7, 0.8F)
                             .setNormal(0.0F, -1.0F, 0.0F);
-                    bufferbuilder.addVertex((float) (l1 + 32), f17, (float) (i2 + 0))
-                            .setUv((float) (l1 + 32) * 0.00390625F + f3, (float) (i2 + 0) * 0.00390625F + f4)
+                    bufferbuilder
+                            .addVertex((float) (l1 + 32), f17, (float) (i2 + 0))
+                            .setUv(
+                                    (float) (l1 + 32) * 0.00390625F + f3,
+                                    (float) (i2 + 0) * 0.00390625F + f4)
                             .setColor(f5, f6, f7, 0.8F)
                             .setNormal(0.0F, -1.0F, 0.0F);
-                    bufferbuilder.addVertex((float) (l1 + 0), f17, (float) (i2 + 0))
-                            .setUv((float) (l1 + 0) * 0.00390625F + f3, (float) (i2 + 0) * 0.00390625F + f4)
+                    bufferbuilder
+                            .addVertex((float) (l1 + 0), f17, (float) (i2 + 0))
+                            .setUv(
+                                    (float) (l1 + 0) * 0.00390625F + f3,
+                                    (float) (i2 + 0) * 0.00390625F + f4)
                             .setColor(f5, f6, f7, 0.8F)
                             .setNormal(0.0F, -1.0F, 0.0F);
                 }

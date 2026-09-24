@@ -16,49 +16,87 @@ public class BiomesUtils {
     }
 
     public static void farmAnimals(MobSpawnSettings.Builder builder) {
-        builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 12, 4, 4));
-        builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PIG, 10, 4, 4));
-        builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CHICKEN, 10, 4, 4));
-        builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.COW, 8, 4, 4));
+        builder.addSpawn(
+                MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 12, 4, 4));
+        builder.addSpawn(
+                MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PIG, 10, 4, 4));
+        builder.addSpawn(
+                MobCategory.CREATURE,
+                new MobSpawnSettings.SpawnerData(EntityType.CHICKEN, 10, 4, 4));
+        builder.addSpawn(
+                MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.COW, 8, 4, 4));
     }
 
     public static void waterAmbient(MobSpawnSettings.Builder builder) {
-        builder.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.TROPICAL_FISH, 25, 8, 8));
-        builder.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.COD, 25, 3, 6));
+        builder.addSpawn(
+                MobCategory.WATER_AMBIENT,
+                new MobSpawnSettings.SpawnerData(EntityType.TROPICAL_FISH, 25, 8, 8));
+        builder.addSpawn(
+                MobCategory.WATER_AMBIENT,
+                new MobSpawnSettings.SpawnerData(EntityType.COD, 25, 3, 6));
     }
 
     public static void undergroundWaterCreatures(MobSpawnSettings.Builder builder) {
-        builder.addSpawn(MobCategory.UNDERGROUND_WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 10, 4, 6));
+        builder.addSpawn(
+                MobCategory.UNDERGROUND_WATER_CREATURE,
+                new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 10, 4, 6));
     }
 
     public static void monsters(MobSpawnSettings.Builder builder) {
-        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 100, 4, 4));
-        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.DROWNED, 50, 4, 4));
-        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE_VILLAGER, 50, 1, 1));
-        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 100, 4, 4));
-        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 100, 4, 4));
-        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 10, 1, 4));
-        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.WITCH, 5, 1, 1));
+        builder.addSpawn(
+                MobCategory.MONSTER,
+                new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 100, 4, 4));
+        builder.addSpawn(
+                MobCategory.MONSTER,
+                new MobSpawnSettings.SpawnerData(EntityType.DROWNED, 50, 4, 4));
+        builder.addSpawn(
+                MobCategory.MONSTER,
+                new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE_VILLAGER, 50, 1, 1));
+        builder.addSpawn(
+                MobCategory.MONSTER,
+                new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 100, 4, 4));
+        builder.addSpawn(
+                MobCategory.MONSTER,
+                new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 100, 4, 4));
+        builder.addSpawn(
+                MobCategory.MONSTER,
+                new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 10, 1, 4));
+        builder.addSpawn(
+                MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.WITCH, 5, 1, 1));
     }
 
     public static void addMeadowVegetation(BiomeGenerationSettings.Builder builder) {
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_PLAIN);
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GLOOM_BERRY_PLANT);
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FLOWER_MEADOW);
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
+        builder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_PLAIN);
+        builder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION,
+                TheAbyssPlacements.PATCH_GLOOM_BERRY_PLANT);
+        builder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FLOWER_MEADOW);
+        builder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
     }
 
     public static void addMeadow2Vegetation(BiomeGenerationSettings.Builder builder) {
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_PLAIN);
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FLOWER_MEADOW2);
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
+        builder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_PLAIN);
+        builder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FLOWER_MEADOW2);
+        builder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
     }
 
     public static void addDenseMeadowVegetation(BiomeGenerationSettings.Builder builder) {
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_FERN);
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_DENSE_LARGE_FERN);
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GLOOM_BERRY_PLANT);
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
+        builder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_FERN);
+        builder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION,
+                TheAbyssPlacements.PATCH_DENSE_LARGE_FERN);
+        builder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION,
+                TheAbyssPlacements.PATCH_GLOOM_BERRY_PLANT);
+        builder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.FOREST_FLOWERS);
     }
 
     public static void abyssGeneration(BiomeGenerationSettings.Builder builder) {
@@ -67,17 +105,22 @@ public class BiomesUtils {
     }
 
     public static void globalAbyssGeneration(BiomeGenerationSettings.Builder builder) {
-        builder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.PRASIOLITE_GEODE);
+        builder.addFeature(
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.PRASIOLITE_GEODE);
         globalAbyssGenerationNotGeode(builder);
     }
 
     public static void globalAbyssGenerationNotGeode(BiomeGenerationSettings.Builder builder) {
-        //MiaBiomeDefaultFeatures.addAbyssCarvers(builder);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TheAbyssPlacements.MONSTER_CHEAT);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TheAbyssPlacements.SLAB_RUINS);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TheAbyssPlacements.SUN_STONE);
+        // MiaBiomeDefaultFeatures.addAbyssCarvers(builder);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TheAbyssPlacements.MONSTER_CHEAT);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TheAbyssPlacements.SLAB_RUINS);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TheAbyssPlacements.SUN_STONE);
         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.VINES);
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_WATERLILY);
+        builder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_WATERLILY);
         addTheAbyssDefaultVariety(builder);
 
         addDefaultSprings(builder);
@@ -87,36 +130,53 @@ public class BiomesUtils {
 
     public static void addTheAbyssDefaultOres(BiomeGenerationSettings.Builder builder) {
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_IRON);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_COPPER);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_COPPER);
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_GOLD);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_LAPIS);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_REDSTONE);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_DIAMOND);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_EMERALD);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_QUARTZ);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_CHLOROPHYTE);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, CavePlacements.UNDERWATER_MAGMA);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_LAPIS);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_REDSTONE);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_DIAMOND);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_EMERALD);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_QUARTZ);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_CHLOROPHYTE);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_ORES, CavePlacements.UNDERWATER_MAGMA);
     }
 
     public static void addTheAbyssDefaultVariety(BiomeGenerationSettings.Builder builder) {
         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_DIRT);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_GRAVEL);
-        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.GLOW_LICHEN);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_ORES, TheAbyssPlacements.ORE_GRAVEL);
+        builder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.GLOW_LICHEN);
     }
 
     public static void addDefaultSoftDisks(BiomeGenerationSettings.Builder builder) {
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, MiscOverworldPlacements.DISK_SAND);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, MiscOverworldPlacements.DISK_CLAY);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, MiscOverworldPlacements.DISK_GRAVEL);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_ORES, MiscOverworldPlacements.DISK_SAND);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_ORES, MiscOverworldPlacements.DISK_CLAY);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_ORES, MiscOverworldPlacements.DISK_GRAVEL);
     }
 
     public static void addDefaultSprings(BiomeGenerationSettings.Builder builder) {
-        builder.addFeature(GenerationStep.Decoration.FLUID_SPRINGS, TheAbyssPlacements.SPRING_WATER);
+        builder.addFeature(
+                GenerationStep.Decoration.FLUID_SPRINGS, TheAbyssPlacements.SPRING_WATER);
     }
 
     public static void addDripstone(BiomeGenerationSettings.Builder builder) {
-        builder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.CAVE_PILLAR);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, CavePlacements.DRIPSTONE_CLUSTER);
-        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, CavePlacements.POINTED_DRIPSTONE);
+        builder.addFeature(
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.CAVE_PILLAR);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_DECORATION, CavePlacements.DRIPSTONE_CLUSTER);
+        builder.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_DECORATION, CavePlacements.POINTED_DRIPSTONE);
     }
 }

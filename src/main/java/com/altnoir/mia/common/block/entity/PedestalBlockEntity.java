@@ -19,25 +19,27 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class PedestalBlockEntity extends BlockEntity implements WorldlyContainer {
-    private final ItemStackHandler InputInventory = new ItemStackHandler(1) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-            if (!level.isClientSide) {
-                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-            }
-        }
-    };
+    private final ItemStackHandler InputInventory =
+            new ItemStackHandler(1) {
+                @Override
+                protected void onContentsChanged(int slot) {
+                    setChanged();
+                    if (!level.isClientSide) {
+                        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                    }
+                }
+            };
 
-    private final ItemStackHandler OutputInventory = new ItemStackHandler(8) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-            if (!level.isClientSide) {
-                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-            }
-        }
-    };
+    private final ItemStackHandler OutputInventory =
+            new ItemStackHandler(8) {
+                @Override
+                protected void onContentsChanged(int slot) {
+                    setChanged();
+                    if (!level.isClientSide) {
+                        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                    }
+                }
+            };
 
     public PedestalBlockEntity(BlockPos pos, BlockState blockState) {
         super(MiaBlockEntities.PEDESTAL_ENTITY.get(), pos, blockState);
@@ -92,20 +94,16 @@ public class PedestalBlockEntity extends BlockEntity implements WorldlyContainer
 
     public ItemStack tryExtractItem(int amount, boolean simulate) {
         var inputStack = extractInput(amount, simulate);
-        if (!inputStack.isEmpty())
-            return inputStack;
+        if (!inputStack.isEmpty()) return inputStack;
 
         var outputStack = extractOutput(amount, simulate);
-        if (!outputStack.isEmpty())
-            return outputStack;
+        if (!outputStack.isEmpty()) return outputStack;
 
         return ItemStack.EMPTY;
     }
 
     public void drops() {
-        var inventory = new SimpleContainer(
-                InputInventory.getSlots() + OutputInventory.getSlots()
-        );
+        var inventory = new SimpleContainer(InputInventory.getSlots() + OutputInventory.getSlots());
 
         for (int i = 0; i < InputInventory.getSlots(); i++) {
             var stack = InputInventory.getStackInSlot(i);
@@ -178,16 +176,14 @@ public class PedestalBlockEntity extends BlockEntity implements WorldlyContainer
     @Override
     public boolean isEmpty() {
         for (int i = 0; i < getContainerSize(); i++) {
-            if (!getItem(i).isEmpty())
-                return false;
+            if (!getItem(i).isEmpty()) return false;
         }
         return true;
     }
 
     @Override
     public ItemStack getItem(int slot) {
-        if (slot < InputInventory.getSlots())
-            return InputInventory.getStackInSlot(slot);
+        if (slot < InputInventory.getSlots()) return InputInventory.getStackInSlot(slot);
 
         return OutputInventory.getStackInSlot(slot - InputInventory.getSlots());
     }
@@ -207,7 +203,8 @@ public class PedestalBlockEntity extends BlockEntity implements WorldlyContainer
     @Override
     public ItemStack removeItemNoUpdate(int slot) {
         if (slot < InputInventory.getSlots()) return ItemStack.EMPTY;
-        return OutputInventory.extractItem(slot - InputInventory.getSlots(), getItem(slot).getCount(), false);
+        return OutputInventory.extractItem(
+                slot - InputInventory.getSlots(), getItem(slot).getCount(), false);
     }
 
     @Override
@@ -217,7 +214,9 @@ public class PedestalBlockEntity extends BlockEntity implements WorldlyContainer
 
     @Override
     public void clearContent() {
-        for (int i = 0; i < InputInventory.getSlots(); i++) InputInventory.setStackInSlot(i, ItemStack.EMPTY);
-        for (int i = 0; i < OutputInventory.getSlots(); i++) OutputInventory.setStackInSlot(i, ItemStack.EMPTY);
+        for (int i = 0; i < InputInventory.getSlots(); i++)
+            InputInventory.setStackInSlot(i, ItemStack.EMPTY);
+        for (int i = 0; i < OutputInventory.getSlots(); i++)
+            OutputInventory.setStackInSlot(i, ItemStack.EMPTY);
     }
 }

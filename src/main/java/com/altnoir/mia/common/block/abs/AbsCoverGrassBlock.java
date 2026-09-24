@@ -23,15 +23,22 @@ public abstract class AbsCoverGrassBlock extends AbsCanFarmBlock {
         if (blockstate.getFluidState().getAmount() == 8) {
             return false;
         } else {
-            int i = LightEngine.getLightBlockInto(
-                    levelReader, state, pos, blockstate, blockpos, Direction.UP, blockstate.getLightBlock(levelReader, blockpos)
-            );
+            int i =
+                    LightEngine.getLightBlockInto(
+                            levelReader,
+                            state,
+                            pos,
+                            blockstate,
+                            blockpos,
+                            Direction.UP,
+                            blockstate.getLightBlock(levelReader, blockpos));
             return i < levelReader.getMaxLightLevel();
         }
     }
 
     @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    protected void randomTick(
+            BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!canBeGrass(state, level, pos)) {
             if (!level.isAreaLoaded(pos, 1)) return;
             level.setBlockAndUpdate(pos, this.defaultBlock.defaultBlockState());

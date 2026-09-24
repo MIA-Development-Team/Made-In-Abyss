@@ -2,6 +2,7 @@ package com.altnoir.mia.worldgen.biome.great_fault;
 
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;
+import java.util.List;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -26,21 +27,26 @@ import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFea
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
-import java.util.List;
-
 public class GreatFaultFeatures {
-    public static final ResourceKey<ConfiguredFeature<?, ?>> ABYSS_LIGHT = greatFaultKey("abyss_light");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> CAERULITE_GEODE = greatFaultKey("caerulite_geode");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ABYSS_LIGHT =
+            greatFaultKey("abyss_light");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> CAERULITE_GEODE =
+            greatFaultKey("caerulite_geode");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
+        HolderGetter<ConfiguredFeature<?, ?>> holdergetter =
+                context.lookup(Registries.CONFIGURED_FEATURE);
         HolderGetter<PlacedFeature> holdergetter1 = context.lookup(Registries.PLACED_FEATURE);
 
-        MiaFeatureUtils.register(context, ABYSS_LIGHT, Feature.SIMPLE_RANDOM_SELECTOR,
-                new SimpleRandomFeatureConfiguration(HolderSet.direct(makeLight()))
-        );
         MiaFeatureUtils.register(
-                context, CAERULITE_GEODE, Feature.GEODE,
+                context,
+                ABYSS_LIGHT,
+                Feature.SIMPLE_RANDOM_SELECTOR,
+                new SimpleRandomFeatureConfiguration(HolderSet.direct(makeLight())));
+        MiaFeatureUtils.register(
+                context,
+                CAERULITE_GEODE,
+                Feature.GEODE,
                 new GeodeConfiguration(
                         new GeodeBlockSettings(
                                 BlockStateProvider.simple(Blocks.AIR),
@@ -52,11 +58,9 @@ public class GreatFaultFeatures {
                                         MiaBlocks.SMALL_CAERULITE_BUD.get().defaultBlockState(),
                                         MiaBlocks.MEDIUM_CAERULITE_BUD.get().defaultBlockState(),
                                         MiaBlocks.LARGE_CAERULITE_BUD.get().defaultBlockState(),
-                                        MiaBlocks.CAERULITE_CLUSTER.get().defaultBlockState()
-                                ),
+                                        MiaBlocks.CAERULITE_CLUSTER.get().defaultBlockState()),
                                 BlockTags.FEATURES_CANNOT_REPLACE,
-                                BlockTags.GEODE_INVALID_BLOCKS
-                        ),
+                                BlockTags.GEODE_INVALID_BLOCKS),
                         new GeodeLayerSettings(1.7, 2.2, 3.2, 4.2),
                         new GeodeCrackSettings(0.95, 2.0, 2),
                         0.35,
@@ -68,10 +72,7 @@ public class GreatFaultFeatures {
                         -16,
                         16,
                         0.05,
-                        1
-                )
-        );
-
+                        1));
     }
 
     private static Holder<PlacedFeature> makeLight() {
@@ -79,13 +80,13 @@ public class GreatFaultFeatures {
                 Feature.BLOCK_COLUMN,
                 new BlockColumnConfiguration(
                         List.of(
-                                BlockColumnConfiguration.layer(ConstantInt.of(12), BlockStateProvider.simple(Blocks.LIGHT.defaultBlockState()))
-                        ),
+                                BlockColumnConfiguration.layer(
+                                        ConstantInt.of(12),
+                                        BlockStateProvider.simple(
+                                                Blocks.LIGHT.defaultBlockState()))),
                         Direction.UP,
                         BlockPredicate.ONLY_IN_AIR_OR_WATER_PREDICATE,
-                        true
-                )
-        );
+                        true));
     }
 
     private static ResourceKey<ConfiguredFeature<?, ?>> greatFaultKey(String name) {

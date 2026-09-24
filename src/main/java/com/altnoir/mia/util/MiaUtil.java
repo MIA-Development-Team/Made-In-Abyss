@@ -6,6 +6,13 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import dev.emi.emi.api.stack.Comparison;
+import java.io.InputStream;
+import java.time.Duration;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import java.util.function.Predicate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -35,16 +42,9 @@ import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
-import java.io.InputStream;
-import java.time.Duration;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-import java.util.function.Predicate;
-
 public class MiaUtil {
-    private static final net.minecraft.util.RandomSource RANDOM = net.minecraft.util.RandomSource.create();
+    private static final net.minecraft.util.RandomSource RANDOM =
+            net.minecraft.util.RandomSource.create();
 
     public static MutableComponent literal(String s) {
         return Component.literal(s);
@@ -82,7 +82,8 @@ public class MiaUtil {
         return text.getVisualOrderText();
     }
 
-    public static Collection<ResourceLocation> findResources(ResourceManager manager, String prefix, Predicate<String> pred) {
+    public static Collection<ResourceLocation> findResources(
+            ResourceManager manager, String prefix, Predicate<String> pred) {
         return manager.listResources(prefix, i -> pred.test(i.toString())).keySet();
     }
 
@@ -95,14 +96,23 @@ public class MiaUtil {
     }
 
     public static BannerPatternLayers addRandomBanner(BannerPatternLayers patterns, Random random) {
-        var bannerRegistry = Minecraft.getInstance().level.registryAccess().registryOrThrow(Registries.BANNER_PATTERN);
-        return new BannerPatternLayers.Builder().addAll(patterns).add(bannerRegistry.getHolder(random.nextInt(bannerRegistry.size())).get(),
-                DyeColor.values()[random.nextInt(DyeColor.values().length)]).build();
+        var bannerRegistry =
+                Minecraft.getInstance()
+                        .level
+                        .registryAccess()
+                        .registryOrThrow(Registries.BANNER_PATTERN);
+        return new BannerPatternLayers.Builder()
+                .addAll(patterns)
+                .add(
+                        bannerRegistry.getHolder(random.nextInt(bannerRegistry.size())).get(),
+                        DyeColor.values()[random.nextInt(DyeColor.values().length)])
+                .build();
     }
 
     public static boolean canTallFlowerDuplicate(TallFlowerBlock tallFlowerBlock) {
         try {
-            return tallFlowerBlock.isValidBonemealTarget(null, null, null) && tallFlowerBlock.isBonemealSuccess(null, null, null, null);
+            return tallFlowerBlock.isValidBonemealTarget(null, null, null)
+                    && tallFlowerBlock.isBonemealSuccess(null, null, null, null);
         } catch (Exception e) {
             return false;
         }
@@ -196,7 +206,6 @@ public class MiaUtil {
     public static Comparison compareStrict() {
         return Comparison.compareComponents();
     }
-
 
     public static ResourceLocation id(String id) {
         return ResourceLocation.parse(id);

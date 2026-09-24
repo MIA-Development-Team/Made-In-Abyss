@@ -1,9 +1,10 @@
 package com.altnoir.mia.common.item;
 
+import com.altnoir.mia.client.network.CompassTargetPayload;
 import com.altnoir.mia.common.block.AbyssPortalCoreBlock;
 import com.altnoir.mia.common.item.abs.IMiaTooltip;
-import com.altnoir.mia.client.network.CompassTargetPayload;
 import com.altnoir.mia.worldgen.structure.MiaStructures;
+import java.util.List;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -23,8 +24,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import java.util.List;
-
 public class StarCompassItem extends Item implements IMiaTooltip {
     private static final int SEARCH_RADIUS = 12800;
     private static final ResourceKey<Structure> ABYSS_STRONGHOLD = MiaStructures.ABYSS_STRONGHOLD;
@@ -39,7 +38,8 @@ public class StarCompassItem extends Item implements IMiaTooltip {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(
+            Level level, Player player, InteractionHand hand) {
         var stack = player.getItemInHand(hand);
 
         if (!level.isClientSide()) {
@@ -56,33 +56,53 @@ public class StarCompassItem extends Item implements IMiaTooltip {
             if (level instanceof ServerLevel serverLevel) {
                 var serverPlayer = (ServerPlayer) player;
 
-                var structureRegistry = serverLevel.registryAccess().registryOrThrow(Registries.STRUCTURE);
+                var structureRegistry =
+                        serverLevel.registryAccess().registryOrThrow(Registries.STRUCTURE);
                 var structureHolder = structureRegistry.getHolder(ABYSS_STRONGHOLD);
 
                 if (structureHolder.isPresent()) {
                     var structures = HolderSet.direct(structureHolder.get());
-                    var result = serverLevel.getChunkSource().getGenerator().findNearestMapStructure(
-                            serverLevel,
-                            structures,
-                            player.blockPosition(),
-                            SEARCH_RADIUS,
-                            false
-                    );
+                    var result =
+                            serverLevel
+                                    .getChunkSource()
+                                    .getGenerator()
+                                    .findNearestMapStructure(
+                                            serverLevel,
+                                            structures,
+                                            player.blockPosition(),
+                                            SEARCH_RADIUS,
+                                            false);
 
                     if (result != null) {
                         var structurePos = result.getFirst();
-                        PacketDistributor.sendToPlayer(serverPlayer, new CompassTargetPayload(
-                                structurePos.getX(),
-                                structurePos.getY(),
-                                structurePos.getZ(),
-                                true
-                        ));
-                        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                                SoundEvents.END_PORTAL_FRAME_FILL, SoundSource.PLAYERS, 1.0F, 1.0F);
+                        PacketDistributor.sendToPlayer(
+                                serverPlayer,
+                                new CompassTargetPayload(
+                                        structurePos.getX(),
+                                        structurePos.getY(),
+                                        structurePos.getZ(),
+                                        true));
+                        level.playSound(
+                                null,
+                                player.getX(),
+                                player.getY(),
+                                player.getZ(),
+                                SoundEvents.END_PORTAL_FRAME_FILL,
+                                SoundSource.PLAYERS,
+                                1.0F,
+                                1.0F);
                     } else {
-                        PacketDistributor.sendToPlayer(serverPlayer, new CompassTargetPayload(0, 0, 0, false));
-                        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                                SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS, 0.5F, 1.0F);
+                        PacketDistributor.sendToPlayer(
+                                serverPlayer, new CompassTargetPayload(0, 0, 0, false));
+                        level.playSound(
+                                null,
+                                player.getX(),
+                                player.getY(),
+                                player.getZ(),
+                                SoundEvents.FIRE_EXTINGUISH,
+                                SoundSource.PLAYERS,
+                                0.5F,
+                                1.0F);
                     }
                 }
 

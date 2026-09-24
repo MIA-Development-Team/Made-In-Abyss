@@ -4,15 +4,6 @@ import com.altnoir.mia.MIA;
 import com.altnoir.mia.MiaConfig;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.DensityFunction;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
-import net.minecraft.world.level.levelgen.RandomState;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,26 +14,32 @@ import java.util.OptionalInt;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.IntPredicate;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
+import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 
 public final class AbyssWallPlanner {
     private static final int EMBED_SALT = 0x57414C4C;
     private static final double FULL_CIRCLE = Math.PI * 2.0;
     private static final double SECTOR_SIZE = Math.PI / 4.0;
     private static final double HALF_SECTOR = SECTOR_SIZE / 2.0;
-    private static final Cache<RandomState, Map<PlanKey, CachedPlan>> WORLD_PLANS = CacheBuilder.newBuilder()
-            .weakKeys()
-            .maximumSize(16)
-            .build();
+    private static final Cache<RandomState, Map<PlanKey, CachedPlan>> WORLD_PLANS =
+            CacheBuilder.newBuilder().weakKeys().maximumSize(16).build();
 
-    private AbyssWallPlanner() {
-    }
+    private AbyssWallPlanner() {}
 
     @FunctionalInterface
     public interface RadiusPredictor {
         OptionalDouble radiusAt(double angle, int y);
     }
 
-    public static List<AbyssWallCandidate> createPlan(long seed, AbyssWallPlanConfig config, RadiusPredictor predictor) {
+    public static List<AbyssWallCandidate> createPlan(
+            long seed, AbyssWallPlanConfig config, RadiusPredictor predictor) {
         return createPlan(seed, config, predictor, predictor);
     }
 
@@ -50,8 +47,7 @@ public final class AbyssWallPlanner {
             long seed,
             AbyssWallPlanConfig config,
             RadiusPredictor preliminaryPredictor,
-            RadiusPredictor preferredPredictor
-    ) {
+            RadiusPredictor preferredPredictor) {
         List<AbyssWallCandidate> candidates = new ArrayList<>(config.candidateCount());
         Set<ChunkPos> claimedChunks = new HashSet<>();
         long bufferedMinimumDistance = config.planningAnchorDistance();
@@ -91,19 +87,20 @@ public final class AbyssWallPlanner {
 
                 BlockPos anchor = blockPos(angle, y, predictedRadius.getAsDouble());
                 ChunkPos startChunk = new ChunkPos(anchor);
-                if (claimedChunks.contains(startChunk) || isTooClose(anchor, candidates, minimumDistanceSquared)) {
+                if (claimedChunks.contains(startChunk)
+                        || isTooClose(anchor, candidates, minimumDistanceSquared)) {
                     continue;
                 }
 
-                candidates.add(new AbyssWallCandidate(
-                        band,
-                        angle,
-                        y,
-                        predictedRadius.getAsDouble(),
-                        anchor,
-                        startChunk,
-                        orientationFor(angle)
-                ));
+                candidates.add(
+                        new AbyssWallCandidate(
+                                band,
+                                angle,
+                                y,
+                                predictedRadius.getAsDouble(),
+                                anchor,
+                                startChunk,
+                                orientationFor(angle)));
                 claimedChunks.add(startChunk);
                 break;
             }
@@ -112,40 +109,49 @@ public final class AbyssWallPlanner {
         return List.copyOf(candidates);
     }
 
-    public static List<AbyssWallCandidate> planFor(long seed, RandomState randomState, AbyssWallPlanConfig config) {
+    public static List<AbyssWallCandidate> planFor(
+            long seed, RandomState randomState, AbyssWallPlanConfig config) {
         return cachedPlanFor(seed, randomState, config).candidates();
     }
 
-    private static CachedPlan cachedPlanFor(long seed, RandomState randomState, AbyssWallPlanConfig config) {
+    private static CachedPlan cachedPlanFor(
+            long seed, RandomState randomState, AbyssWallPlanConfig config) {
         int abyssRadius = currentAbyssRadius();
-        Map<PlanKey, CachedPlan> plans = WORLD_PLANS.asMap()
-                .computeIfAbsent(randomState, ignored -> new ConcurrentHashMap<>());
-        return plans.computeIfAbsent(new PlanKey(seed, config, abyssRadius), ignored -> {
-            DensityFunction finalDensity = randomState.router().finalDensity();
-            RadiusPredictor macroPredictor = (angle, y) -> OptionalDouble.of(nominalRadius(y, abyssRadius, config));
-            RadiusPredictor finalDensityPredictor = (angle, y) -> {
-                double macroRadius = nominalRadius(y, abyssRadius, config);
-                return OptionalDouble.of(preferredRadius(
-                        macroRadius,
-                        config.finalDensityInwardSearch(),
-                        config.finalDensityTolerance(),
-                        radius -> sampleDensity(finalDensity, angle, y, radius) > 0.0
-                ));
-            };
-            List<AbyssWallCandidate> plan = createPlan(
-                    seed, config, macroPredictor, finalDensityPredictor
-            );
-            MIA.LOGGER.debug("Abyss wall candidates for seed {}: {}", seed, plan);
-            return CachedPlan.create(plan);
-        });
+        Map<PlanKey, CachedPlan> plans =
+                WORLD_PLANS
+                        .asMap()
+                        .computeIfAbsent(randomState, ignored -> new ConcurrentHashMap<>());
+        return plans.computeIfAbsent(
+                new PlanKey(seed, config, abyssRadius),
+                ignored -> {
+                    DensityFunction finalDensity = randomState.router().finalDensity();
+                    RadiusPredictor macroPredictor =
+                            (angle, y) -> OptionalDouble.of(nominalRadius(y, abyssRadius, config));
+                    RadiusPredictor finalDensityPredictor =
+                            (angle, y) -> {
+                                double macroRadius = nominalRadius(y, abyssRadius, config);
+                                return OptionalDouble.of(
+                                        preferredRadius(
+                                                macroRadius,
+                                                config.finalDensityInwardSearch(),
+                                                config.finalDensityTolerance(),
+                                                radius ->
+                                                        sampleDensity(
+                                                                        finalDensity,
+                                                                        angle,
+                                                                        y,
+                                                                        radius)
+                                                                > 0.0));
+                            };
+                    List<AbyssWallCandidate> plan =
+                            createPlan(seed, config, macroPredictor, finalDensityPredictor);
+                    MIA.LOGGER.debug("Abyss wall candidates for seed {}: {}", seed, plan);
+                    return CachedPlan.create(plan);
+                });
     }
 
     public static AbyssWallCandidate candidateForChunk(
-            long seed,
-            RandomState randomState,
-            AbyssWallPlanConfig config,
-            ChunkPos chunkPos
-    ) {
+            long seed, RandomState randomState, AbyssWallPlanConfig config, ChunkPos chunkPos) {
         return cachedPlanFor(seed, randomState, config).byChunk().get(chunkPos);
     }
 
@@ -153,28 +159,32 @@ public final class AbyssWallPlanner {
         double normalized = Mth.positiveModulo(angle, FULL_CIRCLE);
         int sector = Mth.floor((normalized + HALF_SECTOR) / SECTOR_SIZE) & 7;
         if ((sector & 1) == 0) {
-            return new AbyssWallCandidate.Orientation(AbyssWallCandidate.TemplateKind.STRAIGHT, rotationFromSouth(sector));
+            return new AbyssWallCandidate.Orientation(
+                    AbyssWallCandidate.TemplateKind.STRAIGHT, rotationFromSouth(sector));
         }
-        return new AbyssWallCandidate.Orientation(AbyssWallCandidate.TemplateKind.TILT, rotationFromSouthEast(sector));
+        return new AbyssWallCandidate.Orientation(
+                AbyssWallCandidate.TemplateKind.TILT, rotationFromSouthEast(sector));
     }
 
     public static BlockPos blockPos(double angle, int y, double radius) {
         return new BlockPos(
                 Mth.floor(Math.cos(angle) * radius + 0.5),
                 y,
-                Mth.floor(Math.sin(angle) * radius + 0.5)
-        );
+                Mth.floor(Math.sin(angle) * radius + 0.5));
     }
 
-    public static OptionalInt findFirstStableBoundary(int minRadius, int maxRadius, IntPredicate isSolid) {
+    public static OptionalInt findFirstStableBoundary(
+            int minRadius, int maxRadius, IntPredicate isSolid) {
         for (int radius = minRadius + 3; radius <= maxRadius - 3; radius++) {
-            boolean stableAir = !isSolid.test(radius - 3)
-                    && !isSolid.test(radius - 2)
-                    && !isSolid.test(radius - 1);
-            boolean stableRock = isSolid.test(radius)
-                    && isSolid.test(radius + 1)
-                    && isSolid.test(radius + 2)
-                    && isSolid.test(radius + 3);
+            boolean stableAir =
+                    !isSolid.test(radius - 3)
+                            && !isSolid.test(radius - 2)
+                            && !isSolid.test(radius - 1);
+            boolean stableRock =
+                    isSolid.test(radius)
+                            && isSolid.test(radius + 1)
+                            && isSolid.test(radius + 2)
+                            && isSolid.test(radius + 3);
             if (stableAir && stableRock) {
                 return OptionalInt.of(radius);
             }
@@ -182,14 +192,12 @@ public final class AbyssWallPlanner {
         return OptionalInt.empty();
     }
 
-    public static OptionalInt findRefinedBoundary(double predictedRadius, int maxCorrection, IntPredicate isSolid) {
+    public static OptionalInt findRefinedBoundary(
+            double predictedRadius, int maxCorrection, IntPredicate isSolid) {
         int allowedMinimum = Math.max(1, (int) Math.floor(predictedRadius) - maxCorrection);
         int allowedMaximum = (int) Math.ceil(predictedRadius) + maxCorrection;
         return findFirstStableBoundary(
-                Math.max(1, allowedMinimum - 3),
-                allowedMaximum + 3,
-                isSolid
-        );
+                Math.max(1, allowedMinimum - 3), allowedMaximum + 3, isSolid);
     }
 
     public static double preferredRadius(double macroRadius, int tolerance, IntPredicate isSolid) {
@@ -197,41 +205,37 @@ public final class AbyssWallPlanner {
                 macroRadius,
                 AbyssWallPlanConfig.DEFAULT.finalDensityInwardSearch(),
                 tolerance,
-                isSolid
-        );
+                isSolid);
     }
 
     public static double preferredRadius(
-            double macroRadius,
-            int inwardSearch,
-            int tolerance,
-            IntPredicate isSolid
-    ) {
+            double macroRadius, int inwardSearch, int tolerance, IntPredicate isSolid) {
         int minimumSampleRadius = Math.max(1, (int) Math.floor(macroRadius) - inwardSearch);
         int maximumBoundary = Math.max(1, (int) Math.floor(macroRadius + tolerance));
         Map<Integer, Boolean> solidity = new HashMap<>();
-        IntPredicate cachedSolidity = radius -> solidity.computeIfAbsent(radius, ignored -> isSolid.test(radius));
+        IntPredicate cachedSolidity =
+                radius -> solidity.computeIfAbsent(radius, ignored -> isSolid.test(radius));
         if (cachedSolidity.test(minimumSampleRadius)) {
             return Double.NaN;
         }
-        OptionalInt boundary = findFirstStableBoundary(
-                minimumSampleRadius,
-                maximumBoundary + 3,
-                cachedSolidity
-        );
+        OptionalInt boundary =
+                findFirstStableBoundary(minimumSampleRadius, maximumBoundary + 3, cachedSolidity);
         return boundary.isPresent() ? boundary.getAsInt() : macroRadius;
     }
 
-    public static int wallAnchorOffset(long seed, AbyssWallCandidate candidate, AbyssWallPlanConfig config) {
+    public static int wallAnchorOffset(
+            long seed, AbyssWallCandidate candidate, AbyssWallPlanConfig config) {
         if (config.embedDepth() == 0) {
             return 0;
         }
         WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
-        random.setLargeFeatureWithSalt(seed, candidate.id(), config.contractVersion(), config.salt() ^ EMBED_SALT);
+        random.setLargeFeatureWithSalt(
+                seed, candidate.id(), config.contractVersion(), config.salt() ^ EMBED_SALT);
         return random.nextInt(config.embedDepth() + 1);
     }
 
-    private static boolean isTooClose(BlockPos anchor, List<AbyssWallCandidate> candidates, long minimumDistanceSquared) {
+    private static boolean isTooClose(
+            BlockPos anchor, List<AbyssWallCandidate> candidates, long minimumDistanceSquared) {
         for (AbyssWallCandidate candidate : candidates) {
             if (anchor.distSqr(candidate.anchor()) < minimumDistanceSquared) {
                 return true;
@@ -241,7 +245,9 @@ public final class AbyssWallPlanner {
     }
 
     private static boolean isUsableRadius(OptionalDouble radius) {
-        return radius.isPresent() && Double.isFinite(radius.getAsDouble()) && radius.getAsDouble() > 0.0;
+        return radius.isPresent()
+                && Double.isFinite(radius.getAsDouble())
+                && radius.getAsDouble() > 0.0;
     }
 
     private static Rotation rotationFromSouth(int sector) {
@@ -283,10 +289,9 @@ public final class AbyssWallPlanner {
     }
 
     private static int allowedYAt(AbyssWallPlanConfig config, int index) {
-        int lowerAllowedCount = Math.max(
-                0,
-                Math.min(config.maxY(), config.forbiddenMinY() - 1) - config.minY() + 1
-        );
+        int lowerAllowedCount =
+                Math.max(
+                        0, Math.min(config.maxY(), config.forbiddenMinY() - 1) - config.minY() + 1);
         return index < lowerAllowedCount
                 ? config.minY() + index
                 : Math.max(config.minY(), config.forbiddenMaxY() + 1) + index - lowerAllowedCount;
@@ -294,13 +299,14 @@ public final class AbyssWallPlanner {
 
     private static double sampleDensity(DensityFunction density, double angle, int y, int radius) {
         BlockPos pos = blockPos(angle, y, radius);
-        return density.compute(new DensityFunction.SinglePointContext(pos.getX(), pos.getY(), pos.getZ()));
+        return density.compute(
+                new DensityFunction.SinglePointContext(pos.getX(), pos.getY(), pos.getZ()));
     }
 
-    private record PlanKey(long seed, AbyssWallPlanConfig config, int abyssRadius) {
-    }
+    private record PlanKey(long seed, AbyssWallPlanConfig config, int abyssRadius) {}
 
-    private record CachedPlan(List<AbyssWallCandidate> candidates, Map<ChunkPos, AbyssWallCandidate> byChunk) {
+    private record CachedPlan(
+            List<AbyssWallCandidate> candidates, Map<ChunkPos, AbyssWallCandidate> byChunk) {
         private static CachedPlan create(List<AbyssWallCandidate> candidates) {
             Map<ChunkPos, AbyssWallCandidate> byChunk = new ConcurrentHashMap<>();
             for (AbyssWallCandidate candidate : candidates) {

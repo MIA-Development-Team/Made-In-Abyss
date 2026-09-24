@@ -5,6 +5,7 @@ import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.init.MiaRecipes;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.Objects;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -18,8 +19,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-import java.util.Objects;
-
 public class ArtifactSmithingRecipe implements Recipe<ArtifactSmithingRecipeInput> {
 
     final Ingredient artifact;
@@ -28,8 +27,12 @@ public class ArtifactSmithingRecipe implements Recipe<ArtifactSmithingRecipeInpu
     final DoubleRange value;
     final AttributeModifier.Operation operation;
 
-    public ArtifactSmithingRecipe(Ingredient artifact, ItemStack material, Holder<Attribute> attribute,
-                                  DoubleRange value, AttributeModifier.Operation operation) {
+    public ArtifactSmithingRecipe(
+            Ingredient artifact,
+            ItemStack material,
+            Holder<Attribute> attribute,
+            DoubleRange value,
+            AttributeModifier.Operation operation) {
         this.artifact = artifact;
         this.material = material;
         this.attribute = attribute;
@@ -41,13 +44,17 @@ public class ArtifactSmithingRecipe implements Recipe<ArtifactSmithingRecipeInpu
     public ItemStack assemble(ArtifactSmithingRecipeInput input, Provider registries) {
         if (input.base().has(MiaComponents.ARTIFACT_ENHANCEMENT)) {
             int artifactLevel = input.base().get(MiaComponents.ARTIFACT_ENHANCEMENT).getLevel();
-            ItemStack newArtifact = input.base().transmuteCopy(input.base().getItem(), input.base().getCount());
+            ItemStack newArtifact =
+                    input.base().transmuteCopy(input.base().getItem(), input.base().getCount());
 
-            double randomAmount = Math.floor(this.value.getRandomValue(input.getRandom()) * 100) / 100;
+            double randomAmount =
+                    Math.floor(this.value.getRandomValue(input.getRandom()) * 100) / 100;
 
-            newArtifact.set(MiaComponents.ARTIFACT_ENHANCEMENT, Objects.requireNonNull(input.base().get(MiaComponents.ARTIFACT_ENHANCEMENT))
-                    .setLevel(artifactLevel + 1)
-                    .addAttributeModifier(this.attribute, randomAmount, this.operation));
+            newArtifact.set(
+                    MiaComponents.ARTIFACT_ENHANCEMENT,
+                    Objects.requireNonNull(input.base().get(MiaComponents.ARTIFACT_ENHANCEMENT))
+                            .setLevel(artifactLevel + 1)
+                            .addAttributeModifier(this.attribute, randomAmount, this.operation));
             return newArtifact;
         }
         return input.base().copy();
@@ -65,7 +72,8 @@ public class ArtifactSmithingRecipe implements Recipe<ArtifactSmithingRecipeInpu
 
     @Override
     public boolean matches(ArtifactSmithingRecipeInput input, Level level) {
-        if (!this.material.getItem().equals(input.material().getItem()) || this.material.getCount() > input.material().getCount()) {
+        if (!this.material.getItem().equals(input.material().getItem())
+                || this.material.getCount() > input.material().getCount()) {
             return false;
         }
         if ((input.base().getItem() instanceof IEArtifact artifact)
@@ -87,7 +95,8 @@ public class ArtifactSmithingRecipe implements Recipe<ArtifactSmithingRecipeInpu
     }
 
     public boolean isMaterialIngredient(ItemStack stack) {
-        return this.material.getItem().equals(stack.getItem()) && this.material.getCount() <= stack.getCount();
+        return this.material.getItem().equals(stack.getItem())
+                && this.material.getCount() <= stack.getCount();
     }
 
     public ItemStack getMaterial() {
@@ -120,16 +129,29 @@ public class ArtifactSmithingRecipe implements Recipe<ArtifactSmithingRecipeInpu
 
     public static class Serializer implements RecipeSerializer<ArtifactSmithingRecipe> {
 
-        private static final MapCodec<ArtifactSmithingRecipe> CODEC = RecordCodecBuilder.mapCodec((codec) -> codec.group(
-                Ingredient.CODEC.fieldOf("artifact").forGetter((recipe) -> recipe.artifact),
-                ItemStack.CODEC.fieldOf("material").forGetter((recipe) -> recipe.material),
-                Attribute.CODEC.fieldOf("attribute").forGetter((recipe) -> recipe.attribute),
-                DoubleRange.CODEC.fieldOf("value").forGetter((recipe) -> recipe.value),
-                AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter((recipe) -> recipe.operation)
-        ).apply(codec, ArtifactSmithingRecipe::new));
+        private static final MapCodec<ArtifactSmithingRecipe> CODEC =
+                RecordCodecBuilder.mapCodec(
+                        (codec) ->
+                                codec.group(
+                                                Ingredient.CODEC
+                                                        .fieldOf("artifact")
+                                                        .forGetter((recipe) -> recipe.artifact),
+                                                ItemStack.CODEC
+                                                        .fieldOf("material")
+                                                        .forGetter((recipe) -> recipe.material),
+                                                Attribute.CODEC
+                                                        .fieldOf("attribute")
+                                                        .forGetter((recipe) -> recipe.attribute),
+                                                DoubleRange.CODEC
+                                                        .fieldOf("value")
+                                                        .forGetter((recipe) -> recipe.value),
+                                                AttributeModifier.Operation.CODEC
+                                                        .fieldOf("operation")
+                                                        .forGetter((recipe) -> recipe.operation))
+                                        .apply(codec, ArtifactSmithingRecipe::new));
 
-        public static final StreamCodec<RegistryFriendlyByteBuf, ArtifactSmithingRecipe> STREAM_CODEC = StreamCodec
-                .of(Serializer::toNetwork, Serializer::fromNetwork);
+        public static final StreamCodec<RegistryFriendlyByteBuf, ArtifactSmithingRecipe>
+                STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
 
         @Override
         public MapCodec<ArtifactSmithingRecipe> codec() {
@@ -146,11 +168,13 @@ public class ArtifactSmithingRecipe implements Recipe<ArtifactSmithingRecipeInpu
             ItemStack material = ItemStack.STREAM_CODEC.decode(buffer);
             Holder<Attribute> attribute = Attribute.STREAM_CODEC.decode(buffer);
             DoubleRange value = DoubleRange.STREAM_CODEC.decode(buffer);
-            AttributeModifier.Operation operation = AttributeModifier.Operation.STREAM_CODEC.decode(buffer);
+            AttributeModifier.Operation operation =
+                    AttributeModifier.Operation.STREAM_CODEC.decode(buffer);
             return new ArtifactSmithingRecipe(artifact, material, attribute, value, operation);
         }
 
-        private static void toNetwork(RegistryFriendlyByteBuf buffer, ArtifactSmithingRecipe recipe) {
+        private static void toNetwork(
+                RegistryFriendlyByteBuf buffer, ArtifactSmithingRecipe recipe) {
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.artifact);
             ItemStack.STREAM_CODEC.encode(buffer, recipe.material);
             Attribute.STREAM_CODEC.encode(buffer, recipe.attribute);

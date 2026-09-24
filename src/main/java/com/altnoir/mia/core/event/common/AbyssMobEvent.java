@@ -4,6 +4,9 @@ import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.core.MiaColors;
 import com.altnoir.mia.init.MiaAttachments;
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,16 +22,10 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.util.TriState;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-
 public class AbyssMobEvent {
-    private static final short CHUNK_RADIUS = 28;        // 从半径28个区块开始计算
-    private static final List<EntityType<? extends Mob>> riderTypes = List.of(
-            EntityType.SKELETON,
-            EntityType.BOGGED
-    );
+    private static final short CHUNK_RADIUS = 28; // 从半径28个区块开始计算
+    private static final List<EntityType<? extends Mob>> riderTypes =
+            List.of(EntityType.SKELETON, EntityType.BOGGED);
 
     public static void onCheckSpawn(Mob mob, ServerLevelAccessor level, MobSpawnType type) {
         if (!MiaConfig.abyssMobLevelSwitch) return;
@@ -37,33 +34,38 @@ public class AbyssMobEvent {
         long chunkX = pos.getX() >> 4, chunkZ = pos.getZ() >> 4; // 等价于 / 16
         long distance = (long) chunkX * chunkX + chunkZ * chunkZ;
 
-
         if (distance <= CHUNK_RADIUS * CHUNK_RADIUS) return;
         double euclideanDistance = Math.sqrt(distance);
 
-        if (level instanceof ServerLevel serverLevel && serverLevel.dimension() == MiaDimensions.THE_ABYSS_LEVEL) {
+        if (level instanceof ServerLevel serverLevel
+                && serverLevel.dimension() == MiaDimensions.THE_ABYSS_LEVEL) {
             if (mob instanceof Enemy || mob instanceof Llama || mob instanceof SkeletonHorse) {
                 if (riderTypes.contains(mob.getType())) return;
 
                 double maxHealth = mob.getMaxHealth();
                 double damage = mob.getAttributeValue(Attributes.ATTACK_DAMAGE);
 
-                boolean reverse = MiaConfig.abyssMobLevelIncreasingCurve != MiaConfig.AbyssMobLevelIncreasingCurve.FROM_FAST_TO_SLOW;
+                boolean reverse =
+                        MiaConfig.abyssMobLevelIncreasingCurve
+                                != MiaConfig.AbyssMobLevelIncreasingCurve.FROM_FAST_TO_SLOW;
                 int mobLevel = calculateMobLevel(euclideanDistance, reverse);
 
                 if (mobLevel <= 0) return;
 
                 damage += Math.floor(mobLevel / (maxHealth / 2));
                 damage = Math.min(damage, 2048.0);
-                Objects.requireNonNull(mob.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(damage);
+                Objects.requireNonNull(mob.getAttribute(Attributes.ATTACK_DAMAGE))
+                        .setBaseValue(damage);
 
                 maxHealth += mobLevel;
                 maxHealth = Math.min(maxHealth, 1024.0);
-                Objects.requireNonNull(mob.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(maxHealth);
+                Objects.requireNonNull(mob.getAttribute(Attributes.MAX_HEALTH))
+                        .setBaseValue(maxHealth);
                 mob.setHealth((float) maxHealth);
 
                 mob.setData(MiaAttachments.ABYSS_MOB_LEVEL.get(), mobLevel);
-                mob.setCustomName(Component.literal("Lv: " + mobLevel).withColor(MiaColors.GREEN.getColor()));
+                mob.setCustomName(
+                        Component.literal("Lv: " + mobLevel).withColor(MiaColors.GREEN.getColor()));
 
                 if (serverLevel.getRandom().nextBoolean()) {
                     createRidingSkeleton(serverLevel, mob);
@@ -72,7 +74,8 @@ public class AbyssMobEvent {
         }
     }
 
-    public static void onLivingDrops(LivingEntity entity, Collection<ItemEntity> drops, DamageSource damageSource) {
+    public static void onLivingDrops(
+            LivingEntity entity, Collection<ItemEntity> drops, DamageSource damageSource) {
         if (!MiaConfig.abyssMobLevelSwitch) return;
         if (entity.hasData(MiaAttachments.ABYSS_MOB_LEVEL.get())) {
             int mobLevel = entity.getData(MiaAttachments.ABYSS_MOB_LEVEL.get());
@@ -86,11 +89,13 @@ public class AbyssMobEvent {
                     int stackSize = Math.min(amount, originalStack.getMaxStackSize());
                     amount -= stackSize;
 
-                    var newItemEntity = new ItemEntity(
-                            level,
-                            item.getX(), item.getY(), item.getZ(),
-                            originalStack.copyWithCount(stackSize)
-                    );
+                    var newItemEntity =
+                            new ItemEntity(
+                                    level,
+                                    item.getX(),
+                                    item.getY(),
+                                    item.getZ(),
+                                    originalStack.copyWithCount(stackSize));
                     level.addFreshEntity(newItemEntity);
                 }
             }
@@ -125,10 +130,11 @@ public class AbyssMobEvent {
 
     private static void createRidingSkeleton(ServerLevel serverLevel, Mob mob) {
         var type = riderTypes.get(serverLevel.getRandom().nextInt(riderTypes.size()));
-        var rider = type.create(serverLevel, null, mob.blockPosition(), MobSpawnType.EVENT, false, false);
+        var rider =
+                type.create(
+                        serverLevel, null, mob.blockPosition(), MobSpawnType.EVENT, false, false);
 
-        if (!(rider instanceof LivingEntity entity))
-            return;
+        if (!(rider instanceof LivingEntity entity)) return;
 
         entity.setItemSlot(EquipmentSlot.MAINHAND, Items.BOW.getDefaultInstance());
         rider.startRiding(mob, true);

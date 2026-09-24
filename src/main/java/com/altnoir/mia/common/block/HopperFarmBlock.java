@@ -1,6 +1,8 @@
 package com.altnoir.mia.common.block;
 
 import com.altnoir.mia.init.MiaBlocks;
+import java.util.Collection;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -26,9 +28,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
-import java.util.Collection;
-
 public class HopperFarmBlock extends FarmBlock {
     public HopperFarmBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -50,7 +49,13 @@ public class HopperFarmBlock extends FarmBlock {
     }
 
     @Override
-    protected @NotNull BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+    protected @NotNull BlockState updateShape(
+            BlockState state,
+            Direction facing,
+            BlockState facingState,
+            LevelAccessor level,
+            BlockPos currentPos,
+            BlockPos facingPos) {
         if (!level.isClientSide() && !level.getBlockTicks().hasScheduledTick(currentPos, this)) {
             level.scheduleTick(currentPos, this, 1);
         }
@@ -63,7 +68,8 @@ public class HopperFarmBlock extends FarmBlock {
         BlockState aboveState = level.getBlockState(abovePos);
         BlockState belowState = level.getBlockState(belowPos);
 
-        IntegerProperty ageProp = (IntegerProperty) aboveState.getBlock().getStateDefinition().getProperty("age");
+        IntegerProperty ageProp =
+                (IntegerProperty) aboveState.getBlock().getStateDefinition().getProperty("age");
         if (ageProp == null) return;
 
         int age = aboveState.getValue(ageProp);
@@ -73,7 +79,9 @@ public class HopperFarmBlock extends FarmBlock {
         int minAge = possibleValues.iterator().next();
         int maxAge = minAge == 0 ? possibleValues.size() - 1 : possibleValues.size();
 
-        if (!notFarmland(aboveState) && !belowState.isCollisionShapeFullBlock(level, belowPos) && age == maxAge) {
+        if (!notFarmland(aboveState)
+                && !belowState.isCollisionShapeFullBlock(level, belowPos)
+                && age == maxAge) {
             BlockState newState;
             if (aboveState.getBlock() instanceof SweetBerryBushBlock) {
                 newState = aboveState.setValue(ageProp, minAge + 1);
@@ -83,22 +91,31 @@ public class HopperFarmBlock extends FarmBlock {
             level.setBlock(abovePos, newState, 2);
 
             getDrops(aboveState, level, abovePos, null, null, ItemStack.EMPTY)
-                    .forEach(stack -> {
-                        ItemEntity itemEntity = new ItemEntity(level, belowPos.getX() + 0.5, belowPos.getY() + 0.5, belowPos.getZ() + 0.5, stack);
-                        itemEntity.setDeltaMovement(0, 0, 0);
-                        level.addFreshEntity(itemEntity);
-                    });
+                    .forEach(
+                            stack -> {
+                                ItemEntity itemEntity =
+                                        new ItemEntity(
+                                                level,
+                                                belowPos.getX() + 0.5,
+                                                belowPos.getY() + 0.5,
+                                                belowPos.getZ() + 0.5,
+                                                stack);
+                                itemEntity.setDeltaMovement(0, 0, 0);
+                                level.addFreshEntity(itemEntity);
+                            });
 
             level.playSound(null, abovePos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS);
         }
     }
 
     private boolean notFarmland(BlockState aboveState) {
-        return aboveState.getBlock() instanceof TorchflowerCropBlock || aboveState.getBlock() instanceof PitcherCropBlock;
+        return aboveState.getBlock() instanceof TorchflowerCropBlock
+                || aboveState.getBlock() instanceof PitcherCropBlock;
     }
 
     @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    protected void randomTick(
+            BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int i = state.getValue(MOISTURE);
         if (!isNearWater(level, pos) && !level.isRainingAt(pos.above())) {
             if (i > 0) {
@@ -117,7 +134,8 @@ public class HopperFarmBlock extends FarmBlock {
 
     private static boolean isNearWater(LevelReader level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
-        for (BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-3, 0, -3), pos.offset(3, 1, 3))) {
+        for (BlockPos blockpos :
+                BlockPos.betweenClosed(pos.offset(-3, 0, -3), pos.offset(3, 1, 3))) {
             if (state.canBeHydrated(level, pos, level.getFluidState(blockpos), blockpos)) {
                 return true;
             }
@@ -127,14 +145,18 @@ public class HopperFarmBlock extends FarmBlock {
     }
 
     @Override
-    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+    public void fallOn(
+            Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
         if (!level.isClientSide) {
             entity.causeFallDamage(fallDistance, 1.0F, entity.damageSources().fall());
         }
     }
 
-    public static void turnToBlock(@Nullable Entity entity, BlockState state, Level level, BlockPos pos) {
-        BlockState blockstate = pushEntitiesUp(state, MiaBlocks.ABYSS_ANDESITE.get().defaultBlockState(), level, pos);
+    public static void turnToBlock(
+            @Nullable Entity entity, BlockState state, Level level, BlockPos pos) {
+        BlockState blockstate =
+                pushEntitiesUp(
+                        state, MiaBlocks.ABYSS_ANDESITE.get().defaultBlockState(), level, pos);
         level.setBlockAndUpdate(pos, blockstate);
         level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(entity, blockstate));
     }

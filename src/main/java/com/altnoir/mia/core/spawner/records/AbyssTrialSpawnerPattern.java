@@ -8,5 +8,4 @@ public record AbyssTrialSpawnerPattern(
         int baseMobs,
         int mobsPerPlayer,
         int spawnPerTick,
-        int spawnRange
-        ) { }
+        int spawnRange) {}

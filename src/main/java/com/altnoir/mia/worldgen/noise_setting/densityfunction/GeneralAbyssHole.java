@@ -8,12 +8,18 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.DensityFunction;
 
 public class GeneralAbyssHole extends AbstractAbyssHole {
-    public static final KeyDispatchDataCodec<GeneralAbyssHole> CODEC = KeyDispatchDataCodec.of(
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    Codec.FLOAT.fieldOf("radius").forGetter(g -> g.radius),
-                    Codec.FLOAT.fieldOf("mul").forGetter(g -> g.mul)
-            ).apply(instance, GeneralAbyssHole::new))
-    );
+    public static final KeyDispatchDataCodec<GeneralAbyssHole> CODEC =
+            KeyDispatchDataCodec.of(
+                    RecordCodecBuilder.mapCodec(
+                            instance ->
+                                    instance.group(
+                                                    Codec.FLOAT
+                                                            .fieldOf("radius")
+                                                            .forGetter(g -> g.radius),
+                                                    Codec.FLOAT
+                                                            .fieldOf("mul")
+                                                            .forGetter(g -> g.mul))
+                                            .apply(instance, GeneralAbyssHole::new)));
 
     public GeneralAbyssHole(float radius, float mul) {
         super(radius, mul);
@@ -30,12 +36,14 @@ public class GeneralAbyssHole extends AbstractAbyssHole {
 
     @Override
     public double compute(DensityFunction.FunctionContext context) {
-        return (double) getHeightValue(context.blockX() / 8, context.blockZ() / 8, this.radius, this.mul) / 16;
+        return (double)
+                        getHeightValue(
+                                context.blockX() / 8, context.blockZ() / 8, this.radius, this.mul)
+                / 16;
     }
 
     @Override
     protected KeyDispatchDataCodec<? extends DensityFunction> getCodec() {
         return CODEC;
     }
-
 }

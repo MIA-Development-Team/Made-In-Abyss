@@ -3,6 +3,8 @@ package com.altnoir.mia.worldgen.feature;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.worldgen.feature.configurations.MiaCavePillarConfiguration;
 import com.mojang.serialization.Codec;
+import java.util.Optional;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -18,9 +20,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nullable;
-import java.util.Optional;
-
 public class MiaCavePillarFeature extends Feature<MiaCavePillarConfiguration> {
     public MiaCavePillarFeature(Codec<MiaCavePillarConfiguration> codec) {
         super(codec);
@@ -35,58 +34,78 @@ public class MiaCavePillarFeature extends Feature<MiaCavePillarConfiguration> {
         if (!MaCavePillarUtils.isEmptyOrWater(worldgenlevel, blockpos)) {
             return false;
         } else {
-            Optional<Column> optional = Column.scan(
-                    worldgenlevel,
-                    blockpos,
-                    ldg.floorToCeilingSearchRange,
-                    MaCavePillarUtils::isEmptyOrWater,
-                    MaCavePillarUtils::isPillarBaseOrLava
-            );
+            Optional<Column> optional =
+                    Column.scan(
+                            worldgenlevel,
+                            blockpos,
+                            ldg.floorToCeilingSearchRange,
+                            MaCavePillarUtils::isEmptyOrWater,
+                            MaCavePillarUtils::isPillarBaseOrLava);
             if (optional.isPresent() && optional.get() instanceof Column.Range column$range) {
                 if (column$range.height() < 4) {
                     return false;
                 } else {
-                    int i = (int) ((float) column$range.height() * ldg.maxColumnRadiusToCaveHeightRatio);
-                    int j = Mth.clamp(i, ldg.columnRadius.getMinValue(), ldg.columnRadius.getMaxValue());
-                    int k = Mth.randomBetweenInclusive(randomsource, ldg.columnRadius.getMinValue(), j);
-                    CavePillar miaCavePillarFeature$largedripstone = makePillar(
-                            blockpos.atY(column$range.ceiling() - 1),
-                            false,
-                            randomsource,
-                            k,
-                            ldg.stalactiteBluntness,
-                            ldg.heightScale
-                    );
-                    CavePillar miaCavePillarFeature$largedripstone1 = makePillar(
-                            blockpos.atY(column$range.floor() + 1),
-                            true,
-                            randomsource,
-                            k,
-                            ldg.stalagmiteBluntness,
-                            ldg.heightScale
-                    );
+                    int i =
+                            (int)
+                                    ((float) column$range.height()
+                                            * ldg.maxColumnRadiusToCaveHeightRatio);
+                    int j =
+                            Mth.clamp(
+                                    i,
+                                    ldg.columnRadius.getMinValue(),
+                                    ldg.columnRadius.getMaxValue());
+                    int k =
+                            Mth.randomBetweenInclusive(
+                                    randomsource, ldg.columnRadius.getMinValue(), j);
+                    CavePillar miaCavePillarFeature$largedripstone =
+                            makePillar(
+                                    blockpos.atY(column$range.ceiling() - 1),
+                                    false,
+                                    randomsource,
+                                    k,
+                                    ldg.stalactiteBluntness,
+                                    ldg.heightScale);
+                    CavePillar miaCavePillarFeature$largedripstone1 =
+                            makePillar(
+                                    blockpos.atY(column$range.floor() + 1),
+                                    true,
+                                    randomsource,
+                                    k,
+                                    ldg.stalagmiteBluntness,
+                                    ldg.heightScale);
                     MiaCavePillarFeature.WindOffsetter MiaLargeDripstoneFeature$windoffsetter;
                     if (miaCavePillarFeature$largedripstone.isSuitableForWind(ldg)
                             && miaCavePillarFeature$largedripstone1.isSuitableForWind(ldg)) {
-                        MiaLargeDripstoneFeature$windoffsetter = new MiaCavePillarFeature.WindOffsetter(
-                                blockpos.getY(), randomsource, ldg.windSpeed
-                        );
+                        MiaLargeDripstoneFeature$windoffsetter =
+                                new MiaCavePillarFeature.WindOffsetter(
+                                        blockpos.getY(), randomsource, ldg.windSpeed);
                     } else {
-                        MiaLargeDripstoneFeature$windoffsetter = MiaCavePillarFeature.WindOffsetter.noWind();
+                        MiaLargeDripstoneFeature$windoffsetter =
+                                MiaCavePillarFeature.WindOffsetter.noWind();
                     }
 
-                    boolean flag = miaCavePillarFeature$largedripstone.moveBackUntilBaseIsInsideStoneAndShrinkRadiusIfNecessary(
-                            worldgenlevel, MiaLargeDripstoneFeature$windoffsetter
-                    );
-                    boolean flag1 = miaCavePillarFeature$largedripstone1.moveBackUntilBaseIsInsideStoneAndShrinkRadiusIfNecessary(
-                            worldgenlevel, MiaLargeDripstoneFeature$windoffsetter
-                    );
+                    boolean flag =
+                            miaCavePillarFeature$largedripstone
+                                    .moveBackUntilBaseIsInsideStoneAndShrinkRadiusIfNecessary(
+                                            worldgenlevel, MiaLargeDripstoneFeature$windoffsetter);
+                    boolean flag1 =
+                            miaCavePillarFeature$largedripstone1
+                                    .moveBackUntilBaseIsInsideStoneAndShrinkRadiusIfNecessary(
+                                            worldgenlevel, MiaLargeDripstoneFeature$windoffsetter);
                     if (flag) {
-                        miaCavePillarFeature$largedripstone.placeBlocks(worldgenlevel, randomsource, MiaLargeDripstoneFeature$windoffsetter, blockpos);
+                        miaCavePillarFeature$largedripstone.placeBlocks(
+                                worldgenlevel,
+                                randomsource,
+                                MiaLargeDripstoneFeature$windoffsetter,
+                                blockpos);
                     }
 
                     if (flag1) {
-                        miaCavePillarFeature$largedripstone1.placeBlocks(worldgenlevel, randomsource, MiaLargeDripstoneFeature$windoffsetter, blockpos);
+                        miaCavePillarFeature$largedripstone1.placeBlocks(
+                                worldgenlevel,
+                                randomsource,
+                                MiaLargeDripstoneFeature$windoffsetter,
+                                blockpos);
                     }
 
                     return true;
@@ -98,11 +117,18 @@ public class MiaCavePillarFeature extends Feature<MiaCavePillarConfiguration> {
     }
 
     private static CavePillar makePillar(
-            BlockPos root, boolean pointingUp, RandomSource random, int radius, FloatProvider bluntnessBase, FloatProvider scaleBase
-    ) {
+            BlockPos root,
+            boolean pointingUp,
+            RandomSource random,
+            int radius,
+            FloatProvider bluntnessBase,
+            FloatProvider scaleBase) {
         return new CavePillar(
-                root, pointingUp, radius, (double) bluntnessBase.sample(random), (double) scaleBase.sample(random)
-        );
+                root,
+                pointingUp,
+                radius,
+                (double) bluntnessBase.sample(random),
+                (double) scaleBase.sample(random));
     }
 
     static final class CavePillar {
@@ -132,7 +158,8 @@ public class MiaCavePillarFeature extends Feature<MiaCavePillarConfiguration> {
             return !this.pointingUp ? this.root.getY() : this.root.getY() + this.getHeight();
         }
 
-        boolean moveBackUntilBaseIsInsideStoneAndShrinkRadiusIfNecessary(WorldGenLevel level, MiaCavePillarFeature.WindOffsetter windOffsetter) {
+        boolean moveBackUntilBaseIsInsideStoneAndShrinkRadiusIfNecessary(
+                WorldGenLevel level, MiaCavePillarFeature.WindOffsetter windOffsetter) {
             while (this.radius > 1) {
                 BlockPos.MutableBlockPos blockpos$mutableblockpos = this.root.mutable();
                 int i = Math.min(10, this.getHeight());
@@ -142,7 +169,8 @@ public class MiaCavePillarFeature extends Feature<MiaCavePillarConfiguration> {
                         return false;
                     }
 
-                    if (MaCavePillarUtils.isCircleMostlyEmbeddedInStone(level, windOffsetter.offset(blockpos$mutableblockpos), this.radius)) {
+                    if (MaCavePillarUtils.isCircleMostlyEmbeddedInStone(
+                            level, windOffsetter.offset(blockpos$mutableblockpos), this.radius)) {
                         this.root = blockpos$mutableblockpos;
                         return true;
                     }
@@ -157,10 +185,16 @@ public class MiaCavePillarFeature extends Feature<MiaCavePillarConfiguration> {
         }
 
         private int getHeightAtRadius(float radius) {
-            return (int) MaCavePillarUtils.getPillarHeight((double) radius, (double) this.radius, this.scale, this.bluntness);
+            return (int)
+                    MaCavePillarUtils.getPillarHeight(
+                            (double) radius, (double) this.radius, this.scale, this.bluntness);
         }
 
-        void placeBlocks(WorldGenLevel level, RandomSource random, MiaCavePillarFeature.WindOffsetter windOffsetter, BlockPos origin) {
+        void placeBlocks(
+                WorldGenLevel level,
+                RandomSource random,
+                MiaCavePillarFeature.WindOffsetter windOffsetter,
+                BlockPos origin) {
             for (int i = -this.radius; i <= this.radius; i++) {
                 for (int j = -this.radius; j <= this.radius; j++) {
                     float f = Mth.sqrt((float) (i * i + j * j));
@@ -171,24 +205,33 @@ public class MiaCavePillarFeature extends Feature<MiaCavePillarConfiguration> {
                                 k = (int) ((float) k * Mth.randomBetween(random, 0.8F, 1.0F));
                             }
 
-                            BlockPos.MutableBlockPos blockpos$mutableblockpos = this.root.offset(i, 0, j).mutable();
+                            BlockPos.MutableBlockPos blockpos$mutableblockpos =
+                                    this.root.offset(i, 0, j).mutable();
                             boolean flag = false;
-                            int l = this.pointingUp
-                                    ? level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, blockpos$mutableblockpos.getX(), blockpos$mutableblockpos.getZ())
-                                    : Integer.MAX_VALUE;
+                            int l =
+                                    this.pointingUp
+                                            ? level.getHeight(
+                                                    Heightmap.Types.WORLD_SURFACE_WG,
+                                                    blockpos$mutableblockpos.getX(),
+                                                    blockpos$mutableblockpos.getZ())
+                                            : Integer.MAX_VALUE;
 
                             for (int i1 = 0; i1 < k && blockpos$mutableblockpos.getY() < l; i1++) {
                                 BlockPos blockpos = windOffsetter.offset(blockpos$mutableblockpos);
 
-                                if (level.isStateAtPosition(blockpos, MaCavePillarUtils::isPillarBase)) {
+                                if (level.isStateAtPosition(
+                                        blockpos, MaCavePillarUtils::isPillarBase)) {
                                     flag = true;
                                     Block block = MiaBlocks.FOSSILIZED_LOG.get();
                                     level.setBlock(blockpos, block.defaultBlockState(), 2);
-                                } else if (flag && level.getBlockState(blockpos).is(BlockTags.BASE_STONE_OVERWORLD)) {
+                                } else if (flag
+                                        && level.getBlockState(blockpos)
+                                                .is(BlockTags.BASE_STONE_OVERWORLD)) {
                                     break;
                                 }
 
-                                blockpos$mutableblockpos.move(this.pointingUp ? Direction.UP : Direction.DOWN);
+                                blockpos$mutableblockpos.move(
+                                        this.pointingUp ? Direction.UP : Direction.DOWN);
                             }
                         }
                     }
@@ -197,14 +240,14 @@ public class MiaCavePillarFeature extends Feature<MiaCavePillarConfiguration> {
         }
 
         boolean isSuitableForWind(MiaCavePillarConfiguration config) {
-            return this.radius >= config.minRadiusForWind && this.bluntness >= (double) config.minBluntnessForWind;
+            return this.radius >= config.minRadiusForWind
+                    && this.bluntness >= (double) config.minBluntnessForWind;
         }
     }
 
     static final class WindOffsetter {
         private final int originY;
-        @Nullable
-        private final Vec3 windSpeed;
+        @Nullable private final Vec3 windSpeed;
 
         WindOffsetter(int originY, RandomSource random, FloatProvider magnitude) {
             this.originY = originY;
@@ -233,4 +276,3 @@ public class MiaCavePillarFeature extends Feature<MiaCavePillarConfiguration> {
         }
     }
 }
-

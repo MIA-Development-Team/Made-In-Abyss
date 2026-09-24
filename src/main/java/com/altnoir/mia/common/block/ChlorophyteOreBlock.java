@@ -1,5 +1,7 @@
 package com.altnoir.mia.common.block;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -14,9 +16,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ChlorophyteOreBlock extends DropExperienceBlock {
     private final Block block;
     protected static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 14.0, 16.0);
@@ -27,7 +26,8 @@ public class ChlorophyteOreBlock extends DropExperienceBlock {
     }
 
     @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getCollisionShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
@@ -37,7 +37,8 @@ public class ChlorophyteOreBlock extends DropExperienceBlock {
     }
 
     @Override
-    protected VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getVisualShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return Shapes.block();
     }
 
@@ -47,7 +48,8 @@ public class ChlorophyteOreBlock extends DropExperienceBlock {
     }
 
     @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    protected void randomTick(
+            BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (random.nextInt(50) != 0) return;
         List<BlockPos> validPositions = new ArrayList<>();
 

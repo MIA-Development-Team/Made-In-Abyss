@@ -11,10 +11,14 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class MiaStats {
-    public static final DeferredRegister<ResourceLocation> CUSTOM_STATS = DeferredRegister.create(Registries.CUSTOM_STAT, MIA.MOD_ID);
+    public static final DeferredRegister<ResourceLocation> CUSTOM_STATS =
+            DeferredRegister.create(Registries.CUSTOM_STAT, MIA.MOD_ID);
 
-    public static final DeferredHolder<ResourceLocation, ResourceLocation> INTERACT_WITH_ARTIFACT_SMITHING_TABLE = CUSTOM_STATS.register("artifact_smithing_table", () ->
-            MiaUtil.miaId("interact_with_artifact_smithing_table"));
+    public static final DeferredHolder<ResourceLocation, ResourceLocation>
+            INTERACT_WITH_ARTIFACT_SMITHING_TABLE =
+                    CUSTOM_STATS.register(
+                            "artifact_smithing_table",
+                            () -> MiaUtil.miaId("interact_with_artifact_smithing_table"));
 
     public static void register(IEventBus modEventBus) {
         CUSTOM_STATS.register(modEventBus);

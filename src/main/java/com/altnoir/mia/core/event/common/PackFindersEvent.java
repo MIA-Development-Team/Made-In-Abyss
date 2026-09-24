@@ -14,7 +14,6 @@ public class PackFindersEvent {
                 MiaUtil.translatable("pack.mia.music_pack.name"),
                 PackSource.BUILT_IN,
                 false,
-                Pack.Position.TOP
-        );
+                Pack.Position.TOP);
     }
 }

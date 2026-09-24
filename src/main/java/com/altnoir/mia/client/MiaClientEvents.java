@@ -37,7 +37,8 @@ public class MiaClientEvents {
         RegisterEntityRendererEvent.register(event);
     }
 
-    public static void registerTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
+    public static void registerTooltipComponentFactories(
+            RegisterClientTooltipComponentFactoriesEvent event) {
         event.register(ArtifactBundleInventoryComponent.class, ClientArtifactBundleTooltip::new);
     }
 

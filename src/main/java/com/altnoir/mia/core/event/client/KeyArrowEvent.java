@@ -1,10 +1,13 @@
 package com.altnoir.mia.core.event.client;
 
-import com.altnoir.mia.init.MiaComponents;
-import com.altnoir.mia.init.MiaKeyBinding;
 import com.altnoir.mia.common.item.abs.IArtifactSkill;
 import com.altnoir.mia.common.network.SkillCooldownPayload;
 import com.altnoir.mia.common.network.SkillPlayPayload;
+import com.altnoir.mia.init.MiaComponents;
+import com.altnoir.mia.init.MiaKeyBinding;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -16,10 +19,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class KeyArrowEvent {
     public static final String SKILL_UNSKILL = "skill.mia.unskill";
@@ -43,13 +42,13 @@ public class KeyArrowEvent {
     private static List<Integer> skillSlotIndices = new ArrayList<>();
 
     private static final List<Integer> PLAYER_SEQUENCE = new ArrayList<>();
-    private static final List<Long> COOLDOWN_START_TIMES = new ArrayList<>();            // 每个技能独立的冷却时间开始时间
-    private static final List<Boolean> IN_COOLDOWNS = new ArrayList<>();                // 每个技能独立的冷却状态
-    private static final List<List<Integer>> SKILL_SEQUENCES = new ArrayList<>();       // 每个技能的序列
+    private static final List<Long> COOLDOWN_START_TIMES = new ArrayList<>(); // 每个技能独立的冷却时间开始时间
+    private static final List<Boolean> IN_COOLDOWNS = new ArrayList<>(); // 每个技能独立的冷却状态
+    private static final List<List<Integer>> SKILL_SEQUENCES = new ArrayList<>(); // 每个技能的序列
     private static int currentSkillIndex = -1;
     // 预渲染数据缓存
-    private static final List<List<String>> SKILL_ARROWS = new ArrayList<>();      // 用于存储多个技能的箭头
-    private static final List<List<Integer>> SKILL_COLORS = new ArrayList<>();     // 用于存储多个技能的颜色
+    private static final List<List<String>> SKILL_ARROWS = new ArrayList<>(); // 用于存储多个技能的箭头
+    private static final List<List<Integer>> SKILL_COLORS = new ArrayList<>(); // 用于存储多个技能的颜色
 
     public static void onClientTick() {
         boolean ctrlPressed = MiaKeyBinding.SKILL_DIAL.isDown();
@@ -167,13 +166,14 @@ public class KeyArrowEvent {
             List<String> arrows = new ArrayList<>();
             List<Integer> colors = new ArrayList<>();
             for (Integer direction : sequence) {
-                String arrow = switch (direction) {
-                    case 0 -> "↑";
-                    case 1 -> "↓";
-                    case 2 -> "←";
-                    case 3 -> "→";
-                    default -> "?";
-                };
+                String arrow =
+                        switch (direction) {
+                            case 0 -> "↑";
+                            case 1 -> "↓";
+                            case 2 -> "←";
+                            case 3 -> "→";
+                            default -> "?";
+                        };
                 arrows.add(arrow);
                 colors.add(0xFFFFFF); // 默认白色
             }
@@ -243,7 +243,6 @@ public class KeyArrowEvent {
             }
         }
     }
-
 
     private static void checkSequence() {
         if (currentSkillIndex == -1) {
@@ -377,7 +376,6 @@ public class KeyArrowEvent {
         }
     }
 
-
     private static final int x = 10; // 整体宽度
     private static final int y = 10; // 整体高度
     private static final int yOffset = 16;
@@ -397,7 +395,8 @@ public class KeyArrowEvent {
         Font font = MC.font;
 
         // 计算背景高度
-        int dynamicHeight = bgHeight + (!artifactSkills.isEmpty() ? artifactSkills.size() * yOffset : 0);
+        int dynamicHeight =
+                bgHeight + (!artifactSkills.isEmpty() ? artifactSkills.size() * yOffset : 0);
 
         // 绘制半透明黑色背景
         guiGraphics.fill(x - 2, y - 2, x + bgWidth, y + dynamicHeight, 0x80000000);
@@ -421,7 +420,8 @@ public class KeyArrowEvent {
                     // 显示冷却时间
                     Component cooldownText = getCoolDown(remaining);
                     guiGraphics.renderItem(itemStack, x, y + 18 + i * yOffset - 8);
-                    guiGraphics.drawString(font, cooldownText, x + 18, y + 15 + i * yOffset, 0xAAAAAA);
+                    guiGraphics.drawString(
+                            font, cooldownText, x + 18, y + 15 + i * yOffset, 0xAAAAAA);
                 } else {
                     // 显示组合键序列
                     if (i < SKILL_ARROWS.size()) {
@@ -450,11 +450,12 @@ public class KeyArrowEvent {
                                 if (canMatch) {
                                     color = 0xAAAAAA; // 已输入部分用灰色
                                 } else {
-                                    color = 0x30FFFFFF;// 不可匹配
+                                    color = 0x30FFFFFF; // 不可匹配
                                 }
                             }
 
-                            guiGraphics.drawString(font, arrow, x + 18 + offsetX, y + 15 + i * yOffset, color);
+                            guiGraphics.drawString(
+                                    font, arrow, x + 18 + offsetX, y + 15 + i * yOffset, color);
                             offsetX += font.width(arrow) + 2; // 字符宽度 + 2像素间隔
                         }
                     }
@@ -498,22 +499,30 @@ public class KeyArrowEvent {
                 // 超过60秒显示为分钟格式
                 long minutes = seconds / 60;
                 long remainingSeconds = seconds % 60;
-                cooldownText = Component.empty()
-                        .append(cooldownRemainingText)
-                        .append(String.valueOf(minutes)).append(m)
-                        .append(String.valueOf(remainingSeconds)).append(s);
+                cooldownText =
+                        Component.empty()
+                                .append(cooldownRemainingText)
+                                .append(String.valueOf(minutes))
+                                .append(m)
+                                .append(String.valueOf(remainingSeconds))
+                                .append(s);
             } else if (seconds < 10) {
                 // 最后10秒显示小数点
                 long decimal = (remaining % 20) * 5; // 转换为0-99的值
-                cooldownText = Component.empty()
-                        .append(cooldownRemainingText)
-                        .append(String.valueOf(seconds)).append(".")
-                        .append(String.format("%02d", decimal)).append(s);
+                cooldownText =
+                        Component.empty()
+                                .append(cooldownRemainingText)
+                                .append(String.valueOf(seconds))
+                                .append(".")
+                                .append(String.format("%02d", decimal))
+                                .append(s);
             } else {
                 // 10秒到60秒之间只显示整数秒
-                cooldownText = Component.empty()
-                        .append(cooldownRemainingText)
-                        .append(String.valueOf(seconds)).append(s);
+                cooldownText =
+                        Component.empty()
+                                .append(cooldownRemainingText)
+                                .append(String.valueOf(seconds))
+                                .append(s);
             }
         }
         return cooldownText;

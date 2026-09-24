@@ -5,6 +5,7 @@ import com.altnoir.mia.datagen.MiaCheatLootTable;
 import com.altnoir.mia.init.worldgen.MiaFeatures;
 import com.altnoir.mia.worldgen.feature.configurations.MonsterCheatConfiguration;
 import com.mojang.serialization.Codec;
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -19,10 +20,11 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 
-import java.util.function.Predicate;
-
 public class MonsterCheatFeature extends Feature<MonsterCheatConfiguration> {
-    private static final EntityType<?>[] MOBS = new EntityType[]{EntityType.SKELETON, EntityType.ZOMBIE, EntityType.ZOMBIE, EntityType.SPIDER};
+    private static final EntityType<?>[] MOBS =
+            new EntityType[] {
+                EntityType.SKELETON, EntityType.ZOMBIE, EntityType.ZOMBIE, EntityType.SPIDER
+            };
     private static final BlockState AIR = Blocks.CAVE_AIR.defaultBlockState();
 
     public MonsterCheatFeature(Codec<MonsterCheatConfiguration> codec) {
@@ -44,13 +46,16 @@ public class MonsterCheatFeature extends Feature<MonsterCheatConfiguration> {
         WorldGenLevel worldgenlevel = context.level();
 
         MonsterCheatConfiguration bsc;
-        for (bsc = context.config(); blockpos.getY() > worldgenlevel.getMinBuildHeight() + 5; blockpos = blockpos.below()) {
+        for (bsc = context.config();
+                blockpos.getY() > worldgenlevel.getMinBuildHeight() + 5;
+                blockpos = blockpos.below()) {
             if (worldgenlevel.isEmptyBlock(blockpos)) {
                 BlockState blockstate = worldgenlevel.getBlockState(blockpos.below());
                 if (isDirt(blockstate) || MiaFeatures.isStone(blockstate)) {
                     boolean all = true;
                     for (Direction dir : Direction.Plane.HORIZONTAL) {
-                        BlockState dirState = worldgenlevel.getBlockState(blockpos.below().relative(dir));
+                        BlockState dirState =
+                                worldgenlevel.getBlockState(blockpos.below().relative(dir));
                         if (!(isDirt(dirState) || MiaFeatures.isStone(dirState))) {
                             all = false;
                             break;
@@ -67,29 +72,60 @@ public class MonsterCheatFeature extends Feature<MonsterCheatConfiguration> {
             return false;
         } else {
             BlockPos spawnerPos = blockpos.below();
-            this.safeSetBlock(worldgenlevel, spawnerPos, Blocks.SPAWNER.defaultBlockState(), predicate);
-            if (worldgenlevel.getBlockEntity(spawnerPos) instanceof SpawnerBlockEntity spawnerblockentity) {
+            this.safeSetBlock(
+                    worldgenlevel, spawnerPos, Blocks.SPAWNER.defaultBlockState(), predicate);
+            if (worldgenlevel.getBlockEntity(spawnerPos)
+                    instanceof SpawnerBlockEntity spawnerblockentity) {
                 spawnerblockentity.setEntityId(this.randomEntityId(randomsource), randomsource);
             } else {
-                MIA.LOGGER.error("Failed to fetch mob spawner entity at ({}, {}, {})", spawnerPos.getX(), spawnerPos.getY(), spawnerPos.getZ());
+                MIA.LOGGER.error(
+                        "Failed to fetch mob spawner entity at ({}, {}, {})",
+                        spawnerPos.getX(),
+                        spawnerPos.getY(),
+                        spawnerPos.getZ());
             }
 
             BlockPos chestPos = spawnerPos.below();
-            this.safeSetBlock(worldgenlevel, chestPos, StructurePiece.reorient(worldgenlevel, chestPos, Blocks.CHEST.defaultBlockState()), predicate);
-            RandomizableContainer.setBlockEntityLootTable(worldgenlevel, randomsource, chestPos, MiaCheatLootTable.SIMPLE_RUINS);
+            this.safeSetBlock(
+                    worldgenlevel,
+                    chestPos,
+                    StructurePiece.reorient(
+                            worldgenlevel, chestPos, Blocks.CHEST.defaultBlockState()),
+                    predicate);
+            RandomizableContainer.setBlockEntityLootTable(
+                    worldgenlevel, randomsource, chestPos, MiaCheatLootTable.SIMPLE_RUINS);
 
             if (worldgenlevel.isEmptyBlock(blockpos)) {
-                this.safeSetBlock(worldgenlevel, blockpos, bsc.coreStateProvider.getState(randomsource, blockpos), predicate);
+                this.safeSetBlock(
+                        worldgenlevel,
+                        blockpos,
+                        bsc.coreStateProvider.getState(randomsource, blockpos),
+                        predicate);
 
-                for (Direction direction : new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST, Direction.UP}) {
+                for (Direction direction :
+                        new Direction[] {
+                            Direction.NORTH,
+                            Direction.SOUTH,
+                            Direction.EAST,
+                            Direction.WEST,
+                            Direction.UP
+                        }) {
                     BlockPos statePos = blockpos.relative(direction);
                     if (worldgenlevel.getBlockState(statePos).canBeReplaced()) {
-                        this.safeSetBlock(worldgenlevel, statePos, bsc.outerStateProvider.getState(randomsource, statePos), predicate);
+                        this.safeSetBlock(
+                                worldgenlevel,
+                                statePos,
+                                bsc.outerStateProvider.getState(randomsource, statePos),
+                                predicate);
 
                         if (direction != Direction.UP) {
                             BlockPos statePos2 = statePos.below();
                             if (worldgenlevel.getBlockState(statePos2).canBeReplaced()) {
-                                this.safeSetBlock(worldgenlevel, statePos2, bsc.outerStateProvider.getState(randomsource, statePos2), predicate);
+                                this.safeSetBlock(
+                                        worldgenlevel,
+                                        statePos2,
+                                        bsc.outerStateProvider.getState(randomsource, statePos2),
+                                        predicate);
                             }
                         }
                     }

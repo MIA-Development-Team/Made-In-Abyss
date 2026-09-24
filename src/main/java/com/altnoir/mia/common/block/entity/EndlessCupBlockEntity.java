@@ -18,15 +18,16 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.Nullable;
 
 public class EndlessCupBlockEntity extends BlockEntity {
-    public FluidTank fluidTank = new FluidTank(Integer.MAX_VALUE) {
-        @Override
-        protected void onContentsChanged() {
-            setChanged();
-            if (level instanceof ServerLevel level) {
-                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-            }
-        }
-    };
+    public FluidTank fluidTank =
+            new FluidTank(Integer.MAX_VALUE) {
+                @Override
+                protected void onContentsChanged() {
+                    setChanged();
+                    if (level instanceof ServerLevel level) {
+                        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                    }
+                }
+            };
 
     public EndlessCupBlockEntity(BlockPos pos, BlockState blockState) {
         super(MiaBlockEntities.ENDLESS_CUP_ENTITY.get(), pos, blockState);
@@ -44,8 +45,7 @@ public class EndlessCupBlockEntity extends BlockEntity {
         this.fluidTank.writeToNBT(registries, tag);
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
@@ -55,7 +55,9 @@ public class EndlessCupBlockEntity extends BlockEntity {
         return saveWithoutMetadata(registries);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, EndlessCupBlockEntity blockEntity) {
-        blockEntity.fluidTank.fill(new FluidStack(Fluids.WATER, Integer.MAX_VALUE), IFluidHandler.FluidAction.EXECUTE);
+    public static void tick(
+            Level level, BlockPos pos, BlockState state, EndlessCupBlockEntity blockEntity) {
+        blockEntity.fluidTank.fill(
+                new FluidStack(Fluids.WATER, Integer.MAX_VALUE), IFluidHandler.FluidAction.EXECUTE);
     }
 }

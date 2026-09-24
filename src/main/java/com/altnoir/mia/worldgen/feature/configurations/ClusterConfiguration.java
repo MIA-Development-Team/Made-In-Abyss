@@ -7,16 +7,33 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 public class ClusterConfiguration implements FeatureConfiguration {
-    public static final Codec<ClusterConfiguration> CODEC = RecordCodecBuilder.create(
-            instance -> instance.group(
-                    BlockStateProvider.CODEC.fieldOf("state_provider").forGetter(config -> config.stateProvider),
-                    BlockStateProvider.CODEC.fieldOf("crystal_state_provider_up").forGetter(config -> config.crystalStateProviderUp),
-                    BlockStateProvider.CODEC.fieldOf("crystal_state_provider_down").forGetter(config -> config.crystalStateProviderDown),
-                    Codec.floatRange(0.0F, 1.0F).fieldOf("crystal_chance").forGetter(config -> config.crystalChance),
-                    IntProvider.codec(1, 32).fieldOf("size").forGetter(config -> config.size),
-                    IntProvider.codec(1, 64).fieldOf("height").forGetter(config -> config.height)
-            ).apply(instance, ClusterConfiguration::new)
-    );
+    public static final Codec<ClusterConfiguration> CODEC =
+            RecordCodecBuilder.create(
+                    instance ->
+                            instance.group(
+                                            BlockStateProvider.CODEC
+                                                    .fieldOf("state_provider")
+                                                    .forGetter(config -> config.stateProvider),
+                                            BlockStateProvider.CODEC
+                                                    .fieldOf("crystal_state_provider_up")
+                                                    .forGetter(
+                                                            config ->
+                                                                    config.crystalStateProviderUp),
+                                            BlockStateProvider.CODEC
+                                                    .fieldOf("crystal_state_provider_down")
+                                                    .forGetter(
+                                                            config ->
+                                                                    config.crystalStateProviderDown),
+                                            Codec.floatRange(0.0F, 1.0F)
+                                                    .fieldOf("crystal_chance")
+                                                    .forGetter(config -> config.crystalChance),
+                                            IntProvider.codec(1, 32)
+                                                    .fieldOf("size")
+                                                    .forGetter(config -> config.size),
+                                            IntProvider.codec(1, 64)
+                                                    .fieldOf("height")
+                                                    .forGetter(config -> config.height))
+                                    .apply(instance, ClusterConfiguration::new));
 
     public final BlockStateProvider stateProvider;
     public final BlockStateProvider crystalStateProviderUp;

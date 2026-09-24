@@ -1,14 +1,15 @@
 plugins {
-    id 'idea'
-    id 'java-library'
-    id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.146'
-    id 'net.kyori.blossom' version '2.2.0'
-    id 'me.modmuss50.mod-publish-plugin' version '2.1.1'
+	id 'idea'
+	id 'java-library'
+	id 'maven-publish'
+	id 'net.neoforged.moddev' version '2.0.146'
+	id 'net.kyori.blossom' version '2.2.0'
+	id 'me.modmuss50.mod-publish-plugin' version '2.1.1'
+	id 'com.diffplug.spotless' version '8.10.2'
 }
 
 tasks.named('wrapper', Wrapper).configure {
-    distributionType = Wrapper.DistributionType.BIN
+	distributionType = Wrapper.DistributionType.BIN
 }
 
 boolean dev = System.getenv("RELEASE") == null || System.getenv("RELEASE") == "false"
@@ -19,20 +20,20 @@ version = mod_version + (dev && buildNumber != null ? "-${buildNumber}" : "")
 group = mod_group_id
 
 repositories {
-    maven { url = "https://api.modrinth.com/maven" } // Jade, Simple Bedrock Model
-    maven { url = "https://maven.terraformersmc.com/" } // EMI
-    maven { url = "https://maven.blamejared.com/" } // JEI, Patchouli
-    maven { url = "https://maven.theillusivec4.top/" } // Curios
-    maven { url = "https://maven.latvian.dev/releases" } // KubeJS
-    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Ponder
-    maven { url = "https://maven.createmod.net" } // Ponder, Flywheel
-    maven { url = "https://jitpack.io" }
-    maven { url = "https://maven.firstdark.dev/snapshots" } // LDLib2
-    maven { url = "https://maven.ringlo.im/releases"} // AbyssLib
+	maven { url = "https://api.modrinth.com/maven" } // Jade, Simple Bedrock Model
+	maven { url = "https://maven.terraformersmc.com/" } // EMI
+	maven { url = "https://maven.blamejared.com/" } // JEI, Patchouli
+	maven { url = "https://maven.theillusivec4.top/" } // Curios
+	maven { url = "https://maven.latvian.dev/releases" } // KubeJS
+	maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Ponder
+	maven { url = "https://maven.createmod.net" } // Ponder, Flywheel
+	maven { url = "https://jitpack.io" }
+	maven { url = "https://maven.firstdark.dev/snapshots" } // LDLib2
+	maven { url = "https://maven.ringlo.im/releases"} // AbyssLib
 }
 
 base {
-    archivesName = mod_id
+	archivesName = mod_id
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -40,216 +41,230 @@ java.withSourcesJar()
 java.withJavadocJar()
 
 sourceSets.main {
-    resources {
-        srcDir 'src/generated/resources'
-        exclude '**/.cache'
-    }
-    blossom.javaSources {
-        property 'version', mod_version
-        property 'gitCommit', gitHash.toString()
-    }
+	resources {
+		srcDir 'src/generated/resources'
+		exclude '**/.cache'
+	}
+	blossom.javaSources {
+		property 'version', mod_version
+		property 'gitCommit', gitHash.toString()
+	}
 }
 
 neoForge {
-    version = project.neo_version
-    validateAccessTransformers = true
+	version = project.neo_version
+	validateAccessTransformers = true
 
-    parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
-    }
+	parchment {
+		mappingsVersion = project.parchment_mappings_version
+		minecraftVersion = project.parchment_minecraft_version
+	}
 
-    runs {
-        client {
-            client()
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
+	runs {
+		client {
+			client()
+			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+		}
 
-        server {
-            server()
-            programArgument '--nogui'
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
+		server {
+			server()
+			programArgument '--nogui'
+			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+		}
 
-        gameTestServer {
-            type = "gameTestServer"
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
+		gameTestServer {
+			type = "gameTestServer"
+			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+		}
 
-        data {
-            data()
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-        }
+		data {
+			data()
+			programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+		}
 
-        configureEach {
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
-            logLevel = org.slf4j.event.Level.DEBUG
-        }
-    }
+		configureEach {
+			systemProperty 'forge.logging.markers', 'REGISTRIES'
+			logLevel = org.slf4j.event.Level.DEBUG
+		}
+	}
 
-    mods {
-        "${mod_id}" {
-            sourceSet(sourceSets.main)
-        }
-    }
+	mods {
+		"${mod_id}" {
+			sourceSet(sourceSets.main)
+		}
+	}
 }
 
 jar {
-    manifest {
-        attributes([
-                'Specification-Title'     : mod_name,
-                'Specification-Vendor'    : mod_authors,
-                'Specification-Version'   : project.jar.archiveVersion,
-                'Implementation-Title'    : project.name,
-                'Implementation-Version'  : project.jar.archiveVersion,
-                'Implementation-Vendor'   : mod_authors,
-                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'Timestampe'              : System.currentTimeMillis(),
-                'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
-                'Built-On-Minecraft'      : minecraft_version,
-                "MixinConfigs"            : "mia.mixins.json",
-                "Git-Hash"                : gitHash
-        ])
-    }
+	manifest {
+		attributes([
+				'Specification-Title'     : mod_name,
+				'Specification-Vendor'    : mod_authors,
+				'Specification-Version'   : project.jar.archiveVersion,
+				'Implementation-Title'    : project.name,
+				'Implementation-Version'  : project.jar.archiveVersion,
+				'Implementation-Vendor'   : mod_authors,
+				'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+				'Timestampe'              : System.currentTimeMillis(),
+				'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+				'Built-On-Minecraft'      : minecraft_version,
+				"MixinConfigs"            : "mia.mixins.json",
+				"Git-Hash"                : gitHash
+		])
+	}
 }
 
 javadoc {
-    options.addStringOption('Xdoclint:none', '-quiet')
+	options.addStringOption('Xdoclint:none', '-quiet')
 }
 
 tasks.named("sourcesJar", Jar) {
-    manifest.attributes([
-            "Git-Hash": gitHash
-    ])
+	manifest.attributes([
+			"Git-Hash": gitHash
+	])
 }
 
 configurations {
-    runtimeClasspath.extendsFrom localRuntime
+	runtimeClasspath.extendsFrom localRuntime
 }
 
 dependencies {
-    // Curios
-    compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
-    runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+	// Curios
+	compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
+	runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
-    // Simple Bedrock Model
-    jarJar(implementation("maven.modrinth:simplebedrockmodel:${sbm_version}")) {
-        version {
-            strictly "[${sbm_version}]"
-            prefer sbm_version
-        }
-    }
-    compileOnly "com.maydaymemory:mae:$mae_version"
+	// Simple Bedrock Model
+	jarJar(implementation("maven.modrinth:simplebedrockmodel:${sbm_version}")) {
+		version {
+			strictly "[${sbm_version}]"
+			prefer sbm_version
+		}
+	}
+	compileOnly "com.maydaymemory:mae:$mae_version"
 
-    // JEI
-    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
-    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+	// JEI
+	compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+	runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
-    // EMI
-    compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
-    runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
+	// EMI
+	compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
+	runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
 
-    // Patchouli
-    compileOnly "vazkii.patchouli:Patchouli:${patchouli_version}:api"
-    runtimeOnly "vazkii.patchouli:Patchouli:${patchouli_version}"
+	// Patchouli
+	compileOnly "vazkii.patchouli:Patchouli:${patchouli_version}:api"
+	runtimeOnly "vazkii.patchouli:Patchouli:${patchouli_version}"
 
-    // Jade
-    implementation "maven.modrinth:jade:${jade_version}"
+	// Jade
+	implementation "maven.modrinth:jade:${jade_version}"
 
-    // KubeJS
-    api "dev.latvian.mods:kubejs-neoforge:$kubejs_version"
+	// KubeJS
+	api "dev.latvian.mods:kubejs-neoforge:$kubejs_version"
 
-    // Ponder
-    implementation "net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}"
-    compileOnly "dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}"
-    runtimeOnly "dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}"
+	// Ponder
+	implementation "net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}"
+	compileOnly "dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}"
+	runtimeOnly "dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
-    var replaceProperties = [
-            minecraft_version      : minecraft_version,
-            minecraft_version_range: minecraft_version_range,
-            neo_version            : neo_version,
-            loader_version_range   : loader_version_range,
-            mod_id                 : mod_id,
-            mod_name               : mod_name,
-            mod_license            : mod_license,
-            mod_version            : mod_version,
-            mod_authors            : mod_authors,
-            mod_description        : mod_description,
-            curios_version_range   : curios_version_range,
-    ]
-    inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
+	var replaceProperties = [
+			minecraft_version      : minecraft_version,
+			minecraft_version_range: minecraft_version_range,
+			neo_version            : neo_version,
+			loader_version_range   : loader_version_range,
+			mod_id                 : mod_id,
+			mod_name               : mod_name,
+			mod_license            : mod_license,
+			mod_version            : mod_version,
+			mod_authors            : mod_authors,
+			mod_description        : mod_description,
+			curios_version_range   : curios_version_range,
+	]
+	inputs.properties replaceProperties
+	expand replaceProperties
+	from "src/main/templates"
+	into "build/generated/sources/modMetadata"
 }
 sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
 
 publishing {
-    publications {
-        register('mavenJava', MavenPublication) {
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-            url = "https://maven.ringlo.im/releases"
-            credentials {
-                username = providers.environmentVariable("MAVEN_USERNAME").orNull
-                password = providers.environmentVariable("MAVEN_PASSWORD").orNull
-            }
-        }
-    }
+	publications {
+		register('mavenJava', MavenPublication) {
+			from components.java
+		}
+	}
+	repositories {
+		maven {
+			url = "https://maven.ringlo.im/releases"
+			credentials {
+				username = providers.environmentVariable("MAVEN_USERNAME").orNull
+				password = providers.environmentVariable("MAVEN_PASSWORD").orNull
+			}
+		}
+	}
 }
 
 publishMods {
-    file = jar.archiveFile
-    type = ALPHA
-    version = "$mod_version+mc$minecraft_version"
-    displayName = "$mod_name $mod_version for mc$minecraft_version"
-    modLoaders.add("neoforge")
+	file = jar.archiveFile
+	type = ALPHA
+	version = "$mod_version+mc$minecraft_version"
+	displayName = "$mod_name $mod_version for mc$minecraft_version"
+	modLoaders.add("neoforge")
 
-    github {
-        repository = "MIA-Development-Team/Made-In-Abyss"
-        accessToken = providers.environmentVariable("GITHUB_TOKEN")
-        commitish = gitHash
-    }
+	github {
+		repository = "MIA-Development-Team/Made-In-Abyss"
+		accessToken = providers.environmentVariable("GITHUB_TOKEN")
+		commitish = gitHash
+	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+	options.encoding = 'UTF-8'
 }
 
 idea {
-    module {
-        downloadSources = true
-        downloadJavadoc = true
-    }
+	module {
+		downloadSources = true
+		downloadJavadoc = true
+	}
+}
+
+spotless {
+	format 'misc', {
+		target '*.gradle', '.gitattributes', '.gitignore'
+		trimTrailingWhitespace()
+		leadingSpacesToTabs()
+		endWithNewline()
+	}
+	java {
+		target 'src/*/java/**/*.java'
+		googleJavaFormat('1.36.1').aosp().reflowLongStrings().skipJavadocFormatting()
+		formatAnnotations()
+	}
 }
 
 String calculateGitHash() {
-    try {
-        ExecOutput output = providers.exec {
-            commandLine 'git', 'rev-parse', '--short', 'HEAD'
-        }
-        return output.standardOutput.asText.get().trim()
-    } catch (Throwable ignored) {
-        return "unknown"
-    }
+	try {
+		ExecOutput output = providers.exec {
+			commandLine 'git', 'rev-parse', '--short', 'HEAD'
+		}
+		return output.standardOutput.asText.get().trim()
+	} catch (Throwable ignored) {
+		return "unknown"
+	}
 }
 
 boolean hasUnstaged() {
-    try {
-        ExecOutput output = providers.exec {
-            commandLine 'git', 'status', '--porcelain'
-        }
-        String result = output.standardOutput.asText.get().trim()
-        if (!result.isEmpty())
-            println("Found stageable results:\n ${result}\n")
-        return !result.isEmpty()
-    } catch (Throwable ignored) {
-        return false
-    }
+	try {
+		ExecOutput output = providers.exec {
+			commandLine 'git', 'status', '--porcelain'
+		}
+		String result = output.standardOutput.asText.get().trim()
+		if (!result.isEmpty())
+			println("Found stageable results:\n ${result}\n")
+		return !result.isEmpty()
+	} catch (Throwable ignored) {
+		return false
+	}
 }

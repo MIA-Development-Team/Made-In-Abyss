@@ -14,12 +14,18 @@ import net.minecraft.util.RandomSource;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class CaveExplorerBeaconRenderer implements BlockEntityRenderer<CaveExplorerBeaconBlockEntity> {
-    public CaveExplorerBeaconRenderer(BlockEntityRendererProvider.Context context) {
-    }
+public class CaveExplorerBeaconRenderer
+        implements BlockEntityRenderer<CaveExplorerBeaconBlockEntity> {
+    public CaveExplorerBeaconRenderer(BlockEntityRendererProvider.Context context) {}
 
     @Override
-    public void render(CaveExplorerBeaconBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(
+            CaveExplorerBeaconBlockEntity blockEntity,
+            float partialTick,
+            PoseStack poseStack,
+            MultiBufferSource bufferSource,
+            int packedLight,
+            int packedOverlay) {
         if (blockEntity.getBlockState().getValue(CaveExplorerBeaconBlock.LIT)) {
             poseStack.pushPose();
             poseStack.translate(0.5D, 0.5D, 0.5D);
@@ -31,12 +37,18 @@ public class CaveExplorerBeaconRenderer implements BlockEntityRenderer<CaveExplo
     }
 
     public static void renderRays(PoseStack poseStack, VertexConsumer buffer) {
-        float timeConstant = (float) (Blaze3D.getTime() * (double) 20.0F) / 200f; //Controls how fast the rays move.
+        float timeConstant =
+                (float) (Blaze3D.getTime() * (double) 20.0F)
+                        / 200f; // Controls how fast the rays move.
         poseStack.pushPose();
-        float rotationControl = Math.min(timeConstant > 0.8F ? (timeConstant - 0.8F) / 0.2F : 0.0F, 1.0F);
+        float rotationControl =
+                Math.min(timeConstant > 0.8F ? (timeConstant - 0.8F) / 0.2F : 0.0F, 1.0F);
         int startColor = FastColor.ARGB32.colorFromFloat(1.0F - 0f, 1.0F, 1.0F, 1.0F);
         int endColor = 0x3D8F3D;
-        RandomSource randomsource = RandomSource.create(432L); //Very important, cannot replace with a static field. it's related to the continuity of the rays movement.
+        RandomSource randomsource =
+                RandomSource.create(
+                        432L); // Very important, cannot replace with a static field. it's related
+        // to the continuity of the rays movement.
         Vector3f vector3f = new Vector3f();
         Vector3f vector3f1 = new Vector3f();
         Vector3f vector3f2 = new Vector3f();
@@ -45,16 +57,16 @@ public class CaveExplorerBeaconRenderer implements BlockEntityRenderer<CaveExplo
         int raysCount = 20;
 
         for (int l = 0; l < raysCount; l++) {
-            quaternionf.rotationXYZ(
+            quaternionf
+                    .rotationXYZ(
                             randomsource.nextFloat() * (float) (Math.PI * 2),
                             randomsource.nextFloat() * (float) (Math.PI * 2),
-                            randomsource.nextFloat() * (float) (Math.PI * 2)
-                    )
+                            randomsource.nextFloat() * (float) (Math.PI * 2))
                     .rotateXYZ(
                             randomsource.nextFloat() * (float) (Math.PI * 2),
                             randomsource.nextFloat() * (float) (Math.PI * 2),
-                            randomsource.nextFloat() * (float) (Math.PI * 2) + timeConstant * (float) (Math.PI / 2)
-                    );
+                            randomsource.nextFloat() * (float) (Math.PI * 2)
+                                    + timeConstant * (float) (Math.PI / 2));
             poseStack.mulPose(quaternionf);
             float f1 = randomsource.nextFloat() * 20.0F + 5.0F + rotationControl * 10.0F;
             float f2 = randomsource.nextFloat() * 2.0F + 1.0F + rotationControl * 2.0F;

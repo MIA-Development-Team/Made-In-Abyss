@@ -4,6 +4,7 @@ import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.init.MiaEntities;
 import com.altnoir.mia.init.MiaItems;
 import com.mojang.serialization.Codec;
+import java.util.function.IntFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -26,17 +27,16 @@ import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.IntFunction;
-
 public class HookEntity extends Projectile {
-    public static final EntityDataAccessor<Integer> DATA_HOOK_STATE = SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Boolean> DATA_SHOOT_HAND = SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Integer> DATA_HOOK_STATE =
+            SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Boolean> DATA_SHOOT_HAND =
+            SynchedEntityData.defineId(HookEntity.class, EntityDataSerializers.BOOLEAN);
     // 钩住位置和方块状态
     public BlockPos hookedBlockPos;
     public BlockState hookedBlockState;
     // 被钩住的实体
-    @Nullable
-    public Entity hookedIn;
+    @Nullable public Entity hookedIn;
 
     public HookEntity(EntityType<? extends HookEntity> entityType, Level level) {
         super(entityType, level);
@@ -48,11 +48,7 @@ public class HookEntity extends Projectile {
         setOwner(player);
         setShootHand(hand);
         setNoGravity(true);
-        setPos(
-                player.getX(),
-                player.getEyeY() - 0.1,
-                player.getZ()
-        );
+        setPos(player.getX(), player.getEyeY() - 0.1, player.getZ());
     }
 
     @Override
@@ -62,8 +58,7 @@ public class HookEntity extends Projectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_HOOK_STATE, HookState.SHOOT.id)
-                .define(DATA_SHOOT_HAND, true);
+        builder.define(DATA_HOOK_STATE, HookState.SHOOT.id).define(DATA_SHOOT_HAND, true);
     }
 
     @Override
@@ -109,7 +104,9 @@ public class HookEntity extends Projectile {
     }
 
     public InteractionHand getShootHand() {
-        return entityData.get(DATA_SHOOT_HAND) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+        return entityData.get(DATA_SHOOT_HAND)
+                ? InteractionHand.MAIN_HAND
+                : InteractionHand.OFF_HAND;
     }
 
     public void setShootHand(InteractionHand hand) {
@@ -120,7 +117,10 @@ public class HookEntity extends Projectile {
     public void tick() {
         super.tick();
         Player player = getPlayer();
-        if (player == null || player.isRemoved() || !player.isAlive() || !player.getItemInHand(getShootHand()).is(MiaItems.GRAPPLING_HOOK)) {
+        if (player == null
+                || player.isRemoved()
+                || !player.isAlive()
+                || !player.getItemInHand(getShootHand()).is(MiaItems.GRAPPLING_HOOK)) {
             discard();
             return;
         }
@@ -145,7 +145,8 @@ public class HookEntity extends Projectile {
      */
     private void tickShoot(Player player) {
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        if (hitresult.getType() != HitResult.Type.MISS && !EventHooks.onProjectileImpact(this, hitresult)) {
+        if (hitresult.getType() != HitResult.Type.MISS
+                && !EventHooks.onProjectileImpact(this, hitresult)) {
             this.hitTargetOrDeflectSelf(hitresult);
         }
         this.checkInsideBlocks();
@@ -153,11 +154,7 @@ public class HookEntity extends Projectile {
         Vec3 vec3 = getDeltaMovement();
         this.setDeltaMovement(vec3.scale(0.99));
         this.applyGravity();
-        this.setPos(
-                getX() + vec3.x,
-                getY() + vec3.y,
-                getZ() + vec3.z
-        );
+        this.setPos(getX() + vec3.x, getY() + vec3.y, getZ() + vec3.z);
         // 检查是否超出最大距离
         if (distanceToSqr(player) > MiaConfig.hookMaxDistance * MiaConfig.hookMaxDistance) {
             setHookState(HookState.BACK);
@@ -169,22 +166,17 @@ public class HookEntity extends Projectile {
      */
     private void tickBack(Player player) {
         // 计算返回速度
-        Vec3 direction = player.position()
-                .add(0, player.getEyeHeight() - 0.1, 0)
-                .subtract(position())
-                .normalize()
-                .scale(MiaConfig.hookRetractVelocity);
-        Vec3 velocity = getDeltaMovement()
-                .scale(0.95)
-                .add(direction);
+        Vec3 direction =
+                player.position()
+                        .add(0, player.getEyeHeight() - 0.1, 0)
+                        .subtract(position())
+                        .normalize()
+                        .scale(MiaConfig.hookRetractVelocity);
+        Vec3 velocity = getDeltaMovement().scale(0.95).add(direction);
         setDeltaMovement(velocity);
         // 移动实体
         Vec3 vec3 = getDeltaMovement();
-        this.setPos(
-                getX() + vec3.x,
-                getY() + vec3.y,
-                getZ() + vec3.z
-        );
+        this.setPos(getX() + vec3.x, getY() + vec3.y, getZ() + vec3.z);
         // 到达玩家后销毁
         if (distanceToSqr(player) < MiaConfig.hookRetractDistance * MiaConfig.hookRetractDistance) {
             discard();
@@ -197,7 +189,8 @@ public class HookEntity extends Projectile {
     private void tickHookedBlock(Player player) {
         if (!level().isClientSide()) {
             // 检查方块是否仍然存在
-            if (hookedBlockPos == null || level().getBlockState(hookedBlockPos) != hookedBlockState) {
+            if (hookedBlockPos == null
+                    || level().getBlockState(hookedBlockPos) != hookedBlockState) {
                 setHookState(HookState.BACK);
                 return;
             }
@@ -231,15 +224,14 @@ public class HookEntity extends Projectile {
     private void pullEntity(Entity entity, Player player) {
         Vec3 target = player.position().add(0, player.getEyeHeight() - 0.1, 0);
         // 这里把hookStopPullDistance乘了2，不然距离太近会一直吸附
-        if (entity.distanceToSqr(player) < (MiaConfig.hookStopPullDistance * MiaConfig.hookStopPullDistance) * 2) {
+        if (entity.distanceToSqr(player)
+                < (MiaConfig.hookStopPullDistance * MiaConfig.hookStopPullDistance) * 2) {
             entity.setDeltaMovement(Vec3.ZERO);
             discard();
             return;
         }
-        Vec3 direction = target
-                .subtract(entity.position())
-                .normalize()
-                .scale(MiaConfig.hookPullVelocity);
+        Vec3 direction =
+                target.subtract(entity.position()).normalize().scale(MiaConfig.hookPullVelocity);
         Vec3 velocity = entity.getDeltaMovement().add(direction);
         entity.setDeltaMovement(velocity);
     }
@@ -278,13 +270,15 @@ public class HookEntity extends Projectile {
     }
 
     public enum HookState implements StringRepresentable {
-        SHOOT(0, "shoot"),                 // 发射
-        BACK(1, "back"),                   // 收回
-        HOOKED_BLOCK(2, "hooked_block"),   // 抓住方块
+        SHOOT(0, "shoot"), // 发射
+        BACK(1, "back"), // 收回
+        HOOKED_BLOCK(2, "hooked_block"), // 抓住方块
         HOOKED_ENTITY(3, "hooked_entity"); // 抓住实体
 
-        public static final Codec<HookState> CODEC = StringRepresentable.fromEnum(HookState::values);
-        private static final IntFunction<HookState> BY_ID = ByIdMap.continuous(HookState::getId, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
+        public static final Codec<HookState> CODEC =
+                StringRepresentable.fromEnum(HookState::values);
+        private static final IntFunction<HookState> BY_ID =
+                ByIdMap.continuous(HookState::getId, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
         final int id;
         private final String name;
 

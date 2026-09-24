@@ -1,11 +1,11 @@
 package com.altnoir.mia.common.item;
 
+import javax.annotation.Nullable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -13,15 +13,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-import javax.annotation.Nullable;
-
 public class RopeItem extends BlockItem {
     public RopeItem(Block block, Properties properties) {
         super(block, properties);
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public BlockPlaceContext updatePlacementContext(BlockPlaceContext context) {
         BlockPos blockpos = context.getClickedPos();
         Level level = context.getLevel();
@@ -32,7 +29,10 @@ public class RopeItem extends BlockItem {
         } else {
             Direction direction;
             if (context.isSecondaryUseActive()) {
-                direction = context.isInside() ? context.getClickedFace().getOpposite() : context.getClickedFace();
+                direction =
+                        context.isInside()
+                                ? context.getClickedFace().getOpposite()
+                                : context.getClickedFace();
             } else {
                 direction = Direction.DOWN;
             }
@@ -43,7 +43,11 @@ public class RopeItem extends BlockItem {
                     Player player = context.getPlayer();
                     int j = level.getMaxBuildHeight();
                     if (player instanceof ServerPlayer && blockpos$mutableblockpos.getY() >= j) {
-                        ((ServerPlayer) player).sendSystemMessage(Component.translatable("build.tooHigh", j - 1).withStyle(ChatFormatting.RED), true);
+                        ((ServerPlayer) player)
+                                .sendSystemMessage(
+                                        Component.translatable("build.tooHigh", j - 1)
+                                                .withStyle(ChatFormatting.RED),
+                                        true);
                     }
                     break;
                 }

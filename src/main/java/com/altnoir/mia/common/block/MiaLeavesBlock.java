@@ -16,17 +16,20 @@ public class MiaLeavesBlock extends LeavesBlock {
     }
 
     @Override
-    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+    public boolean isFlammable(
+            BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return true;
     }
 
     @Override
-    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+    public int getFlammability(
+            BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return 60;
     }
 
     @Override
-    public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+    public int getFireSpreadSpeed(
+            BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return 30;
     }
 
@@ -37,7 +40,8 @@ public class MiaLeavesBlock extends LeavesBlock {
             BlockPos blockpos = pos.below();
             BlockState blockstate = level.getBlockState(blockpos);
             if (!isFaceFull(blockstate.getCollisionShape(level, blockpos), Direction.UP)) {
-                ParticleUtils.spawnParticleBelow(level, pos, random, MiaParticles.SKYFOG_LEAVES.get());
+                ParticleUtils.spawnParticleBelow(
+                        level, pos, random, MiaParticles.SKYFOG_LEAVES.get());
             }
         }
     }

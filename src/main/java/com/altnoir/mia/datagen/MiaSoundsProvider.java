@@ -25,26 +25,30 @@ public class MiaSoundsProvider extends SoundDefinitionsProvider {
 
     @Override
     public void registerSounds() {
-        this.add(MiaSounds.ABYSS_PORTAL_AMBIENT.get(),
+        this.add(
+                MiaSounds.ABYSS_PORTAL_AMBIENT.get(),
                 definition()
                         .with(sound(MiaUtil.miaId("block/abyss_portal_ambient")))
-                        .subtitle(ABYSS_PORTAL_AMBIENT)
-        );
-        this.add(MiaSounds.ABYSS_PORTAL_TRAVEL.get(),
+                        .subtitle(ABYSS_PORTAL_AMBIENT));
+        this.add(
+                MiaSounds.ABYSS_PORTAL_TRAVEL.get(),
                 definition()
                         .with(sound(MiaUtil.miaId("block/abyss_portal_travel")))
-                        .subtitle(ABYSS_PORTAL_TRAVEL)
-        );
+                        .subtitle(ABYSS_PORTAL_TRAVEL));
 
         // Biomes
         if (ABYSS_MUSIC) {
-            this.add(MiaSounds.MUSIC_THE_ABYSS_DIM.get(),
-                    definition().replace(true)
+            this.add(
+                    MiaSounds.MUSIC_THE_ABYSS_DIM.get(),
+                    definition()
+                            .replace(true)
                             .with(
-                                    sound(MiaUtil.miaId("music/the_first_layer")).volume(0.4F).stream(),
-                                    sound(MiaUtil.miaId("music/rikos_cooking")).volume(0.4F).stream()
-                            )
-            );
+                                    sound(MiaUtil.miaId("music/the_first_layer"))
+                                            .volume(0.4F)
+                                            .stream(),
+                                    sound(MiaUtil.miaId("music/rikos_cooking"))
+                                            .volume(0.4F)
+                                            .stream()));
         } else {
             this.add(MiaSounds.MUSIC_THE_ABYSS_DIM.get(), definition().with(defaultMusicSounds()));
         }
@@ -56,21 +60,21 @@ public class MiaSoundsProvider extends SoundDefinitionsProvider {
      * @return SoundDefinition.Sound[] 包含默认音乐的数组
      */
     private SoundDefinition.Sound[] defaultMusicSounds() {
-        return new SoundDefinition.Sound[]{
-                sound("music/game/an_ordinary_day").volume(0.8F).stream(),
-                sound("music/game/clark").stream(),
-                sound("music/game/echo_in_the_wind").volume(0.4F).stream(),
-                sound("music/game/featherfall").volume(0.4F).stream(),
-                sound("music/game/floating_dream").volume(0.5F).stream(),
-                sound("music/game/left_to_bloom").volume(0.4F).stream(),
-                sound("music/game/mice_on_venus").stream(),
-                sound("music/game/minecraft").stream(),
-                sound("music/game/one_more_day").volume(0.4F).stream(),
-                //sound("music/game/os_piano").volume(0.4F).weight(2).stream(),
-                sound("music/game/swamp/aerie").volume(0.4F).stream(),
-                sound("music/game/swamp/firebugs").volume(0.4F).stream(),
-                sound("music/game/swamp/labyrinthine").volume(0.4F).stream(),
-                sound("music/game/sweden").stream()
+        return new SoundDefinition.Sound[] {
+            sound("music/game/an_ordinary_day").volume(0.8F).stream(),
+            sound("music/game/clark").stream(),
+            sound("music/game/echo_in_the_wind").volume(0.4F).stream(),
+            sound("music/game/featherfall").volume(0.4F).stream(),
+            sound("music/game/floating_dream").volume(0.5F).stream(),
+            sound("music/game/left_to_bloom").volume(0.4F).stream(),
+            sound("music/game/mice_on_venus").stream(),
+            sound("music/game/minecraft").stream(),
+            sound("music/game/one_more_day").volume(0.4F).stream(),
+            // sound("music/game/os_piano").volume(0.4F).weight(2).stream(),
+            sound("music/game/swamp/aerie").volume(0.4F).stream(),
+            sound("music/game/swamp/firebugs").volume(0.4F).stream(),
+            sound("music/game/swamp/labyrinthine").volume(0.4F).stream(),
+            sound("music/game/sweden").stream()
         };
     }
 }

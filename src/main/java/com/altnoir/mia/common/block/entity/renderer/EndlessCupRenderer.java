@@ -18,15 +18,23 @@ import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 
 public class EndlessCupRenderer implements BlockEntityRenderer<EndlessCupBlockEntity> {
-    public EndlessCupRenderer(BlockEntityRendererProvider.Context context) {
-    }
+    public EndlessCupRenderer(BlockEntityRendererProvider.Context context) {}
 
     @Override
-    public void render(EndlessCupBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(
+            EndlessCupBlockEntity blockEntity,
+            float partialTick,
+            PoseStack poseStack,
+            MultiBufferSource bufferSource,
+            int packedLight,
+            int packedOverlay) {
         if (blockEntity.getBlockState().getValue(EndlessCupBlock.WATERLOGGED)) return;
         // 获取水的渲染属性
         IClientFluidTypeExtensions water = IClientFluidTypeExtensions.of(Fluids.WATER);
-        TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(water.getStillTexture());
+        TextureAtlasSprite texture =
+                Minecraft.getInstance()
+                        .getTextureAtlas(TextureAtlas.LOCATION_BLOCKS)
+                        .apply(water.getStillTexture());
 
         float u0 = texture.getU0();
         float u1 = texture.getU1();

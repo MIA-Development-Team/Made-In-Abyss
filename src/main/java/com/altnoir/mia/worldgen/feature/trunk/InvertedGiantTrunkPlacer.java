@@ -4,6 +4,8 @@ import com.altnoir.mia.init.worldgen.MiaTrunkPlacerTypes;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.List;
+import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedReader;
@@ -13,13 +15,12 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 
-import java.util.List;
-import java.util.function.BiConsumer;
-
 public class InvertedGiantTrunkPlacer extends TrunkPlacer {
-    public static final MapCodec<InvertedGiantTrunkPlacer> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> trunkPlacerParts(instance).apply(instance, InvertedGiantTrunkPlacer::new)
-    );
+    public static final MapCodec<InvertedGiantTrunkPlacer> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    instance ->
+                            trunkPlacerParts(instance)
+                                    .apply(instance, InvertedGiantTrunkPlacer::new));
 
     public InvertedGiantTrunkPlacer(int baseHeight, int heightRandA, int heightRandB) {
         super(baseHeight, heightRandA, heightRandB);
@@ -37,8 +38,7 @@ public class InvertedGiantTrunkPlacer extends TrunkPlacer {
             RandomSource random,
             int freeTreeHeight,
             BlockPos pos,
-            TreeConfiguration config
-    ) {
+            TreeConfiguration config) {
         BlockPos blockpos = pos.above();
         setDirtAt(level, blockSetter, random, blockpos, config);
         setDirtAt(level, blockSetter, random, blockpos.east(), config);
@@ -47,15 +47,44 @@ public class InvertedGiantTrunkPlacer extends TrunkPlacer {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
         for (int i = 0; i < freeTreeHeight; i++) {
-            this.placeLogIfFreeWithOffset(level, blockSetter, random, blockpos$mutableblockpos, config, pos, 0, -i, 0);
+            this.placeLogIfFreeWithOffset(
+                    level, blockSetter, random, blockpos$mutableblockpos, config, pos, 0, -i, 0);
             if (i < freeTreeHeight - 1) {
-                this.placeLogIfFreeWithOffset(level, blockSetter, random, blockpos$mutableblockpos, config, pos, 1, -i, 0);
-                this.placeLogIfFreeWithOffset(level, blockSetter, random, blockpos$mutableblockpos, config, pos, 1, -i, 1);
-                this.placeLogIfFreeWithOffset(level, blockSetter, random, blockpos$mutableblockpos, config, pos, 0, -i, 1);
+                this.placeLogIfFreeWithOffset(
+                        level,
+                        blockSetter,
+                        random,
+                        blockpos$mutableblockpos,
+                        config,
+                        pos,
+                        1,
+                        -i,
+                        0);
+                this.placeLogIfFreeWithOffset(
+                        level,
+                        blockSetter,
+                        random,
+                        blockpos$mutableblockpos,
+                        config,
+                        pos,
+                        1,
+                        -i,
+                        1);
+                this.placeLogIfFreeWithOffset(
+                        level,
+                        blockSetter,
+                        random,
+                        blockpos$mutableblockpos,
+                        config,
+                        pos,
+                        0,
+                        -i,
+                        1);
             }
         }
 
-        return ImmutableList.of(new FoliagePlacer.FoliageAttachment(pos.below(freeTreeHeight), 0, true));
+        return ImmutableList.of(
+                new FoliagePlacer.FoliageAttachment(pos.below(freeTreeHeight), 0, true));
     }
 
     private void placeLogIfFreeWithOffset(
@@ -67,8 +96,7 @@ public class InvertedGiantTrunkPlacer extends TrunkPlacer {
             BlockPos offsetPos,
             int offsetX,
             int offsetY,
-            int offsetZ
-    ) {
+            int offsetZ) {
         pos.setWithOffset(offsetPos, offsetX, offsetY, offsetZ);
         this.placeLogIfFree(level, blockSetter, random, pos, config);
     }

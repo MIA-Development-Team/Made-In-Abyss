@@ -19,7 +19,12 @@ public class MiaDamageTypes {
         return ResourceKey.create(Registries.DAMAGE_TYPE, MiaUtil.miaId(name));
     }
 
-    public static Holder.Reference<DamageType> register(BootstrapContext<DamageType> context, ResourceKey<DamageType> key, String localizationKey, float exhaustion) {
-        return context.register(key, new DamageType(MIA.MOD_ID + "." + localizationKey, exhaustion));
+    public static Holder.Reference<DamageType> register(
+            BootstrapContext<DamageType> context,
+            ResourceKey<DamageType> key,
+            String localizationKey,
+            float exhaustion) {
+        return context.register(
+                key, new DamageType(MIA.MOD_ID + "." + localizationKey, exhaustion));
     }
 }

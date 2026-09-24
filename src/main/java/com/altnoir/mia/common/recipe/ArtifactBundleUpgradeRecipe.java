@@ -1,12 +1,11 @@
 package com.altnoir.mia.common.recipe;
 
+import com.altnoir.mia.common.item.abs.AbsArtifactBundle;
 import com.altnoir.mia.init.MiaComponents;
 import com.altnoir.mia.init.MiaRecipes;
-import com.altnoir.mia.common.item.abs.AbsArtifactBundle;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -19,8 +18,12 @@ import net.minecraft.world.item.crafting.ShapedRecipePattern;
 
 public class ArtifactBundleUpgradeRecipe extends ShapedRecipe {
 
-    public ArtifactBundleUpgradeRecipe(String group, CraftingBookCategory category, ShapedRecipePattern pattern,
-            ItemStack result, boolean showNotification) {
+    public ArtifactBundleUpgradeRecipe(
+            String group,
+            CraftingBookCategory category,
+            ShapedRecipePattern pattern,
+            ItemStack result,
+            boolean showNotification) {
         super(group, category, pattern, result, showNotification);
     }
 
@@ -38,7 +41,8 @@ public class ArtifactBundleUpgradeRecipe extends ShapedRecipe {
         ItemStack newBundle = this.getResultItem(registries).copy();
         if (oldBundle.has(MiaComponents.ARTIFACT_BUNDLE_INVENTORY)
                 && newBundle.has(MiaComponents.ARTIFACT_BUNDLE_INVENTORY)) {
-            newBundle.set(MiaComponents.ARTIFACT_BUNDLE_INVENTORY,
+            newBundle.set(
+                    MiaComponents.ARTIFACT_BUNDLE_INVENTORY,
                     oldBundle.get(MiaComponents.ARTIFACT_BUNDLE_INVENTORY));
         }
         return newBundle;
@@ -51,29 +55,47 @@ public class ArtifactBundleUpgradeRecipe extends ShapedRecipe {
 
     public static class Serializer implements RecipeSerializer<ArtifactBundleUpgradeRecipe> {
 
-        public static final MapCodec<ArtifactBundleUpgradeRecipe> CODEC = RecordCodecBuilder.mapCodec((codec) -> {
-            return codec.group(
-                    Codec.STRING.optionalFieldOf("group", "").forGetter((recipe) -> {
-                        return recipe.getGroup();
-                    }),
-                    CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC)
-                            .forGetter((recipe) -> {
-                                return recipe.category();
-                            }),
-                    ShapedRecipePattern.MAP_CODEC.forGetter((recipe) -> {
-                        return recipe.pattern;
-                    }),
-                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter((recipe) -> {
-                        return recipe.getResultItem(null);
-                    }),
-                    Codec.BOOL.optionalFieldOf("show_notification", true).forGetter((recipe) -> {
-                        return recipe.showNotification();
-                    })).apply(codec, ArtifactBundleUpgradeRecipe::new);
-        });
+        public static final MapCodec<ArtifactBundleUpgradeRecipe> CODEC =
+                RecordCodecBuilder.mapCodec(
+                        (codec) -> {
+                            return codec.group(
+                                            Codec.STRING
+                                                    .optionalFieldOf("group", "")
+                                                    .forGetter(
+                                                            (recipe) -> {
+                                                                return recipe.getGroup();
+                                                            }),
+                                            CraftingBookCategory.CODEC
+                                                    .fieldOf("category")
+                                                    .orElse(CraftingBookCategory.MISC)
+                                                    .forGetter(
+                                                            (recipe) -> {
+                                                                return recipe.category();
+                                                            }),
+                                            ShapedRecipePattern.MAP_CODEC.forGetter(
+                                                    (recipe) -> {
+                                                        return recipe.pattern;
+                                                    }),
+                                            ItemStack.STRICT_CODEC
+                                                    .fieldOf("result")
+                                                    .forGetter(
+                                                            (recipe) -> {
+                                                                return recipe.getResultItem(null);
+                                                            }),
+                                            Codec.BOOL
+                                                    .optionalFieldOf("show_notification", true)
+                                                    .forGetter(
+                                                            (recipe) -> {
+                                                                return recipe.showNotification();
+                                                            }))
+                                    .apply(codec, ArtifactBundleUpgradeRecipe::new);
+                        });
 
-        public static final StreamCodec<RegistryFriendlyByteBuf, ArtifactBundleUpgradeRecipe> STREAM_CODEC = StreamCodec
-                .of(ArtifactBundleUpgradeRecipe.Serializer::toNetwork,
-                        ArtifactBundleUpgradeRecipe.Serializer::fromNetwork);
+        public static final StreamCodec<RegistryFriendlyByteBuf, ArtifactBundleUpgradeRecipe>
+                STREAM_CODEC =
+                        StreamCodec.of(
+                                ArtifactBundleUpgradeRecipe.Serializer::toNetwork,
+                                ArtifactBundleUpgradeRecipe.Serializer::fromNetwork);
 
         @Override
         public MapCodec<ArtifactBundleUpgradeRecipe> codec() {
@@ -87,16 +109,18 @@ public class ArtifactBundleUpgradeRecipe extends ShapedRecipe {
 
         private static ArtifactBundleUpgradeRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
             String s = buffer.readUtf();
-            CraftingBookCategory craftingbookcategory = (CraftingBookCategory) buffer
-                    .readEnum(CraftingBookCategory.class);
-            ShapedRecipePattern shapedrecipepattern = (ShapedRecipePattern) ShapedRecipePattern.STREAM_CODEC
-                    .decode(buffer);
+            CraftingBookCategory craftingbookcategory =
+                    (CraftingBookCategory) buffer.readEnum(CraftingBookCategory.class);
+            ShapedRecipePattern shapedrecipepattern =
+                    (ShapedRecipePattern) ShapedRecipePattern.STREAM_CODEC.decode(buffer);
             ItemStack itemstack = (ItemStack) ItemStack.STREAM_CODEC.decode(buffer);
             boolean flag = buffer.readBoolean();
-            return new ArtifactBundleUpgradeRecipe(s, craftingbookcategory, shapedrecipepattern, itemstack, flag);
+            return new ArtifactBundleUpgradeRecipe(
+                    s, craftingbookcategory, shapedrecipepattern, itemstack, flag);
         }
 
-        private static void toNetwork(RegistryFriendlyByteBuf buffer, ArtifactBundleUpgradeRecipe recipe) {
+        private static void toNetwork(
+                RegistryFriendlyByteBuf buffer, ArtifactBundleUpgradeRecipe recipe) {
             buffer.writeUtf(recipe.getGroup());
             buffer.writeEnum(recipe.category());
             ShapedRecipePattern.STREAM_CODEC.encode(buffer, recipe.pattern);

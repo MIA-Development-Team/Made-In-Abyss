@@ -1,10 +1,11 @@
 package com.altnoir.mia.compat.jei;
 
 import com.altnoir.mia.MIA;
+import com.altnoir.mia.common.recipe.LampTubeRecipe;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaRecipes;
-import com.altnoir.mia.common.recipe.LampTubeRecipe;
 import com.altnoir.mia.util.MiaUtil;
+import javax.annotation.ParametersAreNonnullByDefault;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.RecipeType;
@@ -18,13 +19,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 @JeiPlugin
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class MiaJeiPlugin implements IModPlugin {
-    public static final RecipeType<RecipeHolder<LampTubeRecipe>> LAMP_TUBE_RECIPE_TYPE = RecipeType.createRecipeHolderType(MiaUtil.id(MIA.MOD_ID, "lamp_tube_recipe"));
+    public static final RecipeType<RecipeHolder<LampTubeRecipe>> LAMP_TUBE_RECIPE_TYPE =
+            RecipeType.createRecipeHolderType(MiaUtil.id(MIA.MOD_ID, "lamp_tube_recipe"));
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -38,7 +38,8 @@ public class MiaJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(MiaBlocks.AMETHYST_LAMPTUBE, MiaJeiPlugin.LAMP_TUBE_RECIPE_TYPE);
+        registration.addRecipeCatalyst(
+                MiaBlocks.AMETHYST_LAMPTUBE, MiaJeiPlugin.LAMP_TUBE_RECIPE_TYPE);
     }
 
     public RecipeManager getRecipeManager() {
@@ -54,6 +55,8 @@ public class MiaJeiPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager recipeManager = this.getRecipeManager();
-        registration.addRecipes(MiaJeiPlugin.LAMP_TUBE_RECIPE_TYPE, recipeManager.getAllRecipesFor(MiaRecipes.LAMP_TUBE_TYPE.get()));
+        registration.addRecipes(
+                MiaJeiPlugin.LAMP_TUBE_RECIPE_TYPE,
+                recipeManager.getAllRecipesFor(MiaRecipes.LAMP_TUBE_TYPE.get()));
     }
 }

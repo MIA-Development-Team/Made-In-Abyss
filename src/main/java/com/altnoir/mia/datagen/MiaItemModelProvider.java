@@ -19,9 +19,9 @@ public class MiaItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         basicItem(MiaItems.RED_WHISTLE.get());
         basicItem(MiaItems.BLUE_WHISTLE.get());
-//        basicItem(MiaItems.MOON_WHISTLE.get());
-//        basicItem(MiaItems.BLACK_WHISTLE.get());
-//        basicItem(MiaItems.WHITE_WHISTLE.get());
+        //        basicItem(MiaItems.MOON_WHISTLE.get());
+        //        basicItem(MiaItems.BLACK_WHISTLE.get());
+        //        basicItem(MiaItems.WHITE_WHISTLE.get());
 
         basicItem(MiaItems.PRASIOLITE_SHARD.get());
         basicItem(MiaItems.CAERULITE_SHARD.get());
@@ -50,19 +50,26 @@ public class MiaItemModelProvider extends ItemModelProvider {
         handheldItem(MiaItems.PRASIOLITE_PICKAXE.get());
         handheldItem(MiaItems.PRASIOLITE_HOE.get());
 
-
         handheldItem(MiaItems.DEBUG_ATTRIBUTE_TOOL.get());
     }
 
     public ItemModelBuilder skillItem(Item item) {
         return getBuilder(MiaUtil.getItemKey(item).toString())
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
-                .texture("layer0", MiaUtil.id(MiaUtil.getItemKey(item).getNamespace(), "item/skill/" + MiaUtil.getItemKey(item).getPath()));
+                .texture(
+                        "layer0",
+                        MiaUtil.id(
+                                MiaUtil.getItemKey(item).getNamespace(),
+                                "item/skill/" + MiaUtil.getItemKey(item).getPath()));
     }
 
     public ItemModelBuilder hookItem(Item item) {
         return getBuilder(MiaUtil.getItemKey(item).toString())
                 .parent(new ModelFile.UncheckedModelFile(modLoc("item/template/grappling_hook")))
-                .texture("layer0", MiaUtil.id(MiaUtil.getItemNamespace(item), "item/" + MiaUtil.getItemPath(item)));
+                .texture(
+                        "layer0",
+                        MiaUtil.id(
+                                MiaUtil.getItemNamespace(item),
+                                "item/" + MiaUtil.getItemPath(item)));
     }
 }

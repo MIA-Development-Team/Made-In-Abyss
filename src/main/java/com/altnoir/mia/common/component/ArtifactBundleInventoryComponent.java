@@ -5,27 +5,35 @@ import com.altnoir.mia.common.item.abs.IBundleable;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 public class ArtifactBundleInventoryComponent implements TooltipComponent {
-    public static final ArtifactBundleInventoryComponent EMPTY = new ArtifactBundleInventoryComponent(List.of());
-    public static final Codec<ArtifactBundleInventoryComponent> CODEC = RecordCodecBuilder.create(instance -> instance
-            .group(
-                    ItemStack.CODEC.listOf().fieldOf("artifacts")
-                            .forGetter(ArtifactBundleInventoryComponent::getStacks))
-            .apply(instance, ArtifactBundleInventoryComponent::new));
-    public static final StreamCodec<RegistryFriendlyByteBuf, ArtifactBundleInventoryComponent> STREAM_CODEC = StreamCodec
-            .composite(
-                    ItemStack.STREAM_CODEC.apply(ByteBufCodecs.list()), ArtifactBundleInventoryComponent::getStacks,
-                    ArtifactBundleInventoryComponent::new);
+    public static final ArtifactBundleInventoryComponent EMPTY =
+            new ArtifactBundleInventoryComponent(List.of());
+    public static final Codec<ArtifactBundleInventoryComponent> CODEC =
+            RecordCodecBuilder.create(
+                    instance ->
+                            instance.group(
+                                            ItemStack.CODEC
+                                                    .listOf()
+                                                    .fieldOf("artifacts")
+                                                    .forGetter(
+                                                            ArtifactBundleInventoryComponent
+                                                                    ::getStacks))
+                                    .apply(instance, ArtifactBundleInventoryComponent::new));
+    public static final StreamCodec<RegistryFriendlyByteBuf, ArtifactBundleInventoryComponent>
+            STREAM_CODEC =
+                    StreamCodec.composite(
+                            ItemStack.STREAM_CODEC.apply(ByteBufCodecs.list()),
+                            ArtifactBundleInventoryComponent::getStacks,
+                            ArtifactBundleInventoryComponent::new);
 
     private final List<ItemStack> stacks;
     private final int usage;
@@ -70,10 +78,8 @@ public class ArtifactBundleInventoryComponent implements TooltipComponent {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof ArtifactBundleInventoryComponent that))
-            return false;
-        return usage == that.usage
-                && Objects.equals(stacks, that.stacks);
+        if (!(o instanceof ArtifactBundleInventoryComponent that)) return false;
+        return usage == that.usage && Objects.equals(stacks, that.stacks);
     }
 
     public static class Mutable {
@@ -100,8 +106,7 @@ public class ArtifactBundleInventoryComponent implements TooltipComponent {
         }
 
         public ItemStack pop() {
-            if (stacks.isEmpty())
-                return ItemStack.EMPTY;
+            if (stacks.isEmpty()) return ItemStack.EMPTY;
 
             var stack = stacks.removeFirst().copy();
             if (stack.getItem() instanceof IBundleable item) {

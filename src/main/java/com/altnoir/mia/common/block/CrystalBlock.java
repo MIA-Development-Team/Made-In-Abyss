@@ -24,11 +24,24 @@ public class CrystalBlock extends Block {
     }
 
     @Override
-    protected void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
+    protected void onProjectileHit(
+            Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
         if (!level.isClientSide) {
             BlockPos blockpos = hit.getBlockPos();
-            level.playSound(null, blockpos, SoundEvents.AMETHYST_BLOCK_HIT, SoundSource.BLOCKS, 1.0F, 0.5F + level.random.nextFloat() * 1.2F);
-            level.playSound(null, blockpos, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 1.0F, 0.5F + level.random.nextFloat() * 1.2F);
+            level.playSound(
+                    null,
+                    blockpos,
+                    SoundEvents.AMETHYST_BLOCK_HIT,
+                    SoundSource.BLOCKS,
+                    1.0F,
+                    0.5F + level.random.nextFloat() * 1.2F);
+            level.playSound(
+                    null,
+                    blockpos,
+                    SoundEvents.AMETHYST_BLOCK_CHIME,
+                    SoundSource.BLOCKS,
+                    1.0F,
+                    0.5F + level.random.nextFloat() * 1.2F);
         }
     }
 

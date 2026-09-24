@@ -26,7 +26,11 @@ public class MIA {
     public static final AbyssTrialSpawnerManager SPAWNER_MANAGER = new AbyssTrialSpawnerManager();
 
     public MIA(IEventBus modEventBus, ModContainer modContainer) {
-        LOGGER.info("{} {}+{} initializing...", MOD_NAME, MiaBuildInfo.VERSION, MiaBuildInfo.GIT_COMMIT);
+        LOGGER.info(
+                "{} {}+{} initializing...",
+                MOD_NAME,
+                MiaBuildInfo.VERSION,
+                MiaBuildInfo.GIT_COMMIT);
 
         modEventBus.addListener(this::commonSetup);
 

@@ -12,11 +12,17 @@ import net.minecraft.world.phys.Vec3;
 
 public class AbyssPortal {
     public static boolean abyssPortal(Level level, Entity entity) {
-        if (level.dimension() == MiaDimensions.THE_ABYSS_LEVEL && entity.getY() < (double) (level.getMinBuildHeight() - 16)) {
+        if (level.dimension() == MiaDimensions.THE_ABYSS_LEVEL
+                && entity.getY() < (double) (level.getMinBuildHeight() - 16)) {
             if (level instanceof ServerLevel serverLevel) {
-                ServerLevel level3 = serverLevel.getServer().getLevel(MiaDimensions.GREAT_FAULT_LEVEL);
+                ServerLevel level3 =
+                        serverLevel.getServer().getLevel(MiaDimensions.GREAT_FAULT_LEVEL);
                 if (level3 != null) {
-                    Vec3 pos = new Vec3(entity.getX() + 0.5, level3.getMaxBuildHeight() + 128, entity.getZ() + 0.5);
+                    Vec3 pos =
+                            new Vec3(
+                                    entity.getX() + 0.5,
+                                    level3.getMaxBuildHeight() + 128,
+                                    entity.getZ() + 0.5);
                     DimensionTransition transition = dimTransition(level3, entity, pos);
                     entity.changeDimension(transition);
                     return true;
@@ -27,16 +33,22 @@ public class AbyssPortal {
     }
 
     private static DimensionTransition dimTransition(ServerLevel level, Entity entity, Vec3 pos) {
-        DimensionTransition.PostDimensionTransition portalSound = playerEntity -> {
-            if (playerEntity instanceof ServerPlayer serverplayer) {
-                serverplayer.playNotifySound(MiaSounds.ABYSS_PORTAL_TRAVEL.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-            }
-        };
+        DimensionTransition.PostDimensionTransition portalSound =
+                playerEntity -> {
+                    if (playerEntity instanceof ServerPlayer serverplayer) {
+                        serverplayer.playNotifySound(
+                                MiaSounds.ABYSS_PORTAL_TRAVEL.get(),
+                                SoundSource.BLOCKS,
+                                1.0F,
+                                1.0F);
+                    }
+                };
         return new DimensionTransition(
-                level, pos,
+                level,
+                pos,
                 entity.getDeltaMovement(),
-                entity.getYRot(), entity.getXRot(),
-                portalSound.then(DimensionTransition.PLACE_PORTAL_TICKET)
-        );
+                entity.getYRot(),
+                entity.getXRot(),
+                portalSound.then(DimensionTransition.PLACE_PORTAL_TICKET));
     }
 }

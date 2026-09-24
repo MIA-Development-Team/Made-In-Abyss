@@ -21,7 +21,9 @@ public class ArtifactItem extends Item implements IEArtifact {
     private final int weight;
 
     public ArtifactItem(Properties properties, Grade grade, int weight) {
-        super(properties.component(MiaComponents.ARTIFACT_ENHANCEMENT, ArtifactEnhancementComponent.EMPTY));
+        super(
+                properties.component(
+                        MiaComponents.ARTIFACT_ENHANCEMENT, ArtifactEnhancementComponent.EMPTY));
         this.grade = grade;
         this.weight = weight;
     }
@@ -37,9 +39,11 @@ public class ArtifactItem extends Item implements IEArtifact {
     }
 
     @Override
-    public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
+    public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(
+            SlotContext slotContext, ResourceLocation id, ItemStack stack) {
         // 获取父类的属性修饰符映射
-        Multimap<Holder<Attribute>, AttributeModifier> parentMultimap = IEArtifact.super.getAttributeModifiers(slotContext, id, stack);
+        Multimap<Holder<Attribute>, AttributeModifier> parentMultimap =
+                IEArtifact.super.getAttributeModifiers(slotContext, id, stack);
 
         if (stack.is(MiaItems.HEALTH_JUNKIE.get())) {
             // 创建新的可变 Multimap
@@ -47,16 +51,18 @@ public class ArtifactItem extends Item implements IEArtifact {
             // 复制父类的所有属性
             multimap.putAll(parentMultimap);
 
-            multimap.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(
-                    MiaUtil.miaId("knockback_resistance"),
-                    0.2,
-                    AttributeModifier.Operation.ADD_MULTIPLIED_BASE
-            ));
-            multimap.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(
-                    MiaUtil.miaId("armor_toughness"),
-                    2.0,
-                    AttributeModifier.Operation.ADD_VALUE
-            ));
+            multimap.put(
+                    Attributes.KNOCKBACK_RESISTANCE,
+                    new AttributeModifier(
+                            MiaUtil.miaId("knockback_resistance"),
+                            0.2,
+                            AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+            multimap.put(
+                    Attributes.ARMOR_TOUGHNESS,
+                    new AttributeModifier(
+                            MiaUtil.miaId("armor_toughness"),
+                            2.0,
+                            AttributeModifier.Operation.ADD_VALUE));
             return multimap;
         }
         return parentMultimap;

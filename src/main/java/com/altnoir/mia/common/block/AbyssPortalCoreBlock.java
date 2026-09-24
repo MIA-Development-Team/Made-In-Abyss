@@ -31,15 +31,16 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class AbyssPortalCoreBlock extends BaseEntityBlock {
-    public static final MapCodec<AbyssPortalCoreBlock> CODEC = simpleCodec(AbyssPortalCoreBlock::new);
+    public static final MapCodec<AbyssPortalCoreBlock> CODEC =
+            simpleCodec(AbyssPortalCoreBlock::new);
     public static final BooleanProperty COMPASS = BooleanProperty.create("compass");
     public static final int MAX_STAGE = 12;
     public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, MAX_STAGE);
-    public static final VoxelShape SHAPE = Shapes.or(
-            Block.box(2.0, 10.0, 2.0, 14.0, 15.0, 14.0),
-            Block.box(3, 3, 3, 13, 10, 13),
-            Block.box(0, 0, 0, 16, 3, 16)
-    );
+    public static final VoxelShape SHAPE =
+            Shapes.or(
+                    Block.box(2.0, 10.0, 2.0, 14.0, 15.0, 14.0),
+                    Block.box(3, 3, 3, 13, 10, 13),
+                    Block.box(0, 0, 0, 16, 3, 16));
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
@@ -48,21 +49,34 @@ public class AbyssPortalCoreBlock extends BaseEntityBlock {
 
     public AbyssPortalCoreBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any()
-                .setValue(COMPASS, Boolean.valueOf(false))
-                .setValue(STAGE, 0));
+        this.registerDefaultState(
+                this.stateDefinition
+                        .any()
+                        .setValue(COMPASS, Boolean.valueOf(false))
+                        .setValue(STAGE, 0));
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (stack.is(MiaItems.STAR_COMPASS.get()) && !state.getValue(COMPASS) && level.dimension() == Level.OVERWORLD) {
+    protected ItemInteractionResult useItemOn(
+            ItemStack stack,
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hitResult) {
+        if (stack.is(MiaItems.STAR_COMPASS.get())
+                && !state.getValue(COMPASS)
+                && level.dimension() == Level.OVERWORLD) {
             if (!level.isClientSide()) {
-                level.setBlock(pos, state.setValue(COMPASS, Boolean.valueOf(true)).setValue(STAGE, 0), 3);
+                level.setBlock(
+                        pos, state.setValue(COMPASS, Boolean.valueOf(true)).setValue(STAGE, 0), 3);
                 level.levelEvent(1503, pos, 0);
 
                 level.scheduleTick(pos, this, 20);
@@ -91,7 +105,8 @@ public class AbyssPortalCoreBlock extends BaseEntityBlock {
             int height = MAX_STAGE - newStage;
             AbyssPortalFeature.createPortalStructure(serverLevel, targetPos, height);
         } else {
-            AbyssPortalFeature.createPortalStructure(serverLevel, targetPos, MiaBlocks.ABYSS_PORTAL.get(), 0);
+            AbyssPortalFeature.createPortalStructure(
+                    serverLevel, targetPos, MiaBlocks.ABYSS_PORTAL.get(), 0);
             level.globalLevelEvent(1038, targetPos, 0);
             return;
         }
@@ -112,11 +127,12 @@ public class AbyssPortalCoreBlock extends BaseEntityBlock {
 
                 level.addParticle(
                         ParticleTypes.END_ROD,
-                        d0, d1, d2,
+                        d0,
+                        d1,
+                        d2,
                         random.nextGaussian() * 0.005,
                         random.nextGaussian() * 0.05 + yOffset,
-                        random.nextGaussian() * 0.005
-                );
+                        random.nextGaussian() * 0.005);
             }
         }
     }

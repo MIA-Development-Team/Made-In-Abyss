@@ -37,20 +37,26 @@ public class DreamLicheeBlock extends DoubleBerryblock implements HurtPlant {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(
+            BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         return new ItemStack(MiaItems.DREAM_LICHEE.get());
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    protected InteractionResult useWithoutItem(
+            BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         int i = state.getValue(AGE);
         boolean flag = i == MAX_AGE;
         if (i > 1) {
             int j = 1 + level.random.nextInt(2);
             popResource(level, pos, new ItemStack(MiaItems.DREAM_LICHEE.get(), j + (flag ? 1 : 0)));
             level.playSound(
-                    null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F
-            );
+                    null,
+                    pos,
+                    SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES,
+                    SoundSource.BLOCKS,
+                    1.0F,
+                    0.8F + level.random.nextFloat() * 0.4F);
             BlockState blockstate = state.setValue(AGE, Integer.valueOf(1));
             if (level instanceof ServerLevel serverLevel) {
                 setAgeUpdate(serverLevel, pos, blockstate, 1);

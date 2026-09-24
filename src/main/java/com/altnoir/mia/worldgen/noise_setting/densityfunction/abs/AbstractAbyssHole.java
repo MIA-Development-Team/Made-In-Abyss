@@ -11,7 +11,7 @@ public abstract class AbstractAbyssHole implements DensityFunction.SimpleFunctio
 
     protected abstract KeyDispatchDataCodec<? extends DensityFunction> getCodec();
 
-    public AbstractAbyssHole(float radius,float mul) {
+    public AbstractAbyssHole(float radius, float mul) {
         this.radius = radius;
         this.mul = mul;
         RandomSource randomsource = new LegacyRandomSource(0L);

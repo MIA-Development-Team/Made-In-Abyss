@@ -12,14 +12,23 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class MiaDensityFunctionTypes {
-    public static final DeferredRegister<MapCodec<? extends DensityFunction>> DENSITY_FUNCTION_TYPE = DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, MIA.MOD_ID);
+    public static final DeferredRegister<MapCodec<? extends DensityFunction>>
+            DENSITY_FUNCTION_TYPE =
+                    DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, MIA.MOD_ID);
 
-    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<HopperAbyssHole>> ABYSS_HOLE =
-            DENSITY_FUNCTION_TYPE.register("abyss_hole", HopperAbyssHole.CODEC::codec);
-    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<GeneralAbyssHole>> GENERAL_ABYSS_HOLE =
-            DENSITY_FUNCTION_TYPE.register("general_abyss_hole", GeneralAbyssHole.CODEC::codec);
-    public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<NoodleAbyssHole>> NOODLE_ABYSS_HOLE =
-            DENSITY_FUNCTION_TYPE.register("noodle_abyss_hole", NoodleAbyssHole.CODEC::codec);
+    public static final DeferredHolder<
+                    MapCodec<? extends DensityFunction>, MapCodec<HopperAbyssHole>>
+            ABYSS_HOLE = DENSITY_FUNCTION_TYPE.register("abyss_hole", HopperAbyssHole.CODEC::codec);
+    public static final DeferredHolder<
+                    MapCodec<? extends DensityFunction>, MapCodec<GeneralAbyssHole>>
+            GENERAL_ABYSS_HOLE =
+                    DENSITY_FUNCTION_TYPE.register(
+                            "general_abyss_hole", GeneralAbyssHole.CODEC::codec);
+    public static final DeferredHolder<
+                    MapCodec<? extends DensityFunction>, MapCodec<NoodleAbyssHole>>
+            NOODLE_ABYSS_HOLE =
+                    DENSITY_FUNCTION_TYPE.register(
+                            "noodle_abyss_hole", NoodleAbyssHole.CODEC::codec);
 
     public static DensityFunction hopperAbyssHole() {
         return hopperAbyssHole(0.0F);
@@ -30,12 +39,12 @@ public class MiaDensityFunctionTypes {
     }
 
     public static DensityFunction hopperAbyssHole(float radius, float mul) {
-        return new HopperAbyssHole(radius, mul,64.0F);
+        return new HopperAbyssHole(radius, mul, 64.0F);
     }
+
     public static DensityFunction hopperAbyssHole(float radius, float mul, float slope) {
         return new HopperAbyssHole(radius, mul, slope);
     }
-
 
     public static DensityFunction generalAbyssHole(float radius) {
         return generalAbyssHole(radius, 1.0F);
@@ -44,7 +53,6 @@ public class MiaDensityFunctionTypes {
     public static DensityFunction generalAbyssHole(float radius, float mul) {
         return new GeneralAbyssHole(radius, mul);
     }
-
 
     public static DensityFunction noodleAbyssHole(float radius, float mul) {
         return new NoodleAbyssHole(radius, mul);

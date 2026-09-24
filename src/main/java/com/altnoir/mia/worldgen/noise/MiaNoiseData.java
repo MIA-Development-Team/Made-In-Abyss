@@ -22,8 +22,8 @@ public class MiaNoiseData {
             ResourceKey<NormalNoise.NoiseParameters> key,
             int firstOctave,
             double amplitude,
-            double... otherAmplitudes
-    ) {
-        context.register(key, new NormalNoise.NoiseParameters(firstOctave, amplitude, otherAmplitudes));
+            double... otherAmplitudes) {
+        context.register(
+                key, new NormalNoise.NoiseParameters(firstOctave, amplitude, otherAmplitudes));
     }
 }

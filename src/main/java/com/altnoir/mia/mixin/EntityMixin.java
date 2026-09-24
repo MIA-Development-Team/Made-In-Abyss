@@ -23,11 +23,11 @@ public abstract class EntityMixin {
 
     @Inject(method = "checkBelowWorld", at = @At("HEAD"), cancellable = true)
     private void checkBelowWorld(CallbackInfo ci) {
-        if (this.level().dimension() == MiaDimensions.THE_ABYSS_LEVEL && this.getY() > (double) (this.level().getMaxBuildHeight() + 64)) {
+        if (this.level().dimension() == MiaDimensions.THE_ABYSS_LEVEL
+                && this.getY() > (double) (this.level().getMaxBuildHeight() + 64)) {
             this.onBelowWorld();
         } else if (AbyssPortal.abyssPortal(this.level(), (Entity) (Object) this)) {
             ci.cancel();
         }
-
     }
 }

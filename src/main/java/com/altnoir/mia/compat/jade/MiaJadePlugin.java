@@ -10,15 +10,18 @@ import snownee.jade.api.WailaPlugin;
 
 @WailaPlugin
 public class MiaJadePlugin implements IWailaPlugin {
-    public static final ResourceLocation SPAWNER_COOLDOWN = ResourceLocation.parse("mia:spawner_cooldown");
+    public static final ResourceLocation SPAWNER_COOLDOWN =
+            ResourceLocation.parse("mia:spawner_cooldown");
 
     @Override
     public void register(IWailaCommonRegistration registration) {
-        registration.registerBlockDataProvider(AbyssSpawnerComponentProvider.INSTANCE, AbyssSpawnerBlockEntity.class);
+        registration.registerBlockDataProvider(
+                AbyssSpawnerComponentProvider.INSTANCE, AbyssSpawnerBlockEntity.class);
     }
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
-        registration.registerBlockComponent(AbyssSpawnerComponentProvider.INSTANCE, AbyssSpawnerBlock.class);
+        registration.registerBlockComponent(
+                AbyssSpawnerComponentProvider.INSTANCE, AbyssSpawnerBlock.class);
     }
 }

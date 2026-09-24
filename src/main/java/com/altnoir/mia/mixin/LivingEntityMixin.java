@@ -2,7 +2,6 @@ package com.altnoir.mia.mixin;
 
 import com.altnoir.mia.core.AbyssGravity;
 import com.altnoir.mia.init.MiaAttributes;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -26,10 +25,11 @@ public class LivingEntityMixin {
         }
     }
 
-    @Inject(method = "createLivingAttributes()Lnet/minecraft/world/entity/ai/attributes/AttributeSupplier$Builder;", at = @At("RETURN"))
+    @Inject(
+            method =
+                    "createLivingAttributes()Lnet/minecraft/world/entity/ai/attributes/AttributeSupplier$Builder;",
+            at = @At("RETURN"))
     private static void injectAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
-        cir.getReturnValue()
-                .add(MiaAttributes.CRITICAL_HIT)
-                .add(MiaAttributes.CRITICAL_HIT_DAMAGE);
+        cir.getReturnValue().add(MiaAttributes.CRITICAL_HIT).add(MiaAttributes.CRITICAL_HIT_DAMAGE);
     }
 }

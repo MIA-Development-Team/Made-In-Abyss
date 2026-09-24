@@ -22,7 +22,8 @@ public class TheAbyssFogRenderer {
     private static int lastSampleChunkY = Integer.MIN_VALUE;
     private static float lastClearFactor = 1;
 
-    public static boolean renderFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, float partialTick) {
+    public static boolean renderFog(
+            Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, float partialTick) {
         var player = camera.getEntity();
         var level = player.level();
         var fogData = new FogData(fogMode);
@@ -54,7 +55,9 @@ public class TheAbyssFogRenderer {
         int currentChunkY = Mth.floor(entityY / 16);
 
         float clearFactor;
-        if (currentGridX == lastSampleGridX && currentGridZ == lastSampleGridZ && currentChunkY == lastSampleChunkY) {
+        if (currentGridX == lastSampleGridX
+                && currentGridZ == lastSampleGridZ
+                && currentChunkY == lastSampleChunkY) {
             clearFactor = lastClearFactor;
         } else {
             clearFactor = getSmoothedClearFactor(level, entityX, entityY, entityZ);
@@ -96,7 +99,15 @@ public class TheAbyssFogRenderer {
         RenderSystem.setShaderFogStart(fogData.start);
         RenderSystem.setShaderFogEnd(fogData.end);
         RenderSystem.setShaderFogShape(fogData.shape);
-        ClientHooks.onFogRender(fogMode, camera.getFluidInCamera(), camera, partialTick, farPlaneDistance, fogData.start, fogData.end, fogData.shape);
+        ClientHooks.onFogRender(
+                fogMode,
+                camera.getFluidInCamera(),
+                camera,
+                partialTick,
+                farPlaneDistance,
+                fogData.start,
+                fogData.end,
+                fogData.shape);
         return true;
     }
 
@@ -116,10 +127,18 @@ public class TheAbyssFogRenderer {
         int gridZ = Mth.floor(z / TRANSITION_RANGE);
 
         float[] factors = new float[4];
-        factors[0] = calculateClearBiomeRatio(level, gridX * TRANSITION_RANGE, y, gridZ * TRANSITION_RANGE);
-        factors[1] = calculateClearBiomeRatio(level, (gridX + 1) * TRANSITION_RANGE, y, gridZ * TRANSITION_RANGE);
-        factors[2] = calculateClearBiomeRatio(level, gridX * TRANSITION_RANGE, y, (gridZ + 1) * TRANSITION_RANGE);
-        factors[3] = calculateClearBiomeRatio(level, (gridX + 1) * TRANSITION_RANGE, y, (gridZ + 1) * TRANSITION_RANGE);
+        factors[0] =
+                calculateClearBiomeRatio(
+                        level, gridX * TRANSITION_RANGE, y, gridZ * TRANSITION_RANGE);
+        factors[1] =
+                calculateClearBiomeRatio(
+                        level, (gridX + 1) * TRANSITION_RANGE, y, gridZ * TRANSITION_RANGE);
+        factors[2] =
+                calculateClearBiomeRatio(
+                        level, gridX * TRANSITION_RANGE, y, (gridZ + 1) * TRANSITION_RANGE);
+        factors[3] =
+                calculateClearBiomeRatio(
+                        level, (gridX + 1) * TRANSITION_RANGE, y, (gridZ + 1) * TRANSITION_RANGE);
 
         float dx = (float) (x - gridX * TRANSITION_RANGE) / TRANSITION_RANGE;
         float dz = (float) (z - gridZ * TRANSITION_RANGE) / TRANSITION_RANGE;

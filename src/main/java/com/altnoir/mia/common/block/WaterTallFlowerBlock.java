@@ -20,12 +20,14 @@ public class WaterTallFlowerBlock extends WaterDoublePlantBlock implements Bonem
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(
+            Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+    public void performBonemeal(
+            ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         popResource(level, pos, new ItemStack(this));
     }
 }

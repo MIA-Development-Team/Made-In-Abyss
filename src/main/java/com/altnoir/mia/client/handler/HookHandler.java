@@ -3,8 +3,8 @@ package com.altnoir.mia.client.handler;
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.client.MiaClientConfig;
 import com.altnoir.mia.common.entity.projectile.HookEntity;
-import com.altnoir.mia.init.MiaItems;
 import com.altnoir.mia.common.network.RetractHookPayload;
+import com.altnoir.mia.init.MiaItems;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -43,7 +43,9 @@ public class HookHandler {
     private static void handleJump(Player player, HookEntity hook) {
         // at开不了，等后续有缘人
         // double y = player.getJumpPower() * MiaConfig.hookJumpBoost;
-        double y = (player.getAttributeValue(Attributes.JUMP_STRENGTH) + player.getJumpBoostPower()) * MiaConfig.hookJumpBoost;
+        double y =
+                (player.getAttributeValue(Attributes.JUMP_STRENGTH) + player.getJumpBoostPower())
+                        * MiaConfig.hookJumpBoost;
         Vec3 vec3 = player.getDeltaMovement();
         player.setDeltaMovement(vec3.x, y, vec3.z);
         hook.discard();
@@ -58,7 +60,8 @@ public class HookHandler {
         // TODO 目前实现，但部分情况下不能使用，比如玩家可以乘坐但不能操控的实体就不能拉取，比如猪、没有装鞍的马
         // TODO 等一个有缘人在HookEntity里写实现，我就懒得写了
         Entity entity = player.isPassenger() ? player.getVehicle() : player;
-        if (entity.distanceToSqr(hook) < MiaConfig.hookStopPullDistance * MiaConfig.hookStopPullDistance) {
+        if (entity.distanceToSqr(hook)
+                < MiaConfig.hookStopPullDistance * MiaConfig.hookStopPullDistance) {
             // 自动回收
             if (MiaClientConfig.autoHook || hook.hookedIn != null) {
                 handleJump(player, hook);
@@ -75,7 +78,10 @@ public class HookHandler {
         }
         // 应用拉取
         Vec3 vec3 = hook.position().subtract(entity.position()).normalize().scale(velocity);
-        entity.setDeltaMovement(entity.getDeltaMovement().add(vec3.x, vec3.y + entity.getGravity() * 0.95, vec3.z).scale(0.95));
+        entity.setDeltaMovement(
+                entity.getDeltaMovement()
+                        .add(vec3.x, vec3.y + entity.getGravity() * 0.95, vec3.z)
+                        .scale(0.95));
     }
 
     private static ItemStack findHookItem(Player player) {

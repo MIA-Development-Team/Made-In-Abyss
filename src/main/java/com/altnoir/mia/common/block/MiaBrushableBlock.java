@@ -28,15 +28,26 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.Nullable;
 
 public class MiaBrushableBlock extends BaseEntityBlock {
-    public static final MapCodec<MiaBrushableBlock> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> instance.group(
-                            BuiltInRegistries.BLOCK.byNameCodec().fieldOf("turns_into").forGetter(MiaBrushableBlock::getTurnsInto),
-                            BuiltInRegistries.SOUND_EVENT.byNameCodec().fieldOf("brush_sound").forGetter(MiaBrushableBlock::getBrushSound),
-                            BuiltInRegistries.SOUND_EVENT.byNameCodec().fieldOf("brush_comleted_sound").forGetter(MiaBrushableBlock::getBrushCompletedSound),
-                            propertiesCodec()
-                    )
-                    .apply(instance, MiaBrushableBlock::new)
-    );
+    public static final MapCodec<MiaBrushableBlock> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    instance ->
+                            instance.group(
+                                            BuiltInRegistries.BLOCK
+                                                    .byNameCodec()
+                                                    .fieldOf("turns_into")
+                                                    .forGetter(MiaBrushableBlock::getTurnsInto),
+                                            BuiltInRegistries.SOUND_EVENT
+                                                    .byNameCodec()
+                                                    .fieldOf("brush_sound")
+                                                    .forGetter(MiaBrushableBlock::getBrushSound),
+                                            BuiltInRegistries.SOUND_EVENT
+                                                    .byNameCodec()
+                                                    .fieldOf("brush_comleted_sound")
+                                                    .forGetter(
+                                                            MiaBrushableBlock
+                                                                    ::getBrushCompletedSound),
+                                            propertiesCodec())
+                                    .apply(instance, MiaBrushableBlock::new));
     private static final IntegerProperty DUSTED = BlockStateProperties.DUSTED;
     public static final int TICK_DELAY = 2;
     private final Block turnsInto;
@@ -48,7 +59,11 @@ public class MiaBrushableBlock extends BaseEntityBlock {
         return CODEC;
     }
 
-    public MiaBrushableBlock(Block turnsInto, SoundEvent brushSound, SoundEvent brushCompletedSound, BlockBehaviour.Properties properties) {
+    public MiaBrushableBlock(
+            Block turnsInto,
+            SoundEvent brushSound,
+            SoundEvent brushCompletedSound,
+            BlockBehaviour.Properties properties) {
         super(properties);
         this.turnsInto = turnsInto;
         this.brushSound = brushSound;
@@ -67,12 +82,23 @@ public class MiaBrushableBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+    public void onPlace(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            BlockState oldState,
+            boolean movedByPiston) {
         level.scheduleTick(pos, this, 2);
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    protected BlockState updateShape(
+            BlockState state,
+            Direction direction,
+            BlockState neighborState,
+            LevelAccessor level,
+            BlockPos pos,
+            BlockPos neighborPos) {
         level.scheduleTick(pos, this, 2);
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
@@ -83,7 +109,8 @@ public class MiaBrushableBlock extends BaseEntityBlock {
             brushableblockentity.checkReset();
         }
 
-        if (FallingBlock.isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinBuildHeight()) {
+        if (FallingBlock.isFree(level.getBlockState(pos.below()))
+                && pos.getY() >= level.getMinBuildHeight()) {
             FallingBlockEntity fallingblockentity = FallingBlockEntity.fall(level, pos, state);
             fallingblockentity.disableDrop();
         }
@@ -97,7 +124,14 @@ public class MiaBrushableBlock extends BaseEntityBlock {
                 double d0 = (double) pos.getX() + random.nextDouble();
                 double d1 = (double) pos.getY() - 0.05;
                 double d2 = (double) pos.getZ() + random.nextDouble();
-                level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state), d0, d1, d2, 0.0, 0.0, 0.0);
+                level.addParticle(
+                        new BlockParticleOption(ParticleTypes.FALLING_DUST, state),
+                        d0,
+                        d1,
+                        d2,
+                        0.0,
+                        0.0,
+                        0.0);
             }
         }
     }

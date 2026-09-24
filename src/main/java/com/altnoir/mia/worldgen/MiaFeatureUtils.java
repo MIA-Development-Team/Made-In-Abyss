@@ -29,14 +29,17 @@ public class MiaFeatureUtils {
     }
 
     public static void register(
-            BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Feature<NoneFeatureConfiguration> feature
-    ) {
+            BootstrapContext<ConfiguredFeature<?, ?>> context,
+            ResourceKey<ConfiguredFeature<?, ?>> key,
+            Feature<NoneFeatureConfiguration> feature) {
         register(context, key, feature, FeatureConfiguration.NONE);
     }
 
     public static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(
-            BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC configuration
-    ) {
+            BootstrapContext<ConfiguredFeature<?, ?>> context,
+            ResourceKey<ConfiguredFeature<?, ?>> key,
+            F feature,
+            FC configuration) {
         context.register(key, new ConfiguredFeature<>(feature, configuration));
     }
 }

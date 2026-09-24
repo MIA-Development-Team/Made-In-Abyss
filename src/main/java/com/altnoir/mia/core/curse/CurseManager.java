@@ -8,6 +8,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.mojang.logging.LogUtils;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -18,10 +21,6 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.*;
 
 public class CurseManager extends SimpleJsonResourceReloadListener {
     private static final Gson GSON =
@@ -36,22 +35,26 @@ public class CurseManager extends SimpleJsonResourceReloadListener {
     }
 
     @Override
-    protected @NotNull Map<ResourceLocation, JsonElement> prepare(ResourceManager resourceManager, @NotNull ProfilerFiller profiler) {
+    protected @NotNull Map<ResourceLocation, JsonElement> prepare(
+            ResourceManager resourceManager, @NotNull ProfilerFiller profiler) {
         Map<ResourceLocation, JsonElement> result = new HashMap<>();
 
         for (var namespace : resourceManager.getNamespaces()) {
             var basePath = "mia/curse";
-            var resources = resourceManager.listResources(basePath, loc -> loc.getPath().endsWith(".json"));
+            var resources =
+                    resourceManager.listResources(basePath, loc -> loc.getPath().endsWith(".json"));
             for (Map.Entry<ResourceLocation, Resource> entry : resources.entrySet()) {
                 var fileLoc = entry.getKey();
                 var parts = MiaUtil.parseResourcePath(fileLoc.getPath(), basePath);
-                
+
                 if (parts == null || parts.length > 2) continue;
-                
+
                 var fixedLoc = ResourceLocation.fromNamespaceAndPath(parts[0], parts[1]);
                 var res = entry.getValue();
                 try (var stream = res.open()) {
-                    var json = GsonHelper.fromJson(GSON, new InputStreamReader(stream), JsonElement.class);
+                    var json =
+                            GsonHelper.fromJson(
+                                    GSON, new InputStreamReader(stream), JsonElement.class);
                     result.put(fixedLoc, json);
                 } catch (IOException | JsonParseException e) {
                     LOGGER.error("Failed to load curse JSON from {}", fileLoc, e);
@@ -63,12 +66,16 @@ public class CurseManager extends SimpleJsonResourceReloadListener {
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> resourceLocationJsonElementMap, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller) {
+    protected void apply(
+            Map<ResourceLocation, JsonElement> resourceLocationJsonElementMap,
+            @NotNull ResourceManager resourceManager,
+            @NotNull ProfilerFiller profilerFiller) {
         curseCache.clear();
 
         LOGGER.info("Found {} curse config files.", resourceLocationJsonElementMap.size());
 
-        for (Map.Entry<ResourceLocation, JsonElement> entry : resourceLocationJsonElementMap.entrySet()) {
+        for (Map.Entry<ResourceLocation, JsonElement> entry :
+                resourceLocationJsonElementMap.entrySet()) {
             var id = entry.getKey();
             var jsonElement = entry.getValue();
 

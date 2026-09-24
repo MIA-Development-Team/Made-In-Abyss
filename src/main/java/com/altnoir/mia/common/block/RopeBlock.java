@@ -30,13 +30,13 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
 
     public RopeBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any()
-                .setValue(WATERLOGGED, Boolean.valueOf(false))
-        );
+        this.registerDefaultState(
+                this.stateDefinition.any().setValue(WATERLOGGED, Boolean.valueOf(false)));
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
@@ -56,7 +56,10 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
         Level level = context.getLevel();
         if (!canPlaceAt(level, blockpos)) return null;
 
-        return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(level.getFluidState(blockpos).getType() == Fluids.WATER));
+        return this.defaultBlockState()
+                .setValue(
+                        WATERLOGGED,
+                        Boolean.valueOf(level.getFluidState(blockpos).getType() == Fluids.WATER));
     }
 
     @Override
@@ -81,7 +84,13 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+    protected BlockState updateShape(
+            BlockState state,
+            Direction facing,
+            BlockState facingState,
+            LevelAccessor level,
+            BlockPos currentPos,
+            BlockPos facingPos) {
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
@@ -92,13 +101,16 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getCollisionShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return Shapes.empty();
     }
 
     @Override
     protected FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED)
+                ? Fluids.WATER.getSource(false)
+                : super.getFluidState(state);
     }
 
     @Override

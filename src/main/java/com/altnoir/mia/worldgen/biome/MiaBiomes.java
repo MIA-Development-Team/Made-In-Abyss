@@ -3,13 +3,12 @@ package com.altnoir.mia.worldgen.biome;
 import com.altnoir.mia.util.MiaUtil;
 import com.altnoir.mia.worldgen.biome.great_fault.GreatFaultBiomes;
 import com.altnoir.mia.worldgen.biome.the_abyss.TheAbyssBiomes;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MiaBiomes {
     public static final List<ResourceKey<Biome>> BIOMES = new ArrayList<>();
@@ -17,14 +16,18 @@ public class MiaBiomes {
     // Layer 1
     public static final ResourceKey<Biome> THE_ABYSS = abyssEdgeKey("the_abyss");
     public static final ResourceKey<Biome> SKYFOG_FOREST = abyssEdgeKey("skyfog_forest");
-    public static final ResourceKey<Biome> DENSE_SKYFOG_FOREST = abyssEdgeKey("dense_skyfog_forest");
+    public static final ResourceKey<Biome> DENSE_SKYFOG_FOREST =
+            abyssEdgeKey("dense_skyfog_forest");
     public static final ResourceKey<Biome> FOSSILIZED_FOREST = abyssEdgeKey("fossilized_forest");
-    public static final ResourceKey<Biome> RICH_FOSSILIZED_FOREST = abyssEdgeKey("rich_fossilized_forest");
-    public static final ResourceKey<Biome> UNDER_FOSSILIZED_FOREST = abyssEdgeKey("under_fossilized_forest");
+    public static final ResourceKey<Biome> RICH_FOSSILIZED_FOREST =
+            abyssEdgeKey("rich_fossilized_forest");
+    public static final ResourceKey<Biome> UNDER_FOSSILIZED_FOREST =
+            abyssEdgeKey("under_fossilized_forest");
     public static final ResourceKey<Biome> ABYSS_PLAINS = abyssEdgeKey("abyss_plains");
     public static final ResourceKey<Biome> PRASIOLITE_CAVES = abyssEdgeKey("prasiolite_caves");
     public static final ResourceKey<Biome> ABYSS_LUSH_CAVES = abyssEdgeKey("abyss_lush_caves");
-    public static final ResourceKey<Biome> ABYSS_DRIPSTONE_CAVES = abyssEdgeKey("abyss_dripstone_caves");
+    public static final ResourceKey<Biome> ABYSS_DRIPSTONE_CAVES =
+            abyssEdgeKey("abyss_dripstone_caves");
     // Layer 2
     public static final ResourceKey<Biome> TEMPTATION_FOREST = abyssEdgeKey("temptation_forest");
     public static final ResourceKey<Biome> INVERTED_FOREST = abyssEdgeKey("inverted_forest");
@@ -52,7 +55,8 @@ public class MiaBiomes {
         register(GREAT_FAULT, GreatFaultBiomes.greatFault(context), context);
     }
 
-    private static void register(ResourceKey<Biome> key, Biome biome, BootstrapContext<Biome> context) {
+    private static void register(
+            ResourceKey<Biome> key, Biome biome, BootstrapContext<Biome> context) {
         BIOMES.add(key);
         context.register(key, biome);
     }

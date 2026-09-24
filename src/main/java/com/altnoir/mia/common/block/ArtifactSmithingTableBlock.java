@@ -1,7 +1,7 @@
 package com.altnoir.mia.common.block;
 
-import com.altnoir.mia.init.MiaStats;
 import com.altnoir.mia.common.inventory.ArtifactSmithingTableMenu;
+import com.altnoir.mia.init.MiaStats;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -17,7 +17,8 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class ArtifactSmithingTableBlock extends CraftingTableBlock {
     public static final String TITLE = "container.mia.artifact.smithing.title";
-    public static final MapCodec<ArtifactSmithingTableBlock> CODEC = simpleCodec(ArtifactSmithingTableBlock::new);
+    public static final MapCodec<ArtifactSmithingTableBlock> CODEC =
+            simpleCodec(ArtifactSmithingTableBlock::new);
 
     private static final Component CONTAINER_TITLE = Component.translatable(TITLE);
 
@@ -31,13 +32,18 @@ public class ArtifactSmithingTableBlock extends CraftingTableBlock {
 
     @Override
     protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
-        return new SimpleMenuProvider((containerId, playerInventory, player) ->
-                new ArtifactSmithingTableMenu(containerId, playerInventory, ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
+        return new SimpleMenuProvider(
+                (containerId, playerInventory, player) ->
+                        new ArtifactSmithingTableMenu(
+                                containerId,
+                                playerInventory,
+                                ContainerLevelAccess.create(level, pos)),
+                CONTAINER_TITLE);
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
-                                               BlockHitResult hitResult) {
+    protected InteractionResult useWithoutItem(
+            BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -46,5 +52,4 @@ public class ArtifactSmithingTableBlock extends CraftingTableBlock {
             return InteractionResult.CONSUME;
         }
     }
-
 }

@@ -2,6 +2,7 @@ package com.altnoir.mia.worldgen.place;
 
 import com.altnoir.mia.init.worldgen.MiaPlacements;
 import com.mojang.serialization.MapCodec;
+import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -13,12 +14,11 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
-import java.util.stream.Stream;
-
 public class InvertedCountOnEveryLayerPlacement extends PlacementModifier {
-    public static final MapCodec<InvertedCountOnEveryLayerPlacement> CODEC = IntProvider.codec(0, 256)
-            .fieldOf("count")
-            .xmap(InvertedCountOnEveryLayerPlacement::new, p_191611_ -> p_191611_.count);
+    public static final MapCodec<InvertedCountOnEveryLayerPlacement> CODEC =
+            IntProvider.codec(0, 256)
+                    .fieldOf("count")
+                    .xmap(InvertedCountOnEveryLayerPlacement::new, p_191611_ -> p_191611_.count);
     private final IntProvider count;
 
     public InvertedCountOnEveryLayerPlacement(IntProvider count) {
@@ -34,7 +34,8 @@ public class InvertedCountOnEveryLayerPlacement extends PlacementModifier {
     }
 
     @Override
-    public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos) {
+    public Stream<BlockPos> getPositions(
+            PlacementContext context, RandomSource random, BlockPos pos) {
         Stream.Builder<BlockPos> builder = Stream.builder();
         int i = 0;
 
@@ -64,7 +65,8 @@ public class InvertedCountOnEveryLayerPlacement extends PlacementModifier {
         return MiaPlacements.INVERTED_COUNT_ON_EVERY_LAYER.get();
     }
 
-    private static int findOnnCeilingYPosition(PlacementContext context, int x, int y, int z, int count) {
+    private static int findOnnCeilingYPosition(
+            PlacementContext context, int x, int y, int z, int count) {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(x, y, z);
         int i = 0;
         BlockState blockstate = context.getBlockState(blockpos$mutableblockpos);

@@ -17,7 +17,6 @@ public enum MiaColors {
     OUTPUT(0xddc166),
     ;
 
-
     private final int color;
 
     MiaColors(int color) {

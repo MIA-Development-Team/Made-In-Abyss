@@ -9,7 +9,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class MaCavePillarUtils {
-    protected static double getPillarHeight(double radius, double maxRadius, double scale, double minRadius) {
+    protected static double getPillarHeight(
+            double radius, double maxRadius, double scale, double minRadius) {
         if (radius < minRadius) {
             radius = minRadius;
         }
@@ -24,7 +25,8 @@ public class MaCavePillarUtils {
         return d5 / 0.384 * maxRadius;
     }
 
-    protected static boolean isCircleMostlyEmbeddedInStone(WorldGenLevel level, BlockPos pos, int radius) {
+    protected static boolean isCircleMostlyEmbeddedInStone(
+            WorldGenLevel level, BlockPos pos, int radius) {
         if (isEmptyOrWaterOrLava(level, pos)) {
             return false;
         } else {

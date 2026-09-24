@@ -8,6 +8,7 @@ import com.altnoir.mia.worldgen.MiaFeatureUtils;
 import com.altnoir.mia.worldgen.feature.LakeFeature;
 import com.altnoir.mia.worldgen.feature.configurations.*;
 import com.altnoir.mia.worldgen.feature.tree.MiaTreePlacements;
+import java.util.List;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -42,36 +43,56 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.material.Fluids;
 
-import java.util.List;
-
 public class TheAbyssFeatures {
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MONSTER_CHEAT = theAbyssKey("monster_cheat");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MONSTER_CHEAT =
+            theAbyssKey("monster_cheat");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SLAB_RUINS = theAbyssKey("slab_ruins");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SPRING_WATER = theAbyssKey("spring_water");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SPRING_WATER =
+            theAbyssKey("spring_water");
     public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_WATER = theAbyssKey("lake_water");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SUN_STONE = theAbyssKey("sun_stone");
     public static final ResourceKey<ConfiguredFeature<?, ?>> VINES = theAbyssKey("vines");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> GLOW_LICHEN = theAbyssKey("glow_lichen");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW = theAbyssKey("flower_meadow_layer1");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW2 = theAbyssKey("flower_meadow_layer2");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_FLOWERS = theAbyssKey("forest_flowers");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_WATERLILY = theAbyssKey("patch_waterlily");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_GLOOM_BERRY_PLANT = theAbyssKey("patch_gloom_berry_plant");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SINGLE_PIECE_OF_MARGINAL_WEED = theAbyssKey("single_piece_of_marginal_weed");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_SKYFOG = theAbyssKey("trees_skyfog");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_SKYFOG_AND_AZALEA = theAbyssKey("trees_skyfog_and_azalea");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> DENSE_TREES_SKYFOG = theAbyssKey("dense_trees_skyfog");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED = theAbyssKey("trees_fossilized");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED_UNDER = theAbyssKey("trees_fossilized_under");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED_UNDER2 = theAbyssKey("trees_fossilized_under2");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GLOW_LICHEN =
+            theAbyssKey("glow_lichen");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW =
+            theAbyssKey("flower_meadow_layer1");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW2 =
+            theAbyssKey("flower_meadow_layer2");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_FLOWERS =
+            theAbyssKey("forest_flowers");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_WATERLILY =
+            theAbyssKey("patch_waterlily");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_GLOOM_BERRY_PLANT =
+            theAbyssKey("patch_gloom_berry_plant");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SINGLE_PIECE_OF_MARGINAL_WEED =
+            theAbyssKey("single_piece_of_marginal_weed");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_SKYFOG =
+            theAbyssKey("trees_skyfog");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_SKYFOG_AND_AZALEA =
+            theAbyssKey("trees_skyfog_and_azalea");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> DENSE_TREES_SKYFOG =
+            theAbyssKey("dense_trees_skyfog");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED =
+            theAbyssKey("trees_fossilized");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED_UNDER =
+            theAbyssKey("trees_fossilized_under");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED_UNDER2 =
+            theAbyssKey("trees_fossilized_under2");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_REED = theAbyssKey("patch_reed");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> POOL_WITH_REED = theAbyssKey("pool_with_reed");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_VERDANT_FUNGUS = theAbyssKey("trees_verdant_fungus");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_INVERTED = theAbyssKey("trees_inverted");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_CLUSTER = theAbyssKey("prasiolite_cluster");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> BIG_PRASIOLITE_CLUSTER = theAbyssKey("big_prasiolite_cluster");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_GEODE = theAbyssKey("prasiolite_geode");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> CAVE_PILLAR = theAbyssKey("cave_pillar");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> POOL_WITH_REED =
+            theAbyssKey("pool_with_reed");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_VERDANT_FUNGUS =
+            theAbyssKey("trees_verdant_fungus");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_INVERTED =
+            theAbyssKey("trees_inverted");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_CLUSTER =
+            theAbyssKey("prasiolite_cluster");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> BIG_PRASIOLITE_CLUSTER =
+            theAbyssKey("big_prasiolite_cluster");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PRASIOLITE_GEODE =
+            theAbyssKey("prasiolite_geode");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> CAVE_PILLAR =
+            theAbyssKey("cave_pillar");
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAW_IRON = theAbyssKey("raw_iron");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_DIRT = theAbyssKey("ore_dirt");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_GRAVEL = theAbyssKey("ore_gravel");
@@ -79,72 +100,102 @@ public class TheAbyssFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_COPPER = theAbyssKey("ore_copper");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_GOLD = theAbyssKey("ore_gold");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_LAPIS = theAbyssKey("ore_lapis");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_REDSTONE = theAbyssKey("ore_redstone");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_DIAMOND = theAbyssKey("ore_diamond");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_EMERALD = theAbyssKey("ore_emerald");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_REDSTONE =
+            theAbyssKey("ore_redstone");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_DIAMOND =
+            theAbyssKey("ore_diamond");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_EMERALD =
+            theAbyssKey("ore_emerald");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_QUARTZ = theAbyssKey("ore_quartz");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_CHLOROPHYTE = theAbyssKey("ore_chlorophyte");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_CHLOROPHYTE =
+            theAbyssKey("ore_chlorophyte");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
+        HolderGetter<ConfiguredFeature<?, ?>> holdergetter =
+                context.lookup(Registries.CONFIGURED_FEATURE);
         HolderGetter<PlacedFeature> holdergetter1 = context.lookup(Registries.PLACED_FEATURE);
 
         Holder<PlacedFeature> azalea = holdergetter1.getOrThrow(MiaTreePlacements.AZALEA_CHECKED);
         Holder<PlacedFeature> skyfog_bee = holdergetter1.getOrThrow(MiaTreePlacements.SKYFOG_BEES);
-        Holder<PlacedFeature> fancy_skyfog_bee = holdergetter1.getOrThrow(MiaTreePlacements.FANCY_SKYFOG_BEES_002);
+        Holder<PlacedFeature> fancy_skyfog_bee =
+                holdergetter1.getOrThrow(MiaTreePlacements.FANCY_SKYFOG_BEES_002);
         Holder<PlacedFeature> maga_skyfog = holdergetter1.getOrThrow(MiaTreePlacements.MEGA_SKYFOG);
         Holder<PlacedFeature> skyfog_bush = holdergetter1.getOrThrow(MiaTreePlacements.SKYFOG_BUSH);
-        Holder<PlacedFeature> verdant_fungus = holdergetter1.getOrThrow(MiaTreePlacements.VERDANT_FUNGUS);
+        Holder<PlacedFeature> verdant_fungus =
+                holdergetter1.getOrThrow(MiaTreePlacements.VERDANT_FUNGUS);
         Holder<PlacedFeature> inverted = holdergetter1.getOrThrow(MiaTreePlacements.INVERTED);
-        Holder<PlacedFeature> maga_inverted = holdergetter1.getOrThrow(MiaTreePlacements.MAGA_INVERTED);
+        Holder<PlacedFeature> maga_inverted =
+                holdergetter1.getOrThrow(MiaTreePlacements.MAGA_INVERTED);
 
         FeatureUtils.register(
-                context, MONSTER_CHEAT, MiaFeatures.MONSTER_CHEAT.get(),
+                context,
+                MONSTER_CHEAT,
+                MiaFeatures.MONSTER_CHEAT.get(),
                 new MonsterCheatConfiguration(
                         BlockStateProvider.simple(MiaBlocks.SKYFOG_LOG.get().defaultBlockState()),
-                        BlockStateProvider.simple(MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS.get().defaultBlockState().setValue(BlockStateProperties.DISTANCE, 1)))
-        );
+                        BlockStateProvider.simple(
+                                MiaBlocks.SKYFOG_LEAVES_WITH_FRUITS
+                                        .get()
+                                        .defaultBlockState()
+                                        .setValue(BlockStateProperties.DISTANCE, 1))));
         FeatureUtils.register(
-                context, SLAB_RUINS, MiaFeatures.SLAB_RUINS.get(),
+                context,
+                SLAB_RUINS,
+                MiaFeatures.SLAB_RUINS.get(),
                 new SlabRuinsConfiguration(
                         new WeightedStateProvider(
                                 SimpleWeightedRandomList.<BlockState>builder()
-                                        .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB.get().defaultBlockState())
-                                        .add(MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB.get().defaultBlockState())
+                                        .add(
+                                                MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB
+                                                        .get()
+                                                        .defaultBlockState())
+                                        .add(
+                                                MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB
+                                                        .get()
+                                                        .defaultBlockState())
                                         .build()),
                         new WeightedStateProvider(
                                 SimpleWeightedRandomList.<BlockState>builder()
-                                        .add(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS.get().defaultBlockState())
-                                        .add(MiaBlocks.ABYSS_ANDESITE_BRICKS.get().defaultBlockState())
-                                        .build())
-                )
-        );
+                                        .add(
+                                                MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS
+                                                        .get()
+                                                        .defaultBlockState())
+                                        .add(
+                                                MiaBlocks.ABYSS_ANDESITE_BRICKS
+                                                        .get()
+                                                        .defaultBlockState())
+                                        .build())));
 
         MiaFeatureUtils.register(
-                context, SPRING_WATER, Feature.SPRING,
+                context,
+                SPRING_WATER,
+                Feature.SPRING,
                 new SpringConfiguration(
-                        Fluids.WATER.defaultFluidState(),
-                        true,
-                        4,
-                        1,
-                        abyssEdgeStone()
-                )
-        );
+                        Fluids.WATER.defaultFluidState(), true, 4, 1, abyssEdgeStone()));
         MiaFeatureUtils.register(
-                context, LAKE_WATER, MiaFeatures.LAKE.get(),
+                context,
+                LAKE_WATER,
+                MiaFeatures.LAKE.get(),
                 new LakeFeature.Configuration(
-                        BlockStateProvider.simple(Blocks.WATER.defaultBlockState()), BlockStateProvider.simple(Blocks.SAND.defaultBlockState())
-                )
-        );
+                        BlockStateProvider.simple(Blocks.WATER.defaultBlockState()),
+                        BlockStateProvider.simple(Blocks.SAND.defaultBlockState())));
         MiaFeatureUtils.register(
-                context, SUN_STONE, Feature.SIMPLE_BLOCK,
-                new SimpleBlockConfiguration(BlockStateProvider.simple(MiaBlocks.SUN_STONE.get().defaultBlockState()))
-        );
-        MiaFeatureUtils.register(context, VINES, MiaFeatures.LONG_VINES.get(), new LongVinesConfiguration(UniformInt.of(4, 16)));
+                context,
+                SUN_STONE,
+                Feature.SIMPLE_BLOCK,
+                new SimpleBlockConfiguration(
+                        BlockStateProvider.simple(MiaBlocks.SUN_STONE.get().defaultBlockState())));
+        MiaFeatureUtils.register(
+                context,
+                VINES,
+                MiaFeatures.LONG_VINES.get(),
+                new LongVinesConfiguration(UniformInt.of(4, 16)));
 
         MultifaceBlock multifaceblock = (MultifaceBlock) Blocks.GLOW_LICHEN;
         MiaFeatureUtils.register(
-                context, GLOW_LICHEN, Feature.MULTIFACE_GROWTH,
+                context,
+                GLOW_LICHEN,
+                Feature.MULTIFACE_GROWTH,
                 new MultifaceGrowthConfiguration(
                         multifaceblock,
                         32,
@@ -152,12 +203,14 @@ public class TheAbyssFeatures {
                         true,
                         true,
                         0.8F,
-                        abyssEdgeStone(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(), MiaBlocks.COVERGRASS_TUFF.get())
-                )
-        );
+                        abyssEdgeStone(
+                                MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(),
+                                MiaBlocks.COVERGRASS_TUFF.get())));
 
         MiaFeatureUtils.register(
-                context, FLOWER_MEADOW, Feature.FLOWER,
+                context,
+                FLOWER_MEADOW,
+                Feature.FLOWER,
                 new RandomPatchConfiguration(
                         96,
                         6,
@@ -174,20 +227,26 @@ public class TheAbyssFeatures {
                                                 1.0F,
                                                 List.of(
                                                         Blocks.BIG_DRIPLEAF.defaultBlockState(),
-                                                        MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
-                                                        MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
-                                                        MiaBlocks.GREEN_PERILLA.get().defaultBlockState(),
-                                                        MiaBlocks.SCORCHLEAF.get().defaultBlockState(),
+                                                        MiaBlocks.BALLOON_PLANT
+                                                                .get()
+                                                                .defaultBlockState(),
+                                                        MiaBlocks.LANTERN_PLANT
+                                                                .get()
+                                                                .defaultBlockState(),
+                                                        MiaBlocks.GREEN_PERILLA
+                                                                .get()
+                                                                .defaultBlockState(),
+                                                        MiaBlocks.SCORCHLEAF
+                                                                .get()
+                                                                .defaultBlockState(),
                                                         Blocks.TORCHFLOWER.defaultBlockState(),
-                                                        MiaBlocks.MARGINAL_WEED.get().defaultBlockState()
-                                                )
-                                        )
-                                )
-                        )
-                )
-        );
+                                                        MiaBlocks.MARGINAL_WEED
+                                                                .get()
+                                                                .defaultBlockState()))))));
         MiaFeatureUtils.register(
-                context, FLOWER_MEADOW2, Feature.FLOWER,
+                context,
+                FLOWER_MEADOW2,
+                Feature.FLOWER,
                 new RandomPatchConfiguration(
                         96,
                         6,
@@ -204,145 +263,273 @@ public class TheAbyssFeatures {
                                                 1.0F,
                                                 List.of(
                                                         Blocks.BIG_DRIPLEAF.defaultBlockState(),
-                                                        MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
-                                                        MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
-                                                        MiaBlocks.SILVEAF_FUNGUS.get().defaultBlockState(),
-                                                        MiaBlocks.KONJAC_ROOT.get().defaultBlockState(),
-                                                        MiaBlocks.CRIMSON_VEILGRASS.get().defaultBlockState()
-                                                )
-                                        )
-                                )
-                        )
-                )
-        );
+                                                        MiaBlocks.BALLOON_PLANT
+                                                                .get()
+                                                                .defaultBlockState(),
+                                                        MiaBlocks.LANTERN_PLANT
+                                                                .get()
+                                                                .defaultBlockState(),
+                                                        MiaBlocks.SILVEAF_FUNGUS
+                                                                .get()
+                                                                .defaultBlockState(),
+                                                        MiaBlocks.KONJAC_ROOT
+                                                                .get()
+                                                                .defaultBlockState(),
+                                                        MiaBlocks.CRIMSON_VEILGRASS
+                                                                .get()
+                                                                .defaultBlockState()))))));
 
         SimpleWeightedRandomList.Builder<BlockState> builder = SimpleWeightedRandomList.builder();
         for (int i = 1; i <= 4; i++) {
             for (Direction direction : Direction.Plane.HORIZONTAL) {
                 builder.add(
-                        MiaBlocks.FORTITUDE_FLOWER.get().defaultBlockState().setValue(PinkPetalsBlock.AMOUNT, Integer.valueOf(i)).setValue(PinkPetalsBlock.FACING, direction), 1
-                );
+                        MiaBlocks.FORTITUDE_FLOWER
+                                .get()
+                                .defaultBlockState()
+                                .setValue(PinkPetalsBlock.AMOUNT, Integer.valueOf(i))
+                                .setValue(PinkPetalsBlock.FACING, direction),
+                        1);
             }
         }
         MiaFeatureUtils.register(
-                context, FOREST_FLOWERS, Feature.FLOWER,
+                context,
+                FOREST_FLOWERS,
+                Feature.FLOWER,
                 new RandomPatchConfiguration(
-                        96, 6, 2,
-                        PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(new WeightedStateProvider(builder)))
-                )
-        );
+                        96,
+                        6,
+                        2,
+                        PlacementUtils.onlyWhenEmpty(
+                                Feature.SIMPLE_BLOCK,
+                                new SimpleBlockConfiguration(new WeightedStateProvider(builder)))));
         MiaFeatureUtils.register(
-                context, PATCH_WATERLILY, Feature.RANDOM_PATCH,
+                context,
+                PATCH_WATERLILY,
+                Feature.RANDOM_PATCH,
                 new RandomPatchConfiguration(
-                        96, 7, 3,
-                        PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.LILY_PAD)))
-                )
-        );
+                        96,
+                        7,
+                        3,
+                        PlacementUtils.onlyWhenEmpty(
+                                Feature.SIMPLE_BLOCK,
+                                new SimpleBlockConfiguration(
+                                        BlockStateProvider.simple(Blocks.LILY_PAD)))));
         MiaFeatureUtils.register(
-                context, PATCH_GLOOM_BERRY_PLANT, Feature.RANDOM_PATCH,
+                context,
+                PATCH_GLOOM_BERRY_PLANT,
+                Feature.RANDOM_PATCH,
                 new RandomPatchConfiguration(
-                        5, 7, 3,
+                        5,
+                        7,
+                        3,
                         PlacementUtils.inlinePlaced(
                                 Feature.BLOCK_COLUMN,
                                 new BlockColumnConfiguration(
                                         List.of(
                                                 BlockColumnConfiguration.layer(
                                                         ConstantInt.of(1),
-                                                        BlockStateProvider.simple(MiaBlocks.GLOOM_BERRY_PLANT.get().defaultBlockState()
-                                                                .setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER)
-                                                                .setValue(DoubleBerryblock.AGE, DoubleBerryblock.MAX_AGE))
-                                                ),
+                                                        BlockStateProvider.simple(
+                                                                MiaBlocks.GLOOM_BERRY_PLANT
+                                                                        .get()
+                                                                        .defaultBlockState()
+                                                                        .setValue(
+                                                                                BlockStateProperties
+                                                                                        .DOUBLE_BLOCK_HALF,
+                                                                                DoubleBlockHalf
+                                                                                        .LOWER)
+                                                                        .setValue(
+                                                                                DoubleBerryblock
+                                                                                        .AGE,
+                                                                                DoubleBerryblock
+                                                                                        .MAX_AGE))),
                                                 BlockColumnConfiguration.layer(
                                                         ConstantInt.of(1),
-                                                        BlockStateProvider.simple(MiaBlocks.GLOOM_BERRY_PLANT.get().defaultBlockState()
-                                                                .setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER)
-                                                                .setValue(DoubleBerryblock.AGE, DoubleBerryblock.MAX_AGE))
-                                                )
-                                        ),
+                                                        BlockStateProvider.simple(
+                                                                MiaBlocks.GLOOM_BERRY_PLANT
+                                                                        .get()
+                                                                        .defaultBlockState()
+                                                                        .setValue(
+                                                                                BlockStateProperties
+                                                                                        .DOUBLE_BLOCK_HALF,
+                                                                                DoubleBlockHalf
+                                                                                        .UPPER)
+                                                                        .setValue(
+                                                                                DoubleBerryblock
+                                                                                        .AGE,
+                                                                                DoubleBerryblock
+                                                                                        .MAX_AGE)))),
                                         Direction.UP,
                                         BlockPredicate.ONLY_IN_AIR_PREDICATE,
-                                        true
-                                ),
+                                        true),
                                 BlockPredicateFilter.forPredicate(
                                         BlockPredicate.allOf(
-                                                BlockPredicate.ONLY_IN_AIR_PREDICATE, BlockPredicate.wouldSurvive(MiaBlocks.GLOOM_BERRY_PLANT.get().defaultBlockState(), BlockPos.ZERO)
-                                        )
-                                )
-                        ))
-        );
-        MiaFeatureUtils.register(context, SINGLE_PIECE_OF_MARGINAL_WEED, Feature.SIMPLE_BLOCK,
-                new SimpleBlockConfiguration(BlockStateProvider.simple(MiaBlocks.MARGINAL_WEED.get().defaultBlockState()))
-        );
+                                                BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                                BlockPredicate.wouldSurvive(
+                                                        MiaBlocks.GLOOM_BERRY_PLANT
+                                                                .get()
+                                                                .defaultBlockState(),
+                                                        BlockPos.ZERO))))));
+        MiaFeatureUtils.register(
+                context,
+                SINGLE_PIECE_OF_MARGINAL_WEED,
+                Feature.SIMPLE_BLOCK,
+                new SimpleBlockConfiguration(
+                        BlockStateProvider.simple(
+                                MiaBlocks.MARGINAL_WEED.get().defaultBlockState())));
 
         MiaFeatureUtils.register(
-                context, RAW_IRON, Feature.BLOCK_PILE,
+                context,
+                RAW_IRON,
+                Feature.BLOCK_PILE,
                 new BlockPileConfiguration(
                         new WeightedStateProvider(
                                 SimpleWeightedRandomList.<BlockState>builder()
                                         .add(Blocks.RAW_IRON_BLOCK.defaultBlockState(), 2)
-                                        .add(MiaBlocks.ABYSS_COBBLED_ANDESITE.get().defaultBlockState(), 1)
-                                        .add(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE.get().defaultBlockState(), 1)
-                                        .build()
-                        )
-                )
-        );
+                                        .add(
+                                                MiaBlocks.ABYSS_COBBLED_ANDESITE
+                                                        .get()
+                                                        .defaultBlockState(),
+                                                1)
+                                        .add(
+                                                MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE
+                                                        .get()
+                                                        .defaultBlockState(),
+                                                1)
+                                        .build())));
         RuleTest oreRule = new TagMatchTest(MiaTags.Blocks.ABYSS_ANDESITE_ORE_REPLACEABLES);
-        MiaFeatureUtils.register(context, ORE_DIRT, Feature.ORE, new OreConfiguration(oreRule, Blocks.DIRT.defaultBlockState(), 33, 1.0F));
-        MiaFeatureUtils.register(context, ORE_GRAVEL, Feature.ORE, new OreConfiguration(oreRule, Blocks.GRAVEL.defaultBlockState(), 33));
-        MiaFeatureUtils.register(context, ORE_IRON, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_IRON_ORE.get().defaultBlockState(), 4));
-        MiaFeatureUtils.register(context, ORE_COPPER, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_COPPER_ORE.get().defaultBlockState(), 6));
-        MiaFeatureUtils.register(context, ORE_GOLD, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_GOLD_ORE.get().defaultBlockState(), 9, 0.5F));
-        MiaFeatureUtils.register(context, ORE_LAPIS, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_LAPIS_ORE.get().defaultBlockState(), 10, 1.0F));
-        MiaFeatureUtils.register(context, ORE_REDSTONE, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_REDSTONE_ORE.get().defaultBlockState(), 12, 1.0F));
-        MiaFeatureUtils.register(context, ORE_DIAMOND, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_DIAMOND_ORE.get().defaultBlockState(), 12));
-        MiaFeatureUtils.register(context, ORE_EMERALD, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_EMERALD_ORE.get().defaultBlockState(), 4));
-        MiaFeatureUtils.register(context, ORE_QUARTZ, Feature.ORE, new OreConfiguration(oreRule, MiaBlocks.ABYSS_QUARTZ_ORE.get().defaultBlockState(), 12));
+        MiaFeatureUtils.register(
+                context,
+                ORE_DIRT,
+                Feature.ORE,
+                new OreConfiguration(oreRule, Blocks.DIRT.defaultBlockState(), 33, 1.0F));
+        MiaFeatureUtils.register(
+                context,
+                ORE_GRAVEL,
+                Feature.ORE,
+                new OreConfiguration(oreRule, Blocks.GRAVEL.defaultBlockState(), 33));
+        MiaFeatureUtils.register(
+                context,
+                ORE_IRON,
+                Feature.ORE,
+                new OreConfiguration(
+                        oreRule, MiaBlocks.ABYSS_IRON_ORE.get().defaultBlockState(), 4));
+        MiaFeatureUtils.register(
+                context,
+                ORE_COPPER,
+                Feature.ORE,
+                new OreConfiguration(
+                        oreRule, MiaBlocks.ABYSS_COPPER_ORE.get().defaultBlockState(), 6));
+        MiaFeatureUtils.register(
+                context,
+                ORE_GOLD,
+                Feature.ORE,
+                new OreConfiguration(
+                        oreRule, MiaBlocks.ABYSS_GOLD_ORE.get().defaultBlockState(), 9, 0.5F));
+        MiaFeatureUtils.register(
+                context,
+                ORE_LAPIS,
+                Feature.ORE,
+                new OreConfiguration(
+                        oreRule, MiaBlocks.ABYSS_LAPIS_ORE.get().defaultBlockState(), 10, 1.0F));
+        MiaFeatureUtils.register(
+                context,
+                ORE_REDSTONE,
+                Feature.ORE,
+                new OreConfiguration(
+                        oreRule, MiaBlocks.ABYSS_REDSTONE_ORE.get().defaultBlockState(), 12, 1.0F));
+        MiaFeatureUtils.register(
+                context,
+                ORE_DIAMOND,
+                Feature.ORE,
+                new OreConfiguration(
+                        oreRule, MiaBlocks.ABYSS_DIAMOND_ORE.get().defaultBlockState(), 12));
+        MiaFeatureUtils.register(
+                context,
+                ORE_EMERALD,
+                Feature.ORE,
+                new OreConfiguration(
+                        oreRule, MiaBlocks.ABYSS_EMERALD_ORE.get().defaultBlockState(), 4));
+        MiaFeatureUtils.register(
+                context,
+                ORE_QUARTZ,
+                Feature.ORE,
+                new OreConfiguration(
+                        oreRule, MiaBlocks.ABYSS_QUARTZ_ORE.get().defaultBlockState(), 12));
         RuleTest mudOreRule = new TagMatchTest(MiaTags.Blocks.ABYSS_MUD_ORE_REPLACEABLES);
-        MiaFeatureUtils.register(context, ORE_CHLOROPHYTE, Feature.ORE, new OreConfiguration(mudOreRule, MiaBlocks.ABYSS_CHLOROPHYTE_ORE.get().defaultBlockState(), 6));
+        MiaFeatureUtils.register(
+                context,
+                ORE_CHLOROPHYTE,
+                Feature.ORE,
+                new OreConfiguration(
+                        mudOreRule, MiaBlocks.ABYSS_CHLOROPHYTE_ORE.get().defaultBlockState(), 6));
 
         MiaFeatureUtils.register(
-                context, TREES_SKYFOG, Feature.RANDOM_SELECTOR,
-                new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(skyfog_bee, 0.3F)), fancy_skyfog_bee)
-        );
+                context,
+                TREES_SKYFOG,
+                Feature.RANDOM_SELECTOR,
+                new RandomFeatureConfiguration(
+                        List.of(new WeightedPlacedFeature(skyfog_bee, 0.3F)), fancy_skyfog_bee));
         MiaFeatureUtils.register(
-                context, TREES_SKYFOG_AND_AZALEA, Feature.RANDOM_SELECTOR,
-                new RandomFeatureConfiguration(List.of(
-                        new WeightedPlacedFeature(maga_skyfog, 0.075F),
-                        new WeightedPlacedFeature(azalea, 0.1F),
-                        new WeightedPlacedFeature(skyfog_bee, 0.5F)
-                ), fancy_skyfog_bee)
-        );
+                context,
+                TREES_SKYFOG_AND_AZALEA,
+                Feature.RANDOM_SELECTOR,
+                new RandomFeatureConfiguration(
+                        List.of(
+                                new WeightedPlacedFeature(maga_skyfog, 0.075F),
+                                new WeightedPlacedFeature(azalea, 0.1F),
+                                new WeightedPlacedFeature(skyfog_bee, 0.5F)),
+                        fancy_skyfog_bee));
         MiaFeatureUtils.register(
-                context, DENSE_TREES_SKYFOG, Feature.RANDOM_SELECTOR,
-                new RandomFeatureConfiguration(List.of(
-                        new WeightedPlacedFeature(maga_skyfog, 0.33333334F),
-                        new WeightedPlacedFeature(skyfog_bush, 0.5F),
-                        new WeightedPlacedFeature(fancy_skyfog_bee, 0.1F)
-                ), skyfog_bee)
-        );
-        MiaFeatureUtils.register(context, TREES_FOSSILIZED, Feature.SIMPLE_RANDOM_SELECTOR,
+                context,
+                DENSE_TREES_SKYFOG,
+                Feature.RANDOM_SELECTOR,
+                new RandomFeatureConfiguration(
+                        List.of(
+                                new WeightedPlacedFeature(maga_skyfog, 0.33333334F),
+                                new WeightedPlacedFeature(skyfog_bush, 0.5F),
+                                new WeightedPlacedFeature(fancy_skyfog_bee, 0.1F)),
+                        skyfog_bee));
+        MiaFeatureUtils.register(
+                context,
+                TREES_FOSSILIZED,
+                Feature.SIMPLE_RANDOM_SELECTOR,
                 new SimpleRandomFeatureConfiguration(
                         HolderSet.direct(
-                                makeSmallPillar(MiaBlocks.FOSSILIZED_LOG.get(), MiaBlocks.MOSSY_FOSSILIZED_LOG.get(), Blocks.MOSS_CARPET, 2, Direction.UP)
-                        )
-                )
-        );
-        MiaFeatureUtils.register(context, TREES_FOSSILIZED_UNDER, Feature.SIMPLE_RANDOM_SELECTOR,
+                                makeSmallPillar(
+                                        MiaBlocks.FOSSILIZED_LOG.get(),
+                                        MiaBlocks.MOSSY_FOSSILIZED_LOG.get(),
+                                        Blocks.MOSS_CARPET,
+                                        2,
+                                        Direction.UP))));
+        MiaFeatureUtils.register(
+                context,
+                TREES_FOSSILIZED_UNDER,
+                Feature.SIMPLE_RANDOM_SELECTOR,
                 new SimpleRandomFeatureConfiguration(
                         HolderSet.direct(
-                                makeSmallPillar(MiaBlocks.FOSSILIZED_LOG.get(), MiaBlocks.MOSSY_FOSSILIZED_LOG.get(), Blocks.MOSS_CARPET, 8, Direction.UP)
-                        )
-                )
-        );
-        MiaFeatureUtils.register(context, TREES_FOSSILIZED_UNDER2, Feature.SIMPLE_RANDOM_SELECTOR,
+                                makeSmallPillar(
+                                        MiaBlocks.FOSSILIZED_LOG.get(),
+                                        MiaBlocks.MOSSY_FOSSILIZED_LOG.get(),
+                                        Blocks.MOSS_CARPET,
+                                        8,
+                                        Direction.UP))));
+        MiaFeatureUtils.register(
+                context,
+                TREES_FOSSILIZED_UNDER2,
+                Feature.SIMPLE_RANDOM_SELECTOR,
                 new SimpleRandomFeatureConfiguration(
                         HolderSet.direct(
-                                makeSmallPillar(MiaBlocks.FOSSILIZED_LOG.get(), MiaBlocks.MOSSY_FOSSILIZED_LOG.get(), Blocks.MOSS_CARPET, 8, Direction.DOWN)
-                        )
-                )
-        );
+                                makeSmallPillar(
+                                        MiaBlocks.FOSSILIZED_LOG.get(),
+                                        MiaBlocks.MOSSY_FOSSILIZED_LOG.get(),
+                                        Blocks.MOSS_CARPET,
+                                        8,
+                                        Direction.DOWN))));
 
-        MiaFeatureUtils.register(context, PATCH_REED, Feature.SIMPLE_RANDOM_SELECTOR,
+        MiaFeatureUtils.register(
+                context,
+                PATCH_REED,
+                Feature.SIMPLE_RANDOM_SELECTOR,
                 new SimpleRandomFeatureConfiguration(
                         HolderSet.direct(
                                 PlacementUtils.inlinePlaced(
@@ -351,22 +538,33 @@ public class TheAbyssFeatures {
                                                 List.of(
                                                         BlockColumnConfiguration.layer(
                                                                 ConstantInt.of(1),
-                                                                BlockStateProvider.simple(MiaBlocks.REED.get().defaultBlockState().setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER))
-                                                        ),
+                                                                BlockStateProvider.simple(
+                                                                        MiaBlocks.REED
+                                                                                .get()
+                                                                                .defaultBlockState()
+                                                                                .setValue(
+                                                                                        BlockStateProperties
+                                                                                                .DOUBLE_BLOCK_HALF,
+                                                                                        DoubleBlockHalf
+                                                                                                .LOWER))),
                                                         BlockColumnConfiguration.layer(
                                                                 ConstantInt.of(1),
-                                                                BlockStateProvider.simple(MiaBlocks.REED.get().defaultBlockState().setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER))
-                                                        )
-                                                ),
+                                                                BlockStateProvider.simple(
+                                                                        MiaBlocks.REED
+                                                                                .get()
+                                                                                .defaultBlockState()
+                                                                                .setValue(
+                                                                                        BlockStateProperties
+                                                                                                .DOUBLE_BLOCK_HALF,
+                                                                                        DoubleBlockHalf
+                                                                                                .UPPER)))),
                                                 Direction.UP,
                                                 BlockPredicate.ONLY_IN_AIR_OR_WATER_PREDICATE,
-                                                true
-                                        )
-                                )
-                        )
-                )
-        );
-        MiaFeatureUtils.register(context, POOL_WITH_REED, Feature.WATERLOGGED_VEGETATION_PATCH,
+                                                true)))));
+        MiaFeatureUtils.register(
+                context,
+                POOL_WITH_REED,
+                Feature.WATERLOGGED_VEGETATION_PATCH,
                 new VegetationPatchConfiguration(
                         BlockTags.MOSS_REPLACEABLE,
                         BlockStateProvider.simple(Blocks.MOSS_BLOCK),
@@ -377,58 +575,85 @@ public class TheAbyssFeatures {
                         5,
                         0.5F,
                         UniformInt.of(4, 9),
-                        0.1F
-                )
-        );
+                        0.1F));
         MiaFeatureUtils.register(
-                context, TREES_VERDANT_FUNGUS, Feature.RANDOM_SELECTOR,
-                new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(fancy_skyfog_bee, 0.1F)), verdant_fungus)
-        );
+                context,
+                TREES_VERDANT_FUNGUS,
+                Feature.RANDOM_SELECTOR,
+                new RandomFeatureConfiguration(
+                        List.of(new WeightedPlacedFeature(fancy_skyfog_bee, 0.1F)),
+                        verdant_fungus));
 
         MiaFeatureUtils.register(
-                context, TREES_INVERTED, Feature.RANDOM_SELECTOR,
-                new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(maga_inverted, 0.2F)), inverted)
-        );
+                context,
+                TREES_INVERTED,
+                Feature.RANDOM_SELECTOR,
+                new RandomFeatureConfiguration(
+                        List.of(new WeightedPlacedFeature(maga_inverted, 0.2F)), inverted));
 
-        WeightedStateProvider prasiolite1 = new WeightedStateProvider(createPrasioliteStates(false).build());
-        WeightedStateProvider prasiolite2 = new WeightedStateProvider(createPrasioliteStates(true).build());
+        WeightedStateProvider prasiolite1 =
+                new WeightedStateProvider(createPrasioliteStates(false).build());
+        WeightedStateProvider prasiolite2 =
+                new WeightedStateProvider(createPrasioliteStates(true).build());
         MiaFeatureUtils.register(
-                context, PRASIOLITE_CLUSTER, Feature.SIMPLE_RANDOM_SELECTOR,
+                context,
+                PRASIOLITE_CLUSTER,
+                Feature.SIMPLE_RANDOM_SELECTOR,
                 new SimpleRandomFeatureConfiguration(
                         HolderSet.direct(
                                 PlacementUtils.inlinePlaced(
                                         MiaFeatures.CLUSTER.get(),
                                         new ClusterConfiguration(
-                                                BlockStateProvider.simple(MiaBlocks.PRASIOLITE_BLOCK.get().defaultBlockState()),
-                                                prasiolite1, prasiolite2,
-                                                0.5F, UniformInt.of(1, 2), ConstantInt.of(1)
-                                        ),
-                                        EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.ONLY_IN_AIR_OR_WATER_PREDICATE, 12),
-                                        RandomOffsetPlacement.vertical(ConstantInt.of(1))
-                                ),
+                                                BlockStateProvider.simple(
+                                                        MiaBlocks.PRASIOLITE_BLOCK
+                                                                .get()
+                                                                .defaultBlockState()),
+                                                prasiolite1,
+                                                prasiolite2,
+                                                0.5F,
+                                                UniformInt.of(1, 2),
+                                                ConstantInt.of(1)),
+                                        EnvironmentScanPlacement.scanningFor(
+                                                Direction.DOWN,
+                                                BlockPredicate.solid(),
+                                                BlockPredicate.ONLY_IN_AIR_OR_WATER_PREDICATE,
+                                                12),
+                                        RandomOffsetPlacement.vertical(ConstantInt.of(1))),
                                 PlacementUtils.inlinePlaced(
                                         MiaFeatures.CLUSTER.get(),
                                         new ClusterConfiguration(
-                                                BlockStateProvider.simple(MiaBlocks.PRASIOLITE_BLOCK.get().defaultBlockState()),
-                                                prasiolite1, prasiolite2,
-                                                0.5F, UniformInt.of(1, 2), ConstantInt.of(1)
-                                        ),
-                                        EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.solid(), BlockPredicate.ONLY_IN_AIR_OR_WATER_PREDICATE, 12),
-                                        RandomOffsetPlacement.vertical(ConstantInt.of(-1))
-                                )
-                        )
-                )
-        );
+                                                BlockStateProvider.simple(
+                                                        MiaBlocks.PRASIOLITE_BLOCK
+                                                                .get()
+                                                                .defaultBlockState()),
+                                                prasiolite1,
+                                                prasiolite2,
+                                                0.5F,
+                                                UniformInt.of(1, 2),
+                                                ConstantInt.of(1)),
+                                        EnvironmentScanPlacement.scanningFor(
+                                                Direction.UP,
+                                                BlockPredicate.solid(),
+                                                BlockPredicate.ONLY_IN_AIR_OR_WATER_PREDICATE,
+                                                12),
+                                        RandomOffsetPlacement.vertical(ConstantInt.of(-1))))));
         MiaFeatureUtils.register(
-                context, BIG_PRASIOLITE_CLUSTER, MiaFeatures.BIG_CLUSTER.get(),
+                context,
+                BIG_PRASIOLITE_CLUSTER,
+                MiaFeatures.BIG_CLUSTER.get(),
                 new ClusterConfiguration(
-                        BlockStateProvider.simple(MiaBlocks.PRASIOLITE_BLOCK.get().defaultBlockState()),
-                        prasiolite1, prasiolite2,
-                        0.5F, UniformInt.of(1, 5), UniformInt.of(16, 32))
-        );
+                        BlockStateProvider.simple(
+                                MiaBlocks.PRASIOLITE_BLOCK.get().defaultBlockState()),
+                        prasiolite1,
+                        prasiolite2,
+                        0.5F,
+                        UniformInt.of(1, 5),
+                        UniformInt.of(16, 32)));
 
         MiaFeatureUtils.register(
-                context, PRASIOLITE_GEODE, Feature.GEODE,
+                context,
+                PRASIOLITE_GEODE,
+                Feature.GEODE,
                 new GeodeConfiguration(
                         new GeodeBlockSettings(
                                 BlockStateProvider.simple(Blocks.AIR),
@@ -440,11 +665,9 @@ public class TheAbyssFeatures {
                                         MiaBlocks.SMALL_PRASIOLITE_BUD.get().defaultBlockState(),
                                         MiaBlocks.MEDIUM_PRASIOLITE_BUD.get().defaultBlockState(),
                                         MiaBlocks.LARGE_PRASIOLITE_BUD.get().defaultBlockState(),
-                                        MiaBlocks.PRASIOLITE_CLUSTER.get().defaultBlockState()
-                                ),
+                                        MiaBlocks.PRASIOLITE_CLUSTER.get().defaultBlockState()),
                                 BlockTags.FEATURES_CANNOT_REPLACE,
-                                BlockTags.GEODE_INVALID_BLOCKS
-                        ),
+                                BlockTags.GEODE_INVALID_BLOCKS),
                         new GeodeLayerSettings(1.7, 2.2, 3.2, 4.2),
                         new GeodeCrackSettings(0.95, 2.0, 2),
                         0.35,
@@ -456,11 +679,11 @@ public class TheAbyssFeatures {
                         -16,
                         16,
                         0.05,
-                        1
-                )
-        );
+                        1));
         MiaFeatureUtils.register(
-                context, CAVE_PILLAR, MiaFeatures.ABYSS_CAVE_PILLAR.get(),
+                context,
+                CAVE_PILLAR,
+                MiaFeatures.ABYSS_CAVE_PILLAR.get(),
                 new MiaCavePillarConfiguration(
                         188,
                         UniformInt.of(3, 15),
@@ -470,93 +693,102 @@ public class TheAbyssFeatures {
                         UniformFloat.of(0.4F, 1.0F),
                         UniformFloat.of(0.0F, 0.3F),
                         4,
-                        0.6F
-                )
-        );
+                        0.6F));
     }
-
 
     public static HolderSet<Block> abyssEdgeStone(Block... addBlocks) {
         return HolderSet.direct(
                 Block::builtInRegistryHolder,
                 Blocks.TUFF,
                 Blocks.DEEPSLATE,
-                MiaBlocks.ABYSS_ANDESITE.get()
-        );
+                MiaBlocks.ABYSS_ANDESITE.get());
     }
 
-    private static Holder<PlacedFeature> makeSmallPillar(Block block1, Block block2, Block blockTop, int l, Direction direction) {
-        var list = direction == Direction.UP ?
-                List.of(
-                        BlockTrunkConfiguration.layer(
-                                new WeightedListInt(
-                                        SimpleWeightedRandomList.<IntProvider>builder()
-                                                .add(UniformInt.of(10, 14), 7)
-                                                .add(ConstantInt.of(8), 2)
-                                                .add(UniformInt.of(16, 24), 1)
-                                                .build()
-                                ),
-                                new WeightedStateProvider(
-                                        SimpleWeightedRandomList.<BlockState>builder()
-                                                .add(block1.defaultBlockState(), 1)
-                                                .add(block2.defaultBlockState(), 3)
-                                                .build()
-                                )
-                        ),
-                        BlockTrunkConfiguration.layer(
-                                ConstantInt.of(1),
-                                BlockStateProvider.simple(blockTop.defaultBlockState())
-                        )
-                ) :
-                List.of(
-                        BlockTrunkConfiguration.layer(
-                                new WeightedListInt(
-                                        SimpleWeightedRandomList.<IntProvider>builder()
-                                                .add(UniformInt.of(8, 12), 3)
-                                                .add(ConstantInt.of(6), 1)
-                                                .build()
-                                ),
-                                new WeightedStateProvider(
-                                        SimpleWeightedRandomList.<BlockState>builder()
-                                                .add(block1.defaultBlockState(), 1)
-                                                .add(block2.defaultBlockState(), 3)
-                                                .build()
-                                )
-                        )
-                );
+    private static Holder<PlacedFeature> makeSmallPillar(
+            Block block1, Block block2, Block blockTop, int l, Direction direction) {
+        var list =
+                direction == Direction.UP
+                        ? List.of(
+                                BlockTrunkConfiguration.layer(
+                                        new WeightedListInt(
+                                                SimpleWeightedRandomList.<IntProvider>builder()
+                                                        .add(UniformInt.of(10, 14), 7)
+                                                        .add(ConstantInt.of(8), 2)
+                                                        .add(UniformInt.of(16, 24), 1)
+                                                        .build()),
+                                        new WeightedStateProvider(
+                                                SimpleWeightedRandomList.<BlockState>builder()
+                                                        .add(block1.defaultBlockState(), 1)
+                                                        .add(block2.defaultBlockState(), 3)
+                                                        .build())),
+                                BlockTrunkConfiguration.layer(
+                                        ConstantInt.of(1),
+                                        BlockStateProvider.simple(blockTop.defaultBlockState())))
+                        : List.of(
+                                BlockTrunkConfiguration.layer(
+                                        new WeightedListInt(
+                                                SimpleWeightedRandomList.<IntProvider>builder()
+                                                        .add(UniformInt.of(8, 12), 3)
+                                                        .add(ConstantInt.of(6), 1)
+                                                        .build()),
+                                        new WeightedStateProvider(
+                                                SimpleWeightedRandomList.<BlockState>builder()
+                                                        .add(block1.defaultBlockState(), 1)
+                                                        .add(block2.defaultBlockState(), 3)
+                                                        .build())));
 
         return PlacementUtils.inlinePlaced(
                 MiaFeatures.BLOCK_TRUNK.get(),
-                new BlockTrunkConfiguration(list,
+                new BlockTrunkConfiguration(
+                        list,
                         BlockTrunkConfiguration.layer(
                                 new WeightedListInt(
                                         SimpleWeightedRandomList.<IntProvider>builder()
                                                 .add(UniformInt.of(1, l), 1)
                                                 .add(ConstantInt.of(1), 3)
-                                                .build()
-                                ),
+                                                .build()),
                                 new WeightedStateProvider(
                                         SimpleWeightedRandomList.<BlockState>builder()
                                                 .add(block1.defaultBlockState(), 1)
                                                 .add(block2.defaultBlockState(), 3)
-                                                .build()
-                                )
-                        ),
-                        BlockTrunkConfiguration.layer(BlockStateProvider.simple(blockTop.defaultBlockState())), 0.15F, direction,
+                                                .build())),
+                        BlockTrunkConfiguration.layer(
+                                BlockStateProvider.simple(blockTop.defaultBlockState())),
+                        0.15F,
+                        direction,
                         BlockPredicate.ONLY_IN_AIR_OR_WATER_PREDICATE,
-                        true
-                )
-        );
+                        true));
     }
 
-    private static SimpleWeightedRandomList.Builder<BlockState> createPrasioliteStates(boolean facingDown) {
+    private static SimpleWeightedRandomList.Builder<BlockState> createPrasioliteStates(
+            boolean facingDown) {
         SimpleWeightedRandomList.Builder<BlockState> builder = SimpleWeightedRandomList.builder();
 
         if (facingDown) {
-            builder.add(MiaBlocks.PRASIOLITE_CLUSTER.get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.DOWN), 1)
-                    .add(MiaBlocks.LARGE_PRASIOLITE_BUD.get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.DOWN), 1)
-                    .add(MiaBlocks.MEDIUM_PRASIOLITE_BUD.get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.DOWN), 1)
-                    .add(MiaBlocks.SMALL_PRASIOLITE_BUD.get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.DOWN), 1);
+            builder.add(
+                            MiaBlocks.PRASIOLITE_CLUSTER
+                                    .get()
+                                    .defaultBlockState()
+                                    .setValue(BlockStateProperties.FACING, Direction.DOWN),
+                            1)
+                    .add(
+                            MiaBlocks.LARGE_PRASIOLITE_BUD
+                                    .get()
+                                    .defaultBlockState()
+                                    .setValue(BlockStateProperties.FACING, Direction.DOWN),
+                            1)
+                    .add(
+                            MiaBlocks.MEDIUM_PRASIOLITE_BUD
+                                    .get()
+                                    .defaultBlockState()
+                                    .setValue(BlockStateProperties.FACING, Direction.DOWN),
+                            1)
+                    .add(
+                            MiaBlocks.SMALL_PRASIOLITE_BUD
+                                    .get()
+                                    .defaultBlockState()
+                                    .setValue(BlockStateProperties.FACING, Direction.DOWN),
+                            1);
         } else {
             builder.add(MiaBlocks.PRASIOLITE_CLUSTER.get().defaultBlockState(), 1)
                     .add(MiaBlocks.LARGE_PRASIOLITE_BUD.get().defaultBlockState(), 1)

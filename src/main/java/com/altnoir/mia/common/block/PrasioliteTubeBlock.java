@@ -2,6 +2,7 @@ package com.altnoir.mia.common.block;
 
 import com.altnoir.mia.common.block.abs.AbsCrystalTubeBlock;
 import com.mojang.serialization.MapCodec;
+import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BoneMealItem;
@@ -15,8 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class PrasioliteTubeBlock extends AbsCrystalTubeBlock {
     public static final IntegerProperty LEVEL = IntegerProperty.create("level", 1, 4);
     public static final MapCodec<PrasioliteTubeBlock> CODEC = simpleCodec(PrasioliteTubeBlock::new);
@@ -29,7 +28,6 @@ public class PrasioliteTubeBlock extends AbsCrystalTubeBlock {
     public PrasioliteTubeBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(LEVEL, 1));
-
     }
 
     @Override
@@ -49,7 +47,13 @@ public class PrasioliteTubeBlock extends AbsCrystalTubeBlock {
     }
 
     @Override
-    protected boolean crystalProcessing(Level level, BlockPos pos, BlockState state, BlockPos targetPos, BlockState targetState, int i) {
+    protected boolean crystalProcessing(
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            BlockPos targetPos,
+            BlockState targetState,
+            int i) {
         if (targetState.getBlock() instanceof AbsCrystalTubeBlock) {
             return propagateSignal(level, pos, state, targetPos, targetState, i);
         } else if (!targetState.isAir()) {
@@ -63,16 +67,18 @@ public class PrasioliteTubeBlock extends AbsCrystalTubeBlock {
         AtomicBoolean hasGrown = new AtomicBoolean(false);
 
         BlockPos.betweenClosedStream(
-                targetPos.offset(-size, -1, -size),
-                targetPos.offset(size, 0, size)
-        ).forEach(pos1 -> {
-            boolean flag = BoneMealItem.applyBonemeal(ItemStack.EMPTY, level, pos1, null)
-                    || BoneMealItem.growWaterPlant(ItemStack.EMPTY, level, pos1, null);
-            if (flag) {
-                level.levelEvent(1505, pos1, 7);
-                hasGrown.set(true);
-            }
-        });
+                        targetPos.offset(-size, -1, -size), targetPos.offset(size, 0, size))
+                .forEach(
+                        pos1 -> {
+                            boolean flag =
+                                    BoneMealItem.applyBonemeal(ItemStack.EMPTY, level, pos1, null)
+                                            || BoneMealItem.growWaterPlant(
+                                                    ItemStack.EMPTY, level, pos1, null);
+                            if (flag) {
+                                level.levelEvent(1505, pos1, 7);
+                                hasGrown.set(true);
+                            }
+                        });
         if (hasGrown.get()) {
             signalParticles(0.5F, 1.0F, 0.5F, level, pos, targetPos, state);
             return true;
@@ -81,10 +87,17 @@ public class PrasioliteTubeBlock extends AbsCrystalTubeBlock {
     }
 
     private boolean inWater(Level level, BlockPos targetPos) {
-        return level.getBlockState(targetPos.above()).is(Blocks.WATER) && level.getFluidState(targetPos.above()).getAmount() == 8;
+        return level.getBlockState(targetPos.above()).is(Blocks.WATER)
+                && level.getFluidState(targetPos.above()).getAmount() == 8;
     }
 
-    private boolean propagateSignal(Level level, BlockPos pos, BlockState state, BlockPos targetPos, BlockState targetState, int i) {
+    private boolean propagateSignal(
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            BlockPos targetPos,
+            BlockState targetState,
+            int i) {
         playAmethyst(level, targetPos, state);
         signalParticles(0.5F, 1.0F, 0.5F, level, pos, targetPos, state);
 

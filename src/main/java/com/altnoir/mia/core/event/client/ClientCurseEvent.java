@@ -1,8 +1,8 @@
 package com.altnoir.mia.core.event.client;
 
 import com.altnoir.mia.MIA;
-import com.altnoir.mia.client.MiaClientConfig;
 import com.altnoir.mia.MiaConfig;
+import com.altnoir.mia.client.MiaClientConfig;
 import com.altnoir.mia.init.MiaCapabilities;
 import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.client.Minecraft;
@@ -19,7 +19,8 @@ import net.neoforged.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ClientCurseEvent {
     public static final String GUI_DISCONNECT = "gui.mia.disconnect";
-    private static final ResourceLocation CURSE_ORB = MiaUtil.id(MIA.MOD_ID, "textures/gui/icon.png");
+    private static final ResourceLocation CURSE_ORB =
+            MiaUtil.id(MIA.MOD_ID, "textures/gui/icon.png");
     private static final int FRAME_SIZE = 18;
     private static final int FRAME_COUNT = 22;
     private static final int FRAME_DURATION = 1000;
@@ -27,13 +28,15 @@ public class ClientCurseEvent {
     private static int animationTick = 0;
 
     public static void ScreenInitPost(Screen screen) {
-        if (MiaClientConfig.disconnectButtonState == MiaClientConfig.DisconnectButtonState.DEFAULT) return;
+        if (MiaClientConfig.disconnectButtonState == MiaClientConfig.DisconnectButtonState.DEFAULT)
+            return;
 
         if (screen instanceof PauseScreen pauseScreen) {
             Button disconnectButton = pauseScreen.disconnectButton;
 
             if (disconnectButton != null) {
-                if (MiaClientConfig.disconnectButtonState == MiaClientConfig.DisconnectButtonState.HIDDEN) {
+                if (MiaClientConfig.disconnectButtonState
+                        == MiaClientConfig.DisconnectButtonState.HIDDEN) {
                     disconnectButton.visible = false;
                 } else {
                     disconnectButton.active = false;
@@ -50,7 +53,9 @@ public class ClientCurseEvent {
         var dim = player.level().dimension().location();
         var dimensionIds = MIA.CURSE_MANAGER.getDimensionIds();
 
-        if (mc.options.hideGui || MiaClientConfig.curseIconPosition == MiaClientConfig.CurseIconPosition.HIDDEN) return;
+        if (mc.options.hideGui
+                || MiaClientConfig.curseIconPosition == MiaClientConfig.CurseIconPosition.HIDDEN)
+            return;
 
         if (dimensionIds.contains(dim)) {
             if (!MiaConfig.curseGod && MiaUtil.isCreativeOrSpectator(player)) return;
@@ -102,16 +107,19 @@ public class ClientCurseEvent {
         int v = frame * FRAME_SIZE;
 
         graphics.blit(
-                CURSE_ORB, cx - FRAME_SIZE / 2, cy - FRAME_SIZE / 2,
-                u, v,
-                FRAME_SIZE, FRAME_SIZE,
-                FRAME_SIZE, FRAME_SIZE * FRAME_COUNT
-        );
+                CURSE_ORB,
+                cx - FRAME_SIZE / 2,
+                cy - FRAME_SIZE / 2,
+                u,
+                v,
+                FRAME_SIZE,
+                FRAME_SIZE,
+                FRAME_SIZE,
+                FRAME_SIZE * FRAME_COUNT);
 
         if (value > 0) {
             animationTick = (animationTick + 1) % (FRAME_DURATION * FRAME_COUNT);
         }
-
 
         var text = String.valueOf(value);
         var tx = cx - font.width(text) / 2;

@@ -1,8 +1,8 @@
 package com.altnoir.mia.common.block;
 
 import com.altnoir.mia.MiaConfig;
-import com.altnoir.mia.init.MiaSounds;
 import com.altnoir.mia.core.MiaHeight;
+import com.altnoir.mia.init.MiaSounds;
 import com.altnoir.mia.worldgen.dimension.MiaDimensions;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -41,32 +41,47 @@ public class AbyssPortalBlock extends Block implements Portal {
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        if (entity.canUsePortal(false) &&
-                Shapes.joinIsNotEmpty(Shapes.create(entity.getBoundingBox().move(-pos.getX(), -pos.getY(), -pos.getZ())), state.getShape(level, pos), BooleanOp.AND)
-        ) {
-//            if (!level.isClientSide && level.dimension() == Level.OVERWORLD && entity instanceof ServerPlayer serverplayer && !serverplayer.seenCredits) {
-//                serverplayer.showEndCredits(); // 片尾字幕
-//                return;
-//            }
+        if (entity.canUsePortal(false)
+                && Shapes.joinIsNotEmpty(
+                        Shapes.create(
+                                entity.getBoundingBox()
+                                        .move(-pos.getX(), -pos.getY(), -pos.getZ())),
+                        state.getShape(level, pos),
+                        BooleanOp.AND)) {
+            //            if (!level.isClientSide && level.dimension() == Level.OVERWORLD && entity
+            // instanceof ServerPlayer serverplayer && !serverplayer.seenCredits) {
+            //                serverplayer.showEndCredits(); // 片尾字幕
+            //                return;
+            //            }
 
             entity.setAsInsidePortal(this, pos);
         }
     }
 
     @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+    protected void onRemove(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            BlockState newState,
+            boolean movedByPiston) {
         super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Override
-    public @Nullable DimensionTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
-        ResourceKey<Level> resourcekey = level.dimension() == MiaDimensions.THE_ABYSS_LEVEL ? Level.OVERWORLD : MiaDimensions.THE_ABYSS_LEVEL;
+    public @Nullable DimensionTransition getPortalDestination(
+            ServerLevel level, Entity entity, BlockPos pos) {
+        ResourceKey<Level> resourcekey =
+                level.dimension() == MiaDimensions.THE_ABYSS_LEVEL
+                        ? Level.OVERWORLD
+                        : MiaDimensions.THE_ABYSS_LEVEL;
         ServerLevel serverlevel = level.getServer().getLevel(resourcekey);
         if (serverlevel == null) {
             return null;
@@ -75,7 +90,8 @@ public class AbyssPortalBlock extends Block implements Portal {
             BlockPos blockpos;
             Vec3 vec3;
             if (flag) {
-                //AbyssPortalFeature.createAbyssBrinkPlatform(serverlevel, BlockPos.containing(vec3).below(), true);
+                // AbyssPortalFeature.createAbyssBrinkPlatform(serverlevel,
+                // BlockPos.containing(vec3).below(), true);
                 blockpos = nearestAbyssPosition(entity.getX(), entity.getZ());
                 BlockPos suitablePos = findSuitablePosition(serverlevel, blockpos);
 
@@ -85,17 +101,23 @@ public class AbyssPortalBlock extends Block implements Portal {
                 }
             } else {
                 if (entity instanceof ServerPlayer serverplayer) {
-                    return serverplayer.findRespawnPositionAndUseSpawnBlock(false, DimensionTransition.DO_NOTHING);
+                    return serverplayer.findRespawnPositionAndUseSpawnBlock(
+                            false, DimensionTransition.DO_NOTHING);
                 }
                 blockpos = serverlevel.getSharedSpawnPos();
                 vec3 = entity.adjustSpawnLocation(serverlevel, blockpos).getBottomCenter();
             }
 
-            DimensionTransition.PostDimensionTransition portalSound = playerEntity -> {
-                if (playerEntity instanceof ServerPlayer serverplayer) {
-                    serverplayer.playNotifySound(MiaSounds.ABYSS_PORTAL_TRAVEL.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-                }
-            };
+            DimensionTransition.PostDimensionTransition portalSound =
+                    playerEntity -> {
+                        if (playerEntity instanceof ServerPlayer serverplayer) {
+                            serverplayer.playNotifySound(
+                                    MiaSounds.ABYSS_PORTAL_TRAVEL.get(),
+                                    SoundSource.BLOCKS,
+                                    1.0F,
+                                    1.0F);
+                        }
+                    };
 
             return new DimensionTransition(
                     serverlevel,
@@ -103,8 +125,7 @@ public class AbyssPortalBlock extends Block implements Portal {
                     entity.getDeltaMovement(),
                     entity.getYRot(),
                     entity.getXRot(),
-                    portalSound.then(DimensionTransition.PLACE_PORTAL_TICKET)
-            );
+                    portalSound.then(DimensionTransition.PLACE_PORTAL_TICKET));
         }
     }
 
@@ -149,7 +170,9 @@ public class AbyssPortalBlock extends Block implements Portal {
                 // 从上到下搜索，找到第一个合适位置就返回
                 for (int y = startY; y >= endY; y--) {
                     BlockPos feetPos = new BlockPos(searchCenter.getX(), y, searchCenter.getZ());
-                    boolean hasSpace = level.getBlockState(feetPos).isAir() && level.getBlockState(feetPos.above(1)).isAir();
+                    boolean hasSpace =
+                            level.getBlockState(feetPos).isAir()
+                                    && level.getBlockState(feetPos.above(1)).isAir();
                     boolean hasSupport = !level.getBlockState(feetPos.below()).isAir();
                     if (hasSpace && hasSupport) {
                         return feetPos;
@@ -174,8 +197,7 @@ public class AbyssPortalBlock extends Block implements Portal {
                     SoundSource.BLOCKS,
                     0.5F,
                     pitch,
-                    false
-            );
+                    false);
         }
 
         for (int i = 0; i < 4; i++) {
@@ -186,7 +208,8 @@ public class AbyssPortalBlock extends Block implements Portal {
             double d4 = ((double) random.nextFloat() - 0.5) * 0.5;
             double d5 = ((double) random.nextFloat() - 0.5) * 0.5;
             int j = random.nextInt(2) * 2 - 1;
-            if (!level.getBlockState(pos.west()).is(this) && !level.getBlockState(pos.east()).is(this)) {
+            if (!level.getBlockState(pos.west()).is(this)
+                    && !level.getBlockState(pos.east()).is(this)) {
                 d0 = (double) pos.getX() + 0.5 + 0.25 * (double) j;
                 d3 = (double) (random.nextFloat() * 2.0F * (float) j);
             } else {

@@ -18,7 +18,9 @@ public class MiaKubeJSPlugin implements KubeJSPlugin {
 
     @Override
     public void registerBuilderTypes(BuilderTypeRegistry registry) {
-        registry.of(Registries.ITEM, reg -> reg.add(ID.kjs("skill"), SkillBuilder.class, SkillBuilder::new));
+        registry.of(
+                Registries.ITEM,
+                reg -> reg.add(ID.kjs("skill"), SkillBuilder.class, SkillBuilder::new));
     }
 
     @Override

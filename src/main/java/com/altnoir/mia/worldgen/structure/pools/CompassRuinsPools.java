@@ -2,6 +2,7 @@ package com.altnoir.mia.worldgen.structure.pools;
 
 import com.altnoir.mia.worldgen.MiaSructurePoolUtils;
 import com.mojang.datafixers.util.Pair;
+import java.util.List;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -10,17 +11,19 @@ import net.minecraft.data.worldgen.Pools;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 
-import java.util.List;
-
 public final class CompassRuinsPools {
-    public static final ResourceKey<StructureTemplatePool> ANCIENT_BABYLON = createStartKey("ancient_babylon_compass_ruins");
-    public static final ResourceKey<StructureTemplatePool> ANCIENT_MAYA = createStartKey("ancient_maya_compass_ruins");
-    public static final ResourceKey<StructureTemplatePool> ANCIENT_ROMAN = createStartKey("ancient_roman_compass_ruins");
-    public static final ResourceKey<StructureTemplatePool> ANCIENT_TRIAL = createStartKey("ancient_trial_compass_ruins");
-    public static final ResourceKey<StructureTemplatePool> ANCIENT_ANGKOR = createStartKey("ancient_angkor_compass_ruins");
+    public static final ResourceKey<StructureTemplatePool> ANCIENT_BABYLON =
+            createStartKey("ancient_babylon_compass_ruins");
+    public static final ResourceKey<StructureTemplatePool> ANCIENT_MAYA =
+            createStartKey("ancient_maya_compass_ruins");
+    public static final ResourceKey<StructureTemplatePool> ANCIENT_ROMAN =
+            createStartKey("ancient_roman_compass_ruins");
+    public static final ResourceKey<StructureTemplatePool> ANCIENT_TRIAL =
+            createStartKey("ancient_trial_compass_ruins");
+    public static final ResourceKey<StructureTemplatePool> ANCIENT_ANGKOR =
+            createStartKey("ancient_angkor_compass_ruins");
 
-    private CompassRuinsPools() {
-    }
+    private CompassRuinsPools() {}
 
     public static void bootstrap(BootstrapContext<StructureTemplatePool> context) {
         HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
@@ -41,15 +44,12 @@ public final class CompassRuinsPools {
             BootstrapContext<StructureTemplatePool> context,
             Holder<StructureTemplatePool> empty,
             ResourceKey<StructureTemplatePool> key,
-            String templateName
-    ) {
+            String templateName) {
         context.register(
                 key,
                 new StructureTemplatePool(
                         empty,
                         List.of(Pair.of(MiaSructurePoolUtils.single(templateName), 1)),
-                        StructureTemplatePool.Projection.RIGID
-                )
-        );
+                        StructureTemplatePool.Projection.RIGID));
     }
 }

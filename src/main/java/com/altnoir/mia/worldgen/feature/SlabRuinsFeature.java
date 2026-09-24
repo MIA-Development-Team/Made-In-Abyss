@@ -6,16 +6,14 @@ import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.worldgen.MiaFeatures;
 import com.altnoir.mia.worldgen.feature.configurations.SlabRuinsConfiguration;
 import com.mojang.serialization.Codec;
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-
-import java.util.function.Predicate;
 
 public class SlabRuinsFeature extends Feature<SlabRuinsConfiguration> {
     public SlabRuinsFeature(Codec<SlabRuinsConfiguration> codec) {
@@ -30,7 +28,9 @@ public class SlabRuinsFeature extends Feature<SlabRuinsConfiguration> {
         WorldGenLevel worldgenlevel = context.level();
 
         SlabRuinsConfiguration src;
-        for (src = context.config(); blockpos.getY() > worldgenlevel.getMinBuildHeight() + 3; blockpos = blockpos.below()) {
+        for (src = context.config();
+                blockpos.getY() > worldgenlevel.getMinBuildHeight() + 3;
+                blockpos = blockpos.below()) {
             if (worldgenlevel.isEmptyBlock(blockpos)) {
                 BlockState blockstate = worldgenlevel.getBlockState(blockpos.below());
                 if (isDirt(blockstate) || MiaFeatures.isStone(blockstate)) {
@@ -63,9 +63,14 @@ public class SlabRuinsFeature extends Feature<SlabRuinsConfiguration> {
                     int offsetZ = randomsource.nextInt(4) - 1;
 
                     if ((offsetX < 0 || offsetX > 1) || (offsetZ < 0 || offsetZ > 1)) {
-                        muPos.set(blockpos.getX() + offsetX, blockpos.getY(), blockpos.getZ() + offsetZ);
-                        BlockState extraSlabState = src.slabStateProvider.getState(randomsource, muPos);
-                        if (worldgenlevel.getBlockState(muPos).isAir() && !worldgenlevel.getBlockState(muPos.below()).isAir()) {
+                        muPos.set(
+                                blockpos.getX() + offsetX,
+                                blockpos.getY(),
+                                blockpos.getZ() + offsetZ);
+                        BlockState extraSlabState =
+                                src.slabStateProvider.getState(randomsource, muPos);
+                        if (worldgenlevel.getBlockState(muPos).isAir()
+                                && !worldgenlevel.getBlockState(muPos.below()).isAir()) {
                             this.safeSetBlock(worldgenlevel, muPos, extraSlabState, predicate);
                         }
                     }
@@ -74,10 +79,22 @@ public class SlabRuinsFeature extends Feature<SlabRuinsConfiguration> {
             int chestX = randomsource.nextInt(2);
             int chestZ = randomsource.nextInt(2);
 
-            BlockPos chestPos = new BlockPos(blockpos.getX() + chestX, blockpos.getY() - 1, blockpos.getZ() + chestZ);
-            this.safeSetBlock(worldgenlevel, chestPos, MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE.get().defaultBlockState(), predicate);
-            worldgenlevel.getBlockEntity(chestPos, MiaBlockEntities.BRUSHABLE_ENTITY.get())
-                    .ifPresent(blockEntity -> blockEntity.setLootTable(MiaArchaeologyLoot.ABYSS_RUINS, chestPos.asLong()));
+            BlockPos chestPos =
+                    new BlockPos(
+                            blockpos.getX() + chestX,
+                            blockpos.getY() - 1,
+                            blockpos.getZ() + chestZ);
+            this.safeSetBlock(
+                    worldgenlevel,
+                    chestPos,
+                    MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE.get().defaultBlockState(),
+                    predicate);
+            worldgenlevel
+                    .getBlockEntity(chestPos, MiaBlockEntities.BRUSHABLE_ENTITY.get())
+                    .ifPresent(
+                            blockEntity ->
+                                    blockEntity.setLootTable(
+                                            MiaArchaeologyLoot.ABYSS_RUINS, chestPos.asLong()));
         }
         return true;
     }

@@ -1,6 +1,7 @@
 package com.altnoir.mia.common.recipe;
 
 import com.altnoir.mia.util.MiaUtil;
+import java.util.*;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger.TriggerInstance.Slots;
@@ -17,8 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 
-import java.util.*;
-
 public class ArtifactSmithingRecipeBuilder {
     private final Ingredient whistle;
     private final ItemStack material;
@@ -34,8 +33,7 @@ public class ArtifactSmithingRecipeBuilder {
             ItemStack addition,
             Holder<Attribute> attribute,
             DoubleRange value,
-            AttributeModifier.Operation operation
-    ) {
+            AttributeModifier.Operation operation) {
         this.whistle = whistle;
         this.material = addition;
         this.attribute = attribute;
@@ -48,10 +46,10 @@ public class ArtifactSmithingRecipeBuilder {
             ItemStack addition,
             Holder<Attribute> attribute,
             double value,
-            AttributeModifier.Operation operation
-    ) {
+            AttributeModifier.Operation operation) {
         materialTags.add(addition.getItem());
-        return new ArtifactSmithingRecipeBuilder(base, addition, attribute, DoubleRange.between(value, value), operation);
+        return new ArtifactSmithingRecipeBuilder(
+                base, addition, attribute, DoubleRange.between(value, value), operation);
     }
 
     public static ArtifactSmithingRecipeBuilder create(
@@ -59,8 +57,7 @@ public class ArtifactSmithingRecipeBuilder {
             ItemStack addition,
             Holder<Attribute> attribute,
             DoubleRange value,
-            AttributeModifier.Operation operation
-    ) {
+            AttributeModifier.Operation operation) {
         materialTags.add(addition.getItem());
         return new ArtifactSmithingRecipeBuilder(base, addition, attribute, value, operation);
     }
@@ -84,44 +81,45 @@ public class ArtifactSmithingRecipeBuilder {
     }
 
     protected static Criterion<InventoryChangeTrigger.TriggerInstance> has(ItemLike... items) {
-        ItemPredicate[] predicates = Arrays.stream(items)
-                .map(i -> ItemPredicate.Builder.item().of(i).build())
-                .toArray(ItemPredicate[]::new);
+        ItemPredicate[] predicates =
+                Arrays.stream(items)
+                        .map(i -> ItemPredicate.Builder.item().of(i).build())
+                        .toArray(ItemPredicate[]::new);
 
         return CriteriaTriggers.INVENTORY_CHANGED.createCriterion(
                 new InventoryChangeTrigger.TriggerInstance(
-                        Optional.empty(),
-                        Slots.ANY,
-                        List.of(predicates)));
+                        Optional.empty(), Slots.ANY, List.of(predicates)));
     }
 
     public void save(RecipeOutput recipeOutput) {
         String name = BuiltInRegistries.ITEM.getKey(material.getItem()).getPath();
-        this.save(recipeOutput,
-                MiaUtil.miaId("artifact_smithing/" + name));
+        this.save(recipeOutput, MiaUtil.miaId("artifact_smithing/" + name));
     }
 
     public void save(RecipeOutput recipeOutput, ResourceLocation id) {
         this.ensureValid(id);
 
-        Advancement.Builder advancementBuilder = recipeOutput.advancement()
-                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
-                .rewards(AdvancementRewards.Builder.recipe(id))
-                .requirements(AdvancementRequirements.Strategy.OR);
+        Advancement.Builder advancementBuilder =
+                recipeOutput
+                        .advancement()
+                        .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
+                        .rewards(AdvancementRewards.Builder.recipe(id))
+                        .requirements(AdvancementRequirements.Strategy.OR);
         Objects.requireNonNull(advancementBuilder);
         criteria.forEach(advancementBuilder::addCriterion);
 
-        ArtifactSmithingRecipe recipe = new ArtifactSmithingRecipe(this.whistle, this.material, this.attribute,
-                this.value, this.operation);
+        ArtifactSmithingRecipe recipe =
+                new ArtifactSmithingRecipe(
+                        this.whistle, this.material, this.attribute, this.value, this.operation);
         ResourceLocation advancementId = MiaUtil.miaId(id.getPath());
-        recipeOutput.accept(id, recipe,
-                advancementBuilder.build(advancementId.withPrefix("recipes/")));
+        recipeOutput.accept(
+                id, recipe, advancementBuilder.build(advancementId.withPrefix("recipes/")));
     }
 
     private void ensureValid(ResourceLocation location) {
         if (this.criteria.isEmpty()) {
-            throw new IllegalStateException("No way of obtaining recipe " + String.valueOf(location));
+            throw new IllegalStateException(
+                    "No way of obtaining recipe " + String.valueOf(location));
         }
     }
-
 }

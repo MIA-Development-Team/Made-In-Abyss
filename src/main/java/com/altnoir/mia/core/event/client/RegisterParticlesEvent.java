@@ -6,9 +6,10 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
 public class RegisterParticlesEvent {
     public static void register(RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(MiaParticles.SKYFOG_LEAVES.get(),
-                spriteSet -> (
-                        simpleParticleType, clientLevel, x, y, z, xSpeed, ySpeed, zSpeed) ->
-                        new LeavesParticles(clientLevel, x, y, z, spriteSet));
+        event.registerSpriteSet(
+                MiaParticles.SKYFOG_LEAVES.get(),
+                spriteSet ->
+                        (simpleParticleType, clientLevel, x, y, z, xSpeed, ySpeed, zSpeed) ->
+                                new LeavesParticles(clientLevel, x, y, z, spriteSet));
     }
 }

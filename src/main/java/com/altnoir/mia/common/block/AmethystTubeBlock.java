@@ -2,10 +2,11 @@ package com.altnoir.mia.common.block;
 
 import com.altnoir.mia.common.block.abs.AbsCrystalTubeBlock;
 import com.altnoir.mia.common.block.entity.PedestalBlockEntity;
-import com.altnoir.mia.init.MiaRecipes;
 import com.altnoir.mia.common.recipe.LampTubeRecipe;
 import com.altnoir.mia.common.recipe.LampTubeRecipeInput;
+import com.altnoir.mia.init.MiaRecipes;
 import com.mojang.serialization.MapCodec;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,8 +24,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
-
-import java.util.Optional;
 
 public class AmethystTubeBlock extends AbsCrystalTubeBlock {
     public static final MapCodec<AmethystTubeBlock> CODEC = simpleCodec(AmethystTubeBlock::new);
@@ -57,7 +56,13 @@ public class AmethystTubeBlock extends AbsCrystalTubeBlock {
     }
 
     @Override
-    protected boolean crystalProcessing(Level level, BlockPos pos, BlockState state, BlockPos targetPos, BlockState targetState, int i) {
+    protected boolean crystalProcessing(
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            BlockPos targetPos,
+            BlockState targetState,
+            int i) {
         if (level.getBlockEntity(targetPos) instanceof PedestalBlockEntity pbe) {
             return processRecipe(pbe, level, pos, state, targetPos);
         }
@@ -70,7 +75,12 @@ public class AmethystTubeBlock extends AbsCrystalTubeBlock {
         return false;
     }
 
-    public boolean processRecipe(PedestalBlockEntity blockEntity, Level level, BlockPos pos, BlockState state, BlockPos targetPos) {
+    public boolean processRecipe(
+            PedestalBlockEntity blockEntity,
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            BlockPos targetPos) {
         // 从置物台中提取输入物品（最大堆叠数）
         var inputStack = blockEntity.extractInput(Item.ABSOLUTE_MAX_STACK_SIZE, true);
         if (inputStack.isEmpty()) return false;
@@ -82,7 +92,7 @@ public class AmethystTubeBlock extends AbsCrystalTubeBlock {
         var result = recipe.get().value().result(); // 输出的物品
 
         for (int mul = state.getValue(LEVEL); mul >= 1; mul--) {
-            var inputCount = input.count() * mul;  // 输入物品数量
+            var inputCount = input.count() * mul; // 输入物品数量
             if (inputStack.getCount() < inputCount) continue;
 
             var outputCount = Math.min(result.getCount() * mul, result.getMaxStackSize()); // 输出物品数量
@@ -100,7 +110,7 @@ public class AmethystTubeBlock extends AbsCrystalTubeBlock {
         return false;
     }
 
-   /* private boolean processRecipe(Level level, BlockPos pos, BlockState state, BlockPos targetPos, Container container) {
+    /* private boolean processRecipe(Level level, BlockPos pos, BlockState state, BlockPos targetPos, Container container) {
         for (int inputSlot = 0; inputSlot < container.getContainerSize(); inputSlot++) {
             var stack = container.getItem(inputSlot);
             var recipe = getCurrentRecipe(level, stack);
@@ -133,7 +143,13 @@ public class AmethystTubeBlock extends AbsCrystalTubeBlock {
         return false;
     }*/
 
-    private boolean propagateSignal(Level level, BlockPos pos, BlockState state, BlockPos targetPos, BlockState targetState, int i) {
+    private boolean propagateSignal(
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            BlockPos targetPos,
+            BlockState targetState,
+            int i) {
         if (!targetState.hasProperty(POWERED)) return false;
 
         playAmethyst(level, targetPos, state);
@@ -151,15 +167,25 @@ public class AmethystTubeBlock extends AbsCrystalTubeBlock {
     }
 
     private Optional<RecipeHolder<LampTubeRecipe>> getCurrentRecipe(Level level, ItemStack stack) {
-        return level.getRecipeManager().getRecipeFor(MiaRecipes.LAMP_TUBE_TYPE.get(), new LampTubeRecipeInput(stack), level);
+        return level.getRecipeManager()
+                .getRecipeFor(
+                        MiaRecipes.LAMP_TUBE_TYPE.get(), new LampTubeRecipeInput(stack), level);
     }
 
-    private void recipeShrinkEffect(Container container, Level level, ItemStack stack, BlockPos targetPos, BlockPos pos, BlockState state, int count) {
+    private void recipeShrinkEffect(
+            Container container,
+            Level level,
+            ItemStack stack,
+            BlockPos targetPos,
+            BlockPos pos,
+            BlockState state,
+            int count) {
         stack.shrink(count);
         recipeEffect(container, level, pos, targetPos, state);
     }
 
-    private void recipeEffect(Container container, Level level, BlockPos pos, BlockPos targetPos, BlockState state) {
+    private void recipeEffect(
+            Container container, Level level, BlockPos pos, BlockPos targetPos, BlockState state) {
         container.setChanged();
 
         playBlast(level, targetPos, state);
@@ -173,13 +199,13 @@ public class AmethystTubeBlock extends AbsCrystalTubeBlock {
         targetBlockParticles(level, targetPos);
     }
 
-
     private void targetBlockParticles(Level level, BlockPos targetPos) {
         double endX = targetPos.getX() + 0.5;
         double endY = targetPos.getY() + 0.5;
         double endZ = targetPos.getZ() + 0.5;
         if (level instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(ParticleTypes.END_ROD, endX, endY, endZ, 5, 0.1, 0.2, 0.1, 0.03);
+            serverLevel.sendParticles(
+                    ParticleTypes.END_ROD, endX, endY, endZ, 5, 0.1, 0.2, 0.1, 0.03);
         }
     }
 

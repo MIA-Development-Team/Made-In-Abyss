@@ -2,6 +2,7 @@ package com.altnoir.mia.worldgen.structure.pools;
 
 import com.altnoir.mia.worldgen.MiaSructurePoolUtils;
 import com.mojang.datafixers.util.Pair;
+import java.util.List;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -10,21 +11,25 @@ import net.minecraft.data.worldgen.Pools;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 
-import java.util.List;
-
 public final class AbyssSurfacePools {
-    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_01 = createStartKey("abyssal_ruins_01");
-    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_02 = createStartKey("abyssal_ruins_02");
-    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_03 = createStartKey("abyssal_ruins_03");
-    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_04 = createStartKey("abyssal_ruins_04");
-    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_05 = createStartKey("abyssal_ruins_05");
-    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_06 = createStartKey("abyssal_ruins_06");
+    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_01 =
+            createStartKey("abyssal_ruins_01");
+    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_02 =
+            createStartKey("abyssal_ruins_02");
+    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_03 =
+            createStartKey("abyssal_ruins_03");
+    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_04 =
+            createStartKey("abyssal_ruins_04");
+    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_05 =
+            createStartKey("abyssal_ruins_05");
+    public static final ResourceKey<StructureTemplatePool> ABYSSAL_RUINS_06 =
+            createStartKey("abyssal_ruins_06");
     public static final ResourceKey<StructureTemplatePool> RUINED_CAVE_RAIDER_HUT =
             createStartKey("ruined_cave_raider_hut");
-    public static final ResourceKey<StructureTemplatePool> FISHERMAN_HUT = createStartKey("fisherman_hut");
+    public static final ResourceKey<StructureTemplatePool> FISHERMAN_HUT =
+            createStartKey("fisherman_hut");
 
-    private AbyssSurfacePools() {
-    }
+    private AbyssSurfacePools() {}
 
     public static void bootstrap(BootstrapContext<StructureTemplatePool> context) {
         HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
@@ -48,15 +53,12 @@ public final class AbyssSurfacePools {
             BootstrapContext<StructureTemplatePool> context,
             Holder<StructureTemplatePool> empty,
             ResourceKey<StructureTemplatePool> key,
-            String templateName
-    ) {
+            String templateName) {
         context.register(
                 key,
                 new StructureTemplatePool(
                         empty,
                         List.of(Pair.of(MiaSructurePoolUtils.single(templateName), 1)),
-                        StructureTemplatePool.Projection.RIGID
-                )
-        );
+                        StructureTemplatePool.Projection.RIGID));
     }
 }

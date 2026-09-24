@@ -12,12 +12,10 @@ public class CapabilityRegister {
         event.registerEntity(
                 MiaCapabilities.CURSE,
                 EntityType.PLAYER,
-                (entity, side) -> entity.getData(MiaAttachments.CURSE)
-        );
+                (entity, side) -> entity.getData(MiaAttachments.CURSE));
         event.registerBlockEntity(
                 Capabilities.FluidHandler.BLOCK,
                 MiaBlockEntities.ENDLESS_CUP_ENTITY.get(),
-                (blockEntity, side) -> blockEntity.fluidTank
-        );
+                (blockEntity, side) -> blockEntity.fluidTank);
     }
 }

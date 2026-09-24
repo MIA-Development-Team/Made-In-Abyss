@@ -12,24 +12,29 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 
 public final class AbyssWindmillPools {
-    public static final ResourceKey<StructureTemplatePool> STRAIGHT = MiaPools.createKey("abyss_windmill/straight");
-    public static final ResourceKey<StructureTemplatePool> TILT = MiaPools.createKey("abyss_windmill/tilt");
+    public static final ResourceKey<StructureTemplatePool> STRAIGHT =
+            MiaPools.createKey("abyss_windmill/straight");
+    public static final ResourceKey<StructureTemplatePool> TILT =
+            MiaPools.createKey("abyss_windmill/tilt");
 
-    private AbyssWindmillPools() {
-    }
+    private AbyssWindmillPools() {}
 
     public static void bootstrap(BootstrapContext<StructureTemplatePool> context) {
         HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
         Holder<StructureTemplatePool> empty = pools.getOrThrow(Pools.EMPTY);
-        context.register(STRAIGHT, new StructureTemplatePool(
-                empty,
-                ImmutableList.of(Pair.of(MiaSructurePoolUtils.single("abyss_windmill_straight"), 1)),
-                StructureTemplatePool.Projection.RIGID
-        ));
-        context.register(TILT, new StructureTemplatePool(
-                empty,
-                ImmutableList.of(Pair.of(MiaSructurePoolUtils.single("abyss_windmill_tilt"), 1)),
-                StructureTemplatePool.Projection.RIGID
-        ));
+        context.register(
+                STRAIGHT,
+                new StructureTemplatePool(
+                        empty,
+                        ImmutableList.of(
+                                Pair.of(MiaSructurePoolUtils.single("abyss_windmill_straight"), 1)),
+                        StructureTemplatePool.Projection.RIGID));
+        context.register(
+                TILT,
+                new StructureTemplatePool(
+                        empty,
+                        ImmutableList.of(
+                                Pair.of(MiaSructurePoolUtils.single("abyss_windmill_tilt"), 1)),
+                        StructureTemplatePool.Projection.RIGID));
     }
 }

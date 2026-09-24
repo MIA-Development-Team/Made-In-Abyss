@@ -19,11 +19,6 @@ public class MiaParticleProvider extends ParticleDescriptionProvider {
 
     @Override
     protected void addDescriptions() {
-        this.spriteSet(
-                MiaParticles.SKYFOG_LEAVES.get(),
-                MiaUtil.miaId("skyfog"),
-                12,
-                false
-        );
+        this.spriteSet(MiaParticles.SKYFOG_LEAVES.get(), MiaUtil.miaId("skyfog"), 12, false);
     }
 }

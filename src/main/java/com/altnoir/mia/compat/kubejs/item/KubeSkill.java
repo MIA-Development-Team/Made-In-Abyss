@@ -1,7 +1,6 @@
 package com.altnoir.mia.compat.kubejs.item;
 
 import com.altnoir.mia.common.item.abs.AbsSkill;
-
 import java.util.List;
 
 public class KubeSkill extends AbsSkill {
@@ -30,6 +29,4 @@ public class KubeSkill extends AbsSkill {
     public int cooldownTicks() {
         return cooldown;
     }
-
-
 }

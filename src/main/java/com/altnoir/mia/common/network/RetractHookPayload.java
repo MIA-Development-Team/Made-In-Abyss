@@ -11,21 +11,21 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record RetractHookPayload(int id) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<RetractHookPayload> TYPE = new CustomPacketPayload.Type<>(MiaUtil.id(MIA.MOD_ID, "discard_hook"));
+    public static final CustomPacketPayload.Type<RetractHookPayload> TYPE =
+            new CustomPacketPayload.Type<>(MiaUtil.id(MIA.MOD_ID, "discard_hook"));
 
-    public static final StreamCodec<ByteBuf, RetractHookPayload> CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT,
-            RetractHookPayload::id,
-            RetractHookPayload::new
-    );
+    public static final StreamCodec<ByteBuf, RetractHookPayload> CODEC =
+            StreamCodec.composite(
+                    ByteBufCodecs.VAR_INT, RetractHookPayload::id, RetractHookPayload::new);
 
     public static void handle(RetractHookPayload packet, IPayloadContext context) {
-        context.enqueueWork(() -> {
-            Player player = context.player();
-            if (player.level().getEntity(packet.id) instanceof HookEntity entity) {
-                entity.setHookState(HookEntity.HookState.BACK);
-            }
-        });
+        context.enqueueWork(
+                () -> {
+                    Player player = context.player();
+                    if (player.level().getEntity(packet.id) instanceof HookEntity entity) {
+                        entity.setHookState(HookEntity.HookState.BACK);
+                    }
+                });
     }
 
     @Override

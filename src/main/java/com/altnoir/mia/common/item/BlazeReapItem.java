@@ -2,6 +2,10 @@ package com.altnoir.mia.common.item;
 
 import com.altnoir.mia.MiaConfig;
 import com.altnoir.mia.init.MiaItems;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -16,16 +20,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
-
 public class BlazeReapItem extends DiggerItem {
-    private static final ScheduledExecutorService SCHEDULER = Executors.newSingleThreadScheduledExecutor();
+    private static final ScheduledExecutorService SCHEDULER =
+            Executors.newSingleThreadScheduledExecutor();
 
-    public static final Predicate<ItemStack> BLAZE_REAP_FUEL = (stack) ->
-            stack.is(Items.GUNPOWDER) || stack.is(MiaItems.PEACE_PHOBIA.get());
+    public static final Predicate<ItemStack> BLAZE_REAP_FUEL =
+            (stack) -> stack.is(Items.GUNPOWDER) || stack.is(MiaItems.PEACE_PHOBIA.get());
 
     public BlazeReapItem(Properties properties) {
         super(Tiers.NETHERITE, BlockTags.MINEABLE_WITH_PICKAXE, properties);
@@ -43,9 +43,7 @@ public class BlazeReapItem extends DiggerItem {
                 ammoStack = findAmmoInInventory(player, BLAZE_REAP_FUEL);
             }
 
-
             if (!ammoStack.isEmpty() || player.getAbilities().instabuild) {
-
 
                 if (!player.getAbilities().instabuild) {
                     if (!ammoStack.is(MiaItems.PEACE_PHOBIA.get())) {
@@ -58,14 +56,13 @@ public class BlazeReapItem extends DiggerItem {
 
                 triggerExplosionSequence(level, player, target);
 
-
-                stack.hurtAndBreak(1, attacker, LivingEntity.getSlotForHand(attacker.getUsedItemHand()));
+                stack.hurtAndBreak(
+                        1, attacker, LivingEntity.getSlotForHand(attacker.getUsedItemHand()));
             }
         }
 
         return super.hurtEnemy(stack, target, attacker);
     }
-
 
     private ItemStack findAmmoInInventory(Player player, Predicate<ItemStack> predicate) {
         if (predicate.test(player.getOffhandItem())) {
@@ -87,33 +84,51 @@ public class BlazeReapItem extends DiggerItem {
 
         for (int i = 0; i < explosionCount; i++) {
             int delay = i;
-            SCHEDULER.schedule(() -> {
-                if (server != null) {
-                    server.execute(() -> {
-                        if (target != null && target.isAlive() && !target.isRemoved()) {
-                            Vec3 pos = target.position();
+            SCHEDULER.schedule(
+                    () -> {
+                        if (server != null) {
+                            server.execute(
+                                    () -> {
+                                        if (target != null
+                                                && target.isAlive()
+                                                && !target.isRemoved()) {
+                                            Vec3 pos = target.position();
 
-                            double x = pos.x + (Math.random() - 0.5) * explosionRadius;
-                            double y = pos.y + Math.random() * target.getBbHeight();
-                            double z = pos.z + (Math.random() - 0.5) * explosionRadius;
+                                            double x =
+                                                    pos.x + (Math.random() - 0.5) * explosionRadius;
+                                            double y = pos.y + Math.random() * target.getBbHeight();
+                                            double z =
+                                                    pos.z + (Math.random() - 0.5) * explosionRadius;
 
-                            if (level instanceof ServerLevel serverLevel) {
-                                serverLevel.sendParticles(ParticleTypes.FLAME, x, y, z, 5, 0.1, 0.1, 0.1, 0.05);
-                            }
+                                            if (level instanceof ServerLevel serverLevel) {
+                                                serverLevel.sendParticles(
+                                                        ParticleTypes.FLAME,
+                                                        x,
+                                                        y,
+                                                        z,
+                                                        5,
+                                                        0.1,
+                                                        0.1,
+                                                        0.1,
+                                                        0.05);
+                                            }
 
-                            level.explode(
-                                    player,
-                                    null,
-                                    null,
-                                    x, y, z,
-                                    2.0f,
-                                    false,
-                                    ExplosionInteraction.NONE
-                            );
+                                            level.explode(
+                                                    player,
+                                                    null,
+                                                    null,
+                                                    x,
+                                                    y,
+                                                    z,
+                                                    2.0f,
+                                                    false,
+                                                    ExplosionInteraction.NONE);
+                                        }
+                                    });
                         }
-                    });
-                }
-            }, delay, TimeUnit.SECONDS);
+                    },
+                    delay,
+                    TimeUnit.SECONDS);
         }
     }
 }

@@ -19,7 +19,8 @@ public class DebugAttributeTool extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+    public InteractionResultHolder<ItemStack> use(
+            Level level, Player player, InteractionHand usedHand) {
 
         double critChance = 0;
         double critDamage = 0;
@@ -39,21 +40,31 @@ public class DebugAttributeTool extends Item {
             baseDamage = getBaseAttributeValue(player, Attributes.ATTACK_DAMAGE);
 
             player.sendSystemMessage(
-                    Component.literal("=== 最终属性信息 ===")
-                            .withStyle(ChatFormatting.AQUA)
-            );
+                    Component.literal("=== 最终属性信息 ===").withStyle(ChatFormatting.AQUA));
             player.sendSystemMessage(
-                    Component.literal("攻击力: " + String.format("%.2f", damage) + " (基础: " + String.format("%.2f", baseDamage) + ")")
-                            .withStyle(ChatFormatting.GREEN)
-            );
+                    Component.literal(
+                                    "攻击力: "
+                                            + String.format("%.2f", damage)
+                                            + " (基础: "
+                                            + String.format("%.2f", baseDamage)
+                                            + ")")
+                            .withStyle(ChatFormatting.GREEN));
             player.sendSystemMessage(
-                    Component.literal("暴击率: " + String.format("%.2f%%", critChance * 100) + " (基础: " + String.format("%.2f%%", baseCritChance * 100) + ")")
-                            .withStyle(ChatFormatting.YELLOW)
-            );
+                    Component.literal(
+                                    "暴击率: "
+                                            + String.format("%.2f%%", critChance * 100)
+                                            + " (基础: "
+                                            + String.format("%.2f%%", baseCritChance * 100)
+                                            + ")")
+                            .withStyle(ChatFormatting.YELLOW));
             player.sendSystemMessage(
-                    Component.literal("暴击伤害: " + String.format("%.2fx", critDamage) + " (基础: " + String.format("%.2fx", baseCritDamage) + ")")
-                            .withStyle(ChatFormatting.RED)
-            );
+                    Component.literal(
+                                    "暴击伤害: "
+                                            + String.format("%.2fx", critDamage)
+                                            + " (基础: "
+                                            + String.format("%.2fx", baseCritDamage)
+                                            + ")")
+                            .withStyle(ChatFormatting.RED));
         }
         return InteractionResultHolder.success(player.getItemInHand(usedHand));
     }

@@ -7,6 +7,8 @@ import com.altnoir.mia.common.block.properties.ColumnSide;
 import com.altnoir.mia.datagen.blockstate.MiaModelProvider;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.util.MiaUtil;
+import java.util.Map;
+import java.util.function.Function;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -19,9 +21,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.neoforged.neoforge.client.model.generators.*;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
-
-import java.util.Map;
-import java.util.function.Function;
 
 public class MiaBlockStateProvider extends BlockStateProvider {
     public MiaBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -63,72 +62,129 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         wallBlockWithItem(MiaBlocks.ABYSS_ANDESITE_WALL, MiaBlocks.ABYSS_ANDESITE);
         // 圆石
         blockWithItem(MiaBlocks.ABYSS_COBBLED_ANDESITE);
-        stairsBlockWithItem(MiaBlocks.ABYSS_COBBLED_ANDESITE_STAIRS, MiaBlocks.ABYSS_COBBLED_ANDESITE);
+        stairsBlockWithItem(
+                MiaBlocks.ABYSS_COBBLED_ANDESITE_STAIRS, MiaBlocks.ABYSS_COBBLED_ANDESITE);
         slabBlockWithItem(MiaBlocks.ABYSS_COBBLED_ANDESITE_SLAB, MiaBlocks.ABYSS_COBBLED_ANDESITE);
         wallBlockWithItem(MiaBlocks.ABYSS_COBBLED_ANDESITE_WALL, MiaBlocks.ABYSS_COBBLED_ANDESITE);
         // 苔石
         blockWithItem(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE);
-        stairsBlockWithItem(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_STAIRS, MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE);
-        slabBlockWithItem(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_SLAB, MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE);
-        wallBlockWithItem(MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_WALL, MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE);
+        stairsBlockWithItem(
+                MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_STAIRS,
+                MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE);
+        slabBlockWithItem(
+                MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_SLAB,
+                MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE);
+        wallBlockWithItem(
+                MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE_WALL,
+                MiaBlocks.MOSSY_ABYSS_COBBLED_ANDESITE);
         //  磨制
         blockWithItem(MiaBlocks.POLISHED_ABYSS_ANDESITE);
-        stairsBlockWithItem(MiaBlocks.POLISHED_ABYSS_ANDESITE_STAIRS, MiaBlocks.POLISHED_ABYSS_ANDESITE);
-        slabBlockWithItem(MiaBlocks.POLISHED_ABYSS_ANDESITE_SLAB, MiaBlocks.POLISHED_ABYSS_ANDESITE);
-        wallBlockWithItem(MiaBlocks.POLISHED_ABYSS_ANDESITE_WALL, MiaBlocks.POLISHED_ABYSS_ANDESITE);
+        stairsBlockWithItem(
+                MiaBlocks.POLISHED_ABYSS_ANDESITE_STAIRS, MiaBlocks.POLISHED_ABYSS_ANDESITE);
+        slabBlockWithItem(
+                MiaBlocks.POLISHED_ABYSS_ANDESITE_SLAB, MiaBlocks.POLISHED_ABYSS_ANDESITE);
+        wallBlockWithItem(
+                MiaBlocks.POLISHED_ABYSS_ANDESITE_WALL, MiaBlocks.POLISHED_ABYSS_ANDESITE);
         pillarBlockWithItem(MiaBlocks.ABYSS_ANDESITE_PILLAR);
-        columnBlockWithItem(MiaBlocks.ABYSS_ANDESITE_COLUMN, MiaBlocks.ABYSS_ANDESITE_PILLAR, MiaBlocks.ABYSS_ANDESITE_BRICKS);
+        columnBlockWithItem(
+                MiaBlocks.ABYSS_ANDESITE_COLUMN,
+                MiaBlocks.ABYSS_ANDESITE_PILLAR,
+                MiaBlocks.ABYSS_ANDESITE_BRICKS);
         // 石砖
         blockWithItem(MiaBlocks.ABYSS_ANDESITE_BRICKS);
         blockWithItem(MiaBlocks.CHISLED_ABYSS_ANDESITE);
-        stairsBlockWithItem(MiaBlocks.ABYSS_ANDESITE_BRICKS_STAIRS, MiaBlocks.ABYSS_ANDESITE_BRICKS);
+        stairsBlockWithItem(
+                MiaBlocks.ABYSS_ANDESITE_BRICKS_STAIRS, MiaBlocks.ABYSS_ANDESITE_BRICKS);
         slabBlockWithItem(MiaBlocks.ABYSS_ANDESITE_BRICKS_SLAB, MiaBlocks.ABYSS_ANDESITE_BRICKS);
         wallBlockWithItem(MiaBlocks.ABYSS_ANDESITE_BRICKS_WALL, MiaBlocks.ABYSS_ANDESITE_BRICKS);
         blockWithItem(MiaBlocks.CRACKED_ABYSS_ANDESITE_BRICKS);
         // 苔石砖
         blockWithItem(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS);
-        stairsBlockWithItem(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS, MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS);
-        slabBlockWithItem(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB, MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS);
-        wallBlockWithItem(MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL, MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS);
+        stairsBlockWithItem(
+                MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_STAIRS,
+                MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS);
+        slabBlockWithItem(
+                MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_SLAB, MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS);
+        wallBlockWithItem(
+                MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS_WALL, MiaBlocks.MOSSY_ABYSS_ANDESITE_BRICKS);
 
         // 化石树
         variantPillarBlockWithItem(MiaBlocks.FOSSILIZED_LOG, 3);
         variantAxisBlockWithItem(MiaBlocks.FOSSILIZED_WOOD, MiaBlocks.FOSSILIZED_LOG, 3);
-        variantPillarBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_LOG, 5, new int[]{12, 1, 1, 1, 1});
-        variantAxisBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD, MiaBlocks.STRIPPED_FOSSILIZED_LOG, 5, new int[]{12, 1, 1, 1, 1});
+        variantPillarBlockWithItem(
+                MiaBlocks.STRIPPED_FOSSILIZED_LOG, 5, new int[] {12, 1, 1, 1, 1});
+        variantAxisBlockWithItem(
+                MiaBlocks.STRIPPED_FOSSILIZED_WOOD,
+                MiaBlocks.STRIPPED_FOSSILIZED_LOG,
+                5,
+                new int[] {12, 1, 1, 1, 1});
 
         variantPillarBlockWithItem(MiaBlocks.MOSSY_FOSSILIZED_LOG, 4);
-        variantAxisBlockWithItem(MiaBlocks.MOSSY_FOSSILIZED_WOOD, MiaBlocks.MOSSY_FOSSILIZED_LOG, 4);
-        variantPillarBlockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_LOG, 5, new int[]{12, 1, 1, 1, 1});
-        variantAxisBlockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD, MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_LOG, 5, new int[]{12, 1, 1, 1, 1});
+        variantAxisBlockWithItem(
+                MiaBlocks.MOSSY_FOSSILIZED_WOOD, MiaBlocks.MOSSY_FOSSILIZED_LOG, 4);
+        variantPillarBlockWithItem(
+                MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_LOG, 5, new int[] {12, 1, 1, 1, 1});
+        variantAxisBlockWithItem(
+                MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD,
+                MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_LOG,
+                5,
+                new int[] {12, 1, 1, 1, 1});
 
         blockWithItem(MiaBlocks.POLISHED_FOSSILIZED_WOOD);
-        stairsBlockWithItem(MiaBlocks.POLISHED_FOSSILIZED_WOOD_STAIRS, MiaBlocks.POLISHED_FOSSILIZED_WOOD);
-        slabBlockWithItem(MiaBlocks.POLISHED_FOSSILIZED_WOOD_SLAB, MiaBlocks.POLISHED_FOSSILIZED_WOOD);
-        wallBlockWithItem(MiaBlocks.POLISHED_FOSSILIZED_WOOD_WALL, MiaBlocks.POLISHED_FOSSILIZED_WOOD);
+        stairsBlockWithItem(
+                MiaBlocks.POLISHED_FOSSILIZED_WOOD_STAIRS, MiaBlocks.POLISHED_FOSSILIZED_WOOD);
+        slabBlockWithItem(
+                MiaBlocks.POLISHED_FOSSILIZED_WOOD_SLAB, MiaBlocks.POLISHED_FOSSILIZED_WOOD);
+        wallBlockWithItem(
+                MiaBlocks.POLISHED_FOSSILIZED_WOOD_WALL, MiaBlocks.POLISHED_FOSSILIZED_WOOD);
         blockWithItem(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD);
-        stairsBlockWithItem(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_STAIRS, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD);
-        slabBlockWithItem(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_SLAB, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD);
-        wallBlockWithItem(MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_WALL, MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD);
+        stairsBlockWithItem(
+                MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_STAIRS,
+                MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD);
+        slabBlockWithItem(
+                MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_SLAB,
+                MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD);
+        wallBlockWithItem(
+                MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD_WALL,
+                MiaBlocks.POLISHED_STRIPPED_FOSSILIZED_WOOD);
         blockWithItem(MiaBlocks.CHISLED_STRIPPED_FOSSILIZED_WOOD);
 
         blockWithItem(MiaBlocks.FOSSILIZED_WOOD_BRICKS);
-        stairsBlockWithItem(MiaBlocks.FOSSILIZED_WOOD_BRICKS_STAIRS, MiaBlocks.FOSSILIZED_WOOD_BRICKS);
+        stairsBlockWithItem(
+                MiaBlocks.FOSSILIZED_WOOD_BRICKS_STAIRS, MiaBlocks.FOSSILIZED_WOOD_BRICKS);
         slabBlockWithItem(MiaBlocks.FOSSILIZED_WOOD_BRICKS_SLAB, MiaBlocks.FOSSILIZED_WOOD_BRICKS);
         wallBlockWithItem(MiaBlocks.FOSSILIZED_WOOD_BRICKS_WALL, MiaBlocks.FOSSILIZED_WOOD_BRICKS);
         blockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
-        stairsBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
-        slabBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
-        wallBlockWithItem(MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL, MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        stairsBlockWithItem(
+                MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS,
+                MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        slabBlockWithItem(
+                MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB,
+                MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        wallBlockWithItem(
+                MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL,
+                MiaBlocks.STRIPPED_FOSSILIZED_WOOD_BRICKS);
 
         blockWithItem(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
-        stairsBlockWithItem(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_STAIRS, MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
-        slabBlockWithItem(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_SLAB, MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
-        wallBlockWithItem(MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_WALL, MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
+        stairsBlockWithItem(
+                MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_STAIRS,
+                MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
+        slabBlockWithItem(
+                MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_SLAB,
+                MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
+        wallBlockWithItem(
+                MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS_WALL,
+                MiaBlocks.MOSSY_FOSSILIZED_WOOD_BRICKS);
         blockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
-        stairsBlockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS, MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
-        slabBlockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB, MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
-        wallBlockWithItem(MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL, MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        stairsBlockWithItem(
+                MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_STAIRS,
+                MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        slabBlockWithItem(
+                MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_SLAB,
+                MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
+        wallBlockWithItem(
+                MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS_WALL,
+                MiaBlocks.MOSSY_STRIPPED_FOSSILIZED_WOOD_BRICKS);
 
         // 天雾树
         logBlockWithItem(MiaBlocks.SKYFOG_LOG);
@@ -217,7 +273,7 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         bushBlock(MiaBlocks.KONJAC_ROOT);
         bushBlock(MiaBlocks.SILVEAF_FUNGUS);
 
-        //遗物
+        // 遗物
         blockWithItem(MiaBlocks.SUN_STONE);
 
         // 红石
@@ -227,23 +283,27 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         buttonBlockWithItem(MiaBlocks.VERDANT_BUTTON, MiaBlocks.VERDANT_PLANKS);
         pressurePlateBlockWithItem(MiaBlocks.INVERTED_PRESSURE_PLATE, MiaBlocks.INVERTED_PLANKS);
         buttonBlockWithItem(MiaBlocks.INVERTED_BUTTON, MiaBlocks.INVERTED_PLANKS);
-
-
     }
 
     private void coverGrassBlock(DeferredBlock<?> modelBlock, DeferredBlock<?> block) {
-        models().withExistingParent(MiaUtil.getBlockPath(modelBlock.get()), modLoc("block/template/cube_tsb"))
+        models().withExistingParent(
+                        MiaUtil.getBlockPath(modelBlock.get()), modLoc("block/template/cube_tsb"))
                 .texture("top", this.modLoc("block/abyss_grass_block_top"))
-                .texture("side", this.modLoc("block/" + MiaUtil.getBlockPath(modelBlock.get()) + "_side"))
+                .texture(
+                        "side",
+                        this.modLoc("block/" + MiaUtil.getBlockPath(modelBlock.get()) + "_side"))
                 .texture("bottom", this.modLoc("block/" + MiaUtil.getBlockPath(block.get())));
         rotationYBlockState(modelBlock.get());
         blockItem(modelBlock);
     }
 
     private void coverGrassBlock(DeferredBlock<?> modelBlock, Block block) {
-        models().withExistingParent(MiaUtil.getBlockPath(modelBlock.get()), modLoc("block/template/cube_tsb"))
+        models().withExistingParent(
+                        MiaUtil.getBlockPath(modelBlock.get()), modLoc("block/template/cube_tsb"))
                 .texture("top", this.modLoc("block/abyss_grass_block_top"))
-                .texture("side", this.modLoc("block/" + MiaUtil.getBlockPath(modelBlock.get()) + "_side"))
+                .texture(
+                        "side",
+                        this.modLoc("block/" + MiaUtil.getBlockPath(modelBlock.get()) + "_side"))
                 .texture("bottom", this.mcLoc("block/" + MiaUtil.getBlockPath(block)));
         rotationYBlockState(modelBlock.get());
         blockItem(modelBlock);
@@ -279,7 +339,6 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         blockItem(MiaBlocks.PEDESTAL);
     }
 
-
     private void abyssSpawnerBlock() {
         modelP.abyssSpawnerBlockModel(this, MiaBlocks.ABYSS_SPAWNER.get());
         abyssSpawnerBlockState(MiaBlocks.ABYSS_SPAWNER.get());
@@ -293,13 +352,17 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     private void abyssPortalCoreBlock() {
-        modelP.abyssPortalCoreModel(this, MiaBlocks.ABYSS_PORTAL_CORE.get(), MiaBlocks.ABYSS_PORTAL_FRAME.get());
+        modelP.abyssPortalCoreModel(
+                this, MiaBlocks.ABYSS_PORTAL_CORE.get(), MiaBlocks.ABYSS_PORTAL_FRAME.get());
         baseBlockState(MiaBlocks.ABYSS_PORTAL_CORE.get());
         blockItem(MiaBlocks.ABYSS_PORTAL_CORE);
     }
 
     private void artifactSmithingTableBlock() {
-        modelP.artifactSmithingTableBlockModel(this, MiaBlocks.ARTIFACT_SMITHING_TABLE.get(), MiaBlocks.CHISLED_ABYSS_ANDESITE.get());
+        modelP.artifactSmithingTableBlockModel(
+                this,
+                MiaBlocks.ARTIFACT_SMITHING_TABLE.get(),
+                MiaBlocks.CHISLED_ABYSS_ANDESITE.get());
         baseBlockState(MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
         blockItem(MiaBlocks.ARTIFACT_SMITHING_TABLE);
     }
@@ -323,8 +386,10 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     protected void bushBlock(DeferredBlock<?> block) {
-        simpleBlock(block.get(),
-                models().cross(MiaUtil.getBlockPath(block.get()), blockTexture(block.get())).renderType("cutout"));
+        simpleBlock(
+                block.get(),
+                models().cross(MiaUtil.getBlockPath(block.get()), blockTexture(block.get()))
+                        .renderType("cutout"));
         bushItem(block);
     }
 
@@ -333,9 +398,14 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     protected void leavesBlock(DeferredBlock<?> block, String renderType) {
-        simpleBlockWithItem(block.get(),
-                models().singleTexture(MiaUtil.getBlockPath(block.get()), mcLoc("block/leaves"),
-                        "all", blockTexture(block.get())).renderType(renderType));
+        simpleBlockWithItem(
+                block.get(),
+                models().singleTexture(
+                                MiaUtil.getBlockPath(block.get()),
+                                mcLoc("block/leaves"),
+                                "all",
+                                blockTexture(block.get()))
+                        .renderType(renderType));
     }
 
     protected void logBlockWithItem(DeferredBlock<?> block) {
@@ -344,12 +414,17 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     protected void woodBlockWithItem(DeferredBlock<?> block, DeferredBlock<?> log) {
-        axisBlock((RotatedPillarBlock) block.get(), blockTexture(log.get()), blockTexture(log.get()));
+        axisBlock(
+                (RotatedPillarBlock) block.get(), blockTexture(log.get()), blockTexture(log.get()));
         blockItem(block);
     }
 
     protected void stairsBlockWithItem(DeferredBlock<?> block, DeferredBlock<?> texture) {
-        stairsBlock((StairBlock) block.get(), blockTexture(texture.get()), blockTexture(texture.get()), blockTexture(texture.get()));
+        stairsBlock(
+                (StairBlock) block.get(),
+                blockTexture(texture.get()),
+                blockTexture(texture.get()),
+                blockTexture(texture.get()));
         blockItem(block);
     }
 
@@ -357,8 +432,14 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         slabBlockWithItem(block, blockTexture(texture.get()), texture);
     }
 
-    protected void slabBlockWithItem(DeferredBlock<?> block, ResourceLocation doubleslab, DeferredBlock<?> texture) {
-        slabBlock((SlabBlock) block.get(), doubleslab, blockTexture(texture.get()), blockTexture(texture.get()), blockTexture(texture.get()));
+    protected void slabBlockWithItem(
+            DeferredBlock<?> block, ResourceLocation doubleslab, DeferredBlock<?> texture) {
+        slabBlock(
+                (SlabBlock) block.get(),
+                doubleslab,
+                blockTexture(texture.get()),
+                blockTexture(texture.get()),
+                blockTexture(texture.get()));
         blockItem(block);
     }
 
@@ -382,8 +463,11 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     protected void doorBlockWithItem(DeferredBlock<?> block, String renderType) {
-        doorBlockWithRenderType((DoorBlock) block.get(), extend(blockTexture(block.get()), "_bottom"),
-                extend(blockTexture(block.get()), "_top"), renderType);
+        doorBlockWithRenderType(
+                (DoorBlock) block.get(),
+                extend(blockTexture(block.get()), "_bottom"),
+                extend(blockTexture(block.get()), "_top"),
+                renderType);
         aloneItem(block);
     }
 
@@ -392,7 +476,8 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     protected void trapdoorBlockWithItem(DeferredBlock<?> block, String renderType) {
-        trapdoorBlockWithRenderType((TrapDoorBlock) block.get(), blockTexture(block.get()), true, renderType);
+        trapdoorBlockWithRenderType(
+                (TrapDoorBlock) block.get(), blockTexture(block.get()), true, renderType);
         blockItem(block, "_bottom");
     }
 
@@ -411,7 +496,8 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         blockItem(block);
     }
 
-    protected void columnBlockWithItem(DeferredBlock<?> block, DeferredBlock<?> pillarBlock, DeferredBlock<?> decBlock) {
+    protected void columnBlockWithItem(
+            DeferredBlock<?> block, DeferredBlock<?> pillarBlock, DeferredBlock<?> decBlock) {
         columnBlock(block, pillarBlock, decBlock);
         blockItem(block);
     }
@@ -420,34 +506,58 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         return MiaUtil.id(rl.getNamespace(), rl.getPath() + suffix);
     }
 
-    protected void columnBlock(DeferredBlock<?> block, DeferredBlock<?> pillarBlock, DeferredBlock<?> decBlock) {
+    protected void columnBlock(
+            DeferredBlock<?> block, DeferredBlock<?> pillarBlock, DeferredBlock<?> decBlock) {
         MiaModelProvider modelP = new MiaModelProvider();
         modelP.columnBlockModel(this, block.get(), pillarBlock.get(), decBlock.get());
 
         getVariantBuilder(block.get())
-                .forAllStates(state -> {
-                    ColumnSide side = state.getValue(ColumnBlock.COLUMN);
-                    String blockPath = MiaUtil.getBlockPath(block.get());
+                .forAllStates(
+                        state -> {
+                            ColumnSide side = state.getValue(ColumnBlock.COLUMN);
+                            String blockPath = MiaUtil.getBlockPath(block.get());
 
-                    return switch (side) {
-                        case NONE -> ConfiguredModel.builder()
-                                .modelFile(models().getExistingFile(modLoc("block/" + blockPath)))
-                                .build();
-                        case TOP -> ConfiguredModel.builder()
-                                .modelFile(models().getExistingFile(modLoc("block/" + blockPath + "_top")))
-                                .build();
-                        case BOTTOM -> ConfiguredModel.builder()
-                                .modelFile(models().getExistingFile(modLoc("block/" + blockPath + "_bottom")))
-                                .build();
-                        case MIDDLE -> ConfiguredModel.builder()
-                                .modelFile(models().getExistingFile(modLoc("block/" + blockPath + "_middle")))
-                                .build();
-                    };
-                });
+                            return switch (side) {
+                                case NONE ->
+                                        ConfiguredModel.builder()
+                                                .modelFile(
+                                                        models().getExistingFile(
+                                                                        modLoc(
+                                                                                "block/"
+                                                                                        + blockPath)))
+                                                .build();
+                                case TOP ->
+                                        ConfiguredModel.builder()
+                                                .modelFile(
+                                                        models().getExistingFile(
+                                                                        modLoc(
+                                                                                "block/" + blockPath
+                                                                                        + "_top")))
+                                                .build();
+                                case BOTTOM ->
+                                        ConfiguredModel.builder()
+                                                .modelFile(
+                                                        models().getExistingFile(
+                                                                        modLoc(
+                                                                                "block/" + blockPath
+                                                                                        + "_bottom")))
+                                                .build();
+                                case MIDDLE ->
+                                        ConfiguredModel.builder()
+                                                .modelFile(
+                                                        models().getExistingFile(
+                                                                        modLoc(
+                                                                                "block/" + blockPath
+                                                                                        + "_middle")))
+                                                .build();
+                            };
+                        });
     }
 
     protected void pillarBlock(DeferredBlock<?> block) {
-        axisBlock((RotatedPillarBlock) block.get(), blockTexture(block.get()),
+        axisBlock(
+                (RotatedPillarBlock) block.get(),
+                blockTexture(block.get()),
                 extend(blockTexture(block.get()), "_top"));
     }
 
@@ -461,25 +571,38 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         blockItem(block, "0");
     }
 
-    protected void variantAxisBlockWithItem(DeferredBlock<?> block, DeferredBlock<?> variant, int variants) {
+    protected void variantAxisBlockWithItem(
+            DeferredBlock<?> block, DeferredBlock<?> variant, int variants) {
         variantAxisBlock(block, variant, variants, null);
         blockItem(block, "0");
     }
 
-    protected void variantAxisBlockWithItem(DeferredBlock<?> block, DeferredBlock<?> variant, int variants, int[] weights) {
+    protected void variantAxisBlockWithItem(
+            DeferredBlock<?> block, DeferredBlock<?> variant, int variants, int[] weights) {
         variantAxisBlock(block, variant, variants, weights);
         blockItem(block, "0");
     }
 
     protected void variantAxisBlock(DeferredBlock<?> block, int variants, int[] weights) {
-        variantAxisBlock((RotatedPillarBlock) block.get(), block.get(), extend(blockTexture(block.get()), "_top"), variants, weights);
+        variantAxisBlock(
+                (RotatedPillarBlock) block.get(),
+                block.get(),
+                extend(blockTexture(block.get()), "_top"),
+                variants,
+                weights);
     }
 
-    protected void variantAxisBlock(DeferredBlock<?> block, DeferredBlock<?> variant, int variants, int[] weights) {
+    protected void variantAxisBlock(
+            DeferredBlock<?> block, DeferredBlock<?> variant, int variants, int[] weights) {
         variantAxisBlock((RotatedPillarBlock) block.get(), variant.get(), null, variants, weights);
     }
 
-    protected void variantAxisBlock(RotatedPillarBlock block, Block side, ResourceLocation end, int variants, int[] weights) {
+    protected void variantAxisBlock(
+            RotatedPillarBlock block,
+            Block side,
+            ResourceLocation end,
+            int variants,
+            int[] weights) {
         ConfiguredModel[] yModels = new ConfiguredModel[variants];
         ConfiguredModel[] zModels = new ConfiguredModel[variants];
         ConfiguredModel[] xModels = new ConfiguredModel[variants];
@@ -488,8 +611,13 @@ public class MiaBlockStateProvider extends BlockStateProvider {
             ResourceLocation variantSide = MiaUtil.miaId("block/" + MiaUtil.getBlockPath(side) + i);
             ResourceLocation topTexture = end != null ? end : variantSide;
 
-            ModelFile model = models().cubeColumn(MiaUtil.getBlockPath(block) + i, variantSide, topTexture);
-            ModelFile horizontalModel = models().cubeColumnHorizontal(MiaUtil.getBlockPath(block) + "_horizontal" + i, variantSide, topTexture);
+            ModelFile model =
+                    models().cubeColumn(MiaUtil.getBlockPath(block) + i, variantSide, topTexture);
+            ModelFile horizontalModel =
+                    models().cubeColumnHorizontal(
+                                    MiaUtil.getBlockPath(block) + "_horizontal" + i,
+                                    variantSide,
+                                    topTexture);
 
             int weight = weights != null ? weights[i] : 1;
 
@@ -499,11 +627,14 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         }
 
         getVariantBuilder(block)
-                .partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y)
+                .partialState()
+                .with(RotatedPillarBlock.AXIS, Direction.Axis.Y)
                 .setModels(yModels)
-                .partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Z)
+                .partialState()
+                .with(RotatedPillarBlock.AXIS, Direction.Axis.Z)
                 .setModels(zModels)
-                .partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.X)
+                .partialState()
+                .with(RotatedPillarBlock.AXIS, Direction.Axis.X)
                 .setModels(xModels);
     }
 
@@ -527,10 +658,16 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         ResourceLocation bottomModel = modelP.crossModel(this, block.get(), "_bottom");
 
         getVariantBuilder(block.get())
-                .partialState().with(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER)
-                .modelForState().modelFile(models().getExistingFile(bottomModel)).addModel()
-                .partialState().with(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER)
-                .modelForState().modelFile(models().getExistingFile(topModel)).addModel();
+                .partialState()
+                .with(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER)
+                .modelForState()
+                .modelFile(models().getExistingFile(bottomModel))
+                .addModel()
+                .partialState()
+                .with(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER)
+                .modelForState()
+                .modelFile(models().getExistingFile(topModel))
+                .addModel();
 
         bushItem(block, "_top");
     }
@@ -543,34 +680,44 @@ public class MiaBlockStateProvider extends BlockStateProvider {
             modelP.crossModel(this, block.get(), "_top" + age);
         }
         getVariantBuilder(block.get())
-                .forAllStates(state -> {
-                    DoubleBlockHalf half = state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF);
-                    int age = state.getValue(DoubleBerryblock.AGE);
+                .forAllStates(
+                        state -> {
+                            DoubleBlockHalf half =
+                                    state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF);
+                            int age = state.getValue(DoubleBerryblock.AGE);
 
-                    String modelName;
-                    if (half == DoubleBlockHalf.UPPER && age >= 2) {
-                        modelName = MiaUtil.getBlockPath(block.get()) + "_top" + age;
-                    } else {
-                        modelName = MiaUtil.getBlockPath(block.get()) + "_bottom" + age;
-                    }
-                    ModelFile model = models().getExistingFile(modLoc("block/" + modelName));
+                            String modelName;
+                            if (half == DoubleBlockHalf.UPPER && age >= 2) {
+                                modelName = MiaUtil.getBlockPath(block.get()) + "_top" + age;
+                            } else {
+                                modelName = MiaUtil.getBlockPath(block.get()) + "_bottom" + age;
+                            }
+                            ModelFile model =
+                                    models().getExistingFile(modLoc("block/" + modelName));
 
-                    return new ConfiguredModel[]{new ConfiguredModel(model)};
-                });
+                            return new ConfiguredModel[] {new ConfiguredModel(model)};
+                        });
 
         bushItem(block, "_top" + maxAge);
     }
 
     private void makeCropBlock(CropBlock cropBlock, String model, String texture) {
-        Function<BlockState, ConfiguredModel[]> function = (state -> states(state, cropBlock, model, texture));
+        Function<BlockState, ConfiguredModel[]> function =
+                (state -> states(state, cropBlock, model, texture));
 
         getVariantBuilder(cropBlock).forAllStates(function);
     }
 
-    private ConfiguredModel[] states(BlockState state, CropBlock cropBlock, String model, String texture) {
+    private ConfiguredModel[] states(
+            BlockState state, CropBlock cropBlock, String model, String texture) {
         ConfiguredModel[] models = new ConfiguredModel[1];
-        models[0] = new ConfiguredModel(models().crop(model + state.getValue(CropBlock.AGE),
-                MiaUtil.miaId("block/" + texture + state.getValue(CropBlock.AGE))).renderType("cutout"));
+        models[0] =
+                new ConfiguredModel(
+                        models().crop(
+                                        model + state.getValue(CropBlock.AGE),
+                                        MiaUtil.miaId(
+                                                "block/" + texture + state.getValue(CropBlock.AGE)))
+                                .renderType("cutout"));
         return models;
     }
 
@@ -579,86 +726,118 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
         getMultipartBuilder(flowerBedBlock.get())
                 // FLOWER_AMOUNT = 1
-                .part().modelFile(models().getExistingFile(flowerbedModels[0]))
-                .rotationY(0).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[0]))
+                .rotationY(0)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 1, 2, 3, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH)
                 .end()
-                .part().modelFile(models().getExistingFile(flowerbedModels[0]))
-                .rotationY(90).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[0]))
+                .rotationY(90)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 1, 2, 3, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST)
                 .end()
-                .part().modelFile(models().getExistingFile(flowerbedModels[0]))
-                .rotationY(180).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[0]))
+                .rotationY(180)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 1, 2, 3, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH)
                 .end()
-                .part().modelFile(models().getExistingFile(flowerbedModels[0]))
-                .rotationY(270).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[0]))
+                .rotationY(270)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 1, 2, 3, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST)
                 .end()
                 // FLOWER_AMOUNT = 2
-                .part().modelFile(models().getExistingFile(flowerbedModels[1]))
-                .rotationY(0).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[1]))
+                .rotationY(0)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 2, 3, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH)
                 .end()
-                .part().modelFile(models().getExistingFile(flowerbedModels[1]))
-                .rotationY(90).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[1]))
+                .rotationY(90)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 2, 3, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST)
                 .end()
-                .part().modelFile(models().getExistingFile(flowerbedModels[1]))
-                .rotationY(180).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[1]))
+                .rotationY(180)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 2, 3, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH)
                 .end()
-                .part().modelFile(models().getExistingFile(flowerbedModels[1]))
-                .rotationY(270).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[1]))
+                .rotationY(270)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 2, 3, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST)
                 .end()
                 // FLOWER_AMOUNT = 3
-                .part().modelFile(models().getExistingFile(flowerbedModels[2]))
-                .rotationY(0).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[2]))
+                .rotationY(0)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 3, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH)
                 .end()
-                .part().modelFile(models().getExistingFile(flowerbedModels[2]))
-                .rotationY(90).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[2]))
+                .rotationY(90)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 3, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST)
                 .end()
-                .part().modelFile(models().getExistingFile(flowerbedModels[2]))
-                .rotationY(180).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[2]))
+                .rotationY(180)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 3, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH)
                 .end()
-                .part().modelFile(models().getExistingFile(flowerbedModels[2]))
-                .rotationY(270).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[2]))
+                .rotationY(270)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 3, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST)
                 .end()
                 // FLOWER_AMOUNT = 4
-                .part().modelFile(models().getExistingFile(flowerbedModels[3]))
-                .rotationY(0).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[3]))
+                .rotationY(0)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH)
                 .end()
-                .part().modelFile(models().getExistingFile(flowerbedModels[3]))
-                .rotationY(90).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[3]))
+                .rotationY(90)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST)
                 .end()
-                .part().modelFile(models().getExistingFile(flowerbedModels[3]))
-                .rotationY(180).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[3]))
+                .rotationY(180)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH)
                 .end()
-                .part().modelFile(models().getExistingFile(flowerbedModels[3]))
-                .rotationY(270).addModel()
+                .part()
+                .modelFile(models().getExistingFile(flowerbedModels[3]))
+                .rotationY(270)
+                .addModel()
                 .condition(BlockStateProperties.FLOWER_AMOUNT, 4)
                 .condition(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST)
                 .end();
@@ -668,16 +847,21 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
     private void createBrushableBlock(DeferredBlock<?> block) {
         getVariantBuilder(block.get())
-                .forAllStates(state -> {
-                    String suffix = "_" + state.getValue(BlockStateProperties.DUSTED);
+                .forAllStates(
+                        state -> {
+                            String suffix = "_" + state.getValue(BlockStateProperties.DUSTED);
 
-                    ModelFile model = models().cubeAll(
-                            MiaUtil.getBlockPath(block.get()) + suffix,
-                            modLoc("block/" + MiaUtil.getBlockPath(block.get()) + suffix)
-                    );
+                            ModelFile model =
+                                    models().cubeAll(
+                                                    MiaUtil.getBlockPath(block.get()) + suffix,
+                                                    modLoc(
+                                                            "block/"
+                                                                    + MiaUtil.getBlockPath(
+                                                                            block.get())
+                                                                    + suffix));
 
-                    return ConfiguredModel.builder().modelFile(model).build();
-                });
+                            return ConfiguredModel.builder().modelFile(model).build();
+                        });
 
         // 创建物品模型
         blockItem(block, "_0");
@@ -685,18 +869,44 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
     private void buildFacingBlockState(DeferredBlock<?> block, ResourceLocation model) {
         getVariantBuilder(block.get())
-                .partialState().with(BlockStateProperties.FACING, Direction.DOWN)
-                .modelForState().modelFile(models().getExistingFile(model)).rotationX(180).addModel()
-                .partialState().with(BlockStateProperties.FACING, Direction.UP)
-                .modelForState().modelFile(models().getExistingFile(model)).addModel()
-                .partialState().with(BlockStateProperties.FACING, Direction.NORTH)
-                .modelForState().modelFile(models().getExistingFile(model)).rotationX(90).addModel()
-                .partialState().with(BlockStateProperties.FACING, Direction.SOUTH)
-                .modelForState().modelFile(models().getExistingFile(model)).rotationX(90).rotationY(180).addModel()
-                .partialState().with(BlockStateProperties.FACING, Direction.WEST)
-                .modelForState().modelFile(models().getExistingFile(model)).rotationX(90).rotationY(270).addModel()
-                .partialState().with(BlockStateProperties.FACING, Direction.EAST)
-                .modelForState().modelFile(models().getExistingFile(model)).rotationX(90).rotationY(90).addModel();
+                .partialState()
+                .with(BlockStateProperties.FACING, Direction.DOWN)
+                .modelForState()
+                .modelFile(models().getExistingFile(model))
+                .rotationX(180)
+                .addModel()
+                .partialState()
+                .with(BlockStateProperties.FACING, Direction.UP)
+                .modelForState()
+                .modelFile(models().getExistingFile(model))
+                .addModel()
+                .partialState()
+                .with(BlockStateProperties.FACING, Direction.NORTH)
+                .modelForState()
+                .modelFile(models().getExistingFile(model))
+                .rotationX(90)
+                .addModel()
+                .partialState()
+                .with(BlockStateProperties.FACING, Direction.SOUTH)
+                .modelForState()
+                .modelFile(models().getExistingFile(model))
+                .rotationX(90)
+                .rotationY(180)
+                .addModel()
+                .partialState()
+                .with(BlockStateProperties.FACING, Direction.WEST)
+                .modelForState()
+                .modelFile(models().getExistingFile(model))
+                .rotationX(90)
+                .rotationY(270)
+                .addModel()
+                .partialState()
+                .with(BlockStateProperties.FACING, Direction.EAST)
+                .modelForState()
+                .modelFile(models().getExistingFile(model))
+                .rotationX(90)
+                .rotationY(90)
+                .addModel();
     }
 
     protected void blockItem(DeferredBlock<?> block) {
@@ -708,58 +918,63 @@ public class MiaBlockStateProvider extends BlockStateProvider {
     }
 
     protected ItemModelBuilder modBlockItem(DeferredBlock<?> block, String suffix) {
-        return itemModels().withExistingParent(MiaUtil.getBlockPath(block.get()), modLoc("block/" + suffix));
+        return itemModels()
+                .withExistingParent(MiaUtil.getBlockPath(block.get()), modLoc("block/" + suffix));
     }
 
     protected ItemModelBuilder vanillaBlockItem(DeferredBlock<?> block, String suffix) {
-        return itemModels().withExistingParent(MiaUtil.getBlockPath(block.get()), mcLoc("block/" + suffix));
+        return itemModels()
+                .withExistingParent(MiaUtil.getBlockPath(block.get()), mcLoc("block/" + suffix));
     }
 
     protected ItemModelBuilder aloneItem(DeferredBlock<?> block) {
-        return itemModels().withExistingParent(block.getId().getPath(),
-                MiaUtil.id("item/generated")).texture("layer0",
-                MiaUtil.miaId("item/" + block.getId().getPath()));
+        return itemModels()
+                .withExistingParent(block.getId().getPath(), MiaUtil.id("item/generated"))
+                .texture("layer0", MiaUtil.miaId("item/" + block.getId().getPath()));
     }
 
     protected ItemModelBuilder bushItem(DeferredBlock<?> block) {
-        return itemModels().withExistingParent(block.getId().getPath(),
-                MiaUtil.id("item/generated")).texture("layer0",
-                MiaUtil.miaId("block/" + block.getId().getPath()));
+        return itemModels()
+                .withExistingParent(block.getId().getPath(), MiaUtil.id("item/generated"))
+                .texture("layer0", MiaUtil.miaId("block/" + block.getId().getPath()));
     }
 
     protected ItemModelBuilder bushItem(DeferredBlock<?> block, String suffix) {
-        return itemModels().withExistingParent(block.getId().getPath(),
-                MiaUtil.id("item/generated")).texture("layer0",
-                MiaUtil.miaId("block/" + block.getId().getPath() + suffix));
+        return itemModels()
+                .withExistingParent(block.getId().getPath(), MiaUtil.id("item/generated"))
+                .texture("layer0", MiaUtil.miaId("block/" + block.getId().getPath() + suffix));
     }
 
     protected void blockWithItem(DeferredBlock<?> block) {
         simpleBlockWithItem(block.get(), cubeAll(block.get()));
     }
 
-
     public void baseBlockState(Block block) {
-        getVariantBuilder(block).partialState().addModels(getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block))));
+        getVariantBuilder(block)
+                .partialState()
+                .addModels(getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block))));
     }
 
     public void rotationYBlockState(Block block) {
         getVariantBuilder(block)
-                .partialState().addModels(
+                .partialState()
+                .addModels(
                         getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block))),
                         getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block)), 90),
                         getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block)), 180),
-                        getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block)), 270)
-                );
+                        getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block)), 270));
     }
 
     public void mirroredBlockState(Block block) {
         getVariantBuilder(block)
-                .partialState().addModels(
+                .partialState()
+                .addModels(
                         getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block))),
-                        getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block) + "_mirrored")),
+                        getVariantBuilder(
+                                modLoc("block/" + MiaUtil.getBlockPath(block) + "_mirrored")),
                         getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block)), 180),
-                        getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block) + "_mirrored"), 180)
-                );
+                        getVariantBuilder(
+                                modLoc("block/" + MiaUtil.getBlockPath(block) + "_mirrored"), 180));
     }
 
     public void moistureBlockState(Block block) {
@@ -774,21 +989,23 @@ public class MiaBlockStateProvider extends BlockStateProvider {
 
         builder.partialState()
                 .with(moisture, 7)
-                .addModels(getVariantBuilder(modLoc("block/" + MiaUtil.getBlockPath(block) + "_moist")));
+                .addModels(
+                        getVariantBuilder(
+                                modLoc("block/" + MiaUtil.getBlockPath(block) + "_moist")));
     }
 
     public void abyssSpawnerBlockState(Block block) {
         VariantBlockStateBuilder builder = getVariantBuilder(block);
         String blockPath = MiaUtil.getBlockPath(block);
 
-        Map<TrialSpawnerState, String> stateSuffixMap = Map.of(
-                TrialSpawnerState.ACTIVE, "_active",
-                TrialSpawnerState.COOLDOWN, "",
-                TrialSpawnerState.EJECTING_REWARD, "_ejecting_reward",
-                TrialSpawnerState.INACTIVE, "",
-                TrialSpawnerState.WAITING_FOR_PLAYERS, "_active",
-                TrialSpawnerState.WAITING_FOR_REWARD_EJECTION, "_ejecting_reward"
-        );
+        Map<TrialSpawnerState, String> stateSuffixMap =
+                Map.of(
+                        TrialSpawnerState.ACTIVE, "_active",
+                        TrialSpawnerState.COOLDOWN, "",
+                        TrialSpawnerState.EJECTING_REWARD, "_ejecting_reward",
+                        TrialSpawnerState.INACTIVE, "",
+                        TrialSpawnerState.WAITING_FOR_PLAYERS, "_active",
+                        TrialSpawnerState.WAITING_FOR_REWARD_EJECTION, "_ejecting_reward");
 
         for (TrialSpawnerState state : stateSuffixMap.keySet()) {
             String suffix = stateSuffixMap.get(state);
@@ -810,11 +1027,13 @@ public class MiaBlockStateProvider extends BlockStateProvider {
         return getVariantBuilder(state, 0, rotationY);
     }
 
-    private ConfiguredModel getVariantBuilder(ResourceLocation state, int rotationX, int rotationY) {
+    private ConfiguredModel getVariantBuilder(
+            ResourceLocation state, int rotationX, int rotationY) {
         return getVariantBuilder(state, rotationX, rotationY, false);
     }
 
-    private ConfiguredModel getVariantBuilder(ResourceLocation state, int rotationX, int rotationY, boolean uvLock) {
+    private ConfiguredModel getVariantBuilder(
+            ResourceLocation state, int rotationX, int rotationY, boolean uvLock) {
         return new ConfiguredModel(models().getExistingFile(state), rotationX, rotationY, uvLock);
     }
 }

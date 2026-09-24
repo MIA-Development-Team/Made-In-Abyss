@@ -16,7 +16,8 @@ public class TheAbyssBiomes {
     // Layer 1
     public static Biome theAbyss(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CAT, 10, 4, 4));
+        spawnBuilder.addSpawn(
+                MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CAT, 10, 4, 4));
 
         BiomesUtils.farmAnimals(spawnBuilder);
         BiomesUtils.commonSpawns(spawnBuilder);
@@ -25,9 +26,16 @@ public class TheAbyssBiomes {
         BiomesUtils.abyssGeneration(generationBuilder);
 
         BiomesUtils.addMeadowVegetation(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_SKYFOG_AND_AZALEA)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_LARGE_FERN)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_SUNFLOWER);
+        generationBuilder
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.TREES_SKYFOG_AND_AZALEA)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.PATCH_LARGE_FERN)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.PATCH_SUNFLOWER);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
@@ -36,7 +44,8 @@ public class TheAbyssBiomes {
 
     public static Biome skyfogForest(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CAT, 10, 4, 4));
+        spawnBuilder.addSpawn(
+                MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CAT, 10, 4, 4));
 
         BiomesUtils.farmAnimals(spawnBuilder);
         BiomesUtils.commonSpawns(spawnBuilder);
@@ -44,12 +53,20 @@ public class TheAbyssBiomes {
         BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
 
         BiomesUtils.globalAbyssGeneration(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.RAW_IRON);
+        generationBuilder.addFeature(
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.RAW_IRON);
 
         BiomesUtils.addMeadowVegetation(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_SKYFOG_AND_AZALEA)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_LARGE_FERN)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
+        generationBuilder
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.TREES_SKYFOG_AND_AZALEA)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.PATCH_LARGE_FERN)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.CAVE_VINES);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
@@ -66,8 +83,13 @@ public class TheAbyssBiomes {
 
         BiomesUtils.globalAbyssGeneration(generationBuilder);
         BiomesUtils.addDenseMeadowVegetation(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.DENSE_TREES_SKYFOG)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
+        generationBuilder
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.DENSE_TREES_SKYFOG)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.CAVE_VINES);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
@@ -82,12 +104,20 @@ public class TheAbyssBiomes {
         BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
 
         BiomesUtils.globalAbyssGeneration(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.RAW_IRON);
+        generationBuilder.addFeature(
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.RAW_IRON);
 
         BiomesUtils.addMeadowVegetation(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_FOSSILIZED)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_LARGE_FERN)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
+        generationBuilder
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.TREES_FOSSILIZED)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.PATCH_LARGE_FERN)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.CAVE_VINES);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
@@ -102,10 +132,19 @@ public class TheAbyssBiomes {
         BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
 
         BiomesUtils.globalAbyssGeneration(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.POOL_WITH_REED)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_GRASS_PLAIN)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_FOSSILIZED)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
+        generationBuilder
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.POOL_WITH_REED)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.PATCH_GRASS_PLAIN)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.TREES_FOSSILIZED)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.CAVE_VINES);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
@@ -120,15 +159,29 @@ public class TheAbyssBiomes {
         BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
 
         BiomesUtils.globalAbyssGeneration(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.RAW_IRON);
+        generationBuilder.addFeature(
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.RAW_IRON);
 
         BiomesUtils.addMeadowVegetation(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_FOSSILIZED_UNDER)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_FOSSILIZED_UNDER2)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_LARGE_FERN)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVES_CEILING_VEGETATION)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.SPORE_BLOSSOM)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
+        generationBuilder
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.TREES_FOSSILIZED_UNDER)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.TREES_FOSSILIZED_UNDER2)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.PATCH_LARGE_FERN)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.CAVES_CEILING_VEGETATION)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.SPORE_BLOSSOM)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.CAVE_VINES);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
@@ -144,17 +197,22 @@ public class TheAbyssBiomes {
         BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
 
         BiomesUtils.globalAbyssGeneration(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.RAW_IRON);
+        generationBuilder.addFeature(
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.RAW_IRON);
 
         BiomesUtils.addMeadowVegetation(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_LARGE_FERN)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
+        generationBuilder
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.PATCH_LARGE_FERN)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.CAVE_VINES);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
         return baseBiome(generationBuilder, spawnBuilder).build();
     }
-
 
     public static Biome prasioliteCaves(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
@@ -165,13 +223,19 @@ public class TheAbyssBiomes {
         BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
 
         BiomesUtils.globalAbyssGenerationNotGeode(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.PRASIOLITE_CLUSTER);
-        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.BIG_PRASIOLITE_CLUSTER);
+        generationBuilder.addFeature(
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+                TheAbyssPlacements.PRASIOLITE_CLUSTER);
+        generationBuilder.addFeature(
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+                TheAbyssPlacements.BIG_PRASIOLITE_CLUSTER);
         BiomeDefaultFeatures.addExtraGold(generationBuilder);
 
         BiomesUtils.addMeadowVegetation(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_SKYFOG);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_LARGE_FERN);
+        generationBuilder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_SKYFOG);
+        generationBuilder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_LARGE_FERN);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
@@ -181,7 +245,9 @@ public class TheAbyssBiomes {
     public static Biome abyssLushCaves(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
 
-        spawnBuilder.addSpawn(MobCategory.AXOLOTLS, new MobSpawnSettings.SpawnerData(EntityType.AXOLOTL, 10, 4, 6));
+        spawnBuilder.addSpawn(
+                MobCategory.AXOLOTLS,
+                new MobSpawnSettings.SpawnerData(EntityType.AXOLOTL, 10, 4, 6));
         BiomesUtils.farmAnimals(spawnBuilder);
         BiomesUtils.commonSpawns(spawnBuilder);
 
@@ -190,7 +256,8 @@ public class TheAbyssBiomes {
         BiomesUtils.globalAbyssGeneration(generationBuilder);
 
         BiomesUtils.addMeadowVegetation(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_SKYFOG);
+        generationBuilder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_SKYFOG);
         BiomeDefaultFeatures.addLushCavesVegetationFeatures(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
@@ -209,18 +276,19 @@ public class TheAbyssBiomes {
         BiomeDefaultFeatures.addExtraGold(generationBuilder);
 
         BiomesUtils.addMeadowVegetation(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_SKYFOG);
+        generationBuilder.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_SKYFOG);
         BiomesUtils.addDripstone(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
         return baseBiome(generationBuilder, spawnBuilder).build();
     }
 
-
     // Layer 2
     public static Biome temptationForest(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        spawnBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SLIME, 10, 4, 4));
+        spawnBuilder.addSpawn(
+                MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SLIME, 10, 4, 4));
 
         BiomesUtils.farmAnimals(spawnBuilder);
         BiomesUtils.commonSpawns(spawnBuilder);
@@ -228,12 +296,20 @@ public class TheAbyssBiomes {
         BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
 
         BiomesUtils.globalAbyssGeneration(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.RAW_IRON);
+        generationBuilder.addFeature(
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS, TheAbyssPlacements.RAW_IRON);
 
         BiomesUtils.addMeadow2Vegetation(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_VERDANT_FUNGUS)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_LARGE_FERN)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
+        generationBuilder
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.TREES_VERDANT_FUNGUS)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.PATCH_LARGE_FERN)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.CAVE_VINES);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
@@ -250,33 +326,51 @@ public class TheAbyssBiomes {
         BiomesUtils.globalAbyssGeneration(generationBuilder);
 
         BiomesUtils.addMeadow2Vegetation(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_INVERTED)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
+        generationBuilder
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.TREES_INVERTED)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.CAVE_VINES);
         BiomeDefaultFeatures.addDefaultMushrooms(generationBuilder);
         BiomeDefaultFeatures.addDefaultExtraVegetation(generationBuilder);
 
         return baseBiome(generationBuilder, spawnBuilder).build();
     }
 
-    public static Biome.BiomeBuilder baseBiome(BiomeGenerationSettings.Builder generationBuilder, MobSpawnSettings.Builder spawnBuilder) {
-        return new Biome.BiomeBuilder().hasPrecipitation(true).downfall(0.8F).temperature(0.8F)
+    public static Biome.BiomeBuilder baseBiome(
+            BiomeGenerationSettings.Builder generationBuilder,
+            MobSpawnSettings.Builder spawnBuilder) {
+        return new Biome.BiomeBuilder()
+                .hasPrecipitation(true)
+                .downfall(0.8F)
+                .temperature(0.8F)
                 .generationSettings(generationBuilder.build())
                 .mobSpawnSettings(spawnBuilder.build())
-                .specialEffects((new BiomeSpecialEffects.Builder())
-                        .waterColor(6141935)
-                        .waterFogColor(6141935)
-                        .skyColor(8888490)
-                        .fogColor(8888490)
-                        .grassColorOverride(11335504)
-                        .ambientLoopSound(SoundEvents.AMBIENT_BASALT_DELTAS_LOOP)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .ambientAdditionsSound(new AmbientAdditionsSettings(SoundEvents.AMBIENT_BASALT_DELTAS_ADDITIONS, 0.0111))
-                        .backgroundMusic(Musics.createGameMusic(MiaSounds.MUSIC_THE_ABYSS_DIM))
-                        .build());
+                .specialEffects(
+                        (new BiomeSpecialEffects.Builder())
+                                .waterColor(6141935)
+                                .waterFogColor(6141935)
+                                .skyColor(8888490)
+                                .fogColor(8888490)
+                                .grassColorOverride(11335504)
+                                .ambientLoopSound(SoundEvents.AMBIENT_BASALT_DELTAS_LOOP)
+                                .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+                                .ambientAdditionsSound(
+                                        new AmbientAdditionsSettings(
+                                                SoundEvents.AMBIENT_BASALT_DELTAS_ADDITIONS,
+                                                0.0111))
+                                .backgroundMusic(
+                                        Musics.createGameMusic(MiaSounds.MUSIC_THE_ABYSS_DIM))
+                                .build());
     }
 
-    private static BiomeGenerationSettings.Builder createGenerationBuilder(BootstrapContext<Biome> context) {
-        return new BiomeGenerationSettings.Builder(context.lookup(Registries.PLACED_FEATURE), context.lookup(Registries.CONFIGURED_CARVER));
+    private static BiomeGenerationSettings.Builder createGenerationBuilder(
+            BootstrapContext<Biome> context) {
+        return new BiomeGenerationSettings.Builder(
+                context.lookup(Registries.PLACED_FEATURE),
+                context.lookup(Registries.CONFIGURED_CARVER));
     }
 
     // 16进制转10进制

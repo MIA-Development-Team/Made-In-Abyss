@@ -23,7 +23,9 @@ public class LightFeature extends Feature<NoneFeatureConfiguration> {
         context.config();
         if (worldgenlevel.isEmptyBlock(blockpos)) {
             for (Direction direction : Direction.values()) {
-                if (direction != Direction.DOWN && VineBlock.isAcceptableNeighbour(worldgenlevel, blockpos.relative(direction), direction)) {
+                if (direction != Direction.DOWN
+                        && VineBlock.isAcceptableNeighbour(
+                                worldgenlevel, blockpos.relative(direction), direction)) {
                     worldgenlevel.setBlock(blockpos, Blocks.LIGHT.defaultBlockState(), 2);
 
                     BlockPos belowPos = blockpos.below();

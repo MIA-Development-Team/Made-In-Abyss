@@ -4,6 +4,9 @@ import com.altnoir.mia.init.worldgen.MiaTrunkPlacerTypes;
 import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.List;
+import java.util.OptionalInt;
+import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -14,14 +17,12 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 
-import java.util.List;
-import java.util.OptionalInt;
-import java.util.function.BiConsumer;
-
 public class InvertedForkingTrunkPlacer extends TrunkPlacer {
-    public static final MapCodec<InvertedForkingTrunkPlacer> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> trunkPlacerParts(instance).apply(instance, InvertedForkingTrunkPlacer::new)
-    );
+    public static final MapCodec<InvertedForkingTrunkPlacer> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    instance ->
+                            trunkPlacerParts(instance)
+                                    .apply(instance, InvertedForkingTrunkPlacer::new));
 
     public InvertedForkingTrunkPlacer(int baseHeight, int heightRandA, int heightRandB) {
         super(baseHeight, heightRandA, heightRandB);
@@ -39,8 +40,7 @@ public class InvertedForkingTrunkPlacer extends TrunkPlacer {
             RandomSource random,
             int freeTreeHeight,
             BlockPos pos,
-            TreeConfiguration config
-    ) {
+            TreeConfiguration config) {
         setDirtAt(level, blockSetter, random, pos.above(), config);
         List<FoliagePlacer.FoliageAttachment> list = Lists.newArrayList();
         Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
@@ -59,13 +59,16 @@ public class InvertedForkingTrunkPlacer extends TrunkPlacer {
                 j--;
             }
 
-            if (this.placeLog(level, blockSetter, random, blockpos$mutableblockpos.set(k, j1, l), config)) {
+            if (this.placeLog(
+                    level, blockSetter, random, blockpos$mutableblockpos.set(k, j1, l), config)) {
                 optionalint = OptionalInt.of(j1 - 1);
             }
         }
 
         if (optionalint.isPresent()) {
-            list.add(new FoliagePlacer.FoliageAttachment(new BlockPos(k, optionalint.getAsInt(), l), 1, false));
+            list.add(
+                    new FoliagePlacer.FoliageAttachment(
+                            new BlockPos(k, optionalint.getAsInt(), l), 1, false));
         }
 
         k = pos.getX();
@@ -81,7 +84,12 @@ public class InvertedForkingTrunkPlacer extends TrunkPlacer {
                     int i2 = pos.getY() - l1;
                     k += direction1.getStepX();
                     l += direction1.getStepZ();
-                    if (this.placeLog(level, blockSetter, random, blockpos$mutableblockpos.set(k, i2, l), config)) {
+                    if (this.placeLog(
+                            level,
+                            blockSetter,
+                            random,
+                            blockpos$mutableblockpos.set(k, i2, l),
+                            config)) {
                         optionalint = OptionalInt.of(i2 - 1);
                     }
                 }
@@ -90,7 +98,9 @@ public class InvertedForkingTrunkPlacer extends TrunkPlacer {
             }
 
             if (optionalint.isPresent()) {
-                list.add(new FoliagePlacer.FoliageAttachment(new BlockPos(k, optionalint.getAsInt(), l), 0, false));
+                list.add(
+                        new FoliagePlacer.FoliageAttachment(
+                                new BlockPos(k, optionalint.getAsInt(), l), 0, false));
             }
         }
 

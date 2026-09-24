@@ -1,5 +1,6 @@
 package com.altnoir.mia.common.block.abs;
 
+import java.util.Objects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -18,17 +19,17 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.joml.Vector3f;
 
-import java.util.Objects;
-
 public abstract class AbsCrystalTubeBlock extends AbsTubeBlock {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     protected AbsCrystalTubeBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any()
-                .setValue(FACING, Direction.UP)
-                .setValue(POWERED, Boolean.valueOf(false))
-                .setValue(WATERLOGGED, Boolean.valueOf(false)));
+        this.registerDefaultState(
+                this.stateDefinition
+                        .any()
+                        .setValue(FACING, Direction.UP)
+                        .setValue(POWERED, Boolean.valueOf(false))
+                        .setValue(WATERLOGGED, Boolean.valueOf(false)));
     }
 
     @Override
@@ -40,7 +41,8 @@ public abstract class AbsCrystalTubeBlock extends AbsTubeBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         var hasNeighbor = context.getLevel().hasNeighborSignal(context.getClickedPos());
-        return Objects.requireNonNull(super.getStateForPlacement(context)).setValue(POWERED, Boolean.valueOf(hasNeighbor));
+        return Objects.requireNonNull(super.getStateForPlacement(context))
+                .setValue(POWERED, Boolean.valueOf(hasNeighbor));
     }
 
     protected abstract IntegerProperty getLevelProperty();
@@ -60,7 +62,13 @@ public abstract class AbsCrystalTubeBlock extends AbsTubeBlock {
     }
 
     @Override
-    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+    protected void neighborChanged(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Block neighborBlock,
+            BlockPos neighborPos,
+            boolean movedByPiston) {
         if (!level.isClientSide) {
             boolean flag = state.getValue(POWERED);
             if (flag != level.hasNeighborSignal(pos)) {
@@ -86,13 +94,32 @@ public abstract class AbsCrystalTubeBlock extends AbsTubeBlock {
         }
     }
 
-    protected abstract boolean crystalProcessing(Level level, BlockPos pos, BlockState state, BlockPos targetPos, BlockState targetState, int i);
+    protected abstract boolean crystalProcessing(
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            BlockPos targetPos,
+            BlockState targetState,
+            int i);
 
-    protected void signalParticles(float red, float green, float blue, Level level, BlockPos pos, BlockPos targetPos, BlockState state) {
+    protected void signalParticles(
+            float red,
+            float green,
+            float blue,
+            Level level,
+            BlockPos pos,
+            BlockPos targetPos,
+            BlockState state) {
         double startX = pos.getX() + 0.5, startY = pos.getY() + 0.5, startZ = pos.getZ() + 0.5;
-        double endX = targetPos.getX() + 0.5, endY = targetPos.getY() + 0.5, endZ = targetPos.getZ() + 0.5;
+        double endX = targetPos.getX() + 0.5,
+                endY = targetPos.getY() + 0.5,
+                endZ = targetPos.getZ() + 0.5;
 
-        double distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2) + Math.pow(endZ - startZ, 2));
+        double distance =
+                Math.sqrt(
+                        Math.pow(endX - startX, 2)
+                                + Math.pow(endY - startY, 2)
+                                + Math.pow(endZ - startZ, 2));
         if (distance <= 1.0) return;
 
         double midX = (startX + endX) / 2, midY = (startY + endY) / 2, midZ = (startZ + endZ) / 2;
@@ -109,18 +136,20 @@ public abstract class AbsCrystalTubeBlock extends AbsTubeBlock {
         if (level instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(
                     new DustParticleOptions(new Vector3f(red, green, blue), 0.5f),
-                    midX, midY, midZ,
+                    midX,
+                    midY,
+                    midZ,
                     particleCount,
                     dx * dxFactor,
                     dy * dyFactor,
                     dz * dzFactor,
-                    0
-            );
+                    0);
         }
     }
 
     protected void playAmethyst(Level level, BlockPos pos, BlockState state) {
-        level.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 0.5F, 1.0F);
+        level.playSound(
+                null, pos, SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 0.5F, 1.0F);
         level.gameEvent(GameEvent.BLOCK_ATTACH, pos, GameEvent.Context.of(state));
     }
 }

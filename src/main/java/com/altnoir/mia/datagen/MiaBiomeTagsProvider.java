@@ -3,6 +3,7 @@ package com.altnoir.mia.datagen;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.worldgen.biome.MiaBiomes;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
@@ -13,21 +14,19 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.concurrent.CompletableFuture;
-
 public class MiaBiomeTagsProvider extends BiomeTagsProvider {
-    public MiaBiomeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
+    public MiaBiomeTagsProvider(
+            PackOutput output,
+            CompletableFuture<HolderLookup.Provider> provider,
+            @Nullable ExistingFileHelper existingFileHelper) {
         super(output, provider, MIA.MOD_ID, existingFileHelper);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        tag(MiaTags.Biomes.HAS_ISLAND)
-                .add(Biomes.MUSHROOM_FIELDS)
-                .addTags(BiomeTags.IS_OVERWORLD);
-        tag(MiaTags.Biomes.THE_ABYSS_CLEAR)
-                .add(MiaBiomes.TEMPTATION_FOREST);
+        tag(MiaTags.Biomes.HAS_ISLAND).add(Biomes.MUSHROOM_FIELDS).addTags(BiomeTags.IS_OVERWORLD);
+        tag(MiaTags.Biomes.THE_ABYSS_CLEAR).add(MiaBiomes.TEMPTATION_FOREST);
         tag(MiaTags.Biomes.HAS_ANCIENT_BABYLON_COMPASS_RUINS)
                 .add(Biomes.JUNGLE)
                 .add(Biomes.SPARSE_JUNGLE);
@@ -36,10 +35,8 @@ public class MiaBiomeTagsProvider extends BiomeTagsProvider {
                 .add(Biomes.SPARSE_JUNGLE);
         tag(MiaTags.Biomes.HAS_ANCIENT_ROMAN_COMPASS_RUINS)
                 .addTags(Tags.Biomes.IS_PLAINS, Tags.Biomes.IS_SAVANNA);
-        tag(MiaTags.Biomes.HAS_ANCIENT_TRIAL_COMPASS_RUINS)
-                .addTag(BiomeTags.HAS_TRIAL_CHAMBERS);
-        tag(MiaTags.Biomes.HAS_ANCIENT_ANGKOR_COMPASS_RUINS)
-                .addTag(Tags.Biomes.IS_DESERT);
+        tag(MiaTags.Biomes.HAS_ANCIENT_TRIAL_COMPASS_RUINS).addTag(BiomeTags.HAS_TRIAL_CHAMBERS);
+        tag(MiaTags.Biomes.HAS_ANCIENT_ANGKOR_COMPASS_RUINS).addTag(Tags.Biomes.IS_DESERT);
         tag(MiaTags.Biomes.HAS_PETRIFIED_SHIP)
                 .add(MiaBiomes.THE_GREAT_FAULT)
                 .add(MiaBiomes.GREAT_FAULT);
@@ -59,19 +56,15 @@ public class MiaBiomeTagsProvider extends BiomeTagsProvider {
                         MiaBiomes.ABYSS_LUSH_CAVES,
                         MiaBiomes.ABYSS_DRIPSTONE_CAVES,
                         MiaBiomes.TEMPTATION_FOREST,
-                        MiaBiomes.INVERTED_FOREST
-                );
-        tag(MiaTags.Biomes.HAS_CAVE_RAIDER_HUT)
-                .add(MiaBiomes.TEMPTATION_FOREST);
-        tag(MiaTags.Biomes.HAS_RUINED_CAVE_RAIDER_HUT)
-                .add(MiaBiomes.ABYSS_PLAINS);
+                        MiaBiomes.INVERTED_FOREST);
+        tag(MiaTags.Biomes.HAS_CAVE_RAIDER_HUT).add(MiaBiomes.TEMPTATION_FOREST);
+        tag(MiaTags.Biomes.HAS_RUINED_CAVE_RAIDER_HUT).add(MiaBiomes.ABYSS_PLAINS);
         tag(MiaTags.Biomes.HAS_FISHERMAN_HUT)
                 .add(
                         MiaBiomes.SKYFOG_FOREST,
                         MiaBiomes.DENSE_SKYFOG_FOREST,
                         MiaBiomes.FOSSILIZED_FOREST,
                         MiaBiomes.RICH_FOSSILIZED_FOREST,
-                        MiaBiomes.ABYSS_PLAINS
-                );
+                        MiaBiomes.ABYSS_PLAINS);
     }
 }

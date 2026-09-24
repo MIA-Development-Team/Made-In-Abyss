@@ -2,6 +2,7 @@ package com.altnoir.mia.worldgen.place;
 
 import com.altnoir.mia.init.worldgen.MiaPlacements;
 import com.mojang.serialization.MapCodec;
+import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -13,12 +14,11 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
-import java.util.stream.Stream;
-
 public class WaterOnEveryLayerPlacement extends PlacementModifier {
-    public static final MapCodec<WaterOnEveryLayerPlacement> CODEC = IntProvider.codec(0, 256)
-            .fieldOf("count")
-            .xmap(WaterOnEveryLayerPlacement::new, placement -> placement.count);
+    public static final MapCodec<WaterOnEveryLayerPlacement> CODEC =
+            IntProvider.codec(0, 256)
+                    .fieldOf("count")
+                    .xmap(WaterOnEveryLayerPlacement::new, placement -> placement.count);
     private final IntProvider count;
 
     private WaterOnEveryLayerPlacement(IntProvider count) {
@@ -34,7 +34,8 @@ public class WaterOnEveryLayerPlacement extends PlacementModifier {
     }
 
     @Override
-    public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos) {
+    public Stream<BlockPos> getPositions(
+            PlacementContext context, RandomSource random, BlockPos pos) {
         Stream.Builder<BlockPos> builder = Stream.builder();
         int i = 0;
 
@@ -64,7 +65,8 @@ public class WaterOnEveryLayerPlacement extends PlacementModifier {
         return MiaPlacements.WATER_ON_EVERY_LAYER.get();
     }
 
-    private static int findOnGroundYPosition(PlacementContext context, int x, int y, int z, int count) {
+    private static int findOnGroundYPosition(
+            PlacementContext context, int x, int y, int z, int count) {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(x, y, z);
         int i = 0;
         BlockState blockstate = context.getBlockState(blockpos$mutableblockpos);
@@ -89,7 +91,8 @@ public class WaterOnEveryLayerPlacement extends PlacementModifier {
     private static boolean isWater(BlockState state) {
         return state.is(Blocks.WATER) || state.is(Blocks.LAVA);
     }
+
     private static boolean isEmpty(BlockState state) {
-        return state.isAir() ;
+        return state.isAir();
     }
 }

@@ -12,9 +12,11 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 public class InvertedFoliagePlacer extends FoliagePlacer {
-    public static final MapCodec<InvertedFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> foliagePlacerParts(instance).apply(instance, InvertedFoliagePlacer::new)
-    );
+    public static final MapCodec<InvertedFoliagePlacer> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    instance ->
+                            foliagePlacerParts(instance)
+                                    .apply(instance, InvertedFoliagePlacer::new));
 
     public InvertedFoliagePlacer(IntProvider radius, IntProvider offset) {
         super(radius, offset);
@@ -35,13 +37,36 @@ public class InvertedFoliagePlacer extends FoliagePlacer {
             FoliageAttachment attachment,
             int foliageHeight,
             int foliageRadius,
-            int offset
-    ) {
+            int offset) {
         boolean flag = attachment.doubleTrunk();
         BlockPos blockpos = attachment.pos().below(offset);
-        this.placeLeavesRow(level, blockSetter, random, config, blockpos, foliageRadius + attachment.radiusOffset() - 1, 0, flag);
-        this.placeLeavesRow(level, blockSetter, random, config, blockpos, foliageRadius + attachment.radiusOffset() - 1, foliageHeight, flag);
-        this.placeLeavesRow(level, blockSetter, random, config, blockpos, foliageRadius + attachment.radiusOffset(), 1 + foliageHeight, flag);
+        this.placeLeavesRow(
+                level,
+                blockSetter,
+                random,
+                config,
+                blockpos,
+                foliageRadius + attachment.radiusOffset() - 1,
+                0,
+                flag);
+        this.placeLeavesRow(
+                level,
+                blockSetter,
+                random,
+                config,
+                blockpos,
+                foliageRadius + attachment.radiusOffset() - 1,
+                foliageHeight,
+                flag);
+        this.placeLeavesRow(
+                level,
+                blockSetter,
+                random,
+                config,
+                blockpos,
+                foliageRadius + attachment.radiusOffset(),
+                1 + foliageHeight,
+                flag);
     }
 
     @Override
@@ -50,7 +75,8 @@ public class InvertedFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected boolean shouldSkipLocation(RandomSource random, int localX, int localY, int localZ, int range, boolean large) {
+    protected boolean shouldSkipLocation(
+            RandomSource random, int localX, int localY, int localZ, int range, boolean large) {
         return localY == 0
                 ? (localX > 1 || localZ > 1) && localX != 0 && localZ != 0
                 : localX == range && localZ == range && range > 0;

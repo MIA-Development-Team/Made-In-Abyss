@@ -4,7 +4,6 @@ import com.altnoir.mia.common.item.abs.AbsWhistle;
 import com.altnoir.mia.util.MiaUtil;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -23,7 +22,9 @@ public class SimpleWhistle extends AbsWhistle {
     public SimpleWhistle(Properties properties, int artifactSlotCount, double amount) {
         super(properties.stacksTo(1));
         this.artifactSlotCount = artifactSlotCount;
-        this.attributeModifier = new AttributeModifier(WHISTLE_ATTRIBUTE, amount, AttributeModifier.Operation.ADD_VALUE);
+        this.attributeModifier =
+                new AttributeModifier(
+                        WHISTLE_ATTRIBUTE, amount, AttributeModifier.Operation.ADD_VALUE);
         this.attribute = Attributes.MAX_HEALTH;
     }
 
@@ -35,7 +36,8 @@ public class SimpleWhistle extends AbsWhistle {
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(
             SlotContext slotContext, ResourceLocation id, ItemStack stack) {
-        ImmutableMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableMultimap.builder();
+        ImmutableMultimap.Builder<Holder<Attribute>, AttributeModifier> builder =
+                ImmutableMultimap.builder();
         builder.put(attribute, attributeModifier);
         return builder.build();
     }

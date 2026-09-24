@@ -3,6 +3,7 @@ package com.altnoir.mia.common.block;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -21,17 +22,17 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import javax.annotation.Nullable;
-
 public class AbyssCrystalBlock extends CrystalBlock implements SimpleWaterloggedBlock {
-    public static final MapCodec<AbyssCrystalBlock> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> instance.group(
-                            Codec.FLOAT.fieldOf("height").forGetter(p -> p.height),
-                            Codec.FLOAT.fieldOf("aabb_offset").forGetter(p -> p.aabbOffset),
-                            propertiesCodec()
-                    )
-                    .apply(instance, AbyssCrystalBlock::new)
-    );
+    public static final MapCodec<AbyssCrystalBlock> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    instance ->
+                            instance.group(
+                                            Codec.FLOAT.fieldOf("height").forGetter(p -> p.height),
+                                            Codec.FLOAT
+                                                    .fieldOf("aabb_offset")
+                                                    .forGetter(p -> p.aabbOffset),
+                                            propertiesCodec())
+                                    .apply(instance, AbyssCrystalBlock::new));
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
@@ -52,31 +53,67 @@ public class AbyssCrystalBlock extends CrystalBlock implements SimpleWaterlogged
 
     public AbyssCrystalBlock(float height, float aabbOffset, BlockBehaviour.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false).setValue(FACING, Direction.UP));
+        this.registerDefaultState(
+                this.defaultBlockState()
+                        .setValue(WATERLOGGED, false)
+                        .setValue(FACING, Direction.UP));
 
-        this.upAabb = Block.box((double) aabbOffset, 0.0, (double) aabbOffset, (double) (16.0F - aabbOffset), (double) height, (double) (16.0F - aabbOffset));
-        this.downAabb = Block.box(
-                (double) aabbOffset, (double) (16.0F - height), (double) aabbOffset, (double) (16.0F - aabbOffset), 16.0, (double) (16.0F - aabbOffset)
-        );
-        this.northAabb = Block.box(
-                (double) aabbOffset, (double) aabbOffset, (double) (16.0F - height), (double) (16.0F - aabbOffset), (double) (16.0F - aabbOffset), 16.0
-        );
-        this.southAabb = Block.box(
-                (double) aabbOffset, (double) aabbOffset, 0.0, (double) (16.0F - aabbOffset), (double) (16.0F - aabbOffset), (double) height
-        );
-        this.eastAabb = Block.box(
-                0.0, (double) aabbOffset, (double) aabbOffset, (double) height, (double) (16.0F - aabbOffset), (double) (16.0F - aabbOffset)
-        );
-        this.westAabb = Block.box(
-                (double) (16.0F - height), (double) aabbOffset, (double) aabbOffset, 16.0, (double) (16.0F - aabbOffset), (double) (16.0F - aabbOffset)
-        );
+        this.upAabb =
+                Block.box(
+                        (double) aabbOffset,
+                        0.0,
+                        (double) aabbOffset,
+                        (double) (16.0F - aabbOffset),
+                        (double) height,
+                        (double) (16.0F - aabbOffset));
+        this.downAabb =
+                Block.box(
+                        (double) aabbOffset,
+                        (double) (16.0F - height),
+                        (double) aabbOffset,
+                        (double) (16.0F - aabbOffset),
+                        16.0,
+                        (double) (16.0F - aabbOffset));
+        this.northAabb =
+                Block.box(
+                        (double) aabbOffset,
+                        (double) aabbOffset,
+                        (double) (16.0F - height),
+                        (double) (16.0F - aabbOffset),
+                        (double) (16.0F - aabbOffset),
+                        16.0);
+        this.southAabb =
+                Block.box(
+                        (double) aabbOffset,
+                        (double) aabbOffset,
+                        0.0,
+                        (double) (16.0F - aabbOffset),
+                        (double) (16.0F - aabbOffset),
+                        (double) height);
+        this.eastAabb =
+                Block.box(
+                        0.0,
+                        (double) aabbOffset,
+                        (double) aabbOffset,
+                        (double) height,
+                        (double) (16.0F - aabbOffset),
+                        (double) (16.0F - aabbOffset));
+        this.westAabb =
+                Block.box(
+                        (double) (16.0F - height),
+                        (double) aabbOffset,
+                        (double) aabbOffset,
+                        16.0,
+                        (double) (16.0F - aabbOffset),
+                        (double) (16.0F - aabbOffset));
 
         this.height = height;
         this.aabbOffset = aabbOffset;
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         Direction direction = state.getValue(FACING);
         switch (direction) {
             case NORTH:
@@ -104,8 +141,12 @@ public class AbyssCrystalBlock extends CrystalBlock implements SimpleWaterlogged
 
     @Override
     protected BlockState updateShape(
-            BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos
-    ) {
+            BlockState state,
+            Direction direction,
+            BlockState neighborState,
+            LevelAccessor level,
+            BlockPos pos,
+            BlockPos neighborPos) {
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
@@ -115,13 +156,14 @@ public class AbyssCrystalBlock extends CrystalBlock implements SimpleWaterlogged
                 : super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         LevelAccessor levelaccessor = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
         return this.defaultBlockState()
-                .setValue(WATERLOGGED, levelaccessor.getFluidState(blockpos).getType() == Fluids.WATER)
+                .setValue(
+                        WATERLOGGED,
+                        levelaccessor.getFluidState(blockpos).getType() == Fluids.WATER)
                 .setValue(FACING, context.getClickedFace());
     }
 
@@ -137,7 +179,9 @@ public class AbyssCrystalBlock extends CrystalBlock implements SimpleWaterlogged
 
     @Override
     protected FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED)
+                ? Fluids.WATER.getSource(false)
+                : super.getFluidState(state);
     }
 
     @Override

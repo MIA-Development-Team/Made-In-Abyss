@@ -4,6 +4,8 @@ import com.altnoir.mia.common.inventory.ArtifactSmithingTableMenu;
 import com.altnoir.mia.common.recipe.ArtifactSmithingRecipe;
 import com.altnoir.mia.core.event.client.ClientTooltipEvent;
 import com.altnoir.mia.util.MiaUtil;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -12,31 +14,29 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
-import java.util.ArrayList;
-import java.util.List;
+public class ArtifactSmithingTableScreen
+        extends AbstractContainerScreen<ArtifactSmithingTableMenu> {
+    private static final ResourceLocation BACKGROUND =
+            MiaUtil.miaId("textures/gui/container/artifact_smithing_table.png");
 
-public class ArtifactSmithingTableScreen extends AbstractContainerScreen<ArtifactSmithingTableMenu> {
-    private static final ResourceLocation BACKGROUND = MiaUtil
-            .miaId("textures/gui/container/artifact_smithing_table.png");
+    private static final ResourceLocation RECIPE_SELECTED_SPRITE =
+            MiaUtil.miaId("container/artifact_smithing_table/recipe_selected");
+    private static final ResourceLocation RECIPE_HIGHLIGHTED_SPRITE =
+            MiaUtil.miaId("container/artifact_smithing_table/recipe_highlighted");
+    private static final ResourceLocation RECIPE_AVAILABLE_SPRITE =
+            MiaUtil.miaId("container/artifact_smithing_table/recipe_available");
+    private static final ResourceLocation RECIPE_UNAVAILABLE_SPRITE =
+            MiaUtil.miaId("container/artifact_smithing_table/recipe_unavailable");
 
-    private static final ResourceLocation RECIPE_SELECTED_SPRITE = MiaUtil
-            .miaId("container/artifact_smithing_table/recipe_selected");
-    private static final ResourceLocation RECIPE_HIGHLIGHTED_SPRITE = MiaUtil
-            .miaId("container/artifact_smithing_table/recipe_highlighted");
-    private static final ResourceLocation RECIPE_AVAILABLE_SPRITE = MiaUtil
-            .miaId("container/artifact_smithing_table/recipe_available");
-    private static final ResourceLocation RECIPE_UNAVAILABLE_SPRITE = MiaUtil
-            .miaId("container/artifact_smithing_table/recipe_unavailable");
-
-    private static final ResourceLocation SCROLLER_SPRITE = MiaUtil.miaId("container/artifact_smithing_table/scroller");
-    private static final ResourceLocation SCROLLER_DISABLED_SPRITE = MiaUtil
-            .miaId("container/artifact_smithing_table/scroller_disabled");
+    private static final ResourceLocation SCROLLER_SPRITE =
+            MiaUtil.miaId("container/artifact_smithing_table/scroller");
+    private static final ResourceLocation SCROLLER_DISABLED_SPRITE =
+            MiaUtil.miaId("container/artifact_smithing_table/scroller_disabled");
 
     // 每行槽间隔高度为18像素
     private static final int RECIPES_COLUMNS = 4; // 配方显示网格列数
@@ -56,7 +56,8 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
     private int startIndex;
     private boolean displayRecipes;
 
-    public ArtifactSmithingTableScreen(ArtifactSmithingTableMenu menu, Inventory playerInventory, Component title) {
+    public ArtifactSmithingTableScreen(
+            ArtifactSmithingTableMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.titleLabelX = 8;
         this.titleLabelY = 6;
@@ -82,8 +83,13 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
         guiGraphics.blit(BACKGROUND, i, j, 0, 0, this.imageWidth, this.imageHeight);
         // render scrollbar
         int k = (int) ((SCROLLER_FULL_HEIGHT - SCROLLER_HEIGHT + 1) * this.scrollOffs);
-        ResourceLocation resourcelocation = this.isScrollBarActive() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
-        guiGraphics.blitSprite(resourcelocation, i + SCROLLER_X, j + SCROLLER_Y_START + k, SCROLLER_WIDTH,
+        ResourceLocation resourcelocation =
+                this.isScrollBarActive() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
+        guiGraphics.blitSprite(
+                resourcelocation,
+                i + SCROLLER_X,
+                j + SCROLLER_Y_START + k,
+                SCROLLER_WIDTH,
                 SCROLLER_HEIGHT);
         // render buttons
         int l = this.leftPos + RECIPES_X;
@@ -100,19 +106,33 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
             var attribute = recipe.value().getAttribute();
             AttributeModifier.Operation operation = recipe.value().getAttributeOperation();
 
-            Component text = ClientTooltipEvent.formatAttributeModifier(attribute, min, max, operation);
+            Component text =
+                    ClientTooltipEvent.formatAttributeModifier(attribute, min, max, operation);
 
-            guiGraphics.drawString(this.font, text, this.leftPos + RECIPES_X, this.topPos + RECIPES_Y - 10, 0x000000,
+            guiGraphics.drawString(
+                    this.font,
+                    text,
+                    this.leftPos + RECIPES_X,
+                    this.topPos + RECIPES_Y - 10,
+                    0x000000,
                     false);
         }
     }
 
-    private void renderButtons(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y,
-                               int lastVisibleElementIndex) {
-        int availableRecipeCount = ((ArtifactSmithingTableMenu) this.menu).getAvailableRecipes().size();
-        int unavailableRecipeCount = ((ArtifactSmithingTableMenu) this.menu).getUnavailableRecipes().size();
-        for (int i = this.startIndex; i < lastVisibleElementIndex
-                && i < availableRecipeCount + unavailableRecipeCount; ++i) {
+    private void renderButtons(
+            GuiGraphics guiGraphics,
+            int mouseX,
+            int mouseY,
+            int x,
+            int y,
+            int lastVisibleElementIndex) {
+        int availableRecipeCount =
+                ((ArtifactSmithingTableMenu) this.menu).getAvailableRecipes().size();
+        int unavailableRecipeCount =
+                ((ArtifactSmithingTableMenu) this.menu).getUnavailableRecipes().size();
+        for (int i = this.startIndex;
+                i < lastVisibleElementIndex && i < availableRecipeCount + unavailableRecipeCount;
+                ++i) {
             int j = i - this.startIndex;
             int k = x + j % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
             int l = j / RECIPES_COLUMNS;
@@ -120,11 +140,13 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
             ResourceLocation resourcelocation;
 
             if (i == ((ArtifactSmithingTableMenu) this.menu).getSelectedRecipeIndex()) {
-                //MIA.LOGGER.debug("selected " + i);
+                // MIA.LOGGER.debug("selected " + i);
 
                 resourcelocation = RECIPE_SELECTED_SPRITE;
             } else if (i < availableRecipeCount) {
-                if (mouseX >= k && mouseY >= i1 && mouseX < k + RECIPES_IMAGE_SIZE_WIDTH
+                if (mouseX >= k
+                        && mouseY >= i1
+                        && mouseX < k + RECIPES_IMAGE_SIZE_WIDTH
                         && mouseY < i1 + RECIPES_IMAGE_SIZE_HEIGHT) {
                     resourcelocation = RECIPE_HIGHLIGHTED_SPRITE;
                 } else {
@@ -134,19 +156,24 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
                 resourcelocation = RECIPE_UNAVAILABLE_SPRITE;
             }
 
-            guiGraphics.blitSprite(resourcelocation, k, i1 - 1, RECIPES_IMAGE_SIZE_WIDTH, RECIPES_IMAGE_SIZE_HEIGHT);
+            guiGraphics.blitSprite(
+                    resourcelocation,
+                    k,
+                    i1 - 1,
+                    RECIPES_IMAGE_SIZE_WIDTH,
+                    RECIPES_IMAGE_SIZE_HEIGHT);
         }
-
     }
 
     private void renderRecipes(GuiGraphics guiGraphics, int x, int y, int startIndex) {
-        List<RecipeHolder<ArtifactSmithingRecipe>> availableRecipes = ((ArtifactSmithingTableMenu) this.menu)
-                .getAvailableRecipes();
-        List<RecipeHolder<ArtifactSmithingRecipe>> unavailableRecipes = ((ArtifactSmithingTableMenu) this.menu)
-                .getUnavailableRecipes();
+        List<RecipeHolder<ArtifactSmithingRecipe>> availableRecipes =
+                ((ArtifactSmithingTableMenu) this.menu).getAvailableRecipes();
+        List<RecipeHolder<ArtifactSmithingRecipe>> unavailableRecipes =
+                ((ArtifactSmithingTableMenu) this.menu).getUnavailableRecipes();
 
-        for (int i = this.startIndex; i < startIndex
-                && i < (availableRecipes.size() + unavailableRecipes.size()); ++i) {
+        for (int i = this.startIndex;
+                i < startIndex && i < (availableRecipes.size() + unavailableRecipes.size());
+                ++i) {
             int j = i - this.startIndex;
             int k = x + j % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
             int l = j / RECIPES_COLUMNS;
@@ -154,16 +181,24 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
             if (i < availableRecipes.size()) {
                 ItemStack material = availableRecipes.get(i).value().getMaterial();
                 guiGraphics.renderItem(material, k, i1);
-                guiGraphics.renderItemDecorations(this.font, material, k, i1,
+                guiGraphics.renderItemDecorations(
+                        this.font,
+                        material,
+                        k,
+                        i1,
                         material.getCount() > 1 ? Integer.toString(material.getCount()) : null);
             } else if ((i - availableRecipes.size()) < unavailableRecipes.size()) {
-                ItemStack material = unavailableRecipes.get(i - availableRecipes.size()).value().getMaterial();
+                ItemStack material =
+                        unavailableRecipes.get(i - availableRecipes.size()).value().getMaterial();
                 guiGraphics.renderItem(material, k, i1);
-                guiGraphics.renderItemDecorations(this.font, material, k, i1,
+                guiGraphics.renderItemDecorations(
+                        this.font,
+                        material,
+                        k,
+                        i1,
                         material.getCount() > 1 ? Integer.toString(material.getCount()) : null);
             }
         }
-
     }
 
     @Override
@@ -177,12 +212,16 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
             list.addAll(((ArtifactSmithingTableMenu) this.menu).getAvailableRecipes());
             list.addAll(((ArtifactSmithingTableMenu) this.menu).getUnavailableRecipes());
 
-            for (int l = this.startIndex; l < k
-                    && l < ((ArtifactSmithingTableMenu) this.menu).getNumRecipes(); ++l) {
+            for (int l = this.startIndex;
+                    l < k && l < ((ArtifactSmithingTableMenu) this.menu).getNumRecipes();
+                    ++l) {
                 int i1 = l - this.startIndex;
                 int j1 = i + i1 % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
                 int k1 = j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT + 2;
-                if (x >= j1 && x < j1 + RECIPES_IMAGE_SIZE_WIDTH && y >= k1 && y < k1 + RECIPES_IMAGE_SIZE_HEIGHT) {
+                if (x >= j1
+                        && x < j1 + RECIPES_IMAGE_SIZE_WIDTH
+                        && y >= k1
+                        && y < k1 + RECIPES_IMAGE_SIZE_HEIGHT) {
                     // 显示材料信息和属性范围
                     RecipeHolder<ArtifactSmithingRecipe> recipe = list.get(l);
                     List<Component> tooltip = new ArrayList<>();
@@ -193,13 +232,14 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
                     var attribute = recipe.value().getAttribute();
                     AttributeModifier.Operation operation = recipe.value().getAttributeOperation();
 
-                    tooltip.add(ClientTooltipEvent.formatAttributeModifier(attribute, min, max, operation));
+                    tooltip.add(
+                            ClientTooltipEvent.formatAttributeModifier(
+                                    attribute, min, max, operation));
 
                     guiGraphics.renderComponentTooltip(this.font, tooltip, x, y);
                 }
             }
         }
-
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
@@ -211,22 +251,31 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
             for (int l = this.startIndex; l < k; ++l) {
                 int i1 = l - this.startIndex;
                 double d0 = mouseX - (double) (i + i1 % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH);
-                double d1 = mouseY - (double) (j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT);
-                if (d0 >= 0.0 && d1 >= 0.0 && d0 < (double) RECIPES_IMAGE_SIZE_WIDTH
+                double d1 =
+                        mouseY - (double) (j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT);
+                if (d0 >= 0.0
+                        && d1 >= 0.0
+                        && d0 < (double) RECIPES_IMAGE_SIZE_WIDTH
                         && d1 < (double) RECIPES_IMAGE_SIZE_HEIGHT
-                        && ((ArtifactSmithingTableMenu) this.menu).clickMenuButton(this.minecraft.player, l)) {
+                        && ((ArtifactSmithingTableMenu) this.menu)
+                                .clickMenuButton(this.minecraft.player, l)) {
                     // play sound
-                    Minecraft.getInstance().getSoundManager()
-                            .play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
-                    this.minecraft.gameMode
-                            .handleInventoryButtonClick(((ArtifactSmithingTableMenu) this.menu).containerId, l);
+                    Minecraft.getInstance()
+                            .getSoundManager()
+                            .play(
+                                    SimpleSoundInstance.forUI(
+                                            SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+                    this.minecraft.gameMode.handleInventoryButtonClick(
+                            ((ArtifactSmithingTableMenu) this.menu).containerId, l);
                     return true;
                 }
             }
 
             i = this.leftPos + SCROLLER_X;
             j = this.topPos + 9 + 18;
-            if (mouseX >= (double) i && mouseX < (double) (i + SCROLLER_WIDTH) && mouseY >= (double) j
+            if (mouseX >= (double) i
+                    && mouseX < (double) (i + SCROLLER_WIDTH)
+                    && mouseY >= (double) j
                     && mouseY < (double) (j + SCROLLER_FULL_HEIGHT)) {
                 this.scrolling = true;
             }
@@ -235,15 +284,18 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+    public boolean mouseDragged(
+            double mouseX, double mouseY, int button, double dragX, double dragY) {
         if (this.scrolling && this.isScrollBarActive()) {
             int i = this.topPos + RECIPES_Y;
             int j = i + SCROLLER_FULL_HEIGHT;
-            this.scrollOffs = ((float) mouseY - (float) i - ((float) SCROLLER_HEIGHT) / 2)
-                    / ((float) (j - i) - SCROLLER_HEIGHT);
+            this.scrollOffs =
+                    ((float) mouseY - (float) i - ((float) SCROLLER_HEIGHT) / 2)
+                            / ((float) (j - i) - SCROLLER_HEIGHT);
             this.scrollOffs = Mth.clamp(this.scrollOffs, 0.0F, 1.0F);
-            this.startIndex = (int) ((double) (this.scrollOffs * (float) this.getOffscreenRows()) + 0.5)
-                    * RECIPES_COLUMNS;
+            this.startIndex =
+                    (int) ((double) (this.scrollOffs * (float) this.getOffscreenRows()) + 0.5)
+                            * RECIPES_COLUMNS;
             return true;
         } else {
             return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
@@ -255,7 +307,8 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
             int i = this.getOffscreenRows();
             float f = (float) scrollY / (float) i;
             this.scrollOffs = Mth.clamp(this.scrollOffs - f, 0.0F, 1.0F);
-            this.startIndex = (int) ((double) (this.scrollOffs * (float) i) + 0.5) * RECIPES_COLUMNS;
+            this.startIndex =
+                    (int) ((double) (this.scrollOffs * (float) i) + 0.5) * RECIPES_COLUMNS;
         }
 
         return true;
@@ -263,11 +316,13 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
 
     private boolean isScrollBarActive() {
         return this.displayRecipes
-                && ((ArtifactSmithingTableMenu) this.menu).getNumRecipes() > RECIPES_COLUMNS * RECIPES_ROWS;
+                && ((ArtifactSmithingTableMenu) this.menu).getNumRecipes()
+                        > RECIPES_COLUMNS * RECIPES_ROWS;
     }
 
     protected int getOffscreenRows() {
-        return (((ArtifactSmithingTableMenu) this.menu).getNumRecipes() + RECIPES_COLUMNS - 1) / RECIPES_COLUMNS
+        return (((ArtifactSmithingTableMenu) this.menu).getNumRecipes() + RECIPES_COLUMNS - 1)
+                        / RECIPES_COLUMNS
                 - RECIPES_ROWS;
     }
 
@@ -278,5 +333,4 @@ public class ArtifactSmithingTableScreen extends AbstractContainerScreen<Artifac
             this.startIndex = 0;
         }
     }
-
 }

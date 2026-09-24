@@ -3,6 +3,7 @@ package com.altnoir.mia.compat.curios;
 // 新增导入Curios API相关类
 
 import com.altnoir.mia.MIA;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -12,11 +13,11 @@ import top.theillusivec4.curios.api.CuriosDataProvider;
 import top.theillusivec4.curios.api.type.data.IEntitiesData;
 import top.theillusivec4.curios.api.type.data.ISlotData;
 
-import java.util.concurrent.CompletableFuture;
-
 public class MiaCuriosProvider extends CuriosDataProvider {
 
-    public MiaCuriosProvider(PackOutput output, ExistingFileHelper fileHelper,
+    public MiaCuriosProvider(
+            PackOutput output,
+            ExistingFileHelper fileHelper,
             CompletableFuture<HolderLookup.Provider> registries) {
         super(MIA.MOD_ID, output, fileHelper, registries);
     }
@@ -26,13 +27,15 @@ public class MiaCuriosProvider extends CuriosDataProvider {
         ISlotData whistleSlot = createSlot("whistle");
         whistleSlot.size(1);
         whistleSlot.order(-999);
-        whistleSlot.icon(ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "slot/empty_whistle_slot"));
+        whistleSlot.icon(
+                ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "slot/empty_whistle_slot"));
         whistleSlot.addCosmetic(true);
 
         ISlotData ArtifactSlot = createSlot("artifact");
         ArtifactSlot.size(0);
         ArtifactSlot.order(-998);
-        ArtifactSlot.icon(ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "slot/empty_artifact_slot"));
+        ArtifactSlot.icon(
+                ResourceLocation.fromNamespaceAndPath(MIA.MOD_ID, "slot/empty_artifact_slot"));
         ArtifactSlot.addCosmetic(false);
 
         IEntitiesData entitiesData = createEntities("entities");

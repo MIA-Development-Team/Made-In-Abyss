@@ -11,13 +11,11 @@ public record AbyssWallCandidate(
         double predictedRadius,
         BlockPos anchor,
         ChunkPos startChunk,
-        Orientation orientation
-) {
+        Orientation orientation) {
     public enum TemplateKind {
         STRAIGHT,
         TILT
     }
 
-    public record Orientation(TemplateKind templateKind, Rotation rotation) {
-    }
+    public record Orientation(TemplateKind templateKind, Rotation rotation) {}
 }

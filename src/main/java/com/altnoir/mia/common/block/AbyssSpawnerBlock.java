@@ -3,6 +3,8 @@ package com.altnoir.mia.common.block;
 import com.altnoir.mia.common.block.entity.AbyssSpawnerBlockEntity;
 import com.altnoir.mia.init.MiaBlockEntities;
 import com.mojang.serialization.MapCodec;
+import java.util.List;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -23,12 +25,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class AbyssSpawnerBlock extends BaseEntityBlock {
     public static final MapCodec<AbyssSpawnerBlock> CODEC = simpleCodec(AbyssSpawnerBlock::new);
-    public static final EnumProperty<TrialSpawnerState> STATE = BlockStateProperties.TRIAL_SPAWNER_STATE;
+    public static final EnumProperty<TrialSpawnerState> STATE =
+            BlockStateProperties.TRIAL_SPAWNER_STATE;
 
     @Override
     public MapCodec<AbyssSpawnerBlock> codec() {
@@ -37,11 +37,13 @@ public class AbyssSpawnerBlock extends BaseEntityBlock {
 
     public AbyssSpawnerBlock(BlockBehaviour.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(STATE, TrialSpawnerState.INACTIVE));
+        this.registerDefaultState(
+                this.stateDefinition.any().setValue(STATE, TrialSpawnerState.INACTIVE));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
+    protected void createBlockStateDefinition(
+            StateDefinition.Builder<Block, BlockState> stateBuilder) {
         stateBuilder.add(STATE);
     }
 
@@ -50,41 +52,60 @@ public class AbyssSpawnerBlock extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new AbyssSpawnerBlockEntity(pos, state);
     }
 
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> entityType) {
+    @Nullable @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
+            Level level, BlockState state, BlockEntityType<T> entityType) {
         return level instanceof ServerLevel serverlevel
                 ? createTickerHelper(
-                entityType,
-                MiaBlockEntities.ABYSS_SPAWNER_ENTITY.get(),
-                (blockLevel, blockPos, blockState, e) -> e.getAbyssSpawner()
-                        .tickServer(serverlevel, blockPos, blockState.getOptionalValue(BlockStateProperties.OMINOUS).orElse(false))
-        )
+                        entityType,
+                        MiaBlockEntities.ABYSS_SPAWNER_ENTITY.get(),
+                        (blockLevel, blockPos, blockState, e) ->
+                                e.getAbyssSpawner()
+                                        .tickServer(
+                                                serverlevel,
+                                                blockPos,
+                                                blockState
+                                                        .getOptionalValue(
+                                                                BlockStateProperties.OMINOUS)
+                                                        .orElse(false)))
                 : createTickerHelper(
-                entityType,
-                MiaBlockEntities.ABYSS_SPAWNER_ENTITY.get(),
-                (blockLevel, blockPos, blockState, e) -> e.getAbyssSpawner()
-                        .tickClient(blockLevel, blockPos, blockState.getOptionalValue(BlockStateProperties.OMINOUS).orElse(false))
-        );
+                        entityType,
+                        MiaBlockEntities.ABYSS_SPAWNER_ENTITY.get(),
+                        (blockLevel, blockPos, blockState, e) ->
+                                e.getAbyssSpawner()
+                                        .tickClient(
+                                                blockLevel,
+                                                blockPos,
+                                                blockState
+                                                        .getOptionalValue(
+                                                                BlockStateProperties.OMINOUS)
+                                                        .orElse(false)));
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, List<Component> components, TooltipFlag flag) {
+    public void appendHoverText(
+            ItemStack itemStack,
+            Item.TooltipContext context,
+            List<Component> components,
+            TooltipFlag flag) {
         super.appendHoverText(itemStack, context, components, flag);
         if (itemStack.has(net.minecraft.core.component.DataComponents.BLOCK_ENTITY_DATA)) {
-            var beData = itemStack.get(net.minecraft.core.component.DataComponents.BLOCK_ENTITY_DATA);
+            var beData =
+                    itemStack.get(net.minecraft.core.component.DataComponents.BLOCK_ENTITY_DATA);
             if (beData != null && beData.copyTag().contains("pattern_id")) {
                 String patternId = beData.copyTag().getString("pattern_id");
-                components.add(Component.literal("Pattern: " + patternId).withStyle(net.minecraft.ChatFormatting.GRAY));
+                components.add(
+                        Component.literal("Pattern: " + patternId)
+                                .withStyle(net.minecraft.ChatFormatting.GRAY));
             }
         }
     }
 
-    // /give @s mia:abyss_spawner[block_entity_data={id:"mia:abyss_spawner",pattern_id:"mia:example_zombie"}]
+    // /give @s
+    // mia:abyss_spawner[block_entity_data={id:"mia:abyss_spawner",pattern_id:"mia:example_zombie"}]
 }
