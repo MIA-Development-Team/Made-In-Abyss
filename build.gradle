@@ -29,7 +29,7 @@ repositories {
 	maven { url = "https://maven.createmod.net" } // Ponder, Flywheel
 	maven { url = "https://jitpack.io" }
 	maven { url = "https://maven.firstdark.dev/snapshots" } // LDLib2
-	maven { url = "https://maven.ringlo.im/releases"} // AbyssLib
+	maven { url = "https://maven.ringlo.im/releases" } // AbyssLib（Reginth 注册框架 + 分区创造栏）
 }
 
 base {
@@ -132,6 +132,12 @@ dependencies {
 	// Curios
 	compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
 	runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+
+	// AbyssLib：Reginth 注册框架（fork 自 Registrate）+ 分区创造栏。
+	// 坐标带 MC 线后缀（abysslib-1.21.1），26.1 线是 abysslib-26.1.2 —— 两条线同 group、
+	// 同 mod_version，artifactId 不区分 MC 版本会互相覆盖，别漏掉后缀。
+	// 注册框架的类就在这个 jar 里（不再有上游 com.tterrag.registrate 依赖，也不要再 jarJar 它）。
+	implementation "com.altnoir:abysslib-1.21.1:${abysslib_version}"
 
 	// Simple Bedrock Model
 	jarJar(implementation("maven.modrinth:simplebedrockmodel:${sbm_version}")) {

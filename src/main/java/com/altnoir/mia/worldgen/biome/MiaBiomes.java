@@ -11,6 +11,13 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 
 public class MiaBiomes {
+    /**
+     * 全部生物群系 key。
+     * <p>
+     * <b>在类初始化时填充</b>（见 {@link #getResourceKey(String)}）而不是 bootstrap 期间：
+     * datagen 时各 provider 是并发跑的，MIA 的 lang 数据在 Reginth 的 lang provider 构建时就要求值，
+     * 那时如果还没轮到 bootstrap，这份列表就是空的 —— 实测会静默丢掉全部 {@code biome.mia.*} 键。
+     */
     public static final List<ResourceKey<Biome>> BIOMES = new ArrayList<>();
 
     // Layer 1
@@ -29,6 +36,8 @@ public class MiaBiomes {
     public static final ResourceKey<Biome> ABYSS_DRIPSTONE_CAVES =
             abyssEdgeKey("abyss_dripstone_caves");
     // Layer 2
+
+    public static final ResourceKey<Biome> PRIMO_FOREST = abyssEdgeKey("primo_forest");
     public static final ResourceKey<Biome> TEMPTATION_FOREST = abyssEdgeKey("temptation_forest");
     public static final ResourceKey<Biome> INVERTED_FOREST = abyssEdgeKey("inverted_forest");
     // Layer 3
@@ -48,6 +57,7 @@ public class MiaBiomes {
         register(ABYSS_LUSH_CAVES, TheAbyssBiomes.abyssLushCaves(context), context);
         register(ABYSS_DRIPSTONE_CAVES, TheAbyssBiomes.abyssDripstoneCaves(context), context);
         // Layer 2
+        register(PRIMO_FOREST, TheAbyssBiomes.primoForest(context), context);
         register(TEMPTATION_FOREST, TheAbyssBiomes.temptationForest(context), context);
         register(INVERTED_FOREST, TheAbyssBiomes.invertedForest(context), context);
         // Layer 3
@@ -57,12 +67,13 @@ public class MiaBiomes {
 
     private static void register(
             ResourceKey<Biome> key, Biome biome, BootstrapContext<Biome> context) {
-        BIOMES.add(key);
         context.register(key, biome);
     }
 
     private static ResourceKey<Biome> getResourceKey(String path) {
-        return ResourceKey.create(Registries.BIOME, MiaUtil.miaId(path));
+        ResourceKey<Biome> key = ResourceKey.create(Registries.BIOME, MiaUtil.miaId(path));
+        BIOMES.add(key);
+        return key;
     }
 
     private static ResourceKey<Biome> abyssEdgeKey(String path) {

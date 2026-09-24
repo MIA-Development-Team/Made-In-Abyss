@@ -53,8 +53,11 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
 
         // 基础标签
         tag(BlockTags.DIRT)
-                .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
-                .add(MiaBlocks.COVERGRASS_TUFF.get());
+                .add(
+                        MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(),
+                        MiaBlocks.COVERGRASS_TUFF.get(),
+                        MiaBlocks.MYCELIUM_BLOCK.get()
+                );
         tag(BlockTags.ANIMALS_SPAWNABLE_ON)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
                 .add(MiaBlocks.COVERGRASS_TUFF.get());
@@ -251,6 +254,58 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.ABYSS_LAPIS_ORE.get())
                 .add(MiaBlocks.ABYSS_QUARTZ_ORE.get())
                 .add(MiaBlocks.ABYSS_CHLOROPHYTE_ORE.get());
+
+
+        tag(MiaTags.Blocks.MYCELIUM_REPLACEABLE)
+                .addTag(BlockTags.DIRT);
+
+        tag(BlockTags.REPLACEABLE_BY_TREES)
+                .add(MiaBlocks.MYCELIUM_BLOCK.get());
+        tag(BlockTags.MUSHROOM_GROW_BLOCK)
+                .add(MiaBlocks.MYCELIUM_BLOCK.get());
+        tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS)
+                .add(MiaBlocks.MYCELIUM_MAT.get())
+                .add(MiaBlocks.MUSHROOM_BED.get());
+
+        tag(MiaTags.Blocks.PRIMO_STEMS)
+                .add(MiaBlocks.PRIMO_STEM.get())
+                .add(MiaBlocks.STRIPPED_PRIMO_STEM.get())
+                .add(MiaBlocks.PRIMO_HYPHAE.get())
+                .add(MiaBlocks.STRIPPED_PRIMO_HYPHAE.get());
+        // 注意：prime 系列是"下界木"性质，只进 LOGS、**不进** LOGS_THAT_BURN（不可燃）。
+        tag(BlockTags.LOGS)
+                .add(MiaBlocks.PRIMO_STEM.get())
+                .add(MiaBlocks.PRIMO_HYPHAE.get())
+                .add(MiaBlocks.STRIPPED_PRIMO_STEM.get())
+                .add(MiaBlocks.STRIPPED_PRIMO_HYPHAE.get());
+
+        tag(BlockTags.WOODEN_STAIRS).add(MiaBlocks.PRIMO_STAIRS.get());
+        tag(BlockTags.WOODEN_SLABS).add(MiaBlocks.PRIMO_SLAB.get());
+        tag(BlockTags.WOODEN_BUTTONS).add(MiaBlocks.PRIMO_BUTTON.get());
+        tag(BlockTags.WOODEN_PRESSURE_PLATES).add(MiaBlocks.PRIMO_PRESSURE_PLATE.get());
+        tag(BlockTags.WOODEN_FENCES).add(MiaBlocks.PRIMO_FENCE.get());
+        tag(BlockTags.FENCE_GATES).add(MiaBlocks.PRIMO_FENCE_GATE.get());
+        tag(BlockTags.WOODEN_DOORS).add(MiaBlocks.PRIMO_DOOR.get());
+        tag(BlockTags.WOODEN_TRAPDOORS).add(MiaBlocks.PRIMO_TRAPDOOR.get());
+
+        // 木质件走斧头、菌类走锄头。下面这两个清单与原模组的生成结果逐条一致 ——
+        // 包括两处原模组本身的遗漏（prime_planks 未进 #minecraft:planks、primo_button 未进
+        // mineable/axe），为保持"一模一样"此处照搬，未擅自补上。
+        tag(BlockTags.MINEABLE_WITH_AXE)
+                .add(MiaBlocks.PRIMO_PLANKS.get())
+                .add(MiaBlocks.PRIMO_STAIRS.get())
+                .add(MiaBlocks.PRIMO_SLAB.get())
+                .add(MiaBlocks.PRIMO_FENCE.get())
+                .add(MiaBlocks.PRIMO_FENCE_GATE.get())
+                .add(MiaBlocks.PRIMO_DOOR.get())
+                .add(MiaBlocks.PRIMO_TRAPDOOR.get())
+                .add(MiaBlocks.PRIMO_PRESSURE_PLATE.get());
+        tag(BlockTags.MINEABLE_WITH_HOE)
+                .add(MiaBlocks.MYCELIUM_BLOCK.get())
+                .add(MiaBlocks.MYCELIUM_MAT.get())
+                .add(MiaBlocks.MUSHROOM_BED.get())
+                .add(MiaBlocks.PRIMO_CAP.get())
+                .add(MiaBlocks.GLOW_PRIMO_CAP.get());
 
         // 标签嵌套
         tag(BlockTags.SCULK_REPLACEABLE).addTag(MiaTags.Blocks.ABYSS_ANDESITE_ORE_REPLACEABLES);

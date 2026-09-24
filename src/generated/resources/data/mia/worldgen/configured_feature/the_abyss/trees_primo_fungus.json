@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "mia:tree/primo_fungus",
+    "features": [
+      {
+        "chance": 0.3,
+        "feature": "mia:tree/glow_primo_fungus"
+      }
+    ]
+  }
+}

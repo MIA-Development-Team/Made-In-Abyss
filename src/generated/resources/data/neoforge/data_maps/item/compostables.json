@@ -2,6 +2,9 @@
   "values": {
     "mia:fortitude_flower": {
       "chance": 0.65
+    },
+    "mia:mycelium_mat": {
+      "chance": 0.3
     }
   }
 }

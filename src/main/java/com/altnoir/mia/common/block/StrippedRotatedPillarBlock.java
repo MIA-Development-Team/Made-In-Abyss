@@ -50,6 +50,12 @@ public class StrippedRotatedPillarBlock extends RotatedPillarBlock {
                                     .put(
                                             MiaBlocks.INVERTED_WOOD.get(),
                                             MiaBlocks.STRIPPED_INVERTED_WOOD.get())
+                                    .put(
+                                            MiaBlocks.PRIMO_STEM.get(),
+                                            MiaBlocks.STRIPPED_PRIMO_STEM.get())
+                                    .put(
+                                            MiaBlocks.PRIMO_HYPHAE.get(),
+                                            MiaBlocks.STRIPPED_PRIMO_HYPHAE.get())
                                     .build();
         }
         return STRIPPABLES.get();

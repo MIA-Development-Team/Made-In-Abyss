@@ -17,6 +17,7 @@ public class MiaDataMapProvider extends DataMapProvider {
     @Override
     protected void gather(HolderLookup.Provider provider) {
         this.builder(NeoForgeDataMaps.COMPOSTABLES)
-                .add(MiaBlocks.FORTITUDE_FLOWER.getId(), new Compostable(0.65F), false);
+                .add(MiaBlocks.FORTITUDE_FLOWER.getId(), new Compostable(0.65F), false)
+                .add(MiaBlocks.MYCELIUM_MAT.getId(), new Compostable(0.3F), false);
     }
 }

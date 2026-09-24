@@ -1,155 +1,129 @@
 package com.altnoir.mia.init;
 
+import com.altnoir.abysslib.reginth.Reginth;
+import com.altnoir.abysslib.reginth.util.entry.ItemEntry;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.common.component.MiaFoods;
 import com.altnoir.mia.common.item.*;
 import com.altnoir.mia.common.item.abs.IArtifactItem.Grade;
+import com.altnoir.mia.datagen.BlockStateGen;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.CustomData;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
+/**
+ * MIA 的物品注册。
+ * <p>
+ * 与方块一样，全部走 AbyssLib 的 Reginth builder 链：{@code REGINTH.<Item>item(...)} 默认就会
+ * 自动生成物品模型（{@code minecraft:item/generated} + {@code mia:item/<name>}）与语言键
+ * {@code item.mia.<name>}，所以这里大部分条目什么都不用额外写。
+ * <p>
+ * <b>为什么这里也需要 {@link #bootstrap()}</b>：理由和 {@link MiaBlocks#bootstrap()} 一样 ——
+ * Reginth 的注册表是在类初始化时被填充的，本类必须早于 {@code RegisterEvent} 被加载。
+ */
 public class MiaItems {
-    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MIA.MOD_ID);
 
-    public static final DeferredItem<Item> RED_WHISTLE =
-            ITEMS.register("red_whistle", () -> new SimpleWhistle(new Item.Properties(), 1, 4));
-    public static final DeferredItem<Item> BLUE_WHISTLE =
-            ITEMS.register("blue_whistle", () -> new SimpleWhistle(new Item.Properties(), 2, 8));
-    //    public static final DeferredItem<Item> MOON_WHISTLE = ITEMS.register("moon_whistle", () ->
-    // new SimpleWhistle(
-    //            new Item.Properties(), 3, 12));
-    //    public static final DeferredItem<Item> BLACK_WHISTLE = ITEMS.register("black_whistle", ()
-    // -> new SimpleWhistle(
-    //            new Item.Properties(), 4, 16));
-    //    public static final DeferredItem<Item> WHITE_WHISTLE = ITEMS.register("white_whistle", ()
-    // -> new SimpleWhistle(
-    //            new Item.Properties(), 5, 20));
+    private static final Reginth REGINTH = MIA.registrate();
 
-    public static final DeferredItem<Item> GRAY_ARTIFACT_BUNDLE =
-            ITEMS.register(
-                    "gray_artifact_bundle",
-                    () -> new ArtifactBundle(new Item.Properties(), Grade.C, 3));
-    public static final DeferredItem<Item> FANCY_ARTIFACT_BUNDLE =
-            ITEMS.register(
-                    "fancy_artifact_bundle",
-                    () -> new ArtifactBundle(new Item.Properties(), Grade.B, 6));
+    /**
+     * 强制初始化本类，见类注释。
+     */
+    public static void bootstrap() {
+    }
 
-    public static final DeferredItem<Item> TEST_ARTIFACT_1 =
-            ITEMS.register(
-                    "test_artifact_1", () -> new ArtifactItem(new Item.Properties(), Grade.D, 1));
-    public static final DeferredItem<Item> TEST_ARTIFACT_2 =
-            ITEMS.register(
-                    "test_artifact_2", () -> new ArtifactItem(new Item.Properties(), Grade.C, 2));
-    public static final DeferredItem<Item> TEST_ARTIFACT_3 =
-            ITEMS.register(
-                    "test_artifact_3", () -> new ArtifactItem(new Item.Properties(), Grade.S, 4));
+    public static final ItemEntry<Item> RED_WHISTLE = REGINTH.<Item>item("red_whistle", p -> new SimpleWhistle(
+            p, 1, 4)).register();
+    public static final ItemEntry<Item> BLUE_WHISTLE = REGINTH.<Item>item("blue_whistle", p -> new SimpleWhistle(
+            p, 2, 8)).register();
+//    public static final ItemEntry<Item> MOON_WHISTLE = REGINTH.<Item>item("moon_whistle", p -> new SimpleWhistle(
+//            p, 3, 12)).register();
+//    public static final ItemEntry<Item> BLACK_WHISTLE = REGINTH.<Item>item("black_whistle", p -> new SimpleWhistle(
+//            p, 4, 16)).register();
+//    public static final ItemEntry<Item> WHITE_WHISTLE = REGINTH.<Item>item("white_whistle", p -> new SimpleWhistle(
+//            p, 5, 20)).register();
 
-    public static final DeferredItem<Item> HEALTH_JUNKIE =
-            ITEMS.register(
-                    "health_junkie", () -> new ArtifactItem(new Item.Properties(), Grade.C, 1));
+    public static final ItemEntry<Item> GRAY_ARTIFACT_BUNDLE = REGINTH.<Item>item("gray_artifact_bundle", p ->
+            new ArtifactBundle(p, Grade.C, 3)).register();
+    public static final ItemEntry<Item> FANCY_ARTIFACT_BUNDLE = REGINTH.<Item>item("fancy_artifact_bundle", p ->
+            new ArtifactBundle(p, Grade.B, 6)).register();
 
-    public static final DeferredItem<Item> ARTIFACT_HASTE =
-            ITEMS.register("artifact_haste", () -> new HasteSkill(new Item.Properties()));
+    public static final ItemEntry<Item> TEST_ARTIFACT_1 = REGINTH.<Item>item("test_artifact_1", p ->
+            new ArtifactItem(p, Grade.D, 1)).register();
+    public static final ItemEntry<Item> TEST_ARTIFACT_2 = REGINTH.<Item>item("test_artifact_2", p ->
+            new ArtifactItem(p, Grade.C, 2)).register();
+    public static final ItemEntry<Item> TEST_ARTIFACT_3 = REGINTH.<Item>item("test_artifact_3", p ->
+            new ArtifactItem(p, Grade.S, 4)).register();
+
+    public static final ItemEntry<Item> HEALTH_JUNKIE = REGINTH.<Item>item("health_junkie", p ->
+            new ArtifactItem(p, Grade.C, 1)).register();
+
+    // 技能物品的贴图不在 mia:item/<name>，而在 mia:item/skill/<name>，所以显式给模型。
+    public static final ItemEntry<Item> ARTIFACT_HASTE = REGINTH.<Item>item("artifact_haste", HasteSkill::new)
+            .model(BlockStateGen::skillItem)
+            .register();
+
     // 水晶碎片
-    public static final DeferredItem<Item> PRASIOLITE_SHARD =
-            ITEMS.register("prasiolite_shard", () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> CAERULITE_SHARD =
-            ITEMS.register("caerulite_shard", () -> new Item(new Item.Properties()));
+    public static final ItemEntry<Item> PRASIOLITE_SHARD = REGINTH.<Item>item("prasiolite_shard", Item::new).register();
+    public static final ItemEntry<Item> CAERULITE_SHARD = REGINTH.<Item>item("caerulite_shard", Item::new).register();
 
-    public static final DeferredItem<Item> RAW_CHLOROPHYTE =
-            ITEMS.register("raw_chlorophyte", () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> CHLOROPHYTE_NUGGET =
-            ITEMS.register("chlorophyte_nugget", () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> CHLOROPHYTE_INGOT =
-            ITEMS.register("chlorophyte_ingot", () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> GROW_SWORD =
-            ITEMS.register(
-                    "grow_sword",
-                    () ->
-                            new GrowSwordItem(
-                                    MiaTiers.PRASIOLITE,
-                                    new Item.Properties()
-                                            .attributes(
-                                                    SwordItem.createAttributes(
-                                                            MiaTiers.PRASIOLITE, 0.0F, -2.4F))));
-    public static final DeferredItem<Item> BLAZE_REAP =
-            ITEMS.register(
-                    "blaze_reap",
-                    () ->
-                            new BlazeReapItem(
-                                    new Item.Properties()
-                                            .attributes(
-                                                    DiggerItem.createAttributes(
-                                                            Tiers.NETHERITE, 9.0F, -3.0F))));
-    public static final DeferredItem<Item> PEACE_PHOBIA =
-            ITEMS.register(
-                    "peace_phobia",
-                    () -> new FoilItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1)));
-    public static final DeferredItem<Item> PRASIOLITE_PICKAXE =
-            ITEMS.register(
-                    "prasiolite_pickaxe",
-                    () ->
-                            new CompositeItem(
-                                    MiaTiers.PRASIOLITE,
-                                    new Item.Properties()
-                                            .attributes(
-                                                    CompositeItem.createAttributes(
-                                                            MiaTiers.PRASIOLITE, 8.0F, -2.8F))));
-    public static final DeferredItem<Item> PRASIOLITE_HOE =
-            ITEMS.register(
-                    "prasiolite_hoe",
-                    () ->
-                            new PrasioliteHoeItem(
-                                    MiaTiers.PRASIOLITE,
-                                    new Item.Properties()
-                                            .attributes(
-                                                    HoeItem.createAttributes(
-                                                            MiaTiers.PRASIOLITE, 0.0F, 0.0F))));
+    public static final ItemEntry<Item> RAW_CHLOROPHYTE = REGINTH.<Item>item("raw_chlorophyte", Item::new).register();
+    public static final ItemEntry<Item> CHLOROPHYTE_NUGGET = REGINTH.<Item>item("chlorophyte_nugget", Item::new).register();
+    public static final ItemEntry<Item> CHLOROPHYTE_INGOT = REGINTH.<Item>item("chlorophyte_ingot", Item::new).register();
+    public static final ItemEntry<Item> GROW_SWORD = REGINTH.<Item>item("grow_sword", p ->
+                    new GrowSwordItem(
+                            MiaTiers.PRASIOLITE, p
+                            .attributes(SwordItem.createAttributes(MiaTiers.PRASIOLITE, 0.0F, -2.4F))
+                    ))
+            .model(BlockStateGen::handheldItem)
+            .register();
+    public static final ItemEntry<Item> BLAZE_REAP = REGINTH.<Item>item("blaze_reap", p ->
+                    new BlazeReapItem(p.attributes(DiggerItem.createAttributes(Tiers.NETHERITE, 9.0F, -3.0F)))
+            )
+            .model(BlockStateGen::handheldItem)
+            .register();
+    public static final ItemEntry<Item> PEACE_PHOBIA = REGINTH.<Item>item("peace_phobia", p ->
+            new FoilItem(p.rarity(Rarity.EPIC).stacksTo(1))
+    ).register();
+    public static final ItemEntry<Item> PRASIOLITE_PICKAXE = REGINTH.<Item>item("prasiolite_pickaxe", p ->
+                    new CompositeItem(
+                            MiaTiers.PRASIOLITE, p
+                            .attributes(CompositeItem.createAttributes(MiaTiers.PRASIOLITE, 8.0F, -2.8F))
+                    ))
+            .model(BlockStateGen::handheldItem)
+            .register();
+    public static final ItemEntry<Item> PRASIOLITE_HOE = REGINTH.<Item>item("prasiolite_hoe", p ->
+                    new PrasioliteHoeItem(
+                            MiaTiers.PRASIOLITE, p
+                            .attributes(HoeItem.createAttributes(MiaTiers.PRASIOLITE, 0.0F, 0.0F))))
+            .model(BlockStateGen::handheldItem)
+            .register();
 
-    public static final DeferredItem<Item> MISTFUZZ_PEACH =
-            ITEMS.register(
-                    "mistfuzz_peach",
-                    () -> new Item(new Item.Properties().food(MiaFoods.MISTFUZZ_PEACH)));
-    public static final DeferredItem<Item> GLOOM_BERRY =
-            ITEMS.register(
-                    "gloom_berry",
-                    () ->
-                            new ItemNameBlockItem(
-                                    MiaBlocks.GLOOM_BERRY_PLANT.get(),
-                                    new Item.Properties().food(MiaFoods.GLOOM_BERRY)));
-    public static final DeferredItem<Item> DREAM_LICHEE =
-            ITEMS.register(
-                    "dream_lichee",
-                    () ->
-                            new ItemNameBlockItem(
-                                    MiaBlocks.DREAM_LICHEE_PLANT.get(),
-                                    new Item.Properties().food(MiaFoods.DREAM_LICHEE)));
+    public static final ItemEntry<Item> MISTFUZZ_PEACH = REGINTH.<Item>item("mistfuzz_peach", p ->
+            new Item(p.food(MiaFoods.MISTFUZZ_PEACH))).register();
+    // ItemNameBlockItem 是 BlockItem 的子类，但 Reginth 的 defaultModel() 对所有物品都出
+    // item/generated + mia:item/<name>，与旧 datagen 的 basicItem() 一致，所以不用额外指定。
+    public static final ItemEntry<Item> GLOOM_BERRY = REGINTH.<Item>item("gloom_berry", p ->
+            new ItemNameBlockItem(MiaBlocks.GLOOM_BERRY_PLANT.get(), p.food(MiaFoods.GLOOM_BERRY))).register();
+    public static final ItemEntry<Item> DREAM_LICHEE = REGINTH.<Item>item("dream_lichee", p ->
+            new ItemNameBlockItem(MiaBlocks.DREAM_LICHEE_PLANT.get(), p.food(MiaFoods.DREAM_LICHEE))).register();
 
-    public static final DeferredItem<Item> GRAPPLING_HOOK =
-            ITEMS.register(
-                    "grappling_hook",
-                    () ->
-                            new HookItem(
-                                    new Item.Properties()
-                                            .component(DataComponents.CUSTOM_DATA, CustomData.EMPTY)
-                                            .stacksTo(1)));
-    public static final DeferredItem<Item> DEBUG_ATTRIBUTE_TOOL =
-            ITEMS.register(
+    // 抓钩的物品模型 parent 是 mia:item/template/grappling_hook，不是 item/generated。
+    public static final ItemEntry<Item> GRAPPLING_HOOK = REGINTH.<Item>item(
+            "grappling_hook",
+            p -> new HookItem(p.component(DataComponents.CUSTOM_DATA, CustomData.EMPTY).stacksTo(1))
+    ).model((ctx, prov) -> BlockStateGen.templateItem(ctx, prov, "grappling_hook")).register();
+    public static final ItemEntry<Item> DEBUG_ATTRIBUTE_TOOL = REGINTH.<Item>item(
                     "debug_attribute_tool",
-                    () -> new DebugAttributeTool(new Item.Properties().stacksTo(1)));
+                    p -> new DebugAttributeTool(p.stacksTo(1))
+            )
+            .model(BlockStateGen::handheldItem)
+            .register();
 
     // Block Item
-    public static final DeferredItem<Item> ROPE =
-            ITEMS.register("rope", () -> new RopeItem(MiaBlocks.ROPE.get(), new Item.Properties()));
+    // 绳子的物品是 RopeItem，需要方块对象，所以由 MiaBlocks.ROPE 的
+    // BlockBuilder.item(RopeItem::new) 注册 —— 而且 HEAD 里没有 item.mia.rope 这个语言键，
+    // BlockBuilder.item 正好会把 LANG 设成 noop。这里不重复注册（否则 mia:rope 注册两次）。
 
-    public static final DeferredItem<Item> STAR_COMPASS =
-            ITEMS.register(
-                    "star_compass", () -> new StarCompassItem(new Item.Properties().stacksTo(1)));
-
-    public static void register(IEventBus eventBus) {
-        ITEMS.register(eventBus);
-    }
+    public static final ItemEntry<Item> STAR_COMPASS = REGINTH.<Item>item("star_compass", p ->
+            new StarCompassItem(p.stacksTo(1))).register();
 }

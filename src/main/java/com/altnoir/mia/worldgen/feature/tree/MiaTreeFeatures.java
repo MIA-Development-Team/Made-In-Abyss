@@ -3,14 +3,17 @@ package com.altnoir.mia.worldgen.feature.tree;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.worldgen.MiaFeatures;
 import com.altnoir.mia.worldgen.MiaFeatureUtils;
+import com.altnoir.mia.worldgen.feature.configurations.PrimoHugeFungusConfiguration;
 import com.altnoir.mia.worldgen.feature.foliage.InvertedFoliagePlacer;
 import com.altnoir.mia.worldgen.feature.foliage.MegaInvertedFoliagePlacer;
 import com.altnoir.mia.worldgen.feature.trunk.InvertedForkingTrunkPlacer;
 import com.altnoir.mia.worldgen.feature.trunk.InvertedGiantTrunkPlacer;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
+import java.util.Optional;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -18,6 +21,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.util.valueproviders.WeightedListInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
@@ -48,6 +52,10 @@ public class MiaTreeFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_BUSH =
             treeKey("short_skyfog_tree");
 
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PRIMO_FUNGUS =
+            treeKey("primo_fungus");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GLOW_PRIMO_FUNGUS =
+            treeKey("glow_primo_fungus");
     public static final ResourceKey<ConfiguredFeature<?, ?>> VERDANT_FUNGUS =
             treeKey("verdant_fungus");
     public static final ResourceKey<ConfiguredFeature<?, ?>> INVERTED_TREE =
@@ -62,6 +70,70 @@ public class MiaTreeFeatures {
         var bee002 = new BeehiveDecorator(0.02F);
         var bee005 = new BeehiveDecorator(0.05F);
         var bee1 = new BeehiveDecorator(1.0F);
+
+        // 巨型菌生长时可以顶掉的方块：原版那套"可替换植物"清单，外加本模组自己的三种。
+        BlockPredicate replaceablePlants = BlockPredicate.matchesBlocks(
+                Blocks.OAK_SAPLING,
+                Blocks.SPRUCE_SAPLING,
+                Blocks.BIRCH_SAPLING,
+                Blocks.JUNGLE_SAPLING,
+                Blocks.ACACIA_SAPLING,
+                Blocks.CHERRY_SAPLING,
+                Blocks.DARK_OAK_SAPLING,
+                Blocks.MANGROVE_PROPAGULE,
+                Blocks.DANDELION,
+                Blocks.TORCHFLOWER,
+                Blocks.POPPY,
+                Blocks.BLUE_ORCHID,
+                Blocks.ALLIUM,
+                Blocks.AZURE_BLUET,
+                Blocks.RED_TULIP,
+                Blocks.ORANGE_TULIP,
+                Blocks.WHITE_TULIP,
+                Blocks.PINK_TULIP,
+                Blocks.OXEYE_DAISY,
+                Blocks.CORNFLOWER,
+                Blocks.WITHER_ROSE,
+                Blocks.LILY_OF_THE_VALLEY,
+                Blocks.BROWN_MUSHROOM,
+                Blocks.RED_MUSHROOM,
+                Blocks.WHEAT,
+                Blocks.SUGAR_CANE,
+                Blocks.ATTACHED_PUMPKIN_STEM,
+                Blocks.ATTACHED_MELON_STEM,
+                Blocks.PUMPKIN_STEM,
+                Blocks.MELON_STEM,
+                Blocks.LILY_PAD,
+                Blocks.NETHER_WART,
+                Blocks.COCOA,
+                Blocks.CARROTS,
+                Blocks.POTATOES,
+                Blocks.CHORUS_PLANT,
+                Blocks.CHORUS_FLOWER,
+                Blocks.TORCHFLOWER_CROP,
+                Blocks.PITCHER_CROP,
+                Blocks.BEETROOTS,
+                Blocks.SWEET_BERRY_BUSH,
+                Blocks.WARPED_FUNGUS,
+                Blocks.CRIMSON_FUNGUS,
+                Blocks.WEEPING_VINES,
+                Blocks.WEEPING_VINES_PLANT,
+                Blocks.TWISTING_VINES,
+                Blocks.TWISTING_VINES_PLANT,
+                Blocks.CAVE_VINES,
+                Blocks.CAVE_VINES_PLANT,
+                Blocks.SPORE_BLOSSOM,
+                Blocks.AZALEA,
+                Blocks.FLOWERING_AZALEA,
+                Blocks.MOSS_CARPET,
+                Blocks.PINK_PETALS,
+                Blocks.BIG_DRIPLEAF,
+                Blocks.BIG_DRIPLEAF_STEM,
+                Blocks.SMALL_DRIPLEAF,
+                MiaBlocks.PRIMO_FUNGUS.get(),
+                MiaBlocks.GLOW_PRIMO_FUNGUS.get(),
+                MiaBlocks.MUSHROOM_BED.get()
+        );
 
         MiaFeatureUtils.register(context, SKYFOG_TREE, Feature.TREE, skyfog().build());
         MiaFeatureUtils.register(
@@ -125,6 +197,27 @@ public class MiaTreeFeatures {
                         .forceDirt()
                         .build());
 
+        MiaFeatureUtils.register(
+                context,
+                PRIMO_FUNGUS,
+                MiaFeatures.HUGE_PRIMO_FUNGUS.get(),
+                new PrimoHugeFungusConfiguration(
+                        BlockTags.DIRT,
+                        MiaBlocks.PRIMO_STEM.get().defaultBlockState(),
+                        MiaBlocks.PRIMO_CAP.get().defaultBlockState(),
+                        Optional.of(Blocks.BUDDING_AMETHYST.defaultBlockState()),
+                        replaceablePlants));
+
+        MiaFeatureUtils.register(
+                context,
+                GLOW_PRIMO_FUNGUS,
+                MiaFeatures.HUGE_PRIMO_FUNGUS.get(),
+                new PrimoHugeFungusConfiguration(
+                        BlockTags.DIRT,
+                        MiaBlocks.PRIMO_STEM.get().defaultBlockState(),
+                        MiaBlocks.GLOW_PRIMO_CAP.get().defaultBlockState(),
+                        Optional.empty(),
+                        replaceablePlants));
         MiaFeatureUtils.register(
                 context,
                 VERDANT_FUNGUS,

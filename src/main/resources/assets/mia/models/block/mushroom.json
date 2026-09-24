@@ -1,0 +1,43 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"parent": "block/block",
+	"textures": {
+		"all": "mushroomm"
+	},
+	"elements": [
+		{
+			"from": [2, 8, 2],
+			"to": [14, 14, 14],
+			"faces": {
+				"north": {"uv": [6, 0, 12, 3], "texture": "#all"},
+				"east": {"uv": [6, 3, 12, 6], "texture": "#all"},
+				"south": {"uv": [6, 0, 12, 3], "texture": "#all"},
+				"west": {"uv": [6, 3, 12, 6], "texture": "#all"},
+				"up": {"uv": [6, 6, 0, 0], "texture": "#all"},
+				"down": {"uv": [6, 6, 0, 12], "texture": "#all"}
+			}
+		},
+		{
+			"from": [5, 0, 5],
+			"to": [11, 8, 11],
+			"faces": {
+				"north": {"uv": [6, 9, 9, 13], "texture": "#all"},
+				"east": {"uv": [6, 9, 9, 13], "texture": "#all"},
+				"south": {"uv": [6, 9, 9, 13], "texture": "#all"},
+				"west": {"uv": [6, 9, 9, 13], "texture": "#all"},
+				"down": {"uv": [9, 6, 6, 9], "texture": "#all"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "main",
+			"origin": [8, 8, 8],
+			"scope": 0,
+			"color": 0,
+			"children": [0, 1]
+		}
+	]
+}

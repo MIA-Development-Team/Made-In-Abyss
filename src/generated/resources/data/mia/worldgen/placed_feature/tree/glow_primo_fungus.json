@@ -1,0 +1,14 @@
+{
+  "feature": "mia:tree/glow_primo_fungus",
+  "placement": [
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:would_survive",
+        "state": {
+          "Name": "mia:glow_primo_fungus"
+        }
+      }
+    }
+  ]
+}

@@ -49,10 +49,6 @@ public class MiaItemTagProvider extends ItemTagsProvider {
                 .add(MiaBlocks.STRIPPED_INVERTED_WOOD.get().asItem());
 
         // 合成标签
-        tag(ItemTags.PLANKS)
-                .add(MiaBlocks.SKYFOG_PLANKS.get().asItem())
-                .add(MiaBlocks.INVERTED_PLANKS.get().asItem());
-
         tag(MiaTags.Items.UNSTRIPPED_FOSSILIZED_LOGS)
                 .add(MiaBlocks.FOSSILIZED_LOG.get().asItem())
                 .add(MiaBlocks.FOSSILIZED_WOOD.get().asItem());
@@ -73,6 +69,40 @@ public class MiaItemTagProvider extends ItemTagsProvider {
                 .add(MiaBlocks.INVERTED_WOOD.get().asItem())
                 .add(MiaBlocks.STRIPPED_INVERTED_LOG.get().asItem())
                 .add(MiaBlocks.STRIPPED_INVERTED_WOOD.get().asItem());
+
+        tag(MiaTags.Items.PRIMO_STEMS)
+                .add(MiaBlocks.PRIMO_STEM.get().asItem())
+                .add(MiaBlocks.STRIPPED_PRIMO_STEM.get().asItem())
+                .add(MiaBlocks.PRIMO_HYPHAE.get().asItem())
+                .add(MiaBlocks.STRIPPED_PRIMO_HYPHAE.get().asItem());
+
+        tag(ItemTags.PLANKS)
+                .add(
+                        MiaBlocks.SKYFOG_PLANKS.get().asItem(),
+                        MiaBlocks.INVERTED_PLANKS.get().asItem(),
+                        MiaBlocks.PRIMO_PLANKS.get().asItem()
+                );
+        tag(ItemTags.LOGS)
+                .add(MiaBlocks.PRIMO_STEM.get().asItem())
+                .add(MiaBlocks.PRIMO_HYPHAE.get().asItem())
+                .add(MiaBlocks.STRIPPED_PRIMO_STEM.get().asItem())
+                .add(MiaBlocks.STRIPPED_PRIMO_HYPHAE.get().asItem());
+
+        tag(ItemTags.STAIRS).add(MiaBlocks.PRIMO_STAIRS.get().asItem());
+        tag(ItemTags.SLABS).add(MiaBlocks.PRIMO_SLAB.get().asItem());
+        tag(ItemTags.BUTTONS).add(MiaBlocks.PRIMO_BUTTON.get().asItem());
+        tag(ItemTags.FENCES).add(MiaBlocks.PRIMO_FENCE.get().asItem());
+        tag(ItemTags.FENCE_GATES).add(MiaBlocks.PRIMO_FENCE_GATE.get().asItem());
+        tag(ItemTags.DOORS).add(MiaBlocks.PRIMO_DOOR.get().asItem());
+        tag(ItemTags.TRAPDOORS).add(MiaBlocks.PRIMO_TRAPDOOR.get().asItem());
+
+        tag(ItemTags.WOODEN_STAIRS).add(MiaBlocks.PRIMO_STAIRS.get().asItem());
+        tag(ItemTags.WOODEN_SLABS).add(MiaBlocks.PRIMO_SLAB.get().asItem());
+        tag(ItemTags.WOODEN_BUTTONS).add(MiaBlocks.PRIMO_BUTTON.get().asItem());
+        tag(ItemTags.WOODEN_PRESSURE_PLATES).add(MiaBlocks.PRIMO_PRESSURE_PLATE.get().asItem());
+        tag(ItemTags.WOODEN_FENCES).add(MiaBlocks.PRIMO_FENCE.get().asItem());
+        tag(ItemTags.WOODEN_DOORS).add(MiaBlocks.PRIMO_DOOR.get().asItem());
+        tag(ItemTags.WOODEN_TRAPDOORS).add(MiaBlocks.PRIMO_TRAPDOOR.get().asItem());
 
         // 工具TAG
         tag(ItemTags.SWORDS).add(MiaItems.GROW_SWORD.get());
