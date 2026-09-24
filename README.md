@@ -14,6 +14,10 @@ A Minecraft mod that introduces many new dimensions and items.
 2. Run `gradlew runData`
 3. Run `gradlew runClient`
 
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening issues or pull requests.
+
 ## Download
 
 (TBD)
