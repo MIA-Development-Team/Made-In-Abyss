@@ -1,25 +1,19 @@
+![Cover.png](Cover.png)
 
-Installation information
-=======
+# Memento In Abyss
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+[![GitHub Release](https://img.shields.io/github/v/release/Altnoir/Made-In-Abyss)](https://github.com/Altnoir/Made-In-Abyss/releases/)
+[![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/Altnoir/Made-In-Abyss/total)](https://github.com/Altnoir/Made-In-Abyss/releases/latest)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Altnoir/Made-In-Abyss/ci-build.yml)](https://github.com/Altnoir/Made-In-Abyss/actions/workflows/ci-build.yml)
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+A Minecraft mod that introduces many new dimensions and items.
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+## Build
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+1. Use [IntelliJ IDEA](https://www.jetbrains.com/idea/) & [JDK 21](https://adoptium.net/temurin/releases/?os=any&version=21)
+2. Run `gradlew runData`
+3. Run `gradlew runClient`
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+## Download
+
+(TBD)
