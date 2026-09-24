@@ -25,22 +25,24 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * 没有走数据包定义的路径，因此没有影响。
  */
 public class PrimoFungusBlock extends MiaFungusBlock {
-    private static final VoxelShape SHAPE = Shapes.or(
-            Block.box(2.0, 8.0, 2.0, 14.0, 14.0, 14.0),
-            Block.box(5.0, 0.0, 5.0, 11.0, 8.0, 11.0)
-    );
+    private static final VoxelShape SHAPE =
+            Shapes.or(
+                    Block.box(2.0, 8.0, 2.0, 14.0, 14.0, 14.0),
+                    Block.box(5.0, 0.0, 5.0, 11.0, 8.0, 11.0));
 
     public PrimoFungusBlock(ResourceKey<ConfiguredFeature<?, ?>> feature, Properties properties) {
         super(feature, properties);
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(
+            BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+    public void fallOn(
+            Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
         super.fallOn(level, state, pos, entity, fallDistance * 0.5F);
     }
 

@@ -23,8 +23,7 @@ public class PrimoHugeFungusFeature extends Feature<PrimoHugeFungusConfiguration
             WorldGenLevel level,
             BlockPos pos,
             PrimoHugeFungusConfiguration config,
-            boolean checkNonReplaceablePlants
-    ) {
+            boolean checkNonReplaceablePlants) {
         if (level.isStateAtPosition(pos, BlockBehaviour.BlockStateBase::canBeReplaced)) {
             return true;
         }
@@ -61,8 +60,7 @@ public class PrimoHugeFungusFeature extends Feature<PrimoHugeFungusConfiguration
             WorldGenLevel level,
             PrimoHugeFungusConfiguration config,
             BlockPos surfaceOrigin,
-            int totalHeight
-    ) {
+            int totalHeight) {
         BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
         BlockState stem = config.stemState();
 
@@ -82,8 +80,7 @@ public class PrimoHugeFungusFeature extends Feature<PrimoHugeFungusConfiguration
             RandomSource random,
             PrimoHugeFungusConfiguration config,
             BlockPos surfaceOrigin,
-            int totalHeight
-    ) {
+            int totalHeight) {
         BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
         int hatHeight = Math.min(random.nextInt(1 + totalHeight / 3) + 5, totalHeight);
         int hatStartY = totalHeight - hatHeight;
@@ -131,8 +128,7 @@ public class PrimoHugeFungusFeature extends Feature<PrimoHugeFungusConfiguration
             PrimoHugeFungusConfiguration config,
             BlockPos.MutableBlockPos blockPos,
             float decorBlockProbability,
-            float hatBlockProbability
-    ) {
+            float hatBlockProbability) {
         if (config.decorState().isPresent() && random.nextFloat() < decorBlockProbability) {
             this.setBlock(level, blockPos, config.decorState().get());
         } else if (random.nextFloat() < hatBlockProbability) {
@@ -140,7 +136,8 @@ public class PrimoHugeFungusFeature extends Feature<PrimoHugeFungusConfiguration
         }
     }
 
-    private void placeHatDropBlock(LevelAccessor level, RandomSource random, BlockPos blockPos, BlockState hatState) {
+    private void placeHatDropBlock(
+            LevelAccessor level, RandomSource random, BlockPos blockPos, BlockState hatState) {
         if (level.getBlockState(blockPos.below()).is(hatState.getBlock())) {
             this.setBlock(level, blockPos, hatState);
         } else if (random.nextFloat() < 0.15) {

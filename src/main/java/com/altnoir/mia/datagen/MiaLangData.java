@@ -8,11 +8,10 @@ import com.altnoir.mia.init.MiaPotions;
 import com.altnoir.mia.init.MiaStats;
 import com.altnoir.mia.util.FilesHelper;
 import com.altnoir.mia.worldgen.biome.MiaBiomes;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.biome.Biome;
-
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
 
 /**
  * MIA 的语言键数据（迁移到 Reginth 之后）。
@@ -33,8 +32,7 @@ import java.util.stream.Collectors;
  */
 public final class MiaLangData {
 
-    private MiaLangData() {
-    }
+    private MiaLangData() {}
 
     /**
      * 在 {@code MIA} 构造函数里调用一次。
@@ -48,29 +46,48 @@ public final class MiaLangData {
         addDefault(out, "tooltip");
         addDefault(out, "ponder");
 
-        MiaBiomes.BIOMES.forEach(biome -> out.add("biome.mia." + biome.location().getPath(), formatName(biome)));
+        MiaBiomes.BIOMES.forEach(
+                biome -> out.add("biome.mia." + biome.location().getPath(), formatName(biome)));
 
-        MiaPaintingVariants.PAINTING_VARIANTS.forEach(paintingVariant -> {
-            out.add("painting.mia." + paintingVariant.location().getPath() + ".title",
-                    formatName(paintingVariant.location().getPath()));
-            out.add("painting.mia." + paintingVariant.location().getPath() + ".author", "Memento In Abyss");
-        });
+        MiaPaintingVariants.PAINTING_VARIANTS.forEach(
+                paintingVariant -> {
+                    out.add(
+                            "painting.mia." + paintingVariant.location().getPath() + ".title",
+                            formatName(paintingVariant.location().getPath()));
+                    out.add(
+                            "painting.mia." + paintingVariant.location().getPath() + ".author",
+                            "Memento In Abyss");
+                });
 
         // 方块**和物品**现在都全部迁到 Reginth 了，所以这里既不再遍历 MiaBlocks.BLOCKS，
         // 也不再遍历 MiaItems.ITEMS（两个 DeferredRegister 都已经删掉）。
         // Reginth 自己会写 block.mia.* / item.mia.*；两边都写会直接抛
         // "Duplicate translation key"（NeoForge 的 LanguageProvider.add 拒绝重复键）——踩过。
 
-        MiaPotions.POTIONS.getEntries().forEach(holder -> {
-            String key = holder.getId().getPath();
-            out.add("item.minecraft.potion.effect." + key, "Potion of " + formatName(key));
-            out.add("item.minecraft.splash_potion.effect." + key, "Splash Potion of " + formatName(key));
-            out.add("item.minecraft.lingering_potion.effect." + key, "Lingering Potion of " + formatName(key));
-        });
+        MiaPotions.POTIONS
+                .getEntries()
+                .forEach(
+                        holder -> {
+                            String key = holder.getId().getPath();
+                            out.add(
+                                    "item.minecraft.potion.effect." + key,
+                                    "Potion of " + formatName(key));
+                            out.add(
+                                    "item.minecraft.splash_potion.effect." + key,
+                                    "Splash Potion of " + formatName(key));
+                            out.add(
+                                    "item.minecraft.lingering_potion.effect." + key,
+                                    "Lingering Potion of " + formatName(key));
+                        });
 
-        MiaStats.CUSTOM_STATS.getEntries().forEach(holder ->
-                out.add("stat.mia.interact_with_" + holder.getId().getPath(),
-                        "Interactions with " + formatName(holder.getId().getPath())));
+        MiaStats.CUSTOM_STATS
+                .getEntries()
+                .forEach(
+                        holder ->
+                                out.add(
+                                        "stat.mia.interact_with_" + holder.getId().getPath(),
+                                        "Interactions with "
+                                                + formatName(holder.getId().getPath())));
 
         // Tags start
         out.add("tag.item.curios.whistle", "Whistle");
@@ -84,7 +101,8 @@ public final class MiaLangData {
         var path = "assets/mia/lang/default/" + fileName + ".json";
         var jsonElement = FilesHelper.loadJsonResource(path);
         if (jsonElement == null) {
-            throw new IllegalStateException(String.format("Could not find default lang file: %s", path));
+            throw new IllegalStateException(
+                    String.format("Could not find default lang file: %s", path));
         }
         for (var entry : jsonElement.getAsJsonObject().entrySet()) {
             out.add(entry.getKey(), entry.getValue().getAsString());
@@ -103,7 +121,10 @@ public final class MiaLangData {
     private static String formatName(String name) {
         return Arrays.stream(name.split("_"))
                 .filter(word -> !word.isEmpty())
-                .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase())
+                .map(
+                        word ->
+                                Character.toUpperCase(word.charAt(0))
+                                        + word.substring(1).toLowerCase())
                 .collect(Collectors.joining(" "));
     }
 }

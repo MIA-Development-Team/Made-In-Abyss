@@ -131,8 +131,7 @@ public class TheAbyssFeatures {
                 holdergetter1.getOrThrow(MiaTreePlacements.FANCY_SKYFOG_BEES_002);
         Holder<PlacedFeature> maga_skyfog = holdergetter1.getOrThrow(MiaTreePlacements.MEGA_SKYFOG);
         Holder<PlacedFeature> skyfog_bush = holdergetter1.getOrThrow(MiaTreePlacements.SKYFOG_BUSH);
-        Holder<PlacedFeature> primo =
-                holdergetter1.getOrThrow(MiaTreePlacements.PRIMO_FUNGUS);
+        Holder<PlacedFeature> primo = holdergetter1.getOrThrow(MiaTreePlacements.PRIMO_FUNGUS);
         Holder<PlacedFeature> glow_primo =
                 holdergetter1.getOrThrow(MiaTreePlacements.GLOW_PRIMO_FUNGUS);
         Holder<PlacedFeature> verdant_fungus =
@@ -622,9 +621,7 @@ public class TheAbyssFeatures {
                                                         .get()
                                                         .defaultBlockState(),
                                                 8)
-                                        .add(
-                                                MiaBlocks.PRIMO_FUNGUS.get().defaultBlockState(),
-                                                12)
+                                        .add(MiaBlocks.PRIMO_FUNGUS.get().defaultBlockState(), 12)
                                         .add(
                                                 MiaBlocks.MYCELIUM_MAT
                                                         .get()
@@ -879,17 +876,22 @@ public class TheAbyssFeatures {
     }
 
     private static VegetationPatchConfiguration vegetationPatch(
-            TagKey<Block> replaceable, Block ground, Holder<ConfiguredFeature<?, ?>> feature,
-            float grow, float infection
-    ) {
+            TagKey<Block> replaceable,
+            Block ground,
+            Holder<ConfiguredFeature<?, ?>> feature,
+            float grow,
+            float infection) {
         return new VegetationPatchConfiguration(
                 replaceable,
                 BlockStateProvider.simple(ground),
                 PlacementUtils.inlinePlaced(feature),
                 CaveSurface.FLOOR,
-                ConstantInt.of(1), 0.0F, 5,
-                grow, UniformInt.of(1, 2), infection
-        );
+                ConstantInt.of(1),
+                0.0F,
+                5,
+                grow,
+                UniformInt.of(1, 2),
+                infection);
     }
 
     private static ResourceKey<ConfiguredFeature<?, ?>> theAbyssKey(String name) {

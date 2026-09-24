@@ -13,8 +13,7 @@ import net.minecraft.world.phys.Vec3;
  * 各方块保留两行 {@code @Override}。
  */
 public final class BounceHelper {
-    private BounceHelper() {
-    }
+    private BounceHelper() {}
 
     /**
      * 落地时是否反弹：抑制弹跳的实体（潜行、穿弹跳靴以外的情形）走原版逻辑。

@@ -24,7 +24,8 @@ public class MiaSurfaceRuleData extends SurfaceRuleData {
     private static final SurfaceRules.RuleSource COVERGRASS_TUFF =
             makeStateRule(MiaBlocks.COVERGRASS_TUFF.get());
     // Layer 2
-    private static final SurfaceRules.RuleSource MYCELTUM = makeStateRule(MiaBlocks.MYCELIUM_BLOCK.get());
+    private static final SurfaceRules.RuleSource MYCELTUM =
+            makeStateRule(MiaBlocks.MYCELIUM_BLOCK.get());
     private static final SurfaceRules.RuleSource MUD = makeStateRule(Blocks.MUD);
 
     private static SurfaceRules.RuleSource makeStateRule(Block block) {

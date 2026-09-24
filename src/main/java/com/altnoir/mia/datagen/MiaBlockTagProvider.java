@@ -56,8 +56,7 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(
                         MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get(),
                         MiaBlocks.COVERGRASS_TUFF.get(),
-                        MiaBlocks.MYCELIUM_BLOCK.get()
-                );
+                        MiaBlocks.MYCELIUM_BLOCK.get());
         tag(BlockTags.ANIMALS_SPAWNABLE_ON)
                 .add(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get())
                 .add(MiaBlocks.COVERGRASS_TUFF.get());
@@ -255,14 +254,10 @@ public class MiaBlockTagProvider extends BlockTagsProvider {
                 .add(MiaBlocks.ABYSS_QUARTZ_ORE.get())
                 .add(MiaBlocks.ABYSS_CHLOROPHYTE_ORE.get());
 
+        tag(MiaTags.Blocks.MYCELIUM_REPLACEABLE).addTag(BlockTags.DIRT);
 
-        tag(MiaTags.Blocks.MYCELIUM_REPLACEABLE)
-                .addTag(BlockTags.DIRT);
-
-        tag(BlockTags.REPLACEABLE_BY_TREES)
-                .add(MiaBlocks.MYCELIUM_BLOCK.get());
-        tag(BlockTags.MUSHROOM_GROW_BLOCK)
-                .add(MiaBlocks.MYCELIUM_BLOCK.get());
+        tag(BlockTags.REPLACEABLE_BY_TREES).add(MiaBlocks.MYCELIUM_BLOCK.get());
+        tag(BlockTags.MUSHROOM_GROW_BLOCK).add(MiaBlocks.MYCELIUM_BLOCK.get());
         tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS)
                 .add(MiaBlocks.MYCELIUM_MAT.get())
                 .add(MiaBlocks.MUSHROOM_BED.get());

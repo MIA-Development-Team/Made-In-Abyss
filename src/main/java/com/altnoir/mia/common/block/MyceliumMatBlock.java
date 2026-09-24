@@ -25,7 +25,8 @@ import net.minecraft.world.level.material.Fluids;
  * 特性：可含水；骨粉后沿任意面向外蔓延（{@link MultifaceSpreader}）；手上拿着菌痕时不可替换已有菌痕
  * （否则右键会一直试图放置而无法蔓延）。
  */
-public class MyceliumMatBlock extends MultifaceBlock implements BonemealableBlock, SimpleWaterloggedBlock {
+public class MyceliumMatBlock extends MultifaceBlock
+        implements BonemealableBlock, SimpleWaterloggedBlock {
     public static final MapCodec<MyceliumMatBlock> CODEC = simpleCodec(MyceliumMatBlock::new);
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
@@ -47,8 +48,13 @@ public class MyceliumMatBlock extends MultifaceBlock implements BonemealableBloc
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
-                                     LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    protected BlockState updateShape(
+            BlockState state,
+            Direction direction,
+            BlockState neighborState,
+            LevelAccessor level,
+            BlockPos pos,
+            BlockPos neighborPos) {
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
@@ -63,23 +69,30 @@ public class MyceliumMatBlock extends MultifaceBlock implements BonemealableBloc
 
     @Override
     public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-        return Direction.stream().anyMatch(direction ->
-                this.spreader.canSpreadInAnyDirection(state, level, pos, direction.getOpposite()));
+        return Direction.stream()
+                .anyMatch(
+                        direction ->
+                                this.spreader.canSpreadInAnyDirection(
+                                        state, level, pos, direction.getOpposite()));
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(
+            Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+    public void performBonemeal(
+            ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         this.spreader.spreadFromRandomFaceTowardRandomDirection(state, level, pos, random);
     }
 
     @Override
     protected FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED)
+                ? Fluids.WATER.getSource(false)
+                : super.getFluidState(state);
     }
 
     @Override

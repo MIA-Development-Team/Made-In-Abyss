@@ -372,7 +372,6 @@ public class MiaRecipeProvider extends RecipeProvider implements IConditionBuild
                 MiaBlocks.PRIMO_PRESSURE_PLATE.get(),
                 MiaBlocks.PRIMO_BUTTON.get());
 
-
         // 模组工作台
         lampTube(recipeOutput, Items.STONE, 2, Items.DEEPSLATE);
         lampTube(recipeOutput, Items.ANDESITE, 2, MiaBlocks.ABYSS_ANDESITE);

@@ -288,31 +288,53 @@ public class TheAbyssBiomes {
     // Layer 2
     public static Biome primoForest(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.MOOSHROOM, 10, 4, 4));
+        spawnBuilder.addSpawn(
+                MobCategory.CREATURE,
+                new MobSpawnSettings.SpawnerData(EntityType.MOOSHROOM, 10, 4, 4));
 
         BiomesUtils.commonSpawns(spawnBuilder);
         BiomeGenerationSettings.Builder generationBuilder = createGenerationBuilder(context);
 
         BiomesUtils.globalAbyssGenerationNotGeode(generationBuilder);
-        generationBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.TREES_PRIMO_FUNGUS)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.MYCELIUM_PATCH)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.PATCH_LARGE_FERN)
-                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TheAbyssPlacements.CAVE_VINES);
+        generationBuilder
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.TREES_PRIMO_FUNGUS)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.MYCELIUM_PATCH)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.PATCH_LARGE_FERN)
+                .addFeature(
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        TheAbyssPlacements.CAVE_VINES);
 
-        return new Biome.BiomeBuilder().hasPrecipitation(true).downfall(0.8F).temperature(0.8F)
+        return new Biome.BiomeBuilder()
+                .hasPrecipitation(true)
+                .downfall(0.8F)
+                .temperature(0.8F)
                 .generationSettings(generationBuilder.build())
                 .mobSpawnSettings(spawnBuilder.build())
-                .specialEffects((new BiomeSpecialEffects.Builder())
-                        .waterColor(6141935)
-                        .waterFogColor(6141935)
-                        .skyColor(8888490)
-                        .fogColor(6184048)
-                        .grassColorOverride(11335504)
-                        .ambientParticle(new AmbientParticleSettings(ParticleTypes.WHITE_ASH, 0.118093334F))
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .ambientAdditionsSound(new AmbientAdditionsSettings(SoundEvents.AMBIENT_BASALT_DELTAS_ADDITIONS, 0.0111))
-                        .backgroundMusic(Musics.createGameMusic(MiaSounds.MUSIC_THE_ABYSS_DIM))
-                        .build()).build();
+                .specialEffects(
+                        (new BiomeSpecialEffects.Builder())
+                                .waterColor(6141935)
+                                .waterFogColor(6141935)
+                                .skyColor(8888490)
+                                .fogColor(6184048)
+                                .grassColorOverride(11335504)
+                                .ambientParticle(
+                                        new AmbientParticleSettings(
+                                                ParticleTypes.WHITE_ASH, 0.118093334F))
+                                .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+                                .ambientAdditionsSound(
+                                        new AmbientAdditionsSettings(
+                                                SoundEvents.AMBIENT_BASALT_DELTAS_ADDITIONS,
+                                                0.0111))
+                                .backgroundMusic(
+                                        Musics.createGameMusic(MiaSounds.MUSIC_THE_ABYSS_DIM))
+                                .build())
+                .build();
     }
 
     public static Biome temptationForest(BootstrapContext<Biome> context) {

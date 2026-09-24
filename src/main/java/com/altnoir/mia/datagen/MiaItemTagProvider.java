@@ -80,8 +80,7 @@ public class MiaItemTagProvider extends ItemTagsProvider {
                 .add(
                         MiaBlocks.SKYFOG_PLANKS.get().asItem(),
                         MiaBlocks.INVERTED_PLANKS.get().asItem(),
-                        MiaBlocks.PRIMO_PLANKS.get().asItem()
-                );
+                        MiaBlocks.PRIMO_PLANKS.get().asItem());
         tag(ItemTags.LOGS)
                 .add(MiaBlocks.PRIMO_STEM.get().asItem())
                 .add(MiaBlocks.PRIMO_HYPHAE.get().asItem())

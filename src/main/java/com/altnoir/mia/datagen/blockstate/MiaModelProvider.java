@@ -244,7 +244,8 @@ public class MiaModelProvider {
      */
     public ModelFile cubeAllModel(BlockStateProvider p, Block block) {
         String blockPath = MiaUtil.getBlockPath(block);
-        return p.models().withExistingParent(blockPath, p.mcLoc("block/cube_all"))
+        return p.models()
+                .withExistingParent(blockPath, p.mcLoc("block/cube_all"))
                 .texture("all", p.modLoc("block/" + blockPath));
     }
 
@@ -258,14 +259,23 @@ public class MiaModelProvider {
     public ModelFile multifaceModel(BlockStateProvider p, Block block) {
         String blockPath = MiaUtil.getBlockPath(block);
         ResourceLocation texture = p.modLoc("block/" + blockPath);
-        return p.models().getBuilder(blockPath).renderType("cutout")
+        return p.models()
+                .getBuilder(blockPath)
+                .renderType("cutout")
                 .ao(false)
                 .texture("particle", texture)
                 .texture("multiface", texture)
                 .element()
-                .from(0, 0, 0.1F).to(16, 16, 0.1F)
-                .face(Direction.NORTH).uvs(16, 0, 0, 16).texture("#multiface").end()
-                .face(Direction.SOUTH).uvs(0, 0, 16, 16).texture("#multiface").end()
+                .from(0, 0, 0.1F)
+                .to(16, 16, 0.1F)
+                .face(Direction.NORTH)
+                .uvs(16, 0, 0, 16)
+                .texture("#multiface")
+                .end()
+                .face(Direction.SOUTH)
+                .uvs(0, 0, 16, 16)
+                .texture("#multiface")
+                .end()
                 .end();
     }
 

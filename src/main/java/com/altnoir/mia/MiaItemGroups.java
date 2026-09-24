@@ -5,6 +5,7 @@ import com.altnoir.abysslib.creative.ALSectionedCreativeModeTab;
 import com.altnoir.abysslib.creative.ALTitlePlate;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaItems;
+import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -12,8 +13,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
-import java.util.function.Supplier;
 
 /**
  * MIA 的创造栏：**一个标签页 + 五个分区**（AbyssLib 的"分区式创造栏"）。
@@ -29,8 +28,8 @@ import java.util.function.Supplier;
  * 旧的 {@code mia_tab_artifact} 标签页已经取消，遗物类内容并入 {@link #SECTION_ARTIFACTS}。
  */
 public class MiaItemGroups {
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB = DeferredRegister
-            .create(Registries.CREATIVE_MODE_TAB, MIA.MOD_ID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB =
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MIA.MOD_ID);
 
     /**
      * 整行横幅贴图的资源路径前缀。
@@ -72,42 +71,66 @@ public class MiaItemGroups {
     private static final ALTitlePlate TITLE_PLATE = ALTitlePlate.argb(0x40000000);
 
     public static final ALCreativeTabSection SECTION_BUILDING =
-            new ALCreativeTabSection("itemgroup.mia.section.building", banner("building"), BANNER_UNITS)
+            new ALCreativeTabSection(
+                            "itemgroup.mia.section.building", banner("building"), BANNER_UNITS)
                     .titlePlate(TITLE_PLATE);
     public static final ALCreativeTabSection SECTION_NATURAL =
-            new ALCreativeTabSection("itemgroup.mia.section.natural", banner("natural"), BANNER_UNITS)
+            new ALCreativeTabSection(
+                            "itemgroup.mia.section.natural", banner("natural"), BANNER_UNITS)
                     .titlePlate(TITLE_PLATE);
     public static final ALCreativeTabSection SECTION_FUNCTIONAL =
-            new ALCreativeTabSection("itemgroup.mia.section.functional", banner("functional"), BANNER_UNITS)
+            new ALCreativeTabSection(
+                            "itemgroup.mia.section.functional", banner("functional"), BANNER_UNITS)
                     .titlePlate(TITLE_PLATE);
     public static final ALCreativeTabSection SECTION_ITEMS =
             new ALCreativeTabSection("itemgroup.mia.section.items", banner("items"), BANNER_UNITS)
                     .titlePlate(TITLE_PLATE);
     public static final ALCreativeTabSection SECTION_ARTIFACTS =
-            new ALCreativeTabSection("itemgroup.mia.section.artifacts", banner("artifacts"), BANNER_UNITS)
+            new ALCreativeTabSection(
+                            "itemgroup.mia.section.artifacts", banner("artifacts"), BANNER_UNITS)
                     .titlePlate(TITLE_PLATE);
 
     // ---------------- 标签页 ----------------
     // 两个标签页都走 AbyssLib 的分区式创造栏：主标签页 4 个分区，
     // 遗物标签页 1 个分区；每个分区各配一张 162×18 的整行横幅贴图。
 
-    public static final Supplier<CreativeModeTab> MIA_TAB = CREATIVE_MODE_TAB.register("mia_tab", () ->
-            ALSectionedCreativeModeTab.configure(
-                    CreativeModeTab.builder()
-                            .title(Component.translatable("itemgroup.mia"))
-                            .icon(() -> new ItemStack(MiaItems.RED_WHISTLE.get())),
-                    MiaItemGroups::populate,
-                    SECTION_BUILDING, SECTION_NATURAL, SECTION_FUNCTIONAL, SECTION_ITEMS
-            ).build());
+    public static final Supplier<CreativeModeTab> MIA_TAB =
+            CREATIVE_MODE_TAB.register(
+                    "mia_tab",
+                    () ->
+                            ALSectionedCreativeModeTab.configure(
+                                            CreativeModeTab.builder()
+                                                    .title(Component.translatable("itemgroup.mia"))
+                                                    .icon(
+                                                            () ->
+                                                                    new ItemStack(
+                                                                            MiaItems.RED_WHISTLE
+                                                                                    .get())),
+                                            MiaItemGroups::populate,
+                                            SECTION_BUILDING,
+                                            SECTION_NATURAL,
+                                            SECTION_FUNCTIONAL,
+                                            SECTION_ITEMS)
+                                    .build());
 
-    public static final Supplier<CreativeModeTab> MIA_TAB_ARIFACT = CREATIVE_MODE_TAB.register("mia_tab_artifact", () ->
-            ALSectionedCreativeModeTab.configure(
-                    CreativeModeTab.builder()
-                            .title(Component.translatable("itemgroup.mia_artifact"))
-                            .icon(() -> new ItemStack(MiaItems.FANCY_ARTIFACT_BUNDLE.get())),
-                    MiaItemGroups::populateArtifacts,
-                    SECTION_ARTIFACTS
-            ).build());
+    public static final Supplier<CreativeModeTab> MIA_TAB_ARIFACT =
+            CREATIVE_MODE_TAB.register(
+                    "mia_tab_artifact",
+                    () ->
+                            ALSectionedCreativeModeTab.configure(
+                                            CreativeModeTab.builder()
+                                                    .title(
+                                                            Component.translatable(
+                                                                    "itemgroup.mia_artifact"))
+                                                    .icon(
+                                                            () ->
+                                                                    new ItemStack(
+                                                                            MiaItems
+                                                                                    .FANCY_ARTIFACT_BUNDLE
+                                                                                    .get())),
+                                            MiaItemGroups::populateArtifacts,
+                                            SECTION_ARTIFACTS)
+                                    .build());
 
     private static void populate(CreativeModeTab.ItemDisplayParameters parameters) {
         // ================= 建筑 =================

@@ -17,7 +17,8 @@ public class GlowPrimoCapBlock extends HalfTransparentBlock {
     }
 
     @Override
-    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+    public void fallOn(
+            Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
         super.fallOn(level, state, pos, entity, fallDistance * 0.5F);
     }
 

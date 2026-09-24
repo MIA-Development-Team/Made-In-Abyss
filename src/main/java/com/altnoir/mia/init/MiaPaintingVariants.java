@@ -42,7 +42,8 @@ public class MiaPaintingVariants {
     }
 
     private static ResourceKey<PaintingVariant> create(String name) {
-        ResourceKey<PaintingVariant> key = ResourceKey.create(Registries.PAINTING_VARIANT, MiaUtil.miaId(name));
+        ResourceKey<PaintingVariant> key =
+                ResourceKey.create(Registries.PAINTING_VARIANT, MiaUtil.miaId(name));
         PAINTING_VARIANTS.add(key);
         return key;
     }
