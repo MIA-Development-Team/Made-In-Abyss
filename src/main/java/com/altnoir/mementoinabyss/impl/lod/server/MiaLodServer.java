@@ -19,13 +19,13 @@ public final class MiaLodServer {
 
     public static void captureIfNeeded(ServerLevel level, LevelChunk chunk) {
         if (!isEnabled()) return;
-        CrossDimensionLodLinks.fromSource(level.dimension())
+        CrossDimensionLodLinks.fromSource(level)
                 .forEach(link -> MiaLodStorage.enqueueIfMissing(link, level, chunk));
     }
 
     public static void captureChanged(ServerLevel level, ChunkAccess chunk) {
         if (!isEnabled()) return;
-        CrossDimensionLodLinks.fromSource(level.dimension())
+        CrossDimensionLodLinks.fromSource(level)
                 .forEach(link -> MiaLodStorage.enqueueChanged(link, level, chunk));
     }
 
@@ -104,8 +104,7 @@ public final class MiaLodServer {
     }
 
     private static void refreshPlayer(ServerPlayer player) {
-        if (isEnabled()
-                && CrossDimensionLodLinks.forTarget(player.level().dimension()).isPresent()) {
+        if (isEnabled() && CrossDimensionLodLinks.forTarget(player.level()).isPresent()) {
             MiaLodSampler.request(player);
         } else {
             MiaLodSampler.remove(player);
@@ -114,7 +113,7 @@ public final class MiaLodServer {
 
     private static void sendDebug(MinecraftServer server) {
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-            var link = CrossDimensionLodLinks.forTarget(player.level().dimension()).orElse(null);
+            var link = CrossDimensionLodLinks.forTarget(player.level()).orElse(null);
             if (link == null || !MiaLodSampler.wantsLod(player)) continue;
             var lazy = CrossDimensionLazyChunkGenerator.debugSnapshot(link);
             var stream = MiaLodSampler.debugSnapshot(player);

@@ -64,7 +64,7 @@ final class CrossDimensionLazyChunkGenerator {
         if (!lodEnabled()) return;
         long gameTime = server.overworld().getGameTime();
         if (gameTime < nextGenerationTick || IN_FLIGHT.get() >= MAX_IN_FLIGHT) return;
-        for (CrossDimensionLodLink link : CrossDimensionLodLinks.all()) {
+        for (CrossDimensionLodLink link : CrossDimensionLodLinks.all(server)) {
             ServerLevel source = server.getLevel(link.source());
             if (source == null
                     || server.getPlayerList().getPlayers().stream()

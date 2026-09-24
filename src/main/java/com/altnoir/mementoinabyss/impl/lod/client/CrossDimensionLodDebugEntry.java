@@ -33,7 +33,7 @@ public final class CrossDimensionLodDebugEntry implements DebugScreenEntry {
             @Nullable LevelChunk clientChunk,
             @Nullable LevelChunk serverChunk) {
         if (level == null) return;
-        var link = CrossDimensionLodLinks.forTarget(level.dimension()).orElse(null);
+        var link = CrossDimensionLodLinks.forTarget(level).orElse(null);
         if (link == null) return;
 
         var client = CrossDimensionLodRenderer.debugStats();

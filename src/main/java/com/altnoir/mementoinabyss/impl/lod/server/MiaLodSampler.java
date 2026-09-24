@@ -34,7 +34,7 @@ final class MiaLodSampler {
 
     static void request(ServerPlayer player) {
         if (!wantsLod(player)) return;
-        var link = CrossDimensionLodLinks.forTarget(player.level().dimension()).orElse(null);
+        var link = CrossDimensionLodLinks.forTarget(player.level()).orElse(null);
         if (link == null) {
             remove(player);
             return;
@@ -365,8 +365,7 @@ final class MiaLodSampler {
                         .anyMatch(
                                 player ->
                                         player.isAlive()
-                                                && CrossDimensionLodLinks.forTarget(
-                                                                player.level().dimension())
+                                                && CrossDimensionLodLinks.forTarget(player.level())
                                                         .isPresent()
                                                 && wantsLod(player));
     }

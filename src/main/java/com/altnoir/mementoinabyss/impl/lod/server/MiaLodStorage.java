@@ -156,7 +156,7 @@ final class MiaLodStorage {
                 retainDirtyChunk(key);
                 continue;
             }
-            CrossDimensionLodLinks.fromSource(level.dimension())
+            CrossDimensionLodLinks.fromSource(level)
                     .forEach(
                             link -> {
                                 if (!enqueueCapture(

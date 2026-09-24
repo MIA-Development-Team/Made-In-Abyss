@@ -7,11 +7,13 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.attribute.EnvironmentAttribute;
+import net.minecraft.world.attribute.EnvironmentAttributeMap;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 
-/** Moves players across registered vertical world boundaries without a portal block. */
+/** Moves players across vertical world boundaries declared on the dimension type. */
 public final class VerticalDimensionTeleporter {
     private static final int TELEPORT_COOLDOWN_TICKS = 20;
     private static final double MAX_HORIZONTAL_COORDINATE = 29_999_872.0;
@@ -27,30 +29,43 @@ public final class VerticalDimensionTeleporter {
                 COOLDOWNS.remove(player.getUUID());
             }
 
-            VerticalDimensionLink below = VerticalDimensionLinks.below(player.level().dimension());
-            if (below != null && player.getY() < below.upperHeight().minY()) {
-                teleport(
-                        player,
-                        server.getLevel(below.lowerDimension()),
-                        below.lowerHeight().maxY() - below.entryOffset(),
-                        tick);
+            DimensionType type = player.level().dimensionType();
+            EnvironmentAttributeMap attributes = type.attributes();
+            int maxY = type.minY() + type.height();
+            if (attributes.contains(MiaEnvironmentAttributes.VERTICAL_BELOW)
+                    && player.getY() < type.minY()) {
+                VerticalBoundary below =
+                        boundary(attributes, MiaEnvironmentAttributes.VERTICAL_BELOW);
+                ServerLevel destination = server.getLevel(below.dimension());
+                if (destination == null) continue;
+                int destinationMaxY =
+                        destination.dimensionType().minY() + destination.dimensionType().height();
+                teleport(player, destination, destinationMaxY - below.entryOffset(), tick);
                 continue;
             }
 
-            VerticalDimensionLink above = VerticalDimensionLinks.above(player.level().dimension());
-            if (above != null && player.getY() >= above.lowerHeight().maxY()) {
+            if (attributes.contains(MiaEnvironmentAttributes.VERTICAL_ABOVE)
+                    && player.getY() >= maxY) {
+                VerticalBoundary above =
+                        boundary(attributes, MiaEnvironmentAttributes.VERTICAL_ABOVE);
+                ServerLevel destination = server.getLevel(above.dimension());
+                if (destination == null) continue;
                 teleport(
                         player,
-                        server.getLevel(above.upperDimension()),
-                        above.upperHeight().minY() + above.entryOffset(),
+                        destination,
+                        destination.dimensionType().minY() + above.entryOffset(),
                         tick);
             }
         }
     }
 
+    private static VerticalBoundary boundary(
+            EnvironmentAttributeMap attributes, EnvironmentAttribute<VerticalBoundary> attribute) {
+        return attributes.applyModifier(attribute, attribute.defaultValue());
+    }
+
     private static void teleport(
             ServerPlayer player, ServerLevel destination, double destinationY, int tick) {
-        if (destination == null) return;
         double scale =
                 DimensionType.getTeleportationScale(
                         player.level().dimensionType(), destination.dimensionType());

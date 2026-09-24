@@ -47,6 +47,9 @@ public final class MiaDimensionTypes {
                                         ABYSS_AMBIENT_LIGHT))
                         .set(EnvironmentAttributes.CLOUD_COLOR, ARGB.white(0.8F))
                         .set(EnvironmentAttributes.CLOUD_HEIGHT, 640.0F)
+                        .set(
+                                MiaEnvironmentAttributes.VERTICAL_BELOW,
+                                new VerticalBoundary(MiaDimensions.GREAT_FAULT_LEVEL, 8.0))
                         .set(EnvironmentAttributes.SUN_ANGLE, 0.0F)
                         .set(EnvironmentAttributes.MOON_ANGLE, 180.0F)
                         .set(EnvironmentAttributes.STAR_ANGLE, 0.0F)
@@ -97,6 +100,9 @@ public final class MiaDimensionTypes {
                                         GREAT_FAULT_AMBIENT_LIGHT,
                                         GREAT_FAULT_AMBIENT_LIGHT))
                         .set(EnvironmentAttributes.CLOUD_COLOR, 0)
+                        .set(
+                                MiaEnvironmentAttributes.VERTICAL_ABOVE,
+                                new VerticalBoundary(MiaDimensions.THE_ABYSS_LEVEL, 8.0))
                         .set(EnvironmentAttributes.SUN_ANGLE, 0.0F)
                         .set(EnvironmentAttributes.MOON_ANGLE, 180.0F)
                         .set(EnvironmentAttributes.STAR_ANGLE, 0.0F)

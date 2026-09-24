@@ -215,7 +215,7 @@ public final class CrossDimensionLodRenderer {
         if (minecraft.level == null || clientCache == null) return;
         lastReceiveNanos = started;
         if (INGRESS.takeReset()) resetStreamData();
-        var activeLink = CrossDimensionLodLinks.forTarget(minecraft.level.dimension()).orElse(null);
+        var activeLink = CrossDimensionLodLinks.forTarget(minecraft.level).orElse(null);
         if (activeLink == null) return;
         for (int i = 0; i < RECEIVE_ITEMS_PER_FRAME; i++) {
             var rejected = INGRESS.pollRejected();
@@ -591,7 +591,7 @@ public final class CrossDimensionLodRenderer {
         if (minecraft.getConnection() == null) return ClientState.DISCONNECTED;
         if (!lodEnabled()
                 || minecraft.level == null
-                || CrossDimensionLodLinks.forTarget(minecraft.level.dimension()).isEmpty()) {
+                || CrossDimensionLodLinks.forTarget(minecraft.level).isEmpty()) {
             return ClientState.DISABLED;
         }
         return ClientState.RUNNING;
@@ -653,7 +653,7 @@ public final class CrossDimensionLodRenderer {
         }
         if (minecraft.level == null) return;
         transitionTo(ClientState.RUNNING);
-        var activeLink = CrossDimensionLodLinks.forTarget(minecraft.level.dimension()).orElse(null);
+        var activeLink = CrossDimensionLodLinks.forTarget(minecraft.level).orElse(null);
         if (activeLink == null) return;
         Vec3 camera = event.getLevelRenderState().cameraRenderState.pos;
         if (camera == null) return;
@@ -1663,7 +1663,7 @@ public final class CrossDimensionLodRenderer {
     private static RegionalSkyLight.Region irisSkyExposureRegion() {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null) return null;
-        var activeLink = CrossDimensionLodLinks.forTarget(minecraft.level.dimension()).orElse(null);
+        var activeLink = CrossDimensionLodLinks.forTarget(minecraft.level).orElse(null);
         return activeLink == null ? null : RegionalSkyLight.resolve(activeLink.source());
     }
 
