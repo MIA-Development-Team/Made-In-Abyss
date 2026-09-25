@@ -1,0 +1,23 @@
+{
+  "block.mementoinabyss.mycelium_block": "菌丝块",
+  "block.mementoinabyss.mycelium_mat": "菌痕",
+  "block.mementoinabyss.mushroom_bed": "蘑菇簇",
+  "block.mementoinabyss.primo_stem": "太初菌柄",
+  "block.mementoinabyss.primo_hyphae": "太初菌核",
+  "block.mementoinabyss.stripped_primo_stem": "去皮太初菌柄",
+  "block.mementoinabyss.stripped_primo_hyphae": "去皮太初菌核",
+  "block.mementoinabyss.primo_planks": "太初木板",
+  "block.mementoinabyss.primo_stairs": "太初木楼梯",
+  "block.mementoinabyss.primo_slab": "太初木台阶",
+  "block.mementoinabyss.primo_fence": "太初木栅栏",
+  "block.mementoinabyss.primo_fence_gate": "太初木栅栏门",
+  "block.mementoinabyss.primo_door": "太初木门",
+  "block.mementoinabyss.primo_trapdoor": "太初木活板门",
+  "block.mementoinabyss.primo_pressure_plate": "太初压力板",
+  "block.mementoinabyss.primo_button": "太初木按钮",
+  "block.mementoinabyss.primo_cap": "太初菌伞",
+  "block.mementoinabyss.glow_primo_cap": "发光太初菌伞",
+  "block.mementoinabyss.primo_fungus": "太初菌",
+  "block.mementoinabyss.glow_primo_fungus": "发光太初菌",
+  "biome.mementoinabyss.the_abyss.primo_forest": "太初菌林"
+}

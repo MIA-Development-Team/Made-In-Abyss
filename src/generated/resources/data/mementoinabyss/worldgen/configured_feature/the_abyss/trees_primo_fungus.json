@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": {
+      "feature": "mementoinabyss:tree/primo_fungus",
+      "placement": []
+    },
+    "features": [
+      {
+        "chance": 0.3,
+        "feature": {
+          "feature": "mementoinabyss:tree/glow_primo_fungus",
+          "placement": []
+        }
+      }
+    ]
+  }
+}

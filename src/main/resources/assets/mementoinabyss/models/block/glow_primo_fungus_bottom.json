@@ -1,0 +1,21 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "all": "mementoinabyss:block/mushroom/glow_primo_fungus",
+    "particle": "mementoinabyss:block/glow_primo_cap"
+  },
+  "elements": [
+    {
+      "from": [5, 0, 5],
+      "to": [11, 8, 11],
+      "faces": {
+        "north": {"uv": [6, 9, 9, 13], "texture": "#all"},
+        "east": {"uv": [6, 9, 9, 13], "texture": "#all"},
+        "south": {"uv": [6, 9, 9, 13], "texture": "#all"},
+        "west": {"uv": [6, 9, 9, 13], "texture": "#all"},
+        "up": {"uv": [6, 6, 9, 9], "texture": "#all"},
+        "down": {"uv": [9, 6, 6, 9], "texture": "#all"}
+      }
+    }
+  ]
+}

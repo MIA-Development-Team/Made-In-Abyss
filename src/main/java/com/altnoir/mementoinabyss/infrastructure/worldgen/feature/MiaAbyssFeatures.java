@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.feature;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.content.abyss.plant.DoubleBerryBlock;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeFeatures;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaTags;
 import com.altnoir.mementoinabyss.init.MiaWorldgenFeatures;
@@ -11,14 +12,17 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.util.valueproviders.WeightedListInt;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBedBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,10 +35,12 @@ import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.LakeFeature;
+import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockColumnConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockPileConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.GeodeConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SpringConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.VegetationPatchConfiguration;
@@ -92,6 +98,13 @@ public final class MiaAbyssFeatures {
             key("trees_fossilized_under");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED_UNDER_CEILING =
             key("trees_fossilized_under_ceiling");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_PRIMO_FUNGUS =
+            key("trees_primo_fungus");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIUM_VEGETATION =
+            key("mycelium_vegetation");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIUM_PATCH = key("mycelium_patch");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIUM_PATCH_BONEMEAL =
+            key("mycelium_patch_bonemeal");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         context.register(
@@ -462,6 +475,90 @@ public final class MiaAbyssFeatures {
         fossilTrunk(context, TREES_FOSSILIZED, 2, Direction.UP);
         fossilTrunk(context, TREES_FOSSILIZED_UNDER, 8, Direction.UP);
         fossilTrunk(context, TREES_FOSSILIZED_UNDER_CEILING, 8, Direction.DOWN);
+
+        WeightedList.Builder<BlockState> myceliumVegetation = WeightedList.builder();
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            for (int amount = 1; amount <= 4; amount++) {
+                myceliumVegetation.add(
+                        MiaBlocks.MUSHROOM_BED
+                                .get()
+                                .defaultBlockState()
+                                .setValue(FlowerBedBlock.FACING, direction)
+                                .setValue(FlowerBedBlock.AMOUNT, amount),
+                        2);
+            }
+        }
+        myceliumVegetation
+                .add(MiaBlocks.GLOW_PRIMO_FUNGUS.get().defaultBlockState(), 8)
+                .add(MiaBlocks.PRIMO_FUNGUS.get().defaultBlockState(), 12)
+                .add(
+                        MiaBlocks.MYCELIUM_MAT
+                                .get()
+                                .defaultBlockState()
+                                .setValue(BlockStateProperties.DOWN, true),
+                        25)
+                .add(Blocks.BROWN_MUSHROOM.defaultBlockState(), 4)
+                .add(Blocks.RED_MUSHROOM.defaultBlockState(), 4);
+        context.register(
+                MYCELIUM_VEGETATION,
+                new ConfiguredFeature<>(
+                        Feature.SIMPLE_BLOCK,
+                        new SimpleBlockConfiguration(
+                                new WeightedStateProvider(myceliumVegetation.build()))));
+        var configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
+        context.register(
+                MYCELIUM_PATCH,
+                new ConfiguredFeature<>(
+                        Feature.VEGETATION_PATCH,
+                        vegetationPatch(
+                                MiaTags.BlockTags.MYCELIUM_REPLACEABLE.tag,
+                                MiaBlocks.MYCELIUM_BLOCK.get(),
+                                configuredFeatures.getOrThrow(MYCELIUM_VEGETATION),
+                                0.8F,
+                                0.75F)));
+        context.register(
+                MYCELIUM_PATCH_BONEMEAL,
+                new ConfiguredFeature<>(
+                        Feature.VEGETATION_PATCH,
+                        vegetationPatch(
+                                MiaTags.BlockTags.MYCELIUM_REPLACEABLE.tag,
+                                MiaBlocks.MYCELIUM_BLOCK.get(),
+                                configuredFeatures.getOrThrow(MYCELIUM_VEGETATION),
+                                0.6F,
+                                0.75F)));
+        context.register(
+                TREES_PRIMO_FUNGUS,
+                new ConfiguredFeature<>(
+                        Feature.RANDOM_SELECTOR,
+                        new RandomFeatureConfiguration(
+                                List.of(
+                                        new WeightedPlacedFeature(
+                                                PlacementUtils.inlinePlaced(
+                                                        configuredFeatures.getOrThrow(
+                                                                MiaTreeFeatures.GLOW_PRIMO_FUNGUS)),
+                                                0.3F)),
+                                PlacementUtils.inlinePlaced(
+                                        configuredFeatures.getOrThrow(
+                                                MiaTreeFeatures.PRIMO_FUNGUS)))));
+    }
+
+    private static VegetationPatchConfiguration vegetationPatch(
+            TagKey<Block> replaceable,
+            Block ground,
+            Holder<ConfiguredFeature<?, ?>> feature,
+            float grow,
+            float infection) {
+        return new VegetationPatchConfiguration(
+                replaceable,
+                BlockStateProvider.simple(ground),
+                PlacementUtils.inlinePlaced(feature),
+                CaveSurface.FLOOR,
+                ConstantInt.of(1),
+                0.0F,
+                5,
+                grow,
+                UniformInt.of(1, 2),
+                infection);
     }
 
     private static WeightedStateProvider prasioliteCrystals(Direction facing) {

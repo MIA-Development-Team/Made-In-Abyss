@@ -15,9 +15,18 @@ public final class MiaRegistrateTags {
         var registrate = MementoInAbyss.registrate();
         registrate.addDataGenerator(
                 ProviderType.BLOCK_TAGS,
-                provider ->
-                        provider.tag(MiaTags.BlockTags.ABYSS_MUD_ORE_REPLACEABLE.tag)
-                                .add(Blocks.MUD));
+                provider -> {
+                    provider.tag(MiaTags.BlockTags.ABYSS_MUD_ORE_REPLACEABLE.tag).add(Blocks.MUD);
+                    provider.tag(MiaTags.BlockTags.MYCELIUM_REPLACEABLE.tag).addTag(BlockTags.DIRT);
+                    provider.tag(MiaTags.BlockTags.PRIMO_STEMS.tag)
+                            .add(
+                                    com.altnoir.mementoinabyss.init.MiaBlocks.PRIMO_STEM.get(),
+                                    com.altnoir.mementoinabyss.init.MiaBlocks.STRIPPED_PRIMO_STEM
+                                            .get(),
+                                    com.altnoir.mementoinabyss.init.MiaBlocks.PRIMO_HYPHAE.get(),
+                                    com.altnoir.mementoinabyss.init.MiaBlocks.STRIPPED_PRIMO_HYPHAE
+                                            .get());
+                });
         registrate.addDataGenerator(
                 ProviderType.ITEM_TAGS,
                 provider -> {
@@ -27,6 +36,8 @@ public final class MiaRegistrateTags {
                     provider.copy(BlockTags.LOGS_THAT_BURN, ItemTags.LOGS_THAT_BURN);
                     provider.copy(BlockTags.LEAVES, ItemTags.LEAVES);
                     provider.copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
+                    provider.copy(
+                            MiaTags.BlockTags.PRIMO_STEMS.tag, MiaTags.ItemTags.PRIMO_STEMS.tag);
                 });
     }
 }

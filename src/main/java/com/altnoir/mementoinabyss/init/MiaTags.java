@@ -38,7 +38,9 @@ public class MiaTags {
         ABYSS_DRIPSTONE_UNREPLACEABLE,
         NEED_PRASIOLITE_TOOL,
         INCORRECT_FOR_PRASIOLITE_TOOL,
-        MINEABLE_WITH_COMPOSITE;
+        MINEABLE_WITH_COMPOSITE,
+        MYCELIUM_REPLACEABLE,
+        PRIMO_STEMS;
 
         public final TagKey<Block> tag;
 
@@ -58,7 +60,8 @@ public class MiaTags {
     public enum ItemTags {
         SKYFOG_LOGS,
         VERDANT_STEMS,
-        INVERTED_LOGS;
+        INVERTED_LOGS,
+        PRIMO_STEMS;
 
         public final TagKey<Item> tag;
 

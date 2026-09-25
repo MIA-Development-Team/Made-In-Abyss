@@ -1,0 +1,22 @@
+{
+  "type": "mementoinabyss:huge_primo_fungus",
+  "config": {
+    "decor_state": {
+      "Name": "minecraft:budding_amethyst"
+    },
+    "hat_state": {
+      "Name": "mementoinabyss:primo_cap"
+    },
+    "replaceable_blocks": {
+      "type": "minecraft:matching_block_tag",
+      "tag": "minecraft:replaceable_by_mushrooms"
+    },
+    "stem_state": {
+      "Name": "mementoinabyss:primo_stem",
+      "Properties": {
+        "axis": "y"
+      }
+    },
+    "valid_base_block": "#minecraft:dirt"
+  }
+}

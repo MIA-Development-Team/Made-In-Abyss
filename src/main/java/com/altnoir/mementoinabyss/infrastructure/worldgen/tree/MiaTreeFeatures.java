@@ -1,9 +1,11 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.tree;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.PrimoHugeFungusConfiguration;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaWorldgenFeatures;
 import java.util.List;
+import java.util.Optional;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -34,12 +36,18 @@ public final class MiaTreeFeatures {
             key("skyfog_tree_bees");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_SKYFOG_TREE =
             key("mega_skyfog_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PRIMO_FUNGUS = key("primo_fungus");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GLOW_PRIMO_FUNGUS =
+            key("glow_primo_fungus");
     public static final ResourceKey<ConfiguredFeature<?, ?>> VERDANT_FUNGUS = key("verdant_fungus");
     public static final ResourceKey<ConfiguredFeature<?, ?>> INVERTED_TREE = key("inverted_tree");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_INVERTED_TREE =
             key("mega_inverted_tree");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+        BlockPredicate replaceablePlants =
+                BlockPredicate.matchesTag(BlockTags.REPLACEABLE_BY_MUSHROOMS);
+
         context.register(SKYFOG_TREE, new ConfiguredFeature<>(Feature.TREE, skyfog().build()));
         context.register(
                 SKYFOG_TREE_BEES,
@@ -60,6 +68,26 @@ public final class MiaTreeFeatures {
                                 .belowTrunkProvider(BlockStateProvider.simple(Blocks.ROOTED_DIRT))
                                 .ignoreVines()
                                 .build()));
+        context.register(
+                PRIMO_FUNGUS,
+                new ConfiguredFeature<>(
+                        MiaWorldgenFeatures.HUGE_PRIMO_FUNGUS.get(),
+                        new PrimoHugeFungusConfiguration(
+                                BlockTags.DIRT,
+                                MiaBlocks.PRIMO_STEM.get().defaultBlockState(),
+                                MiaBlocks.PRIMO_CAP.get().defaultBlockState(),
+                                Optional.of(Blocks.BUDDING_AMETHYST.defaultBlockState()),
+                                replaceablePlants)));
+        context.register(
+                GLOW_PRIMO_FUNGUS,
+                new ConfiguredFeature<>(
+                        MiaWorldgenFeatures.HUGE_PRIMO_FUNGUS.get(),
+                        new PrimoHugeFungusConfiguration(
+                                BlockTags.DIRT,
+                                MiaBlocks.PRIMO_STEM.get().defaultBlockState(),
+                                MiaBlocks.GLOW_PRIMO_CAP.get().defaultBlockState(),
+                                Optional.empty(),
+                                replaceablePlants)));
         context.register(
                 VERDANT_FUNGUS,
                 new ConfiguredFeature<>(

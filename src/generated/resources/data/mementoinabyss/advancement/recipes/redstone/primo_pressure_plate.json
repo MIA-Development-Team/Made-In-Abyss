@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_primo_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mementoinabyss:primo_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mementoinabyss:primo_pressure_plate"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_primo_planks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mementoinabyss:primo_pressure_plate"
+    ]
+  }
+}

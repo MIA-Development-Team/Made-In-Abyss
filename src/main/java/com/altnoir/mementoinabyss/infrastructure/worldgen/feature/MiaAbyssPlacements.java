@@ -86,6 +86,8 @@ public final class MiaAbyssPlacements {
     public static final ResourceKey<PlacedFeature> TREES_VERDANT_FUNGUS =
             key("trees_verdant_fungus");
     public static final ResourceKey<PlacedFeature> TREES_INVERTED = key("trees_inverted");
+    public static final ResourceKey<PlacedFeature> TREES_PRIMO_FUNGUS = key("trees_primo_fungus");
+    public static final ResourceKey<PlacedFeature> MYCELIUM_PATCH = key("mycelium_patch");
     public static final ResourceKey<PlacedFeature> TREES_FOSSILIZED = key("trees_fossilized");
     public static final ResourceKey<PlacedFeature> TREES_FOSSILIZED_UNDER =
             key("trees_fossilized_under");
@@ -347,6 +349,27 @@ public final class MiaAbyssPlacements {
                 new PlacedFeature(
                         configured.getOrThrow(MiaTreeFeatures.VERDANT_FUNGUS),
                         List.of(TreeOnEveryLayerPlacement.of(8), BiomeFilter.biome())));
+        context.register(
+                TREES_PRIMO_FUNGUS,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.TREES_PRIMO_FUNGUS),
+                        List.of(TreeOnEveryLayerPlacement.of(8), BiomeFilter.biome())));
+        context.register(
+                MYCELIUM_PATCH,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.MYCELIUM_PATCH),
+                        List.of(
+                                CountPlacement.of(188),
+                                CountPlacement.of(2),
+                                InSquarePlacement.spread(),
+                                PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
+                                EnvironmentScanPlacement.scanningFor(
+                                        Direction.DOWN,
+                                        BlockPredicate.solid(),
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                                        12),
+                                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                                BiomeFilter.biome())));
         context.register(
                 TREES_INVERTED,
                 new PlacedFeature(

@@ -23,6 +23,8 @@ public final class MiaSurfaceRules {
             makeStateRule(MiaBlocks.COVERGRASS_TUFF.get());
     // Layer 2
     private static final SurfaceRules.RuleSource MUD = makeStateRule(Blocks.MUD);
+    private static final SurfaceRules.RuleSource MYCELIUM =
+            makeStateRule(MiaBlocks.MYCELIUM_BLOCK.get());
 
     private static SurfaceRules.RuleSource makeStateRule(Block block) {
         return SurfaceRules.state(block.defaultBlockState());
@@ -79,6 +81,11 @@ public final class MiaSurfaceRules {
                                                 coverGrass_tuff),
                                         makeStateRule(Blocks.TUFF))),
                         // Layer 2
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.isBiome(MiaBiomes.PRIMO_FOREST),
+                                SurfaceRules.ifTrue(
+                                        SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
+                                        MYCELIUM)),
                         SurfaceRules.ifTrue(
                                 SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
                                 SurfaceRules.ifTrue(

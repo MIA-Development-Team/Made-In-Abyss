@@ -1,0 +1,14 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "mementoinabyss:block/glow_primo_fungus_bottom"
+      }
+    },
+    {
+      "apply": {
+        "model": "mementoinabyss:block/glow_primo_fungus_top"
+      }
+    }
+  ]
+}

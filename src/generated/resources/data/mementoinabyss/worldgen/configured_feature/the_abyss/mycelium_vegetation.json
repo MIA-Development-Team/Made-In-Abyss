@@ -1,0 +1,209 @@
+{
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "north",
+              "flower_amount": "1"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "north",
+              "flower_amount": "2"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "north",
+              "flower_amount": "3"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "north",
+              "flower_amount": "4"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "east",
+              "flower_amount": "1"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "east",
+              "flower_amount": "2"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "east",
+              "flower_amount": "3"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "east",
+              "flower_amount": "4"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "south",
+              "flower_amount": "1"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "south",
+              "flower_amount": "2"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "south",
+              "flower_amount": "3"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "south",
+              "flower_amount": "4"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "west",
+              "flower_amount": "1"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "west",
+              "flower_amount": "2"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "west",
+              "flower_amount": "3"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mushroom_bed",
+            "Properties": {
+              "facing": "west",
+              "flower_amount": "4"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:glow_primo_fungus"
+          },
+          "weight": 8
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:primo_fungus"
+          },
+          "weight": 12
+        },
+        {
+          "data": {
+            "Name": "mementoinabyss:mycelium_mat",
+            "Properties": {
+              "down": "true",
+              "east": "false",
+              "north": "false",
+              "south": "false",
+              "up": "false",
+              "waterlogged": "false",
+              "west": "false"
+            }
+          },
+          "weight": 25
+        },
+        {
+          "data": {
+            "Name": "minecraft:brown_mushroom"
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "minecraft:red_mushroom"
+          },
+          "weight": 4
+        }
+      ]
+    }
+  }
+}

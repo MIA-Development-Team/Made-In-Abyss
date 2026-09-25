@@ -1,0 +1,7 @@
+{
+  "parent": "mementoinabyss:block/mushroom",
+  "textures": {
+    "all": "mementoinabyss:block/mushroom/primo_fungus",
+    "particle": "mementoinabyss:block/primo_planks"
+  }
+}

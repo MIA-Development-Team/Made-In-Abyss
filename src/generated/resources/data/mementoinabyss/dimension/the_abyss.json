@@ -223,6 +223,27 @@
             "temperature": 0.8,
             "weirdness": [
               -0.5,
+              0.0
+            ]
+          }
+        },
+        {
+          "biome": "mementoinabyss:the_abyss/primo_forest",
+          "parameters": {
+            "continentalness": 0.0,
+            "depth": [
+              1.85,
+              1.95
+            ],
+            "erosion": 0.0,
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": 0.8,
+            "weirdness": [
+              0.0,
               0.5
             ]
           }

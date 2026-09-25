@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "mementoinabyss:primo_planks"
+  },
+  "pattern": [
+    "##"
+  ],
+  "result": {
+    "id": "mementoinabyss:primo_pressure_plate"
+  }
+}

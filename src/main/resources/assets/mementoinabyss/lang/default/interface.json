@@ -61,5 +61,6 @@
   "mementoinabyss.rope.not_enough_length": "The endpoint is beyond the selected rope length (%s blocks).",
   "mementoinabyss.rope.length": "Rope length: %s / %s blocks",
   "mementoinabyss.rope.free_end_placed": "The free end of the rope was placed.",
-  "mementoinabyss.rope.connected": "Rope connected."
+  "mementoinabyss.rope.connected": "Rope connected.",
+  "biome.mementoinabyss.the_abyss.primo_forest": "Primo Forest"
 }

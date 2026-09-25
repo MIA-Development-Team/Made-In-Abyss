@@ -26,6 +26,15 @@
     "mementoinabyss:inverted_door",
     "mementoinabyss:inverted_trapdoor",
     "mementoinabyss:inverted_pressure_plate",
-    "mementoinabyss:inverted_button"
+    "mementoinabyss:inverted_button",
+    "mementoinabyss:primo_planks",
+    "mementoinabyss:primo_stairs",
+    "mementoinabyss:primo_slab",
+    "mementoinabyss:primo_fence",
+    "mementoinabyss:primo_fence_gate",
+    "mementoinabyss:primo_door",
+    "mementoinabyss:primo_trapdoor",
+    "mementoinabyss:primo_pressure_plate",
+    "mementoinabyss:primo_button"
   ]
 }

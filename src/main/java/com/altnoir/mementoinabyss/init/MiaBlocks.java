@@ -12,9 +12,14 @@ import com.altnoir.mementoinabyss.content.abyss.pillar.StrippedRotatedPillarBloc
 import com.altnoir.mementoinabyss.content.abyss.plant.DreamLicheeBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.FruitingSkyfogLeavesBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.GloomBerryBlock;
+import com.altnoir.mementoinabyss.content.abyss.plant.GlowPrimoCapBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.GreenParticleLeavesBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.InvertedSaplingBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.MiaFungusBlock;
+import com.altnoir.mementoinabyss.content.abyss.plant.MyceliumBlock;
+import com.altnoir.mementoinabyss.content.abyss.plant.MyceliumMatBlock;
+import com.altnoir.mementoinabyss.content.abyss.plant.PrimoCapBlock;
+import com.altnoir.mementoinabyss.content.abyss.plant.PrimoFungusBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.WaterTallFlowerBlock;
 import com.altnoir.mementoinabyss.content.artifact.ArtifactSmithingTableBlock;
 import com.altnoir.mementoinabyss.content.beacon.CaveExplorerBeaconBlock;
@@ -36,6 +41,7 @@ import com.altnoir.mementoinabyss.foundation.registrate.WoodBlockFamily.PillarPr
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeFeatures;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeGrowers;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
@@ -808,6 +814,49 @@ public class MiaBlocks {
     public static final BlockEntry<ButtonBlock> INVERTED_BUTTON =
             INVERTED_BUILDING_FAMILY.get(BuildingBlockVariant.BUTTON);
 
+    private static final WoodBlockFamily PRIMO_FAMILY =
+            new WoodBlockFamily(
+                    "primo",
+                    "stem",
+                    "hyphae",
+                    new PillarProperties(
+                            MapColor.COLOR_ORANGE, MapColor.COLOR_ORANGE, SoundType.STEM),
+                    new PillarProperties(
+                            MapColor.COLOR_ORANGE, MapColor.COLOR_ORANGE, SoundType.STEM),
+                    MapColor.COLOR_ORANGE,
+                    WoodType.CRIMSON,
+                    false,
+                    MiaTags.ItemTags.PRIMO_STEMS.tag);
+    private static final WoodBlockFamily.Logs PRIMO_LOG_FAMILY =
+            PRIMO_FAMILY.registerLogs(REGISTRATE);
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_PRIMO_STEM =
+            PRIMO_LOG_FAMILY.strippedLog();
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_PRIMO_HYPHAE =
+            PRIMO_LOG_FAMILY.strippedWood();
+    public static final BlockEntry<StrippedRotatedPillarBlock> PRIMO_STEM = PRIMO_LOG_FAMILY.log();
+    public static final BlockEntry<StrippedRotatedPillarBlock> PRIMO_HYPHAE =
+            PRIMO_LOG_FAMILY.wood();
+
+    public static final BlockEntry<Block> PRIMO_PLANKS = PRIMO_FAMILY.registerPlanks(REGISTRATE);
+    private static final BuildingBlockFamily PRIMO_BUILDING_FAMILY =
+            PRIMO_FAMILY.buildingBlocks(REGISTRATE, PRIMO_PLANKS).register();
+    public static final BlockEntry<StairBlock> PRIMO_STAIRS =
+            PRIMO_BUILDING_FAMILY.get(BuildingBlockVariant.STAIRS);
+    public static final BlockEntry<SlabBlock> PRIMO_SLAB =
+            PRIMO_BUILDING_FAMILY.get(BuildingBlockVariant.SLAB);
+    public static final BlockEntry<FenceBlock> PRIMO_FENCE =
+            PRIMO_BUILDING_FAMILY.get(BuildingBlockVariant.FENCE);
+    public static final BlockEntry<FenceGateBlock> PRIMO_FENCE_GATE =
+            PRIMO_BUILDING_FAMILY.get(BuildingBlockVariant.FENCE_GATE);
+    public static final BlockEntry<DoorBlock> PRIMO_DOOR =
+            PRIMO_BUILDING_FAMILY.get(BuildingBlockVariant.DOOR);
+    public static final BlockEntry<TrapDoorBlock> PRIMO_TRAPDOOR =
+            PRIMO_BUILDING_FAMILY.get(BuildingBlockVariant.TRAPDOOR);
+    public static final BlockEntry<PressurePlateBlock> PRIMO_PRESSURE_PLATE =
+            PRIMO_BUILDING_FAMILY.get(BuildingBlockVariant.PRESSURE_PLATE);
+    public static final BlockEntry<ButtonBlock> PRIMO_BUTTON =
+            PRIMO_BUILDING_FAMILY.get(BuildingBlockVariant.BUTTON);
+
     static {
         REGISTRATE.defaultCreativeSection(MiaItemGroups.BASE_NATURE_BLOCKS);
     }
@@ -971,6 +1020,136 @@ public class MiaBlocks {
                     .blockstate(BlockStateGen::crossPlant)
                     .item()
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
+                    .build()
+                    .register();
+
+    public static final BlockEntry<MyceliumBlock> MYCELIUM_BLOCK =
+            REGISTRATE
+                    .object("mycelium_block")
+                    .block(MyceliumBlock::new)
+                    .properties(
+                            p ->
+                                    p.mapColor(MapColor.COLOR_PURPLE)
+                                            .strength(0.1F)
+                                            .sound(SoundType.MOSS)
+                                            .pushReaction(PushReaction.DESTROY))
+                    .tag(
+                            BlockTags.DIRT,
+                            BlockTags.SUPPORTS_VEGETATION,
+                            BlockTags.REPLACEABLE_BY_TREES,
+                            BlockTags.OVERRIDES_MUSHROOM_LIGHT_REQUIREMENT,
+                            BlockTags.MINEABLE_WITH_HOE)
+                    .blockstate(BlockStateGen::rotationYCubeAll)
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<MyceliumMatBlock> MYCELIUM_MAT =
+            REGISTRATE
+                    .object("mycelium_mat")
+                    .block(MyceliumMatBlock::new)
+                    .properties(
+                            p ->
+                                    p.mapColor(MapColor.COLOR_PURPLE)
+                                            .replaceable()
+                                            .noCollision()
+                                            .strength(0.2F)
+                                            .sound(SoundType.GLOW_LICHEN)
+                                            .lightLevel(GlowLichenBlock.emission(3))
+                                            .ignitedByLava()
+                                            .pushReaction(PushReaction.DESTROY))
+                    .tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS, BlockTags.MINEABLE_WITH_HOE)
+                    .blockstate(BlockStateGen::multifaceMat)
+                    .loot((lt, b) -> lt.add(b, lt.createMultifaceBlockDrops(b)))
+                    .item()
+                    .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
+                    .build()
+                    .register();
+
+    public static final BlockEntry<FlowerBedBlock> MUSHROOM_BED =
+            REGISTRATE
+                    .object("mushroom_bed")
+                    .block(FlowerBedBlock::new)
+                    .properties(
+                            p ->
+                                    p.mapColor(MapColor.TERRACOTTA_RED)
+                                            .noCollision()
+                                            .sound(SoundType.PINK_PETALS)
+                                            .pushReaction(PushReaction.DESTROY))
+                    .tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS, BlockTags.MINEABLE_WITH_HOE)
+                    .blockstate(BlockStateGen::flowerBed)
+                    .loot((lt, b) -> lt.add(b, lt.createSegmentedBlockDrops(b)))
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<PrimoCapBlock> PRIMO_CAP =
+            REGISTRATE
+                    .object("primo_cap")
+                    .block(PrimoCapBlock::new)
+                    .properties(
+                            p ->
+                                    p.mapColor(MapColor.COLOR_YELLOW)
+                                            .strength(1.0F)
+                                            .sound(SoundType.WART_BLOCK))
+                    .tag(BlockTags.MINEABLE_WITH_HOE)
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<GlowPrimoCapBlock> GLOW_PRIMO_CAP =
+            REGISTRATE
+                    .object("glow_primo_cap")
+                    .block(GlowPrimoCapBlock::new)
+                    .properties(
+                            p ->
+                                    p.mapColor(MapColor.COLOR_BLUE)
+                                            .strength(1.0F)
+                                            .sound(SoundType.WART_BLOCK)
+                                            .noOcclusion()
+                                            .lightLevel(state -> 12))
+                    .tag(BlockTags.MINEABLE_WITH_HOE)
+                    .blockstate(BlockStateGen::translucentCubeAll)
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<PrimoFungusBlock> PRIMO_FUNGUS =
+            REGISTRATE
+                    .object("primo_fungus")
+                    .block(p -> new PrimoFungusBlock(MiaTreeFeatures.PRIMO_FUNGUS, p))
+                    .properties(
+                            p ->
+                                    p.mapColor(MapColor.COLOR_ORANGE)
+                                            .instabreak()
+                                            .sound(SoundType.FUNGUS)
+                                            .pushReaction(PushReaction.DESTROY))
+                    .blockstate(BlockStateGen::mushroomFungus)
+                    .item()
+                    .model(
+                            () ->
+                                    (ctx, prov) ->
+                                            prov.generateFlatItem(
+                                                    ctx.get(),
+                                                    TextureMapping.getItemTexture(ctx.get())))
+                    .build()
+                    .register();
+
+    public static final BlockEntry<PrimoFungusBlock> GLOW_PRIMO_FUNGUS =
+            REGISTRATE
+                    .object("glow_primo_fungus")
+                    .block(p -> new PrimoFungusBlock(MiaTreeFeatures.GLOW_PRIMO_FUNGUS, p))
+                    .properties(
+                            p ->
+                                    p.mapColor(MapColor.COLOR_ORANGE)
+                                            .instabreak()
+                                            .lightLevel(state -> 7)
+                                            .sound(SoundType.FUNGUS)
+                                            .pushReaction(PushReaction.DESTROY))
+                    .blockstate(BlockStateGen::glowMushroomFungus)
+                    .item()
+                    .model(
+                            () ->
+                                    (ctx, prov) ->
+                                            prov.generateFlatItem(
+                                                    ctx.get(),
+                                                    TextureMapping.getItemTexture(ctx.get())))
                     .build()
                     .register();
 

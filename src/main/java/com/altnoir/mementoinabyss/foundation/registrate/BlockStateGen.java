@@ -11,6 +11,7 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
@@ -19,6 +20,7 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.renderer.block.dispatch.Variant;
 import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.block.Block;
@@ -534,6 +536,102 @@ public class BlockStateGen {
                     BlockEntry<? extends Block> base) {
         return (ctx, prov) ->
                 prov.new BlockFamilyProvider(TextureMapping.cube(base.get())).button(ctx.get());
+    }
+
+    /** cube_all with four Y-axis rotations (mycelium block). */
+    public static <B extends Block>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+                    rotationYCubeAll() {
+        return (ctx, prov) -> prov.createRotatedVariantBlock(ctx.get());
+    }
+
+    /**
+     * Multiface mat: thin north-face model (like glow lichen) + multipart blockstates. Item model
+     * is registered separately as a flat item.
+     */
+    public static <B extends Block>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+                    multifaceMat() {
+        return (ctx, prov) -> {
+            var multiface = TextureSlot.create("multiface");
+            var texture = prov.modBlockTexture(ctx.getName());
+            prov.getBuilder()
+                    .texture(multiface, texture)
+                    .texture(TextureSlot.PARTICLE, texture)
+                    .transformTemplate(
+                            template ->
+                                    template.ambientOcclusion(false)
+                                            .element(
+                                                    element ->
+                                                            element.from(0, 0, 0.1F)
+                                                                    .to(16, 16, 0.1F)
+                                                                    .face(
+                                                                            Direction.NORTH,
+                                                                            face ->
+                                                                                    face.uvs(
+                                                                                                    16,
+                                                                                                    0,
+                                                                                                    0,
+                                                                                                    16)
+                                                                                            .texture(
+                                                                                                    multiface))
+                                                                    .face(
+                                                                            Direction.SOUTH,
+                                                                            face ->
+                                                                                    face.uvs(
+                                                                                                    0,
+                                                                                                    0,
+                                                                                                    16,
+                                                                                                    16)
+                                                                                            .texture(
+                                                                                                    multiface))))
+                    .build(ctx.get());
+            prov.createMultifaceBlockStates(ctx.get());
+        };
+    }
+
+    /** Primo fungus: hand-authored mushroom parent + per-block texture. */
+    public static <B extends Block>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+                    mushroomFungus() {
+        return (ctx, prov) -> {
+            var model =
+                    prov.getBuilder()
+                            .parent(prov.modLoc("block/mushroom"))
+                            .texture(
+                                    TextureSlot.ALL,
+                                    prov.modBlockTexture("mushroom/" + ctx.getName()))
+                            .texture(TextureSlot.PARTICLE, prov.modBlockTexture("primo_planks"))
+                            .build(ctx.get());
+            prov.create(ctx.get(), model);
+        };
+    }
+
+    /**
+     * Glow primo fungus: opaque stem + translucent cap multipart using hand-written models in
+     * main resources.
+     */
+    public static <B extends Block>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+                    glowMushroomFungus() {
+        return (ctx, prov) -> {
+            Identifier bottom = prov.modLoc("block/glow_primo_fungus_bottom");
+            Identifier top = prov.modLoc("block/glow_primo_fungus_top");
+            prov.blockStateOutput.accept(
+                    MultiPartGenerator.multiPart(ctx.get())
+                            .with(BlockModelGenerators.plainVariant(bottom))
+                            .with(BlockModelGenerators.plainVariant(top)));
+        };
+    }
+
+    /** Translucent cube_all referencing a hand-written model. */
+    public static <B extends Block>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+                    translucentCubeAll() {
+        return (ctx, prov) -> {
+            Identifier model = ModelLocationUtils.getModelLocation(ctx.get());
+            prov.create(ctx.get(), model);
+        };
     }
 
     private static TextureMapping sideBottomTop(Material side, Material bottom, Material top) {

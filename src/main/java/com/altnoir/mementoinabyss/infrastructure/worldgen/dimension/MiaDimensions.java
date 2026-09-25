@@ -112,8 +112,16 @@ public final class MiaDimensions {
                                         1.85F,
                                         1.95F,
                                         -0.5F,
-                                        0.5F,
+                                        0.0F,
                                         biomes.getOrThrow(MiaBiomes.TEMPTATION_FOREST)),
+                                biomePair(
+                                        -1.0F,
+                                        1.0F,
+                                        1.85F,
+                                        1.95F,
+                                        0.0F,
+                                        0.5F,
+                                        biomes.getOrThrow(MiaBiomes.PRIMO_FOREST)),
                                 biomePair(
                                         -1.0F,
                                         1.0F,

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    "#mementoinabyss:primo_stems"
+  ],
+  "result": {
+    "count": 4,
+    "id": "mementoinabyss:primo_planks"
+  }
+}

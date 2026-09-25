@@ -7,6 +7,8 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.ClusterConfigu
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.ClusterFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.LongVinesConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.LongVinesFeature;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.PrimoHugeFungusConfiguration;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.PrimoHugeFungusFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.SlabRuinsConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.SlabRuinsFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.InvertedTreeFeature;
@@ -38,6 +40,10 @@ public final class MiaWorldgenFeatures {
     public static final DeferredHolder<Feature<?>, SlabRuinsFeature> SLAB_RUINS =
             FEATURES.register(
                     "slab_ruins", () -> new SlabRuinsFeature(SlabRuinsConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, PrimoHugeFungusFeature> HUGE_PRIMO_FUNGUS =
+            FEATURES.register(
+                    "huge_primo_fungus",
+                    () -> new PrimoHugeFungusFeature(PrimoHugeFungusConfiguration.CODEC));
 
     public static void register(IEventBus bus) {
         FEATURES.register(bus);

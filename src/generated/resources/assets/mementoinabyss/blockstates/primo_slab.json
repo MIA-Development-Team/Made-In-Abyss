@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "mementoinabyss:block/primo_slab"
+    },
+    "type=double": {
+      "model": "mementoinabyss:block/primo_planks"
+    },
+    "type=top": {
+      "model": "mementoinabyss:block/primo_slab_top"
+    }
+  }
+}

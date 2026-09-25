@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "mementoinabyss:block/mycelium_block"
+      },
+      {
+        "model": "mementoinabyss:block/mycelium_block",
+        "y": 90
+      },
+      {
+        "model": "mementoinabyss:block/mycelium_block",
+        "y": 180
+      },
+      {
+        "model": "mementoinabyss:block/mycelium_block",
+        "y": 270
+      }
+    ]
+  }
+}
