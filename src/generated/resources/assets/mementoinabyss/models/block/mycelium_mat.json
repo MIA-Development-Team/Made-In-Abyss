@@ -1,0 +1,35 @@
+{
+  "ambientocclusion": false,
+  "elements": [
+    {
+      "faces": {
+        "north": {
+          "texture": "#multiface",
+          "uv": [
+            16.0,
+            0.0,
+            0.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#multiface"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0.1
+      ],
+      "to": [
+        16,
+        16,
+        0.1
+      ]
+    }
+  ],
+  "textures": {
+    "multiface": "mementoinabyss:block/mycelium_mat",
+    "particle": "mementoinabyss:block/mycelium_mat"
+  }
+}
