@@ -98,14 +98,32 @@ public final class CrossDimensionLodLinks {
         return attributes.applyModifier(attribute, attribute.defaultValue());
     }
 
+    /**
+     * Resolves the source dimension's type for LOD height/offset math.
+     *
+     * <p>{@link Registries#LEVEL_STEM} is worldgen-only and is not networked to clients.
+     * {@link Registries#DIMENSION_TYPE} is. Falls back to the {@code <dimension>_type} naming used
+     * by this mod's datapack when the stem registry is absent.
+     */
     private static DimensionType dimensionType(
             RegistryAccess registries, ResourceKey<Level> dimension) {
         ResourceKey<LevelStem> stem =
                 ResourceKey.create(Registries.LEVEL_STEM, dimension.identifier());
+        var fromStem =
+                registries
+                        .lookup(Registries.LEVEL_STEM)
+                        .flatMap(lookup -> lookup.get(stem))
+                        .map(holder -> holder.value().type().value());
+        if (fromStem.isPresent()) return fromStem.get();
+
+        ResourceKey<DimensionType> typeKey =
+                ResourceKey.create(
+                        Registries.DIMENSION_TYPE,
+                        dimension.identifier().withPath(path -> path + "_type"));
         return registries
-                .lookup(Registries.LEVEL_STEM)
-                .flatMap(lookup -> lookup.get(stem))
-                .map(holder -> holder.value().type().value())
+                .lookup(Registries.DIMENSION_TYPE)
+                .flatMap(lookup -> lookup.get(typeKey))
+                .map(holder -> holder.value())
                 .orElse(null);
     }
 
