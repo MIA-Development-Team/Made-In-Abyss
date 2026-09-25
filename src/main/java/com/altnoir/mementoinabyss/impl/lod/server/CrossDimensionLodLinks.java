@@ -8,6 +8,8 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.VerticalBoun
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -18,6 +20,7 @@ import net.minecraft.world.attribute.EnvironmentAttributeMap;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
+import org.jspecify.annotations.Nullable;
 
 /** Resolves cross-dimension views from dimension-type environment attributes. */
 public final class CrossDimensionLodLinks {
@@ -79,7 +82,6 @@ public final class CrossDimensionLodLinks {
             VerticalBoundary boundary,
             boolean sourceIsBelow) {
         DimensionType sourceType = dimensionType(registries, boundary.dimension());
-        if (sourceType == null) return Optional.empty();
         int sourceMaxY = sourceType.minY() + sourceType.height();
         int targetMaxY = targetType.minY() + targetType.height();
         int displayYOffset =
@@ -105,7 +107,7 @@ public final class CrossDimensionLodLinks {
      * {@link Registries#DIMENSION_TYPE} is. Falls back to the {@code <dimension>_type} naming used
      * by this mod's datapack when the stem registry is absent.
      */
-    private static DimensionType dimensionType(
+    private static @Nullable DimensionType dimensionType(
             RegistryAccess registries, ResourceKey<Level> dimension) {
         ResourceKey<LevelStem> stem =
                 ResourceKey.create(Registries.LEVEL_STEM, dimension.identifier());
@@ -123,7 +125,7 @@ public final class CrossDimensionLodLinks {
         return registries
                 .lookup(Registries.DIMENSION_TYPE)
                 .flatMap(lookup -> lookup.get(typeKey))
-                .map(holder -> holder.value())
+                .map(Holder.Reference::value)
                 .orElse(null);
     }
 
