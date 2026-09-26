@@ -5,6 +5,7 @@ import com.altnoir.mementoinabyss.content.beacon.CaveExplorerBeaconBlockEntity;
 import com.altnoir.mementoinabyss.content.beacon.client.CaveExplorerBeaconRenderer;
 import com.altnoir.mementoinabyss.content.cup.EndlessCupBlockEntity;
 import com.altnoir.mementoinabyss.content.cup.client.EndlessCupRenderer;
+import com.altnoir.mementoinabyss.content.lamptube.AmethystTubeBlockEntity;
 import com.altnoir.mementoinabyss.content.pedestal.PedestalBlockEntity;
 import com.altnoir.mementoinabyss.content.pedestal.client.PedestalRenderer;
 import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlockEntity;
@@ -31,6 +32,18 @@ public class MiaBlockEntityTypes {
                                             Capabilities.Item.BLOCK,
                                             MiaBlockEntityTypes.PEDESTAL.get(),
                                             WorldlyContainerWrapper::new))
+                    .register();
+
+    public static final BlockEntityEntry<AmethystTubeBlockEntity> AMETHYST_LAMPTUBE =
+            REGISTRATE
+                    .blockEntity("amethyst_lamptube", AmethystTubeBlockEntity::new)
+                    .validBlock(MiaBlocks.AMETHYST_LAMPTUBE)
+                    .registerCapability(
+                            event ->
+                                    event.registerBlockEntity(
+                                            MiaCapabilities.Heat.BLOCK,
+                                            MiaBlockEntityTypes.AMETHYST_LAMPTUBE.get(),
+                                            (blockEntity, side) -> blockEntity.heatHandler))
                     .register();
 
     public static final BlockEntityEntry<EndlessCupBlockEntity> ENDLESS_CUP =

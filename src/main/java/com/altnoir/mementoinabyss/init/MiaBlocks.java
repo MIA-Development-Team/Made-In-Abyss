@@ -24,6 +24,8 @@ import com.altnoir.mementoinabyss.content.abyss.plant.WaterTallFlowerBlock;
 import com.altnoir.mementoinabyss.content.artifact.ArtifactSmithingTableBlock;
 import com.altnoir.mementoinabyss.content.beacon.CaveExplorerBeaconBlock;
 import com.altnoir.mementoinabyss.content.cup.EndlessCupBlock;
+import com.altnoir.mementoinabyss.content.lamptube.AmethystTubeBlock;
+import com.altnoir.mementoinabyss.content.lamptube.PrasioliteTubeBlock;
 import com.altnoir.mementoinabyss.content.pedestal.PedestalBlock;
 import com.altnoir.mementoinabyss.content.portal.AbyssPortalBlock;
 import com.altnoir.mementoinabyss.content.portal.AbyssPortalCoreBlock;
@@ -43,6 +45,7 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeGrowers;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -206,6 +209,47 @@ public class MiaBlocks {
                                             .noOcclusion())
                     .transform(TagGen.pickaxeOnly())
                     .blockstate(BlockStateGen::ropeConnector)
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<AmethystTubeBlock> AMETHYST_LAMPTUBE =
+            REGISTRATE
+                    .object("amethyst_lamptube")
+                    .block(AmethystTubeBlock::new)
+                    .properties(
+                            p ->
+                                    p
+                                            .strength(1.5F)
+                                            .lightLevel(state -> 5)
+                                            .sound(SoundType.AMETHYST)
+                                            .noOcclusion())
+                    .transform(TagGen.pickaxeOnly())
+                    .blockstate(
+                            () ->
+                                    BlockStateGen.lampTube(
+                                            Identifier.withDefaultNamespace(
+                                                    "block/amethyst_block")))
+                    .lang("Amethyst Lamptube")
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<PrasioliteTubeBlock> PRASIOLITE_LAMPTUBE =
+            REGISTRATE
+                    .object("prasiolite_lamptube")
+                    .block(PrasioliteTubeBlock::new)
+                    .properties(
+                            p ->
+                                    p
+                                            .strength(1.5F)
+                                            .lightLevel(state -> 5)
+                                            .sound(SoundType.AMETHYST)
+                                            .noOcclusion())
+                    .transform(TagGen.pickaxeOnly())
+                    .blockstate(
+                            () ->
+                                    BlockStateGen.lampTube(
+                                            MementoInAbyss.asResource("block/prasiolite_block")))
+                    .lang("Prasiolite Lamptube")
                     .simpleItem()
                     .register();
 

@@ -36,6 +36,7 @@ public class MiaDataGen {
         event.createProvider(MiaCurseDataProvider::new);
         event.createProvider(MiaCuriosDataProvider::new);
         event.createProvider(MiaArtifactEnhancementRecipeProvider.Runner::new);
+        event.createProvider(MiaLampTubeRecipeProvider.Runner::new);
         event.createProvider(MiaLootTableProvider::create);
         event.createDatapackRegistryObjects(
                 new RegistrySetBuilder()

@@ -252,6 +252,26 @@ public class BlockStateGen {
         };
     }
 
+    public static <B extends Block>
+            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> lampTube(
+                    Identifier particle) {
+        return (ctx, prov) -> {
+            var lampTube = TextureSlot.create("lamp_tube");
+            prov.getBuilder()
+                    .parent(prov.modLoc("block/template/lamp_tube"))
+                    .texture(lampTube, prov.modBlockTexture("model/" + ctx.getName()))
+                    .texture(TextureSlot.PARTICLE, new Material(particle))
+                    .build(ctx.get());
+            var model =
+                    BlockModelGenerators.plainVariant(
+                            ModelLocationUtils.getModelLocation(ctx.get()));
+            prov.blockStateOutput.accept(
+                    MultiVariantGenerator.dispatch(ctx.get(), model)
+                            .with(BlockModelGenerators.ROTATIONS_COLUMN_WITH_FACING));
+            prov.registerSimpleItemModel(ctx.get(), ModelLocationUtils.getModelLocation(ctx.get()));
+        };
+    }
+
     public static <B extends CoverGrassBlock>
             NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
                     coverGrass() {

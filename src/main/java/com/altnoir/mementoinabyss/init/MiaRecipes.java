@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.content.lamptube.LampTubeRecipe;
 import com.altnoir.mementoinabyss.impl.artifact.enhancement.ArtifactEnhancementRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -24,6 +25,25 @@ public final class MiaRecipes {
                                     new RecipeSerializer<>(
                                             ArtifactEnhancementRecipe.CODEC,
                                             ArtifactEnhancementRecipe.STREAM_CODEC));
+
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<LampTubeRecipe>>
+            LAMP_TUBE_SERIALIZER =
+                    SERIALIZERS.register(
+                            "lamp_tube",
+                            () ->
+                                    new RecipeSerializer<>(
+                                            LampTubeRecipe.CODEC, LampTubeRecipe.STREAM_CODEC));
+
+    public static final DeferredHolder<RecipeType<?>, RecipeType<LampTubeRecipe>> LAMP_TUBE_TYPE =
+            TYPES.register(
+                    "lamp_tube",
+                    () ->
+                            new RecipeType<>() {
+                                @Override
+                                public String toString() {
+                                    return MementoInAbyss.ID + ":lamp_tube";
+                                }
+                            });
 
     public static final DeferredHolder<RecipeType<?>, RecipeType<ArtifactEnhancementRecipe>>
             ARTIFACT_ENHANCEMENT_TYPE =

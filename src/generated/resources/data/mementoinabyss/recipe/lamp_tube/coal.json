@@ -1,0 +1,21 @@
+{
+  "type": "mementoinabyss:lamp_tube",
+  "ingredients": [
+    {
+      "count": 1,
+      "ingredient": [
+        "mementoinabyss:fossilized_log",
+        "mementoinabyss:mossy_fossilized_log"
+      ]
+    },
+    {
+      "amount": 1000,
+      "heat": "mementoinabyss:heat"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:coal"
+    }
+  ]
+}

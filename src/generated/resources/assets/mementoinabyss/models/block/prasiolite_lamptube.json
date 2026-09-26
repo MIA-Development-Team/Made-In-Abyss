@@ -1,0 +1,7 @@
+{
+  "parent": "mementoinabyss:block/template/lamp_tube",
+  "textures": {
+    "lamp_tube": "mementoinabyss:block/model/prasiolite_lamptube",
+    "particle": "mementoinabyss:block/prasiolite_block"
+  }
+}

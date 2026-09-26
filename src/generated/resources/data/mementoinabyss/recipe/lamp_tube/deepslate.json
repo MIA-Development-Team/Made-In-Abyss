@@ -1,0 +1,14 @@
+{
+  "type": "mementoinabyss:lamp_tube",
+  "ingredients": [
+    {
+      "count": 2,
+      "ingredient": "minecraft:stone"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:deepslate"
+    }
+  ]
+}
