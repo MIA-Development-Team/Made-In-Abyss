@@ -8,7 +8,6 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.VerticalBoun
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
