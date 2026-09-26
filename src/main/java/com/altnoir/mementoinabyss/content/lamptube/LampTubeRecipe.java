@@ -86,8 +86,7 @@ public final class LampTubeRecipe extends ProcessingRecipe<LampTubeRecipeInput> 
     @Override
     public boolean matches(LampTubeRecipeInput input, Level level) {
         SizedHeatIngredient heat = heatInput();
-        return itemInput().test(input.item())
-                && (heat == null || heat.test(input.heat()));
+        return itemInput().test(input.item()) && (heat == null || heat.test(input.heat()));
     }
 
     @Override

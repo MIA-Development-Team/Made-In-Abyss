@@ -218,8 +218,7 @@ public class MiaBlocks {
                     .block(AmethystTubeBlock::new)
                     .properties(
                             p ->
-                                    p
-                                            .strength(1.5F)
+                                    p.strength(1.5F)
                                             .lightLevel(state -> 5)
                                             .sound(SoundType.AMETHYST)
                                             .noOcclusion())
@@ -239,8 +238,7 @@ public class MiaBlocks {
                     .block(PrasioliteTubeBlock::new)
                     .properties(
                             p ->
-                                    p
-                                            .strength(1.5F)
+                                    p.strength(1.5F)
                                             .lightLevel(state -> 5)
                                             .sound(SoundType.AMETHYST)
                                             .noOcclusion())

@@ -114,8 +114,7 @@ public class AmethystTubeBlock extends CrystalTubeBlock implements EntityBlock {
             if (heatCount > 0) {
                 var heat = matched.heatInput();
                 try (Transaction transaction = Transaction.openRoot()) {
-                    int extracted =
-                            tube.heatHandler.extract(heat.heat(), heatCount, transaction);
+                    int extracted = tube.heatHandler.extract(heat.heat(), heatCount, transaction);
                     if (extracted != heatCount) {
                         continue;
                     }
