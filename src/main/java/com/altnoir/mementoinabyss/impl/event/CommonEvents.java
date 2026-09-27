@@ -38,7 +38,8 @@ import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 public final class CommonEvents {
     @SubscribeEvent
     public static void onDatapackSync(OnDatapackSyncEvent event) {
-        event.sendRecipes(MiaRecipes.ARTIFACT_ENHANCEMENT_TYPE.get());
+        event.sendRecipes(
+                MiaRecipes.ARTIFACT_ENHANCEMENT_TYPE.get(), MiaRecipes.LAMP_TUBE_TYPE.get());
     }
 
     @SubscribeEvent

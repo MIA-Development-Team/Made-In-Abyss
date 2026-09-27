@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.compat.jei;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.content.artifact.client.ArtifactEnhancementClientRecipes;
 import com.altnoir.mementoinabyss.content.artifact.client.ArtifactEnhancementScreen;
+import com.altnoir.mementoinabyss.content.lamptube.client.LampTubeClientRecipes;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -23,20 +24,25 @@ public final class MiaJeiPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
+        var guiHelper = registration.getJeiHelpers().getGuiHelper();
         registration.addRecipeCategories(
-                new ArtifactEnhancementRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+                new ArtifactEnhancementRecipeCategory(guiHelper),
+                new LampTubeRecipeCategory(guiHelper));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         registration.addRecipes(
                 ArtifactEnhancementRecipeCategory.TYPE, ArtifactEnhancementClientRecipes.all());
+        registration.addRecipes(LampTubeRecipeCategory.TYPE, LampTubeClientRecipes.all());
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addCraftingStation(
                 ArtifactEnhancementRecipeCategory.TYPE, MiaBlocks.ARTIFACT_SMITHING_TABLE.get());
+        registration.addCraftingStation(
+                LampTubeRecipeCategory.TYPE, MiaBlocks.AMETHYST_LAMPTUBE.get());
     }
 
     @Override

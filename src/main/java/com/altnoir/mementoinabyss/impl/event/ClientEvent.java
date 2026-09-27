@@ -7,6 +7,7 @@ import com.altnoir.mementoinabyss.client.tooltip.TooltipModifierRegistry;
 import com.altnoir.mementoinabyss.content.artifact.client.ArtifactEnhancementScreen;
 import com.altnoir.mementoinabyss.content.beacon.client.CaveExplorerBeaconRenderTypes;
 import com.altnoir.mementoinabyss.content.equipment.client.StarCompassOverlay;
+import com.altnoir.mementoinabyss.content.lamptube.client.LampTubeClientRecipes;
 import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlockEntity;
 import com.altnoir.mementoinabyss.content.rope.RopeItem;
 import com.altnoir.mementoinabyss.content.rope.client.RopeFreeEndGrabHandler;
@@ -137,6 +138,7 @@ public final class ClientEvent {
     @SubscribeEvent
     public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
         ArtifactEnhancementMaterialTooltip.clear();
+        LampTubeClientRecipes.clear();
         CrossDimensionLodRenderer.disconnect();
         CrossDimensionLodDebugEntry.clear();
         StarCompassOverlay.clear();
@@ -182,6 +184,9 @@ public final class ClientEvent {
     public static void onRecipesReceived(RecipesReceivedEvent event) {
         if (event.getRecipeTypes().contains(MiaRecipes.ARTIFACT_ENHANCEMENT_TYPE.get())) {
             ArtifactEnhancementMaterialTooltip.update(event.getRecipeMap());
+        }
+        if (event.getRecipeTypes().contains(MiaRecipes.LAMP_TUBE_TYPE.get())) {
+            LampTubeClientRecipes.update(event.getRecipeMap());
         }
     }
 
