@@ -290,9 +290,7 @@ public final class MiaAbyssFeatures {
                                         Blocks.TUFF,
                                         Blocks.DEEPSLATE,
                                         MiaBlocks.ABYSS_ANDESITE.get()))));
-        context.register(
-                LAKE_WATER,
-                new ConfiguredFeature<>(Feature.LAKE, waterLake()));
+        context.register(LAKE_WATER, new ConfiguredFeature<>(Feature.LAKE, waterLake()));
         context.register(
                 SLAB_RUINS,
                 new ConfiguredFeature<>(
