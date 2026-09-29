@@ -16,6 +16,9 @@ Memento In Abyss.
 [[mixins]]
 config="${mod_id}.mixins.json"
 
+[[mixins]]
+config="recall.mixins.json"
+
 #[[accessTransformers]]
 #file="META-INF/accesstransformer.cfg"
 

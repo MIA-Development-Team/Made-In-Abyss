@@ -19,12 +19,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class DreamLicheeBlock extends DoubleBerryBlock {
+public final class DreamLicheeBlock extends DoubleBerryBlock {
     public static final ResourceKey<DamageType> DAMAGE_TYPE =
             ResourceKey.create(Registries.DAMAGE_TYPE, MementoInAbyss.asResource("dream_lichee"));
 
     public DreamLicheeBlock(Properties properties) {
         super(properties);
+        registerDefaultState(defaultBerryState(defaultBlockState()));
     }
 
     @Override

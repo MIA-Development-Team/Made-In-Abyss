@@ -86,7 +86,8 @@ public final class LampTubeRecipeCategory implements IRecipeCategory<RecipeHolde
         int count = recipe.itemInput().count();
         return recipe.itemInput()
                 .ingredient()
-                .items()
+                .getValues()
+                .stream()
                 .map(holder -> new ItemStack(holder.value(), count))
                 .toList();
     }

@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "com.mementoinabyss.recall.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": ["GuiGraphicsExtractorAccessor"],
+  "injectors": {"defaultRequire": 1}
+}

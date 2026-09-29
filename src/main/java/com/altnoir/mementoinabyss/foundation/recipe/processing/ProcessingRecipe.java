@@ -20,11 +20,21 @@ public abstract class ProcessingRecipe<I extends RecipeInput> implements Recipe<
     private final List<SizedIngredient> ingredients;
     private final List<SizedHeatIngredient> heatIngredients;
     private final List<ItemStackTemplate> results;
+    private final int maxInputCount;
+    private final int maxOutputCount;
+    private final int maxHeatInputCount;
 
-    protected ProcessingRecipe(ProcessingRecipeParams params) {
+    protected ProcessingRecipe(
+            ProcessingRecipeParams params,
+            int maxInputCount,
+            int maxOutputCount,
+            int maxHeatInputCount) {
         this.ingredients = params.ingredients();
         this.heatIngredients = params.heatIngredients();
         this.results = params.results();
+        this.maxInputCount = maxInputCount;
+        this.maxOutputCount = maxOutputCount;
+        this.maxHeatInputCount = maxHeatInputCount;
         List<String> errors = validate();
         if (!errors.isEmpty()) {
             throw new IllegalArgumentException(
@@ -34,38 +44,30 @@ public abstract class ProcessingRecipe<I extends RecipeInput> implements Recipe<
         }
     }
 
-    protected abstract int getMaxInputCount();
-
-    protected abstract int getMaxOutputCount();
-
-    protected int getMaxHeatInputCount() {
-        return 0;
-    }
-
-    public List<String> validate() {
+    private List<String> validate() {
         List<String> errors = new ArrayList<>();
-        if (ingredients.size() > getMaxInputCount()) {
+        if (ingredients.size() > maxInputCount) {
             errors.add(
                     "Recipe has more item inputs ("
                             + ingredients.size()
                             + ") than supported ("
-                            + getMaxInputCount()
+                            + maxInputCount
                             + ").");
         }
-        if (results.size() > getMaxOutputCount()) {
+        if (results.size() > maxOutputCount) {
             errors.add(
                     "Recipe has more item outputs ("
                             + results.size()
                             + ") than supported ("
-                            + getMaxOutputCount()
+                            + maxOutputCount
                             + ").");
         }
-        if (heatIngredients.size() > getMaxHeatInputCount()) {
+        if (heatIngredients.size() > maxHeatInputCount) {
             errors.add(
                     "Recipe has more heat inputs ("
                             + heatIngredients.size()
                             + ") than supported ("
-                            + getMaxHeatInputCount()
+                            + maxHeatInputCount
                             + ").");
         }
         return errors;

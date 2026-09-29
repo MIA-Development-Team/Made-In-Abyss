@@ -41,13 +41,13 @@ public abstract class CrystalTubeBlock extends DirectionalBlock implements Simpl
 
     protected CrystalTubeBlock(Properties properties) {
         super(properties);
-        registerDefaultState(
-                stateDefinition
-                        .any()
-                        .setValue(FACING, Direction.UP)
-                        .setValue(POWERED, false)
-                        .setValue(WATERLOGGED, false)
-                        .setValue(levelProperty(), 1));
+    }
+
+    protected static BlockState defaultTubeState(BlockState state, IntegerProperty level) {
+        return state.setValue(FACING, Direction.UP)
+                .setValue(POWERED, false)
+                .setValue(WATERLOGGED, false)
+                .setValue(level, 1);
     }
 
     protected abstract IntegerProperty levelProperty();
@@ -76,7 +76,7 @@ public abstract class CrystalTubeBlock extends DirectionalBlock implements Simpl
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, WATERLOGGED, POWERED, levelProperty());
+        builder.add(FACING, WATERLOGGED, POWERED);
     }
 
     @Override

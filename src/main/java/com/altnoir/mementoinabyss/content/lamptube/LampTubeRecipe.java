@@ -5,6 +5,7 @@ import com.altnoir.mementoinabyss.foundation.recipe.processing.ProcessingRecipeP
 import com.altnoir.mementoinabyss.foundation.recipe.processing.SizedHeatIngredient;
 import com.altnoir.mementoinabyss.init.MiaRecipes;
 import com.mojang.serialization.MapCodec;
+import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -23,27 +24,8 @@ public final class LampTubeRecipe extends ProcessingRecipe<LampTubeRecipeInput> 
             ProcessingRecipe.streamCodec(LampTubeRecipe::new);
 
     public LampTubeRecipe(ProcessingRecipeParams params) {
-        super(params);
-    }
-
-    @Override
-    protected int getMaxInputCount() {
-        return 1;
-    }
-
-    @Override
-    protected int getMaxOutputCount() {
-        return 1;
-    }
-
-    @Override
-    protected int getMaxHeatInputCount() {
-        return 1;
-    }
-
-    @Override
-    public List<String> validate() {
-        List<String> errors = super.validate();
+        super(params, 1, 1, 1);
+        List<String> errors = new ArrayList<>();
         if (getIngredients().size() != 1) {
             errors.add("Lamp tube recipes require exactly one item ingredient.");
         }
@@ -53,7 +35,10 @@ public final class LampTubeRecipe extends ProcessingRecipe<LampTubeRecipeInput> 
         if (getResults().size() != 1) {
             errors.add("Lamp tube recipes require exactly one result.");
         }
-        return errors;
+        if (!errors.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "LampTubeRecipe failed validation:\n" + String.join("\n", errors));
+        }
     }
 
     public SizedIngredient itemInput() {

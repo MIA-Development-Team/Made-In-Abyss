@@ -9,9 +9,11 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class WaterTallFlowerBlock extends WaterDoublePlantBlock implements BonemealableBlock {
+public final class WaterTallFlowerBlock extends WaterDoublePlantBlock
+        implements BonemealableBlock {
     public WaterTallFlowerBlock(Properties properties) {
         super(properties);
+        registerDefaultState(defaultPlantState(defaultBlockState()));
     }
 
     @Override

@@ -13,20 +13,29 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
-public class AmethystTubeBlock extends CrystalTubeBlock implements EntityBlock {
+public final class AmethystTubeBlock extends CrystalTubeBlock implements EntityBlock {
     public static final MapCodec<AmethystTubeBlock> CODEC = simpleCodec(AmethystTubeBlock::new);
     public static final IntegerProperty LEVEL = IntegerProperty.create("level", 1, 8);
 
     public AmethystTubeBlock(Properties properties) {
         super(properties);
+        registerDefaultState(defaultTubeState(defaultBlockState(), LEVEL));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(LEVEL);
     }
 
     @Override

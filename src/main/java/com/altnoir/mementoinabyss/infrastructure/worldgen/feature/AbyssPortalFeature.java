@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class AbyssPortalFeature {
-    private static final int RADIUS = 8;
+    public static final int RADIUS = 8;
 
     public static void clearPortalLayer(ServerLevelAccessor level, BlockPos center, int height) {
         buildLayer(level, center, Blocks.AIR, Blocks.AIR, height, true);
@@ -32,17 +32,10 @@ public final class AbyssPortalFeature {
             int height,
             boolean dropBlocks) {
         BlockPos.MutableBlockPos cursor = center.mutable();
-        int radiusSquared = RADIUS * RADIUS;
         for (int x = -RADIUS - 1; x <= RADIUS + 1; x++) {
             for (int z = -RADIUS - 1; z <= RADIUS + 1; z++) {
-                int distance = x * x + z * z;
-                boolean inside = distance < radiusSquared;
-                boolean edge =
-                        !inside
-                                && (x * x + (z - 1) * (z - 1) < radiusSquared
-                                        || (x - 1) * (x - 1) + z * z < radiusSquared
-                                        || x * x + (z + 1) * (z + 1) < radiusSquared
-                                        || (x + 1) * (x + 1) + z * z < radiusSquared);
+                boolean inside = isPortalInterior(x, z);
+                boolean edge = isPortalRim(x, z);
                 if (!inside && !edge) {
                     continue;
                 }
@@ -68,6 +61,19 @@ public final class AbyssPortalFeature {
                 level.setBlock(cursor, target, Block.UPDATE_ALL);
             }
         }
+    }
+
+    public static boolean isPortalInterior(int x, int z) {
+        return x * x + z * z < RADIUS * RADIUS;
+    }
+
+    public static boolean isPortalRim(int x, int z) {
+        int radiusSquared = RADIUS * RADIUS;
+        return !isPortalInterior(x, z)
+                && (x * x + (z - 1) * (z - 1) < radiusSquared
+                        || (x - 1) * (x - 1) + z * z < radiusSquared
+                        || x * x + (z + 1) * (z + 1) < radiusSquared
+                        || (x + 1) * (x + 1) + z * z < radiusSquared);
     }
 
     private AbyssPortalFeature() {}

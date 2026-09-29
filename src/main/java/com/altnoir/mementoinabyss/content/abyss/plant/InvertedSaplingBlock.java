@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class InvertedSaplingBlock extends VegetationBlock implements BonemealableBlock {
+public final class InvertedSaplingBlock extends VegetationBlock implements BonemealableBlock {
     public static final MapCodec<InvertedSaplingBlock> CODEC =
             RecordCodecBuilder.mapCodec(
                     i ->

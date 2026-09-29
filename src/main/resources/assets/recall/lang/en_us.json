@@ -1,0 +1,8 @@
+{
+  "key.recall.open_item_guide": "Recall Hovered Item",
+  "recall.tooltip.open": "Hold [%s] to Recall",
+  "recall.tooltip.subject": "Subject of this guide",
+  "recall.search": "Search guide nodes",
+  "recall.search.hint": "Search nodes...",
+  "recall.search.pondering": "Pondering about..."
+}

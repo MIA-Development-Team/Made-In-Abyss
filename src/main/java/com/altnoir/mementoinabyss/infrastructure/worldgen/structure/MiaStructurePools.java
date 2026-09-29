@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.structure;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.mojang.datafixers.util.Pair;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -160,8 +161,16 @@ public final class MiaStructurePools {
                                                     .StructurePoolElement>,
                             Integer>...
                     elements) {
+        var templates =
+                new ArrayList<
+                        Pair<
+                                Function<
+                                        StructureTemplatePool.Projection,
+                                        ? extends StructurePoolElement>,
+                                Integer>>(elements.length);
+        for (var element : elements) templates.add(element);
         return new StructureTemplatePool(
-                empty, List.of(elements), StructureTemplatePool.Projection.RIGID);
+                empty, List.copyOf(templates), StructureTemplatePool.Projection.RIGID);
     }
 
     @SuppressWarnings("unchecked")

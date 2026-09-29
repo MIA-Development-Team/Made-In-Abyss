@@ -1,0 +1,439 @@
+{
+  "timeline": [
+    {
+      "type": "reveal",
+      "at": 1.0,
+      "group": "portal_layer_1",
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "selection": [
+        {
+          "from": [
+            6,
+            -1,
+            6
+          ],
+          "to": [
+            22,
+            -1,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "type": "reveal",
+      "at": 2.0,
+      "group": "portal_layer_2",
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "selection": [
+        {
+          "from": [
+            6,
+            -2,
+            6
+          ],
+          "to": [
+            22,
+            -2,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "type": "reveal",
+      "at": 3.0,
+      "group": "portal_layer_3",
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "selection": [
+        {
+          "from": [
+            6,
+            -3,
+            6
+          ],
+          "to": [
+            22,
+            -3,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "type": "reveal",
+      "at": 4.0,
+      "group": "portal_layer_4",
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "selection": [
+        {
+          "from": [
+            6,
+            -4,
+            6
+          ],
+          "to": [
+            22,
+            -4,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "type": "reveal",
+      "at": 5.0,
+      "group": "portal_layer_5",
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "selection": [
+        {
+          "from": [
+            6,
+            -5,
+            6
+          ],
+          "to": [
+            22,
+            -5,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "type": "reveal",
+      "at": 6.0,
+      "group": "portal_layer_6",
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "selection": [
+        {
+          "from": [
+            6,
+            -6,
+            6
+          ],
+          "to": [
+            22,
+            -6,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "type": "reveal",
+      "at": 7.0,
+      "group": "portal_layer_7",
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "selection": [
+        {
+          "from": [
+            6,
+            -7,
+            6
+          ],
+          "to": [
+            22,
+            -7,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "type": "reveal",
+      "at": 8.0,
+      "group": "portal_layer_8",
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "selection": [
+        {
+          "from": [
+            6,
+            -8,
+            6
+          ],
+          "to": [
+            22,
+            -8,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "type": "reveal",
+      "at": 9.0,
+      "group": "portal_layer_9",
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "selection": [
+        {
+          "from": [
+            6,
+            -9,
+            6
+          ],
+          "to": [
+            22,
+            -9,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "type": "reveal",
+      "at": 10.0,
+      "group": "portal_layer_10",
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "selection": [
+        {
+          "from": [
+            6,
+            -10,
+            6
+          ],
+          "to": [
+            22,
+            -10,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "type": "reveal",
+      "at": 11.0,
+      "group": "portal_layer_11",
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "selection": [
+        {
+          "from": [
+            6,
+            -11,
+            6
+          ],
+          "to": [
+            22,
+            -11,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "at": 0.0,
+      "text": "Activating the Abyss portal"
+    },
+    {
+      "type": "camera",
+      "at": 0.0,
+      "pitch": 30.0,
+      "yaw": 38.0
+    },
+    {
+      "type": "tooltip",
+      "at": 0.0,
+      "block": [
+        14,
+        3,
+        14
+      ],
+      "duration": 1.0,
+      "text": "The Star Compass activates this core."
+    },
+    {
+      "type": "tooltip",
+      "at": 1.0,
+      "block": [
+        22,
+        -1,
+        14
+      ],
+      "duration": 2.0,
+      "text": "Each stage builds a new ring around the cleared center."
+    },
+    {
+      "type": "tooltip",
+      "at": 6.0,
+      "block": [
+        14,
+        -6,
+        14
+      ],
+      "duration": 2.0,
+      "text": "Fossilized wood forms the center column."
+    },
+    {
+      "type": "tooltip",
+      "at": 12.0,
+      "block": [
+        14,
+        -12,
+        13
+      ],
+      "duration": 2.0,
+      "text": "The portal surface appears on the twelfth stage."
+    },
+    {
+      "type": "caption",
+      "at": 0.0,
+      "duration": 1.0,
+      "text": "Use the Star Compass on the Abyss Portal Core."
+    },
+    {
+      "type": "caption",
+      "at": 1.0,
+      "duration": 1.0,
+      "text": "Stage 1/12: the core clears the first layer and builds its rim."
+    },
+    {
+      "type": "caption",
+      "at": 2.0,
+      "duration": 1.0,
+      "text": "Stage 2/12: another rim and center block appear below it."
+    },
+    {
+      "type": "caption",
+      "at": 3.0,
+      "duration": 1.0,
+      "text": "Stage 3/12: the ring wall grows downward."
+    },
+    {
+      "type": "caption",
+      "at": 4.0,
+      "duration": 1.0,
+      "text": "Stage 4/12: the core clears the next layer and rebuilds its edge."
+    },
+    {
+      "type": "caption",
+      "at": 5.0,
+      "duration": 1.0,
+      "text": "Stage 5/12: a fossilized-wood column forms at the center."
+    },
+    {
+      "type": "caption",
+      "at": 6.0,
+      "duration": 1.0,
+      "text": "Stage 6/12: the rim continues around the cleared center."
+    },
+    {
+      "type": "caption",
+      "at": 7.0,
+      "duration": 1.0,
+      "text": "Stage 7/12: the column and surrounding wall extend downward."
+    },
+    {
+      "type": "caption",
+      "at": 8.0,
+      "duration": 1.0,
+      "text": "Stage 8/12: the core builds another layer of the ring."
+    },
+    {
+      "type": "caption",
+      "at": 9.0,
+      "duration": 1.0,
+      "text": "Stage 9/12: the edge takes shape around the opening."
+    },
+    {
+      "type": "caption",
+      "at": 10.0,
+      "duration": 1.0,
+      "text": "Stage 10/12: the ring approaches the portal level."
+    },
+    {
+      "type": "caption",
+      "at": 11.0,
+      "duration": 1.0,
+      "text": "Stage 11/12: the final wall layer is in place."
+    },
+    {
+      "type": "reveal",
+      "at": 12.0,
+      "group": "portal_surface",
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "selection": [
+        {
+          "from": [
+            5,
+            -12,
+            5
+          ],
+          "to": [
+            23,
+            -12,
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "type": "caption",
+      "at": 12.0,
+      "duration": 1.0,
+      "text": "Stage 12/12: the Abyss portal is created below the core."
+    },
+    {
+      "type": "camera",
+      "at": 12.0,
+      "duration": 1.5,
+      "pitch": 25.0,
+      "yaw": -35.0
+    },
+    {
+      "type": "caption",
+      "at": 13.0,
+      "duration": 2.5,
+      "text": "The portal is active. Step into its surface to travel."
+    }
+  ],
+  "zeroLayer": 15
+}

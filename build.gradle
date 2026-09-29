@@ -38,6 +38,7 @@ sourceSets.main {
 }
 
 repositories {
+	maven { url = "https://maven.createmod.net" } // Flywheel
 	maven { url = "https://maven.gegy.dev/releases" } // Registrate
 	maven { url = "https://api.modrinth.com/maven" } // Jade
 	maven { url = "https://maven.blamejared.com/" } // JEI, Patchouli
@@ -141,6 +142,9 @@ dependencies {
 	compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
 	runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
+	implementation jarJar('org.commonmark:commonmark:0.24.0')
+	implementation jarJar('org.commonmark:commonmark-ext-gfm-strikethrough:0.24.0')
+
 	compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
 	runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
@@ -208,6 +212,10 @@ publishMods {
 
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'
+}
+
+tasks.named('test', Test) {
+	useJUnitPlatform()
 }
 
 idea {

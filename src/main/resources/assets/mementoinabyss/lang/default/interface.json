@@ -62,5 +62,10 @@
   "mementoinabyss.rope.length": "Rope length: %s / %s blocks",
   "mementoinabyss.rope.free_end_placed": "The free end of the rope was placed.",
   "mementoinabyss.rope.connected": "Rope connected.",
-  "biome.mementoinabyss.the_abyss.primo_forest": "Primo Forest"
+  "biome.mementoinabyss.the_abyss.primo_forest": "Primo Forest",
+  "key.categories.mementoinabyss.guide": "Abyss Guide",
+  "key.mementoinabyss.open_guide": "Open Abyss Guide",
+  "guide.mementoinabyss.first_layer.title": "First Layer",
+  "guide.mementoinabyss.first_layer.subtitle": "The Journey Begins",
+  "guide.mementoinabyss.second_layer.title": "Second Layer"
 }

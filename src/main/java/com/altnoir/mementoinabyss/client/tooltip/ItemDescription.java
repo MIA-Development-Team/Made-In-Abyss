@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.client.tooltip;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.CommonComponents;
@@ -169,9 +170,9 @@ public record ItemDescription(
             boolean hasDescription = !shiftLines.isEmpty();
             boolean hasControls = externalControls || !controlLines.isEmpty();
             if (hasDescription || hasControls) {
-                addTabs(defaultLines, false, false, hasDescription, hasControls, palette);
-                addTabs(shiftLines, true, false, hasDescription, hasControls, palette);
-                addTabs(controlLines, false, true, hasDescription, hasControls, palette);
+                addTabs(defaultLines, false, false, hasDescription, hasControls);
+                addTabs(shiftLines, true, false, hasDescription, hasControls);
+                addTabs(controlLines, false, true, hasDescription, hasControls);
             }
             if (!hasDescription) {
                 shiftLines = List.copyOf(defaultLines);
@@ -188,38 +189,30 @@ public record ItemDescription(
                 boolean shiftSelected,
                 boolean controlSelected,
                 boolean hasDescription,
-                boolean hasControls,
-                TooltipPalette palette) {
+                boolean hasControls) {
             int index = 0;
             if (hasDescription) {
                 lines.add(
                         index++,
                         tab(
                                 "tooltip.mementoinabyss.hold_for_description",
-                                "tooltip.mementoinabyss.key_shift",
-                                shiftSelected,
-                                palette));
+                                "tooltip.mementoinabyss.key_shift"));
             }
             if (hasControls) {
                 lines.add(
                         index++,
                         tab(
                                 "tooltip.mementoinabyss.hold_for_controls",
-                                "tooltip.mementoinabyss.key_control",
-                                controlSelected,
-                                palette));
+                                "tooltip.mementoinabyss.key_control"));
             }
             if ((shiftSelected || controlSelected) && index > 0) {
                 lines.add(index, CommonComponents.EMPTY);
             }
         }
 
-        private static MutableComponent tab(
-                String messageKey, String keyName, boolean selected, TooltipPalette palette) {
-            Component key =
-                    Component.translatable(keyName)
-                            .withStyle(selected ? palette.highlight() : palette.muted());
-            return Component.translatable(messageKey, key).withStyle(palette.primary());
+        private static MutableComponent tab(String messageKey, String keyName) {
+            Component key = Component.translatable(keyName).withStyle(ChatFormatting.GRAY);
+            return Component.translatable(messageKey, key).withStyle(ChatFormatting.DARK_GRAY);
         }
 
         private record Entry(String heading, String body) {}

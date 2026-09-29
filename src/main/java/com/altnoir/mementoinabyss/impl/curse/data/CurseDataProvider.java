@@ -61,7 +61,7 @@ public abstract class CurseDataProvider implements DataProvider {
                         futures.add(DataProvider.saveStable(cache, encoded, path));
                     }
 
-                    return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+                    return CompletableFuture.allOf(futures.toArray(CompletableFuture<?>[]::new));
                 });
     }
 

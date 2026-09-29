@@ -292,11 +292,7 @@ public final class MiaAbyssFeatures {
                                         MiaBlocks.ABYSS_ANDESITE.get()))));
         context.register(
                 LAKE_WATER,
-                new ConfiguredFeature<>(
-                        Feature.LAKE,
-                        new LakeFeature.Configuration(
-                                BlockStateProvider.simple(Blocks.WATER),
-                                BlockStateProvider.simple(Blocks.SAND))));
+                new ConfiguredFeature<>(Feature.LAKE, waterLake()));
         context.register(
                 SLAB_RUINS,
                 new ConfiguredFeature<>(
@@ -656,6 +652,12 @@ public final class MiaAbyssFeatures {
                                 direction,
                                 BlockPredicate.ONLY_IN_AIR_OR_WATER_PREDICATE,
                                 true)));
+    }
+
+    @SuppressWarnings("deprecation") // Vanilla still registers lakes only through LakeFeature.
+    private static LakeFeature.Configuration waterLake() {
+        return new LakeFeature.Configuration(
+                BlockStateProvider.simple(Blocks.WATER), BlockStateProvider.simple(Blocks.SAND));
     }
 
     private static ResourceKey<ConfiguredFeature<?, ?>> key(String name) {

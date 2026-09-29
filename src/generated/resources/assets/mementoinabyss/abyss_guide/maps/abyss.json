@@ -1,0 +1,61 @@
+{
+  "articles": [
+    {
+      "content": "articles/getting_started.md",
+      "id": "mementoinabyss:getting_started",
+      "summary": "Learn how the map, nodes, cards, and inline articles fit together.",
+      "title": "Getting Started"
+    },
+    {
+      "content": "articles/star_compass.md",
+      "id": "mementoinabyss:star_compass",
+      "summary": "Use the Star Compass to keep your route through the Abyss readable.",
+      "title": "Star Compass"
+    },
+    {
+      "content": "articles/red_whistle.md",
+      "id": "mementoinabyss:red_whistle",
+      "summary": "A reference entry for the Red Whistle and its future guide branches.",
+      "title": "Red Whistle"
+    }
+  ],
+  "background": "mementoinabyss:skybox/the_abyss",
+  "connections": [
+    {
+      "from": "mementoinabyss:entrance",
+      "kind": "related",
+      "to": "mementoinabyss:whistle"
+    }
+  ],
+  "icon": "mementoinabyss:star_compass",
+  "id": "mementoinabyss:abyss",
+  "layer": 1,
+  "nodes": [
+    {
+      "articles": [
+        "mementoinabyss:getting_started",
+        "mementoinabyss:star_compass"
+      ],
+      "id": "mementoinabyss:entrance",
+      "item": "mementoinabyss:star_compass",
+      "summary": "Start here for equipment, routes, and survival notes from the Abyss.",
+      "title": "Abyss Entrance",
+      "x": 150.0,
+      "y": 220.0
+    },
+    {
+      "articles": [
+        "mementoinabyss:red_whistle"
+      ],
+      "id": "mementoinabyss:whistle",
+      "item": "mementoinabyss:red_whistle",
+      "summary": "Review the core whistle mechanics and the branches planned for later updates.",
+      "title": "Whistle Echoes",
+      "x": 470.0,
+      "y": 180.0
+    }
+  ],
+  "start_node": "mementoinabyss:entrance",
+  "subtitle": "guide.mementoinabyss.first_layer.subtitle",
+  "title": "guide.mementoinabyss.first_layer.title"
+}

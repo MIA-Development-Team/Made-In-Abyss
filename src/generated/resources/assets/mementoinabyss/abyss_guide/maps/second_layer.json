@@ -1,0 +1,83 @@
+{
+  "articles": [],
+  "background": "mementoinabyss:painting/fossil_tree",
+  "connections": [
+    {
+      "from": "mementoinabyss:descent",
+      "kind": "related",
+      "to": "mementoinabyss:echo_reed"
+    },
+    {
+      "from": "mementoinabyss:caerulite",
+      "kind": "related",
+      "to": "mementoinabyss:descent"
+    },
+    {
+      "from": "mementoinabyss:echo_reed",
+      "kind": "related",
+      "to": "mementoinabyss:relic"
+    },
+    {
+      "from": "mementoinabyss:caerulite",
+      "kind": "related",
+      "to": "mementoinabyss:relic"
+    },
+    {
+      "from": "mementoinabyss:relic",
+      "kind": "related",
+      "to": "mementoinabyss:resonance"
+    }
+  ],
+  "icon": "mementoinabyss:echo_reed",
+  "id": "mementoinabyss:second_layer",
+  "layer": 2,
+  "nodes": [
+    {
+      "articles": [],
+      "id": "mementoinabyss:descent",
+      "item": "mementoinabyss:rope",
+      "summary": "Prepare rope and supplies before descending from the entrance.",
+      "title": "Descent Point",
+      "x": 130.0,
+      "y": 120.0
+    },
+    {
+      "articles": [],
+      "id": "mementoinabyss:echo_reed",
+      "item": "mementoinabyss:echo_reed",
+      "summary": "Record the uses of echo reeds and mark their locations along the route.",
+      "title": "Echo Reed",
+      "x": 350.0,
+      "y": 100.0
+    },
+    {
+      "articles": [],
+      "id": "mementoinabyss:caerulite",
+      "item": "mementoinabyss:caerulite_shard",
+      "summary": "Gather caerulite shards and mark a safe route through the vein.",
+      "title": "Caerulite Vein",
+      "x": 220.0,
+      "y": 300.0
+    },
+    {
+      "articles": [],
+      "id": "mementoinabyss:relic",
+      "item": "mementoinabyss:test_artifact_1",
+      "summary": "Record recovered relics, nearby hazards, and a safe return route.",
+      "title": "Relic Cache",
+      "x": 490.0,
+      "y": 270.0
+    },
+    {
+      "articles": [],
+      "id": "mementoinabyss:resonance",
+      "item": "mementoinabyss:resonance_pressure_fragment",
+      "summary": "Keep notes on resonance pressure fragments for a later field guide.",
+      "title": "Resonance Fragment",
+      "x": 390.0,
+      "y": 410.0
+    }
+  ],
+  "start_node": "mementoinabyss:descent",
+  "title": "guide.mementoinabyss.second_layer.title"
+}

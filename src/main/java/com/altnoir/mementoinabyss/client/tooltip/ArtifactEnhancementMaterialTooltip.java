@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -51,15 +52,12 @@ public final class ArtifactEnhancementMaterialTooltip {
         boolean expanded = Minecraft.getInstance().hasControlDown();
         Component key =
                 Component.translatable("tooltip.mementoinabyss.key_control")
-                        .withStyle(
-                                expanded
-                                        ? TooltipPalette.MIA.highlight()
-                                        : TooltipPalette.MIA.muted());
+                        .withStyle(ChatFormatting.GRAY);
         event.getToolTip()
                 .add(
                         index++,
                         Component.translatable("tooltip.mementoinabyss.hold_for_enhancements", key)
-                                .withStyle(TooltipPalette.MIA.primary()));
+                                .withStyle(ChatFormatting.DARK_GRAY));
         if (!expanded) {
             return;
         }

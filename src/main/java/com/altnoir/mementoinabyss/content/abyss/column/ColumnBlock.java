@@ -15,7 +15,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class ColumnBlock extends Block {
+public final class ColumnBlock extends Block {
     public static final MapCodec<ColumnBlock> CODEC = simpleCodec(ColumnBlock::new);
     public static final EnumProperty<ColumnSide> COLUMN =
             EnumProperty.create("column", ColumnSide.class);

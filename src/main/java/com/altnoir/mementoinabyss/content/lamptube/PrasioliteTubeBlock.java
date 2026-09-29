@@ -6,15 +6,24 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
-public class PrasioliteTubeBlock extends CrystalTubeBlock {
+public final class PrasioliteTubeBlock extends CrystalTubeBlock {
     public static final MapCodec<PrasioliteTubeBlock> CODEC = simpleCodec(PrasioliteTubeBlock::new);
     public static final IntegerProperty LEVEL = IntegerProperty.create("level", 1, 4);
 
     public PrasioliteTubeBlock(Properties properties) {
         super(properties);
+        registerDefaultState(defaultTubeState(defaultBlockState(), LEVEL));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(LEVEL);
     }
 
     @Override

@@ -14,9 +14,10 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class GloomBerryBlock extends DoubleBerryBlock {
+public final class GloomBerryBlock extends DoubleBerryBlock {
     public GloomBerryBlock(Properties properties) {
         super(properties);
+        registerDefaultState(defaultBerryState(defaultBlockState()));
     }
 
     @Override

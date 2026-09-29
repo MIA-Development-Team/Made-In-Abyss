@@ -26,8 +26,10 @@ public abstract class DoubleBerryBlock extends BushBlock implements Bonemealable
 
     protected DoubleBerryBlock(Properties properties) {
         super(properties);
-        registerDefaultState(
-                stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(AGE, 0));
+    }
+
+    protected static BlockState defaultBerryState(BlockState state) {
+        return state.setValue(HALF, DoubleBlockHalf.LOWER).setValue(AGE, 0);
     }
 
     @Override

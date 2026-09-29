@@ -25,4 +25,5 @@ A Minecraft mod that introduces many new dimensions and items.
 - [Fzzy Config](https://github.com/fzzyhmstrs/fconfig)
 - [Jade](https://github.com/Snownee/Jade/)
 - [Just Enough Items](https://github.com/mezz/JustEnoughItems)
+- [Ponder](https://github.com/Creators-of-Create/Ponder)
 - [Registrate](https://github.com/tterrag1098/Registrate)

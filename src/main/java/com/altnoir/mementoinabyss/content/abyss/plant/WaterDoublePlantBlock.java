@@ -29,11 +29,10 @@ public class WaterDoublePlantBlock extends BushBlock implements SimpleWaterlogge
 
     public WaterDoublePlantBlock(Properties properties) {
         super(properties);
-        registerDefaultState(
-                stateDefinition
-                        .any()
-                        .setValue(HALF, DoubleBlockHalf.LOWER)
-                        .setValue(WATERLOGGED, false));
+    }
+
+    protected static BlockState defaultPlantState(BlockState state) {
+        return state.setValue(HALF, DoubleBlockHalf.LOWER).setValue(WATERLOGGED, false);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.impl.event;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.client.render.sky.EnvironmentCubeSkyboxRenderer;
 import com.altnoir.mementoinabyss.client.tooltip.ArtifactEnhancementMaterialTooltip;
+import com.altnoir.mementoinabyss.client.tooltip.CuriosSlotTooltip;
 import com.altnoir.mementoinabyss.client.tooltip.TooltipModifierRegistry;
 import com.altnoir.mementoinabyss.content.artifact.client.ArtifactEnhancementScreen;
 import com.altnoir.mementoinabyss.content.beacon.client.CaveExplorerBeaconRenderTypes;
@@ -31,6 +32,7 @@ import com.altnoir.mementoinabyss.network.RopeSnapshotPayload;
 import net.minecraft.client.gui.components.debug.DebugScreenEntryStatus;
 import net.minecraft.client.gui.components.debug.DebugScreenProfile;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
@@ -44,6 +46,7 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
@@ -150,6 +153,11 @@ public final class ClientEvent {
     public static void onItemTooltip(ItemTooltipEvent event) {
         TooltipModifierRegistry.get(event.getItemStack().getItem()).modify(event);
         ArtifactEnhancementMaterialTooltip.append(event);
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onGatherTooltip(RenderTooltipEvent.GatherComponents event) {
+        CuriosSlotTooltip.moveToEnd(event.getTooltipElements());
     }
 
     @SubscribeEvent

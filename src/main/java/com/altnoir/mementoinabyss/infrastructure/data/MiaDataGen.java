@@ -33,6 +33,7 @@ public class MiaDataGen {
     public static void gatherData(GatherDataEvent.Client event) {
         if (!event.getModContainer().getModId().equals(MementoInAbyss.ID)) return;
 
+        event.createProvider(MiaGuideDataProvider::new);
         event.createProvider(MiaCurseDataProvider::new);
         event.createProvider(MiaCuriosDataProvider::new);
         event.createProvider(MiaArtifactEnhancementRecipeProvider.Runner::new);

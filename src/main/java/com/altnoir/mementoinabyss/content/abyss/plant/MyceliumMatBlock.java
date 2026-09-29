@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * Mycelium mat — multiface growth like glow lichen. Waterlogging is handled by {@link
  * net.minecraft.world.level.block.MultifaceBlock} in 26.1.
  */
-public class MyceliumMatBlock extends MultifaceSpreadeableBlock implements BonemealableBlock {
+public final class MyceliumMatBlock extends MultifaceSpreadeableBlock implements BonemealableBlock {
     public static final MapCodec<MyceliumMatBlock> CODEC = simpleCodec(MyceliumMatBlock::new);
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
