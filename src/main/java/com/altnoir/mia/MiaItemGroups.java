@@ -1,8 +1,8 @@
 package com.altnoir.mia;
 
-import com.altnoir.abysslib.creative.ALCreativeTabSection;
-import com.altnoir.abysslib.creative.ALSectionedCreativeModeTab;
-import com.altnoir.abysslib.creative.ALTitlePlate;
+import com.altnoir.abysslib.creative.CreativeTabSection;
+import com.altnoir.abysslib.creative.SectionedCreativeModeTab;
+import com.altnoir.abysslib.creative.TitlePlate;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaItems;
 import net.minecraft.core.registries.Registries;
@@ -20,10 +20,10 @@ import java.util.function.Supplier;
  * <p>
  * 每个分区带一张 162×18 的整行横幅贴图（{@code assets/mia/textures/gui/ctab/*.png}，即
  * 原 {@code CTAB_*.png}）。贴图里自带标题与底纹，所以渲染器<b>不会</b>再往横幅上叠代码文字
- * （见 {@code ALSectionedCreativeTabRenderer#drawFullRowTexture}），分区标题键因此只在无贴图时才会用到。
+ * （见 {@code SectionedCreativeTabRenderer#drawFullRowTexture}），分区标题键因此只在无贴图时才会用到。
  * <p>
  * 为什么不用 {@code Reginth.defaultCreativeSection(...)} 那套自动登记：那套是在<b>注册时</b>
- * 往分区里塞一次条目，而 {@code ALSectionedCreativeModeTab.buildContents()} 每次重建标签页内容时
+ * 往分区里塞一次条目，而 {@code SectionedCreativeModeTab.buildContents()} 每次重建标签页内容时
  * 都会先 {@code section.clear()}，自动塞进去的条目会被清掉。所以这里统一走 populator 显式登记。
  * <p>
  * 旧的 {@code mia_tab_artifact} 标签页已经取消，遗物类内容并入 {@link #SECTION_ARTIFACTS}。
@@ -40,7 +40,7 @@ public class MiaItemGroups {
     /**
      * 分区横幅贴图 id。
      * <p>
-     * <b>{@code .png} 必须显式写上</b>：{@code ALSectionedCreativeTabRenderer} 对非 {@code abysslib:}
+     * <b>{@code .png} 必须显式写上</b>：{@code SectionedCreativeTabRenderer} 对非 {@code abysslib:}
      * 命名空间的贴图走 {@code RenderSystem.setShaderTexture(0, loc)}，也就是 MC 的 {@code SimpleTexture}
      * 加载路径 —— 它把路径原样交给资源管理器，<b>不会自己补 {@code .png}</b>。
      * 少写扩展名会实测得到
@@ -65,29 +65,29 @@ public class MiaItemGroups {
     /**
      * 分区标题底板：横幅贴图有渐变/花纹，白字直接压上去在浅色区域读不清，所以垫一层 25% 黑底。
      * <p>
-     * AbyssLib 侧默认是 {@link ALTitlePlate#DISABLED 不启用}，这里是 MIA 显式打开。
+     * AbyssLib 侧默认是 {@link TitlePlate#DISABLED 不启用}，这里是 MIA 显式打开。
      * 想调淡/调深就改这一个值：{@code 0x33}≈20%、{@code 0x40}≈25%（当前）、{@code 0x59}≈35%；
-     * 要关掉整行改成 {@code ALTitlePlate.DISABLED} 即可。
+     * 要关掉整行改成 {@code TitlePlate.DISABLED} 即可。
      */
-    private static final ALTitlePlate TITLE_PLATE = ALTitlePlate.argb(0x40000000);
+    private static final TitlePlate TITLE_PLATE = TitlePlate.argb(0x40000000);
 
-    public static final ALCreativeTabSection SECTION_BUILDING =
-            new ALCreativeTabSection(
+    public static final CreativeTabSection SECTION_BUILDING =
+            new CreativeTabSection(
                             "itemgroup.mia.section.building", banner("building"), BANNER_UNITS)
                     .titlePlate(TITLE_PLATE);
-    public static final ALCreativeTabSection SECTION_NATURAL =
-            new ALCreativeTabSection(
+    public static final CreativeTabSection SECTION_NATURAL =
+            new CreativeTabSection(
                             "itemgroup.mia.section.natural", banner("natural"), BANNER_UNITS)
                     .titlePlate(TITLE_PLATE);
-    public static final ALCreativeTabSection SECTION_FUNCTIONAL =
-            new ALCreativeTabSection(
+    public static final CreativeTabSection SECTION_FUNCTIONAL =
+            new CreativeTabSection(
                             "itemgroup.mia.section.functional", banner("functional"), BANNER_UNITS)
                     .titlePlate(TITLE_PLATE);
-    public static final ALCreativeTabSection SECTION_ITEMS =
-            new ALCreativeTabSection("itemgroup.mia.section.items", banner("items"), BANNER_UNITS)
+    public static final CreativeTabSection SECTION_ITEMS =
+            new CreativeTabSection("itemgroup.mia.section.items", banner("items"), BANNER_UNITS)
                     .titlePlate(TITLE_PLATE);
-    public static final ALCreativeTabSection SECTION_ARTIFACTS =
-            new ALCreativeTabSection(
+    public static final CreativeTabSection SECTION_ARTIFACTS =
+            new CreativeTabSection(
                             "itemgroup.mia.section.artifacts", banner("artifacts"), BANNER_UNITS)
                     .titlePlate(TITLE_PLATE);
 
@@ -99,7 +99,7 @@ public class MiaItemGroups {
             CREATIVE_MODE_TAB.register(
                     "mia_tab",
                     () ->
-                            ALSectionedCreativeModeTab.configure(
+                            SectionedCreativeModeTab.configure(
                                             CreativeModeTab.builder()
                                                     .title(Component.translatable("itemgroup.mia"))
                                                     .icon(
@@ -118,7 +118,7 @@ public class MiaItemGroups {
             CREATIVE_MODE_TAB.register(
                     "mia_tab_artifact",
                     () ->
-                            ALSectionedCreativeModeTab.configure(
+                            SectionedCreativeModeTab.configure(
                                             CreativeModeTab.builder()
                                                     .title(
                                                             Component.translatable(
