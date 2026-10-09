@@ -22,8 +22,10 @@ public class CurseEvent {
         if (livingEntity.level().isClientSide()) return;
 
         if (livingEntity instanceof Player player
-                && player.isCreative()
-                && !MementoInAbyss.CONFIGS.gamePlaySection.enableCurseCreative.get()) return;
+                && (player.isSpectator()
+                        || (player.isCreative()
+                                && !MementoInAbyss.CONFIGS.gamePlaySection.enableCurseCreative
+                                        .get()))) return;
 
         var dimIdentifier = livingEntity.level().dimension().identifier();
 

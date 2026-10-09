@@ -1,6 +1,6 @@
 package com.altnoir.mementoinabyss;
 
-import com.altnoir.mementoinabyss.foundation.registrate.MiaRegistrate;
+import com.altnoir.abysslib.reginth.Reginth;
 import com.altnoir.mementoinabyss.infrastructure.config.MiaConfigs;
 import com.altnoir.mementoinabyss.infrastructure.data.MiaDataGen;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaEnvironmentAttributes;
@@ -22,7 +22,7 @@ public class MementoInAbyss {
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final MiaConfigs CONFIGS = ConfigApiJava.registerAndLoadConfig(MiaConfigs::new);
 
-    private static final MiaRegistrate REGISTRATE = MiaRegistrate.create(ID);
+    private static final Reginth REGISTRATE = Reginth.create(ID);
 
     public MementoInAbyss(IEventBus modEventBus, ModContainer modContainer) {
         LOGGER.info(
@@ -64,7 +64,7 @@ public class MementoInAbyss {
         return Identifier.fromNamespaceAndPath(ID, string);
     }
 
-    public static MiaRegistrate registrate() {
+    public static Reginth registrate() {
         return REGISTRATE;
     }
 }

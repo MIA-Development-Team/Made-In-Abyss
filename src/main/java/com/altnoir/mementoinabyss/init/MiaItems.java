@@ -1,9 +1,9 @@
 package com.altnoir.mementoinabyss.init;
 
+import com.altnoir.abysslib.reginth.Reginth;
+import com.altnoir.abysslib.reginth.util.entry.ItemEntry;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.content.rope.RopeItem;
-import com.altnoir.mementoinabyss.foundation.registrate.MiaRegistrate;
-import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.resources.model.sprite.Material;
@@ -12,7 +12,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 
 public class MiaItems {
-    private static final MiaRegistrate REGISTRATE = MementoInAbyss.registrate();
+    private static final Reginth REGISTRATE = MementoInAbyss.registrate();
 
     static {
         REGISTRATE.defaultCreativeSection(MiaItemGroups.BASE_ITEMS);

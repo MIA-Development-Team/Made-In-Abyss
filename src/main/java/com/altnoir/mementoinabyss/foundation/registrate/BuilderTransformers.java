@@ -1,13 +1,12 @@
 package com.altnoir.mementoinabyss.foundation.registrate;
 
-import com.tterrag.registrate.builders.BlockBuilder;
-import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
+import com.altnoir.abysslib.reginth.builders.BlockBuilder;
+import com.altnoir.abysslib.reginth.util.nullness.NonNullUnaryOperator;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-/** Composable registration policies; unlike initialProperties, these also configure data. */
 public final class BuilderTransformers {
     private BuilderTransformers() {}
 

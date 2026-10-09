@@ -1,7 +1,7 @@
 package com.altnoir.mementoinabyss.foundation.registrate;
 
-import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
-import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
+import com.altnoir.abysslib.reginth.providers.loot.ReginthBlockLootTables;
+import com.altnoir.abysslib.reginth.util.nullness.NonNullBiConsumer;
 import java.util.function.Supplier;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.world.level.ItemLike;
@@ -15,20 +15,22 @@ import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
-/** Reusable loot rules. Referenced entries are resolved only when datagen runs. */
+/**
+ * Reusable loot rules. Referenced entries are resolved only when datagen runs.
+ */
 public final class LootGen {
     private LootGen() {}
 
-    public static <B extends Block> NonNullBiConsumer<RegistrateBlockLootTables, B> lowerHalf() {
+    public static <B extends Block> NonNullBiConsumer<ReginthBlockLootTables, B> lowerHalf() {
         return (loot, block) -> lowerHalf(loot, block, block);
     }
 
-    public static <B extends Block> NonNullBiConsumer<RegistrateBlockLootTables, B> lowerHalf(
+    public static <B extends Block> NonNullBiConsumer<ReginthBlockLootTables, B> lowerHalf(
             Supplier<? extends ItemLike> drop) {
         return (loot, block) -> lowerHalf(loot, block, drop.get());
     }
 
-    private static void lowerHalf(RegistrateBlockLootTables loot, Block block, ItemLike drop) {
+    private static void lowerHalf(ReginthBlockLootTables loot, Block block, ItemLike drop) {
         loot.add(
                 block,
                 LootTable.lootTable()
@@ -53,7 +55,7 @@ public final class LootGen {
                                                                                                         .LOWER))))));
     }
 
-    public static <B extends Block> NonNullBiConsumer<RegistrateBlockLootTables, B> leaves(
+    public static <B extends Block> NonNullBiConsumer<ReginthBlockLootTables, B> leaves(
             Supplier<? extends Block> sapling) {
         return (loot, block) ->
                 loot.add(
@@ -62,7 +64,7 @@ public final class LootGen {
                                 block, sapling.get(), 0.05F, 0.0625F, 0.083333336F, 0.1F));
     }
 
-    public static <B extends Block> NonNullBiConsumer<RegistrateBlockLootTables, B> silkTouchOr(
+    public static <B extends Block> NonNullBiConsumer<ReginthBlockLootTables, B> silkTouchOr(
             Supplier<? extends ItemLike> drop) {
         return (loot, block) ->
                 loot.add(

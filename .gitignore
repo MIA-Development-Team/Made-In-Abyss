@@ -42,3 +42,7 @@ runs/
 repo/
 !**/src/**/repo/
 /libs
+
+### Local scratch / diagnostics ###
+# 构建排障用的临时目录：gradle 运行日志（*.log）与探针 init 脚本，仅供本地诊断，不入库。
+_probe/

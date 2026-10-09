@@ -1,14 +1,14 @@
 package com.altnoir.mementoinabyss.foundation.registrate;
 
+import com.altnoir.abysslib.reginth.providers.DataGenContext;
+import com.altnoir.abysslib.reginth.providers.generators.ReginthBlockModelGenerator;
+import com.altnoir.abysslib.reginth.util.entry.BlockEntry;
+import com.altnoir.abysslib.reginth.util.nullness.NonNullBiConsumer;
 import com.altnoir.mementoinabyss.content.abyss.column.ColumnBlock;
 import com.altnoir.mementoinabyss.content.abyss.column.ColumnSide;
 import com.altnoir.mementoinabyss.content.abyss.cover_grass.CoverGrassBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.DoubleBerryBlock;
 import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlock;
-import com.tterrag.registrate.providers.DataGenContext;
-import com.tterrag.registrate.providers.generators.RegistrateBlockModelGenerator;
-import com.tterrag.registrate.util.entry.BlockEntry;
-import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
@@ -23,24 +23,14 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.random.WeightedList;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BrushableBlock;
-import net.minecraft.world.level.block.ButtonBlock;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.PressurePlateBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockStateGen {
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
-                    abyssPortal() {
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> abyssPortal() {
         return (ctx, prov) -> {
             var portal = TextureSlot.create("portal");
             var texture = prov.modBlockTexture(ctx.getName());
@@ -56,10 +46,7 @@ public class BlockStateGen {
                                                                     element.from(0, 1, 0)
                                                                             .to(16, 15, 16)
                                                                             .face(
-                                                                                    net.minecraft
-                                                                                            .core
-                                                                                            .Direction
-                                                                                            .UP,
+                                                                                    Direction.UP,
                                                                                     face ->
                                                                                             face.uvs(
                                                                                                             0,
@@ -69,10 +56,7 @@ public class BlockStateGen {
                                                                                                     .texture(
                                                                                                             portal))
                                                                             .face(
-                                                                                    net.minecraft
-                                                                                            .core
-                                                                                            .Direction
-                                                                                            .DOWN,
+                                                                                    Direction.DOWN,
                                                                                     face ->
                                                                                             face.uvs(
                                                                                                             0,
@@ -87,7 +71,7 @@ public class BlockStateGen {
     }
 
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     abyssPortalCore() {
         return (ctx, prov) -> {
             var model =
@@ -106,7 +90,7 @@ public class BlockStateGen {
     }
 
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     caveExplorerBeacon() {
         return (ctx, prov) -> {
             var model =
@@ -124,7 +108,7 @@ public class BlockStateGen {
     }
 
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> pedestal() {
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> pedestal() {
         return (ctx, prov) -> {
             var pedestal = TextureSlot.create("pedestal");
             var model =
@@ -138,8 +122,7 @@ public class BlockStateGen {
     }
 
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
-                    endlessCup() {
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> endlessCup() {
         return (ctx, prov) -> {
             var all = TextureSlot.create("all");
             var model =
@@ -155,7 +138,7 @@ public class BlockStateGen {
     }
 
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     hopperFarmland() {
         return (ctx, prov) -> {
             var top = TextureSlot.create("top");
@@ -192,7 +175,7 @@ public class BlockStateGen {
     }
 
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     artifactSmithingTable() {
         return (ctx, prov) -> {
             var bottom = prov.modBlockTexture("chiseled_abyss_andesite");
@@ -214,7 +197,7 @@ public class BlockStateGen {
     }
 
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     whistleWorkbench() {
         return (ctx, prov) -> {
             var bottom = prov.modBlockTexture("chiseled_abyss_andesite");
@@ -235,7 +218,7 @@ public class BlockStateGen {
     }
 
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     ropeConnector() {
         return (ctx, prov) -> {
             var idle = BlockModelGenerators.plainVariant(prov.modLoc("block/rope_connector"));
@@ -253,7 +236,7 @@ public class BlockStateGen {
     }
 
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> lampTube(
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> lampTube(
                     Identifier particle) {
         return (ctx, prov) -> {
             var lampTube = TextureSlot.create("lamp_tube");
@@ -273,8 +256,7 @@ public class BlockStateGen {
     }
 
     public static <B extends CoverGrassBlock>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
-                    coverGrass() {
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> coverGrass() {
         return (ctx, prov) -> {
             var block = ctx.getEntry();
             var model =
@@ -295,7 +277,7 @@ public class BlockStateGen {
     }
 
     public static NonNullBiConsumer<
-                    DataGenContext<Block, BrushableBlock>, RegistrateBlockModelGenerator>
+                    DataGenContext<Block, BrushableBlock>, ReginthBlockModelGenerator>
             suspiciousAbyssAndesite() {
         return (ctx, prov) -> {
             var models = new MultiVariant[4];
@@ -317,20 +299,22 @@ public class BlockStateGen {
     }
 
     public static <B extends RotatedPillarBlock>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> variantLog(
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> variantLog(
                     int... weights) {
         return variantAxisBlock(null, weights);
     }
 
     public static <B extends RotatedPillarBlock>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> variantWood(
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> variantWood(
                     BlockEntry<? extends Block> barkSource, int... weights) {
         return variantAxisBlock(barkSource, weights);
     }
 
-    /** Generates weighted axis models and uses the first vertical model for the block item. */
+    /**
+     * Generates weighted axis models and uses the first vertical model for the block item.
+     */
     private static <B extends RotatedPillarBlock>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     variantAxisBlock(
                             @Nullable BlockEntry<? extends Block> barkSource, int[] weights) {
         if (weights.length == 0)
@@ -373,8 +357,7 @@ public class BlockStateGen {
         };
     }
 
-    public static NonNullBiConsumer<
-                    DataGenContext<Block, ColumnBlock>, RegistrateBlockModelGenerator>
+    public static NonNullBiConsumer<DataGenContext<Block, ColumnBlock>, ReginthBlockModelGenerator>
             column(BlockEntry<? extends Block> pillar, BlockEntry<? extends Block> decoration) {
         return (ctx, prov) -> {
             var side = prov.blockTexture(pillar.get());
@@ -431,27 +414,24 @@ public class BlockStateGen {
     }
 
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
-                    crossPlant() {
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> crossPlant() {
         return (ctx, prov) ->
                 prov.createCrossBlock(ctx.get(), BlockModelGenerators.PlantType.NOT_TINTED);
     }
 
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
-                    doublePlant() {
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> doublePlant() {
         return (ctx, prov) ->
                 prov.createDoublePlant(ctx.get(), BlockModelGenerators.PlantType.NOT_TINTED);
     }
 
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> flowerBed() {
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> flowerBed() {
         return (ctx, prov) -> prov.createFlowerBed(ctx.get());
     }
 
     public static <B extends DoubleBerryBlock>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
-                    doubleBerry() {
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> doubleBerry() {
         return (ctx, prov) -> {
             var models = new Identifier[2][DoubleBerryBlock.MAX_AGE + 1];
             for (int age = 0; age <= DoubleBerryBlock.MAX_AGE; age++) {
@@ -498,13 +478,13 @@ public class BlockStateGen {
     }
 
     public static <B extends StairBlock>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> stairs(
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> stairs(
                     BlockEntry<? extends Block> base) {
         return (ctx, prov) -> prov.generateStairsBlock(ctx.get(), prov.blockTexture(base.get()));
     }
 
     public static <B extends SlabBlock>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> slab(
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> slab(
                     BlockEntry<? extends Block> base) {
         return (ctx, prov) ->
                 prov.generateSlabBlock(
@@ -515,7 +495,7 @@ public class BlockStateGen {
     }
 
     public static <B extends WallBlock>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> wall(
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> wall(
                     BlockEntry<? extends Block> base) {
         return (ctx, prov) -> {
             prov.generateWallBlock(ctx.get(), prov.blockTexture(base.get()));
@@ -530,37 +510,39 @@ public class BlockStateGen {
     }
 
     public static <B extends FenceBlock>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> fence(
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> fence(
                     BlockEntry<? extends Block> base) {
         return (ctx, prov) ->
                 prov.new BlockFamilyProvider(TextureMapping.cube(base.get())).fence(ctx.get());
     }
 
     public static <B extends FenceGateBlock>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> fenceGate(
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> fenceGate(
                     BlockEntry<? extends Block> base) {
         return (ctx, prov) ->
                 prov.new BlockFamilyProvider(TextureMapping.cube(base.get())).fenceGate(ctx.get());
     }
 
     public static <B extends PressurePlateBlock>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
-                    pressurePlate(BlockEntry<? extends Block> base) {
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> pressurePlate(
+                    BlockEntry<? extends Block> base) {
         return (ctx, prov) ->
                 prov.new BlockFamilyProvider(TextureMapping.cube(base.get()))
                         .pressurePlate(ctx.get());
     }
 
     public static <B extends ButtonBlock>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator> button(
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> button(
                     BlockEntry<? extends Block> base) {
         return (ctx, prov) ->
                 prov.new BlockFamilyProvider(TextureMapping.cube(base.get())).button(ctx.get());
     }
 
-    /** cube_all with four Y-axis rotations (mycelium block). */
+    /**
+     * cube_all with four Y-axis rotations (mycelium block).
+     */
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     rotationYCubeAll() {
         return (ctx, prov) -> prov.createRotatedVariantBlock(ctx.get());
     }
@@ -570,8 +552,7 @@ public class BlockStateGen {
      * is registered separately as a flat item.
      */
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
-                    multifaceMat() {
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> multifaceMat() {
         return (ctx, prov) -> {
             var multiface = TextureSlot.create("multiface");
             var texture = prov.modBlockTexture(ctx.getName());
@@ -610,9 +591,11 @@ public class BlockStateGen {
         };
     }
 
-    /** Primo fungus: hand-authored mushroom parent + per-block texture. */
+    /**
+     * Primo fungus: hand-authored mushroom parent + per-block texture.
+     */
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     mushroomFungus() {
         return (ctx, prov) -> {
             var model =
@@ -632,7 +615,7 @@ public class BlockStateGen {
      * main resources.
      */
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     glowMushroomFungus() {
         return (ctx, prov) -> {
             Identifier bottom = prov.modLoc("block/glow_primo_fungus_bottom");
@@ -644,9 +627,11 @@ public class BlockStateGen {
         };
     }
 
-    /** Translucent cube_all referencing a hand-written model. */
+    /**
+     * Translucent cube_all referencing a hand-written model.
+     */
     public static <B extends Block>
-            NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockModelGenerator>
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     translucentCubeAll() {
         return (ctx, prov) -> {
             Identifier model = ModelLocationUtils.getModelLocation(ctx.get());

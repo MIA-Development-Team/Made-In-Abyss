@@ -19,8 +19,6 @@
   },
   "client": [
     "accessor.PauseScreenAccessor",
-    "client.FogRendererMixin",
-    "creative.CreativeModeInventoryScreenMixin",
-    "creative.CustomCreativeSlotMixin"
+    "client.FogRendererMixin"
   ]
 }

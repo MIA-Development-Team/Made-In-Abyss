@@ -1,19 +1,19 @@
 package com.altnoir.mementoinabyss.init;
 
+import com.altnoir.abysslib.reginth.Reginth;
+import com.altnoir.abysslib.reginth.util.entry.ItemEntry;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.content.artifact.ArtifactItem;
 import com.altnoir.mementoinabyss.content.equipment.StarCompassItem;
-import com.altnoir.mementoinabyss.foundation.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.impl.artifact.ArtifactAttribute;
 import com.altnoir.mementoinabyss.impl.artifact.ArtifactGrade;
 import com.altnoir.mementoinabyss.impl.artifact.ArtifactProfile;
 import com.altnoir.mementoinabyss.impl.artifact.component.ArtifactAttributeComponent;
-import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public final class MiaArtifactItems {
-    private static final MiaRegistrate REGISTRATE = MementoInAbyss.registrate();
+    private static final Reginth REGISTRATE = MementoInAbyss.registrate();
 
     static {
         REGISTRATE.defaultCreativeSection(MiaItemGroups.ARTIFACTS);

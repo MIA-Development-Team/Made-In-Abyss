@@ -1,8 +1,8 @@
 package com.altnoir.mementoinabyss.infrastructure.data;
 
+import com.altnoir.abysslib.reginth.providers.ProviderType;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.init.MiaTags;
-import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Blocks;

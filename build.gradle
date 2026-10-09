@@ -39,7 +39,15 @@ sourceSets.main {
 
 repositories {
 	maven { url = "https://maven.createmod.net" } // Flywheel
-	maven { url = "https://maven.gegy.dev/releases" } // Registrate
+	// AbyssLib and the other Altnoir libraries, published by the library's own CI. Scoped to that
+	// group so the other dependencies are not looked up here first.
+	maven {
+		name "RingLoReleases"
+		url "https://maven.ringlo.im/releases"
+		content {
+			includeGroup "com.altnoir"
+		}
+	}
 	maven { url = "https://api.modrinth.com/maven" } // Jade
 	maven { url = "https://maven.blamejared.com/" } // JEI, Patchouli
 	maven { url = "https://maven.theillusivec4.top/" } // Curios
@@ -135,7 +143,7 @@ configurations {
 }
 
 dependencies {
-	implementation jarJar("com.tterrag.registrate:Registrate:${registrate_version}")
+	implementation "com.altnoir:abysslib-reginth-${minecraft_version}:${abysslib_version}"
 
 	implementation "me.fzzyhmstrs:fzzy_config:${fzzyconfig_version}"
 

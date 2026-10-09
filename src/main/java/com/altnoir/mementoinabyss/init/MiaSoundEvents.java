@@ -1,13 +1,13 @@
 package com.altnoir.mementoinabyss.init;
 
+import com.altnoir.abysslib.reginth.Reginth;
+import com.altnoir.abysslib.reginth.util.entry.RegistryEntry;
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.foundation.registrate.MiaRegistrate;
-import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 
 public class MiaSoundEvents {
-    private static final MiaRegistrate REGISTRATE = MementoInAbyss.registrate();
+    private static final Reginth REGISTRATE = MementoInAbyss.registrate();
 
     public static final RegistryEntry<SoundEvent, SoundEvent> ABYSS_PORTAL_TRAVEL =
             REGISTRATE.simple(

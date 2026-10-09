@@ -1,57 +1,58 @@
 package com.altnoir.mementoinabyss.init;
 
+import com.altnoir.abysslib.creative.CreativeTabSection;
+import com.altnoir.abysslib.creative.SectionedCreativeModeTab;
+import com.altnoir.abysslib.reginth.Reginth;
+import com.altnoir.abysslib.reginth.util.entry.RegistryEntry;
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.foundation.registrate.MiaRegistrate;
-import com.altnoir.mementoinabyss.impl.creative.CreativeTabSection;
-import com.altnoir.mementoinabyss.impl.creative.SectionedCreativeModeTab;
-import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
 
 public class MiaItemGroups {
-    private static final MiaRegistrate REGISTRATE = MementoInAbyss.registrate();
+    private static final Reginth REGISTRATE = MementoInAbyss.registrate();
 
     public static final ResourceKey<CreativeModeTab> BASE_KEY =
-            ResourceKey.create(Registries.CREATIVE_MODE_TAB, MementoInAbyss.asResource("base"));
+            ResourceKey.create(Registries.CREATIVE_MODE_TAB, MementoInAbyss.asResource("mia"));
     public static final ResourceKey<CreativeModeTab> ARTIFACT_KEY =
-            ResourceKey.create(Registries.CREATIVE_MODE_TAB, MementoInAbyss.asResource("artifact"));
+            ResourceKey.create(
+                    Registries.CREATIVE_MODE_TAB, MementoInAbyss.asResource("mia_artifact"));
 
     public static final CreativeTabSection BASE_BUILDING_BLOCKS =
             section(
                     BASE_KEY,
-                    "base/building_blocks",
-                    "itemGroup.mementoinabyss.base.section.building_blocks",
+                    "mia/building_blocks",
+                    "itemGroup.mementoinabyss.mia.section.building_blocks",
                     "creative_inventory/section/building_blocks");
     public static final CreativeTabSection BASE_NATURE_BLOCKS =
             section(
                     BASE_KEY,
-                    "base/nature_blocks",
-                    "itemGroup.mementoinabyss.base.section.nature_blocks",
+                    "mia/nature_blocks",
+                    "itemGroup.mementoinabyss.mia.section.nature_blocks",
                     "creative_inventory/section/nature_blocks");
     public static final CreativeTabSection BASE_ITEMS =
             section(
                     BASE_KEY,
-                    "base/items",
-                    "itemGroup.mementoinabyss.base.section.items",
+                    "mia/items",
+                    "itemGroup.mementoinabyss.mia.section.items",
                     "creative_inventory/section/items");
     public static final CreativeTabSection ARTIFACTS =
             section(
                     ARTIFACT_KEY,
-                    "artifact/artifacts",
-                    "itemGroup.mementoinabyss.artifact.section.artifacts",
+                    "mia_artifact/artifacts",
+                    "itemGroup.mementoinabyss.mia_artifact.section.artifacts",
                     "creative_inventory/section/artifacts");
     public static final CreativeTabSection FUNCTIONAL_BLOCKS =
             section(
                     ARTIFACT_KEY,
-                    "artifact/functional_blocks",
-                    "itemGroup.mementoinabyss.artifact.section.functional_blocks",
+                    "mia_artifact/functional_blocks",
+                    "itemGroup.mementoinabyss.mia_artifact.section.functional_blocks",
                     "creative_inventory/section/functional_blocks");
 
     public static final RegistryEntry<CreativeModeTab, CreativeModeTab> BASE =
             REGISTRATE
-                    .object("base")
+                    .object("mia")
                     .creativeTab(
                             tab ->
                                     SectionedCreativeModeTab.configure(
@@ -63,7 +64,7 @@ public class MiaItemGroups {
 
     public static final RegistryEntry<CreativeModeTab, CreativeModeTab> ARTIFACT =
             REGISTRATE
-                    .object("artifact")
+                    .object("mia_artifact")
                     .creativeTab(
                             tab ->
                                     SectionedCreativeModeTab.configure(

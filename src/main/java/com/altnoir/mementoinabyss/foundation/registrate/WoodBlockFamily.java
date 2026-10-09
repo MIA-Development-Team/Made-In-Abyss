@@ -1,9 +1,10 @@
 package com.altnoir.mementoinabyss.foundation.registrate;
 
+import com.altnoir.abysslib.reginth.Reginth;
+import com.altnoir.abysslib.reginth.builders.BlockBuilder;
+import com.altnoir.abysslib.reginth.util.DataIngredient;
+import com.altnoir.abysslib.reginth.util.entry.BlockEntry;
 import com.altnoir.mementoinabyss.content.abyss.pillar.StrippedRotatedPillarBlock;
-import com.tterrag.registrate.builders.BlockBuilder;
-import com.tterrag.registrate.util.DataIngredient;
-import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.tags.BlockTags;
@@ -34,7 +35,7 @@ public record WoodBlockFamily(
         boolean burns,
         TagKey<Item> logsTag) {
 
-    public Logs registerLogs(MiaRegistrate registrate) {
+    public Logs registerLogs(Reginth registrate) {
         var strippedLog =
                 finishLog(
                         registrate
@@ -83,14 +84,14 @@ public record WoodBlockFamily(
     }
 
     private <B extends RotatedPillarBlock> BlockEntry<B> finishLog(
-            BlockBuilder<B, MiaRegistrate> builder) {
+            BlockBuilder<B, Reginth> builder) {
         builder.tag(BlockTags.LOGS);
         if (burns) builder.tag(BlockTags.LOGS_THAT_BURN);
         // Vanilla log item tags are copied from block tags in MiaRegistrateTags.
         return builder.item().tag(logsTag).build().register();
     }
 
-    public BlockEntry<Block> registerPlanks(MiaRegistrate registrate) {
+    public BlockEntry<Block> registerPlanks(Reginth registrate) {
         return registrate
                 .block(name + "_planks", Block::new)
                 .properties(
@@ -113,7 +114,7 @@ public record WoodBlockFamily(
     }
 
     public BuildingBlockFamily.Builder buildingBlocks(
-            MiaRegistrate registrate, BlockEntry<Block> planks) {
+            Reginth registrate, BlockEntry<Block> planks) {
         return BuildingBlockFamily.wooden(registrate, name, planks, woodType);
     }
 

@@ -1,8 +1,8 @@
 package com.altnoir.mementoinabyss.foundation.registrate;
 
-import com.tterrag.registrate.builders.BlockBuilder;
-import com.tterrag.registrate.builders.ItemBuilder;
-import com.tterrag.registrate.util.nullness.NonNullFunction;
+import com.altnoir.abysslib.reginth.builders.BlockBuilder;
+import com.altnoir.abysslib.reginth.builders.ItemBuilder;
+import com.altnoir.abysslib.reginth.util.nullness.NonNullFunction;
 import java.util.List;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;

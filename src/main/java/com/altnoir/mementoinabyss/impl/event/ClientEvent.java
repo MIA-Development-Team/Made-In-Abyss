@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.impl.event;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.client.render.sky.EnvironmentCubeSkyboxRenderer;
+import com.altnoir.mementoinabyss.client.screen.SeamlessLevelLoadingScreen;
 import com.altnoir.mementoinabyss.client.tooltip.ArtifactEnhancementMaterialTooltip;
 import com.altnoir.mementoinabyss.client.tooltip.CuriosSlotTooltip;
 import com.altnoir.mementoinabyss.client.tooltip.TooltipModifierRegistry;
@@ -23,6 +24,7 @@ import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodBatchPayload
 import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodCacheOfferPayload;
 import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodDebugPayload;
 import com.altnoir.mementoinabyss.impl.rope.minecraft.RopeClimbing;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
 import com.altnoir.mementoinabyss.init.MiaDataComponents;
 import com.altnoir.mementoinabyss.init.MiaMenus;
 import com.altnoir.mementoinabyss.init.MiaRecipes;
@@ -41,6 +43,7 @@ import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RecipesReceivedEvent;
 import net.neoforged.neoforge.client.event.RegisterCustomEnvironmentEffectRendererEvent;
 import net.neoforged.neoforge.client.event.RegisterDebugEntriesEvent;
+import net.neoforged.neoforge.client.event.RegisterDimensionTransitionScreenEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
@@ -82,6 +85,19 @@ public final class ClientEvent {
     @SubscribeEvent
     public static void renderCrossDimensionLod(RenderLevelStageEvent.AfterOpaqueBlocks event) {
         CrossDimensionLodRenderer.renderPersistent(event);
+    }
+
+    @SubscribeEvent
+    public static void registerDimensionTransitionScreens(
+            RegisterDimensionTransitionScreenEvent event) {
+        event.registerConditionalEffect(
+                MiaDimensions.THE_ABYSS_LEVEL,
+                MiaDimensions.GREAT_FAULT_LEVEL,
+                SeamlessLevelLoadingScreen::new);
+        event.registerConditionalEffect(
+                MiaDimensions.GREAT_FAULT_LEVEL,
+                MiaDimensions.THE_ABYSS_LEVEL,
+                SeamlessLevelLoadingScreen::new);
     }
 
     @SubscribeEvent

@@ -1,5 +1,7 @@
 package com.altnoir.mementoinabyss.init;
 
+import com.altnoir.abysslib.reginth.Reginth;
+import com.altnoir.abysslib.reginth.util.entry.BlockEntry;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.content.abyss.andesite.AbyssAndesiteBlock;
 import com.altnoir.mementoinabyss.content.abyss.column.ColumnBlock;
@@ -36,13 +38,11 @@ import com.altnoir.mementoinabyss.foundation.registrate.BuilderTransformers;
 import com.altnoir.mementoinabyss.foundation.registrate.BuildingBlockFamily;
 import com.altnoir.mementoinabyss.foundation.registrate.BuildingBlockVariant;
 import com.altnoir.mementoinabyss.foundation.registrate.LootGen;
-import com.altnoir.mementoinabyss.foundation.registrate.MiaRegistrate;
 import com.altnoir.mementoinabyss.foundation.registrate.TagGen;
 import com.altnoir.mementoinabyss.foundation.registrate.WoodBlockFamily;
 import com.altnoir.mementoinabyss.foundation.registrate.WoodBlockFamily.PillarProperties;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeFeatures;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeGrowers;
-import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
@@ -63,7 +63,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.common.Tags;
 
 public class MiaBlocks {
-    private static final MiaRegistrate REGISTRATE = MementoInAbyss.registrate();
+    private static final Reginth REGISTRATE = MementoInAbyss.registrate();
 
     static {
         REGISTRATE.defaultCreativeSection(MiaItemGroups.FUNCTIONAL_BLOCKS);

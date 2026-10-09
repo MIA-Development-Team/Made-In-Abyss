@@ -1,13 +1,10 @@
 package com.altnoir.mementoinabyss.foundation.registrate;
 
-import com.tterrag.registrate.builders.BlockBuilder;
-import com.tterrag.registrate.util.entry.BlockEntry;
-import com.tterrag.registrate.util.nullness.NonNullConsumer;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
+import com.altnoir.abysslib.reginth.Reginth;
+import com.altnoir.abysslib.reginth.builders.BlockBuilder;
+import com.altnoir.abysslib.reginth.util.entry.BlockEntry;
+import com.altnoir.abysslib.reginth.util.nullness.NonNullConsumer;
+import java.util.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import org.jetbrains.annotations.Nullable;
@@ -33,7 +30,9 @@ public final class BuildingBlockFamily {
         return base;
     }
 
-    /** The key carries the block type; requesting an omitted variant fails immediately. */
+    /**
+     * The key carries the block type; requesting an omitted variant fails immediately.
+     */
     @SuppressWarnings("unchecked")
     public <B extends Block> BlockEntry<B> get(BuildingBlockVariant<B> variant) {
         var entry = variants.get(variant);
@@ -48,7 +47,7 @@ public final class BuildingBlockFamily {
         return variants;
     }
 
-    public static Builder stone(MiaRegistrate registrate, BlockEntry<? extends Block> base) {
+    public static Builder stone(Reginth registrate, BlockEntry<? extends Block> base) {
         return new Builder(new Context(registrate, base, base.getId().getPath(), null))
                 .variant(BuildingBlockVariant.STAIRS)
                 .variant(BuildingBlockVariant.SLAB)
@@ -56,7 +55,7 @@ public final class BuildingBlockFamily {
     }
 
     public static Builder wooden(
-            MiaRegistrate registrate,
+            Reginth registrate,
             String prefix,
             BlockEntry<? extends Block> planks,
             WoodType woodType) {
@@ -73,7 +72,7 @@ public final class BuildingBlockFamily {
     }
 
     public record Context(
-            MiaRegistrate registrate,
+            Reginth registrate,
             BlockEntry<? extends Block> base,
             String prefix,
             @Nullable WoodType woodType) {
@@ -96,7 +95,9 @@ public final class BuildingBlockFamily {
             this.context = context;
         }
 
-        /** Adds a variant, or restores its defaults, without changing its position in the family. */
+        /**
+         * Adds a variant, or restores its defaults, without changing its position in the family.
+         */
         public <B extends Block> Builder variant(BuildingBlockVariant<B> variant) {
             return variant(variant, context.prefix() + "_" + variant.suffix(), builder -> {});
         }
@@ -108,14 +109,14 @@ public final class BuildingBlockFamily {
          */
         public <B extends Block> Builder variant(
                 BuildingBlockVariant<B> variant,
-                NonNullConsumer<BlockBuilder<B, MiaRegistrate>> configure) {
+                NonNullConsumer<BlockBuilder<B, Reginth>> configure) {
             return variant(variant, context.prefix() + "_" + variant.suffix(), configure);
         }
 
         public <B extends Block> Builder variant(
                 BuildingBlockVariant<B> variant,
                 String name,
-                NonNullConsumer<BlockBuilder<B, MiaRegistrate>> configure) {
+                NonNullConsumer<BlockBuilder<B, Reginth>> configure) {
             ensureMutable();
             Objects.requireNonNull(variant, "variant");
             Objects.requireNonNull(configure, "configure");
@@ -161,7 +162,7 @@ public final class BuildingBlockFamily {
     private record Registration<B extends Block>(
             BuildingBlockVariant<B> variant,
             String name,
-            NonNullConsumer<BlockBuilder<B, MiaRegistrate>> configure) {
+            NonNullConsumer<BlockBuilder<B, Reginth>> configure) {
         BlockEntry<B> register(Context context) {
             var builder = variant.create(context, name);
             configure.accept(builder);

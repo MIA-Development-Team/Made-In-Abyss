@@ -1,7 +1,8 @@
 package com.altnoir.mementoinabyss.foundation.registrate;
 
-import com.tterrag.registrate.builders.BlockBuilder;
-import com.tterrag.registrate.util.DataIngredient;
+import com.altnoir.abysslib.reginth.Reginth;
+import com.altnoir.abysslib.reginth.builders.BlockBuilder;
+import com.altnoir.abysslib.reginth.util.DataIngredient;
 import java.util.ArrayList;
 import java.util.function.BiFunction;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -13,7 +14,9 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.Nullable;
 
-/** Shape-specific factories and data, independent of the family's base block and naming. */
+/**
+ * Shape-specific factories and data, independent of the family's base block and naming.
+ */
 public final class BuildingBlockVariant<B extends Block> {
     public static final BuildingBlockVariant<StairBlock> STAIRS =
             new BuildingBlockVariant<>(
@@ -273,16 +276,14 @@ public final class BuildingBlockVariant<B extends Block> {
     private final boolean woodOnly;
     private final @Nullable TagGen.BlockAndItemTag tag;
     private final @Nullable TagGen.BlockAndItemTag woodenTag;
-    private final BiFunction<BuildingBlockFamily.Context, String, BlockBuilder<B, MiaRegistrate>>
-            factory;
+    private final BiFunction<BuildingBlockFamily.Context, String, BlockBuilder<B, Reginth>> factory;
 
     private BuildingBlockVariant(
             String suffix,
             boolean woodOnly,
             @Nullable TagGen.BlockAndItemTag tag,
             @Nullable TagGen.BlockAndItemTag woodenTag,
-            BiFunction<BuildingBlockFamily.Context, String, BlockBuilder<B, MiaRegistrate>>
-                    factory) {
+            BiFunction<BuildingBlockFamily.Context, String, BlockBuilder<B, Reginth>> factory) {
         this.suffix = suffix;
         this.woodOnly = woodOnly;
         this.tag = tag;
@@ -301,15 +302,15 @@ public final class BuildingBlockVariant<B extends Block> {
         }
     }
 
-    BlockBuilder<B, MiaRegistrate> create(BuildingBlockFamily.Context context, String name) {
+    BlockBuilder<B, Reginth> create(BuildingBlockFamily.Context context, String name) {
         var builder = factory.apply(context, name);
         return context.wooden()
                 ? builder.transform(BuilderTransformers.wooden())
                 : builder.transform(BuilderTransformers.stone());
     }
 
-    BlockBuilder<B, MiaRegistrate> withItem(
-            BlockBuilder<B, MiaRegistrate> builder, BuildingBlockFamily.Context context) {
+    BlockBuilder<B, Reginth> withItem(
+            BlockBuilder<B, Reginth> builder, BuildingBlockFamily.Context context) {
         var tags = new ArrayList<TagGen.BlockAndItemTag>();
         if (tag != null) tags.add(tag);
         if (context.wooden() && woodenTag != null) tags.add(woodenTag);

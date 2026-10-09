@@ -1,5 +1,7 @@
 package com.altnoir.mementoinabyss.init;
 
+import com.altnoir.abysslib.reginth.Reginth;
+import com.altnoir.abysslib.reginth.util.entry.BlockEntityEntry;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.content.beacon.CaveExplorerBeaconBlockEntity;
 import com.altnoir.mementoinabyss.content.beacon.client.CaveExplorerBeaconRenderer;
@@ -10,8 +12,6 @@ import com.altnoir.mementoinabyss.content.pedestal.PedestalBlockEntity;
 import com.altnoir.mementoinabyss.content.pedestal.client.PedestalRenderer;
 import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlockEntity;
 import com.altnoir.mementoinabyss.content.rope.client.RopeConnectorRenderer;
-import com.altnoir.mementoinabyss.foundation.registrate.MiaRegistrate;
-import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -19,7 +19,7 @@ import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
 
 public class MiaBlockEntityTypes {
-    private static final MiaRegistrate REGISTRATE = MementoInAbyss.registrate();
+    private static final Reginth REGISTRATE = MementoInAbyss.registrate();
 
     public static final BlockEntityEntry<PedestalBlockEntity> PEDESTAL =
             REGISTRATE
