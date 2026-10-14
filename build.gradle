@@ -38,6 +38,13 @@ sourceSets.main {
 }
 
 repositories {
+	mavenCentral {
+		content {
+			includeGroupByRegex 'org.junit.*'
+			includeGroup 'org.opentest4j'
+			includeGroup 'org.apiguardian'
+		}
+	}
 	maven { url = "https://maven.createmod.net" } // Flywheel
 	// AbyssLib and the other Altnoir libraries, published by the library's own CI. Scoped to that
 	// group so the other dependencies are not looked up here first.
@@ -107,6 +114,10 @@ neoForge {
 			sourceSet(sourceSets.main)
 		}
 	}
+	unitTest {
+		enable()
+		testedMod = mods."${mod_id}"
+	}
 }
 
 jar {
@@ -143,6 +154,8 @@ configurations {
 }
 
 dependencies {
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation "com.altnoir:abysslib-reginth-${minecraft_version}:${abysslib_version}"
 
 	implementation "me.fzzyhmstrs:fzzy_config:${fzzyconfig_version}"

@@ -2,19 +2,16 @@ package com.altnoir.mementoinabyss.impl.lod.server;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.foundation.concurrent.MiaExecutors;
-import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodBatchPayload;
+import com.altnoir.mementoinabyss.impl.lod.network.*;
 import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodBatchPayload.Section;
-import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodCacheOfferPayload;
-import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodCacheScope;
-import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodReceiptPayload;
-import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodTransfer;
-import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodViewPayload;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.LongPredicate;
+import java.util.function.Predicate;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,35 +19,60 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.storage.LevelResource;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-/** Persistent camera-driven stream. Replanning changes demand/priority, never the stream or useful in-flight work. */
+/**
+ * Persistent camera-driven stream. Replanning changes demand/priority, never the stream or useful in-flight work.
+ */
 final class MiaLodSampler {
     private static final int MAX_BATCHES_PER_TICK = 16;
     private static final int MAX_BYTES_PER_TICK = 128 * 1024;
     private static final int MAX_IN_FLIGHT_PER_TASK = 32;
     private static final int MAX_LOADS_PER_TICK = 16;
     private static final AtomicLong NEXT_STREAM_EPOCH = new AtomicLong();
-    private static final Map<UUID, Task> TASKS = new ConcurrentHashMap<>();
+
+    private record ViewerKey(UUID playerId, String linkId) {}
+
+    private static final Map<ViewerKey, Task> TASKS = new ConcurrentHashMap<>();
     private static final Set<UUID> CLIENT_DISABLED = ConcurrentHashMap.newKeySet();
 
     static void request(ServerPlayer player) {
-        if (!wantsLod(player)) return;
-        var link = CrossDimensionLodLinks.forTarget(player.level()).orElse(null);
-        if (link == null) {
+        if (!wantsLod(player)) {
             remove(player);
             return;
         }
-        TASKS.compute(
-                player.getUUID(),
-                (key, previous) ->
-                        previous != null && previous.player == player && previous.link.equals(link)
-                                ? previous
-                                : new Task(player, link));
+        var links = CrossDimensionLodLinks.forTargets(player.level());
+        if (links.isEmpty()) {
+            remove(player);
+            return;
+        }
+        var keys = new HashSet<ViewerKey>();
+        for (var link : links) {
+            var key = new ViewerKey(player.getUUID(), link.id().toString());
+            keys.add(key);
+            TASKS.compute(
+                    key,
+                    (ignored, previous) -> {
+                        if (previous != null
+                                && previous.player == player
+                                && previous.link.equals(link)) return previous;
+                        if (previous != null) previous.active = false;
+                        return new Task(player, link);
+                    });
+        }
+        TASKS.entrySet()
+                .removeIf(
+                        entry -> {
+                            if (!entry.getKey().playerId().equals(player.getUUID())
+                                    || keys.contains(entry.getKey())) return false;
+                            entry.getValue().active = false;
+                            return true;
+                        });
     }
 
     static void receiveView(ServerPlayer player, CrossDimensionLodViewPayload payload) {
-        Task task = TASKS.get(player.getUUID());
+        Task task = TASKS.get(new ViewerKey(player.getUUID(), payload.linkId()));
         if (task == null
                 || !isCurrent(task)
+                || !wantsLod(player)
                 || !payload.linkId().equals(task.link.id().toString())
                 || !player.level().dimension().equals(task.link.target())
                 || payload.sequence() <= task.viewSequence) return;
@@ -74,15 +96,17 @@ final class MiaLodSampler {
 
     static void tick(MinecraftServer server) {
         if (!lodEnabled()) {
-            TASKS.clear();
+            clearTasks();
             return;
         }
         for (Task task : TASKS.values()) {
             ServerLevel source = server.getLevel(task.link.source());
             if (source == null
+                    || !wantsLod(task.player)
                     || !task.player.isAlive()
                     || !task.player.level().dimension().equals(task.link.target())) {
-                TASKS.remove(task.player.getUUID(), task);
+                task.active = false;
+                TASKS.remove(task.key, task);
                 continue;
             }
             long now = task.player.level().getGameTime();
@@ -312,9 +336,10 @@ final class MiaLodSampler {
     }
 
     static void receive(ServerPlayer player, CrossDimensionLodReceiptPayload receipt) {
-        Task task = TASKS.get(player.getUUID());
+        Task task = TASKS.get(new ViewerKey(player.getUUID(), receipt.linkId()));
         if (task == null
                 || !isCurrent(task)
+                || !wantsLod(player)
                 || !player.level().dimension().equals(task.link.target())
                 || !receipt.linkId().equals(task.link.id().toString())
                 || receipt.streamEpoch() != task.streamEpoch) return;
@@ -337,7 +362,13 @@ final class MiaLodSampler {
     }
 
     static void remove(ServerPlayer player) {
-        TASKS.remove(player.getUUID());
+        TASKS.entrySet()
+                .removeIf(
+                        entry -> {
+                            if (!entry.getKey().playerId().equals(player.getUUID())) return false;
+                            entry.getValue().active = false;
+                            return true;
+                        });
     }
 
     static void forget(ServerPlayer player) {
@@ -356,7 +387,9 @@ final class MiaLodSampler {
     }
 
     static boolean wantsLod(ServerPlayer player) {
-        return lodEnabled() && !CLIENT_DISABLED.contains(player.getUUID());
+        return lodEnabled()
+                && !CLIENT_DISABLED.contains(player.getUUID())
+                && CrossDimensionLodLinks.activeAt(player.level(), player.getX(), player.getZ());
     }
 
     static boolean hasInterestedPlayer(MinecraftServer server) {
@@ -371,13 +404,13 @@ final class MiaLodSampler {
     }
 
     private static boolean isCurrent(Task task) {
-        return wantsLod(task.player) && TASKS.get(task.player.getUUID()) == task;
+        return task.active && TASKS.get(task.key) == task;
     }
 
     static void notifyAvailable(CrossDimensionLodLink link, ChunkPos pos) {
         long key = CrossDimensionLodKey.pack(pos.x(), pos.z());
         for (Task task : TASKS.values())
-            if (task.link.equals(link) && task.demands.containsKey(key)) {
+            if (task.link.source().equals(link.source()) && task.demands.containsKey(key)) {
                 task.availability.available(key);
                 task.scan = true;
             }
@@ -386,7 +419,7 @@ final class MiaLodSampler {
     static void notifyReplaced(CrossDimensionLodLink link, ChunkPos pos, long revision) {
         long key = CrossDimensionLodKey.pack(pos.x(), pos.z());
         for (Task task : TASKS.values())
-            if (task.link.equals(link)
+            if (task.link.source().equals(link.source())
                     && (task.demands.containsKey(key)
                             || task.delivery.confirmedCellSize(key) != 0
                             || task.delivery.waiting(key))) {
@@ -396,15 +429,16 @@ final class MiaLodSampler {
             }
     }
 
-    static ChunkPos generationCandidate(
-            CrossDimensionLodLink link, java.util.function.Predicate<ChunkPos> missing) {
+    static ChunkPos generationCandidate(CrossDimensionLodLink link, Predicate<ChunkPos> missing) {
         var order =
                 Comparator.comparingDouble(MiaLodViewPlanner.Demand::priority)
                         .thenComparingLong(MiaLodViewPlanner.Demand::key);
         var best = new PriorityQueue<MiaLodViewPlanner.Demand>(order.reversed());
         Map<Long, MiaLodViewPlanner.Demand> selected = new HashMap<>();
         for (Task task : TASKS.values())
-            if (task.link.equals(link)
+            if (isCurrent(task)
+                    && wantsLod(task.player)
+                    && task.link.equals(link)
                     && task.view != null
                     && validCamera(task.player, task.view)) {
                 long now = task.player.level().getGameTime();
@@ -434,6 +468,7 @@ final class MiaLodSampler {
     }
 
     static void clearTasks() {
+        for (Task task : TASKS.values()) task.active = false;
         TASKS.clear();
     }
 
@@ -442,7 +477,11 @@ final class MiaLodSampler {
     }
 
     static DebugSnapshot debugSnapshot(ServerPlayer player) {
-        Task task = TASKS.get(player.getUUID());
+        var link = CrossDimensionLodLinks.forTarget(player.level()).orElse(null);
+        Task task =
+                link == null
+                        ? null
+                        : TASKS.get(new ViewerKey(player.getUUID(), link.id().toString()));
         if (task == null) return new DebugSnapshot(0, 0, 0, 0, 0, 0, 0);
         int loading =
                 (int) task.work.values().stream().filter(work -> work.prepared == null).count();
@@ -467,6 +506,9 @@ final class MiaLodSampler {
 
     private static final class Task {
         final ServerPlayer player;
+        final UUID playerId;
+        final ViewerKey key;
+        volatile boolean active = true;
         final CrossDimensionLodLink link;
         final long streamEpoch = NEXT_STREAM_EPOCH.incrementAndGet();
         final MiaLodDeliveryState delivery = new MiaLodDeliveryState();
@@ -486,6 +528,8 @@ final class MiaLodSampler {
 
         Task(ServerPlayer player, CrossDimensionLodLink link) {
             this.player = player;
+            this.playerId = player == null ? null : player.getUUID();
+            this.key = new ViewerKey(playerId, link.id().toString());
             this.link = link;
         }
 
@@ -512,7 +556,7 @@ final class MiaLodSampler {
                 }
             }
             double retention = radius + 128.0;
-            java.util.function.LongPredicate keep =
+            LongPredicate keep =
                     key ->
                             view.distanceSquared(
                                             CrossDimensionLodKey.x(key) * 16.0,

@@ -4,6 +4,9 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.GeneralAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.HopperAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.NoodleAbyssHole;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssClimate;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssHole;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssNoise;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.SparseAquiferGate;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
@@ -16,21 +19,32 @@ public final class MiaDensityFunctionTypes {
     private static final DeferredRegister<MapCodec<? extends DensityFunction>> TYPES =
             DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, MementoInAbyss.ID);
 
+    static {
+        TYPES.register("overworld_abyss_climate", OverworldAbyssClimate.CODEC::codec);
+    }
+
     public static final DeferredHolder<
                     MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>>
-            ABYSS_HOLE = TYPES.register("abyss_hole", () -> HopperAbyssHole.CODEC.codec());
+            ABYSS_HOLE = TYPES.register("abyss_hole", HopperAbyssHole.CODEC::codec);
+    public static final DeferredHolder<
+                    MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>>
+            OVERWORLD_ABYSS_HOLE =
+                    TYPES.register("overworld_abyss_hole", OverworldAbyssHole.CODEC::codec);
+    public static final DeferredHolder<
+                    MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>>
+            OVERWORLD_ABYSS_NOISE =
+                    TYPES.register("overworld_abyss_noise", OverworldAbyssNoise.CODEC::codec);
     public static final DeferredHolder<
                     MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>>
             GENERAL_ABYSS_HOLE =
-                    TYPES.register("general_abyss_hole", () -> GeneralAbyssHole.CODEC.codec());
+                    TYPES.register("general_abyss_hole", GeneralAbyssHole.CODEC::codec);
     public static final DeferredHolder<
                     MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>>
-            NOODLE_ABYSS_HOLE =
-                    TYPES.register("noodle_abyss_hole", () -> NoodleAbyssHole.CODEC.codec());
+            NOODLE_ABYSS_HOLE = TYPES.register("noodle_abyss_hole", NoodleAbyssHole.CODEC::codec);
     public static final DeferredHolder<
                     MapCodec<? extends DensityFunction>, MapCodec<? extends DensityFunction>>
             SPARSE_AQUIFER_GATE =
-                    TYPES.register("sparse_aquifer_gate", () -> SparseAquiferGate.CODEC.codec());
+                    TYPES.register("sparse_aquifer_gate", SparseAquiferGate.CODEC::codec);
 
     public static DensityFunction hopper() {
         return hopper(0.0F);

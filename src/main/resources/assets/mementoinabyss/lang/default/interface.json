@@ -35,6 +35,7 @@
   "effect.mementoinabyss.abyss_blessing": "Abyss Blessing",
   "mementoinabyss.config.worldGenSection": "World Generation",
   "mementoinabyss.config.worldGenSection.abyssRadius": "Abyss Radius",
+  "mementoinabyss.config.worldGenSection.overworldAbyssEnabled": "Overworld Abyss (reload world)",
   "container.mementoinabyss.artifact_enhancement": "Artifact Smithing Table",
   "container.mementoinabyss.artifact_enhancement.insert_artifact": "Insert an enhanceable artifact",
   "container.mementoinabyss.artifact_enhancement.insert_material": "Insert an enhancement material",

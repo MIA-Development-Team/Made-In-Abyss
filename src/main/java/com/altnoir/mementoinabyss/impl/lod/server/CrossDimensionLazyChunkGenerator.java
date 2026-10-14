@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
@@ -36,9 +37,11 @@ import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.chunk.UpgradeData;
 import net.minecraft.world.level.chunk.status.ChunkPyramid;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.minecraft.world.level.chunk.status.ChunkStep;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
@@ -55,23 +58,29 @@ final class CrossDimensionLazyChunkGenerator {
     private static final Map<CrossDimensionLodLink, State> STATES = new HashMap<>();
     private static final Executor PREGEN_EXECUTOR =
             MiaExecutors.executor(MiaExecutors.Priority.LOD_PREGEN);
-    private static final java.util.concurrent.atomic.AtomicInteger IN_FLIGHT =
-            new java.util.concurrent.atomic.AtomicInteger();
+    private static final AtomicInteger IN_FLIGHT = new AtomicInteger();
     private static final AtomicLong GENERATION_EPOCH = new AtomicLong();
     private static long nextGenerationTick;
+    private static int nextLinkIndex;
 
     static void tick(MinecraftServer server) {
         if (!lodEnabled()) return;
+        // Revoke each link independently, including while all generation slots are occupied.
+        STATES.entrySet()
+                .removeIf(
+                        entry -> {
+                            if (hasViewer(server, entry.getKey())) return false;
+                            entry.getValue().active = false;
+                            return true;
+                        });
         long gameTime = server.overworld().getGameTime();
         if (gameTime < nextGenerationTick || IN_FLIGHT.get() >= MAX_IN_FLIGHT) return;
-        for (CrossDimensionLodLink link : CrossDimensionLodLinks.all(server)) {
+        var links = CrossDimensionLodLinks.all(server);
+        for (int step = 0; step < links.size(); step++) {
+            int index = Math.floorMod(nextLinkIndex + step, links.size());
+            CrossDimensionLodLink link = links.get(index);
             ServerLevel source = server.getLevel(link.source());
-            if (source == null
-                    || server.getPlayerList().getPlayers().stream()
-                            .noneMatch(
-                                    player ->
-                                            player.level().dimension().equals(link.target())
-                                                    && MiaLodSampler.wantsLod(player))) continue;
+            if (source == null || !hasViewer(server, link)) continue;
 
             State state = STATES.computeIfAbsent(link, ignored -> new State());
             String phase = "camera-view";
@@ -86,8 +95,18 @@ final class CrossDimensionLazyChunkGenerator {
 
             nextGenerationTick = gameTime + GENERATION_INTERVAL_TICKS;
             requestAsync(server, source, link, state, candidate, phase);
+            nextLinkIndex = (index + 1) % links.size();
             break;
         }
+    }
+
+    private static boolean hasViewer(MinecraftServer server, CrossDimensionLodLink link) {
+        return server.getPlayerList().getPlayers().stream()
+                .anyMatch(
+                        player ->
+                                player.isAlive()
+                                        && player.level().dimension().equals(link.target())
+                                        && MiaLodSampler.wantsLod(player));
     }
 
     private static void requestAsync(
@@ -105,7 +124,7 @@ final class CrossDimensionLazyChunkGenerator {
         PREGEN_EXECUTOR.execute(
                 () -> {
                     try {
-                        requireActive(generationEpoch);
+                        requireActive(generationEpoch, state);
                         ProtoChunk protoChunk =
                                 new ProtoChunk(
                                         pos,
@@ -128,6 +147,7 @@ final class CrossDimensionLazyChunkGenerator {
                                         chunk ->
                                                 activeChunk(
                                                         generationEpoch,
+                                                        state,
                                                         advanceStatus(chunk, ChunkStatus.BIOMES)))
                                 .thenCompose(
                                         chunk ->
@@ -140,6 +160,7 @@ final class CrossDimensionLazyChunkGenerator {
                                         chunk ->
                                                 activeChunk(
                                                         generationEpoch,
+                                                        state,
                                                         advanceStatus(chunk, ChunkStatus.NOISE)))
                                 .thenApplyAsync(
                                         chunk ->
@@ -148,17 +169,20 @@ final class CrossDimensionLazyChunkGenerator {
                                                         generator,
                                                         structureManager,
                                                         randomState,
-                                                        activeChunk(generationEpoch, chunk)),
+                                                        activeChunk(generationEpoch, state, chunk)),
                                         PREGEN_EXECUTOR)
                                 .thenApplyAsync(
                                         chunk ->
                                                 addTrees(
                                                         source,
                                                         generator,
-                                                        activeChunk(generationEpoch, chunk)),
+                                                        activeChunk(generationEpoch, state, chunk)),
                                         PREGEN_EXECUTOR)
                                 .thenComposeAsync(
-                                        chunk -> MiaLodStorage.ingest(link, source, chunk, true),
+                                        chunk -> {
+                                            requireActive(generationEpoch, state);
+                                            return MiaLodStorage.ingest(link, source, chunk, true);
+                                        },
                                         PREGEN_EXECUTOR)
                                 .whenComplete(
                                         (ignored, throwable) ->
@@ -168,6 +192,7 @@ final class CrossDimensionLazyChunkGenerator {
                                                                     != GENERATION_EPOCH.get())
                                                                 return;
                                                             try {
+                                                                if (!state.active) return;
                                                                 if (throwable != null) {
                                                                     state.requested.remove(key);
                                                                     state.failed++;
@@ -194,6 +219,11 @@ final class CrossDimensionLazyChunkGenerator {
                         server.execute(
                                 () -> {
                                     if (generationEpoch != GENERATION_EPOCH.get()) return;
+                                    if (!state.active) {
+                                        state.finish(pos);
+                                        IN_FLIGHT.decrementAndGet();
+                                        return;
+                                    }
                                     state.requested.remove(key);
                                     state.failed++;
                                     state.lastResult = "failed";
@@ -212,7 +242,7 @@ final class CrossDimensionLazyChunkGenerator {
             ServerLevel source,
             ChunkGenerator generator,
             StructureManager structureManager,
-            net.minecraft.world.level.levelgen.RandomState randomState,
+            RandomState randomState,
             ChunkAccess chunk) {
         if (generator instanceof NoiseBasedChunkGenerator noiseGenerator) {
             noiseGenerator.buildSurface(
@@ -320,15 +350,16 @@ final class CrossDimensionLazyChunkGenerator {
         STATES.clear();
         IN_FLIGHT.set(0);
         nextGenerationTick = 0;
+        nextLinkIndex = 0;
     }
 
-    private static ChunkAccess activeChunk(long generationEpoch, ChunkAccess chunk) {
-        requireActive(generationEpoch);
+    private static ChunkAccess activeChunk(long generationEpoch, State state, ChunkAccess chunk) {
+        requireActive(generationEpoch, state);
         return chunk;
     }
 
-    private static void requireActive(long generationEpoch) {
-        if (generationEpoch != GENERATION_EPOCH.get() || !lodEnabled()) {
+    private static void requireActive(long generationEpoch, State state) {
+        if (generationEpoch != GENERATION_EPOCH.get() || !state.active || !lodEnabled()) {
             throw new CancellationException("Cross-dimension LOD generation stopped");
         }
     }
@@ -413,7 +444,7 @@ final class CrossDimensionLazyChunkGenerator {
         private TemporaryWorldGenRegion(
                 ServerLevel level,
                 StaticCache2D<GenerationChunkHolder> cache,
-                net.minecraft.world.level.chunk.status.ChunkStep step,
+                ChunkStep step,
                 ChunkAccess center) {
             super(level, cache, step, center);
         }
@@ -435,6 +466,7 @@ final class CrossDimensionLazyChunkGenerator {
     }
 
     private static final class State {
+        private volatile boolean active = true;
         private final Set<Long> requested = new HashSet<>();
         private final Map<Long, ActiveRequest> activeRequests = new LinkedHashMap<>();
         private int centralCursor;

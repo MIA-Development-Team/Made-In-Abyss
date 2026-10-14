@@ -85,6 +85,30 @@ public class MiaConfigs extends Config {
 
         public ValidatedInt abyssRadius =
                 new ValidatedInt(160, 10240, 64, ValidatedInt.WidgetType.TEXTBOX);
+        public ValidatedBoolean overworldAbyssEnabled = new ValidatedBoolean(true);
+
+        /**
+         * Shape exponent of the outer slope, clamped to 0.5-3.0 by the geometry itself. The slope always
+         * spans the same band and lands on the surrounding ground at the influence radius; this only
+         * picks its profile. 1.0 is the plain fall; below it the ring holds its height further out and
+         * then drops faster, which reads as the steeper flank; above it flattens the middle of the band
+         * and spends the height in a bank at the far end.
+         */
+        public ValidatedDouble abyssOuterSlope =
+                new ValidatedDouble(1.0, 3.0, 0.5, ValidatedDouble.WidgetType.TEXTBOX);
+
+        /**
+         * Width of the outer slope's descent, in units of the effective overworld radius
+         * ({@code 1.5 * abyssRadius}), measured outwards from
+         * the ring. This is the knob that sets how steep the junction is: the whole ring-to-ground drop
+         * is spent across this band, so the average gradient is the drop divided by
+         * {@code abyssSlopeBand * 1.5 * abyssRadius}. Lower is steeper, never below 1.0 - the band must be at
+         * least as wide as the ground the blend has to cover, or the carve stops before it has landed
+         * and leaves a cliff. Raising it past 2.0 only spends more pristine terrain on a shallower
+         * approach.
+         */
+        public ValidatedDouble abyssSlopeBand =
+                new ValidatedDouble(1.25, 2.0, 1.0, ValidatedDouble.WidgetType.TEXTBOX);
     }
 
     @Override

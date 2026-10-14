@@ -3,6 +3,9 @@ package com.altnoir.mementoinabyss.impl.lod.server;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.foundation.concurrent.MiaExecutors;
 import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodDebugPayload;
+import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodReceiptPayload;
+import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodViewPayload;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,6 +42,7 @@ public final class MiaLodServer {
         }
         if (!enabled) return;
 
+        requestForEligiblePlayers(server);
         boolean interested = MiaLodSampler.hasInterestedPlayer(server);
         if (interested != interestedLastTick) {
             interestedLastTick = interested;
@@ -74,19 +78,16 @@ public final class MiaLodServer {
         MiaLodSampler.setClientEnabled(player, active);
     }
 
-    public static void receiveView(
-            ServerPlayer player,
-            com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodViewPayload payload) {
+    public static void receiveView(ServerPlayer player, CrossDimensionLodViewPayload payload) {
         if (isEnabled()) MiaLodSampler.receiveView(player, payload);
     }
 
     public static void receiveLodReceipt(
-            ServerPlayer player,
-            com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodReceiptPayload receipt) {
+            ServerPlayer player, CrossDimensionLodReceiptPayload receipt) {
         if (isEnabled()) MiaLodSampler.receive(player, receipt);
     }
 
-    public static void markBlockDirty(ServerLevel level, net.minecraft.core.BlockPos pos) {
+    public static void markBlockDirty(ServerLevel level, BlockPos pos) {
         if (isEnabled()) MiaLodStorage.markSectionDirty(level, pos);
     }
 
@@ -104,7 +105,9 @@ public final class MiaLodServer {
     }
 
     private static void refreshPlayer(ServerPlayer player) {
-        if (isEnabled() && CrossDimensionLodLinks.forTarget(player.level()).isPresent()) {
+        if (isEnabled()
+                && CrossDimensionLodLinks.activeAt(player.level(), player.getX(), player.getZ())
+                && CrossDimensionLodLinks.forTarget(player.level()).isPresent()) {
             MiaLodSampler.request(player);
         } else {
             MiaLodSampler.remove(player);
