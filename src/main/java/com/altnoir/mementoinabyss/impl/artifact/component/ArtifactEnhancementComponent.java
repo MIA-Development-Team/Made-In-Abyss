@@ -9,6 +9,7 @@ import com.altnoir.mementoinabyss.init.MiaDataComponents;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -62,9 +63,7 @@ public final class ArtifactEnhancementComponent implements ArtifactItemComponent
         for (ArtifactAttribute attribute : enhancement.attributes()) {
             double amount = attribute.modifier().amount();
             boolean percentage =
-                    attribute.modifier().operation()
-                                    != net.minecraft.world.entity.ai.attributes.AttributeModifier
-                                            .Operation.ADD_VALUE
+                    attribute.modifier().operation() != AttributeModifier.Operation.ADD_VALUE
                             || MiaAttributes.CRITICAL_HIT
                                     .unwrapKey()
                                     .map(attribute.attribute()::is)

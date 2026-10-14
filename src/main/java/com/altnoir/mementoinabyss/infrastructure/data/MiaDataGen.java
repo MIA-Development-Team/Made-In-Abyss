@@ -31,6 +31,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.item.CreativeModeTab;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 public class MiaDataGen {
@@ -130,9 +131,7 @@ public class MiaDataGen {
     @SuppressWarnings("unchecked")
     private static Map<String, Component> langData(Object provider) {
         try {
-            Field field =
-                    net.neoforged.neoforge.common.data.LanguageProvider.class.getDeclaredField(
-                            "data");
+            Field field = LanguageProvider.class.getDeclaredField("data");
             field.setAccessible(true);
             return (Map<String, Component>) field.get(provider);
         } catch (ReflectiveOperationException e) {

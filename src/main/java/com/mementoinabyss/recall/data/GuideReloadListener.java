@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
@@ -198,13 +199,8 @@ public final class GuideReloadListener
             List<GuideDefinition.GuideNode> nodes,
             List<GuideDefinition.GuideConnection> connections) {
         var articleIds =
-                articles.stream()
-                        .map(GuideDefinition.GuideArticle::id)
-                        .collect(java.util.stream.Collectors.toSet());
-        var nodeIds =
-                nodes.stream()
-                        .map(GuideDefinition.GuideNode::id)
-                        .collect(java.util.stream.Collectors.toSet());
+                articles.stream().map(GuideDefinition.GuideArticle::id).collect(Collectors.toSet());
+        var nodeIds = nodes.stream().map(GuideDefinition.GuideNode::id).collect(Collectors.toSet());
         for (var node : nodes) {
             for (var articleId : node.articleIds()) {
                 if (!articleIds.contains(articleId)) {

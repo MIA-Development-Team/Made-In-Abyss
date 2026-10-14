@@ -7,8 +7,10 @@ import com.mementoinabyss.recall.data.scene.SceneSelection;
 import com.mementoinabyss.recall.data.scene.SceneStructure;
 import com.mementoinabyss.recall.data.scene.SceneStructure.Position;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -96,7 +98,7 @@ public final class MiaGuideDataProvider implements DataProvider {
         Map<Position, String> blocks =
                 structure.blocks().stream()
                         .collect(
-                                java.util.stream.Collectors.toMap(
+                                Collectors.toMap(
                                         SceneStructure.Block::position,
                                         block -> block.state().name().toString()));
         var core =
@@ -138,7 +140,7 @@ public final class MiaGuideDataProvider implements DataProvider {
                     boolean matches =
                             "rim".equals(expected)
                                     ? rimBlocks.contains(actual)
-                                    : java.util.Objects.equals(expected, actual);
+                                    : Objects.equals(expected, actual);
                     if (!matches)
                         throw new IllegalArgumentException(
                                 "Scene NBT differs from portal core stage "

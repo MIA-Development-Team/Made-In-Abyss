@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,9 +30,7 @@ public record SceneTimeline(float duration, List<Instruction> instructions) {
                 throw new IllegalArgumentException("Scene exceeds 128 instructions");
             for (var element : array) {
                 JsonObject json = element.getAsJsonObject();
-                Type type =
-                        Type.valueOf(
-                                json.get("type").getAsString().toUpperCase(java.util.Locale.ROOT));
+                Type type = Type.valueOf(json.get("type").getAsString().toUpperCase(Locale.ROOT));
                 String group = json.has("group") ? json.get("group").getAsString() : "main";
                 if (type.grouped() && !groups.contains(group))
                     throw new IllegalArgumentException("Unknown scene group: " + group);

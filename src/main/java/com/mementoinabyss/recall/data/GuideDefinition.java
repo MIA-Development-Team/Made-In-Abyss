@@ -3,6 +3,7 @@ package com.mementoinabyss.recall.data;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,8 +61,7 @@ public record GuideDefinition(
     }
 
     public Map<Identifier, GuideArticle> articlesById() {
-        return articles.stream()
-                .collect(java.util.stream.Collectors.toUnmodifiableMap(GuideArticle::id, a -> a));
+        return articles.stream().collect(Collectors.toUnmodifiableMap(GuideArticle::id, a -> a));
     }
 
     public Optional<GuideNode> node(Identifier nodeId) {

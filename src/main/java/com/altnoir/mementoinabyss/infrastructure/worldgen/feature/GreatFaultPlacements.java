@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.feature;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import java.util.List;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -29,7 +30,7 @@ public final class GreatFaultPlacements {
                 CAERULITE_GEODE,
                 new PlacedFeature(
                         geode,
-                        java.util.List.of(
+                        List.of(
                                 RarityFilter.onAverageOnceEvery(24),
                                 InSquarePlacement.spread(),
                                 HeightRangePlacement.uniform(

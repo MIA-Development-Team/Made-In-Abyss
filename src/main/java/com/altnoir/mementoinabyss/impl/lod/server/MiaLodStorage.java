@@ -16,11 +16,14 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
@@ -31,6 +34,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.IntStream;
 import java.util.zip.CRC32;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
@@ -88,19 +92,18 @@ final class MiaLodStorage {
 
     /** Fixed stripes avoid unbounded per-path locks and serialize read-cache publication with commit. */
     private static final Object[] FILE_LOCKS =
-            java.util.stream.IntStream.range(0, 64).mapToObj(ignored -> new Object()).toArray();
+            IntStream.range(0, 64).mapToObj(ignored -> new Object()).toArray();
 
     private static final Map<Path, StoredChunk> CHUNK_CACHE = new LinkedHashMap<>(64, 0.75F, true);
-    private static final java.util.Set<Path> READY_DIRECTORIES = ConcurrentHashMap.newKeySet();
+    private static final Set<Path> READY_DIRECTORIES = ConcurrentHashMap.newKeySet();
 
     /** Chunk events may run off-thread under C2ME; entries retain chunks only weakly until selected. */
     private static final ConcurrentLinkedDeque<PendingCapture> PENDING_CAPTURES =
             new ConcurrentLinkedDeque<>();
 
-    private static final java.util.Set<CaptureKey> PENDING_CAPTURE_KEYS =
-            ConcurrentHashMap.newKeySet();
+    private static final Set<CaptureKey> PENDING_CAPTURE_KEYS = ConcurrentHashMap.newKeySet();
     private static final Object DIRTY_SECTION_LOCK = new Object();
-    private static final Map<CaptureKey, java.util.Set<Integer>> DIRTY_SECTIONS = new HashMap<>();
+    private static final Map<CaptureKey, Set<Integer>> DIRTY_SECTIONS = new HashMap<>();
     private static final AtomicInteger PENDING_CAPTURE_COUNT = new AtomicInteger();
     private static final AtomicInteger CAPTURES_IN_FLIGHT = new AtomicInteger();
     private static final AtomicLong CAPTURE_EPOCH = new AtomicLong();
@@ -122,7 +125,7 @@ final class MiaLodStorage {
                                 Math.floorDiv(pos.getX(), 16), Math.floorDiv(pos.getZ(), 16)));
         int section = Math.floorDiv(pos.getY() - level.getMinY(), 16);
         synchronized (DIRTY_SECTION_LOCK) {
-            DIRTY_SECTIONS.computeIfAbsent(key, ignored -> new java.util.HashSet<>()).add(section);
+            DIRTY_SECTIONS.computeIfAbsent(key, ignored -> new HashSet<>()).add(section);
         }
     }
 
@@ -169,7 +172,7 @@ final class MiaLodStorage {
 
     private static void retainDirtyChunk(CaptureKey key) {
         synchronized (DIRTY_SECTION_LOCK) {
-            DIRTY_SECTIONS.computeIfAbsent(key, ignored -> new java.util.HashSet<>()).add(-1);
+            DIRTY_SECTIONS.computeIfAbsent(key, ignored -> new HashSet<>()).add(-1);
         }
     }
 
@@ -587,7 +590,7 @@ final class MiaLodStorage {
                         if (mergedIndex == null) {
                             if (palette.length >= 4096) return null;
                             mergedIndex = (short) palette.length;
-                            palette = java.util.Arrays.copyOf(palette, palette.length + 1);
+                            palette = Arrays.copyOf(palette, palette.length + 1);
                             palette[mergedIndex] = stateId;
                             paletteLookup.put(stateId, mergedIndex);
                         }

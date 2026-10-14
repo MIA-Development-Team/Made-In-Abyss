@@ -1,5 +1,6 @@
 package com.altnoir.mementoinabyss.compat.jei;
 
+import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.client.tooltip.ArtifactEnhancementMaterialTooltip;
 import com.altnoir.mementoinabyss.impl.artifact.ArtifactApi;
 import com.altnoir.mementoinabyss.impl.artifact.enhancement.ArtifactEnhancementRecipe;
@@ -10,6 +11,7 @@ import java.util.List;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -29,8 +31,7 @@ public final class ArtifactEnhancementRecipeCategory
     private static final int ARROW_HEIGHT = 17;
 
     public static final IRecipeHolderType<ArtifactEnhancementRecipe> TYPE =
-            IRecipeHolderType.create(
-                    com.altnoir.mementoinabyss.MementoInAbyss.asResource("artifact_enhancement"));
+            IRecipeHolderType.create(MementoInAbyss.asResource("artifact_enhancement"));
 
     private final IDrawable icon;
 
@@ -109,7 +110,7 @@ public final class ArtifactEnhancementRecipeCategory
     public void getTooltip(
             ITooltipBuilder tooltip,
             RecipeHolder<ArtifactEnhancementRecipe> recipe,
-            mezz.jei.api.gui.ingredient.IRecipeSlotsView recipeSlotsView,
+            IRecipeSlotsView recipeSlotsView,
             double mouseX,
             double mouseY) {
         if (mouseX >= ARROW_X

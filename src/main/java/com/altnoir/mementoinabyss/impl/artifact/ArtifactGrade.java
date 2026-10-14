@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.impl.artifact;
 
 import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import java.util.function.IntFunction;
 import java.util.function.UnaryOperator;
 import net.minecraft.ChatFormatting;
@@ -22,7 +23,7 @@ public enum ArtifactGrade implements StringRepresentable {
             StringRepresentable.fromEnum(ArtifactGrade::values);
     private static final IntFunction<ArtifactGrade> BY_ID =
             ByIdMap.continuous(ArtifactGrade::ordinal, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
-    public static final StreamCodec<io.netty.buffer.ByteBuf, ArtifactGrade> STREAM_CODEC =
+    public static final StreamCodec<ByteBuf, ArtifactGrade> STREAM_CODEC =
             ByteBufCodecs.idMapper(BY_ID, ArtifactGrade::ordinal);
 
     private final String serializedName;

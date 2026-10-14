@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
@@ -196,7 +197,7 @@ public record SceneStructure(Position size, List<Block> blocks) {
                     + new TreeMap<>(properties)
                             .entrySet().stream()
                                     .map(entry -> entry.getKey() + "=" + entry.getValue())
-                                    .collect(java.util.stream.Collectors.joining(","))
+                                    .collect(Collectors.joining(","))
                     + "]";
         }
 

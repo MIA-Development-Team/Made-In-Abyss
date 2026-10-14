@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.infrastructure.data;
 
 import com.altnoir.abysslib.reginth.providers.ProviderType;
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -20,12 +21,10 @@ public final class MiaRegistrateTags {
                     provider.tag(MiaTags.BlockTags.MYCELIUM_REPLACEABLE.tag).addTag(BlockTags.DIRT);
                     provider.tag(MiaTags.BlockTags.PRIMO_STEMS.tag)
                             .add(
-                                    com.altnoir.mementoinabyss.init.MiaBlocks.PRIMO_STEM.get(),
-                                    com.altnoir.mementoinabyss.init.MiaBlocks.STRIPPED_PRIMO_STEM
-                                            .get(),
-                                    com.altnoir.mementoinabyss.init.MiaBlocks.PRIMO_HYPHAE.get(),
-                                    com.altnoir.mementoinabyss.init.MiaBlocks.STRIPPED_PRIMO_HYPHAE
-                                            .get());
+                                    MiaBlocks.PRIMO_STEM.get(),
+                                    MiaBlocks.STRIPPED_PRIMO_STEM.get(),
+                                    MiaBlocks.PRIMO_HYPHAE.get(),
+                                    MiaBlocks.STRIPPED_PRIMO_HYPHAE.get());
                 });
         registrate.addDataGenerator(
                 ProviderType.ITEM_TAGS,

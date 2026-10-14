@@ -6,6 +6,7 @@ import com.altnoir.mementoinabyss.impl.rope.RopeSimulation;
 import com.altnoir.mementoinabyss.impl.rope.minecraft.MinecraftBlockCollisionResolver;
 import com.altnoir.mementoinabyss.network.RopeSnapshotPayload;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.WeakHashMap;
@@ -262,8 +263,8 @@ public final class RopeConnectorBlockEntity extends BlockEntity {
         }
 
         if (this.clientRope == null
-                || !java.util.Objects.equals(this.connectedPos, this.simulatedConnectedPos)
-                || !java.util.Objects.equals(this.freeEnd, this.simulatedFreeEnd)
+                || !Objects.equals(this.connectedPos, this.simulatedConnectedPos)
+                || !Objects.equals(this.freeEnd, this.simulatedFreeEnd)
                 || Double.compare(this.ropeLength, this.simulatedLength) != 0) {
             this.createClientRope();
         }

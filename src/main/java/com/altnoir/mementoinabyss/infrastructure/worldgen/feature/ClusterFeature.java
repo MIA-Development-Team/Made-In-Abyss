@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.material.Fluids;
 
 public final class ClusterFeature extends Feature<ClusterConfiguration> {
@@ -86,7 +87,7 @@ public final class ClusterFeature extends Feature<ClusterConfiguration> {
             WorldGenLevel level,
             BlockPos pos,
             Direction facing,
-            net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider provider,
+            BlockStateProvider provider,
             RandomSource random) {
         if (!level.isEmptyBlock(pos) && !isWater(level, pos)) return false;
         BlockPos support = pos.relative(facing.getOpposite());

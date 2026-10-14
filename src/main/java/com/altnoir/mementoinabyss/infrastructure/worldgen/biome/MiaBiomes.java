@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.biome;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.GreatFaultPlacements;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.MiaAbyssPlacements;
 import com.altnoir.mementoinabyss.init.MiaSoundEvents;
 import java.util.List;
@@ -253,8 +254,7 @@ public final class MiaBiomes {
         if (!inside) {
             generationBuilder.addFeature(
                     GenerationStep.Decoration.LOCAL_MODIFICATIONS,
-                    com.altnoir.mementoinabyss.infrastructure.worldgen.feature.GreatFaultPlacements
-                            .CAERULITE_GEODE);
+                    GreatFaultPlacements.CAERULITE_GEODE);
             generationBuilder.addFeature(
                     GenerationStep.Decoration.VEGETAL_DECORATION,
                     MiaAbyssPlacements.PATCH_LARGE_FERN);

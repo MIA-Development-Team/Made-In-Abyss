@@ -6,6 +6,7 @@ import java.util.zip.CRC32;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.Identifier;
 
 /** Reuse is offered only for a full replacement, validated by canonical named-state SHA-256. */
 public record CrossDimensionLodCacheOfferPayload(
@@ -13,7 +14,7 @@ public record CrossDimensionLodCacheOfferPayload(
         implements CrossDimensionLodStreamPayload {
     public static final Type<CrossDimensionLodCacheOfferPayload> TYPE =
             new Type<>(
-                    net.minecraft.resources.Identifier.fromNamespaceAndPath(
+                    Identifier.fromNamespaceAndPath(
                             MementoInAbyss.ID, "cross_dimension_lod_cache_offer"));
     public static final StreamCodec<RegistryFriendlyByteBuf, CrossDimensionLodCacheOfferPayload>
             STREAM_CODEC =

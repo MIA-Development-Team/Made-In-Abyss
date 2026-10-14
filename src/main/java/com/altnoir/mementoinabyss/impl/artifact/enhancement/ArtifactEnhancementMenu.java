@@ -179,7 +179,7 @@ public final class ArtifactEnhancementMenu extends AbstractContainerMenu {
 
     private List<RecipeHolder<ArtifactEnhancementRecipe>> recipes() {
         var server = player.level().getServer();
-        if (server == null) return java.util.List.of();
+        if (server == null) return List.of();
         return server
                 .getRecipeManager()
                 .recipeMap()

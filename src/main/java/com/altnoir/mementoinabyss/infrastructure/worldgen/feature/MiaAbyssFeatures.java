@@ -10,6 +10,7 @@ import java.util.List;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -285,8 +286,7 @@ public final class MiaAbyssFeatures {
                                 4,
                                 1,
                                 HolderSet.direct(
-                                        net.minecraft.core.registries.BuiltInRegistries.BLOCK
-                                                ::wrapAsHolder,
+                                        BuiltInRegistries.BLOCK::wrapAsHolder,
                                         Blocks.TUFF,
                                         Blocks.DEEPSLATE,
                                         MiaBlocks.ABYSS_ANDESITE.get()))));

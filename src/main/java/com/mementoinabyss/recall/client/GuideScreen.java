@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -22,11 +23,16 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Util;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import org.commonmark.node.Node;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3x2fStack;
 import org.slf4j.Logger;
@@ -101,7 +107,7 @@ public final class GuideScreen extends Screen {
     private final GuideSpring cardSpring = new GuideSpring(0.34F);
     private final GuideSpring outgoingCardSpring = new GuideSpring(0.34F);
     private final GuideAccordion accordion = new GuideAccordion();
-    private final Map<Identifier, org.commonmark.node.Node> documents = new LinkedHashMap<>();
+    private final Map<Identifier, Node> documents = new LinkedHashMap<>();
     private final Map<LayoutKey, GuideMarkdown.Layout> articleLayouts = new LinkedHashMap<>();
     private final Map<String, SceneView> sceneViews = new LinkedHashMap<>();
     @Nullable private SceneView draggingScene;
@@ -1131,7 +1137,7 @@ public final class GuideScreen extends Screen {
     }
 
     private List<SearchResult> searchResults() {
-        String query = searchText.trim().toLowerCase(java.util.Locale.ROOT);
+        String query = searchText.trim().toLowerCase(Locale.ROOT);
         if (query.isBlank()) return List.of();
         List<SearchResult> results = new ArrayList<>();
         for (GuideDefinition definition : maps()) {
@@ -1146,7 +1152,7 @@ public final class GuideScreen extends Screen {
                                         + node.id()
                                         + " "
                                         + node.item())
-                                .toLowerCase(java.util.Locale.ROOT);
+                                .toLowerCase(Locale.ROOT);
                 if (searchable.contains(query)) {
                     results.add(new SearchResult(definition, node));
                     if (results.size() == MAX_SEARCH_RESULTS) return results;
@@ -1741,8 +1747,8 @@ public final class GuideScreen extends Screen {
                                 remaining[0] -=
                                         font.getSplitter()
                                                 .stringWidth(
-                                                        net.minecraft.util.FormattedCharSequence
-                                                                .codepoint(codepoint, style));
+                                                        FormattedCharSequence.codepoint(
+                                                                codepoint, style));
                                 if (remaining[0] < 0) {
                                     destination[0] = style.getInsertion();
                                     return false;
@@ -1774,10 +1780,10 @@ public final class GuideScreen extends Screen {
 
     private static ItemStack itemStack(Identifier itemId) {
         return new ItemStack(
-                net.minecraft.core.registries.BuiltInRegistries.ITEM
+                BuiltInRegistries.ITEM
                         .get(itemId)
-                        .map(net.minecraft.core.Holder.Reference::value)
-                        .orElse(net.minecraft.world.item.Items.BARRIER));
+                        .map(Holder.Reference::value)
+                        .orElse(Items.BARRIER));
     }
 
     private void fitMap() {

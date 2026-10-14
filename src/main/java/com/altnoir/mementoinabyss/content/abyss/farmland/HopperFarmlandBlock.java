@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.TorchflowerCropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.neoforged.neoforge.common.FarmlandWaterManager;
 import org.jetbrains.annotations.Nullable;
 
 public class HopperFarmlandBlock extends FarmlandBlock {
@@ -146,7 +147,7 @@ public class HopperFarmlandBlock extends FarmlandBlock {
                 return true;
             }
         }
-        return net.neoforged.neoforge.common.FarmlandWaterManager.hasBlockWaterTicket(level, pos);
+        return FarmlandWaterManager.hasBlockWaterTicket(level, pos);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.altnoir.mementoinabyss.impl.lod.network;
 
+import com.altnoir.mementoinabyss.impl.lod.server.CrossDimensionLodKey;
 import java.nio.charset.StandardCharsets;
 import java.util.zip.CRC32;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -143,6 +144,6 @@ public record CrossDimensionLodTransfer(
     }
 
     public long chunkKey() {
-        return com.altnoir.mementoinabyss.impl.lod.server.CrossDimensionLodKey.pack(chunkX, chunkZ);
+        return CrossDimensionLodKey.pack(chunkX, chunkZ);
     }
 }

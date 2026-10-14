@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -269,7 +270,7 @@ final class GuideMarkdown {
                             || uri.getRawQuery() != null
                             || uri.getRawFragment() != null
                             || uri.getPath().startsWith("/")
-                            || !uri.getPath().toLowerCase(java.util.Locale.ROOT).endsWith(".png")
+                            || !uri.getPath().toLowerCase(Locale.ROOT).endsWith(".png")
                             || namespace.isBlank()) return null;
                     String path = uri.getPath();
                     if (path.startsWith("textures/")) {

@@ -8,6 +8,7 @@ import com.altnoir.mementoinabyss.init.MiaItems;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -83,10 +84,7 @@ public final class MiaArtifactEnhancementRecipeProvider extends RecipeProvider {
             Holder<Attribute> attribute,
             DoubleRange range,
             AttributeModifier.Operation operation) {
-        var materialId =
-                net.minecraft.core.registries.BuiltInRegistries.ITEM
-                        .getKey(material.asItem())
-                        .getPath();
+        var materialId = BuiltInRegistries.ITEM.getKey(material.asItem()).getPath();
         var id =
                 ResourceKey.create(
                         Registries.RECIPE,
@@ -94,8 +92,7 @@ public final class MiaArtifactEnhancementRecipeProvider extends RecipeProvider {
         output.accept(
                 id,
                 new ArtifactEnhancementRecipe(
-                        net.minecraft.core.registries.BuiltInRegistries.ITEM.wrapAsHolder(
-                                material.asItem()),
+                        BuiltInRegistries.ITEM.wrapAsHolder(material.asItem()),
                         count,
                         attribute,
                         range,

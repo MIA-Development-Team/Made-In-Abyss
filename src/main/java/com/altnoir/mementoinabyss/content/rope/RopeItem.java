@@ -15,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public final class RopeItem extends Item {
     private static final int USE_DURATION = 72_000;
@@ -217,21 +218,20 @@ public final class RopeItem extends Item {
             Player player,
             ItemStack stack,
             RopeEndpointSelection selection,
-            net.minecraft.world.phys.Vec3 end) {
+            Vec3 end) {
         if (!(level.getBlockEntity(selection.connector()) instanceof RopeConnectorBlockEntity)) {
             stack.remove(MiaDataComponents.ROPE_ENDPOINT.get());
             refundReservedLength(player, stack, selection);
             notify(player, "rope.missing_endpoint");
             return InteractionResult.FAIL;
         }
-        double distance =
-                net.minecraft.world.phys.Vec3.atCenterOf(selection.connector()).distanceTo(end);
+        double distance = Vec3.atCenterOf(selection.connector()).distanceTo(end);
         double maximumDistance = MementoInAbyss.CONFIGS.gamePlaySection.hookMaxDistance.get();
         if (distance > selection.length() + 1.0E-6 || selection.length() > maximumDistance) {
             notify(player, "rope.not_enough_length", selection.length());
             return InteractionResult.FAIL;
         }
-        net.minecraft.world.phys.Vec3 throwVelocity =
+        Vec3 throwVelocity =
                 player.getLookAngle().scale(THROW_SPEED).add(player.getDeltaMovement().scale(20.0));
         if (!RopeConnectorBlockEntity.connectFree(
                 level, selection.connector(), end, selection.length(), throwVelocity)) {
@@ -251,11 +251,7 @@ public final class RopeItem extends Item {
     }
 
     private static int initialLength(Player player, ItemStack stack, BlockPos connector) {
-        int needed =
-                (int)
-                        Math.ceil(
-                                net.minecraft.world.phys.Vec3.atCenterOf(connector)
-                                        .distanceTo(heldPosition(player)));
+        int needed = (int) Math.ceil(Vec3.atCenterOf(connector).distanceTo(heldPosition(player)));
         int maximum =
                 Math.max(
                         1,
@@ -298,7 +294,7 @@ public final class RopeItem extends Item {
         }
     }
 
-    private static net.minecraft.world.phys.Vec3 heldPosition(Player player) {
+    private static Vec3 heldPosition(Player player) {
         return player.getEyePosition().add(player.getLookAngle().scale(0.55)).add(0.0, -0.35, 0.0);
     }
 

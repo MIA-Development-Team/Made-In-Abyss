@@ -7,6 +7,7 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.TreeOnEveryL
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.WaterOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeFeatures;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
+import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -397,7 +398,7 @@ public final class MiaAbyssPlacements {
      */
     private static List<PlacementModifier> patchOnEveryLayer(
             PlacementModifier prefix, int layerCount, int tries, int xzSpread, int ySpread) {
-        java.util.ArrayList<PlacementModifier> modifiers = new java.util.ArrayList<>();
+        ArrayList<PlacementModifier> modifiers = new ArrayList<>();
         if (prefix != null) {
             modifiers.add(prefix);
         }

@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /** NBT supplies all block content; the paired JSON supplies temporal instructions and selections. */
 public record SceneDefinition(
@@ -80,8 +81,7 @@ public record SceneDefinition(
                                                 block.state(),
                                                 membership.getOrDefault(block.position(), "main")))
                         .toList();
-        Set<String> groups =
-                blocks.stream().map(Block::group).collect(java.util.stream.Collectors.toSet());
+        Set<String> groups = blocks.stream().map(Block::group).collect(Collectors.toSet());
         return new SceneDefinition(
                 blocks,
                 groups,
@@ -89,9 +89,7 @@ public record SceneDefinition(
                         json,
                         groups,
                         zeroLayer,
-                        blocks.stream()
-                                .map(Block::position)
-                                .collect(java.util.stream.Collectors.toSet())),
+                        blocks.stream().map(Block::position).collect(Collectors.toSet())),
                 zeroLayer);
     }
 

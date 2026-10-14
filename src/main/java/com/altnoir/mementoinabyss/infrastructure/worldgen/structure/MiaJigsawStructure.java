@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pools.DimensionPadding;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
@@ -186,12 +187,7 @@ public final class MiaJigsawStructure extends Structure {
     }
 
     private static DataResult<MiaJigsawStructure> verifyRange(MiaJigsawStructure structure) {
-        int terrainMargin =
-                structure.terrainAdaptation()
-                                == net.minecraft.world.level.levelgen.structure.TerrainAdjustment
-                                        .NONE
-                        ? 0
-                        : 12;
+        int terrainMargin = structure.terrainAdaptation() == TerrainAdjustment.NONE ? 0 : 12;
         return structure.maxDistance.horizontal() + terrainMargin > MAX_RANGE
                 ? DataResult.error(
                         () ->

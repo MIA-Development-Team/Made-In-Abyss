@@ -5,10 +5,12 @@ import com.mementoinabyss.recall.data.scene.SceneDefinition;
 import com.mementoinabyss.recall.data.scene.SceneStructure;
 import com.mementoinabyss.recall.data.scene.SceneTimeline;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeStorage;
@@ -41,8 +43,7 @@ final class RecallScene {
     private final float centerY;
     private final AABBOutline outline = new AABBOutline();
 
-    RecallScene(SceneDefinition definition)
-            throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+    RecallScene(SceneDefinition definition) throws CommandSyntaxException {
         Map<BlockPos, BlockState> states = new HashMap<>();
         Map<String, AABB> groups = new HashMap<>();
         AABB all = null;
@@ -83,8 +84,7 @@ final class RecallScene {
         modelsByPosition =
                 built.stream()
                         .collect(
-                                java.util.stream.Collectors.toUnmodifiableMap(
-                                        BlockModel::position, block -> block));
+                                Collectors.toUnmodifiableMap(BlockModel::position, block -> block));
     }
 
     float fitScale(int width, int height) {

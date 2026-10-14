@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.impl.lod.client;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodDebugPayload;
 import com.altnoir.mementoinabyss.impl.lod.server.CrossDimensionLodLinks;
+import com.altnoir.mementoinabyss.impl.lod.server.MiaLodView;
 import java.util.Locale;
 import net.minecraft.client.gui.components.debug.DebugScreenDisplayer;
 import net.minecraft.client.gui.components.debug.DebugScreenEntry;
@@ -77,8 +78,7 @@ public final class CrossDimensionLodDebugEntry implements DebugScreenEntry {
                             view.x(),
                             view.y(),
                             view.z(),
-                            com.altnoir.mementoinabyss.impl.lod.server.MiaLodView
-                                    .TARGET_CELL_PIXELS));
+                            MiaLodView.TARGET_CELL_PIXELS));
         var cache = CrossDimensionLodRenderer.cacheStats();
         displayer.addLine(
                 String.format(

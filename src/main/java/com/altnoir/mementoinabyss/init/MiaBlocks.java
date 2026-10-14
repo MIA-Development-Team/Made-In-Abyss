@@ -45,12 +45,14 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeFeatures;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeGrowers;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -1423,11 +1425,7 @@ public class MiaBlocks {
     }
 
     private static BlockEntry<FlowerBlock> flower(
-            String name,
-            net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect> effect,
-            float duration,
-            SoundType sound,
-            int light) {
+            String name, Holder<MobEffect> effect, float duration, SoundType sound, int light) {
         return REGISTRATE
                 .object(name)
                 .block(p -> new FlowerBlock(effect, duration, p))

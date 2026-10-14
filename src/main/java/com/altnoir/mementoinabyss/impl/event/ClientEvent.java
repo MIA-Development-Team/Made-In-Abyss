@@ -31,6 +31,7 @@ import com.altnoir.mementoinabyss.init.MiaRecipes;
 import com.altnoir.mementoinabyss.network.AdjustRopeLengthPayload;
 import com.altnoir.mementoinabyss.network.CompassTargetPayload;
 import com.altnoir.mementoinabyss.network.RopeSnapshotPayload;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.debug.DebugScreenEntryStatus;
 import net.minecraft.client.gui.components.debug.DebugScreenProfile;
 import net.neoforged.api.distmarker.Dist;
@@ -108,7 +109,7 @@ public final class ClientEvent {
 
     @SubscribeEvent
     public static void clientTick(ClientTickEvent.Pre event) {
-        var player = net.minecraft.client.Minecraft.getInstance().player;
+        var player = Minecraft.getInstance().player;
         if (player != null) {
             var input = player.input.keyPresses;
             RopeClimbing.tick(
@@ -136,7 +137,7 @@ public final class ClientEvent {
         event.register(
                 RopeSnapshotPayload.TYPE,
                 (payload, context) -> {
-                    var level = net.minecraft.client.Minecraft.getInstance().level;
+                    var level = Minecraft.getInstance().level;
                     if (level != null
                             && level.getBlockEntity(payload.connector())
                                     instanceof RopeConnectorBlockEntity connector) {
@@ -178,7 +179,7 @@ public final class ClientEvent {
 
     @SubscribeEvent
     public static void adjustRopeLength(InputEvent.MouseScrollingEvent event) {
-        var minecraft = net.minecraft.client.Minecraft.getInstance();
+        var minecraft = Minecraft.getInstance();
         if (minecraft.player == null
                 || minecraft.screen != null
                 || !minecraft.player.isUsingItem()

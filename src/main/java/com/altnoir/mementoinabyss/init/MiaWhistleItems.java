@@ -12,6 +12,7 @@ import com.altnoir.mementoinabyss.impl.whistle.grid.WhistleGrid;
 import com.altnoir.mementoinabyss.impl.whistle.skill.WhistleNote;
 import com.altnoir.mementoinabyss.impl.whistle.skill.WhistleSkillCategory;
 import com.altnoir.mementoinabyss.impl.whistle.skill.WhistleSkillDefinition;
+import java.util.List;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.resources.model.sprite.Material;
@@ -45,7 +46,7 @@ public final class MiaWhistleItems {
                                                             1, 2),
                                                     WhistleSkillCategory.ECHO,
                                                     true,
-                                                    java.util.List.of(
+                                                    List.of(
                                                             WhistleNote.UP,
                                                             WhistleNote.RIGHT,
                                                             WhistleNote.DOWN,

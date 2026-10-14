@@ -16,6 +16,7 @@ import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
+import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
@@ -145,7 +146,7 @@ public final class EnvironmentCubeSkyboxRenderer implements CustomSkyboxRenderer
     }
 
     private static GpuBuffer buildBuffer(
-            String label, int vertices, java.util.function.Consumer<BufferBuilder> writer) {
+            String label, int vertices, Consumer<BufferBuilder> writer) {
         int bytes = vertices * DefaultVertexFormat.POSITION.getVertexSize();
         try (ByteBufferBuilder storage = ByteBufferBuilder.exactlySized(bytes)) {
             BufferBuilder builder =

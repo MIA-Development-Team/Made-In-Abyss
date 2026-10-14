@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -54,7 +55,7 @@ public final class EndlessCupRenderer
         state.waterSprite =
                 Minecraft.getInstance()
                         .getAtlasManager()
-                        .getAtlasOrThrow(net.minecraft.data.AtlasIds.BLOCKS)
+                        .getAtlasOrThrow(AtlasIds.BLOCKS)
                         .getSprite(WATER_STILL);
     }
 
