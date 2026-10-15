@@ -5,8 +5,9 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaBiomes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.OverworldAbyssBiomeSource;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssClimate;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssHole;
-import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssNoise;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssShape;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssSurface;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensionTypes;
 import com.altnoir.mementoinabyss.mixin.worldgen.ChunkGeneratorAccessor;
 import com.altnoir.mementoinabyss.mixin.worldgen.RandomStateAccessor;
 import java.util.List;
@@ -17,17 +18,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.biome.Biomes;
-import net.minecraft.world.level.biome.Climate;
-import net.minecraft.world.level.biome.FeatureSorter;
+import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.DensityFunction;
-import net.minecraft.world.level.levelgen.DensityFunctions;
-import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
-import net.minecraft.world.level.levelgen.NoiseRouter;
-import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.*;
 import org.jspecify.annotations.Nullable;
 
 public final class OverworldAbyss {
@@ -41,7 +34,7 @@ public final class OverworldAbyss {
     private static final Map<RandomState, OverworldAbyssHole> INSTALLED = new ConcurrentHashMap<>();
 
     public static int overworldRadius(int baseRadius) {
-        return Math.toIntExact(((long) baseRadius * 3 + 1) / 2);
+        return Math.multiplyExact(baseRadius, 2);
     }
 
     public static int configuredRadius() {
@@ -49,7 +42,7 @@ public final class OverworldAbyss {
     }
 
     public static boolean withinConnectionRange(double x, double z, int radius) {
-        double limit = 3.0 * radius;
+        double limit = 2.0 * radius;
         return Double.isFinite(x) && Double.isFinite(z) && x * x + z * z <= limit * limit;
     }
 
@@ -61,7 +54,9 @@ public final class OverworldAbyss {
                 MementoInAbyss.CONFIGS.worldGenSection.overworldAbyssEnabled.get());
     }
 
-    /** Separated from the config lookup so the guards can be exercised without a running server. */
+    /**
+     * Separated from the config lookup so the guards can be exercised without a running server.
+     */
     public static boolean install(
             ServerLevel level, ChunkGenerator generator, RandomState state, boolean enabled) {
         // A saved generator can contain last session's wrapper. Rebuild with current config/seed,
@@ -84,22 +79,41 @@ public final class OverworldAbyss {
         }
         var noise = (NoiseBasedChunkGenerator) generator;
         NoiseRouter original = state.router();
+        NoiseRouter source = C2meDensityFunctionCompat.originalRouter(original);
         var settings = noise.generatorSettings().value().noiseSettings();
         OverworldAbyssShape shape =
                 new OverworldAbyssShape(
                         configuredRadius(),
-                        settings.minY(),
-                        settings.minY() + settings.height(),
+                        level.dimensionType().minY(),
+                        level.dimensionType().minY() + level.dimensionType().height(),
                         level.getSeed(),
                         MementoInAbyss.CONFIGS.worldGenSection.abyssOuterSlope.get(),
-                        MementoInAbyss.CONFIGS.worldGenSection.abyssSlopeBand.get());
-        ((RandomStateAccessor) (Object) state).mia$setRouter(compose(state, original, shape));
+                        MementoInAbyss.CONFIGS.worldGenSection.abyssSlopeBand.get(),
+                        level.registryAccess()
+                                        .lookupOrThrow(Registries.DIMENSION_TYPE)
+                                        .getOrThrow(MiaDimensionTypes.THE_ABYSS)
+                                        .value()
+                                        .minY()
+                                + level.registryAccess()
+                                        .lookupOrThrow(Registries.DIMENSION_TYPE)
+                                        .getOrThrow(MiaDimensionTypes.THE_ABYSS)
+                                        .value()
+                                        .height());
+        ((RandomStateAccessor) (Object) state)
+                .mia$setRouter(
+                        compose(
+                                state,
+                                original,
+                                shape,
+                                DensityFunctions.cache2d(source.preliminarySurfaceLevel()),
+                                settings.getCellWidth(),
+                                settings.getCellHeight()));
         var biomeRegistry = level.registryAccess().lookupOrThrow(Registries.BIOME);
         replaceBiomeSource(
                 generator,
                 new OverworldAbyssBiomeSource(
                         generator.getBiomeSource(),
-                        biomeRegistry.getOrThrow(MiaBiomes.THE_ABYSS),
+                        biomeRegistry.getOrThrow(MiaBiomes.OVERWORLD_ABYSS),
                         List.of(
                                         Biomes.FROZEN_PEAKS,
                                         Biomes.JAGGED_PEAKS,
@@ -134,7 +148,9 @@ public final class OverworldAbyss {
                                         true)));
     }
 
-    /** What {@link #install} does with one candidate level; every refusal has its own reason. */
+    /**
+     * What {@link #install} does with one candidate level; every refusal has its own reason.
+     */
     public enum Decision {
         INSTALL,
         NOT_OVERWORLD,
@@ -160,7 +176,9 @@ public final class OverworldAbyss {
         return Decision.INSTALL;
     }
 
-    /** @return the abyss geometry installed into this random state, or {@code null} for untouched levels */
+    /**
+     * @return the abyss geometry installed into this random state, or {@code null} for untouched levels
+     */
     public static @Nullable OverworldAbyssShape shapeOf(@Nullable RandomState state) {
         OverworldAbyssHole hole = holeOf(state);
         return hole == null ? null : hole.shape();
@@ -193,26 +211,58 @@ public final class OverworldAbyss {
      * not once per block.
      *
      * @param originalSurface unmodified estimate, cached once per level; {@code NoiseChunk} replaces
-     *     its {@code Cache2D} marker with a chunk-local cache, so sharing one instance is safe
+     *                        its {@code Cache2D} marker with a chunk-local cache, so sharing one instance is safe
      */
     public static NoiseRouter compose(
             RandomState state,
             NoiseRouter original,
             OverworldAbyssShape shape,
             DensityFunction originalSurface) {
-        DensityFunction detail = new OverworldAbyssNoise(shape.seed());
+        return compose(state, original, shape, originalSurface, 4, 8);
+    }
+
+    public static NoiseRouter compose(
+            RandomState state,
+            NoiseRouter original,
+            OverworldAbyssShape shape,
+            DensityFunction originalSurface,
+            int cellWidth,
+            int cellHeight) {
+        OverworldAbyssCarvers.retainOriginalSampler(state);
+        NoiseRouter source = C2meDensityFunctionCompat.originalRouter(original);
+        var pipeline =
+                OverworldAbyssPipeline.build(source.finalDensity(), shape, cellWidth, cellHeight);
+        MementoInAbyss.LOGGER.info(
+                "Overworld abyss density path: {} (lattice {}x{})",
+                pipeline.path(),
+                cellWidth,
+                cellHeight);
         OverworldAbyssHole surface =
                 new OverworldAbyssHole(
-                        original.finalDensity(),
+                        source.finalDensity(),
+                        pipeline.terrain(),
                         originalSurface,
-                        originalSurface,
-                        detail,
+                        DensityFunctions.zero(),
                         shape,
+                        true,
+                        true,
+                        pipeline.sampledTerrain(),
+                        false,
                         true);
         OverworldAbyssHole terrain =
                 new OverworldAbyssHole(
-                        original.finalDensity(), surface, originalSurface, detail, shape, false);
+                        source.finalDensity(),
+                        pipeline.terrain(),
+                        originalSurface,
+                        DensityFunctions.zero(),
+                        shape,
+                        false,
+                        true,
+                        pipeline.sampledTerrain(),
+                        false,
+                        true);
         INSTALLED.put(state, surface);
+        DensityFunction terrainSurface = new OverworldAbyssSurface(surface);
         NoiseRouter router =
                 new NoiseRouter(
                         original.barrierNoise(),
@@ -222,16 +272,19 @@ public final class OverworldAbyss {
                         original.temperature(),
                         original.vegetation(),
                         new OverworldAbyssClimate(
-                                original.continents(),
+                                source.continents(),
                                 shape,
                                 OverworldAbyssClimate.Component.CONTINENTS),
                         new OverworldAbyssClimate(
-                                original.erosion(), shape, OverworldAbyssClimate.Component.EROSION),
+                                source.erosion(), shape, OverworldAbyssClimate.Component.EROSION),
                         new OverworldAbyssClimate(
-                                original.depth(), shape, OverworldAbyssClimate.Component.DEPTH),
+                                source.depth(),
+                                shape,
+                                OverworldAbyssClimate.Component.DEPTH,
+                                java.util.Optional.of(terrainSurface)),
                         new OverworldAbyssClimate(
-                                original.ridges(), shape, OverworldAbyssClimate.Component.RIDGES),
-                        surface,
+                                source.ridges(), shape, OverworldAbyssClimate.Component.RIDGES),
+                        terrainSurface,
                         terrain,
                         original.veinToggle(),
                         original.veinRidged(),
@@ -247,8 +300,8 @@ public final class OverworldAbyss {
         ((RandomStateAccessor) (Object) state)
                 .mia$setSampler(
                         new Climate.Sampler(
-                                router.temperature().mapAll(flatten),
-                                router.vegetation().mapAll(flatten),
+                                source.temperature().mapAll(flatten),
+                                source.vegetation().mapAll(flatten),
                                 router.continents().mapAll(flatten),
                                 router.erosion().mapAll(flatten),
                                 router.depth().mapAll(flatten),

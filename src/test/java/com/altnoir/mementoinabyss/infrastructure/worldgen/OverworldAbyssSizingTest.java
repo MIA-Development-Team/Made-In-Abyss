@@ -10,21 +10,21 @@ class OverworldAbyssSizingTest {
     void expandedRadiusDrivesAllOverworldBoundaries() {
         int radius = OverworldAbyss.overworldRadius(160);
         var shape = new OverworldAbyssShape(radius, -64, 320, 1, 1, 1.25);
-        assertEquals(240, radius);
-        assertEquals(480, radius * 2);
-        assertEquals(780, shape.outerLimit());
-        assertTrue(OverworldAbyss.withinConnectionRange(720, 0, radius));
-        assertTrue(OverworldAbyss.withinConnectionRange(-432, 576, radius));
-        assertFalse(OverworldAbyss.withinConnectionRange(720.01, 0, radius));
-        assertFalse(OverworldAbyss.withinConnectionRange(600, 600, radius));
+        assertEquals(320, radius);
+        assertEquals(640, radius * 2);
+        assertEquals(1040, shape.outerLimit());
+        assertTrue(OverworldAbyss.withinConnectionRange(640, 0, radius));
+        assertTrue(OverworldAbyss.withinConnectionRange(-384, 512, radius));
+        assertFalse(OverworldAbyss.withinConnectionRange(640.01, 0, radius));
+        assertFalse(OverworldAbyss.withinConnectionRange(800, 800, radius));
         assertFalse(OverworldAbyss.withinConnectionRange(Double.NaN, 0, radius));
         assertFalse(OverworldAbyss.withinConnectionRange(Double.POSITIVE_INFINITY, 0, radius));
     }
 
     @Test
     void fullConfigRangeAndOddRadiiRemainRepresentable() {
-        assertEquals(242, OverworldAbyss.overworldRadius(161));
-        assertEquals(96, OverworldAbyss.overworldRadius(64));
+        assertEquals(322, OverworldAbyss.overworldRadius(161));
+        assertEquals(128, OverworldAbyss.overworldRadius(64));
         assertDoesNotThrow(
                 () ->
                         new OverworldAbyssShape(

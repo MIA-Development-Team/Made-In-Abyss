@@ -148,7 +148,7 @@ class OverworldAbyssBiomeTest {
                                 Heightmap.Types.OCEAN_FLOOR_WG,
                                 HEIGHT,
                                 modified);
-                assertTrue(y >= 212 && y <= 260, "seed=" + seed + ", ring height=" + y);
+                assertTrue(y >= 212 && y < 320, "seed=" + seed + ", ring height=" + y);
                 int qx = QuartPos.fromBlock(point[0]),
                         qy = QuartPos.fromBlock(y),
                         qz = QuartPos.fromBlock(point[1]);

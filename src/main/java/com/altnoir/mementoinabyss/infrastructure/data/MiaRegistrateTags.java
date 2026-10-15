@@ -18,7 +18,9 @@ public final class MiaRegistrateTags {
                 ProviderType.BLOCK_TAGS,
                 provider -> {
                     provider.tag(MiaTags.BlockTags.ABYSS_MUD_ORE_REPLACEABLE.tag).add(Blocks.MUD);
-                    provider.tag(MiaTags.BlockTags.MYCELIUM_REPLACEABLE.tag).addTag(BlockTags.DIRT);
+                    provider.tag(MiaTags.BlockTags.MYCELIUM_REPLACEABLE.tag)
+                            .addTag(BlockTags.DIRT)
+                            .addTag(BlockTags.GRASS_BLOCKS);
                     provider.tag(MiaTags.BlockTags.PRIMO_STEMS.tag)
                             .add(
                                     MiaBlocks.PRIMO_STEM.get(),

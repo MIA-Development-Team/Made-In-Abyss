@@ -34,6 +34,16 @@ public final class NoodleAbyssHole extends AbstractAbyssHole {
     }
 
     @Override
+    public double minValue() {
+        return -10;
+    }
+
+    @Override
+    public double maxValue() {
+        return 12.5;
+    }
+
+    @Override
     public KeyDispatchDataCodec<NoodleAbyssHole> codec() {
         return CODEC;
     }

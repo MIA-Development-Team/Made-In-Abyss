@@ -81,7 +81,9 @@ public final class SlabRuinsFeature extends Feature<SlabRuinsConfiguration> {
         while (cursor.getY() > minimumY) {
             if (level.isEmptyBlock(cursor)) {
                 BlockState floor = level.getBlockState(cursor.below());
-                if (floor.is(BlockTags.DIRT) || floor.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag)) {
+                if (floor.is(BlockTags.DIRT)
+                        || floor.is(BlockTags.GRASS_BLOCKS)
+                        || floor.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag)) {
                     return cursor.immutable();
                 }
             }

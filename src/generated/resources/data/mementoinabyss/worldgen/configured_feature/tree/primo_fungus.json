@@ -17,6 +17,6 @@
         "axis": "y"
       }
     },
-    "valid_base_block": "#minecraft:dirt"
+    "valid_base_block": "#mementoinabyss:mycelium_replaceable"
   }
 }

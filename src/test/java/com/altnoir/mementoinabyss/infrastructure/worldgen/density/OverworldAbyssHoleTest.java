@@ -123,7 +123,8 @@ class OverworldAbyssHoleTest {
         for (int x = 321; x <= 360; x += 13) {
             assertTrue(surface.compute(at(x, 0, 0)) > baseline, "outer band x=" + x);
         }
-        // The cubic shoulder has a finite crest slope; adjacent heights stay within three blocks.
+        // The rounded shoulder approaches the crest smoothly; adjacent heights stay within three
+        // blocks.
         // The report
         // agrees with the density on both sides of the crest.
         assertEquals(surface.compute(at(320, 0, 0)), surface.compute(at(321, 0, 0)), 3.0);
@@ -182,7 +183,7 @@ class OverworldAbyssHoleTest {
         }
         for (int x = -320; x <= 320; x++) {
             double h = SHAPE.ridgeHeight(x, 100);
-            assertTrue(h >= 224 && h <= 256);
+            assertEquals(256.0, h);
         }
     }
 
@@ -345,41 +346,22 @@ class OverworldAbyssHoleTest {
         assertTrue(
                 weight > 0.0 && weight < 1.0E-4,
                 "the circle itself is the seam, x=519 is just inside it");
-        // The carved column is the plain column nudged by the slope's own weight toward the blended
-        // boundary: below that boundary the target is +1 and the sample moves up from the plain's
-        // value, above it the target is -1 and the sample moves down. Both moves are proportional
-        // to
-        // the weight and bounded by twice it, which is what makes the handover here continuous -
-        // the
-        // sum of the two gaps is what a lost carve would collapse.
-        // The pre-carve estimate floors at one below the world - the same clamp the carve applies -
-        // so the blended boundary mixes that floor with the funnel wall rather than the estimate.
-        double floored = Math.max(SHAPE.minY() - 1.0, 70.0);
-        double boundary = OverworldAbyssShape.lerp(weight, floored, SHAPE.innerHeight(519, 0));
-        assertTrue(boundary > 0.0, "the blended boundary sits above the world floor");
+        // The compatibility graph blends the uncapped local field into the original density.
+        // Just inside the edge its small nonzero contribution must still be observable.
         for (int y : new int[] {0, 69, 70, 160, 255}) {
             double unmodified = new Plane(70).compute(at(519, y, 0));
             double carved = density.compute(at(519, y, 0));
-            double field = Math.min(519.0 - SHAPE.radius(), boundary - y);
-            field = Math.min(field, Math.min(256.0, SHAPE.maxY() - 2.0) - y);
-            double target = Math.clamp(field, -80.0, 100.0) / 16.0;
-            double expected = OverworldAbyssShape.lerp(weight, unmodified, target);
-            // The exact form is asserted below; this bound only has to pin the magnitude, since the
-            // larger cliff target and the plain's own rounding disagree in the last few digits at
-            // depth.
+            double target =
+                    Math.min(
+                            (519.0 - SHAPE.radius()) / 16.0,
+                            (SHAPE.innerHeight(519, 0) - y) / 24.0);
             assertEquals(
                     unmodified,
                     carved,
                     10.0 * weight + 1.0E-5,
-                    "carved density at x=519 hands the plain value the slope's own weight, y=" + y);
-            assertEquals(
-                    expected,
-                    carved,
-                    1.0E-9,
-                    "the last carved column is the plain column plus its own weight, y=" + y);
-            // The gaps either side of the boundary are the two ends of that weight, so the column
-            // converges on the plain rather than stepping onto it. The equality above already
-            // asserts that, including its sign - an extra guard here only re-tested the clamp.
+                    "The contribution converges on vanilla at y=" + y);
+            assertEquals(OverworldAbyssShape.lerp(weight, unmodified, target), carved, 1.0E-9);
+            assertNotEquals(unmodified, carved, "The last inside column remains affected");
         }
         // The last carved column is rock up to the block the plain itself stops at, so losing the
         // carve here would not change the column - only the weight bound above would notice.
@@ -428,19 +410,19 @@ class OverworldAbyssHoleTest {
         var density =
                 new OverworldAbyssHole(
                         shaped, DensityFunctions.constant(70), estimate, SHAPE, false);
-        double weight = SHAPE.outerWeight(440);
+        double weight = SHAPE.outerWeight(480);
         assertTrue(weight > 0.0 && weight < 1.0);
         // The scan has to find the layer: only three blocks of rock around y=100, with air both far
         // above and far below, which a walk that skipped blocks would step straight over.
-        assertEquals(100, densityHeight(density, 440, 0));
-        assertTrue(density.compute(at(440, 100, 0)) > 0);
-        assertTrue(density.compute(at(440, 99, 0)) > 0);
-        assertTrue(density.compute(at(440, 97, 0)) <= 0);
-        assertTrue(density.compute(at(440, 103, 0)) <= 0);
+        assertEquals(100, densityHeight(density, 480, 0));
+        assertTrue(density.compute(at(480, 100, 0)) > 0);
+        assertTrue(density.compute(at(480, 99, 0)) > 0);
+        assertTrue(density.compute(at(480, 97, 0)) <= 0);
+        assertTrue(density.compute(at(480, 103, 0)) <= 0);
         // The report follows the composed density, so the thin layer decides it even though the
         // blend that fades the slope down to the plain estimate would otherwise put the boundary
         // near the ridge.
-        assertEquals(100.0, surface.compute(at(440, 0, 0)), 1.0E-9);
+        assertEquals(100.0, surface.compute(at(480, 0, 0)), 1.0E-9);
     }
 
     /**
@@ -493,12 +475,12 @@ class OverworldAbyssHoleTest {
                         executor.submit(() -> density.compute(provider.forIndex(index))).get());
             }
         }
-        // Steepness matches SHAPE so this pair isolates the seed: the slope exponent cannot move
-        // ridgeHeight, and a mismatched value here would hide that if it ever stopped being true.
+        // The nominal macro crest is seed-independent; seeded detail belongs to the vanilla noise
+        // graph.
         assertEquals(
                 SHAPE.ridgeHeight(320, 0),
                 new OverworldAbyssShape(160, -64, 320, 12345, 1.0, 1.25).ridgeHeight(320, 0));
-        assertNotEquals(
+        assertEquals(
                 SHAPE.ridgeHeight(320, 0),
                 new OverworldAbyssShape(160, -64, 320, 54321, 1.0, 1.25).ridgeHeight(320, 0));
     }
@@ -558,6 +540,54 @@ class OverworldAbyssHoleTest {
         assertEquals(0.25, composed.compute(at(800, 50, 0)));
         assertEquals(0.75, visited.compute(at(800, 50, 0)));
         assertEquals(-1.0, visited.compute(at(0, 50, 0)));
+    }
+
+    @Test
+    void legacyUndersideFlagStillDecodesButDoesNotChangeUndergroundDensity() {
+        var input = DensityFunctions.constant(12.0);
+        var original = DensityFunctions.constant(70.0);
+        var decoded = new java.util.ArrayList<OverworldAbyssHole>();
+        for (boolean legacyFlag : new boolean[] {false, true}) {
+            var legacy =
+                    new OverworldAbyssHole(
+                            input,
+                            original,
+                            original,
+                            DensityFunctions.zero(),
+                            SHAPE,
+                            false,
+                            false,
+                            DensityFunctions.zero(),
+                            legacyFlag);
+            var json =
+                    OverworldAbyssHole.CODEC
+                            .codec()
+                            .codec()
+                            .encodeStart(JsonOps.INSTANCE, legacy)
+                            .getOrThrow()
+                            .getAsJsonObject();
+            // Presets written by either old and new writers may omit the default false value.
+            // Supplying both forms here covers explicit legacy data and the current default.
+            json.addProperty("sculpt_underside", legacyFlag);
+            var restored =
+                    OverworldAbyssHole.CODEC
+                            .codec()
+                            .codec()
+                            .parse(JsonOps.INSTANCE, json)
+                            .getOrThrow();
+            assertEquals(legacyFlag, restored.sculptUnderside());
+            decoded.add(restored);
+        }
+
+        for (int x : new int[] {321, 400, 640})
+            for (int y = -64; y < 0; y++)
+                assertEquals(
+                        decoded.get(0).compute(at(x, y, 0)),
+                        decoded.get(1).compute(at(x, y, 0)),
+                        "Legacy sculpt_underside value changed decoded underground density at x="
+                                + x
+                                + ", y="
+                                + y);
     }
 
     @Test

@@ -111,6 +111,7 @@ final class CrossDimensionLodRenderContext {
     private long clientTick;
     private MiaLodView cameraView, reportedView;
     private long viewSequence, lastViewTick = Long.MIN_VALUE / 2;
+    private boolean reportedTerrainReady;
     private String reportedViewLink;
     private int reportedViewRadius;
 
@@ -319,7 +320,7 @@ final class CrossDimensionLodRenderContext {
             // Normally serviced once per rendered frame; keep ACK/timeouts alive when rendering is
             // suspended.
             if (System.nanoTime() - lastReceiveNanos >= 50_000_000L) drainPayloads();
-            drainMaterialRequests();
+            if (CurrentTerrainReadiness.ready()) drainMaterialRequests();
         } else {
             clearPendingPayloads();
         }
@@ -682,11 +683,13 @@ final class CrossDimensionLodRenderContext {
                     activeLink.sourceHeight().maxY() + activeLink.displayYOffset());
         long meshStarted = System.nanoTime();
         closeRetiredMeshes();
-        updateMeshes();
+        if (CurrentTerrainReadiness.ready()) updateMeshes();
         long meshNanos = System.nanoTime() - meshStarted;
         long pageStarted = System.nanoTime();
-        finishPageTransitions(pageStarted);
-        updatePages();
+        if (CurrentTerrainReadiness.ready()) {
+            finishPageTransitions(pageStarted);
+            updatePages();
+        }
         long transitionTime = System.nanoTime();
         long pageNanos = System.nanoTime() - pageStarted;
         long visibilityStarted = System.nanoTime();
@@ -889,11 +892,18 @@ final class CrossDimensionLodRenderContext {
         if (clientTick - lastViewTick < 2) return;
         int radius = MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodViewDistance.get() * 16;
         if (!linkId.equals(reportedViewLink)
+                || reportedTerrainReady != CurrentTerrainReadiness.ready()
                 || radius != reportedViewRadius
                 || cameraView.materiallyDifferent(reportedView)
                 || clientTick - lastViewTick >= 20) {
             ClientPacketDistributor.sendToServer(
-                    new CrossDimensionLodViewPayload(linkId, ++viewSequence, radius, cameraView));
+                    new CrossDimensionLodViewPayload(
+                            linkId,
+                            ++viewSequence,
+                            radius,
+                            cameraView,
+                            CurrentTerrainReadiness.ready()));
+            reportedTerrainReady = CurrentTerrainReadiness.ready();
             reportedViewRadius = radius;
             reportedView = cameraView;
             reportedViewLink = linkId;

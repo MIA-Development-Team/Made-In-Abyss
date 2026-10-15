@@ -34,6 +34,16 @@ public final class GeneralAbyssHole extends AbstractAbyssHole {
     }
 
     @Override
+    public double minValue() {
+        return -5;
+    }
+
+    @Override
+    public double maxValue() {
+        return 6.25;
+    }
+
+    @Override
     public KeyDispatchDataCodec<GeneralAbyssHole> codec() {
         return CODEC;
     }

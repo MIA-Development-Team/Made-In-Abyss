@@ -2,6 +2,8 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.noise;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.MiaHeight;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.HopperAbyssHole;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.SharedAbyssWall;
 import com.altnoir.mementoinabyss.init.MiaDensityFunctionTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -157,11 +159,7 @@ public class MiaDensityFunctions {
                 DensityFunctions.add(
                         MiaDensityFunctionTypes.general(0.0F, 0.3F),
                         getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
-        context.register(
-                THE_ABYSS_BIG_HOLE,
-                DensityFunctions.add(
-                        MiaDensityFunctionTypes.general(128.0F),
-                        getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
+        context.register(THE_ABYSS_BIG_HOLE, SharedAbyssWall.unbound(HopperAbyssHole.abyssRadius()));
         context.register(
                 THE_ABYSS_INSIDE_HOLE_BELOW,
                 abyssDensityFunction(
@@ -433,7 +431,7 @@ public class MiaDensityFunctions {
                                 densityFunction2, ridgeB ? densityFunction6 : densityFunction5));
         return full
                 ? DensityFunctions.add(
-                        densityFunction2, ridgeB ? densityFunction6 : densityFunction5)
+                densityFunction2, ridgeB ? densityFunction6 : densityFunction5)
                 : densityFunction7;
     }
 

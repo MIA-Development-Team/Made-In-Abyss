@@ -8,9 +8,6 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimension
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaEnvironmentAttributes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.VerticalBoundary;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.VerticalDimensionCoordinates;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
@@ -24,7 +21,13 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import org.jspecify.annotations.Nullable;
 
-/** Resolves declared vertical views and the default overworld view into the Abyss below it. */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * Resolves declared vertical views and the default overworld view into the Abyss below it.
+ */
 public final class CrossDimensionLodLinks {
     public static Optional<CrossDimensionLodLink> forTarget(Level viewer) {
         return forTarget(viewer.registryAccess(), viewer.dimension(), viewer.dimensionType());
@@ -45,20 +48,20 @@ public final class CrossDimensionLodLinks {
         EnvironmentAttributeMap attributes = targetType.attributes();
         if (attributes.contains(MiaEnvironmentAttributes.VERTICAL_BELOW)) {
             resolve(
-                            registries,
-                            target,
-                            targetType,
-                            boundary(attributes, MiaEnvironmentAttributes.VERTICAL_BELOW),
-                            true)
+                    registries,
+                    target,
+                    targetType,
+                    boundary(attributes, MiaEnvironmentAttributes.VERTICAL_BELOW),
+                    true)
                     .ifPresent(links::add);
         }
         if (attributes.contains(MiaEnvironmentAttributes.VERTICAL_ABOVE)) {
             resolve(
-                            registries,
-                            target,
-                            targetType,
-                            boundary(attributes, MiaEnvironmentAttributes.VERTICAL_ABOVE),
-                            false)
+                    registries,
+                    target,
+                    targetType,
+                    boundary(attributes, MiaEnvironmentAttributes.VERTICAL_ABOVE),
+                    false)
                     .ifPresent(links::add);
         }
         // Keep the original dimension type; the central connection's teleport uses this same shift.
@@ -66,11 +69,11 @@ public final class CrossDimensionLodLinks {
                 && !attributes.contains(MiaEnvironmentAttributes.VERTICAL_BELOW)
                 && !attributes.contains(MiaEnvironmentAttributes.VERTICAL_ABOVE)) {
             resolve(
-                            registries,
-                            target,
-                            targetType,
-                            new VerticalBoundary(MiaDimensions.THE_ABYSS_LEVEL, 0.0),
-                            true)
+                    registries,
+                    target,
+                    targetType,
+                    new VerticalBoundary(MiaDimensions.THE_ABYSS_LEVEL, 0.0),
+                    true)
                     .ifPresent(links::add);
         }
         if (target.equals(MiaDimensions.THE_ABYSS_LEVEL)
@@ -81,7 +84,9 @@ public final class CrossDimensionLodLinks {
         return List.copyOf(links);
     }
 
-    /** Only the implicit overworld visual connection has a horizontal activation boundary. */
+    /**
+     * Only the implicit overworld visual connection has a horizontal activation boundary.
+     */
     public static boolean activeAt(Level viewer, double x, double z) {
         return activeAt(
                 viewer.dimension(),
@@ -129,7 +134,9 @@ public final class CrossDimensionLodLinks {
         return MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodViewDistance.get() * 16;
     }
 
-    /** Configured radius of the center-first lazy-generation area. */
+    /**
+     * Configured radius of the center-first lazy-generation area.
+     */
     public static int centralGenerationRadius() {
         return Mth.ceil(HopperAbyssHole.abyssRadius());
     }
@@ -158,8 +165,8 @@ public final class CrossDimensionLodLinks {
         else if (!sourceIsBelow
                 && targetType.attributes().contains(MiaEnvironmentAttributes.VERTICAL_BELOW)
                 && boundary(targetType.attributes(), MiaEnvironmentAttributes.VERTICAL_BELOW)
-                        .dimension()
-                        .equals(boundary.dimension()))
+                .dimension()
+                .equals(boundary.dimension()))
             id =
                     id.withPath(
                             path ->
@@ -213,5 +220,6 @@ public final class CrossDimensionLodLinks {
                 .orElse(null);
     }
 
-    private CrossDimensionLodLinks() {}
+    private CrossDimensionLodLinks() {
+    }
 }

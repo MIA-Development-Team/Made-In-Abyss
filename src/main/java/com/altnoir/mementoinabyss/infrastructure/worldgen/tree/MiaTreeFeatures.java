@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.tree;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.PrimoHugeFungusConfiguration;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
+import com.altnoir.mementoinabyss.init.MiaTags;
 import com.altnoir.mementoinabyss.init.MiaWorldgenFeatures;
 import java.util.List;
 import java.util.Optional;
@@ -73,7 +74,7 @@ public final class MiaTreeFeatures {
                 new ConfiguredFeature<>(
                         MiaWorldgenFeatures.HUGE_PRIMO_FUNGUS.get(),
                         new PrimoHugeFungusConfiguration(
-                                BlockTags.DIRT,
+                                MiaTags.BlockTags.MYCELIUM_REPLACEABLE.tag,
                                 MiaBlocks.PRIMO_STEM.get().defaultBlockState(),
                                 MiaBlocks.PRIMO_CAP.get().defaultBlockState(),
                                 Optional.of(Blocks.BUDDING_AMETHYST.defaultBlockState()),
@@ -83,7 +84,7 @@ public final class MiaTreeFeatures {
                 new ConfiguredFeature<>(
                         MiaWorldgenFeatures.HUGE_PRIMO_FUNGUS.get(),
                         new PrimoHugeFungusConfiguration(
-                                BlockTags.DIRT,
+                                MiaTags.BlockTags.MYCELIUM_REPLACEABLE.tag,
                                 MiaBlocks.PRIMO_STEM.get().defaultBlockState(),
                                 MiaBlocks.GLOW_PRIMO_CAP.get().defaultBlockState(),
                                 Optional.empty(),

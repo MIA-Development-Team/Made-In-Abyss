@@ -4,6 +4,13 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.foundation.concurrent.MiaExecutors;
 import com.altnoir.mementoinabyss.impl.lod.network.*;
 import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodBatchPayload.Section;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.storage.LevelResource;
+import net.neoforged.neoforge.network.PacketDistributor;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -12,12 +19,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.storage.LevelResource;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
  * Persistent camera-driven stream. Replanning changes demand/priority, never the stream or useful in-flight work.
@@ -29,7 +30,8 @@ final class MiaLodSampler {
     private static final int MAX_LOADS_PER_TICK = 16;
     private static final AtomicLong NEXT_STREAM_EPOCH = new AtomicLong();
 
-    private record ViewerKey(UUID playerId, String linkId) {}
+    private record ViewerKey(UUID playerId, String linkId) {
+    }
 
     private static final Map<ViewerKey, Task> TASKS = new ConcurrentHashMap<>();
     private static final Set<UUID> CLIENT_DISABLED = ConcurrentHashMap.newKeySet();
@@ -80,6 +82,7 @@ final class MiaLodSampler {
         if (now - task.lastViewTick < 2 || !validCamera(player, payload.view())) return;
         task.lastViewTick = now;
         task.viewSequence = payload.sequence();
+        task.currentTerrainReady = payload.currentTerrainReady();
         task.replan |=
                 payload.view().materiallyDifferent(task.view)
                         || task.requestedRadius != payload.radius();
@@ -113,6 +116,7 @@ final class MiaLodSampler {
             if (!task.delivery.retries(now).isEmpty()) task.scan = true;
             drainPrepared(task);
             if (task.view == null || !validCamera(task.player, task.view)) continue;
+            if (!readyForLod(task) || !CurrentDimensionPriority.allReady(server)) continue;
             int radius = Math.min(CrossDimensionLodLinks.radius(task.link), task.requestedRadius);
             if (task.replan || task.radius != radius) task.plan(radius);
             if (task.availability.retryReady(now)) task.scan = true;
@@ -184,7 +188,10 @@ final class MiaLodSampler {
         ChunkPos pos =
                 new ChunkPos(CrossDimensionLodKey.x(work.key), CrossDimensionLodKey.z(work.key));
         try {
-            if (!isCurrent(task) || work.cancelled) return;
+            if (!isCurrent(task)
+                    || work.cancelled
+                    || !task.currentTerrainReady
+                    || !CurrentDimensionPriority.backgroundAllowed()) return;
             var stored = MiaLodStorage.read(source, pos);
             if (work.cancelled || !isCurrent(task)) return;
             if (stored.isPresent()
@@ -266,7 +273,7 @@ final class MiaLodSampler {
         while (sent < MAX_BATCHES_PER_TICK && bytes < MAX_BYTES_PER_TICK && !ready.isEmpty()) {
             boolean progress = false;
             for (var iterator = ready.iterator();
-                    iterator.hasNext() && sent < MAX_BATCHES_PER_TICK; ) {
+                 iterator.hasNext() && sent < MAX_BATCHES_PER_TICK; ) {
                 Work work = iterator.next();
                 var prepared = work.prepared;
                 if (work.transfer != null && !task.delivery.active(work.transfer)) {
@@ -395,12 +402,12 @@ final class MiaLodSampler {
     static boolean hasInterestedPlayer(MinecraftServer server) {
         return lodEnabled()
                 && server.getPlayerList().getPlayers().stream()
-                        .anyMatch(
-                                player ->
-                                        player.isAlive()
-                                                && CrossDimensionLodLinks.forTarget(player.level())
-                                                        .isPresent()
-                                                && wantsLod(player));
+                .anyMatch(
+                        player ->
+                                player.isAlive()
+                                        && CrossDimensionLodLinks.forTarget(player.level())
+                                        .isPresent()
+                                        && wantsLod(player));
     }
 
     private static boolean isCurrent(Task task) {
@@ -421,8 +428,8 @@ final class MiaLodSampler {
         for (Task task : TASKS.values())
             if (task.link.source().equals(link.source())
                     && (task.demands.containsKey(key)
-                            || task.delivery.confirmedCellSize(key) != 0
-                            || task.delivery.waiting(key))) {
+                    || task.delivery.confirmedCellSize(key) != 0
+                    || task.delivery.waiting(key))) {
                 task.pendingRevisions.merge(key, revision, Math::max);
                 task.availability.available(key);
                 task.scan = true;
@@ -438,6 +445,7 @@ final class MiaLodSampler {
         for (Task task : TASKS.values())
             if (isCurrent(task)
                     && wantsLod(task.player)
+                    && readyForLod(task)
                     && task.link.equals(link)
                     && task.view != null
                     && validCamera(task.player, task.view)) {
@@ -465,6 +473,23 @@ final class MiaLodSampler {
             if (missing.test(pos)) return pos;
         }
         return null;
+    }
+
+    private static boolean readyForLod(Task task) {
+        return task.currentTerrainReady
+                && task.view != null
+                && task.player.level().getGameTime() - task.lastViewTick <= 40
+                && CurrentDimensionPriority.ready(task.player);
+    }
+
+    static boolean hasReadyViewer(CrossDimensionLodLink link) {
+        return TASKS.values().stream()
+                .anyMatch(
+                        task ->
+                                isCurrent(task)
+                                        && task.link.equals(link)
+                                        && wantsLod(task.player)
+                                        && readyForLod(task));
     }
 
     static void clearTasks() {
@@ -502,7 +527,8 @@ final class MiaLodSampler {
             int loading,
             int ready,
             int known,
-            int missing) {}
+            int missing) {
+    }
 
     private static final class Task {
         final ServerPlayer player;
@@ -525,6 +551,7 @@ final class MiaLodSampler {
         long feedbackTick = Long.MIN_VALUE;
         int feedbackCount;
         boolean replan = true, scan = true;
+        volatile boolean currentTerrainReady;
 
         Task(ServerPlayer player, CrossDimensionLodLink link) {
             this.player = player;
@@ -541,7 +568,13 @@ final class MiaLodSampler {
                     MiaLodViewPlanner.plan(view, radius, minY, maxY, delivery::confirmedCellSize);
             var previousDemands = demands;
             demands = new LinkedHashMap<>();
-            for (var demand : selected) demands.put(demand.key(), demand);
+            int layoutRadius =
+                    com.altnoir.mementoinabyss.infrastructure.worldgen.OverworldAbyss
+                            .configuredRadius();
+            for (var demand : selected) {
+                var refined = MiaLodViewPlanner.refineAbyssSeam(demand, view, link, layoutRadius);
+                demands.put(refined.key(), refined);
+            }
             var iterator = work.values().iterator();
             while (iterator.hasNext()) {
                 Work old = iterator.next();
@@ -559,12 +592,12 @@ final class MiaLodSampler {
             LongPredicate keep =
                     key ->
                             view.distanceSquared(
-                                            CrossDimensionLodKey.x(key) * 16.0,
-                                            minY,
-                                            CrossDimensionLodKey.z(key) * 16.0,
-                                            CrossDimensionLodKey.x(key) * 16.0 + 16,
-                                            maxY,
-                                            CrossDimensionLodKey.z(key) * 16.0 + 16)
+                                    CrossDimensionLodKey.x(key) * 16.0,
+                                    minY,
+                                    CrossDimensionLodKey.z(key) * 16.0,
+                                    CrossDimensionLodKey.x(key) * 16.0 + 16,
+                                    maxY,
+                                    CrossDimensionLodKey.z(key) * 16.0 + 16)
                                     <= retention * retention;
             delivery.retain(key -> keep.test(key) || work.containsKey(key));
             pendingRevisions.keySet().removeIf(key -> !keep.test(key));
@@ -597,7 +630,8 @@ final class MiaLodSampler {
         }
     }
 
-    private record PreparedResult(Work work, PreparedChunk prepared) {}
+    private record PreparedResult(Work work, PreparedChunk prepared) {
+    }
 
     private record PreparedChunk(
             MiaLodSectionTree tree,
@@ -605,11 +639,13 @@ final class MiaLodSampler {
             long baseRevision,
             List<Section> sections,
             CrossDimensionLodCacheScope scope,
-            String digest) {}
+            String digest) {
+    }
 
     private static boolean lodEnabled() {
         return MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodEnabled.get();
     }
 
-    private MiaLodSampler() {}
+    private MiaLodSampler() {
+    }
 }

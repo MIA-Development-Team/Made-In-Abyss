@@ -1,6 +1,10 @@
 {
   "ambient_light": 0.12,
   "attributes": {
+    "mementoinabyss:vertical_above": {
+      "dimension": "minecraft:overworld",
+      "entry_offset": 0.0
+    },
     "mementoinabyss:vertical_below": {
       "dimension": "mementoinabyss:great_fault",
       "entry_offset": 8.0

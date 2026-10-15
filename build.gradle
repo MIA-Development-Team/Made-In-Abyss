@@ -237,6 +237,7 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.named('test', Test) {
 	useJUnitPlatform()
+	systemProperty 'abyss.reportDirectory', layout.buildDirectory.dir('reports/overworld-abyss').get().asFile.absolutePath
 }
 
 idea {

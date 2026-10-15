@@ -650,6 +650,7 @@ public final class DelayedCavePillarGenerator {
         return state.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag)
                 || state.is(BlockTags.BASE_STONE_OVERWORLD)
                 || state.is(BlockTags.DIRT)
+                || state.is(BlockTags.GRASS_BLOCKS)
                 || state.is(Blocks.TUFF)
                 || state.is(Blocks.MUD)
                 || state.is(Blocks.CALCITE)

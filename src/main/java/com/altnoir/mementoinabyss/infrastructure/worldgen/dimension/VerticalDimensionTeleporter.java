@@ -79,11 +79,22 @@ public final class VerticalDimensionTeleporter {
                         boundary(attributes, MiaEnvironmentAttributes.VERTICAL_ABOVE);
                 ServerLevel destination = server.getLevel(above.dimension());
                 if (destination == null) continue;
-                teleport(
-                        player,
-                        destination,
-                        destination.dimensionType().minY() + above.entryOffset(),
-                        tick);
+                double destinationY =
+                        aboveDestinationY(
+                                player.level().dimension(),
+                                above,
+                                player.getY(),
+                                maxY,
+                                destination.dimensionType().minY());
+                if (centralOverworldLink(player.level().dimension(), above)) {
+                    teleport(
+                            player,
+                            destination,
+                            new Vec3(player.getX(), destinationY, player.getZ()),
+                            tick);
+                } else {
+                    teleport(player, destination, destinationY, tick);
+                }
                 continue;
             }
 
@@ -131,6 +142,24 @@ public final class VerticalDimensionTeleporter {
     static double overworldDestinationY(double playerY, int abyssMaxY, int overworldMinY) {
         return VerticalDimensionCoordinates.sourceY(
                 playerY, VerticalDimensionCoordinates.displayOffset(abyssMaxY, overworldMinY));
+    }
+
+    /** The central Abyss link inverts the LOD shift; every other link enters at its offset. */
+    static double aboveDestinationY(
+            ResourceKey<Level> dimension,
+            VerticalBoundary above,
+            double playerY,
+            int maxY,
+            int destinationMinY) {
+        if (centralOverworldLink(dimension, above)) {
+            return overworldDestinationY(playerY, maxY, destinationMinY);
+        }
+        return destinationMinY + above.entryOffset();
+    }
+
+    static boolean centralOverworldLink(ResourceKey<Level> dimension, VerticalBoundary above) {
+        return MiaDimensions.THE_ABYSS_LEVEL.equals(dimension)
+                && Level.OVERWORLD.equals(above.dimension());
     }
 
     private static VerticalBoundary boundary(

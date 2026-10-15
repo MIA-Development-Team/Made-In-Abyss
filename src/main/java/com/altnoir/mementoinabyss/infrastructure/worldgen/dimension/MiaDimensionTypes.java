@@ -16,6 +16,7 @@ import net.minecraft.world.attribute.BedRule;
 import net.minecraft.world.attribute.EnvironmentAttributeMap;
 import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.CardinalLighting;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.neoforged.neoforge.common.world.NeoForgeEnvironmentAttributes;
 
@@ -50,6 +51,9 @@ public final class MiaDimensionTypes {
                         .set(
                                 MiaEnvironmentAttributes.VERTICAL_BELOW,
                                 new VerticalBoundary(MiaDimensions.GREAT_FAULT_LEVEL, 8.0))
+                        .set(
+                                MiaEnvironmentAttributes.VERTICAL_ABOVE,
+                                new VerticalBoundary(Level.OVERWORLD, 0.0))
                         .set(EnvironmentAttributes.SUN_ANGLE, 0.0F)
                         .set(EnvironmentAttributes.MOON_ANGLE, 180.0F)
                         .set(EnvironmentAttributes.STAR_ANGLE, 0.0F)

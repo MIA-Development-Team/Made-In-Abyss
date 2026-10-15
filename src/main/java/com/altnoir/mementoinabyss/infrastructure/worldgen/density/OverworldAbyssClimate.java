@@ -2,12 +2,16 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.density;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.Optional;
 import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.world.level.levelgen.DensityFunction;
 
 /** Local climate correction; the original biome parameter map remains in charge of selection. */
 public record OverworldAbyssClimate(
-        DensityFunction input, OverworldAbyssShape shape, Component component)
+        DensityFunction input,
+        OverworldAbyssShape shape,
+        Component component,
+        Optional<DensityFunction> surface)
         implements DensityFunction.SimpleFunction {
     public enum Component {
         CONTINENTS,
@@ -36,8 +40,17 @@ public record OverworldAbyssClimate(
                                                             .fieldOf("component")
                                                             .forGetter(
                                                                     OverworldAbyssClimate
-                                                                            ::component))
+                                                                            ::component),
+                                                    DensityFunction.HOLDER_HELPER_CODEC
+                                                            .optionalFieldOf("terrain_surface")
+                                                            .forGetter(
+                                                                    OverworldAbyssClimate::surface))
                                             .apply(instance, OverworldAbyssClimate::new)));
+
+    public OverworldAbyssClimate(
+            DensityFunction input, OverworldAbyssShape shape, Component component) {
+        this(input, shape, component, Optional.empty());
+    }
 
     @Override
     public double compute(FunctionContext context) {
@@ -47,6 +60,8 @@ public record OverworldAbyssClimate(
         double original = input.compute(context);
         if (weight <= 0) return original;
         double height = shape.innerHeight(x, z);
+        if (component == Component.DEPTH && surface.isPresent())
+            height = surface.get().compute(context);
         double mountain = OverworldAbyssShape.smooth((height - 144.0) / 80.0);
         double target =
                 switch (component) {
@@ -62,7 +77,12 @@ public record OverworldAbyssClimate(
 
     @Override
     public DensityFunction mapAll(Visitor visitor) {
-        return visitor.apply(new OverworldAbyssClimate(input.mapAll(visitor), shape, component));
+        return visitor.apply(
+                new OverworldAbyssClimate(
+                        input.mapAll(visitor),
+                        shape,
+                        component,
+                        surface.map(function -> function.mapAll(visitor))));
     }
 
     @Override

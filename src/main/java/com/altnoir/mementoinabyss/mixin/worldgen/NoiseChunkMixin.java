@@ -1,14 +1,17 @@
 package com.altnoir.mementoinabyss.mixin.worldgen;
 
 import com.altnoir.mementoinabyss.infrastructure.worldgen.OverworldAbyss;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.OverworldAbyssAquiferRouter;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssAquifer;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssOriginalSurface;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssHole;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssInterpolated;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.NoiseChunk;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.NoiseRouter;
 import net.minecraft.world.level.levelgen.NoiseSettings;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.blending.Blender;
@@ -21,13 +24,22 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(NoiseChunk.class)
 public abstract class NoiseChunkMixin implements AbyssOriginalSurface {
     @Shadow @Final @Mutable private Aquifer aquifer;
 
     @Unique private @Nullable DensityFunction mia$originalPreliminarySurface;
+
+    @Inject(method = "wrapNew", at = @At("HEAD"), cancellable = true)
+    private void mia$bindSurfaceBlender(
+            DensityFunction function, CallbackInfoReturnable<DensityFunction> ci) {
+        if (function instanceof OverworldAbyssInterpolated interpolated)
+            ci.setReturnValue(interpolated.withBlender(((NoiseChunk) (Object) this).getBlender()));
+    }
 
     /**
      * Runs before said aquifer is built by {@code NoiseChunk}'s own constructor body, because the
@@ -60,6 +72,18 @@ public abstract class NoiseChunkMixin implements AbyssOriginalSurface {
         }
     }
 
+    @ModifyArg(
+            method = "<init>",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lnet/minecraft/world/level/levelgen/Aquifer;create(Lnet/minecraft/world/level/levelgen/NoiseChunk;Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/world/level/levelgen/NoiseRouter;Lnet/minecraft/world/level/levelgen/PositionalRandomFactory;IILnet/minecraft/world/level/levelgen/Aquifer$FluidPicker;)Lnet/minecraft/world/level/levelgen/Aquifer;"),
+            index = 2)
+    private NoiseRouter mia$useOriginalClimateForAquifer(NoiseRouter router) {
+        return OverworldAbyssAquiferRouter.forAquifer(router);
+    }
+
     @Inject(method = "<init>", at = @At("RETURN"))
     private void mia$keepOpeningDry(
             int cellCountXZ,
@@ -72,6 +96,13 @@ public abstract class NoiseChunkMixin implements AbyssOriginalSurface {
             Aquifer.FluidPicker fluidPicker,
             Blender blender,
             CallbackInfo ci) {
+        var seam =
+                com.altnoir.mementoinabyss.infrastructure.worldgen.AbyssSeamRuntime.seamOf(
+                        randomState);
+        if (seam != null)
+            aquifer =
+                    new com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssSeamAquifer(
+                            aquifer, seam);
         OverworldAbyssHole hole = OverworldAbyss.holeOf(randomState);
         if (hole != null) {
             int span = cellCountXZ * noiseSettings.getCellWidth();

@@ -29,5 +29,7 @@ public abstract class ChunkMapMixin {
             @Local(argsOnly = true) ServerLevel level,
             @Local(argsOnly = true) ChunkGenerator generator) {
         OverworldAbyss.install(level, generator, randomState);
+        com.altnoir.mementoinabyss.infrastructure.worldgen.AbyssSeamRuntime.configure(
+                level, randomState);
     }
 }

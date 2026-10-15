@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 class VerticalDimensionTeleporterTest {
     @Test
     void downwardEntryIncludesConnectionEdgeButRequiresCrossingBuildBoundary() {
-        assertTrue(canEnter(300, -64.01, 0));
-        assertTrue(canEnter(180, -65, 240));
-        assertFalse(canEnter(300.01, -65, 0));
+        assertTrue(canEnter(200, -64.01, 0));
+        assertTrue(canEnter(120, -65, 160));
+        assertFalse(canEnter(200.01, -65, 0));
         assertFalse(canEnter(0, -64, 0));
         assertFalse(canEnter(0, -63, 0));
     }
@@ -54,6 +54,26 @@ class VerticalDimensionTeleporterTest {
         double abyss = VerticalDimensionTeleporter.abyssDestinationY(original, -64, 384);
         assertEquals(original, VerticalDimensionTeleporter.overworldDestinationY(abyss, 384, -64));
         assertEquals(-125.75, VerticalDimensionTeleporter.overworldDestinationY(514.25, 512, -128));
+    }
+
+    @Test
+    void declaredCentralReturnInvertsTheLodShiftAndKeepsFractionalHeight() {
+        assertEquals(
+                -63.5,
+                VerticalDimensionTeleporter.aboveDestinationY(
+                        MiaDimensions.THE_ABYSS_LEVEL,
+                        new VerticalBoundary(Level.OVERWORLD, 0),
+                        384.5,
+                        384,
+                        -64));
+        assertEquals(
+                -248,
+                VerticalDimensionTeleporter.aboveDestinationY(
+                        MiaDimensions.GREAT_FAULT_LEVEL,
+                        new VerticalBoundary(MiaDimensions.THE_ABYSS_LEVEL, 8),
+                        384,
+                        384,
+                        -256));
     }
 
     private static boolean canEnter(double x, double y, double z) {

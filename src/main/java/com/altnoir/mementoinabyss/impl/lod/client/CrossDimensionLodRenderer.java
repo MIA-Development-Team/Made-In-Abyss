@@ -56,6 +56,7 @@ public final class CrossDimensionLodRenderer {
 
     public static void clientTick() {
         MiaExecutors.refreshThreadLimit();
+        CurrentTerrainReadiness.tick();
         ensureContexts();
         boolean enabled = false;
         for (var context : CONTEXTS.values()) {
@@ -78,6 +79,7 @@ public final class CrossDimensionLodRenderer {
     }
 
     public static void disconnect() {
+        CurrentTerrainReadiness.reset();
         reportedServerEnabled = null;
         for (var context : CONTEXTS.values()) context.disconnect();
     }

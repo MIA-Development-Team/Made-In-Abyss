@@ -1,6 +1,7 @@
 {
   "attribute.name.mementoinabyss.critical_hit": "ǝɔuɐɥƆ ʇıH ןɐɔıʇıɹƆ",
   "attribute.name.mementoinabyss.critical_hit_damage": "ǝbɐɯɐᗡ ʇıH ןɐɔıʇıɹƆ",
+  "biome.mementoinabyss.overworld.the_abyss": "ssʎqⱯ pןɹoʍɹǝʌO",
   "biome.mementoinabyss.the_abyss.primo_forest": "ʇsǝɹoℲ oɯıɹԀ",
   "block.mementoinabyss.abyss_andesite": "ǝʇısǝpuⱯ ssʎqⱯ",
   "block.mementoinabyss.abyss_andesite_bricks": "sʞɔıɹᗺ ǝʇısǝpuⱯ ssʎqⱯ",
@@ -265,6 +266,7 @@
   "mementoinabyss.config.graphsSection.performanceGroup": "ǝɔuɐɯɹoɟɹǝԀ",
   "mementoinabyss.config.worldGenSection": "uoıʇɐɹǝuǝ⅁ pןɹoM",
   "mementoinabyss.config.worldGenSection.abyssRadius": "snıpɐᴚ ssʎqⱯ",
+  "mementoinabyss.config.worldGenSection.overworldAbyssEnabled": "(pןɹoʍ pɐoןǝɹ) ssʎqⱯ pןɹoʍɹǝʌO",
   "mementoinabyss.rope.connected": "˙pǝʇɔǝuuoɔ ǝdoᴚ",
   "mementoinabyss.rope.endpoint_picked": "˙ɹoʇɔǝuuoɔ ɹǝɥʇouɐ ǝsn ɹo 'ʇı ʎɹɹɐɔ oʇ ǝsn pןoH ˙pǝɥɔɐʇʇɐ puǝ ǝdoᴚ",
   "mementoinabyss.rope.endpoint_released": "˙pǝsɐǝןǝɹ puǝ ǝdoᴚ",

@@ -52,6 +52,16 @@ public final class HopperAbyssHole extends AbstractAbyssHole {
     }
 
     @Override
+    public double minValue() {
+        return -1.25;
+    }
+
+    @Override
+    public double maxValue() {
+        return 1.5625;
+    }
+
+    @Override
     public KeyDispatchDataCodec<HopperAbyssHole> codec() {
         return CODEC;
     }

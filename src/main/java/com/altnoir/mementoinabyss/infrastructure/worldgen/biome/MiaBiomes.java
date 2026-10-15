@@ -4,9 +4,9 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.GreatFaultPlacements;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.MiaAbyssPlacements;
 import com.altnoir.mementoinabyss.init.MiaSoundEvents;
-import java.util.List;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.Carvers;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.attribute.BackgroundMusic;
 import net.minecraft.world.attribute.EnvironmentAttributes;
@@ -17,8 +17,12 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
+import java.util.List;
+
 public final class MiaBiomes {
     public static final ResourceKey<Biome> THE_ABYSS = key("the_abyss");
+    public static final ResourceKey<Biome> OVERWORLD_ABYSS =
+            ResourceKey.create(Registries.BIOME, MementoInAbyss.asResource("overworld/the_abyss"));
     public static final ResourceKey<Biome> SKYFOG_FOREST = key("skyfog_forest");
     public static final ResourceKey<Biome> DENSE_SKYFOG_FOREST = key("dense_skyfog_forest");
     public static final ResourceKey<Biome> FOSSILIZED_FOREST = key("fossilized_forest");
@@ -54,15 +58,27 @@ public final class MiaBiomes {
         for (ResourceKey<Biome> biome : FIRST_LAYERS) {
             context.register(biome, create(context, biome));
         }
+        context.register(OVERWORLD_ABYSS, create(context, THE_ABYSS, true));
         context.register(THE_GREAT_FAULT, createGreatFault(context, true));
         context.register(GREAT_FAULT, createGreatFault(context, false));
     }
 
     private static Biome create(BootstrapContext<Biome> context, ResourceKey<Biome> biome) {
+        return create(context, biome, false);
+    }
+
+    private static Biome create(
+            BootstrapContext<Biome> context, ResourceKey<Biome> biome, boolean overworld) {
         BiomeGenerationSettings.Builder generationBuilder =
                 new BiomeGenerationSettings.Builder(
                         context.lookup(Registries.PLACED_FEATURE),
                         context.lookup(Registries.CONFIGURED_CARVER));
+        if (overworld) {
+            generationBuilder
+                    .addCarver(Carvers.CAVE)
+                    .addCarver(Carvers.CAVE_EXTRA_UNDERGROUND)
+                    .addCarver(Carvers.CANYON);
+        }
         generationBuilder
                 .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, MiaAbyssPlacements.ORE_DIRT)
                 .addFeature(
@@ -96,6 +112,8 @@ public final class MiaBiomes {
             case THE_ABYSS -> {
                 addSlabRuins(generationBuilder);
                 addGeode(generationBuilder);
+                if (overworld)
+                    addTree(generationBuilder, MiaAbyssPlacements.OVERWORLD_TREES_SKYFOG);
                 addLayerOneMeadow(generationBuilder);
                 addLargeFern(generationBuilder);
                 generationBuilder
@@ -376,5 +394,6 @@ public final class MiaBiomes {
         }
     }
 
-    private MiaBiomes() {}
+    private MiaBiomes() {
+    }
 }

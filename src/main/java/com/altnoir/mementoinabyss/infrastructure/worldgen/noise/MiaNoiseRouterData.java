@@ -1,6 +1,9 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.noise;
 
 import com.altnoir.mementoinabyss.infrastructure.worldgen.MiaHeight;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssSeamDensity;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.HopperAbyssHole;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.SharedAbyssWall;
 import com.altnoir.mementoinabyss.init.MiaDensityFunctionTypes;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -78,9 +81,16 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         DensityFunction abyssPillars =
                 getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_PILLARS);
 
+        DensityFunction wallBlend =
+                DensityFunctions.add(DensityFunctions.constant(0.5), abyssBigHole).clamp(0, 1);
+        DensityFunction wallSmooth =
+                DensityFunctions.mul(
+                        DensityFunctions.mul(wallBlend, wallBlend),
+                        DensityFunctions.add(
+                                DensityFunctions.constant(3),
+                                DensityFunctions.mul(DensityFunctions.constant(-2), wallBlend)));
         DensityFunction rangeChoice2 =
-                DensityFunctions.rangeChoice(
-                        abyssBigHole, -1000000.0, 0.025, middleAbyssNoise, outsideAbyssNoise);
+                DensityFunctions.lerp(wallSmooth, middleAbyssNoise, outsideAbyssNoise);
 
         DensityFunction layer2 =
                 DensityFunctions.add(DensityFunctions.constant(0.2), abyssGreatCave);
@@ -231,6 +241,12 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                         combinedDensity,
                         DensityFunctions.constant(-64.0));
 
+        finalDensity =
+                AbyssSeamDensity.abyss(
+                        SharedAbyssWall.unbound(HopperAbyssHole.abyssRadius()),
+                        finalDensity,
+                        MiaHeight.THE_ABYSS.maxY());
+
         return new NoiseRouter(
                 DensityFunctions.constant(1.0), // barrier 影响含水层是否在流体与空气之间放置阻挡方块，值越大概率越大。
                 fluidLevelFloodedness, // fluid_level_floodedness 影响含水层放置流体的概率，大于1的值被视为1，小于0的值被视为0。
@@ -250,7 +266,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 DensityFunctions.zero(), // vein_ridged
                 DensityFunctions.zero() // vein_gap
                 // 最后三个参数是矿脉生成相关的，因为是硬编码就不用它的
-                );
+        );
     }
 
     private static NoiseRouter greatFaultRouter(

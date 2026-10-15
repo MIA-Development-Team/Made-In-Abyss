@@ -1,4 +1,5 @@
 {
+  "biome.mementoinabyss.overworld.the_abyss": "Overworld Abyss",
   "mementoinabyss.config.graphsSection": "Graphs",
   "mementoinabyss.config.graphsSection.crossDimensionLodGroup": "Cross-Dimension LOD",
   "mementoinabyss.config.graphsSection.crossDimensionLodEnabled": "Enable Cross-Dimension LOD",

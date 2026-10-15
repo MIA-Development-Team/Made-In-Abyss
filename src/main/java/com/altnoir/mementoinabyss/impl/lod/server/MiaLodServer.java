@@ -42,17 +42,20 @@ public final class MiaLodServer {
         }
         if (!enabled) return;
 
+        CurrentDimensionPriority.tick(server);
+
         requestForEligiblePlayers(server);
         boolean interested = MiaLodSampler.hasInterestedPlayer(server);
         if (interested != interestedLastTick) {
             interestedLastTick = interested;
             if (!interested) suspendConsumerWork();
         }
-        if (interested) {
+        if (interested && CurrentDimensionPriority.allReady(server)) {
             MiaLodStorage.processDirtySections(server);
             MiaLodStorage.processPendingCapture(server);
-            CrossDimensionLazyChunkGenerator.tick(server);
         }
+        // Keep revocation running even while local terrain blocks new background generation.
+        CrossDimensionLazyChunkGenerator.tick(server);
         MiaLodSampler.tick(server);
 
         long gameTime = server.overworld().getGameTime();
@@ -151,6 +154,7 @@ public final class MiaLodServer {
     }
 
     private static void stopWork() {
+        CurrentDimensionPriority.clear();
         MiaLodStorage.clearPendingCaptures();
         CrossDimensionLazyChunkGenerator.clear();
         MiaLodSampler.clearTasks();

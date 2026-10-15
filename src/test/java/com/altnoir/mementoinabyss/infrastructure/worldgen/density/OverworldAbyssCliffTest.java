@@ -52,10 +52,10 @@ class OverworldAbyssCliffTest {
     }
 
     @Test
-    void shoulderUsesCubicProgressAndAcceleratesTowardCrest() {
+    void shoulderSteepensCubicallyBeforeRoundingIntoHorizontalCrest() {
         double previousRise = 0;
-        for (int x : new int[] {180, 200, 220, 240, 260, 280, 300, 320}) {
-            double t = (x - 160.0) / 160.0;
+        for (int x : new int[] {200, 220, 240, 260, 280, 298}) {
+            double t = (x - SHAPE.wallRadius()) / (320.0 - SHAPE.wallRadius());
             double expected = 128 + (SHAPE.ridgeHeight(x, 0) - 128) * t * t * t;
             assertEquals(expected, SHAPE.innerHeight(x, 0), 1.0E-10);
             // Normalize out ridge-height variation to isolate the shoulder's curve.
@@ -63,6 +63,12 @@ class OverworldAbyssCliffTest {
             assertTrue(rise > previousRise);
             previousRise = rise;
         }
+        assertEquals(256.0, SHAPE.innerHeight(320, 0));
+        assertTrue(SHAPE.innerHeight(300, 0) > SHAPE.innerHeight(280, 0));
+        assertTrue(SHAPE.innerHeight(319, 0) < SHAPE.innerHeight(320, 0));
+        double crestRise = SHAPE.innerHeight(320, 0) - SHAPE.innerHeight(319, 0);
+        double incomingRise = SHAPE.innerHeight(300, 0) - SHAPE.innerHeight(299, 0);
+        assertTrue(crestRise < incomingRise / 5.0, "Crest flattens before the outer descent");
     }
 
     @Test
@@ -131,11 +137,16 @@ class OverworldAbyssCliffTest {
     }
 
     @Test
-    void noiseCannotRaiseInnerRidgeAboveCapOrAffectOuterColumns() {
+    void positiveDetailRaisesRockAboveNominalCrestWithoutAffectingOuterColumns() {
         var positive = hole(DensityFunctions.constant(1));
-        for (int x = 161; x <= 320; x += 7) {
-            for (int y = 256; y < 320; y++) assertTrue(positive.compute(at(x, y, 0)) <= 0);
-        }
+        var unperturbed = hole(DensityFunctions.zero());
+        assertTrue(unperturbed.compute(at(320, 264, 0)) < 0);
+        assertTrue(
+                positive.compute(at(320, 264, 0)) > 0,
+                "Positive rock detail must survive above the nominal Y=256 crest");
+        assertFalse(positive.isOpening(at(319, 264, 0)));
+        // A bounded detail input still has a finite zero crossing, without a hard Y=256 cut.
+        assertTrue(positive.compute(at(320, 280, 0)) <= 0);
         for (int x : new int[] {-700, -520, 520, 700}) {
             for (int y : new int[] {-64, 70, 256, 319})
                 assertEquals(0.25, positive.compute(at(x, y, 0)));

@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.impl.lod.server;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaEnvironmentAttributes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.VerticalBoundary;
@@ -100,12 +101,19 @@ class CrossDimensionLodLinksTest {
         return new RegistryAccess.ImmutableRegistryAccess(List.of(types.freeze()));
     }
 
+    private static CrossDimensionLodLink overworldLink(List<CrossDimensionLodLink> links) {
+        return links.stream()
+                .filter(link -> link.source().equals(Level.OVERWORLD))
+                .findFirst()
+                .orElseThrow();
+    }
+
     @Test
     void implicitOverworldConnectionRequiresEnabledFeatureAndInclusiveCircularRange() {
         var attrs = EnvironmentAttributeMap.builder().build();
-        assertTrue(CrossDimensionLodLinks.activeAt(Level.OVERWORLD, attrs, 300, 0, true, 100));
-        assertTrue(CrossDimensionLodLinks.activeAt(Level.OVERWORLD, attrs, -180, 240, true, 100));
-        assertFalse(CrossDimensionLodLinks.activeAt(Level.OVERWORLD, attrs, 300.01, 0, true, 100));
+        assertTrue(CrossDimensionLodLinks.activeAt(Level.OVERWORLD, attrs, 200, 0, true, 100));
+        assertTrue(CrossDimensionLodLinks.activeAt(Level.OVERWORLD, attrs, -120, 160, true, 100));
+        assertFalse(CrossDimensionLodLinks.activeAt(Level.OVERWORLD, attrs, 200.01, 0, true, 100));
         assertFalse(CrossDimensionLodLinks.activeAt(Level.OVERWORLD, attrs, 240, 240, true, 100));
         assertFalse(CrossDimensionLodLinks.activeAt(Level.OVERWORLD, attrs, 0, 0, false, 100));
     }
@@ -332,6 +340,45 @@ class CrossDimensionLodLinksTest {
                 256,
                 com.altnoir.mementoinabyss.infrastructure.worldgen.dimension
                         .VerticalDimensionCoordinates.sourceY(704, upper.displayYOffset()));
+    }
+
+    @Test
+    void declaredCentralUpperRuleKeepsTheImplicitOverworldLink() {
+        var registries = clientRegistries(type(-256, 640));
+        var implicitAttrs =
+                EnvironmentAttributeMap.builder()
+                        .set(
+                                MiaEnvironmentAttributes.VERTICAL_BELOW,
+                                new VerticalBoundary(MiaDimensions.GREAT_FAULT_LEVEL, 8))
+                        .build();
+        var declaredAttrs =
+                EnvironmentAttributeMap.builder()
+                        .set(
+                                MiaEnvironmentAttributes.VERTICAL_BELOW,
+                                new VerticalBoundary(MiaDimensions.GREAT_FAULT_LEVEL, 8))
+                        .set(
+                                MiaEnvironmentAttributes.VERTICAL_ABOVE,
+                                new VerticalBoundary(Level.OVERWORLD, 0))
+                        .build();
+        assertFalse(implicitAttrs.contains(MiaEnvironmentAttributes.VERTICAL_ABOVE));
+        assertTrue(declaredAttrs.contains(MiaEnvironmentAttributes.VERTICAL_ABOVE));
+        var implicitLink =
+                overworldLink(
+                        CrossDimensionLodLinks.forTargets(
+                                registries,
+                                MiaDimensions.THE_ABYSS_LEVEL,
+                                type(-256, 640, implicitAttrs)));
+        var declaredLink =
+                overworldLink(
+                        CrossDimensionLodLinks.forTargets(
+                                registries,
+                                MiaDimensions.THE_ABYSS_LEVEL,
+                                type(-256, 640, declaredAttrs)));
+        assertEquals(implicitLink, declaredLink);
+        assertEquals(MementoInAbyss.asResource("overworld_in_the_abyss"), declaredLink.id());
+        assertEquals(Level.OVERWORLD, declaredLink.source());
+        assertEquals(MiaDimensions.THE_ABYSS_LEVEL, declaredLink.target());
+        assertEquals(448, declaredLink.displayYOffset());
     }
 
     @Test

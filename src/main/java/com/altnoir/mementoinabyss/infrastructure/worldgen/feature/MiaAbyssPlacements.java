@@ -83,6 +83,8 @@ public final class MiaAbyssPlacements {
     public static final ResourceKey<PlacedFeature> ORE_QUARTZ = key("ore_quartz");
     public static final ResourceKey<PlacedFeature> ORE_CHLOROPHYTE = key("ore_chlorophyte");
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG = key("trees_skyfog");
+    public static final ResourceKey<PlacedFeature> OVERWORLD_TREES_SKYFOG =
+            key("overworld/trees_skyfog");
     public static final ResourceKey<PlacedFeature> DENSE_TREES_SKYFOG = key("dense_trees_skyfog");
     public static final ResourceKey<PlacedFeature> TREES_VERDANT_FUNGUS =
             key("trees_verdant_fungus");
@@ -345,6 +347,11 @@ public final class MiaAbyssPlacements {
                 new PlacedFeature(
                         configured.getOrThrow(MiaTreeFeatures.SKYFOG_TREE),
                         List.of(TreeOnEveryLayerPlacement.of(16), BiomeFilter.biome())));
+        context.register(
+                OVERWORLD_TREES_SKYFOG,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaTreeFeatures.SKYFOG_TREE),
+                        List.of(TreeOnEveryLayerPlacement.of(8), BiomeFilter.biome())));
         context.register(
                 TREES_VERDANT_FUNGUS,
                 new PlacedFeature(

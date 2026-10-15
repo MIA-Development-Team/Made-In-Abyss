@@ -1,6 +1,7 @@
 {
   "attribute.name.mementoinabyss.critical_hit": "Critical Hit Chance",
   "attribute.name.mementoinabyss.critical_hit_damage": "Critical Hit Damage",
+  "biome.mementoinabyss.overworld.the_abyss": "Overworld Abyss",
   "biome.mementoinabyss.the_abyss.primo_forest": "Primo Forest",
   "block.mementoinabyss.abyss_andesite": "Abyss Andesite",
   "block.mementoinabyss.abyss_andesite_bricks": "Abyss Andesite Bricks",
@@ -265,6 +266,7 @@
   "mementoinabyss.config.graphsSection.performanceGroup": "Performance",
   "mementoinabyss.config.worldGenSection": "World Generation",
   "mementoinabyss.config.worldGenSection.abyssRadius": "Abyss Radius",
+  "mementoinabyss.config.worldGenSection.overworldAbyssEnabled": "Overworld Abyss (reload world)",
   "mementoinabyss.rope.connected": "Rope connected.",
   "mementoinabyss.rope.endpoint_picked": "Rope end attached. Hold use to carry it, or use another connector.",
   "mementoinabyss.rope.endpoint_released": "Rope end released.",

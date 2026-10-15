@@ -54,6 +54,32 @@ public final class MiaLodViewPlanner {
                 || (next.band() == 2 && previous != null && previous.band() < 2);
     }
 
+    /** Refine only already-selected, nearby wall columns when the camera approaches the seam. */
+    static Demand refineAbyssSeam(
+            Demand demand, MiaLodView view, CrossDimensionLodLink link, int layoutRadius) {
+        var abyss =
+                com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions
+                        .THE_ABYSS_LEVEL;
+        var overworld = net.minecraft.world.level.Level.OVERWORLD;
+        boolean down = link.source().equals(abyss) && link.target().equals(overworld);
+        boolean up = link.source().equals(overworld) && link.target().equals(abyss);
+        if ((!down && !up) || demand.band() > 1 || demand.cellSize() == 1) return demand;
+        double boundary =
+                (down ? link.sourceHeight().maxY() : link.sourceHeight().minY())
+                        + link.displayYOffset();
+        if (Math.abs(view.y() - boundary) > 64) return demand;
+        double minX = CrossDimensionLodKey.x(demand.key()) * 16.0;
+        double minZ = CrossDimensionLodKey.z(demand.key()) * 16.0;
+        double nearestX = Math.clamp(0, minX, minX + 16), nearestZ = Math.clamp(0, minZ, minZ + 16);
+        double farX = Math.max(Math.abs(minX), Math.abs(minX + 16));
+        double farZ = Math.max(Math.abs(minZ), Math.abs(minZ + 16));
+        if (Math.hypot(nearestX, nearestZ) > layoutRadius + 64
+                || Math.hypot(farX, farZ) < layoutRadius - 16) return demand;
+        if (view.distanceSquared(minX, boundary, minZ, minX + 16, boundary, minZ + 16) > 64 * 64)
+            return demand;
+        return new Demand(demand.key(), 1, demand.band(), demand.priority());
+    }
+
     static int workLimit(Demand demand, int confirmedLevel, int capacity) {
         return demand.band() == 0 && confirmedLevel == 0 ? capacity : Math.max(1, capacity - 8);
     }

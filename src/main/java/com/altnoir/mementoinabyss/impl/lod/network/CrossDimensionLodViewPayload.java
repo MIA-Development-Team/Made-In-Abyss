@@ -13,7 +13,12 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 /** Camera interest, not arbitrary chunk requests. Server bounds position, cadence, radius and work credits. */
 public record CrossDimensionLodViewPayload(
-        String linkId, long sequence, int radius, MiaLodView view) implements CustomPacketPayload {
+        String linkId, long sequence, int radius, MiaLodView view, boolean currentTerrainReady)
+        implements CustomPacketPayload {
+    public CrossDimensionLodViewPayload(String linkId, long sequence, int radius, MiaLodView view) {
+        this(linkId, sequence, radius, view, false);
+    }
+
     public static final Type<CrossDimensionLodViewPayload> TYPE =
             new Type<>(
                     Identifier.fromNamespaceAndPath(MementoInAbyss.ID, "cross_dimension_lod_view"));
@@ -50,6 +55,7 @@ public record CrossDimensionLodViewPayload(
             buffer.writeFloat(plane.z());
             buffer.writeFloat(plane.w());
         }
+        buffer.writeBoolean(currentTerrainReady);
     }
 
     private static CrossDimensionLodViewPayload decode(RegistryFriendlyByteBuf buffer) {
@@ -69,7 +75,11 @@ public record CrossDimensionLodViewPayload(
                             buffer.readFloat(),
                             buffer.readFloat()));
         return new CrossDimensionLodViewPayload(
-                link, sequence, radius, new MiaLodView(x, y, z, scale, planes));
+                link,
+                sequence,
+                radius,
+                new MiaLodView(x, y, z, scale, planes),
+                buffer.readBoolean());
     }
 
     public static void handle(CrossDimensionLodViewPayload payload, IPayloadContext context) {

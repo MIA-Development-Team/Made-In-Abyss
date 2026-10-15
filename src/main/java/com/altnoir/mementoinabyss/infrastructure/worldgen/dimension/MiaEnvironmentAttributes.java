@@ -34,5 +34,6 @@ public final class MiaEnvironmentAttributes {
         ENVIRONMENT_ATTRIBUTES.register(bus);
     }
 
-    private MiaEnvironmentAttributes() {}
+    private MiaEnvironmentAttributes() {
+    }
 }

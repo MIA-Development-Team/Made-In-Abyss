@@ -74,6 +74,7 @@ final class CrossDimensionLazyChunkGenerator {
                             return true;
                         });
         long gameTime = server.overworld().getGameTime();
+        if (!CurrentDimensionPriority.allReady(server)) return;
         if (gameTime < nextGenerationTick || IN_FLIGHT.get() >= MAX_IN_FLIGHT) return;
         var links = CrossDimensionLodLinks.all(server);
         for (int step = 0; step < links.size(); step++) {
@@ -101,12 +102,14 @@ final class CrossDimensionLazyChunkGenerator {
     }
 
     private static boolean hasViewer(MinecraftServer server, CrossDimensionLodLink link) {
-        return server.getPlayerList().getPlayers().stream()
-                .anyMatch(
-                        player ->
-                                player.isAlive()
-                                        && player.level().dimension().equals(link.target())
-                                        && MiaLodSampler.wantsLod(player));
+        return CurrentDimensionPriority.allReady(server)
+                && MiaLodSampler.hasReadyViewer(link)
+                && server.getPlayerList().getPlayers().stream()
+                        .anyMatch(
+                                player ->
+                                        player.isAlive()
+                                                && player.level().dimension().equals(link.target())
+                                                && MiaLodSampler.wantsLod(player));
     }
 
     private static void requestAsync(
@@ -359,7 +362,10 @@ final class CrossDimensionLazyChunkGenerator {
     }
 
     private static void requireActive(long generationEpoch, State state) {
-        if (generationEpoch != GENERATION_EPOCH.get() || !state.active || !lodEnabled()) {
+        if (generationEpoch != GENERATION_EPOCH.get()
+                || !state.active
+                || !CurrentDimensionPriority.backgroundAllowed()
+                || !lodEnabled()) {
             throw new CancellationException("Cross-dimension LOD generation stopped");
         }
     }

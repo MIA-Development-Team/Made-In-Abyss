@@ -1,12 +1,21 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssSeamDensity;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.GeneralAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.HopperAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.NoodleAbyssHole;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssCaveGuard;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssCliff;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssClimate;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssHole;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssInterpolated;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssNoise;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssSlide;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssSloped;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssSurface;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssTerrain;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.SharedAbyssWall;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.SparseAquiferGate;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
@@ -20,7 +29,16 @@ public final class MiaDensityFunctionTypes {
             DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, MementoInAbyss.ID);
 
     static {
+        TYPES.register("shared_abyss_wall", SharedAbyssWall.CODEC::codec);
+        TYPES.register("abyss_seam", AbyssSeamDensity.CODEC::codec);
         TYPES.register("overworld_abyss_climate", OverworldAbyssClimate.CODEC::codec);
+        TYPES.register("overworld_abyss_terrain", OverworldAbyssTerrain.CODEC::codec);
+        TYPES.register("overworld_abyss_interpolated", OverworldAbyssInterpolated.CODEC::codec);
+        TYPES.register("overworld_abyss_surface", OverworldAbyssSurface.CODEC::codec);
+        TYPES.register("overworld_abyss_sloped", OverworldAbyssSloped.CODEC::codec);
+        TYPES.register("overworld_abyss_slide", OverworldAbyssSlide.CODEC::codec);
+        TYPES.register("overworld_abyss_cave_guard", OverworldAbyssCaveGuard.CODEC::codec);
+        TYPES.register("overworld_abyss_cliff", OverworldAbyssCliff.CODEC::codec);
     }
 
     public static final DeferredHolder<

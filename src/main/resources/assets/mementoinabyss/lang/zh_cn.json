@@ -1,4 +1,5 @@
 {
+  "biome.mementoinabyss.overworld.the_abyss": "主世界深渊",
   "mementoinabyss.config.worldGenSection.overworldAbyssEnabled": "主世界深渊（重新加载世界后生效）",
   "block.mementoinabyss.mycelium_block": "菌丝块",
   "block.mementoinabyss.mycelium_mat": "菌痕",

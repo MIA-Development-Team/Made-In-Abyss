@@ -98,10 +98,16 @@ public class TreeOnEveryLayerPlacement extends PlacementModifier {
     }
 
     private static boolean isEmpty(BlockState state) {
-        return state.isAir();
+        // Meadow flowers/grass may already have been decorated before the forest step.
+        // Match vanilla tree replacement rather than rejecting every planted floor.
+        return state.getFluidState().isEmpty()
+                && (state.isAir() || state.is(BlockTags.REPLACEABLE_BY_TREES));
     }
 
     private static boolean isValidGround(BlockState state) {
-        return state.is(BlockTags.DIRT) || state.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag);
+        // Since 26.1, grass blocks/podzol/mycelium are separate from the dirt tag.
+        return state.is(BlockTags.DIRT)
+                || state.is(BlockTags.GRASS_BLOCKS)
+                || state.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag);
     }
 }

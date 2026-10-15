@@ -45,6 +45,7 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
                             context.origin()
                                     .relative(blockConfiguration.direction().getOpposite()));
             if (!directionState.is(BlockTags.DIRT)
+                    && !directionState.is(BlockTags.GRASS_BLOCKS)
                     && !directionState.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag)) {
                 return false;
             }
