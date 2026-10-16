@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.structure.MiaJigsawStructure;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.structure.wall.AbyssWindmillStructure;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.neoforged.bus.api.IEventBus;
@@ -14,6 +15,10 @@ public final class MiaStructureTypes {
 
     public static final DeferredHolder<StructureType<?>, StructureType<MiaJigsawStructure>> JIGSAW =
             TYPES.register("jigsaw", () -> () -> MiaJigsawStructure.CODEC);
+
+    public static final DeferredHolder<StructureType<?>, StructureType<AbyssWindmillStructure>>
+            ABYSS_WALL_TEMPLATE =
+                    TYPES.register("abyss_wall_template", () -> () -> AbyssWindmillStructure.CODEC);
 
     public static void register(IEventBus bus) {
         TYPES.register(bus);
