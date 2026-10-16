@@ -7,7 +7,11 @@
   },
   "structures": [
     {
-      "structure": "mementoinabyss:star_compass_ruins",
+      "structure": "mementoinabyss:ancient_babylon_compass_ruins",
+      "weight": 3
+    },
+    {
+      "structure": "mementoinabyss:ancient_maya_compass_ruins",
       "weight": 1
     }
   ]

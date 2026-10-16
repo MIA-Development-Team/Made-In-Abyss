@@ -42,6 +42,9 @@ public final class MiaStructurePools {
             key("fisherman_hut/starts");
 
     public static void bootstrap(BootstrapContext<StructureTemplatePool> context) {
+        AbyssWindmillPools.bootstrap(context);
+        CompassRuinsPools.bootstrap(context);
+        PetrifiedShipPools.bootstrap(context);
         Holder<StructureTemplatePool> empty =
                 context.lookup(Registries.TEMPLATE_POOL).getOrThrow(Pools.EMPTY);
         Holder<StructureProcessorList> degraded =
@@ -208,7 +211,7 @@ public final class MiaStructurePools {
         return Pair.of(MiaStructurePoolElements.single(path, processors), 1);
     }
 
-    private static ResourceKey<StructureTemplatePool> key(String path) {
+    static ResourceKey<StructureTemplatePool> key(String path) {
         return ResourceKey.create(Registries.TEMPLATE_POOL, MementoInAbyss.asResource(path));
     }
 

@@ -1,6 +1,8 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.structure;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.structure.wall.AbyssWallPlanConfig;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.structure.wall.AbyssWallStructurePlacement;
 import java.util.List;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -15,43 +17,79 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStruct
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 
 public final class MiaStructureSets {
-    public static final ResourceKey<StructureSet> STAR_COMPASS_RUINS = key("star_compass_ruins");
-    public static final ResourceKey<StructureSet> ABYSS_STRONGHOLDS = key("abyss_strongholds");
-    public static final ResourceKey<StructureSet> ABYSSAL_RUINS = key("abyssal_ruins");
-    public static final ResourceKey<StructureSet> CAVE_RAIDER_HUTS = key("cave_raider_huts");
-    public static final ResourceKey<StructureSet> FISHERMAN_HUTS = key("fisherman_huts");
+    public static final ResourceKey<StructureSet> ANCIENT_JUNGLE_COMPASS_RUINS =
+            register("ancient_jungle_compass_ruins");
+    public static final ResourceKey<StructureSet> ANCIENT_ROMAN_COMPASS_RUINS =
+            register("ancient_roman_compass_ruins");
+    public static final ResourceKey<StructureSet> ANCIENT_TRIAL_COMPASS_RUINS =
+            register("ancient_trial_compass_ruins");
+    public static final ResourceKey<StructureSet> ANCIENT_ANGKOR_COMPASS_RUINS =
+            register("ancient_angkor_compass_ruins");
+    public static final ResourceKey<StructureSet> PETRIFIED_SHIPS = register("petrified_ships");
+    public static final ResourceKey<StructureSet> ABYSSAL_RUINS = register("abyssal_ruins");
+    public static final ResourceKey<StructureSet> CAVE_RAIDER_HUTS = register("cave_raider_huts");
+    public static final ResourceKey<StructureSet> FISHERMAN_HUTS = register("fisherman_huts");
+    public static final ResourceKey<StructureSet> ABYSS_STRONGHOLDS = register("abyss_strongholds");
+    public static final ResourceKey<StructureSet> ABYSS_WINDMILLS = register("abyss_windmills");
 
     public static void bootstrap(BootstrapContext<StructureSet> context) {
-        HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
-        HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
+        HolderGetter<Structure> structure = context.lookup(Registries.STRUCTURE);
+        HolderGetter<Biome> biome = context.lookup(Registries.BIOME);
+
         context.register(
-                STAR_COMPASS_RUINS,
+                ANCIENT_JUNGLE_COMPASS_RUINS,
                 new StructureSet(
-                        structures.getOrThrow(MiaStructures.STAR_COMPASS_RUINS),
+                        List.of(
+                                StructureSet.entry(
+                                        structure.getOrThrow(
+                                                MiaStructures.ANCIENT_BABYLON_COMPASS_RUINS),
+                                        3),
+                                StructureSet.entry(
+                                        structure.getOrThrow(
+                                                MiaStructures.ANCIENT_MAYA_COMPASS_RUINS),
+                                        1)),
                         new RandomSpreadStructurePlacement(
                                 32, 8, RandomSpreadType.LINEAR, 70387317)));
         context.register(
-                ABYSS_STRONGHOLDS,
+                ANCIENT_ROMAN_COMPASS_RUINS,
                 new StructureSet(
-                        structures.getOrThrow(MiaStructures.ABYSS_STRONGHOLD),
-                        new ConcentricRingsStructurePlacement(
-                                32, 11, 64, biomes.getOrThrow(BiomeTags.IS_OVERWORLD))));
+                        structure.getOrThrow(MiaStructures.ANCIENT_ROMAN_COMPASS_RUINS),
+                        new RandomSpreadStructurePlacement(
+                                32, 8, RandomSpreadType.LINEAR, 70387318)));
+        context.register(
+                ANCIENT_TRIAL_COMPASS_RUINS,
+                new StructureSet(
+                        structure.getOrThrow(MiaStructures.ANCIENT_TRIAL_COMPASS_RUINS),
+                        new RandomSpreadStructurePlacement(
+                                34, 12, RandomSpreadType.LINEAR, 94251328)));
+        context.register(
+                ANCIENT_ANGKOR_COMPASS_RUINS,
+                new StructureSet(
+                        structure.getOrThrow(MiaStructures.ANCIENT_ANGKOR_COMPASS_RUINS),
+                        new RandomSpreadStructurePlacement(
+                                32, 8, RandomSpreadType.LINEAR, 70387319)));
+        context.register(
+                PETRIFIED_SHIPS,
+                new StructureSet(
+                        structure.getOrThrow(MiaStructures.PETRIFIED_SHIP),
+                        new RandomSpreadStructurePlacement(
+                                16, 4, RandomSpreadType.LINEAR, 70387320)));
         context.register(
                 ABYSSAL_RUINS,
                 new StructureSet(
                         List.of(
                                 StructureSet.entry(
-                                        structures.getOrThrow(MiaStructures.ABYSSAL_RUINS_01), 1),
+                                        structure.getOrThrow(MiaStructures.ABYSSAL_RUINS_01), 1),
                                 StructureSet.entry(
-                                        structures.getOrThrow(MiaStructures.ABYSSAL_RUINS_02), 1),
+                                        structure.getOrThrow(MiaStructures.ABYSSAL_RUINS_02), 1),
                                 StructureSet.entry(
-                                        structures.getOrThrow(MiaStructures.ABYSSAL_RUINS_03), 1),
+                                        structure.getOrThrow(MiaStructures.ABYSSAL_RUINS_03), 1),
                                 StructureSet.entry(
-                                        structures.getOrThrow(MiaStructures.ABYSSAL_RUINS_04), 1),
+                                        structure.getOrThrow(MiaStructures.ABYSSAL_RUINS_04), 1),
                                 StructureSet.entry(
-                                        structures.getOrThrow(MiaStructures.ABYSSAL_RUINS_05), 1),
+                                        structure.getOrThrow(MiaStructures.ABYSSAL_RUINS_05), 1),
                                 StructureSet.entry(
-                                        structures.getOrThrow(MiaStructures.ABYSSAL_RUINS_06), 1)),
+                                        structure.getOrThrow(MiaStructures.ABYSSAL_RUINS_06), 1)),
                         new RandomSpreadStructurePlacement(
                                 16, 4, RandomSpreadType.LINEAR, 70387321)));
         context.register(
@@ -59,23 +97,34 @@ public final class MiaStructureSets {
                 new StructureSet(
                         List.of(
                                 StructureSet.entry(
-                                        structures.getOrThrow(MiaStructures.CAVE_RAIDER_HUT), 1),
+                                        structure.getOrThrow(MiaStructures.CAVE_RAIDER_HUT), 1),
                                 StructureSet.entry(
-                                        structures.getOrThrow(MiaStructures.RUINED_CAVE_RAIDER_HUT),
+                                        structure.getOrThrow(MiaStructures.RUINED_CAVE_RAIDER_HUT),
                                         1)),
                         new RandomSpreadStructurePlacement(
                                 32, 8, RandomSpreadType.LINEAR, 70387322)));
         context.register(
                 FISHERMAN_HUTS,
                 new StructureSet(
-                        structures.getOrThrow(MiaStructures.FISHERMAN_HUT),
+                        structure.getOrThrow(MiaStructures.FISHERMAN_HUT),
                         new RandomSpreadStructurePlacement(
                                 32, 8, RandomSpreadType.LINEAR, 70387323)));
-    }
-
-    private static ResourceKey<StructureSet> key(String path) {
-        return ResourceKey.create(Registries.STRUCTURE_SET, MementoInAbyss.asResource(path));
+        context.register(
+                ABYSS_STRONGHOLDS,
+                new StructureSet(
+                        structure.getOrThrow(MiaStructures.ABYSS_STRONGHOLD),
+                        new ConcentricRingsStructurePlacement(
+                                32, 11, 64, biome.getOrThrow(BiomeTags.IS_OVERWORLD))));
+        context.register(
+                ABYSS_WINDMILLS,
+                new StructureSet(
+                        structure.getOrThrow(MiaStructures.ABYSS_WINDMILL),
+                        new AbyssWallStructurePlacement(AbyssWallPlanConfig.DEFAULT)));
     }
 
     private MiaStructureSets() {}
+
+    private static ResourceKey<StructureSet> register(String name) {
+        return ResourceKey.create(Registries.STRUCTURE_SET, MementoInAbyss.asResource(name));
+    }
 }
