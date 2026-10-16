@@ -4,6 +4,7 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.GreatFaultPlacements;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.MiaAbyssPlacements;
 import com.altnoir.mementoinabyss.init.MiaSoundEvents;
+import java.util.List;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Carvers;
@@ -16,8 +17,6 @@ import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-
-import java.util.List;
 
 public final class MiaBiomes {
     public static final ResourceKey<Biome> THE_ABYSS = key("the_abyss");
@@ -394,6 +393,5 @@ public final class MiaBiomes {
         }
     }
 
-    private MiaBiomes() {
-    }
+    private MiaBiomes() {}
 }

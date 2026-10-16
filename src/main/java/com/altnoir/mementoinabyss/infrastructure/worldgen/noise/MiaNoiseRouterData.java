@@ -266,7 +266,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 DensityFunctions.zero(), // vein_ridged
                 DensityFunctions.zero() // vein_gap
                 // 最后三个参数是矿脉生成相关的，因为是硬编码就不用它的
-        );
+                );
     }
 
     private static NoiseRouter greatFaultRouter(

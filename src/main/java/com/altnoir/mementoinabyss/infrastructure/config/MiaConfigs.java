@@ -16,8 +16,7 @@ public class MiaConfigs extends Config {
         super(MementoInAbyss.asResource("config"));
     }
 
-    @NonSync
-    public GraphsSection graphsSection = new GraphsSection();
+    @NonSync public GraphsSection graphsSection = new GraphsSection();
 
     public GamePlaySection gamePlaySection = new GamePlaySection();
     public WorldGenSection worldGenSection = new WorldGenSection();
@@ -54,8 +53,7 @@ public class MiaConfigs extends Config {
 
         public ConfigGroup curseGroup = new ConfigGroup("curse");
         public ValidatedBoolean enableCurse = new ValidatedBoolean(true);
-        @ConfigGroup.Pop
-        public ValidatedBoolean enableCurseCreative = new ValidatedBoolean(false);
+        @ConfigGroup.Pop public ValidatedBoolean enableCurseCreative = new ValidatedBoolean(false);
 
         public ConfigGroup blazeReapGroup = new ConfigGroup("blaze_reap");
         public ValidatedInt blazeReapExplosionCount = new ValidatedInt(4, 64, 1);
@@ -70,8 +68,7 @@ public class MiaConfigs extends Config {
         public ValidatedDouble hookStopPullDistance = new ValidatedDouble(1.41421, 10, 1);
         public ValidatedDouble hookRetractVelocity = new ValidatedDouble(0.75, 5, 0.1);
         public ValidatedDouble hookRetractDistance = new ValidatedDouble(4, 16, 1);
-        @ConfigGroup.Pop
-        public ValidatedDouble hookJumpBoost = new ValidatedDouble(1.25, 3, 1);
+        @ConfigGroup.Pop public ValidatedDouble hookJumpBoost = new ValidatedDouble(1.25, 3, 1);
 
         public ConfigGroup caveExplorerBeacon = new ConfigGroup("cave_explorer_beacon");
         public ValidatedInt caveExplorerBeaconHorizontal = new ValidatedInt(10, 1024, 1);

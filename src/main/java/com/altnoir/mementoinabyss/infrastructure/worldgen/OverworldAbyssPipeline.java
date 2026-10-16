@@ -204,7 +204,9 @@ public final class OverworldAbyssPipeline {
     private static boolean isType(DensityFunction function, String path) {
         try {
             var key = BuiltInRegistries.DENSITY_FUNCTION_TYPE.getKey(function.codec().codec());
-            return key != null && key.getNamespace().equals("minecraft") && key.getPath().equals(path);
+            return key != null
+                    && key.getNamespace().equals("minecraft")
+                    && key.getPath().equals(path);
         } catch (UnsupportedOperationException unsupportedCodec) {
             if (UNSUPPORTED_CODEC_WARNING_LOGGED.compareAndSet(false, true))
                 MementoInAbyss.LOGGER.warn(

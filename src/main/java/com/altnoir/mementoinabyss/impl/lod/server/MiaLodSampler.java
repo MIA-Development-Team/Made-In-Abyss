@@ -4,13 +4,6 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.foundation.concurrent.MiaExecutors;
 import com.altnoir.mementoinabyss.impl.lod.network.*;
 import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodBatchPayload.Section;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.storage.LevelResource;
-import net.neoforged.neoforge.network.PacketDistributor;
-
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -19,6 +12,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.storage.LevelResource;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
  * Persistent camera-driven stream. Replanning changes demand/priority, never the stream or useful in-flight work.
@@ -30,8 +29,7 @@ final class MiaLodSampler {
     private static final int MAX_LOADS_PER_TICK = 16;
     private static final AtomicLong NEXT_STREAM_EPOCH = new AtomicLong();
 
-    private record ViewerKey(UUID playerId, String linkId) {
-    }
+    private record ViewerKey(UUID playerId, String linkId) {}
 
     private static final Map<ViewerKey, Task> TASKS = new ConcurrentHashMap<>();
     private static final Set<UUID> CLIENT_DISABLED = ConcurrentHashMap.newKeySet();
@@ -273,7 +271,7 @@ final class MiaLodSampler {
         while (sent < MAX_BATCHES_PER_TICK && bytes < MAX_BYTES_PER_TICK && !ready.isEmpty()) {
             boolean progress = false;
             for (var iterator = ready.iterator();
-                 iterator.hasNext() && sent < MAX_BATCHES_PER_TICK; ) {
+                    iterator.hasNext() && sent < MAX_BATCHES_PER_TICK; ) {
                 Work work = iterator.next();
                 var prepared = work.prepared;
                 if (work.transfer != null && !task.delivery.active(work.transfer)) {
@@ -402,12 +400,12 @@ final class MiaLodSampler {
     static boolean hasInterestedPlayer(MinecraftServer server) {
         return lodEnabled()
                 && server.getPlayerList().getPlayers().stream()
-                .anyMatch(
-                        player ->
-                                player.isAlive()
-                                        && CrossDimensionLodLinks.forTarget(player.level())
-                                        .isPresent()
-                                        && wantsLod(player));
+                        .anyMatch(
+                                player ->
+                                        player.isAlive()
+                                                && CrossDimensionLodLinks.forTarget(player.level())
+                                                        .isPresent()
+                                                && wantsLod(player));
     }
 
     private static boolean isCurrent(Task task) {
@@ -428,8 +426,8 @@ final class MiaLodSampler {
         for (Task task : TASKS.values())
             if (task.link.source().equals(link.source())
                     && (task.demands.containsKey(key)
-                    || task.delivery.confirmedCellSize(key) != 0
-                    || task.delivery.waiting(key))) {
+                            || task.delivery.confirmedCellSize(key) != 0
+                            || task.delivery.waiting(key))) {
                 task.pendingRevisions.merge(key, revision, Math::max);
                 task.availability.available(key);
                 task.scan = true;
@@ -527,8 +525,7 @@ final class MiaLodSampler {
             int loading,
             int ready,
             int known,
-            int missing) {
-    }
+            int missing) {}
 
     private static final class Task {
         final ServerPlayer player;
@@ -592,12 +589,12 @@ final class MiaLodSampler {
             LongPredicate keep =
                     key ->
                             view.distanceSquared(
-                                    CrossDimensionLodKey.x(key) * 16.0,
-                                    minY,
-                                    CrossDimensionLodKey.z(key) * 16.0,
-                                    CrossDimensionLodKey.x(key) * 16.0 + 16,
-                                    maxY,
-                                    CrossDimensionLodKey.z(key) * 16.0 + 16)
+                                            CrossDimensionLodKey.x(key) * 16.0,
+                                            minY,
+                                            CrossDimensionLodKey.z(key) * 16.0,
+                                            CrossDimensionLodKey.x(key) * 16.0 + 16,
+                                            maxY,
+                                            CrossDimensionLodKey.z(key) * 16.0 + 16)
                                     <= retention * retention;
             delivery.retain(key -> keep.test(key) || work.containsKey(key));
             pendingRevisions.keySet().removeIf(key -> !keep.test(key));
@@ -630,8 +627,7 @@ final class MiaLodSampler {
         }
     }
 
-    private record PreparedResult(Work work, PreparedChunk prepared) {
-    }
+    private record PreparedResult(Work work, PreparedChunk prepared) {}
 
     private record PreparedChunk(
             MiaLodSectionTree tree,
@@ -639,13 +635,11 @@ final class MiaLodSampler {
             long baseRevision,
             List<Section> sections,
             CrossDimensionLodCacheScope scope,
-            String digest) {
-    }
+            String digest) {}
 
     private static boolean lodEnabled() {
         return MementoInAbyss.CONFIGS.graphsSection.crossDimensionLodEnabled.get();
     }
 
-    private MiaLodSampler() {
-    }
+    private MiaLodSampler() {}
 }
