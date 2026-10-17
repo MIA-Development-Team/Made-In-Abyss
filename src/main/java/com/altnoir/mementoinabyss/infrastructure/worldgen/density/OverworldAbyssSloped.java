@@ -80,7 +80,8 @@ public final class OverworldAbyssSloped implements DensityFunction {
     @Override
     public double compute(FunctionContext context) {
         int x = context.blockX(), z = context.blockZ();
-        double distance = shape.distance(x, z), weight = shape.outerWeight(distance);
+        double distance = shape.distance(x, z),
+                weight = shape.outerWeight(context.blockX(), context.blockZ());
         if (weight == 0) return input.compute(context);
         if (distance <= shape.radius()) return (distance - shape.radius() - 2) / 16.0;
         Columns cache = columns.get();

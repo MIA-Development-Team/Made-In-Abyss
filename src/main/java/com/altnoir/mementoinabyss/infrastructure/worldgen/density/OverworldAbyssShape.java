@@ -2,16 +2,16 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.density;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.Objects;
 
 /** Immutable world-local geometry; radius is the effective overworld radius (twice config). */
-public record OverworldAbyssShape(
-        int radius,
-        int minY,
-        int maxY,
-        long seed,
-        double outerSteepness,
-        double slopeBand,
-        int abyssMaxY) {
+public final class OverworldAbyssShape {
+    private final int radius, minY, maxY, abyssMaxY;
+    private final long seed;
+    private final double outerSteepness, slopeBand;
+    private final int hash;
+    private final OverworldAbyssMountains mountains;
+
     /**
      * Range of the outer slope's shape exponent. One is the plain smoothstep fall; below one holds the
      * ring drop earlier in the band; above one holds its height further out before descending.
@@ -37,10 +37,8 @@ public record OverworldAbyssShape(
     public static final double MAX_SLOPE_BAND = 2.0;
 
     /**
-     * Width of the descent, in radii, measured from the ridge at {@code 2 * radius}. This is the one
-     * lever that sets how steep the junction averages: the whole ridge-to-ground drop is spent across
-     * this band, so the nominal gradient is {@code drop / (slopeBand * radius)} and the peak is a fixed
-     * multiple of it for a given shape exponent.
+     * Width of the nominal descent, in radii, measured from the mean ridge at {@code 2 * radius}.
+     * Local crests meander inside this band; all slopes land at the same outer limit.
      *
      * <p>The final slope also depends on the original density and local 3D rock detail.
      */
@@ -73,12 +71,78 @@ public record OverworldAbyssShape(
                                                     .forGetter(OverworldAbyssShape::abyssMaxY))
                                     .apply(instance, OverworldAbyssShape::new));
 
-    public OverworldAbyssShape {
+    public OverworldAbyssShape(
+            int radius,
+            int minY,
+            int maxY,
+            long seed,
+            double outerSteepness,
+            double slopeBand,
+            int abyssMaxY) {
         if (radius < 64 || radius > 20480 || minY >= maxY) {
             throw new IllegalArgumentException("Invalid overworld abyss geometry");
         }
-        outerSteepness = Math.clamp(outerSteepness, MIN_OUTER_STEEPNESS, MAX_OUTER_STEEPNESS);
-        slopeBand = Math.clamp(slopeBand, MIN_SLOPE_BAND, MAX_SLOPE_BAND);
+        this.radius = radius;
+        this.minY = minY;
+        this.maxY = maxY;
+        this.seed = seed;
+        this.abyssMaxY = abyssMaxY;
+        this.outerSteepness = Math.clamp(outerSteepness, MIN_OUTER_STEEPNESS, MAX_OUTER_STEEPNESS);
+        this.slopeBand = Math.clamp(slopeBand, MIN_SLOPE_BAND, MAX_SLOPE_BAND);
+        this.hash =
+                Objects.hash(
+                        radius, minY, maxY, seed, this.outerSteepness, this.slopeBand, abyssMaxY);
+        this.mountains = new OverworldAbyssMountains(this);
+    }
+
+    public int radius() {
+        return radius;
+    }
+
+    public int minY() {
+        return minY;
+    }
+
+    public int maxY() {
+        return maxY;
+    }
+
+    public long seed() {
+        return seed;
+    }
+
+    public double outerSteepness() {
+        return outerSteepness;
+    }
+
+    public double slopeBand() {
+        return slopeBand;
+    }
+
+    public int abyssMaxY() {
+        return abyssMaxY;
+    }
+
+    public OverworldAbyssMountains.Sample sample(int x, int z) {
+        return mountains.sample(x, z);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return this == other
+                || other instanceof OverworldAbyssShape that
+                        && radius == that.radius
+                        && minY == that.minY
+                        && maxY == that.maxY
+                        && seed == that.seed
+                        && abyssMaxY == that.abyssMaxY
+                        && Double.compare(outerSteepness, that.outerSteepness) == 0
+                        && Double.compare(slopeBand, that.slopeBand) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return hash;
     }
 
     /** Old saved graphs use the original abyss boundary; live worlds supply their actual type. */
@@ -125,23 +189,19 @@ public record OverworldAbyssShape(
     }
 
     public double ridgeHeight(int x, int z) {
-        return Math.clamp(256.0, minY, maxY - 2.0);
+        return sample(x, z).ridgeHeight();
     }
 
-    /** Y=128 shoulder, cubic steepening, then a rounded crest with zero radial slope. */
+    /** Target height before the single outer blend with the original terrain. */
     public double innerHeight(int x, int z) {
-        double t =
-                Math.clamp(
-                        (distance(x, z) - wallRadius()) / (2.0 * radius - wallRadius()), 0.0, 1.0);
-        double shoulder = Math.clamp(128.0, minY, maxY - 2.0);
-        return lerp(innerRise(t), shoulder, ridgeHeight(x, z));
+        return sample(x, z).height();
     }
 
-    private static double innerRise(double t) {
+    static double innerRise(double t) {
         double rise = t * t * t;
         if (t > 0.85) {
             // Hermite matches the cubic's value and derivative before rounding to a horizontal
-            // ridge. The outer descent also begins horizontally at two radii.
+            // ridge. The outer descent also begins horizontally at the local crest.
             double u = (t - 0.85) / 0.15;
             double start = 0.85 * 0.85 * 0.85;
             double tangent = 3.0 * 0.85 * 0.85 * 0.15;
@@ -153,13 +213,11 @@ public record OverworldAbyssShape(
         return rise;
     }
 
-    public double outerWeight(double distance) {
-        // Clamping the position keeps the weight exactly zero from the outer limit on, so a caller
-        // can
-        // never mistake a rounding crumb of the smoothstep for "the abyss still reaches here" and
-        // sample the whole carve graph outside its own boundary.
-        double position = Math.clamp((distance - 2.0 * radius) / (slopeBand * radius), 0.0, 1.0);
-        return 1.0 - Math.pow(smooth(position), outerSteepness);
+    public double outerWeight(int x, int z) {
+        double distance = distance(x, z);
+        if (distance <= (2 - OverworldAbyssMountains.MAX_RIDGE_SHIFT) * radius) return 1;
+        if (distance >= outerLimit()) return 0;
+        return sample(x, z).weight();
     }
 
     public static double smooth(double value) {

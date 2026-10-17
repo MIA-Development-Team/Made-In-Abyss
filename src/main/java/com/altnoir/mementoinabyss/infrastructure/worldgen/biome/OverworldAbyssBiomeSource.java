@@ -81,33 +81,41 @@ public final class OverworldAbyssBiomeSource extends BiomeSource {
             int quartX, int quartY, int quartZ, Climate.Sampler sampler) {
         int x = QuartPos.toBlock(quartX), z = QuartPos.toBlock(quartZ);
         if (!shape.affects(x, z)) return delegate.getNoiseBiome(quartX, quartY, quartZ, sampler);
-        // At 1.75R the cubic inner slope is only ~144, so the low shoulder is the abyss habitat;
-        // the upper half of the ascent belongs to the ordinary mountain climate map.
-        if (shape.distance(x, z) < 1.75 * shape.radius()) return innerBiome;
+        var mountain = shape.sample(x, z);
+        double habitatFraction =
+                (1.75 * shape.radius() - shape.wallRadius())
+                        / (2.0 * shape.radius() - shape.wallRadius());
+        double habitatLimit =
+                shape.wallRadius()
+                        + habitatFraction * (mountain.ridgeRadius() - shape.wallRadius());
+        if (shape.distance(x, z) < habitatLimit) return innerBiome;
         Holder<Biome> selected = delegate.getNoiseBiome(quartX, quartY, quartZ, sampler);
-        double height = shape.innerHeight(x, z);
-        double weight = shape.outerWeight(shape.distance(x, z));
+        double weight = mountain.weight();
         // A foreign source may disregard continentalness. Only reject aquatic surface biomes
         // where the imposed ring is still materially elevated; preserve its land/cave biomes.
         if (weight > 0.15
                 && (selected.is(BiomeTags.IS_OCEAN)
                 || selected.is(BiomeTags.IS_RIVER)
                 || selected.is(BiomeTags.IS_BEACH))) {
-            float temperature =
-                    Climate.unquantizeCoord(sampler.sample(quartX, quartY, quartZ).temperature());
-            ResourceKey<Biome> fallback =
-                    height >= 192 && weight >= 0.5
-                            ? (temperature < -0.45
-                            ? Biomes.FROZEN_PEAKS
-                            : temperature < 0.2 ? Biomes.JAGGED_PEAKS : Biomes.STONY_PEAKS)
-                            : (temperature < -0.45
-                            ? Biomes.SNOWY_SLOPES
-                            : temperature < 0.2 ? Biomes.GROVE : Biomes.MEADOW);
+            var climate = sampler.sample(quartX, quartY, quartZ);
+            ResourceKey<Biome> fallback = getFallback(quartY, climate, weight);
             return landFallbacks.stream()
                     .filter(biome -> biome.is(fallback))
                     .findFirst()
                     .orElse(selected);
         }
         return selected;
+    }
+
+    private static ResourceKey<Biome> getFallback(int quartY, Climate.TargetPoint climate, double weight) {
+        double height = QuartPos.toBlock(quartY) + 128 * Climate.unquantizeCoord(climate.depth());
+        float temperature = Climate.unquantizeCoord(climate.temperature());
+        return height >= 192 && weight >= 0.5
+                ? (temperature < -0.45
+                ? Biomes.FROZEN_PEAKS
+                : temperature < 0.2 ? Biomes.JAGGED_PEAKS : Biomes.STONY_PEAKS)
+                : (temperature < -0.45
+                ? Biomes.SNOWY_SLOPES
+                : temperature < 0.2 ? Biomes.GROVE : Biomes.MEADOW);
     }
 }

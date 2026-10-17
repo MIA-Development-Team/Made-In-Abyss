@@ -14,6 +14,8 @@ public record OverworldAbyssClimate(
         Optional<DensityFunction> surface)
         implements DensityFunction.SimpleFunction {
     public enum Component {
+        TEMPERATURE,
+        HUMIDITY,
         CONTINENTS,
         EROSION,
         DEPTH,
@@ -55,13 +57,20 @@ public record OverworldAbyssClimate(
     @Override
     public double compute(FunctionContext context) {
         int x = context.blockX(), z = context.blockZ();
-        double distance = shape.distance(x, z);
-        double weight = shape.outerWeight(distance);
+        double weight = shape.outerWeight(context.blockX(), context.blockZ());
         double original = input.compute(context);
         if (weight <= 0) return original;
+        if (component == Component.TEMPERATURE || component == Component.HUMIDITY) {
+            double warmed = original + 0.06;
+            double target =
+                    component == Component.TEMPERATURE
+                            ? (warmed <= 0.4 ? warmed : 0.4 + 0.1 * Math.tanh((warmed - 0.4) / 0.1))
+                            : 0.88 * original + 0.12;
+            return OverworldAbyssShape.lerp(
+                    OverworldAbyssShape.smooth(weight / 0.15), original, target);
+        }
         double height = shape.innerHeight(x, z);
-        if (component == Component.DEPTH && surface.isPresent())
-            height = surface.get().compute(context);
+        if (surface.isPresent()) height = surface.get().compute(context);
         double mountain = OverworldAbyssShape.smooth((height - 144.0) / 80.0);
         double target =
                 switch (component) {
@@ -71,6 +80,7 @@ public record OverworldAbyssClimate(
                             OverworldAbyssShape.lerp(
                                     mountain, original, Math.copySign(0.65, original));
                     case DEPTH -> (height - context.blockY()) / 128.0;
+                    case TEMPERATURE, HUMIDITY -> throw new AssertionError(component);
                 };
         return OverworldAbyssShape.lerp(weight, original, target);
     }

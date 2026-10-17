@@ -171,7 +171,7 @@ public record OverworldAbyssHole(
                 value = Math.min(value, (distance - shape.radius() - 2) / 16.0);
             return value;
         }
-        double weight = shape.outerWeight(distance);
+        double weight = shape.outerWeight(context.blockX(), context.blockZ());
         double height = shape.innerHeight(x, z);
         // Compatibility evaluation for old documents. New installations use the composed graph.
         double target =

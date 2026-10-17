@@ -22,7 +22,7 @@ public record OverworldAbyssSlide(DensityFunction input, OverworldAbyssShape sha
 
     @Override
     public double compute(FunctionContext context) {
-        double weight = shape.outerWeight(shape.distance(context.blockX(), context.blockZ()));
+        double weight = shape.outerWeight(context.blockX(), context.blockZ());
         double original = input.compute(context);
         if (weight == 0) return original;
         double raised = 1 - Math.clamp((context.blockY() - (shape.maxY() - 32.0)) / 24.0, 0, 1);

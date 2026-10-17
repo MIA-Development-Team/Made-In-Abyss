@@ -54,7 +54,7 @@ public record OverworldAbyssTerrain(
     @Override
     public double compute(FunctionContext context) {
         double distance = shape.distance(context.blockX(), context.blockZ());
-        double weight = localOnly ? 1.0 : shape.outerWeight(distance);
+        double weight = localOnly ? 1.0 : shape.outerWeight(context.blockX(), context.blockZ());
         if (weight == 0) return input.compute(context);
         double target;
         if (finalBlend) {
@@ -96,10 +96,7 @@ public record OverworldAbyssTerrain(
         boolean needsBaseNoise = false;
         for (int i = 0; i < size; i++) {
             FunctionContext context = provider.forIndex(i);
-            double weight =
-                    localOnly
-                            ? 1.0
-                            : shape.outerWeight(shape.distance(context.blockX(), context.blockZ()));
+            double weight = localOnly ? 1.0 : shape.outerWeight(context.blockX(), context.blockZ());
             weights[i] = weight;
             needsInput |= weight != 1.0;
             needsBaseNoise |= weight != 0.0;

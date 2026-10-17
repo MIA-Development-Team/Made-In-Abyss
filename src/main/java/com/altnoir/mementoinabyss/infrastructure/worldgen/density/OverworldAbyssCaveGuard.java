@@ -36,7 +36,7 @@ public record OverworldAbyssCaveGuard(
 
     @Override
     public double compute(FunctionContext context) {
-        double weight = shape.outerWeight(shape.distance(context.blockX(), context.blockZ()));
+        double weight = shape.outerWeight(context.blockX(), context.blockZ());
         if (weight == 0) return input.compute(context);
         double depthBlocks = depth.compute(context) * 24;
         double skin =
@@ -55,7 +55,7 @@ public record OverworldAbyssCaveGuard(
         depth.fillArray(depthValues, p);
         for (int i = 0; i < out.length; i++) {
             var context = p.forIndex(i);
-            double weight = shape.outerWeight(shape.distance(context.blockX(), context.blockZ()));
+            double weight = shape.outerWeight(context.blockX(), context.blockZ());
             double skin =
                     (1 - OverworldAbyssShape.smooth((depthValues[i] * 24 - 8) / 16))
                             * OverworldAbyssShape.smooth(weight / 0.05);

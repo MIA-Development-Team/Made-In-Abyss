@@ -126,7 +126,7 @@ public final class OverworldAbyss {
                                 .toList(),
                         shape));
         MementoInAbyss.LOGGER.info(
-                "Overworld abyss enabled: bottom radius {}, ridge radius {}, outer radius {}",
+                "Overworld abyss enabled: bottom radius {}, mean ridge radius {}, outer radius {}",
                 shape.radius(),
                 shape.radius() * 2,
                 shape.outerLimit());
@@ -269,8 +269,14 @@ public final class OverworldAbyss {
                         original.fluidLevelFloodednessNoise(),
                         original.fluidLevelSpreadNoise(),
                         original.lavaNoise(),
-                        original.temperature(),
-                        original.vegetation(),
+                        new OverworldAbyssClimate(
+                                source.temperature(),
+                                shape,
+                                OverworldAbyssClimate.Component.TEMPERATURE),
+                        new OverworldAbyssClimate(
+                                source.vegetation(),
+                                shape,
+                                OverworldAbyssClimate.Component.HUMIDITY),
                         new OverworldAbyssClimate(
                                 source.continents(),
                                 shape,
@@ -300,8 +306,8 @@ public final class OverworldAbyss {
         ((RandomStateAccessor) (Object) state)
                 .mia$setSampler(
                         new Climate.Sampler(
-                                source.temperature().mapAll(flatten),
-                                source.vegetation().mapAll(flatten),
+                                router.temperature().mapAll(flatten),
+                                router.vegetation().mapAll(flatten),
                                 router.continents().mapAll(flatten),
                                 router.erosion().mapAll(flatten),
                                 router.depth().mapAll(flatten),

@@ -99,15 +99,16 @@ public final class OverworldAbyssPipeline {
                                     referenceHeight,
                                     shape,
                                     slopedFactor(originalSloped[0])));
+            DensityFunction solidInterpolated =
+                    DensityFunctions.interpolated(DensityFunctions.blendDensity(solidRaw));
             DensityFunction solid =
-                    DensityFunctions.mul(
-                                    DensityFunctions.interpolated(
-                                            DensityFunctions.blendDensity(solidRaw)),
-                                    DensityFunctions.constant(0.64))
+                    DensityFunctions.mul(solidInterpolated, DensityFunctions.constant(0.64))
                             .squeeze();
             // Retain all cave nodes, including the outer NOODLE min, below a continuous skin.
             // Otherwise world-height cave entrances can sever the newly raised mountain cap.
-            terrain = new OverworldAbyssCaveGuard(terrain, solid, solidRaw, shape);
+            // The skin follows the same interpolated envelope as the rock. Evaluating the raw
+            // field per block also searches the original surface per block and thrashes its cache.
+            terrain = new OverworldAbyssCaveGuard(terrain, solid, solidInterpolated, shape);
         } else {
             MementoInAbyss.LOGGER.info(
                     "Overworld abyss fallback: interpolation stages={}, terrain inputs={}, base"
