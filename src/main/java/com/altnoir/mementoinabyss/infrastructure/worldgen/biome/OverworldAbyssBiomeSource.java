@@ -3,10 +3,8 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.biome;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssShape;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
 import java.util.List;
 import java.util.stream.Stream;
-
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.resources.ResourceKey;
@@ -95,8 +93,8 @@ public final class OverworldAbyssBiomeSource extends BiomeSource {
         // where the imposed ring is still materially elevated; preserve its land/cave biomes.
         if (weight > 0.15
                 && (selected.is(BiomeTags.IS_OCEAN)
-                || selected.is(BiomeTags.IS_RIVER)
-                || selected.is(BiomeTags.IS_BEACH))) {
+                        || selected.is(BiomeTags.IS_RIVER)
+                        || selected.is(BiomeTags.IS_BEACH))) {
             var climate = sampler.sample(quartX, quartY, quartZ);
             ResourceKey<Biome> fallback = getFallback(quartY, climate, weight);
             return landFallbacks.stream()
@@ -107,15 +105,16 @@ public final class OverworldAbyssBiomeSource extends BiomeSource {
         return selected;
     }
 
-    private static ResourceKey<Biome> getFallback(int quartY, Climate.TargetPoint climate, double weight) {
+    private static ResourceKey<Biome> getFallback(
+            int quartY, Climate.TargetPoint climate, double weight) {
         double height = QuartPos.toBlock(quartY) + 128 * Climate.unquantizeCoord(climate.depth());
         float temperature = Climate.unquantizeCoord(climate.temperature());
         return height >= 192 && weight >= 0.5
                 ? (temperature < -0.45
-                ? Biomes.FROZEN_PEAKS
-                : temperature < 0.2 ? Biomes.JAGGED_PEAKS : Biomes.STONY_PEAKS)
+                        ? Biomes.FROZEN_PEAKS
+                        : temperature < 0.2 ? Biomes.JAGGED_PEAKS : Biomes.STONY_PEAKS)
                 : (temperature < -0.45
-                ? Biomes.SNOWY_SLOPES
-                : temperature < 0.2 ? Biomes.GROVE : Biomes.MEADOW);
+                        ? Biomes.SNOWY_SLOPES
+                        : temperature < 0.2 ? Biomes.GROVE : Biomes.MEADOW);
     }
 }
