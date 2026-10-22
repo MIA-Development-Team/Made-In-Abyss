@@ -1,6 +1,9 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen;
 
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssNoodleTaper;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssSeamDensity;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssTongueDensity;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssTongueShape;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.SharedAbyssWall;
 import com.altnoir.mementoinabyss.mixin.worldgen.RandomStateAccessor;
 import net.minecraft.server.level.ServerLevel;
@@ -21,10 +24,18 @@ public final class AbyssSeamRuntime {
     }
 
     public static NoiseRouter bindRouter(NoiseRouter router, long seed, double layoutRadius) {
+        var tongues = new java.util.HashMap<Double, AbyssTongueShape>();
+        var walls = new java.util.HashMap<Integer, SharedAbyssWall>();
         return router.mapAll(
                 function -> {
                     if (function instanceof SharedAbyssWall wall && !wall.bound())
-                        return SharedAbyssWall.forOverworld(layoutRadius, seed, wall.phaseOffset());
+                        return walls.computeIfAbsent(
+                                wall.phaseOffset(),
+                                offset -> SharedAbyssWall.forOverworld(layoutRadius, seed, offset));
+                    if (function instanceof AbyssTongueDensity tongue)
+                        return tongue.bind(seed, layoutRadius, tongues);
+                    if (function instanceof AbyssNoodleTaper taper)
+                        return taper.bind(seed, layoutRadius);
                     return function;
                 });
     }

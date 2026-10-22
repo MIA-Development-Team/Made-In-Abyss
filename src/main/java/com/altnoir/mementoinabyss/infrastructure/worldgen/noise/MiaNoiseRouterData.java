@@ -2,6 +2,8 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.noise;
 
 import com.altnoir.mementoinabyss.infrastructure.worldgen.MiaHeight;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssSeamDensity;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssTongueDensity;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssTongueShape;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.HopperAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.SharedAbyssWall;
 import com.altnoir.mementoinabyss.init.MiaDensityFunctionTypes;
@@ -59,7 +61,8 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 .squeeze();
     }
 
-    private static DensityFunction theAbyssDensity(HolderGetter<DensityFunction> densityFunctions) {
+    private static DensityFunction theAbyssRawDensity(
+            HolderGetter<DensityFunction> densityFunctions) {
         DensityFunction yFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
         DensityFunction abyssGreatCave =
                 getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_GREAT_CAVE);
@@ -126,7 +129,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         DensityFunction mul2 = DensityFunctions.mul(ycg2, add3);
         DensityFunction add4 = DensityFunctions.add(DensityFunctions.constant(-0.4), mul2);
 
-        return postProcess(add4);
+        return add4;
     }
 
     private static DensityFunction greatFaultDensity(
@@ -229,10 +232,38 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                                 DensityFunctions.yClampedGradient(0, 32, 1.5, 0.0),
                                 getFunction(
                                         densityFunctions, MiaDensityFunctions.THE_ABYSS_NOODLE)));
+        DensityFunction terrain = theAbyssRawDensity(densityFunctions);
+        DensityFunction support =
+                DensityFunctions.max(
+                        DensityFunctions.min(postProcess(terrain), noodle), greatCaveNoodle);
+        double tongueRadius = HopperAbyssHole.abyssRadius();
+        DensityFunction carved = new AbyssTongueDensity(terrain, support, tongueRadius, false);
+        DensityFunction tongues =
+                new AbyssTongueDensity(DensityFunctions.zero(), support, tongueRadius, true);
         DensityFunction combinedDensity =
                 DensityFunctions.max(
-                        DensityFunctions.min(theAbyssDensity(densityFunctions), noodle),
-                        greatCaveNoodle);
+                        DensityFunctions.min(postProcess(carved), noodle), greatCaveNoodle);
+        // Thin tips must be sampled per block; the 8-block terrain lattice can sever their necks.
+        DensityFunction tongueBody =
+                DensityFunctions.mul(
+                                DensityFunctions.blendDensity(tongues),
+                                DensityFunctions.constant(.64))
+                        .squeeze();
+        DensityFunction withTongues = DensityFunctions.max(combinedDensity, tongueBody);
+        withTongues =
+                DensityFunctions.rangeChoice(
+                        MiaDensityFunctionTypes.noodle(0, .95F),
+                        -1000000,
+                        0,
+                        withTongues,
+                        combinedDensity);
+        combinedDensity =
+                DensityFunctions.rangeChoice(
+                        yFunction,
+                        AbyssTongueShape.MIN_Y,
+                        AbyssTongueShape.MAX_Y,
+                        withTongues,
+                        combinedDensity);
         DensityFunction finalDensity =
                 DensityFunctions.rangeChoice(
                         yFunction,

@@ -1,7 +1,9 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssNoodleTaper;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssSeamDensity;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssTongueDensity;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.GeneralAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.HopperAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.NoodleAbyssHole;
@@ -31,6 +33,8 @@ public final class MiaDensityFunctionTypes {
     static {
         TYPES.register("shared_abyss_wall", SharedAbyssWall.CODEC::codec);
         TYPES.register("abyss_seam", AbyssSeamDensity.CODEC::codec);
+        TYPES.register("abyss_tongues", AbyssTongueDensity.CODEC::codec);
+        TYPES.register("abyss_noodle_taper", AbyssNoodleTaper.CODEC::codec);
         TYPES.register("overworld_abyss_climate", OverworldAbyssClimate.CODEC::codec);
         TYPES.register("overworld_abyss_terrain", OverworldAbyssTerrain.CODEC::codec);
         TYPES.register("overworld_abyss_interpolated", OverworldAbyssInterpolated.CODEC::codec);

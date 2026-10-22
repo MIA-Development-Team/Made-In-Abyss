@@ -120,6 +120,7 @@ public final class MiaBiomes {
                         .addFeature(
                                 GenerationStep.Decoration.VEGETAL_DECORATION,
                                 MiaAbyssPlacements.PATCH_SUNFLOWER);
+                if (!overworld) addTree(generationBuilder, MiaAbyssPlacements.TREES_SKYFOG);
             }
             case SKYFOG_FOREST -> {
                 addSlabRuins(generationBuilder);

@@ -95,8 +95,21 @@ public final class MiaSurfaceRules {
                                                         SurfaceRules.noiseCondition(
                                                                 MiaNoiseData.STRIPEY, -0.12, 0.12),
                                                         MUD),
-                                                coverGrass_andesite,
+                                                SurfaceRules.ifTrue(
+                                                        SurfaceRules.noiseCondition(
+                                                                MiaNoiseData.STRIPEY, -0.24, 0.24),
+                                                        COARSE_DIRT),
+                                                SurfaceRules.ifTrue(
+                                                        SurfaceRules.ON_FLOOR, coverGrass_andesite),
                                                 ABYSS_ANDESITE))),
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
+                                SurfaceRules.ifTrue(
+                                        SurfaceRules.isBiome(MiaBiomes.INVERTED_FOREST),
+                                        SurfaceRules.ifTrue(
+                                                SurfaceRules.noiseCondition(
+                                                        MiaNoiseData.STRIPEY, -0.2, 0.2),
+                                                DEEPSLATE))),
                         SurfaceRules.sequence(
                                 addCalciteRule(320, 2),
                                 addCalciteRule(288, 3),

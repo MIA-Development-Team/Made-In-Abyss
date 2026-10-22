@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.noise;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.MiaHeight;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssNoodleTaper;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.HopperAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.SharedAbyssWall;
 import com.altnoir.mementoinabyss.init.MiaDensityFunctionTypes;
@@ -144,8 +145,8 @@ public class MiaDensityFunctions {
                                 yFunction,
                                 MiaHeight.THE_ABYSS.minY(),
                                 -112,
-                                DensityFunctions.constant(2.0),
-                                DensityFunctions.constant(1.9)),
+                                DensityFunctions.constant(3.0),
+                                DensityFunctions.constant(2.0)),
                         DensityFunctions.yClampedGradient(
                                 MiaHeight.THE_ABYSS.middleY(), 832, 1.5, -2.5)));
 
@@ -203,14 +204,9 @@ public class MiaDensityFunctions {
                 theAbyssGreatCaveNoodle(holdergetter1, holdergetter));
         context.register(
                 THE_ABYSS_GREAT_CAVE_NOODLE,
-                DensityFunctions.rangeChoice(
-                        DensityFunctions.min(
-                                getFunction(holdergetter1, THE_ABYSS_BASE_GREAT_CAVE_NOODLE),
-                                MiaDensityFunctionTypes.noodle(0.0F, 0.2F)),
-                        -1000000,
-                        0.05,
-                        DensityFunctions.constant(-1000000),
-                        getFunction(holdergetter1, THE_ABYSS_BASE_GREAT_CAVE_NOODLE)));
+                new AbyssNoodleTaper(
+                        getFunction(holdergetter1, THE_ABYSS_BASE_GREAT_CAVE_NOODLE),
+                        HopperAbyssHole.abyssRadius()));
         context.register(THE_ABYSS_NOODLE, abyssNoodle(holdergetter1, holdergetter));
 
         // Layer 3

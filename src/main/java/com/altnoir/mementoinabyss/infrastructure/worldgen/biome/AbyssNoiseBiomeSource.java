@@ -24,10 +24,10 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
     private static final MapCodec<Long> RADIUS_CODEC = Codec.LONG.fieldOf("abyss_radius");
     private static final MapCodec<Holder<Biome>> ENTRY_CODEC = Biome.CODEC.fieldOf("biome");
     private static final MapCodec<Climate.ParameterList<Holder<Biome>>> DIRECT_CODEC =
-            Climate.ParameterList.codec(ENTRY_CODEC).fieldOf("biomes");
+            AbyssClimateCodecs.parameterList(ENTRY_CODEC).fieldOf("biomes");
     private static final MapCodec<Optional<Climate.ParameterList<Holder<Biome>>>>
             ABYSS_DIRECT_CODEC =
-                    Climate.ParameterList.codec(ENTRY_CODEC).optionalFieldOf("abyss_biomes");
+                    AbyssClimateCodecs.parameterList(ENTRY_CODEC).optionalFieldOf("abyss_biomes");
     private static final MapCodec<Optional<Holder<Biome>>> ABYSS_CODEC =
             Biome.CODEC.optionalFieldOf("abyss_biome");
 
