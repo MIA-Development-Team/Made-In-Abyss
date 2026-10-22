@@ -1,0 +1,10 @@
+{
+  "icon": "mementoinabyss:star_compass",
+  "id": "mementoinabyss:abyss",
+  "maps": [
+    "mementoinabyss:abyss",
+    "mementoinabyss:second_layer"
+  ],
+  "subtitle": "The Journey Begins",
+  "title": "Abyss Guide"
+}

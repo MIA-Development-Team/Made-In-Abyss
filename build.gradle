@@ -38,23 +38,9 @@ sourceSets.main {
 }
 
 repositories {
-	mavenCentral {
-		content {
-			includeGroupByRegex 'org.junit.*'
-			includeGroup 'org.opentest4j'
-			includeGroup 'org.apiguardian'
-		}
-	}
+	mavenCentral()
 	maven { url = "https://maven.createmod.net" } // Flywheel
-	// AbyssLib and the other Altnoir libraries, published by the library's own CI. Scoped to that
-	// group so the other dependencies are not looked up here first.
-	maven {
-		name "RingLoReleases"
-		url "https://maven.ringlo.im/releases"
-		content {
-			includeGroup "com.altnoir"
-		}
-	}
+	maven { url = "https://maven.ringlo.im/releases" } // AbyssLib, Recall
 	maven { url = "https://api.modrinth.com/maven" } // Jade
 	maven { url = "https://maven.blamejared.com/" } // JEI, Patchouli
 	maven { url = "https://maven.theillusivec4.top/" } // Curios
@@ -154,17 +140,13 @@ configurations {
 }
 
 dependencies {
-	testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation "com.altnoir:abysslib-reginth-${minecraft_version}:${abysslib_version}"
+	implementation "im.ringlo.recall:Recall-${minecraft_version}-NeoForge:${recall_version}"
 
 	implementation "me.fzzyhmstrs:fzzy_config:${fzzyconfig_version}"
 
 	compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
 	runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
-
-	implementation jarJar('org.commonmark:commonmark:0.24.0')
-	implementation jarJar('org.commonmark:commonmark-ext-gfm-strikethrough:0.24.0')
 
 	compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
 	runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
@@ -189,6 +171,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 			mod_version            : mod_version,
 			curios_version         : curios_version,
 			fzzyconfig_version     : fzzyconfig_version,
+			recall_version_range   : recall_version_range,
 	]
 	inputs.properties replaceProperties
 	expand replaceProperties
@@ -233,11 +216,6 @@ publishMods {
 
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'
-}
-
-tasks.named('test', Test) {
-	useJUnitPlatform()
-	systemProperty 'abyss.reportDirectory', layout.buildDirectory.dir('reports/overworld-abyss').get().asFile.absolutePath
 }
 
 idea {
