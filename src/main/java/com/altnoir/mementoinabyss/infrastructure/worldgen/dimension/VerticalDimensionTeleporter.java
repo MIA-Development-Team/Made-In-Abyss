@@ -17,7 +17,6 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 
-/** Moves players across declared vertical boundaries and the central overworld Abyss connection. */
 public final class VerticalDimensionTeleporter {
     private static final int TELEPORT_COOLDOWN_TICKS = 20;
     private static final double MAX_HORIZONTAL_COORDINATE = 29_999_872.0;
@@ -79,6 +78,12 @@ public final class VerticalDimensionTeleporter {
                         boundary(attributes, MiaEnvironmentAttributes.VERTICAL_ABOVE);
                 ServerLevel destination = server.getLevel(above.dimension());
                 if (destination == null) continue;
+                boolean central = centralOverworldLink(player.level().dimension(), above);
+                if (central
+                        && !OverworldAbyss.withinConnectionRange(
+                                player.getX(), player.getZ(), OverworldAbyss.configuredRadius())) {
+                    continue;
+                }
                 double destinationY =
                         aboveDestinationY(
                                 player.level().dimension(),
@@ -86,7 +91,7 @@ public final class VerticalDimensionTeleporter {
                                 player.getY(),
                                 maxY,
                                 destination.dimensionType().minY());
-                if (centralOverworldLink(player.level().dimension(), above)) {
+                if (central) {
                     teleport(
                             player,
                             destination,
@@ -96,21 +101,6 @@ public final class VerticalDimensionTeleporter {
                     teleport(player, destination, destinationY, tick);
                 }
                 continue;
-            }
-
-            if (!attributes.contains(MiaEnvironmentAttributes.VERTICAL_ABOVE)
-                    && canReturnFromAbyss(player.level().dimension(), player.getY(), maxY)) {
-                ServerLevel destination = server.getLevel(Level.OVERWORLD);
-                if (destination == null) continue;
-                teleport(
-                        player,
-                        destination,
-                        new Vec3(
-                                player.getX(),
-                                overworldDestinationY(
-                                        player.getY(), maxY, destination.dimensionType().minY()),
-                                player.getZ()),
-                        tick);
             }
         }
     }
@@ -129,14 +119,9 @@ public final class VerticalDimensionTeleporter {
                 && OverworldAbyss.withinConnectionRange(x, z, radius);
     }
 
-    /** Inverts the LOD display shift while retaining how far the player crossed the boundary. */
     static double abyssDestinationY(double playerY, int overworldMinY, int abyssMaxY) {
         return VerticalDimensionCoordinates.sourceY(
                 playerY, VerticalDimensionCoordinates.displayOffset(overworldMinY, abyssMaxY));
-    }
-
-    static boolean canReturnFromAbyss(ResourceKey<Level> dimension, double y, int maxY) {
-        return MiaDimensions.THE_ABYSS_LEVEL.equals(dimension) && y >= maxY;
     }
 
     static double overworldDestinationY(double playerY, int abyssMaxY, int overworldMinY) {
@@ -144,7 +129,6 @@ public final class VerticalDimensionTeleporter {
                 playerY, VerticalDimensionCoordinates.displayOffset(abyssMaxY, overworldMinY));
     }
 
-    /** The central Abyss link inverts the LOD shift; every other link enters at its offset. */
     static double aboveDestinationY(
             ResourceKey<Level> dimension,
             VerticalBoundary above,

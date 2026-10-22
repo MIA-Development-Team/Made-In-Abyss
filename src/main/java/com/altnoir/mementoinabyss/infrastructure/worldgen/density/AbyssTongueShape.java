@@ -64,7 +64,7 @@ public final class AbyssTongueShape {
         }
     }
 
-    private record Attachment(double edge, double top, double bottom) {}
+    private record Attachment(double horizontal, double top) {}
 
     private record Column(
             int x,
@@ -229,8 +229,14 @@ public final class AbyssTongueShape {
         double relief = relief(x, z);
         for (int band = 0; band < bands.length; band++) {
             for (Curve c : sectors[band][sector]) {
-                Attachment attachment = attachment(c, distance, angle, relief);
-                if (attachment != null) attachments.add(attachment);
+                double rootSide =
+                        Math.abs(Math.IEEEremainder(angle - c.angle, Math.TAU) * distance);
+                double rootDistance =
+                        Math.min(
+                                Math.min(distance - c.root + 8, c.root + 32 - distance),
+                                .5 * c.width + 8 - rootSide);
+                if (rootDistance > 0)
+                    attachments.add(new Attachment(smooth(rootDistance / 8), c.top));
                 Ribbon ribbon = ribbon(c, distance, angle, relief, tips.get(c));
                 if (ribbon != null) {
                     ribbons.add(ribbon);
@@ -269,39 +275,7 @@ public final class AbyssTongueShape {
             if (signed > 0 && !r.tip.allows(c.x, context.blockY(), c.z, c.distance)) continue;
             density = Math.max(density, signed / 8);
         }
-        for (Attachment a : c.attachments) {
-            double signed =
-                    Math.min(
-                            a.edge,
-                            Math.min(a.top - context.blockY(), context.blockY() - a.bottom));
-            density = Math.max(density, signed / 8);
-        }
         return Math.clamp(density, -8, 8);
-    }
-
-    private Attachment attachment(Curve c, double distance, double angle, double relief) {
-        double front = radius * .10;
-        double back = Math.min(radius * .14, radius * .94 - c.root);
-        double along = distance - c.root;
-        if (along <= -front || along >= back) return null;
-        double progress = Math.clamp((c.root - distance) / (c.root - c.tip), 0, 1);
-        double side = Math.abs(Math.IEEEremainder(angle - turn(c, progress), Math.TAU) * distance);
-        double halfWidth = .5 * c.width + radius * .035;
-        double halfLength = .5 * (front + back);
-        double elliptical =
-                Math.hypot((along - .5 * (back - front)) / halfLength, side / halfWidth);
-        if (elliptical >= 1) return null;
-        // Taper the buttress in all three axes instead of adding another flat root cap.
-        double growth =
-                smooth((along + front) / front) * smooth((back - along) / Math.min(16, back));
-        double top = c.top + relief + 1.5 + 3 * growth;
-        double thickness = fittedThickness(top, c.thickness + 8 * growth);
-        double middle = top - .5 * thickness;
-        double halfHeight = .5 * thickness * Math.sqrt(1 - elliptical * elliptical);
-        return new Attachment(
-                (1 - elliptical) * Math.min(halfWidth, halfLength),
-                middle + halfHeight,
-                middle - halfHeight);
     }
 
     private Ribbon ribbon(Curve c, double distance, double angle, double relief, Tip tip) {
@@ -317,7 +291,9 @@ public final class AbyssTongueShape {
         double hump = 16 * progress * progress * (1 - progress) * (1 - progress);
         double top = c.top - c.descent * progress * progress + c.arch * hump + crown + relief;
         double thickness = Math.min(Math.max(c.thickness * taper, 2.5), 2 * tipCap);
-        thickness = fittedThickness(top, thickness);
+        // Fit a deep bend above the lower boundary without shaving it on a horizontal plane.
+        double available = Math.max(.01, top - MIN_Y - 2);
+        thickness /= Math.pow(1 + Math.pow(thickness / available, 8), .125);
         double end = Math.min(distance - c.tip, c.root + radius * .075 - distance);
         double inward = c.excavation * smooth((c.root - radius * .10 - distance) / (radius * .18));
         double roughness =
@@ -326,12 +302,6 @@ public final class AbyssTongueShape {
                         * smooth((width - 4) / 4)
                         * smooth((thickness - 4) / 8);
         return new Ribbon(side - width, top, top - thickness, end, inward, roughness, tip);
-    }
-
-    private static double fittedThickness(double top, double thickness) {
-        // Keep deep bends and root buttresses above the lower boundary without a flat cut.
-        double available = Math.max(.01, top - MIN_Y - 2);
-        return thickness / Math.pow(1 + Math.pow(thickness / available, 8), .125);
     }
 
     private static double signed(Ribbon r, int y) {
@@ -470,9 +440,9 @@ public final class AbyssTongueShape {
             protection =
                     Math.max(
                             protection,
-                            smooth(a.edge / 8)
+                            a.horizontal
                                     * smooth((a.top + 8 - context.blockY()) / 8)
-                                    * smooth((context.blockY() - a.bottom + 8) / 8));
+                                    * smooth((context.blockY() - a.top + 32) / 8));
         }
         return result + protection * (original - result);
     }

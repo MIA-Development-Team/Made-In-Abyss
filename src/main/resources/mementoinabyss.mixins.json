@@ -36,6 +36,7 @@
   },
   "client": [
     "accessor.PauseScreenAccessor",
-    "client.FogRendererMixin"
+    "client.FogRendererMixin",
+    "client.SkyRendererMixin"
   ]
 }
