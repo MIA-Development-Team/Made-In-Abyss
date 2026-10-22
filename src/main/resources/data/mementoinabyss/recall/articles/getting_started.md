@@ -1,3 +1,9 @@
+---
+id: mementoinabyss:getting_started
+title: Getting Started
+summary: Learn how the map, nodes, cards, and inline articles fit together.
+tags:
+---
 # Getting Started
 
 The map is the first layer of the Abyss Guide. Data generation writes its nodes, article metadata, and explicit connections to JSON. Markdown provides the article bodies.
@@ -17,4 +23,4 @@ Click an item node to expand that node into a centered card. The card keeps the 
 - Use the scene's upper-right buttons for playback and animated fullscreen. Click the bottom progress bar to jump to a keyframe, the beginning, or the end.
 - Press Esc to collapse the article, close the card, and return to the map.
 
-Read [Star Compass](guide:star_compass) for an interactive ruins scene. Articles support **bold text**, *emphasis*, `inline code`, lists, quotes, code blocks, and links.
+Read **Star Compass** for an interactive ruins scene. Articles support **bold text**, *emphasis*, `inline code`, lists, quotes, code blocks, and links.

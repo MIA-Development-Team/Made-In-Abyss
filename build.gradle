@@ -38,6 +38,7 @@ sourceSets.main {
 }
 
 repositories {
+	mavenCentral()
 	maven { url = "https://maven.createmod.net" } // Flywheel
 	maven { url = "https://maven.ringlo.im/releases" } // AbyssLib, Recall
 	maven { url = "https://api.modrinth.com/maven" } // Jade
@@ -140,15 +141,12 @@ configurations {
 
 dependencies {
 	implementation "com.altnoir:abysslib-reginth-${minecraft_version}:${abysslib_version}"
-	implementation "im.ringlo.recall:Recall:${minecraft_version}-NeoForge:${recall_version}"
+	implementation "im.ringlo.recall:Recall-${minecraft_version}-NeoForge:${recall_version}"
 
 	implementation "me.fzzyhmstrs:fzzy_config:${fzzyconfig_version}"
 
 	compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
 	runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
-
-	implementation jarJar('org.commonmark:commonmark:0.24.0')
-	implementation jarJar('org.commonmark:commonmark-ext-gfm-strikethrough:0.24.0')
 
 	compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
 	runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
@@ -173,6 +171,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 			mod_version            : mod_version,
 			curios_version         : curios_version,
 			fzzyconfig_version     : fzzyconfig_version,
+			recall_version_range   : recall_version_range,
 	]
 	inputs.properties replaceProperties
 	expand replaceProperties

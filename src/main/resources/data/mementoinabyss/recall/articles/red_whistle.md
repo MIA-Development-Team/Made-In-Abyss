@@ -1,3 +1,9 @@
+---
+id: mementoinabyss:red_whistle
+title: Red Whistle
+summary: A reference entry for the Red Whistle and its future guide branches.
+tags:
+---
 # Red Whistle
 
 The Red Whistle entry collects the first notes for the whistle system. It is a starting point for future articles about skills, combinations, and workbench recipes.

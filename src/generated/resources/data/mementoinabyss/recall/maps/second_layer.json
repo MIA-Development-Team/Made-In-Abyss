@@ -1,16 +1,14 @@
 {
-  "articles": [],
-  "background": "mementoinabyss:painting/fossil_tree",
-  "connections": [
+  "edges": [
     {
       "from": "mementoinabyss:descent",
       "kind": "related",
       "to": "mementoinabyss:echo_reed"
     },
     {
-      "from": "mementoinabyss:caerulite",
+      "from": "mementoinabyss:descent",
       "kind": "related",
-      "to": "mementoinabyss:descent"
+      "to": "mementoinabyss:caerulite"
     },
     {
       "from": "mementoinabyss:echo_reed",
@@ -28,9 +26,7 @@
       "to": "mementoinabyss:resonance"
     }
   ],
-  "icon": "mementoinabyss:echo_reed",
   "id": "mementoinabyss:second_layer",
-  "layer": 2,
   "nodes": [
     {
       "articles": [],
@@ -79,5 +75,5 @@
     }
   ],
   "start_node": "mementoinabyss:descent",
-  "title": "guide.mementoinabyss.second_layer.title"
+  "title": "Second Layer"
 }
