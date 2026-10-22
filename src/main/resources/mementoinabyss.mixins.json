@@ -6,6 +6,7 @@
     "worldgen.ChunkMapMixin",
     "worldgen.RandomStateAccessor",
     "worldgen.RandomStateSeamMixin",
+    "worldgen.C2meNoiseSamplerHashMixin",
     "worldgen.WorldCarverSeamMixin",
     "worldgen.BlendDensityAccessor",
     "worldgen.DensityInputAccessor",

@@ -98,8 +98,12 @@ public final class SharedAbyssWall implements DensityFunction.SimpleFunction {
     }
 
     public double boundaryRadius(FunctionContext context) {
-        // Sample a fixed cylinder: each horizontal ray has exactly one boundary.
         double distance = Math.hypot(context.blockX(), context.blockZ());
+        return boundaryRadius(context, distance);
+    }
+
+    private double boundaryRadius(FunctionContext context, double distance) {
+        // Sample a fixed cylinder: each horizontal ray has exactly one boundary.
         double scale = distance == 0 ? 0 : baseRadius() / distance;
         double sample =
                 noise.compute(
@@ -112,10 +116,12 @@ public final class SharedAbyssWall implements DensityFunction.SimpleFunction {
 
     @Override
     public double compute(FunctionContext context) {
-        return Math.clamp(
-                (Math.hypot(context.blockX(), context.blockZ()) - boundaryRadius(context)) / 16,
-                -5,
-                6.25);
+        double distance = Math.hypot(context.blockX(), context.blockZ());
+        // The boundary stays within [layoutRadius, layoutRadius + 2 * RELIEF]. Outside
+        // these bounds the existing clamp is constant, regardless of the noise value.
+        if (distance <= layoutRadius - 80) return -5;
+        if (distance >= layoutRadius + 2 * RELIEF + 100) return 6.25;
+        return Math.clamp((distance - boundaryRadius(context, distance)) / 16, -5, 6.25);
     }
 
     @Override

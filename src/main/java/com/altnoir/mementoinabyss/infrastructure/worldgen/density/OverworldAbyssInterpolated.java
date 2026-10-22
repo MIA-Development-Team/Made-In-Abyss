@@ -6,6 +6,7 @@ import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 
 /** Evaluate the actual interpolation lattice when querying a column outside NoiseChunk's loop. */
 public final class OverworldAbyssInterpolated implements DensityFunction {
@@ -34,9 +35,7 @@ public final class OverworldAbyssInterpolated implements DensityFunction {
     private final int cellWidth, cellHeight;
     private final Blender boundBlender;
     private final int hash;
-    // Surface queries scan a column. Keep just one lattice cell per worker, never a global
-    // coordinate cache or NoiseChunk's mutable interpolation state.
-    private final ThreadLocal<Cell> cache = ThreadLocal.withInitial(Cell::new);
+    private final ThreadLocal<Cell> cache;
 
     public OverworldAbyssInterpolated(DensityFunction input, int cellWidth, int cellHeight) {
         this(input, cellWidth, cellHeight, null);
@@ -50,6 +49,8 @@ public final class OverworldAbyssInterpolated implements DensityFunction {
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
         this.boundBlender = blender;
+        this.cache =
+                ThreadLocal.withInitial(() -> new Cell(input.getClass() == BlendedNoise.class));
         this.hash =
                 java.util.Objects.hash(
                         input, cellWidth, cellHeight, System.identityHashCode(blender));
@@ -105,12 +106,12 @@ public final class OverworldAbyssInterpolated implements DensityFunction {
                 for (int dy = up ? 1 : 0; dy < (down ? 1 : 2); dy++)
                     for (int dx = 0; dx < 2; dx++)
                         cell.values[dx + 2 * dy + 4 * dz] =
-                                input.compute(
-                                        new Sample(
-                                                x + dx * cellWidth,
-                                                y + dy * cellHeight,
-                                                z + dz * cellWidth,
-                                                blender));
+                                sample(
+                                        cell,
+                                        x + dx * cellWidth,
+                                        y + dy * cellHeight,
+                                        z + dz * cellWidth,
+                                        blender);
             cell.x = x;
             cell.y = y;
             cell.z = z;
@@ -130,6 +131,11 @@ public final class OverworldAbyssInterpolated implements DensityFunction {
                 v[5],
                 v[6],
                 v[7]);
+    }
+
+    private double sample(Cell cell, int x, int y, int z, Blender blender) {
+        if (cell.nodes == null) return input.compute(new Sample(x, y, z, blender));
+        return cell.nodes.sample(input, x, y, z, blender);
     }
 
     @Override
@@ -178,6 +184,34 @@ public final class OverworldAbyssInterpolated implements DensityFunction {
         int x, y, z;
         Blender blender;
         final double[] values = new double[8];
+        final Nodes nodes;
+
+        Cell(boolean immutableNoise) {
+            nodes = immutableNoise ? new Nodes() : null;
+        }
+    }
+
+    // Only raw BlendedNoise is independent of Blender and NoiseChunk's mutable caches. Reuse
+    // its exact lattice values as adjacent columns revisit cells; unknown graphs stay uncached.
+    private static final class Nodes {
+        private static final int SIZE = 1024;
+        final int[] xs = new int[SIZE], ys = new int[SIZE], zs = new int[SIZE];
+        final boolean[] valid = new boolean[SIZE];
+        final double[] values = new double[SIZE];
+
+        double sample(DensityFunction input, int x, int y, int z, Blender blender) {
+            int hash = x * 73428767 ^ y * 912931 ^ z * 42317861;
+            int index = (hash ^ (hash >>> 16)) & (SIZE - 1);
+            if (valid[index] && xs[index] == x && ys[index] == y && zs[index] == z)
+                return values[index];
+            double value = input.compute(new Sample(x, y, z, blender));
+            xs[index] = x;
+            ys[index] = y;
+            zs[index] = z;
+            values[index] = value;
+            valid[index] = true;
+            return value;
+        }
     }
 
     private record Sample(int blockX, int blockY, int blockZ, Blender blender)

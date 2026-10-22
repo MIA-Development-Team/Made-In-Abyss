@@ -1,19 +1,13 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.placement;
 
 import com.altnoir.mementoinabyss.init.MiaPlacementModifiers;
-import com.altnoir.mementoinabyss.init.MiaTags;
 import com.mojang.serialization.MapCodec;
 import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.IntProviders;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
@@ -41,6 +35,8 @@ public class TreeOnEveryLayerPlacement extends PlacementModifier {
     public Stream<BlockPos> getPositions(
             PlacementContext context, RandomSource random, BlockPos pos) {
         Stream.Builder<BlockPos> builder = Stream.builder();
+        LayeredPlacementScan scan =
+                new LayeredPlacementScan(context, LayeredPlacementScan.Surface.TREE);
         int i = 0;
 
         boolean flag;
@@ -50,13 +46,7 @@ public class TreeOnEveryLayerPlacement extends PlacementModifier {
             for (int j = 0; j < this.count.sample(random); j++) {
                 int k = random.nextInt(16) + pos.getX();
                 int l = random.nextInt(16) + pos.getZ();
-                int i1 = context.getHeight(Heightmap.Types.MOTION_BLOCKING, k, l);
-                ChunkAccess chunk =
-                        context.getLevel()
-                                .getChunk(
-                                        SectionPos.blockToSectionCoord(k),
-                                        SectionPos.blockToSectionCoord(l));
-                int j1 = findOnGroundYPosition(context, chunk, k, i1, l, i);
+                int j1 = scan.find(k, l, i);
                 if (j1 != Integer.MAX_VALUE) {
                     builder.add(new BlockPos(k, j1, l));
                     flag = true;
@@ -72,42 +62,5 @@ public class TreeOnEveryLayerPlacement extends PlacementModifier {
     @Override
     public PlacementModifierType<?> type() {
         return MiaPlacementModifiers.TREE_ON_EVERY_LAYER.get();
-    }
-
-    private static int findOnGroundYPosition(
-            PlacementContext context, ChunkAccess chunk, int x, int y, int z, int count) {
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(x, y, z);
-        int i = 0;
-        BlockState blockstate = chunk.getBlockState(blockpos$mutableblockpos);
-
-        for (int j = y; j >= context.getMinY() + 1; j--) {
-            blockpos$mutableblockpos.setY(j - 1);
-            BlockState blockstate1 = chunk.getBlockState(blockpos$mutableblockpos);
-            if (isValidGround(blockstate1) && isEmpty(blockstate)) {
-                if (i == count) {
-                    return blockpos$mutableblockpos.getY() + 1;
-                }
-
-                i++;
-            }
-
-            blockstate = blockstate1;
-        }
-
-        return Integer.MAX_VALUE;
-    }
-
-    private static boolean isEmpty(BlockState state) {
-        // Meadow flowers/grass may already have been decorated before the forest step.
-        // Match vanilla tree replacement rather than rejecting every planted floor.
-        return state.getFluidState().isEmpty()
-                && (state.isAir() || state.is(BlockTags.REPLACEABLE_BY_TREES));
-    }
-
-    private static boolean isValidGround(BlockState state) {
-        // Since 26.1, grass blocks/podzol/mycelium are separate from the dirt tag.
-        return state.is(BlockTags.DIRT)
-                || state.is(BlockTags.GRASS_BLOCKS)
-                || state.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag);
     }
 }

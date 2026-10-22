@@ -157,6 +157,8 @@ dependencies {
 	runtimeOnly "net.caffeinemc:sodium-neoforge:${sodium_version}"
 
 	compileOnly "maven.modrinth:iris:${iris_version}"
+
+	localRuntime "maven.modrinth:c2me-neoforge:0.4.0-alpha.0.100+26.1.2"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

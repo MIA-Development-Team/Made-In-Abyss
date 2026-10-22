@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.density;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.IdentityHashMap;
@@ -18,12 +19,14 @@ public final class AbyssTongueShape {
     public static final int MAX_Y = 32;
     private static final int CACHE_SIZE = 1024;
     private static final int SECTORS = 32;
+    private static final double[] NO_SIDE_NOISE = new double[0];
     private static final Tip UNFILTERED_TIP =
             new Tip(0, 0, 0, 0, Double.NEGATIVE_INFINITY, new long[0]);
     private final double radius;
     private final List<Curve>[] bands;
     private final List<Curve>[][] sectors;
     private final NormalNoise detail;
+    private final NormalNoise sideDetail;
     private final Map<Curve, Tip> tips;
     private final ThreadLocal<Column[]> columns =
             ThreadLocal.withInitial(() -> new Column[CACHE_SIZE]);
@@ -38,10 +41,17 @@ public final class AbyssTongueShape {
             double descent,
             double arch,
             double width,
-            double thickness) {}
+            double thickness,
+            double excavation) {}
 
     private record Ribbon(
-            double outside, double top, double bottom, double end, double inward, Tip tip) {}
+            double outside,
+            double top,
+            double bottom,
+            double end,
+            double inward,
+            double roughness,
+            Tip tip) {}
 
     private record Tip(int minX, int minZ, int sizeX, int sizeZ, double radius, long[] connected) {
         boolean allows(int x, int y, int z, double distance) {
@@ -54,7 +64,7 @@ public final class AbyssTongueShape {
         }
     }
 
-    private record Attachment(double horizontal, double top) {}
+    private record Attachment(double edge, double top, double bottom) {}
 
     private record Column(
             int x,
@@ -62,7 +72,8 @@ public final class AbyssTongueShape {
             double distance,
             Ribbon[] solids,
             Ribbon[] ribbons,
-            Attachment[] attachments) {}
+            Attachment[] attachments,
+            double[] sideNoise) {}
 
     @SuppressWarnings("unchecked")
     public AbyssTongueShape(long seed, double radius, DensityFunction support) {
@@ -83,6 +94,14 @@ public final class AbyssTongueShape {
                                 .forkPositional()
                                 .fromHashOf(
                                         MementoInAbyss.asResource("radial_abyss_tongue_surface")),
+                        -4,
+                        1,
+                        .5);
+        sideDetail =
+                NormalNoise.create(
+                        new XoroshiroRandomSource(seed)
+                                .forkPositional()
+                                .fromHashOf(MementoInAbyss.asResource("radial_abyss_tongue_sides")),
                         -4,
                         1,
                         .5);
@@ -119,8 +138,17 @@ public final class AbyssTongueShape {
                 if (Double.isFinite(root))
                     curves.add(
                             new Curve(
-                                    angle, root, tip, bend, swerve, top, descent, arch, width,
-                                    thickness));
+                                    angle,
+                                    root,
+                                    tip,
+                                    bend,
+                                    swerve,
+                                    top,
+                                    descent,
+                                    arch,
+                                    width,
+                                    thickness,
+                                    smooth(((root - tip) / radius - .45) / .15)));
             }
             bands[band] = List.copyOf(curves);
             for (int sector = 0; sector < SECTORS; sector++) {
@@ -197,24 +225,23 @@ public final class AbyssTongueShape {
         List<Ribbon> ribbons = new ArrayList<>();
         List<Ribbon> solids = new ArrayList<>();
         List<Attachment> attachments = new ArrayList<>();
+        boolean needsSideNoise = false;
         double relief = relief(x, z);
         for (int band = 0; band < bands.length; band++) {
             for (Curve c : sectors[band][sector]) {
-                double rootSide =
-                        Math.abs(Math.IEEEremainder(angle - c.angle, Math.TAU) * distance);
-                double rootDistance =
-                        Math.min(
-                                Math.min(distance - c.root + 8, c.root + 32 - distance),
-                                .5 * c.width + 8 - rootSide);
-                if (rootDistance > 0)
-                    attachments.add(new Attachment(smooth(rootDistance / 8), c.top));
+                Attachment attachment = attachment(c, distance, angle, relief);
+                if (attachment != null) attachments.add(attachment);
                 Ribbon ribbon = ribbon(c, distance, angle, relief, tips.get(c));
                 if (ribbon != null) {
                     ribbons.add(ribbon);
-                    if (ribbon.outside < 0 && ribbon.end > 0) solids.add(ribbon);
+                    if (ribbon.outside < ribbon.roughness && ribbon.end > 0) solids.add(ribbon);
+                    needsSideNoise |=
+                            ribbon.roughness > 0 && Math.abs(ribbon.outside) < ribbon.roughness;
                 }
             }
         }
+        double[] sideNoise = needsSideNoise ? new double[(MAX_Y - MIN_Y) / 4 + 1] : NO_SIDE_NOISE;
+        if (needsSideNoise) Arrays.fill(sideNoise, Double.NaN);
         column =
                 new Column(
                         x,
@@ -222,7 +249,8 @@ public final class AbyssTongueShape {
                         distance,
                         solids.toArray(Ribbon[]::new),
                         ribbons.toArray(Ribbon[]::new),
-                        attachments.toArray(Attachment[]::new));
+                        attachments.toArray(Attachment[]::new),
+                        sideNoise);
         cache[index] = column;
         return column;
     }
@@ -231,12 +259,49 @@ public final class AbyssTongueShape {
         if (!affects(context.blockX(), context.blockY(), context.blockZ())) return -8;
         Column c = column(context.blockX(), context.blockZ());
         double density = -8;
+        double noise = Double.NaN;
         for (Ribbon r : c.solids) {
-            double signed = signed(r, context.blockY());
+            double signed;
+            if (roughSide(r, context.blockY())) {
+                if (Double.isNaN(noise)) noise = sideNoise(c, context.blockY());
+                signed = signed(r, context.blockY(), noise);
+            } else signed = signed(r, context.blockY());
             if (signed > 0 && !r.tip.allows(c.x, context.blockY(), c.z, c.distance)) continue;
             density = Math.max(density, signed / 8);
         }
+        for (Attachment a : c.attachments) {
+            double signed =
+                    Math.min(
+                            a.edge,
+                            Math.min(a.top - context.blockY(), context.blockY() - a.bottom));
+            density = Math.max(density, signed / 8);
+        }
         return Math.clamp(density, -8, 8);
+    }
+
+    private Attachment attachment(Curve c, double distance, double angle, double relief) {
+        double front = radius * .10;
+        double back = Math.min(radius * .14, radius * .94 - c.root);
+        double along = distance - c.root;
+        if (along <= -front || along >= back) return null;
+        double progress = Math.clamp((c.root - distance) / (c.root - c.tip), 0, 1);
+        double side = Math.abs(Math.IEEEremainder(angle - turn(c, progress), Math.TAU) * distance);
+        double halfWidth = .5 * c.width + radius * .035;
+        double halfLength = .5 * (front + back);
+        double elliptical =
+                Math.hypot((along - .5 * (back - front)) / halfLength, side / halfWidth);
+        if (elliptical >= 1) return null;
+        // Taper the buttress in all three axes instead of adding another flat root cap.
+        double growth =
+                smooth((along + front) / front) * smooth((back - along) / Math.min(16, back));
+        double top = c.top + relief + 1.5 + 3 * growth;
+        double thickness = fittedThickness(top, c.thickness + 8 * growth);
+        double middle = top - .5 * thickness;
+        double halfHeight = .5 * thickness * Math.sqrt(1 - elliptical * elliptical);
+        return new Attachment(
+                (1 - elliptical) * Math.min(halfWidth, halfLength),
+                middle + halfHeight,
+                middle - halfHeight);
     }
 
     private Ribbon ribbon(Curve c, double distance, double angle, double relief, Tip tip) {
@@ -252,16 +317,48 @@ public final class AbyssTongueShape {
         double hump = 16 * progress * progress * (1 - progress) * (1 - progress);
         double top = c.top - c.descent * progress * progress + c.arch * hump + crown + relief;
         double thickness = Math.min(Math.max(c.thickness * taper, 2.5), 2 * tipCap);
-        // Fit a deep bend above the lower boundary without shaving it on a horizontal plane.
-        double available = Math.max(.01, top - MIN_Y - 2);
-        thickness /= Math.pow(1 + Math.pow(thickness / available, 8), .125);
+        thickness = fittedThickness(top, thickness);
         double end = Math.min(distance - c.tip, c.root + radius * .075 - distance);
-        double inward = smooth((c.root - radius * .05 - distance) / (radius * .18));
-        return new Ribbon(side - width, top, top - thickness, end, inward, tip);
+        double inward = c.excavation * smooth((c.root - radius * .10 - distance) / (radius * .18));
+        double roughness =
+                Math.min(2.75, width * .3)
+                        * smooth(progress / .18)
+                        * smooth((width - 4) / 4)
+                        * smooth((thickness - 4) / 8);
+        return new Ribbon(side - width, top, top - thickness, end, inward, roughness, tip);
+    }
+
+    private static double fittedThickness(double top, double thickness) {
+        // Keep deep bends and root buttresses above the lower boundary without a flat cut.
+        double available = Math.max(.01, top - MIN_Y - 2);
+        return thickness / Math.pow(1 + Math.pow(thickness / available, 8), .125);
     }
 
     private static double signed(Ribbon r, int y) {
         return Math.min(Math.min(-r.outside, r.end), Math.min(r.top - y, y - r.bottom));
+    }
+
+    private static boolean roughSide(Ribbon r, int y) {
+        return r.roughness > 0 && Math.abs(r.outside) < r.roughness && y < r.top && y > r.bottom;
+    }
+
+    private static double signed(Ribbon r, int y, double noise) {
+        double vertical = smooth((r.top - y - 2) / 4) * smooth((y - r.bottom - 2) / 4);
+        double offset = r.roughness * vertical * noise;
+        return Math.min(Math.min(-r.outside + offset, r.end), Math.min(r.top - y, y - r.bottom));
+    }
+
+    private double sideNode(int x, int y, int z) {
+        return Math.clamp(2 * sideDetail.getValue(x, y * 1.5, z), -1, 1);
+    }
+
+    private double sideNoise(Column c, int y) {
+        int node = Math.floorDiv(y - MIN_Y, 4), baseY = MIN_Y + node * 4;
+        if (Double.isNaN(c.sideNoise[node])) c.sideNoise[node] = sideNode(c.x, baseY, c.z);
+        if (Double.isNaN(c.sideNoise[node + 1]))
+            c.sideNoise[node + 1] = sideNode(c.x, baseY + 4, c.z);
+        double a = c.sideNoise[node], b = c.sideNoise[node + 1];
+        return a + (y - baseY) / 4.0 * (b - a);
     }
 
     private double relief(int x, int z) {
@@ -312,7 +409,13 @@ public final class AbyssTongueShape {
                 for (int y = Math.max(MIN_Y + 1, (int) Math.floor(r.bottom));
                         y < Math.min(MAX_Y, Math.ceil(r.top));
                         y++) {
-                    if (signed(r, y) <= 0) continue;
+                    double value = signed(r, y);
+                    if (roughSide(r, y)) {
+                        int baseY = Math.floorDiv(y - MIN_Y, 4) * 4 + MIN_Y;
+                        double a = sideNode(x, baseY, z), b = sideNode(x, baseY + 4, z);
+                        value = signed(r, y, a + (y - baseY) / 4.0 * (b - a));
+                    }
+                    if (value <= 0) continue;
                     int index = ((y - MIN_Y) * sizeZ + z - minZ) * sizeX + x - minX;
                     solid.set(index);
                     if (distance >= capRadius + 2) {
@@ -367,9 +470,9 @@ public final class AbyssTongueShape {
             protection =
                     Math.max(
                             protection,
-                            a.horizontal
+                            smooth(a.edge / 8)
                                     * smooth((a.top + 8 - context.blockY()) / 8)
-                                    * smooth((context.blockY() - a.top + 32) / 8));
+                                    * smooth((context.blockY() - a.bottom + 8) / 8));
         }
         return result + protection * (original - result);
     }

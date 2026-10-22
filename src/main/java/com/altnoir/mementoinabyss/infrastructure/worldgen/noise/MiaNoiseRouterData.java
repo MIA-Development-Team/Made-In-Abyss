@@ -61,8 +61,8 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 .squeeze();
     }
 
-    private static DensityFunction theAbyssRawDensity(
-            HolderGetter<DensityFunction> densityFunctions) {
+    static DensityFunction theAbyssRawDensity(
+            HolderGetter<DensityFunction> densityFunctions, boolean naturalTerrain) {
         DensityFunction yFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
         DensityFunction abyssGreatCave =
                 getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_GREAT_CAVE);
@@ -73,19 +73,47 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_BIG_HOLE);
 
         DensityFunction insideAbyssHoleB =
-                getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_INSIDE_HOLE_BELOW);
+                naturalTerrain
+                        ? MiaDensityFunctions.lowerLayerDensity(
+                                densityFunctions,
+                                MiaDensityFunctions.THE_ABYSS_INSIDE_HOLE_BELOW,
+                                MiaDensityFunctions.THE_ABYSS_HOLE_BELOW)
+                        : getFunction(
+                                densityFunctions, MiaDensityFunctions.THE_ABYSS_INSIDE_HOLE_BELOW);
         DensityFunction insideAbyssHoleA =
                 getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_INSIDE_HOLE_ABOVE);
+        if (naturalTerrain) {
+            // Only the upper cliff exposes middle-layer caves; the lower cliff is independent.
+            insideAbyssHoleA =
+                    DensityFunctions.min(
+                            insideAbyssHoleA,
+                            DensityFunctions.rangeChoice(
+                                    yFunction,
+                                    MiaHeight.THE_ABYSS.middleY(),
+                                    MiaHeight.THE_ABYSS.maxY() - 64,
+                                    getFunction(
+                                            densityFunctions,
+                                            MiaDensityFunctions.BASE_3D_NOISE_THE_ABYSS),
+                                    DensityFunctions.constant(-1)));
+        }
 
         DensityFunction middleAbyssNoise =
-                getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_MIDDLE_BASE_3D);
+                naturalTerrain
+                        ? MiaDensityFunctions.lowerLayerDensity(
+                                densityFunctions,
+                                MiaDensityFunctions.THE_ABYSS_MIDDLE_BASE_3D,
+                                MiaDensityFunctions.BASE_3D_NOISE_THE_ABYSS)
+                        : getFunction(
+                                densityFunctions, MiaDensityFunctions.THE_ABYSS_MIDDLE_BASE_3D);
         DensityFunction outsideAbyssNoise =
                 getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_OUTSIDE_BASE_3D);
         DensityFunction abyssPillars =
                 getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_PILLARS);
 
         DensityFunction wallBlend =
-                DensityFunctions.add(DensityFunctions.constant(0.5), abyssBigHole).clamp(0, 1);
+                DensityFunctions.cacheOnce(
+                        DensityFunctions.add(DensityFunctions.constant(0.5), abyssBigHole)
+                                .clamp(0, 1));
         DensityFunction wallSmooth =
                 DensityFunctions.mul(
                         DensityFunctions.mul(wallBlend, wallBlend),
@@ -93,7 +121,8 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                                 DensityFunctions.constant(3),
                                 DensityFunctions.mul(DensityFunctions.constant(-2), wallBlend)));
         DensityFunction rangeChoice2 =
-                DensityFunctions.lerp(wallSmooth, middleAbyssNoise, outsideAbyssNoise);
+                MiaDensityFunctions.lerpWithEndpoints(
+                        wallSmooth, middleAbyssNoise, outsideAbyssNoise);
 
         DensityFunction layer2 =
                 DensityFunctions.add(DensityFunctions.constant(0.2), abyssGreatCave);
@@ -104,6 +133,25 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                         MiaHeight.THE_ABYSS.middleY(),
                         layer2,
                         DensityFunctions.max(rangeChoice2, abyssPillars));
+        if (naturalTerrain) {
+            layer =
+                    DensityFunctions.rangeChoice(
+                            yFunction,
+                            MiaDensityFunctions.LOWER_TRANSITION_MIN,
+                            MiaDensityFunctions.LOWER_TRANSITION_MAX,
+                            MiaDensityFunctions.lerpWithEndpoints(
+                                    getFunction(
+                                            densityFunctions,
+                                            MiaDensityFunctions.THE_ABYSS_LOWER_LAYER_BLEND),
+                                    DensityFunctions.max(rangeChoice2, abyssPillars),
+                                    DensityFunctions.add(
+                                            DensityFunctions.constant(0.2),
+                                            getFunction(
+                                                    densityFunctions,
+                                                    MiaDensityFunctions
+                                                            .THE_ABYSS_LOWER_GREAT_CAVE))),
+                            layer);
+        }
 
         DensityFunction rangeChoice1 =
                 DensityFunctions.rangeChoice(
@@ -115,13 +163,8 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         DensityFunction rangeChoice =
                 DensityFunctions.rangeChoice(abyssHole, -1000000.0, 0.025, rangeChoice1, layer);
 
-        DensityFunction ycg1 =
-                DensityFunctions.yClampedGradient(
-                        MiaHeight.THE_ABYSS.maxY() - 64, MiaHeight.THE_ABYSS.maxY(), 1, 1);
         DensityFunction add1 = DensityFunctions.add(DensityFunctions.constant(1.025), rangeChoice);
-
-        DensityFunction mul1 = DensityFunctions.mul(ycg1, add1);
-        DensityFunction add2 = DensityFunctions.add(DensityFunctions.constant(-0.8975), mul1);
+        DensityFunction add2 = DensityFunctions.add(DensityFunctions.constant(-0.8975), add1);
 
         DensityFunction ycg2 = DensityFunctions.yClampedGradient(-160, -120, 0, 1);
         DensityFunction add3 = DensityFunctions.add(DensityFunctions.constant(0.4), add2);
@@ -166,6 +209,38 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         DensityFunction add4 = DensityFunctions.add(DensityFunctions.constant(-0.4), mul2);
 
         return postProcess(add4);
+    }
+
+    private static DensityFunction noodleWithDepth(DensityFunction noodle) {
+        return DensityFunctions.add(
+                DensityFunctions.yClampedGradient(-16, 16, -1.5, 0.0),
+                DensityFunctions.add(DensityFunctions.yClampedGradient(0, 32, 1.5, 0.0), noodle));
+    }
+
+    static DensityFunction theAbyssTongueSupport(HolderGetter<DensityFunction> functions) {
+        DensityFunction legacySupport =
+                DensityFunctions.max(
+                        DensityFunctions.min(
+                                postProcess(theAbyssRawDensity(functions, false)),
+                                noodleWithDepth(
+                                        getFunction(
+                                                functions, MiaDensityFunctions.THE_ABYSS_NOODLE))),
+                        getFunction(functions, MiaDensityFunctions.THE_ABYSS_GREAT_CAVE_NOODLE));
+        DensityFunction liveSupport =
+                DensityFunctions.max(
+                        DensityFunctions.min(
+                                postProcess(
+                                        getFunction(
+                                                functions,
+                                                MiaDensityFunctions.THE_ABYSS_RAW_TERRAIN)),
+                                noodleWithDepth(
+                                        getFunction(
+                                                functions,
+                                                MiaDensityFunctions.THE_ABYSS_LOWER_NOODLE))),
+                        getFunction(functions, MiaDensityFunctions.THE_ABYSS_GREAT_CAVE_NOODLE));
+        // Keep established roots only where the live caves still provide solid rock.
+        // Support is sampled at world binding, not per chunk.
+        return DensityFunctions.min(legacySupport, liveSupport);
     }
 
     private static NoiseRouter theAbyssRouter(
@@ -225,17 +300,15 @@ public class MiaNoiseRouterData extends NoiseRouterData {
 
         DensityFunction greatCaveNoodle =
                 getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_GREAT_CAVE_NOODLE);
-        DensityFunction noodle =
-                DensityFunctions.add(
-                        DensityFunctions.yClampedGradient(-16, 16, -1.5, 0.0),
-                        DensityFunctions.add(
-                                DensityFunctions.yClampedGradient(0, 32, 1.5, 0.0),
-                                getFunction(
-                                        densityFunctions, MiaDensityFunctions.THE_ABYSS_NOODLE)));
-        DensityFunction terrain = theAbyssRawDensity(densityFunctions);
+        DensityFunction terrain =
+                getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_RAW_TERRAIN);
         DensityFunction support =
-                DensityFunctions.max(
-                        DensityFunctions.min(postProcess(terrain), noodle), greatCaveNoodle);
+                getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_TONGUE_SUPPORT);
+        // The old noodle extends its gate/thickness by 40 blocks, but not its ridges. Align
+        // those envelopes locally instead of letting zero ridges shave the shelf at -128.
+        DensityFunction noodle =
+                noodleWithDepth(
+                        getFunction(densityFunctions, MiaDensityFunctions.THE_ABYSS_LOWER_NOODLE));
         double tongueRadius = HopperAbyssHole.abyssRadius();
         DensityFunction carved = new AbyssTongueDensity(terrain, support, tongueRadius, false);
         DensityFunction tongues =

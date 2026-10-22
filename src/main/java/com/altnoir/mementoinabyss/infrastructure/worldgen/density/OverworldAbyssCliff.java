@@ -61,10 +61,14 @@ public record OverworldAbyssCliff(
                             - OverworldAbyssShape.smooth(
                                     (context.blockY() - TRANSITION_BOTTOM)
                                             / (double) (TRANSITION_TOP - TRANSITION_BOTTOM));
-            double boundary =
-                    OverworldAbyssShape.lerp(
-                            fade, shape.wallRadius(), sharedWall.get().boundaryRadius(context));
-            double raw = Math.clamp((distance - boundary) / 16, -5, 6.25);
+            double raw;
+            if (fade == 1) raw = sharedWall.get().compute(context);
+            else {
+                double boundary =
+                        OverworldAbyssShape.lerp(
+                                fade, shape.wallRadius(), sharedWall.get().boundaryRadius(context));
+                raw = Math.clamp((distance - boundary) / 16, -5, 6.25);
+            }
             // This branch is already after vanilla processing: preserve that density scale.
             double d = Math.clamp(raw * 0.64, -1, 1);
             double processed = d / 2 - d * d * d / 24;

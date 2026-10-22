@@ -1,5 +1,6 @@
 {
   "biome.mementoinabyss.overworld.the_abyss": "Overworld Abyss",
+  "config.jade.plugin_mementoinabyss.lamp_tube_heat": "Lamptube Heat",
   "mementoinabyss.config.graphsSection": "Graphs",
   "mementoinabyss.config.graphsSection.crossDimensionLodGroup": "Cross-Dimension LOD",
   "mementoinabyss.config.graphsSection.crossDimensionLodEnabled": "Enable Cross-Dimension LOD",

@@ -1,4 +1,5 @@
 {
+  "jade.mementoinabyss.lamp_tube.heat": "Heat: %s / %s",
   "tooltip.mementoinabyss.hold_for_description": "Hold [%s] for Description",
   "tooltip.mementoinabyss.hold_for_controls": "Hold [%s] for Details",
   "tooltip.mementoinabyss.hold_for_enhancements": "Hold [%s] for Details",

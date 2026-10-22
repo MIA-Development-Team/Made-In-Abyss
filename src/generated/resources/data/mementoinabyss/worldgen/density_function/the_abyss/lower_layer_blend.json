@@ -1,0 +1,80 @@
+{
+  "type": "minecraft:cache_once",
+  "argument": {
+    "type": "minecraft:mul",
+    "argument1": {
+      "type": "minecraft:mul",
+      "argument1": {
+        "type": "minecraft:cache_once",
+        "argument": {
+          "type": "minecraft:clamp",
+          "input": {
+            "type": "minecraft:mul",
+            "argument1": 0.020833333333333332,
+            "argument2": {
+              "type": "minecraft:add",
+              "argument1": 152.0,
+              "argument2": {
+                "type": "minecraft:add",
+                "argument1": "minecraft:y",
+                "argument2": "mementoinabyss:the_abyss/lower_layer_shift"
+              }
+            }
+          },
+          "max": 1.0,
+          "min": 0.0
+        }
+      },
+      "argument2": {
+        "type": "minecraft:cache_once",
+        "argument": {
+          "type": "minecraft:clamp",
+          "input": {
+            "type": "minecraft:mul",
+            "argument1": 0.020833333333333332,
+            "argument2": {
+              "type": "minecraft:add",
+              "argument1": 152.0,
+              "argument2": {
+                "type": "minecraft:add",
+                "argument1": "minecraft:y",
+                "argument2": "mementoinabyss:the_abyss/lower_layer_shift"
+              }
+            }
+          },
+          "max": 1.0,
+          "min": 0.0
+        }
+      }
+    },
+    "argument2": {
+      "type": "minecraft:add",
+      "argument1": 3.0,
+      "argument2": {
+        "type": "minecraft:mul",
+        "argument1": -2.0,
+        "argument2": {
+          "type": "minecraft:cache_once",
+          "argument": {
+            "type": "minecraft:clamp",
+            "input": {
+              "type": "minecraft:mul",
+              "argument1": 0.020833333333333332,
+              "argument2": {
+                "type": "minecraft:add",
+                "argument1": 152.0,
+                "argument2": {
+                  "type": "minecraft:add",
+                  "argument1": "minecraft:y",
+                  "argument2": "mementoinabyss:the_abyss/lower_layer_shift"
+                }
+              }
+            },
+            "max": 1.0,
+            "min": 0.0
+          }
+        }
+      }
+    }
+  }
+}

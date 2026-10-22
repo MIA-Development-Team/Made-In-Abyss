@@ -44,6 +44,18 @@ public class MiaDensityFunctions {
             theAbyssKey("outside_abyss_3d_noise");
     public static final ResourceKey<DensityFunction> THE_ABYSS_GREAT_CAVE =
             theAbyssKey("great_cave");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_LOWER_LAYER_SHIFT =
+            theAbyssKey("lower_layer_shift");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_LOWER_LAYER_BLEND =
+            theAbyssKey("lower_layer_blend");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_LOWER_GREAT_CAVE =
+            theAbyssKey("lower_great_cave");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_RAW_TERRAIN =
+            theAbyssKey("raw_terrain");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_TONGUE_SUPPORT =
+            theAbyssKey("tongue_support");
+    static final int LOWER_TRANSITION_MIN = -176;
+    static final int LOWER_TRANSITION_MAX = -80;
     public static final ResourceKey<DensityFunction> THE_ABYSS_BASE_GREAT_CAVE_NOODLE =
             theAbyssKey("caves/base_great_cave_noodle");
     public static final ResourceKey<DensityFunction> THE_ABYSS_GREAT_CAVE_NOODLE =
@@ -53,6 +65,8 @@ public class MiaDensityFunctions {
     public static final ResourceKey<DensityFunction> THE_ABYSS_PILLARS =
             theAbyssKey("caves/pillars");
     public static final ResourceKey<DensityFunction> THE_ABYSS_NOODLE = theAbyssKey("caves/noodle");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_LOWER_NOODLE =
+            theAbyssKey("caves/lower_noodle");
 
     public static final ResourceKey<DensityFunction> GREAT_FAULT_HOLE_ABOVE =
             greatFaultKey("great_fault_hole_above");
@@ -124,7 +138,27 @@ public class MiaDensityFunctions {
         // Layer 1-2
         context.register(
                 BASE_3D_NOISE_THE_ABYSS,
-                BlendedNoise.createUnseeded(0.25, 0.25, 160.0, 160.0, 8.0));
+                DensityFunctions.cacheOnce(
+                        BlendedNoise.createUnseeded(0.25, 0.25, 160.0, 160.0, 8.0)));
+        context.register(
+                THE_ABYSS_LOWER_LAYER_SHIFT,
+                DensityFunctions.cache2d(
+                        DensityFunctions.mul(
+                                        DensityFunctions.noise(
+                                                holdergetter.getOrThrow(Noises.SURFACE), 1, 0),
+                                        DensityFunctions.constant(14))
+                                .clamp(-14, 14)));
+        DensityFunction lowerRamp =
+                DensityFunctions.cacheOnce(lowerLayerRamp(holdergetter1, -152, -104));
+        context.register(
+                THE_ABYSS_LOWER_LAYER_BLEND,
+                DensityFunctions.cacheOnce(
+                        DensityFunctions.mul(
+                                DensityFunctions.mul(lowerRamp, lowerRamp),
+                                DensityFunctions.add(
+                                        DensityFunctions.constant(3),
+                                        DensityFunctions.mul(
+                                                DensityFunctions.constant(-2), lowerRamp)))));
 
         context.register(THE_ABYSS_BASE_PILLARS, pillars(holdergetter));
         context.register(
@@ -152,9 +186,10 @@ public class MiaDensityFunctions {
 
         context.register(
                 THE_ABYSS_HOLE_ABOVE,
-                DensityFunctions.add(
-                        MiaDensityFunctionTypes.hopper(),
-                        getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
+                DensityFunctions.cacheOnce(
+                        DensityFunctions.add(
+                                MiaDensityFunctionTypes.hopper(),
+                                getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS))));
         context.register(
                 THE_ABYSS_HOLE_BELOW,
                 DensityFunctions.add(
@@ -208,6 +243,27 @@ public class MiaDensityFunctions {
                         getFunction(holdergetter1, THE_ABYSS_BASE_GREAT_CAVE_NOODLE),
                         HopperAbyssHole.abyssRadius()));
         context.register(THE_ABYSS_NOODLE, abyssNoodle(holdergetter1, holdergetter));
+        context.register(
+                THE_ABYSS_LOWER_NOODLE,
+                abyssNoodleBase(
+                        MiaHeight.THE_ABYSS.minY() + 128,
+                        MiaHeight.THE_ABYSS.maxY(),
+                        holdergetter1,
+                        holdergetter,
+                        1.5,
+                        1.5,
+                        2.6666666666666665,
+                        -0.5,
+                        -0.3,
+                        40,
+                        true,
+                        false,
+                        false,
+                        true));
+        context.register(
+                THE_ABYSS_RAW_TERRAIN, MiaNoiseRouterData.theAbyssRawDensity(holdergetter1, true));
+        context.register(
+                THE_ABYSS_TONGUE_SUPPORT, MiaNoiseRouterData.theAbyssTongueSupport(holdergetter1));
 
         // Layer 3
         context.register(
@@ -304,6 +360,7 @@ public class MiaDensityFunctions {
                 YOffset,
                 true,
                 inverse,
+                false,
                 false);
     }
 
@@ -330,7 +387,8 @@ public class MiaDensityFunctions {
                 0,
                 true,
                 inverse,
-                true);
+                true,
+                false);
     }
 
     private static DensityFunction abyssNoodleBase(
@@ -346,7 +404,8 @@ public class MiaDensityFunctions {
             int YOffset,
             boolean ridgeB,
             boolean inverse,
-            boolean full) {
+            boolean full,
+            boolean extendLowerRidges) {
         DensityFunction yFunction = getFunction(densityFunctions, MiaNoiseRouterData.Y);
 
         int FMinY = minY - YOffset;
@@ -397,7 +456,7 @@ public class MiaDensityFunctions {
                         yFunction,
                         DensityFunctions.noise(
                                 noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_A), d1, d0),
-                        minY,
+                        extendLowerRidges ? FMinY : minY,
                         maxY,
                         inverse ? -1 : 0);
 
@@ -406,7 +465,7 @@ public class MiaDensityFunctions {
                         yFunction,
                         DensityFunctions.noise(
                                 noiseParameters.getOrThrow(Noises.NOODLE_RIDGE_B), d1, d0),
-                        minY,
+                        extendLowerRidges ? FMinY : minY,
                         maxY,
                         inverse ? -1 : 0);
 
@@ -500,6 +559,63 @@ public class MiaDensityFunctions {
         return DensityFunctions.min(rangeChoice, entranceFactor);
     }
 
+    static DensityFunction lowerLayerRamp(
+            HolderGetter<DensityFunction> functions, int fromY, int toY) {
+        DensityFunction shiftedY =
+                DensityFunctions.add(
+                        getFunction(functions, MiaNoiseRouterData.Y),
+                        getFunction(functions, THE_ABYSS_LOWER_LAYER_SHIFT));
+        return DensityFunctions.mul(
+                        DensityFunctions.add(shiftedY, DensityFunctions.constant(-fromY)),
+                        DensityFunctions.constant(1.0 / (toY - fromY)))
+                .clamp(0, 1);
+    }
+
+    static DensityFunction lowerLayerDensity(
+            HolderGetter<DensityFunction> functions,
+            ResourceKey<DensityFunction> original,
+            ResourceKey<DensityFunction> main) {
+        DensityFunction fading =
+                lerpWithEndpoints(
+                        getFunction(functions, THE_ABYSS_LOWER_LAYER_BLEND),
+                        DensityFunctions.constant(-1),
+                        getFunction(functions, main));
+        DensityFunction entrances =
+                DensityFunctions.mul(
+                        DensityFunctions.constant(5),
+                        getFunction(functions, MiaNoiseRouterData.ENTRANCES));
+        return DensityFunctions.rangeChoice(
+                getFunction(functions, MiaNoiseRouterData.Y),
+                LOWER_TRANSITION_MIN,
+                LOWER_TRANSITION_MAX,
+                DensityFunctions.min(fading, entrances),
+                getFunction(functions, original));
+    }
+
+    static DensityFunction lerpWithEndpoints(
+            DensityFunction weight, DensityFunction lower, DensityFunction upper) {
+        DensityFunction cached = DensityFunctions.cacheOnce(weight);
+        DensityFunction inverse =
+                DensityFunctions.add(
+                        DensityFunctions.mul(cached, DensityFunctions.constant(-1)),
+                        DensityFunctions.constant(1));
+        DensityFunction mixed =
+                DensityFunctions.add(
+                        DensityFunctions.mul(lower, inverse), DensityFunctions.mul(upper, cached));
+        // Isolate exactly 0 and 1; retain vanilla arithmetic, including positive zero at endpoints.
+        return DensityFunctions.rangeChoice(
+                cached,
+                1,
+                Math.nextUp(1.0),
+                DensityFunctions.add(upper, DensityFunctions.zero()),
+                DensityFunctions.rangeChoice(
+                        cached,
+                        0,
+                        Math.nextUp(0.0),
+                        DensityFunctions.add(lower, DensityFunctions.zero()),
+                        mixed));
+    }
+
     private static DensityFunction getFunction(
             HolderGetter<DensityFunction> densityFunctions, ResourceKey<DensityFunction> key) {
         return new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(key));
@@ -579,6 +695,22 @@ public class MiaDensityFunctions {
                 DensityFunctions.add(
                         densityfunction5,
                         getFunction(densityFunctionGetter, BASE_3D_NOISE_THE_ABYSS)));
+        if (slopedCheeseKey.equals(THE_ABYSS_GREAT_CAVE)) {
+            DensityFunction lowerDepth =
+                    DensityFunctions.add(
+                            DensityFunctions.add(
+                                    DensityFunctions.mul(
+                                            lowerLayerRamp(densityFunctionGetter, -128, -96),
+                                            DensityFunctions.constant(-1.5)),
+                                    DensityFunctions.constant(1.5)),
+                            depth1);
+            context.register(
+                    THE_ABYSS_LOWER_GREAT_CAVE,
+                    DensityFunctions.add(
+                            noiseGradientDensity(
+                                    factor, DensityFunctions.add(lowerDepth, densityfunction4)),
+                            getFunction(densityFunctionGetter, BASE_3D_NOISE_THE_ABYSS)));
+        }
     }
 
     private static DensityFunction registerAndWrap(
