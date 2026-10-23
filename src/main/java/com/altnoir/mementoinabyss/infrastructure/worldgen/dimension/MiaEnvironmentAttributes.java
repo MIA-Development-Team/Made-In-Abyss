@@ -2,7 +2,9 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.dimension;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.attribute.AttributeRange;
 import net.minecraft.world.attribute.AttributeType;
+import net.minecraft.world.attribute.AttributeTypes;
 import net.minecraft.world.attribute.EnvironmentAttribute;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
@@ -17,6 +19,19 @@ public final class MiaEnvironmentAttributes {
             boundary("vertical_below");
     public static final EnvironmentAttribute<VerticalBoundary> VERTICAL_ABOVE =
             boundary("vertical_above");
+    public static final EnvironmentAttribute<Float> ABYSS_FOG_DENSITY = fogDensity();
+
+    private static EnvironmentAttribute<Float> fogDensity() {
+        EnvironmentAttribute<Float> attribute =
+                EnvironmentAttribute.builder(AttributeTypes.FLOAT)
+                        .defaultValue(0.0F)
+                        .valueRange(AttributeRange.UNIT_FLOAT)
+                        .spatiallyInterpolated()
+                        .syncable()
+                        .build();
+        ENVIRONMENT_ATTRIBUTES.register("abyss_fog_density", () -> attribute);
+        return attribute;
+    }
 
     private static EnvironmentAttribute<VerticalBoundary> boundary(String name) {
         EnvironmentAttribute<VerticalBoundary> attribute =

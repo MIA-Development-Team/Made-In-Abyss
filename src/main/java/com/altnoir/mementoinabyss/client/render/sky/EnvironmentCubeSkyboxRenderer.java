@@ -1,11 +1,13 @@
 package com.altnoir.mementoinabyss.client.render.sky;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.client.render.TheAbyssFogRenderer;
 import com.altnoir.mementoinabyss.compat.iris.IrisRenderCompat;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.shaders.UniformType;
 import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.GpuTextureView;
@@ -39,10 +41,11 @@ public final class EnvironmentCubeSkyboxRenderer implements CustomSkyboxRenderer
     private static final double ABYSS_DARK_SIDE_Y = -90.0;
     private static final int DARK_SIDE_COLOR = 0xFF1C231E;
     private static final RenderPipeline PIPELINE =
-            RenderPipeline.builder(RenderPipelines.MATRICES_PROJECTION_SNIPPET)
+            RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
                     .withLocation(MementoInAbyss.asResource("pipeline/environment_cube_skybox"))
                     .withVertexShader(MementoInAbyss.asResource("core/environment_cube_skybox"))
                     .withFragmentShader(MementoInAbyss.asResource("core/environment_cube_skybox"))
+                    .withUniform("AbyssSkyFog", UniformType.UNIFORM_BUFFER)
                     .withCull(false)
                     .withVertexFormat(DefaultVertexFormat.POSITION, VertexFormat.Mode.TRIANGLES)
                     .build();
@@ -65,6 +68,12 @@ public final class EnvironmentCubeSkyboxRenderer implements CustomSkyboxRenderer
 
         Minecraft minecraft = Minecraft.getInstance();
         var camera = levelRenderState.cameraRenderState;
+        float fogStrength =
+                TheAbyssFogRenderer.strength(
+                        minecraft.level,
+                        minecraft.gameRenderer.getMainCamera(),
+                        camera.fogType,
+                        minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false));
         boolean darkSides =
                 minecraft.level != null
                         && (minecraft.level.dimension().equals(MiaDimensions.GREAT_FAULT_LEVEL)
@@ -88,6 +97,16 @@ public final class EnvironmentCubeSkyboxRenderer implements CustomSkyboxRenderer
                 RenderSystem.getDynamicUniforms()
                         .writeTransform(
                                 modelView, new Vector4f(1.0F), new Vector3f(), new Matrix4f());
+        // Reuse engine-owned, frame-scoped storage without changing Iris's ColorModulator alpha.
+        GpuBufferSlice skyFog =
+                fogStrength <= 0.0F
+                        ? bottomTransform
+                        : RenderSystem.getDynamicUniforms()
+                                .writeTransform(
+                                        modelView,
+                                        new Vector4f(1.0F - fogStrength),
+                                        new Vector3f(),
+                                        new Matrix4f());
         GpuTextureView color = minecraft.getMainRenderTarget().getColorTextureView();
         GpuTextureView depth = minecraft.getMainRenderTarget().getDepthTextureView();
 
@@ -102,6 +121,7 @@ public final class EnvironmentCubeSkyboxRenderer implements CustomSkyboxRenderer
                                 OptionalDouble.empty())) {
             pass.setPipeline(PIPELINE);
             RenderSystem.bindDefaultUniforms(pass);
+            pass.setUniform("AbyssSkyFog", skyFog);
             pass.setVertexBuffer(0, this.cubeBuffer);
             // buildCube emits the ceiling, four sides, then the floor. Only the side tint changes
             // with depth.

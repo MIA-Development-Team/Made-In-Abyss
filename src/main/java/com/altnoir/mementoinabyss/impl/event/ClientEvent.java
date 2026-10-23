@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.impl.event;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.client.render.TheAbyssFogRenderer;
 import com.altnoir.mementoinabyss.client.render.sky.EnvironmentCubeSkyboxRenderer;
 import com.altnoir.mementoinabyss.client.screen.SeamlessLevelLoadingScreen;
 import com.altnoir.mementoinabyss.client.tooltip.ArtifactEnhancementMaterialTooltip;
@@ -51,12 +52,18 @@ import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
+import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 @EventBusSubscriber(Dist.CLIENT)
 public final class ClientEvent {
+    @SubscribeEvent
+    public static void renderFog(ViewportEvent.RenderFog event) {
+        TheAbyssFogRenderer.renderFog(event);
+    }
+
     @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(MiaMenus.ARTIFACT_ENHANCEMENT.get(), ArtifactEnhancementScreen::new);

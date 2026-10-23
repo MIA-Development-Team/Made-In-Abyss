@@ -36,6 +36,9 @@ public class MiaConfigs extends Config {
                         1,
                         ValidatedInt.WidgetType.TEXTBOX);
 
+        public ConfigGroup abyssFogGroup = new ConfigGroup("abyss_fog");
+        @ConfigGroup.Pop public ValidatedBoolean abyssFogEnabled = new ValidatedBoolean(false);
+
         public ConfigGroup crossDimensionLodGroup = new ConfigGroup("cross_dimension_lod");
         public ValidatedBoolean crossDimensionLodEnabled = new ValidatedBoolean(true);
         public ValidatedInt crossDimensionLodCaptureQueueLimit =

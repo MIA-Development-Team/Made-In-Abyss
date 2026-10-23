@@ -255,6 +255,8 @@
   "mementoinabyss.config.gamePlaySection.hookShootVelocity": "ʎʇıɔoןǝΛ ʇooɥS",
   "mementoinabyss.config.gamePlaySection.hookStopPullDistance": "ǝɔuɐʇsıᗡ ןןnԀ doʇS",
   "mementoinabyss.config.graphsSection": "sɥdɐɹ⅁",
+  "mementoinabyss.config.graphsSection.abyssFogEnabled": "ƃoℲ ssʎqⱯ ǝןqɐuƎ",
+  "mementoinabyss.config.graphsSection.abyssFogGroup": "ƃoℲ ssʎqⱯ",
   "mementoinabyss.config.graphsSection.crossDimensionLodCaptureQueueLimit": "ʇıɯıꞀ ǝnǝnὉ ǝɹnʇdɐƆ ᗡOꞀ",
   "mementoinabyss.config.graphsSection.crossDimensionLodEnabled": "ᗡOꞀ uoısuǝɯıᗡ-ssoɹƆ ǝןqɐuƎ",
   "mementoinabyss.config.graphsSection.crossDimensionLodGroup": "ᗡOꞀ uoısuǝɯıᗡ-ssoɹƆ",

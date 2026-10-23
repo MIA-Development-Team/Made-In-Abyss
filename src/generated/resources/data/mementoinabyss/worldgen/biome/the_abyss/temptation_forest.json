@@ -1,5 +1,6 @@
 {
   "attributes": {
+    "mementoinabyss:abyss_fog_density": 0.0,
     "minecraft:audio/background_music": {
       "default": {
         "max_delay": 24000,

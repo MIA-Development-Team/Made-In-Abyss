@@ -1,6 +1,7 @@
 {
   "ambient_light": 0.12,
   "attributes": {
+    "mementoinabyss:abyss_fog_density": 1.0,
     "mementoinabyss:vertical_above": {
       "dimension": "minecraft:overworld",
       "entry_offset": 0.0

@@ -36,6 +36,7 @@ public final class MiaDimensionTypes {
         var attributes =
                 EnvironmentAttributeMap.builder()
                         .set(EnvironmentAttributes.FOG_COLOR, 0xFF708C79)
+                        .set(MiaEnvironmentAttributes.ABYSS_FOG_DENSITY, 1.0F)
                         .set(
                                 EnvironmentAttributes.SKY_COLOR,
                                 OverworldBiomes.calculateSkyColor(0.8F))

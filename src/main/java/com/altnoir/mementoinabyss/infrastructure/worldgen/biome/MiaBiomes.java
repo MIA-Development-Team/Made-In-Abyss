@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.biome;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaEnvironmentAttributes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.GreatFaultPlacements;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.MiaAbyssPlacements;
 import com.altnoir.mementoinabyss.init.MiaSoundEvents;
@@ -237,22 +238,26 @@ public final class MiaBiomes {
         }
         generationBuilder.addFeature(
                 GenerationStep.Decoration.UNDERGROUND_STRUCTURES, MiaAbyssPlacements.SUN_STONE);
-        return new Biome.BiomeBuilder()
-                .hasPrecipitation(false)
-                .temperature(2.0F)
-                .downfall(0.8F)
-                .mobSpawnSettings(new MobSpawnSettings.Builder().build())
-                .generationSettings(generationBuilder.build())
-                .setAttribute(
-                        EnvironmentAttributes.BACKGROUND_MUSIC,
-                        new BackgroundMusic(MiaSoundEvents.MUSIC_THE_FIRST_LAYER))
-                .specialEffects(
-                        new BiomeSpecialEffects.Builder()
-                                .waterColor(6141935)
-                                .foliageColorOverride(11335504)
-                                .grassColorOverride(11335504)
-                                .build())
-                .build();
+        Biome.BiomeBuilder biomeBuilder =
+                new Biome.BiomeBuilder()
+                        .hasPrecipitation(false)
+                        .temperature(2.0F)
+                        .downfall(0.8F)
+                        .mobSpawnSettings(new MobSpawnSettings.Builder().build())
+                        .generationSettings(generationBuilder.build())
+                        .setAttribute(
+                                EnvironmentAttributes.BACKGROUND_MUSIC,
+                                new BackgroundMusic(MiaSoundEvents.MUSIC_THE_FIRST_LAYER))
+                        .specialEffects(
+                                new BiomeSpecialEffects.Builder()
+                                        .waterColor(6141935)
+                                        .foliageColorOverride(11335504)
+                                        .grassColorOverride(11335504)
+                                        .build());
+        if (biome.equals(TEMPTATION_FOREST)) {
+            biomeBuilder.setAttribute(MiaEnvironmentAttributes.ABYSS_FOG_DENSITY, 0.0F);
+        }
+        return biomeBuilder.build();
     }
 
     private static ResourceKey<Biome> key(String path) {
