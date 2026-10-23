@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.event.EventHooks;
 
 import java.util.Optional;
 
@@ -60,7 +61,7 @@ public class MiaFungusBlock extends BushBlock implements BonemealableBlock {
         // Neo: Fire the BlockGrowFeatureEvent and update the result of the Optional local with the
         // new feature.
         var event =
-                net.neoforged.neoforge.event.EventHooks.fireBlockGrowFeature(
+                EventHooks.fireBlockGrowFeature(
                         level, random, pos, optional.orElse(null));
         if (event.isCanceled()) {
             return false;

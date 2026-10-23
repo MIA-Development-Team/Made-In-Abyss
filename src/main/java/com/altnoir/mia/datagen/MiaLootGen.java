@@ -2,8 +2,10 @@ package com.altnoir.mia.datagen;
 
 import com.altnoir.abysslib.reginth.providers.loot.ReginthBlockLootTables;
 import net.minecraft.advancements.critereon.*;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
@@ -244,8 +246,8 @@ public final class MiaLootGen {
         return hasShears.or(hasSilkTouch).invert();
     }
 
-    private static net.minecraft.core.Holder<Enchantment> enchantment(
-            ReginthBlockLootTables tables, net.minecraft.resources.ResourceKey<Enchantment> key) {
+    private static Holder<Enchantment> enchantment(
+            ReginthBlockLootTables tables, ResourceKey<Enchantment> key) {
         HolderLookup.RegistryLookup<Enchantment> lookup =
                 tables.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
         return lookup.getOrThrow(key);

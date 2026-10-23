@@ -3,6 +3,7 @@ package com.altnoir.mia.client.network;
 import com.altnoir.mia.MIA;
 import com.altnoir.mia.init.MiaCapabilities;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -24,7 +25,7 @@ public record CurseCapabilityPayload(int curse, int maxCurse) implements CustomP
     public static void handle(CurseCapabilityPayload packet, IPayloadContext context) {
         context.enqueueWork(
                 () -> {
-                    var mc = net.minecraft.client.Minecraft.getInstance();
+                    var mc = Minecraft.getInstance();
                     if (mc.player == null) return;
 
                     var curse = mc.player.getCapability(MiaCapabilities.CURSE, null);

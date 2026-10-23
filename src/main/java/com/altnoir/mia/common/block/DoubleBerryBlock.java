@@ -33,12 +33,12 @@ import net.neoforged.neoforge.common.CommonHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class DoubleBerryblock extends BushBlock implements BonemealableBlock {
+public abstract class DoubleBerryBlock extends BushBlock implements BonemealableBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
     public static final int MAX_AGE = 3;
 
-    public DoubleBerryblock(Properties properties) {
+    public DoubleBerryBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
                 this.stateDefinition

@@ -4,7 +4,7 @@ import com.altnoir.abysslib.reginth.providers.DataGenContext;
 import com.altnoir.abysslib.reginth.providers.ReginthBlockstateProvider;
 import com.altnoir.abysslib.reginth.providers.ReginthItemModelProvider;
 import com.altnoir.mia.common.block.ColumnBlock;
-import com.altnoir.mia.common.block.DoubleBerryblock;
+import com.altnoir.mia.common.block.DoubleBerryBlock;
 import com.altnoir.mia.datagen.blockstate.MiaModelProvider;
 import com.altnoir.mia.util.MiaUtil;
 import net.minecraft.core.Direction;
@@ -12,6 +12,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.trialspawner.TrialSpawnerState;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -507,7 +508,7 @@ public final class BlockStateGen {
         String blockPath = MiaUtil.getBlockPath(block);
         VariantBlockStateBuilder builder = prov.getVariantBuilder(block);
 
-        Map<net.minecraft.world.level.block.entity.trialspawner.TrialSpawnerState, String>
+        Map<TrialSpawnerState, String>
                 suffixes =
                         Map.of(
                                 net.minecraft.world.level.block.entity.trialspawner
@@ -630,7 +631,7 @@ public final class BlockStateGen {
                         state -> {
                             DoubleBlockHalf half =
                                     state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF);
-                            int age = state.getValue(DoubleBerryblock.AGE);
+                            int age = state.getValue(DoubleBerryBlock.AGE);
                             String modelName =
                                     half == DoubleBlockHalf.UPPER && age >= 2
                                             ? MiaUtil.getBlockPath(block) + "_top" + age

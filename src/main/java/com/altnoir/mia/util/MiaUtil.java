@@ -21,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -44,8 +45,8 @@ import java.util.Random;
 import java.util.function.Predicate;
 
 public class MiaUtil {
-    private static final net.minecraft.util.RandomSource RANDOM =
-            net.minecraft.util.RandomSource.create();
+    private static final RandomSource RANDOM =
+            RandomSource.create();
 
     public static MutableComponent literal(String s) {
         return Component.literal(s);

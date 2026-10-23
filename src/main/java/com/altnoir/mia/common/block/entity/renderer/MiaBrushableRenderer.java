@@ -96,7 +96,7 @@ public class MiaBrushableRenderer implements BlockEntityRenderer<MiaBrushableBlo
     @Override
     public AABB getRenderBoundingBox(MiaBrushableBlockEntity blockEntity) {
         BlockPos pos = blockEntity.getBlockPos();
-        return new net.minecraft.world.phys.AABB(
+        return new AABB(
                 pos.getX() - .25,
                 pos.getY() - .25,
                 pos.getZ() - .25,

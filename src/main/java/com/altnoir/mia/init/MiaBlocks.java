@@ -2319,7 +2319,7 @@ public class MiaBlocks {
                                     BlockStateGen.doubleBerry(
                                             ctx,
                                             prov,
-                                            com.altnoir.mia.common.block.DoubleBerryblock.MAX_AGE))
+                                            DoubleBerryBlock.MAX_AGE))
                     .loot(
                             (tables, block) ->
                                     tables.add(
@@ -2353,7 +2353,7 @@ public class MiaBlocks {
                                     BlockStateGen.doubleBerry(
                                             ctx,
                                             prov,
-                                            com.altnoir.mia.common.block.DoubleBerryblock.MAX_AGE))
+                                            DoubleBerryBlock.MAX_AGE))
                     .loot(
                             (tables, block) ->
                                     tables.add(

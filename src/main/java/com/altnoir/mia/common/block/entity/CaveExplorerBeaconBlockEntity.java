@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -68,7 +69,7 @@ public class CaveExplorerBeaconBlockEntity extends BlockEntity {
             for (int l = x - j; l <= x + j && flag; l++) {
                 for (int i1 = z - j; i1 <= z + j; i1++) {
                     if (!level.getBlockState(new BlockPos(l, k, i1))
-                            .is(net.minecraft.tags.BlockTags.BEACON_BASE_BLOCKS)) {
+                            .is(BlockTags.BEACON_BASE_BLOCKS)) {
                         flag = false;
                         break;
                     }

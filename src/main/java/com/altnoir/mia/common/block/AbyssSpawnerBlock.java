@@ -3,7 +3,9 @@ package com.altnoir.mia.common.block;
 import com.altnoir.mia.common.block.entity.AbyssSpawnerBlockEntity;
 import com.altnoir.mia.init.MiaBlockEntities;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
@@ -95,14 +97,14 @@ public class AbyssSpawnerBlock extends BaseEntityBlock {
             List<Component> components,
             TooltipFlag flag) {
         super.appendHoverText(itemStack, context, components, flag);
-        if (itemStack.has(net.minecraft.core.component.DataComponents.BLOCK_ENTITY_DATA)) {
+        if (itemStack.has(DataComponents.BLOCK_ENTITY_DATA)) {
             var beData =
-                    itemStack.get(net.minecraft.core.component.DataComponents.BLOCK_ENTITY_DATA);
+                    itemStack.get(DataComponents.BLOCK_ENTITY_DATA);
             if (beData != null && beData.copyTag().contains("pattern_id")) {
                 String patternId = beData.copyTag().getString("pattern_id");
                 components.add(
                         Component.literal("Pattern: " + patternId)
-                                .withStyle(net.minecraft.ChatFormatting.GRAY));
+                                .withStyle(ChatFormatting.GRAY));
             }
         }
     }

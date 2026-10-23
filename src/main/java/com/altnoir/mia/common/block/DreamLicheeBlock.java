@@ -24,7 +24,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
-public class DreamLicheeBlock extends DoubleBerryblock implements HurtPlant {
+public class DreamLicheeBlock extends DoubleBerryBlock implements HurtPlant {
     public static final MapCodec<DreamLicheeBlock> CODEC = simpleCodec(DreamLicheeBlock::new);
 
     @Override

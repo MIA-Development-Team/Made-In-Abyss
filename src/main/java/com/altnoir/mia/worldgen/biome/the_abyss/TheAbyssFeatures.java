@@ -1,6 +1,6 @@
 package com.altnoir.mia.worldgen.biome.the_abyss;
 
-import com.altnoir.mia.common.block.DoubleBerryblock;
+import com.altnoir.mia.common.block.DoubleBerryBlock;
 import com.altnoir.mia.init.MiaBlocks;
 import com.altnoir.mia.init.MiaTags;
 import com.altnoir.mia.init.worldgen.MiaFeatures;
@@ -352,9 +352,9 @@ public class TheAbyssFeatures {
                                                                                 DoubleBlockHalf
                                                                                         .LOWER)
                                                                         .setValue(
-                                                                                DoubleBerryblock
+                                                                                DoubleBerryBlock
                                                                                         .AGE,
-                                                                                DoubleBerryblock
+                                                                                DoubleBerryBlock
                                                                                         .MAX_AGE))),
                                                 BlockColumnConfiguration.layer(
                                                         ConstantInt.of(1),
@@ -368,9 +368,9 @@ public class TheAbyssFeatures {
                                                                                 DoubleBlockHalf
                                                                                         .UPPER)
                                                                         .setValue(
-                                                                                DoubleBerryblock
+                                                                                DoubleBerryBlock
                                                                                         .AGE,
-                                                                                DoubleBerryblock
+                                                                                DoubleBerryBlock
                                                                                         .MAX_AGE)))),
                                         Direction.UP,
                                         BlockPredicate.ONLY_IN_AIR_PREDICATE,

@@ -8,6 +8,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.client.gui.ClientTooltipComponentManager;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class ClientArtifactBundleTooltip implements ClientTooltipComponent {
             return new ClientArtifactBundleTooltip(bundleComponent);
         }
         var result =
-                net.neoforged.neoforge.client.gui.ClientTooltipComponentManager
+                ClientTooltipComponentManager
                         .createClientTooltipComponent(component);
         if (result != null) return result;
         throw new IllegalArgumentException("Unknown TooltipComponent");

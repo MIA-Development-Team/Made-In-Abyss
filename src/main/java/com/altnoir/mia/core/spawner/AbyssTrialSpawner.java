@@ -14,9 +14,11 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandom;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -328,7 +330,7 @@ public class AbyssTrialSpawner {
 
         if (entityInstance.hasEffects()) {
             for (var effect : entityInstance.getEffects()) {
-                mob.addEffect(new net.minecraft.world.effect.MobEffectInstance(effect));
+                mob.addEffect(new MobEffectInstance(effect));
             }
         }
 
@@ -380,7 +382,7 @@ public class AbyssTrialSpawner {
         var speed = 0.1 + this.random.nextDouble() * 0.05;
 
         var itemEntity =
-                new net.minecraft.world.entity.item.ItemEntity(
+                new ItemEntity(
                         level,
                         x,
                         y,

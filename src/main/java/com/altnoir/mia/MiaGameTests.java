@@ -17,6 +17,7 @@ import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.FrontAndTop;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTest;
@@ -1240,7 +1241,7 @@ public class MiaGameTests {
 
     @SafeVarargs
     private static Set<ResourceKey<Biome>> unionBiomeTags(
-            net.minecraft.core.HolderGetter<Biome> biomes, TagKey<Biome>... tags) {
+            HolderGetter<Biome> biomes, TagKey<Biome>... tags) {
         return Arrays.stream(tags)
                 .flatMap(tag -> biomes.getOrThrow(tag).stream())
                 .map(holder -> holder.unwrapKey().orElseThrow())

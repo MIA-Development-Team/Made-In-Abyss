@@ -19,7 +19,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
-public class GloomBerryBlock extends DoubleBerryblock {
+public class GloomBerryBlock extends DoubleBerryBlock {
     public static final MapCodec<GloomBerryBlock> CODEC = simpleCodec(GloomBerryBlock::new);
 
     @Override

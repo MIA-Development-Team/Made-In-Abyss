@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.neoforged.neoforge.common.FarmlandWaterManager;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -58,7 +59,7 @@ public class HopperFarmBlock extends FarmBlock {
             }
         }
 
-        return net.neoforged.neoforge.common.FarmlandWaterManager.hasBlockWaterTicket(level, pos);
+        return FarmlandWaterManager.hasBlockWaterTicket(level, pos);
     }
 
     public static void turnToBlock(
