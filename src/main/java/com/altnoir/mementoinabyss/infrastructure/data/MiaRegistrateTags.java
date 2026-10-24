@@ -61,9 +61,12 @@ public final class MiaRegistrateTags {
                     provider.copy(Tags.Blocks.STRIPPED_WOODS, Tags.Items.STRIPPED_WOODS);
                     provider.copy(Tags.Blocks.NATURAL_LOGS, Tags.Items.NATURAL_LOGS);
                     provider.copy(Tags.Blocks.NATURAL_WOODS, Tags.Items.NATURAL_WOODS);
-                    provider.tag(ItemTags.STONE_TOOL_MATERIALS).add(MiaBlocks.ABYSS_COBBLED_ANDESITE.get().asItem());
-                    provider.tag(ItemTags.STONE_CRAFTING_MATERIALS).add(MiaBlocks.ABYSS_COBBLED_ANDESITE.get().asItem());
-                    provider.copy(MiaTags.BlockTags.PRIMO_STEMS.tag, MiaTags.ItemTags.PRIMO_STEMS.tag);
+                    provider.tag(ItemTags.STONE_TOOL_MATERIALS)
+                            .add(MiaBlocks.ABYSS_COBBLED_ANDESITE.get().asItem());
+                    provider.tag(ItemTags.STONE_CRAFTING_MATERIALS)
+                            .add(MiaBlocks.ABYSS_COBBLED_ANDESITE.get().asItem());
+                    provider.copy(
+                            MiaTags.BlockTags.PRIMO_STEMS.tag, MiaTags.ItemTags.PRIMO_STEMS.tag);
                 });
     }
 }
