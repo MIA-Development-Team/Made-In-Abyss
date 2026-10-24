@@ -102,11 +102,11 @@ public final class MiaTreeFeatures {
         context.register(
                 INVERTED_TREE,
                 new ConfiguredFeature<>(
-                        MiaWorldgenFeatures.INVERTED_TREE.get(), inverted(10, 2, 3, 3)));
+                        MiaWorldgenFeatures.INVERTED_TREE.get(), inverted(10, 5, 6, 3)));
         context.register(
                 MEGA_INVERTED_TREE,
                 new ConfiguredFeature<>(
-                        MiaWorldgenFeatures.INVERTED_TREE.get(), inverted(16, 3, 6, 5)));
+                        MiaWorldgenFeatures.INVERTED_TREE.get(), inverted(16, 8, 8, 5)));
     }
 
     private static TreeConfiguration.TreeConfigurationBuilder skyfog() {

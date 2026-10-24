@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.function.BiFunction;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.PushReaction;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -134,7 +136,7 @@ public final class BuildingBlockVariant<B extends Block> {
                                                             family.requireWoodType(),
                                                             p.forceSolidOn()))
                                     .initialProperties(family.base())
-                                    .tag(BlockTags.FENCE_GATES)
+                                    .tag(BlockTags.FENCE_GATES, Tags.Blocks.FENCE_GATES_WOODEN)
                                     .blockstate(() -> BlockStateGen.fenceGate(family.base()))
                                     .recipe(
                                             (ctx, prov) ->
@@ -314,9 +316,11 @@ public final class BuildingBlockVariant<B extends Block> {
         var tags = new ArrayList<TagGen.BlockAndItemTag>();
         if (tag != null) tags.add(tag);
         if (context.wooden() && woodenTag != null) tags.add(woodenTag);
-        return builder.transform(
-                        TagGen.tagBlockAndItem(tags.toArray(TagGen.BlockAndItemTag[]::new)))
-                .build();
+        var item =
+                builder.transform(
+                        TagGen.tagBlockAndItem(tags.toArray(TagGen.BlockAndItemTag[]::new)));
+        if (context.wooden() && !context.burns()) item.tag(ItemTags.NON_FLAMMABLE_WOOD);
+        return item.build();
     }
 
     private static BlockBehaviour.Properties woodenDevice(

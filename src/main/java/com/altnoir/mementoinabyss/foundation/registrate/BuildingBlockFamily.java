@@ -48,7 +48,7 @@ public final class BuildingBlockFamily {
     }
 
     public static Builder stone(Reginth registrate, BlockEntry<? extends Block> base) {
-        return new Builder(new Context(registrate, base, base.getId().getPath(), null))
+        return new Builder(new Context(registrate, base, base.getId().getPath(), null, false))
                 .variant(BuildingBlockVariant.STAIRS)
                 .variant(BuildingBlockVariant.SLAB)
                 .variant(BuildingBlockVariant.WALL);
@@ -58,9 +58,15 @@ public final class BuildingBlockFamily {
             Reginth registrate,
             String prefix,
             BlockEntry<? extends Block> planks,
-            WoodType woodType) {
+            WoodType woodType,
+            boolean burns) {
         return new Builder(
-                        new Context(registrate, planks, prefix, Objects.requireNonNull(woodType)))
+                        new Context(
+                                registrate,
+                                planks,
+                                prefix,
+                                Objects.requireNonNull(woodType),
+                                burns))
                 .variant(BuildingBlockVariant.STAIRS)
                 .variant(BuildingBlockVariant.SLAB)
                 .variant(BuildingBlockVariant.FENCE)
@@ -75,7 +81,8 @@ public final class BuildingBlockFamily {
             Reginth registrate,
             BlockEntry<? extends Block> base,
             String prefix,
-            @Nullable WoodType woodType) {
+            @Nullable WoodType woodType,
+            boolean burns) {
         public boolean wooden() {
             return woodType != null;
         }

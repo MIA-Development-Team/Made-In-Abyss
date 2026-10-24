@@ -49,6 +49,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -163,6 +165,7 @@ public class MiaBlocks {
                                             .lightLevel(_ -> 15)
                                             .noOcclusion()
                                             .isRedstoneConductor((state, level, pos) -> false))
+                    .transform(TagGen.pickaxeOnly())
                     .blockstate(BlockStateGen::caveExplorerBeacon)
                     .lang("Cave Explorer Beacon")
                     .simpleItem()
@@ -272,6 +275,7 @@ public class MiaBlocks {
                     .tag(
                             MiaTags.BlockTags.BASE_STONE_ABYSS.tag,
                             MiaTags.BlockTags.ABYSS_ANDESITE_ORE_REPLACEABLE.tag)
+                    .tag(Tags.Blocks.STONES)
                     .simpleItem()
                     .register();
 
@@ -291,6 +295,7 @@ public class MiaBlocks {
                     .initialProperties(ABYSS_ANDESITE)
                     .properties(p -> p.strength(3.5F, 6.0F))
                     .transform(TagGen.pickaxeOnly())
+                    .tag(Tags.Blocks.COBBLESTONES_NORMAL)
                     .simpleItem()
                     .register();
 
@@ -341,6 +346,7 @@ public class MiaBlocks {
                     .block(Block::new)
                     .initialProperties(ABYSS_COBBLED_ANDESITE)
                     .transform(BuilderTransformers.stone())
+                    .tag(Tags.Blocks.COBBLESTONES_MOSSY)
                     .simpleItem()
                     .register();
 
@@ -910,8 +916,10 @@ public class MiaBlocks {
                     .object("marginal_weed")
                     .block(TallGrassBlock::new)
                     .properties(MiaBlocks::plantProperties)
+                    .tag(BlockTags.REPLACEABLE_BY_TREES)
                     .blockstate(BlockStateGen::crossPlant)
                     .item()
+                    .compostable(0.3F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                     .build()
                     .register();
@@ -925,8 +933,10 @@ public class MiaBlocks {
                                     plantProperties(p)
                                             .mapColor(MapColor.NETHER)
                                             .sound(SoundType.ROOTS))
+                    .tag(BlockTags.REPLACEABLE_BY_TREES)
                     .blockstate(BlockStateGen::crossPlant)
                     .item()
+                    .compostable(0.3F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                     .build()
                     .register();
@@ -940,8 +950,10 @@ public class MiaBlocks {
                                     plantProperties(p)
                                             .mapColor(MapColor.COLOR_CYAN)
                                             .sound(SoundType.NETHER_SPROUTS))
+                    .tag(BlockTags.REPLACEABLE_BY_TREES)
                     .blockstate(BlockStateGen::crossPlant)
                     .item()
+                    .compostable(0.5F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                     .build()
                     .register();
@@ -956,8 +968,16 @@ public class MiaBlocks {
                                             .noCollision()
                                             .sound(SoundType.PINK_PETALS)
                                             .pushReaction(PushReaction.DESTROY))
+                    .tag(
+                            BlockTags.FLOWERS,
+                            BlockTags.BEE_ATTRACTIVE,
+                            BlockTags.INSIDE_STEP_SOUND_BLOCKS,
+                            BlockTags.REPLACEABLE_BY_TREES)
                     .blockstate(BlockStateGen::flowerBed)
-                    .simpleItem()
+                    .item()
+                    .tag(ItemTags.BEE_FOOD)
+                    .compostable(0.65F)
+                    .build()
                     .register();
 
     public static final BlockEntry<WaterTallFlowerBlock> REED =
@@ -965,9 +985,11 @@ public class MiaBlocks {
                     .object("reed")
                     .block(WaterTallFlowerBlock::new)
                     .properties(MiaBlocks::plantProperties)
+                    .tag(BlockTags.REPLACEABLE_BY_TREES)
                     .blockstate(BlockStateGen::doublePlant)
                     .loot(LootGen.lowerHalf())
                     .item()
+                    .compostable(0.5F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get(), "_top"))
                     .build()
                     .register();
@@ -1012,7 +1034,9 @@ public class MiaBlocks {
                     .initialProperties(() -> Blocks.AZALEA_LEAVES)
                     .tag(BlockTags.LEAVES)
                     .loot(LootGen.leaves(() -> MiaBlocks.SKYFOG_SAPLING.get()))
-                    .simpleItem()
+                    .item()
+                    .compostable(0.3F)
+                    .build()
                     .register();
 
     public static final BlockEntry<FruitingSkyfogLeavesBlock> SKYFOG_LEAVES_WITH_FRUITS =
@@ -1022,7 +1046,9 @@ public class MiaBlocks {
                     .initialProperties(SKYFOG_LEAVES)
                     .tag(BlockTags.LEAVES)
                     .loot(LootGen.leaves(() -> MiaBlocks.SKYFOG_SAPLING.get()))
-                    .simpleItem()
+                    .item()
+                    .compostable(0.3F)
+                    .build()
                     .register();
 
     public static final BlockEntry<SaplingBlock> SKYFOG_SAPLING =
@@ -1034,6 +1060,7 @@ public class MiaBlocks {
                     .tag(BlockTags.SAPLINGS)
                     .blockstate(BlockStateGen::crossPlant)
                     .item()
+                    .compostable(0.3F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                     .build()
                     .register();
@@ -1049,7 +1076,9 @@ public class MiaBlocks {
                                             .sound(SoundType.WART_BLOCK)
                                             .noOcclusion()
                                             .lightLevel(_ -> 15))
-                    .simpleItem()
+                    .item()
+                    .compostable(0.85F)
+                    .build()
                     .register();
 
     public static final BlockEntry<MiaFungusBlock> VERDANT_FUNGUS =
@@ -1063,6 +1092,7 @@ public class MiaBlocks {
                                             .sound(SoundType.CHERRY_SAPLING))
                     .blockstate(BlockStateGen::crossPlant)
                     .item()
+                    .compostable(0.65F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                     .build()
                     .register();
@@ -1084,7 +1114,9 @@ public class MiaBlocks {
                             BlockTags.OVERRIDES_MUSHROOM_LIGHT_REQUIREMENT,
                             BlockTags.MINEABLE_WITH_HOE)
                     .blockstate(BlockStateGen::rotationYCubeAll)
-                    .simpleItem()
+                    .item()
+                    .compostable(0.65F)
+                    .build()
                     .register();
 
     public static final BlockEntry<MyceliumMatBlock> MYCELIUM_MAT =
@@ -1102,9 +1134,14 @@ public class MiaBlocks {
                                             .ignitedByLava()
                                             .pushReaction(PushReaction.DESTROY))
                     .tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS, BlockTags.MINEABLE_WITH_HOE)
+                    .tag(
+                            BlockTags.REPLACEABLE_BY_TREES,
+                            BlockTags.SWORD_EFFICIENT,
+                            BlockTags.MINEABLE_WITH_AXE)
                     .blockstate(BlockStateGen::multifaceMat)
                     .loot((lt, b) -> lt.add(b, lt.createMultifaceBlockDrops(b)))
                     .item()
+                    .compostable(0.5F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                     .build()
                     .register();
@@ -1120,9 +1157,12 @@ public class MiaBlocks {
                                             .sound(SoundType.PINK_PETALS)
                                             .pushReaction(PushReaction.DESTROY))
                     .tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS, BlockTags.MINEABLE_WITH_HOE)
+                    .tag(BlockTags.REPLACEABLE_BY_TREES)
                     .blockstate(BlockStateGen::flowerBed)
                     .loot((lt, b) -> lt.add(b, lt.createSegmentedBlockDrops(b)))
-                    .simpleItem()
+                    .item()
+                    .compostable(0.65F)
+                    .build()
                     .register();
 
     public static final BlockEntry<PrimoCapBlock> PRIMO_CAP =
@@ -1135,7 +1175,9 @@ public class MiaBlocks {
                                             .strength(1.0F)
                                             .sound(SoundType.WART_BLOCK))
                     .tag(BlockTags.MINEABLE_WITH_HOE)
-                    .simpleItem()
+                    .item()
+                    .compostable(0.85F)
+                    .build()
                     .register();
 
     public static final BlockEntry<GlowPrimoCapBlock> GLOW_PRIMO_CAP =
@@ -1151,7 +1193,9 @@ public class MiaBlocks {
                                             .lightLevel(state -> 12))
                     .tag(BlockTags.MINEABLE_WITH_HOE)
                     .blockstate(BlockStateGen::translucentCubeAll)
-                    .simpleItem()
+                    .item()
+                    .compostable(0.85F)
+                    .build()
                     .register();
 
     public static final BlockEntry<PrimoFungusBlock> PRIMO_FUNGUS =
@@ -1166,6 +1210,7 @@ public class MiaBlocks {
                                             .pushReaction(PushReaction.DESTROY))
                     .blockstate(BlockStateGen::mushroomFungus)
                     .item()
+                    .compostable(0.65F)
                     .model(
                             () ->
                                     (ctx, prov) ->
@@ -1188,6 +1233,7 @@ public class MiaBlocks {
                                             .pushReaction(PushReaction.DESTROY))
                     .blockstate(BlockStateGen::glowMushroomFungus)
                     .item()
+                    .compostable(0.65F)
                     .model(
                             () ->
                                     (ctx, prov) ->
@@ -1204,7 +1250,9 @@ public class MiaBlocks {
                     .initialProperties(() -> Blocks.CHERRY_LEAVES)
                     .tag(BlockTags.LEAVES)
                     .loot(LootGen.leaves(() -> MiaBlocks.INVERTED_SAPLING.get()))
-                    .simpleItem()
+                    .item()
+                    .compostable(0.3F)
+                    .build()
                     .register();
 
     public static final BlockEntry<InvertedSaplingBlock> INVERTED_SAPLING =
@@ -1216,20 +1264,41 @@ public class MiaBlocks {
                     .tag(BlockTags.SAPLINGS)
                     .blockstate(BlockStateGen::crossPlant)
                     .item()
+                    .compostable(0.3F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                     .build()
                     .register();
 
     public static final BlockEntry<DropExperienceBlock> ABYSS_IRON_ORE =
-            ore("abyss_iron_ore", ConstantInt.of(0), Items.RAW_IRON);
+            ore(
+                    "abyss_iron_ore",
+                    ConstantInt.of(0),
+                    Items.RAW_IRON,
+                    BlockTags.IRON_ORES,
+                    BlockTags.NEEDS_STONE_TOOL);
     public static final BlockEntry<DropExperienceBlock> ABYSS_GOLD_ORE =
-            ore("abyss_gold_ore", ConstantInt.of(0), Items.RAW_GOLD);
+            ore(
+                    "abyss_gold_ore",
+                    ConstantInt.of(0),
+                    Items.RAW_GOLD,
+                    BlockTags.GOLD_ORES,
+                    BlockTags.NEEDS_IRON_TOOL);
     public static final BlockEntry<DropExperienceBlock> ABYSS_DIAMOND_ORE =
-            ore("abyss_diamond_ore", UniformInt.of(3, 7), Items.DIAMOND);
+            ore(
+                    "abyss_diamond_ore",
+                    UniformInt.of(3, 7),
+                    Items.DIAMOND,
+                    BlockTags.DIAMOND_ORES,
+                    BlockTags.NEEDS_IRON_TOOL);
     public static final BlockEntry<DropExperienceBlock> ABYSS_EMERALD_ORE =
-            ore("abyss_emerald_ore", UniformInt.of(3, 7), Items.EMERALD);
+            ore(
+                    "abyss_emerald_ore",
+                    UniformInt.of(3, 7),
+                    Items.EMERALD,
+                    BlockTags.EMERALD_ORES,
+                    BlockTags.NEEDS_IRON_TOOL);
     public static final BlockEntry<DropExperienceBlock> ABYSS_QUARTZ_ORE =
-            ore("abyss_quartz_ore", UniformInt.of(2, 5), Items.QUARTZ);
+            ore("abyss_quartz_ore", UniformInt.of(2, 5), Items.QUARTZ, Tags.Blocks.ORES_QUARTZ);
 
     public static final BlockEntry<DropExperienceBlock> ABYSS_COPPER_ORE =
             REGISTRATE
@@ -1239,6 +1308,7 @@ public class MiaBlocks {
                     .properties(p -> p.strength(4.5F, 3.0F))
                     .transform(TagGen.pickaxeOnly())
                     .loot((lt, b) -> lt.add(b, lt.createCopperOreDrops(b)))
+                    .tag(BlockTags.COPPER_ORES, BlockTags.NEEDS_STONE_TOOL)
                     .simpleItem()
                     .register();
     public static final BlockEntry<DropExperienceBlock> ABYSS_LAPIS_ORE =
@@ -1249,6 +1319,7 @@ public class MiaBlocks {
                     .properties(p -> p.strength(4.5F, 3.0F))
                     .transform(TagGen.pickaxeOnly())
                     .loot((lt, b) -> lt.add(b, lt.createLapisOreDrops(b)))
+                    .tag(BlockTags.LAPIS_ORES, BlockTags.NEEDS_STONE_TOOL)
                     .simpleItem()
                     .register();
     public static final BlockEntry<RedStoneOreBlock> ABYSS_REDSTONE_ORE =
@@ -1264,6 +1335,7 @@ public class MiaBlocks {
                                             .strength(4.5F, 3.0F))
                     .transform(TagGen.pickaxeOnly())
                     .loot((lt, b) -> lt.add(b, lt.createRedstoneOreDrops(b)))
+                    .tag(BlockTags.REDSTONE_ORES, BlockTags.NEEDS_IRON_TOOL)
                     .simpleItem()
                     .register();
     public static final BlockEntry<ChlorophyteOreBlock> ABYSS_CHLOROPHYTE_ORE =
@@ -1278,13 +1350,22 @@ public class MiaBlocks {
                                             .sound(SoundType.MUD_BRICKS))
                     .transform(TagGen.pickaxeOnly())
                     .loot((lt, b) -> lt.add(b, lt.createOreDrop(b, MiaItems.RAW_CHLOROPHYTE.get())))
+                    .tag(Tags.Blocks.ORES)
                     .simpleItem()
                     .register();
 
     public static final BlockEntry<Block> RAW_CHLOROPHYTE_BLOCK =
-            mineralBlock("raw_chlorophyte_block", MapColor.COLOR_LIGHT_GREEN, SoundType.STONE);
+            mineralBlock(
+                    "raw_chlorophyte_block",
+                    MapColor.COLOR_LIGHT_GREEN,
+                    SoundType.STONE,
+                    Tags.Blocks.STORAGE_BLOCKS);
     public static final BlockEntry<Block> CHLOROPHYTE_BLOCK =
-            mineralBlock("chlorophyte_block", MapColor.METAL, SoundType.METAL);
+            mineralBlock(
+                    "chlorophyte_block",
+                    MapColor.METAL,
+                    SoundType.METAL,
+                    Tags.Blocks.STORAGE_BLOCKS);
     public static final BlockEntry<Block> PRASIOLITE_BLOCK =
             mineralBlock("prasiolite_block", MapColor.COLOR_GREEN, SoundType.AMETHYST);
     public static final BlockEntry<BuddingPrasioliteBlock> BUDDING_PRASIOLITE =
@@ -1295,6 +1376,7 @@ public class MiaBlocks {
                     .properties(p -> p.randomTicks().pushReaction(PushReaction.DESTROY))
                     .transform(TagGen.pickaxeOnly())
                     .loot((lt, b) -> lt.dropWhenSilkTouch(b))
+                    .tag(Tags.Blocks.BUDDING_BLOCKS)
                     .simpleItem()
                     .register();
     public static final BlockEntry<AmethystClusterBlock> SMALL_PRASIOLITE_BUD =
@@ -1309,6 +1391,7 @@ public class MiaBlocks {
                     .block(p -> new AmethystClusterBlock(7, 3, p))
                     .properties(p -> crystalProperties(p, 5))
                     .transform(TagGen.pickaxeOnly())
+                    .tag(Tags.Blocks.CLUSTERS)
                     .blockstate(() -> (ctx, prov) -> prov.createAmethystCluster(ctx.get()))
                     .loot(
                             (lt, b) ->
@@ -1325,6 +1408,7 @@ public class MiaBlocks {
                     .properties(p -> p.randomTicks().pushReaction(PushReaction.DESTROY))
                     .transform(TagGen.pickaxeOnly())
                     .loot((lt, b) -> lt.dropWhenSilkTouch(b))
+                    .tag(Tags.Blocks.BUDDING_BLOCKS)
                     .simpleItem()
                     .register();
     public static final BlockEntry<AmethystClusterBlock> SMALL_CAERULITE_BUD =
@@ -1339,6 +1423,7 @@ public class MiaBlocks {
                     .block(p -> new AmethystClusterBlock(7, 3, p))
                     .properties(p -> crystalProperties(p, 5))
                     .transform(TagGen.pickaxeOnly())
+                    .tag(Tags.Blocks.CLUSTERS)
                     .blockstate(() -> (ctx, prov) -> prov.createAmethystCluster(ctx.get()))
                     .loot((lt, b) -> lt.add(b, lt.createOreDrop(b, MiaItems.CAERULITE_SHARD.get())))
                     .simpleItem()
@@ -1369,20 +1454,24 @@ public class MiaBlocks {
                 .pushReaction(PushReaction.DESTROY);
     }
 
+    @SafeVarargs
     private static BlockEntry<DropExperienceBlock> ore(
-            String name, IntProvider experience, Item drop) {
+            String name, IntProvider experience, Item drop, TagKey<Block>... tags) {
         return REGISTRATE
                 .object(name)
                 .block(p -> new DropExperienceBlock(experience, p))
                 .initialProperties(ABYSS_ANDESITE)
                 .properties(p -> p.strength(4.5F, 3.0F))
                 .transform(TagGen.pickaxeOnly())
+                .tag(tags)
                 .loot((lt, b) -> lt.add(b, lt.createOreDrop(b, drop)))
                 .simpleItem()
                 .register();
     }
 
-    private static BlockEntry<Block> mineralBlock(String name, MapColor color, SoundType sound) {
+    @SafeVarargs
+    private static BlockEntry<Block> mineralBlock(
+            String name, MapColor color, SoundType sound, TagKey<Block>... tags) {
         return REGISTRATE
                 .object(name)
                 .block(Block::new)
@@ -1394,6 +1483,7 @@ public class MiaBlocks {
                                         .strength(5.0F, 6.0F)
                                         .sound(sound))
                 .transform(TagGen.pickaxeOnly())
+                .tag(tags)
                 .simpleItem()
                 .register();
     }
@@ -1406,6 +1496,7 @@ public class MiaBlocks {
                 .ignore()
                 .properties(p -> crystalProperties(p, light))
                 .transform(TagGen.pickaxeOnly())
+                .tag(Tags.Blocks.BUDS)
                 .blockstate(() -> (ctx, prov) -> prov.createAmethystCluster(ctx.get()))
                 .loot((lt, b) -> lt.dropWhenSilkTouch(b))
                 .simpleItem()
@@ -1430,8 +1521,11 @@ public class MiaBlocks {
                 .object(name)
                 .block(p -> new FlowerBlock(effect, duration, p))
                 .properties(p -> plantProperties(p).sound(sound).lightLevel(_ -> light))
+                .tag(BlockTags.SMALL_FLOWERS, BlockTags.BEE_ATTRACTIVE)
                 .blockstate(BlockStateGen::crossPlant)
                 .item()
+                .tag(ItemTags.BEE_FOOD)
+                .compostable(0.65F)
                 .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                 .build()
                 .register();

@@ -1,0 +1,85 @@
+{
+  "values": {
+    "mementoinabyss:balloon_plant": {
+      "chance": 0.65
+    },
+    "mementoinabyss:crimson_veilgrass": {
+      "chance": 0.3
+    },
+    "mementoinabyss:dream_lichee": {
+      "chance": 0.65
+    },
+    "mementoinabyss:fortitude_flower": {
+      "chance": 0.65
+    },
+    "mementoinabyss:gloom_berry": {
+      "chance": 0.3
+    },
+    "mementoinabyss:glow_primo_cap": {
+      "chance": 0.85
+    },
+    "mementoinabyss:glow_primo_fungus": {
+      "chance": 0.65
+    },
+    "mementoinabyss:green_perilla": {
+      "chance": 0.65
+    },
+    "mementoinabyss:inverted_leaves": {
+      "chance": 0.3
+    },
+    "mementoinabyss:inverted_sapling": {
+      "chance": 0.3
+    },
+    "mementoinabyss:konjac_root": {
+      "chance": 0.65
+    },
+    "mementoinabyss:lantern_plant": {
+      "chance": 0.65
+    },
+    "mementoinabyss:marginal_weed": {
+      "chance": 0.3
+    },
+    "mementoinabyss:mistfuzz_peach": {
+      "chance": 0.65
+    },
+    "mementoinabyss:mushroom_bed": {
+      "chance": 0.65
+    },
+    "mementoinabyss:mycelium_block": {
+      "chance": 0.65
+    },
+    "mementoinabyss:mycelium_mat": {
+      "chance": 0.5
+    },
+    "mementoinabyss:primo_cap": {
+      "chance": 0.85
+    },
+    "mementoinabyss:primo_fungus": {
+      "chance": 0.65
+    },
+    "mementoinabyss:reed": {
+      "chance": 0.5
+    },
+    "mementoinabyss:scorchleaf": {
+      "chance": 0.5
+    },
+    "mementoinabyss:silveaf_fungus": {
+      "chance": 0.65
+    },
+    "mementoinabyss:skyfog_leaves": {
+      "chance": 0.3
+    },
+    "mementoinabyss:skyfog_leaves_with_fruits": {
+      "chance": 0.3
+    },
+    "mementoinabyss:skyfog_sapling": {
+      "chance": 0.3
+    },
+    "mementoinabyss:verdant_fungus": {
+      "chance": 0.65
+    },
+    "mementoinabyss:verdant_leaves": {
+      "chance": 0.85
+    }
+  }
+}

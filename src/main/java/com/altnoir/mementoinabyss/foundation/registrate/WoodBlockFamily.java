@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
+import net.neoforged.neoforge.common.Tags;
 
 /**
  * Shared specification for logs/stems, bark blocks, planks and wooden building variants.
@@ -43,6 +44,7 @@ public record WoodBlockFamily(
                                         "stripped_" + name + "_" + logSuffix,
                                         RotatedPillarBlock::new)
                                 .properties(strippedLogProperties::apply)
+                                .tag(Tags.Blocks.STRIPPED_LOGS)
                                 .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get())));
         var strippedWood =
                 finishLog(
@@ -51,6 +53,7 @@ public record WoodBlockFamily(
                                         "stripped_" + name + "_" + woodSuffix,
                                         RotatedPillarBlock::new)
                                 .initialProperties(strippedLog)
+                                .tag(Tags.Blocks.STRIPPED_WOODS)
                                 .blockstate(
                                         () ->
                                                 (ctx, prov) ->
@@ -66,6 +69,7 @@ public record WoodBlockFamily(
                                         name + "_" + logSuffix,
                                         p -> new StrippedRotatedPillarBlock(strippedLog.get(), p))
                                 .properties(logProperties::apply)
+                                .tag(Tags.Blocks.NATURAL_LOGS)
                                 .blockstate(() -> (ctx, prov) -> prov.generateLogBlock(ctx.get())));
         var wood =
                 finishLog(
@@ -74,6 +78,7 @@ public record WoodBlockFamily(
                                         name + "_" + woodSuffix,
                                         p -> new StrippedRotatedPillarBlock(strippedWood.get(), p))
                                 .initialProperties(log)
+                                .tag(Tags.Blocks.NATURAL_WOODS)
                                 .blockstate(
                                         () ->
                                                 (ctx, prov) ->
@@ -88,34 +93,38 @@ public record WoodBlockFamily(
         builder.tag(BlockTags.LOGS);
         if (burns) builder.tag(BlockTags.LOGS_THAT_BURN);
         // Vanilla log item tags are copied from block tags in MiaRegistrateTags.
-        return builder.item().tag(logsTag).build().register();
+        var item = builder.item().tag(logsTag);
+        if (!burns) item.tag(ItemTags.NON_FLAMMABLE_WOOD);
+        return item.build().register();
     }
 
     public BlockEntry<Block> registerPlanks(Reginth registrate) {
-        return registrate
-                .block(name + "_planks", Block::new)
-                .properties(
-                        p ->
-                                p.mapColor(planksColor)
-                                        .instrument(NoteBlockInstrument.BASS)
-                                        .strength(2.0F, 3.0F)
-                                        .sound(SoundType.WOOD)
-                                        .ignitedByLava())
-                .transform(BuilderTransformers.wooden())
-                .recipe(
-                        (ctx, prov) ->
-                                prov.planks(
-                                        DataIngredient.ingredient(prov.tag(logsTag), logsTag),
-                                        RecipeCategory.BUILDING_BLOCKS,
-                                        ctx::get))
-                .transform(TagGen.tagBlockAndItem(BlockTags.PLANKS, ItemTags.PLANKS))
-                .build()
-                .register();
+        var item =
+                registrate
+                        .block(name + "_planks", Block::new)
+                        .properties(
+                                p ->
+                                        p.mapColor(planksColor)
+                                                .instrument(NoteBlockInstrument.BASS)
+                                                .strength(2.0F, 3.0F)
+                                                .sound(SoundType.WOOD)
+                                                .ignitedByLava())
+                        .transform(BuilderTransformers.wooden())
+                        .recipe(
+                                (ctx, prov) ->
+                                        prov.planks(
+                                                DataIngredient.ingredient(
+                                                        prov.tag(logsTag), logsTag),
+                                                RecipeCategory.BUILDING_BLOCKS,
+                                                ctx::get))
+                        .transform(TagGen.tagBlockAndItem(BlockTags.PLANKS, ItemTags.PLANKS));
+        if (!burns) item.tag(ItemTags.NON_FLAMMABLE_WOOD);
+        return item.build().register();
     }
 
     public BuildingBlockFamily.Builder buildingBlocks(
             Reginth registrate, BlockEntry<Block> planks) {
-        return BuildingBlockFamily.wooden(registrate, name, planks, woodType);
+        return BuildingBlockFamily.wooden(registrate, name, planks, woodType, burns);
     }
 
     public record Logs(

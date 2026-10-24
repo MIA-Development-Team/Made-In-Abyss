@@ -10,6 +10,7 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.neoforged.neoforge.common.Tags;
 
 public class MiaItems {
     private static final Reginth REGISTRATE = MementoInAbyss.registrate();
@@ -21,6 +22,8 @@ public class MiaItems {
     public static final ItemEntry<BlockItem> GLOOM_BERRY =
             REGISTRATE
                     .item("gloom_berry", p -> new BlockItem(MiaBlocks.GLOOM_BERRY_PLANT.get(), p))
+                    .tag(Tags.Items.FOODS_BERRY)
+                    .compostable(0.3F)
                     .properties(
                             p ->
                                     p.food(
@@ -33,6 +36,8 @@ public class MiaItems {
     public static final ItemEntry<BlockItem> DREAM_LICHEE =
             REGISTRATE
                     .item("dream_lichee", p -> new BlockItem(MiaBlocks.DREAM_LICHEE_PLANT.get(), p))
+                    .tag(Tags.Items.FOODS_FRUIT)
+                    .compostable(0.65F)
                     .properties(
                             p ->
                                     p.food(
@@ -45,6 +50,8 @@ public class MiaItems {
     public static final ItemEntry<Item> MISTFUZZ_PEACH =
             REGISTRATE
                     .item("mistfuzz_peach", Item::new)
+                    .tag(Tags.Items.FOODS_FRUIT)
+                    .compostable(0.65F)
                     .properties(
                             p ->
                                     p.food(
@@ -55,11 +62,11 @@ public class MiaItems {
                     .register();
 
     public static final ItemEntry<Item> RAW_CHLOROPHYTE =
-            REGISTRATE.item("raw_chlorophyte", Item::new).register();
+            REGISTRATE.item("raw_chlorophyte", Item::new).tag(Tags.Items.RAW_MATERIALS).register();
     public static final ItemEntry<Item> PRASIOLITE_SHARD =
-            REGISTRATE.item("prasiolite_shard", Item::new).register();
+            REGISTRATE.item("prasiolite_shard", Item::new).tag(Tags.Items.GEMS).register();
     public static final ItemEntry<Item> CAERULITE_SHARD =
-            REGISTRATE.item("caerulite_shard", Item::new).register();
+            REGISTRATE.item("caerulite_shard", Item::new).tag(Tags.Items.GEMS).register();
     public static final ItemEntry<RopeItem> ROPE =
             REGISTRATE
                     .item("rope", RopeItem::new)
