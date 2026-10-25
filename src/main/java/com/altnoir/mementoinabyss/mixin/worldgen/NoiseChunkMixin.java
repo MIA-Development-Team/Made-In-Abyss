@@ -6,6 +6,8 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssAquifer;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssOriginalSurface;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssInterpolated;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.layer2.Layer2Runtime;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
@@ -84,6 +86,20 @@ public abstract class NoiseChunkMixin implements AbyssOriginalSurface {
         return OverworldAbyssAquiferRouter.forAquifer(router);
     }
 
+    @ModifyArg(
+            method = "<init>",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lnet/minecraft/world/level/levelgen/Aquifer;create(Lnet/minecraft/world/level/levelgen/NoiseChunk;Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/world/level/levelgen/NoiseRouter;Lnet/minecraft/world/level/levelgen/PositionalRandomFactory;IILnet/minecraft/world/level/levelgen/Aquifer$FluidPicker;)Lnet/minecraft/world/level/levelgen/Aquifer;"),
+            index = 6)
+    private Aquifer.FluidPicker mia$layer2Water(
+            Aquifer.FluidPicker original, @Local(argsOnly = true) RandomState state) {
+        var layer2 = Layer2Runtime.state(state);
+        return layer2 == null ? original : layer2.picker(original);
+    }
+
     @Inject(method = "<init>", at = @At("RETURN"))
     private void mia$keepOpeningDry(
             int cellCountXZ,
@@ -102,14 +118,7 @@ public abstract class NoiseChunkMixin implements AbyssOriginalSurface {
         if (seam != null)
             aquifer =
                     new com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssSeamAquifer(
-                            aquifer, seam);
-        var river =
-                com.altnoir.mementoinabyss.infrastructure.worldgen.river.AbyssRivers.profile(
-                        randomState);
-        if (river != null)
-            aquifer =
-                    new com.altnoir.mementoinabyss.infrastructure.worldgen.river.AbyssRiverAquifer(
-                            aquifer, river);
+                            aquifer, seam, Layer2Runtime.state(randomState));
         OverworldAbyssHole hole = OverworldAbyss.holeOf(randomState);
         if (hole != null) {
             int span = cellCountXZ * noiseSettings.getCellWidth();

@@ -1,0 +1,130 @@
+{
+  "type": "minecraft:cache_2d",
+  "argument": {
+    "type": "minecraft:mul",
+    "argument1": {
+      "type": "minecraft:mul",
+      "argument1": {
+        "type": "minecraft:mul",
+        "argument1": {
+          "type": "minecraft:clamp",
+          "input": {
+            "type": "minecraft:mul",
+            "argument1": 0.5,
+            "argument2": {
+              "type": "minecraft:add",
+              "argument1": -4.0,
+              "argument2": {
+                "type": "mementoinabyss:general_abyss_hole",
+                "mul": 0.3,
+                "radius": 32.0
+              }
+            }
+          },
+          "max": 1.0,
+          "min": 0.0
+        },
+        "argument2": {
+          "type": "minecraft:clamp",
+          "input": {
+            "type": "minecraft:mul",
+            "argument1": 0.5,
+            "argument2": {
+              "type": "minecraft:add",
+              "argument1": -4.0,
+              "argument2": {
+                "type": "mementoinabyss:general_abyss_hole",
+                "mul": 0.3,
+                "radius": 32.0
+              }
+            }
+          },
+          "max": 1.0,
+          "min": 0.0
+        }
+      },
+      "argument2": {
+        "type": "minecraft:add",
+        "argument1": 3.0,
+        "argument2": {
+          "type": "minecraft:mul",
+          "argument1": -2.0,
+          "argument2": {
+            "type": "minecraft:clamp",
+            "input": {
+              "type": "minecraft:mul",
+              "argument1": 0.5,
+              "argument2": {
+                "type": "minecraft:add",
+                "argument1": -4.0,
+                "argument2": {
+                  "type": "mementoinabyss:general_abyss_hole",
+                  "mul": 0.3,
+                  "radius": 32.0
+                }
+              }
+            },
+            "max": 1.0,
+            "min": 0.0
+          }
+        }
+      }
+    },
+    "argument2": {
+      "type": "minecraft:mul",
+      "argument1": {
+        "type": "minecraft:mul",
+        "argument1": {
+          "type": "minecraft:clamp",
+          "input": {
+            "type": "minecraft:add",
+            "argument1": 1.0,
+            "argument2": {
+              "type": "minecraft:mul",
+              "argument1": -1.0,
+              "argument2": "mementoinabyss:the_abyss/layer2/layout"
+            }
+          },
+          "max": 1.0,
+          "min": 0.0
+        },
+        "argument2": {
+          "type": "minecraft:clamp",
+          "input": {
+            "type": "minecraft:add",
+            "argument1": 1.0,
+            "argument2": {
+              "type": "minecraft:mul",
+              "argument1": -1.0,
+              "argument2": "mementoinabyss:the_abyss/layer2/layout"
+            }
+          },
+          "max": 1.0,
+          "min": 0.0
+        }
+      },
+      "argument2": {
+        "type": "minecraft:add",
+        "argument1": 3.0,
+        "argument2": {
+          "type": "minecraft:mul",
+          "argument1": -2.0,
+          "argument2": {
+            "type": "minecraft:clamp",
+            "input": {
+              "type": "minecraft:add",
+              "argument1": 1.0,
+              "argument2": {
+                "type": "minecraft:mul",
+                "argument1": -1.0,
+                "argument2": "mementoinabyss:the_abyss/layer2/layout"
+              }
+            },
+            "max": 1.0,
+            "min": 0.0
+          }
+        }
+      }
+    }
+  }
+}

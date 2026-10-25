@@ -31,7 +31,7 @@ public abstract class ChunkMapMixin {
         OverworldAbyss.install(level, generator, randomState);
         com.altnoir.mementoinabyss.infrastructure.worldgen.AbyssSeamRuntime.configure(
                 level, randomState);
-        com.altnoir.mementoinabyss.infrastructure.worldgen.river.AbyssRivers.install(
+        com.altnoir.mementoinabyss.infrastructure.worldgen.layer2.Layer2Runtime.install(
                 level, generator, randomState);
     }
 }

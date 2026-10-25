@@ -14,12 +14,12 @@ public final class MiaBiomeSources {
             DeferredRegister.create(Registries.BIOME_SOURCE, MementoInAbyss.ID);
 
     static {
-        SOURCES.register("the_abyss", () -> AbyssNoiseBiomeSource.CODEC);
         SOURCES.register(
-                "abyss_rivers",
+                "abyss_layer2",
                 () ->
                         com.altnoir.mementoinabyss.infrastructure.worldgen.biome
-                                .AbyssRiverBiomeSource.CODEC);
+                                .AbyssLayer2BiomeSource.CODEC);
+        SOURCES.register("the_abyss", () -> AbyssNoiseBiomeSource.CODEC);
         SOURCES.register("overworld_abyss", () -> OverworldAbyssBiomeSource.CODEC);
     }
 

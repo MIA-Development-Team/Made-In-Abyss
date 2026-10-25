@@ -32,19 +32,15 @@ public final class MiaDensityFunctionTypes {
             DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, MementoInAbyss.ID);
 
     static {
+        TYPES.register(
+                "layer2_layout",
+                com.altnoir.mementoinabyss.infrastructure.worldgen.density.Layer2Layout.CODEC
+                        ::codec);
         TYPES.register("great_fault_profile", GreatFaultProfile.CODEC::codec);
         TYPES.register("shared_abyss_wall", SharedAbyssWall.CODEC::codec);
         TYPES.register("abyss_seam", AbyssSeamDensity.CODEC::codec);
         TYPES.register("abyss_tongues", AbyssTongueDensity.CODEC::codec);
         TYPES.register("abyss_noodle_taper", AbyssNoodleTaper.CODEC::codec);
-        TYPES.register(
-                "abyss_layer2_cave_mask",
-                com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssLayer2CaveMask.CODEC
-                        ::codec);
-        TYPES.register(
-                "abyss_river_mask",
-                com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssRiverMask.CODEC
-                        ::codec);
         TYPES.register("overworld_abyss_climate", OverworldAbyssClimate.CODEC::codec);
         TYPES.register("overworld_abyss_terrain", OverworldAbyssTerrain.CODEC::codec);
         TYPES.register("overworld_abyss_interpolated", OverworldAbyssInterpolated.CODEC::codec);

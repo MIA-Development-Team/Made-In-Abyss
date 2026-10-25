@@ -35,7 +35,7 @@ public final class MiaNoiseGeneratorSettings {
                                 context.lookup(Registries.NOISE)),
                         MiaSurfaceRules.theAbyss(),
                         List.of(),
-                        MiaHeight.THE_ABYSS.minY(),
+                        -112,
                         false,
                         true,
                         false,

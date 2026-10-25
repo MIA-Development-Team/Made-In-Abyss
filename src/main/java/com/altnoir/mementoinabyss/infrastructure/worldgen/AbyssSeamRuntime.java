@@ -26,8 +26,17 @@ public final class AbyssSeamRuntime {
     public static NoiseRouter bindRouter(NoiseRouter router, long seed, double layoutRadius) {
         var tongues = new java.util.HashMap<Double, AbyssTongueShape>();
         var walls = new java.util.HashMap<Integer, SharedAbyssWall>();
+        var layouts =
+                new java.util.HashMap<
+                        com.altnoir.mementoinabyss.infrastructure.worldgen.density.Layer2Layout,
+                        com.altnoir.mementoinabyss.infrastructure.worldgen.density.Layer2Layout>();
         return router.mapAll(
                 function -> {
+                    if (function
+                            instanceof
+                            com.altnoir.mementoinabyss.infrastructure.worldgen.density.Layer2Layout
+                                    layout)
+                        return layouts.computeIfAbsent(layout, l -> l.bind(seed));
                     if (function instanceof SharedAbyssWall wall && !wall.bound())
                         return walls.computeIfAbsent(
                                 wall.phaseOffset(),
