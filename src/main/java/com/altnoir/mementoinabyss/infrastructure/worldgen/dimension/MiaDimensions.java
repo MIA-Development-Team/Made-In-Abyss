@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.dimension;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.AbyssLayer2BiomeSource;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.AbyssNoiseBiomeSource;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaBiomes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.noise.MiaNoiseGeneratorSettings;
@@ -161,13 +162,14 @@ public final class MiaDimensions {
 
         NoiseBasedChunkGenerator generator =
                 new NoiseBasedChunkGenerator(
-                        new com.altnoir.mementoinabyss.infrastructure.worldgen.biome
-                                .AbyssLayer2BiomeSource(
+                        new AbyssLayer2BiomeSource(
                                 AbyssNoiseBiomeSource.createFromList(272, outside, inside),
                                 List.of(
-                                        new com.altnoir.mementoinabyss.infrastructure.worldgen.biome
-                                                .AbyssLayer2BiomeSource.Group(
+                                        new AbyssLayer2BiomeSource.Group(
                                                 biomes.getOrThrow(MiaBiomes.PRIMO_FOREST),
+                                                biomes.getOrThrow(MiaBiomes.PRIMO_PLAINS)),
+                                        new AbyssLayer2BiomeSource.Group(
+                                                biomes.getOrThrow(MiaBiomes.TEMPTATION_PLAINS),
                                                 biomes.getOrThrow(MiaBiomes.TEMPTATION_FOREST))),
                                 biomes.getOrThrow(MiaBiomes.ABYSS_RIVER)),
                         noiseSettings.getOrThrow(MiaNoiseGeneratorSettings.THE_ABYSS));

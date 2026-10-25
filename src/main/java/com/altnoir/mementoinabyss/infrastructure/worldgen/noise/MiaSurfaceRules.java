@@ -82,14 +82,17 @@ public final class MiaSurfaceRules {
                                         makeStateRule(Blocks.TUFF))),
                         // Layer 2
                         SurfaceRules.ifTrue(
-                                SurfaceRules.isBiome(MiaBiomes.PRIMO_FOREST),
+                                SurfaceRules.isBiome(
+                                        MiaBiomes.PRIMO_FOREST, MiaBiomes.PRIMO_PLAINS),
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
                                         MYCELIUM)),
                         SurfaceRules.ifTrue(
                                 SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
                                 SurfaceRules.ifTrue(
-                                        SurfaceRules.isBiome(MiaBiomes.TEMPTATION_FOREST),
+                                        SurfaceRules.isBiome(
+                                                MiaBiomes.TEMPTATION_FOREST,
+                                                MiaBiomes.TEMPTATION_PLAINS),
                                         SurfaceRules.sequence(
                                                 SurfaceRules.ifTrue(
                                                         SurfaceRules.noiseCondition(

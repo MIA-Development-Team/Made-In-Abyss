@@ -174,24 +174,19 @@ public final class Layer2DensityFunctions {
                 DensityFunctions.add(DensityFunctions.max(a.abs(), b.abs()), scale(thickness, -1));
         cave =
                 DensityFunctions.max(
-                        cave,
                         DensityFunctions.max(
                                 DensityFunctions.yClampedGradient(-168, -144, 1, -1),
-                                DensityFunctions.yClampedGradient(-152, -128, -1, 1)));
-        cave =
-                DensityFunctions.max(
-                        cave, scale(add(DensityFunctions.add(y, scale(surface, -1)), 8), 1 / 16.0));
-        cave =
-                DensityFunctions.max(
-                        cave,
-                        DensityFunctions.max(
-                                get(functions, PILLAR), scale(add(scale(edge, -1), 5 / 3.0), 1.5)));
+                                scale(
+                                        add(DensityFunctions.add(y, scale(surface, -1)), -4),
+                                        1 / 8.0)),
+                        cave);
+        cave = DensityFunctions.max(get(functions, PILLAR), cave);
         context.register(
                 CAVES,
                 DensityFunctions.rangeChoice(
                         y,
                         -168,
-                        -128,
+                        -80,
                         MiaDensityFunctions.lerpDirect(
                                 get(functions, WEIGHT), DensityFunctions.constant(1), cave),
                         DensityFunctions.constant(1)));
@@ -221,7 +216,7 @@ public final class Layer2DensityFunctions {
                 DensityFunctions.rangeChoice(
                         y,
                         -168,
-                        -128,
+                        -80,
                         DensityFunctions.noise(noises.getOrThrow(key), 1, verticalScale),
                         DensityFunctions.zero()));
     }

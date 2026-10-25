@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.layer2;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.AbyssSeamRuntime;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.C2meDensityFunctionCompat;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.AbyssLayer2BiomeSource;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.AbyssNoiseBiomeSource;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.Layer2Layout;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.noise.Layer2DensityFunctions;
@@ -18,6 +19,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.biome.FeatureSorter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.RandomState;
@@ -54,6 +56,8 @@ public final class Layer2Runtime {
         var layout = found[0];
         if (!layout.bound()) throw new IllegalStateException("Unbound layer 2 layout");
         if (generator.getBiomeSource() instanceof AbyssLayer2BiomeSource configured) {
+            if (configured.original() instanceof AbyssNoiseBiomeSource abyss)
+                abyss.cacheClimateColumns(random.sampler(), router);
             setBiomeSource(
                     generator,
                     new AbyssLayer2BiomeSource(
@@ -113,7 +117,7 @@ public final class Layer2Runtime {
         private final Layer2Layout layout;
         private final DensityFunction surface, roof, pillar;
         private final Aquifer.FluidStatus water, empty;
-        private final double openingSquared;
+        private final double openingSquared, waterOpeningSquared;
         private final ThreadLocal<Long2ObjectLinkedOpenHashMap<Column>> columns =
                 ThreadLocal.withInitial(Long2ObjectLinkedOpenHashMap::new);
 
@@ -128,9 +132,13 @@ public final class Layer2Runtime {
             this.pillar = pillar;
             this.water =
                     new Aquifer.FluidStatus(layout.waterLevel(), Blocks.WATER.defaultBlockState());
-            this.empty = new Aquifer.FluidStatus(Integer.MIN_VALUE, Blocks.AIR.defaultBlockState());
+            // Aquifer pressure sums integer levels before converting to double.
+            this.empty =
+                    new Aquifer.FluidStatus(
+                            DimensionType.WAY_BELOW_MIN_Y, Blocks.AIR.defaultBlockState());
             double waterOpening = layout.openingRadius() + 64;
-            this.openingSquared = waterOpening * waterOpening;
+            this.waterOpeningSquared = waterOpening * waterOpening;
+            this.openingSquared = layout.openingRadius() * layout.openingRadius();
         }
 
         public Layer2Layout layout() {
@@ -166,10 +174,11 @@ public final class Layer2Runtime {
         public record Column(double height, double roof, boolean pillar) {}
 
         public boolean dry(int x, int y, int z) {
-            return y < 0
-                    && (y < layout.minWaterY()
-                            || y >= layout.waterLevel()
-                            || (double) x * x + (double) z * z <= openingSquared);
+            return y < 0 && (y < layout.minWaterY() || y >= layout.waterLevel() || opening(x, z));
+        }
+
+        public boolean opening(int x, int z) {
+            return (double) x * x + (double) z * z <= openingSquared;
         }
 
         public Aquifer.FluidPicker picker(Aquifer.FluidPicker original) {
@@ -177,7 +186,11 @@ public final class Layer2Runtime {
             return (x, y, z) ->
                     y >= 0
                             ? original.computeFluid(x, y, z)
-                            : (double) x * x + (double) z * z <= openingSquared ? empty : water;
+                            : y < layout.minWaterY()
+                                            || (double) x * x + (double) z * z
+                                                    <= waterOpeningSquared
+                                    ? empty
+                                    : water;
         }
     }
 

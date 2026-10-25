@@ -99,7 +99,12 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                                 DensityFunctions.mul(DensityFunctions.constant(-2), edge)));
         DensityFunction oldOuter =
                 DensityFunctions.max(
-                        MiaDensityFunctions.lerpWithEndpoints(smooth, middle, outer),
+                        DensityFunctions.rangeChoice(
+                                y,
+                                MiaDensityFunctions.LOWER_TRANSITION_MAX,
+                                MiaHeight.THE_ABYSS.maxY() - 64,
+                                outer,
+                                MiaDensityFunctions.lerpWithEndpoints(smooth, middle, outer)),
                         getFunction(functions, MiaDensityFunctions.THE_ABYSS_PILLARS));
         DensityFunction inner =
                 DensityFunctions.rangeChoice(
@@ -179,28 +184,17 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                                 MiaDensityFunctions.lerpDirect(weight, ordinary, rock)));
         DensityFunction inverse =
                 getFunction(functions, MiaDensityFunctions.THE_ABYSS_GREAT_CAVE_NOODLE);
-        main =
+        DensityFunction caves =
                 DensityFunctions.rangeChoice(
-                        weight,
-                        0,
-                        Math.nextUp(0.0),
-                        DensityFunctions.max(main, inverse),
-                        DensityFunctions.rangeChoice(
-                                weight,
-                                1,
-                                2,
+                        getFunction(functions, Y),
+                        -176,
+                        16,
+                        DensityFunctions.min(
                                 main,
-                                DensityFunctions.max(
-                                        main,
-                                        MiaDensityFunctions.lerpDirect(
-                                                weight, inverse, DensityFunctions.constant(-1)))));
-        return DensityFunctions.rangeChoice(
-                getFunction(functions, Y),
-                -176,
-                16,
-                DensityFunctions.min(
-                        main, Layer2DensityFunctions.get(functions, Layer2DensityFunctions.CAVES)),
-                DensityFunctions.max(ordinary, inverse));
+                                Layer2DensityFunctions.get(
+                                        functions, Layer2DensityFunctions.CAVES)),
+                        ordinary);
+        return DensityFunctions.max(caves, inverse);
     }
 
     private static NoiseRouter theAbyssRouter(
@@ -295,7 +289,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                         yFunction,
                         -176,
                         0,
-                        MiaDensityFunctions.lerpDirect(
+                        localSurfaceEstimate(
                                 Layer2DensityFunctions.get(
                                         densityFunctions, Layer2DensityFunctions.WEIGHT),
                                 idwj4,
@@ -366,6 +360,22 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 DensityFunctions.zero() // vein_gap
                 // 最后三个参数是矿脉生成相关的，因为是硬编码就不用它的
                 );
+    }
+
+    private static DensityFunction localSurfaceEstimate(
+            DensityFunction weight, DensityFunction original, DensityFunction local) {
+        // Preliminary surface scans reuse one context; CacheOnce must not freeze their Y weight.
+        return DensityFunctions.rangeChoice(
+                weight,
+                0,
+                Math.nextUp(0.0),
+                original,
+                DensityFunctions.rangeChoice(
+                        weight,
+                        1,
+                        2,
+                        local,
+                        MiaDensityFunctions.lerpDirect(weight, original, local)));
     }
 
     private static NoiseRouter greatFaultRouter(

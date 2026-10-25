@@ -7,12 +7,21 @@
       "groups": [
         {
           "companions": [
+            "mementoinabyss:the_abyss/primo_plains",
+            "mementoinabyss:the_abyss/primo_plains",
+            "mementoinabyss:the_abyss/primo_plains",
+            "mementoinabyss:the_abyss/primo_plains"
+          ],
+          "primary": "mementoinabyss:the_abyss/primo_forest"
+        },
+        {
+          "companions": [
             "mementoinabyss:the_abyss/temptation_forest",
             "mementoinabyss:the_abyss/temptation_forest",
             "mementoinabyss:the_abyss/temptation_forest",
             "mementoinabyss:the_abyss/temptation_forest"
           ],
-          "primary": "mementoinabyss:the_abyss/primo_forest"
+          "primary": "mementoinabyss:the_abyss/temptation_plains"
         }
       ],
       "original": {

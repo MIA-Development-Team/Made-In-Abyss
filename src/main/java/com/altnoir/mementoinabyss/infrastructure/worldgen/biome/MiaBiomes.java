@@ -33,7 +33,9 @@ public final class MiaBiomes {
     public static final ResourceKey<Biome> ABYSS_LUSH_CAVES = key("abyss_lush_caves");
     public static final ResourceKey<Biome> ABYSS_DRIPSTONE_CAVES = key("abyss_dripstone_caves");
     public static final ResourceKey<Biome> TEMPTATION_FOREST = key("temptation_forest");
+    public static final ResourceKey<Biome> TEMPTATION_PLAINS = key("temptation_plains");
     public static final ResourceKey<Biome> PRIMO_FOREST = key("primo_forest");
+    public static final ResourceKey<Biome> PRIMO_PLAINS = key("primo_plains");
     public static final ResourceKey<Biome> INVERTED_FOREST = key("inverted_forest");
     public static final ResourceKey<Biome> ABYSS_RIVER = key("abyss_river");
     public static final ResourceKey<Biome> THE_GREAT_FAULT = greatFaultKey("the_great_fault");
@@ -52,7 +54,9 @@ public final class MiaBiomes {
                     ABYSS_LUSH_CAVES,
                     ABYSS_DRIPSTONE_CAVES,
                     TEMPTATION_FOREST,
+                    TEMPTATION_PLAINS,
                     PRIMO_FOREST,
+                    PRIMO_PLAINS,
                     INVERTED_FOREST,
                     ABYSS_RIVER);
 
@@ -213,20 +217,22 @@ public final class MiaBiomes {
                 addGeode(generationBuilder);
                 addLayerOneMeadow(generationBuilder);
             }
-            case TEMPTATION_FOREST -> {
+            case TEMPTATION_FOREST, TEMPTATION_PLAINS -> {
                 addSlabRuins(generationBuilder);
                 addGeode(generationBuilder);
                 addLayerTwoMeadow(generationBuilder);
                 addRawIron(generationBuilder);
                 addLargeFern(generationBuilder);
                 addCaveVines(generationBuilder);
-                addTree(generationBuilder, MiaAbyssPlacements.TREES_VERDANT_FUNGUS);
+                if (biome.equals(TEMPTATION_FOREST))
+                    addTree(generationBuilder, MiaAbyssPlacements.TREES_VERDANT_FUNGUS);
             }
-            case PRIMO_FOREST -> {
+            case PRIMO_FOREST, PRIMO_PLAINS -> {
                 addSlabRuins(generationBuilder);
                 addLargeFern(generationBuilder);
                 addCaveVines(generationBuilder);
-                addTree(generationBuilder, MiaAbyssPlacements.TREES_PRIMO_FUNGUS);
+                if (biome.equals(PRIMO_FOREST))
+                    addTree(generationBuilder, MiaAbyssPlacements.TREES_PRIMO_FUNGUS);
                 generationBuilder.addFeature(
                         GenerationStep.Decoration.VEGETAL_DECORATION,
                         MiaAbyssPlacements.MYCELIUM_PATCH);
@@ -257,7 +263,7 @@ public final class MiaBiomes {
                                         .foliageColorOverride(11335504)
                                         .grassColorOverride(11335504)
                                         .build());
-        if (biome.equals(TEMPTATION_FOREST)) {
+        if (biome.equals(TEMPTATION_FOREST) || biome.equals(TEMPTATION_PLAINS)) {
             biomeBuilder.setAttribute(MiaEnvironmentAttributes.ABYSS_FOG_DENSITY, 0.0F);
         }
         return biomeBuilder.build();
@@ -385,7 +391,9 @@ public final class MiaBiomes {
         ABYSS_LUSH_CAVES(MiaBiomes.ABYSS_LUSH_CAVES),
         ABYSS_DRIPSTONE_CAVES(MiaBiomes.ABYSS_DRIPSTONE_CAVES),
         TEMPTATION_FOREST(MiaBiomes.TEMPTATION_FOREST),
+        TEMPTATION_PLAINS(MiaBiomes.TEMPTATION_PLAINS),
         PRIMO_FOREST(MiaBiomes.PRIMO_FOREST),
+        PRIMO_PLAINS(MiaBiomes.PRIMO_PLAINS),
         INVERTED_FOREST(MiaBiomes.INVERTED_FOREST),
         ABYSS_RIVER(MiaBiomes.ABYSS_RIVER);
 

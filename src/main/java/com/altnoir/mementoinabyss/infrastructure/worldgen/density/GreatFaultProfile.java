@@ -49,14 +49,12 @@ public record GreatFaultProfile(DensityFunction noise, int minY, int maxY)
             double transition = Math.clamp((y - junctionY) / 16.0, 0, 1);
             transition *= transition * (3 - 2 * transition);
             double scale = 16 + 48 * transition;
-
-            // Translate the old upper contour to the lower wall's zero crossing. Its radius
-            // expands immediately at the corner, independently of the changing density scale.
+            
             double atJunction = radial + 16 * (WALL_OFFSET - TOP_OFFSET);
             double geometry = ((1 - top) * atJunction - 64 * TOP_OFFSET * top) / scale;
-            // Limit the completed shape, not its radial input: distant slopes can keep rising
-            // toward the dimension boundary instead of all stopping at the same height.
-            raw = Math.clamp(geometry, MIN_GEOMETRY, MAX_GEOMETRY) + (1 - top) * sample;
+            double detail = (1 - top) * (16 / scale) * sample;
+
+            raw = Math.clamp(geometry, MIN_GEOMETRY, MAX_GEOMETRY) + detail;
         }
 
         double bottom = Math.clamp((y - minY) / 64.0, 0, 1);

@@ -214,53 +214,38 @@ public final class Layer2Layout implements DensityFunction {
         var point = new SinglePointContext(blockX, 0, blockZ);
         double x = blockX + warpX.compute(point), z = blockZ + warpZ.compute(point);
         int cellX = (int) Math.floor(x / cellSize), cellZ = (int) Math.floor(z / cellSize);
+        long cellKey = ((long) cellX << 32) ^ (cellZ & 0xffffffffL);
+        Cell sites = columns.cells.getAndMoveToLast(cellKey);
+        if (sites == null) {
+            sites = new Cell(cellX, cellZ, seed, salt, cellSize, cellJitter);
+            if (columns.cells.size() >= 32) columns.cells.removeFirst();
+            columns.cells.putAndMoveToLast(cellKey, sites);
+        }
         double first = Double.POSITIVE_INFINITY;
-        double ax = 0, az = 0;
-        int count = 0, nearest = 0;
-        long region = 0;
-        for (int dx = -2; dx <= 2; dx++)
-            for (int dz = -2; dz <= 2; dz++) {
-                int cx = cellX + dx, cz = cellZ + dz;
-                long h =
-                        mix(
-                                seed
-                                        ^ salt
-                                        ^ (long) cx * 0x9e3779b97f4a7c15L
-                                        ^ (long) cz * 0xc2b2ae3d27d4eb4fL);
-                double px =
-                        (cx + .5 - cellJitter + ((h >>> 16) & 65535) / 65535.0 * 2 * cellJitter)
-                                * cellSize;
-                double pz =
-                        (cz + .5 - cellJitter + ((h >>> 32) & 65535) / 65535.0 * 2 * cellJitter)
-                                * cellSize;
-                double d = (x - px) * (x - px) + (z - pz) * (z - pz);
-                columns.x[count] = px;
-                columns.z[count] = pz;
-                columns.distance[count] = d;
-                if (d < first) {
-                    first = d;
-                    ax = px;
-                    az = pz;
-                    region = h;
-                    nearest = count;
-                }
-                count++;
+        int nearest = 0;
+        for (int i = 0; i < 25; i++) {
+            double dx = x - sites.x[i], dz = z - sites.z[i];
+            double d = dx * dx + dz * dz;
+            columns.distance[i] = d;
+            if (d < first) {
+                first = d;
+                nearest = i;
             }
+        }
         double edge = cellSize;
         // Distance to every competing bisector avoids a jump when the second-nearest site changes.
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < 25; i++) {
             if (i == nearest) continue;
             edge =
                     Math.min(
                             edge,
-                            (columns.distance[i] - first)
-                                    / (2 * Math.hypot(ax - columns.x[i], az - columns.z[i])));
+                            (columns.distance[i] - first) / sites.denominators[nearest * 25 + i]);
         }
-        double dx = x - ax, dz = z - az;
+        double dx = x - sites.x[nearest], dz = z - sites.z[nearest];
         int sector = Math.abs(dx) > Math.abs(dz) ? (dx > 0 ? 1 : 3) : (dz > 0 ? 2 : 0);
         result =
                 new Region(
-                        region,
+                        sites.ids[nearest],
                         edge,
                         dx * dx + dz * dz < Math.pow(cellSize * primaryRadius, 2)
                                 && edge > Math.max(32, riverBankDistance * 2),
@@ -350,7 +335,44 @@ public final class Layer2Layout implements DensityFunction {
 
     private static final class Columns {
         final Long2ObjectLinkedOpenHashMap<Region> values = new Long2ObjectLinkedOpenHashMap<>();
-        final double[] x = new double[25], z = new double[25], distance = new double[25];
+        final Long2ObjectLinkedOpenHashMap<Cell> cells = new Long2ObjectLinkedOpenHashMap<>();
+        final double[] distance = new double[25];
+    }
+
+    private static final class Cell {
+        final long[] ids = new long[25];
+        final double[] x = new double[25], z = new double[25];
+        final double[] denominators = new double[625];
+
+        Cell(int cellX, int cellZ, long seed, long salt, int cellSize, double cellJitter) {
+            int i = 0;
+            for (int dx = -2; dx <= 2; dx++)
+                for (int dz = -2; dz <= 2; dz++) {
+                    int cx = cellX + dx, cz = cellZ + dz;
+                    long h =
+                            mix(
+                                    seed
+                                            ^ salt
+                                            ^ (long) cx * 0x9e3779b97f4a7c15L
+                                            ^ (long) cz * 0xc2b2ae3d27d4eb4fL);
+                    ids[i] = h;
+                    x[i] =
+                            (cx + .5 - cellJitter + ((h >>> 16) & 65535) / 65535.0 * 2 * cellJitter)
+                                    * cellSize;
+                    z[i] =
+                            (cz + .5 - cellJitter + ((h >>> 32) & 65535) / 65535.0 * 2 * cellJitter)
+                                    * cellSize;
+                    i++;
+                }
+            // Keep the original division: reciprocal multiplication can shift density zero
+            // crossings.
+            for (i = 0; i < 25; i++)
+                for (int j = i + 1; j < 25; j++) {
+                    double distance = 2 * Math.hypot(x[i] - x[j], z[i] - z[j]);
+                    denominators[i * 25 + j] = distance;
+                    denominators[j * 25 + i] = distance;
+                }
+        }
     }
 
     public record Region(long id, double edgeDistance, boolean primary, int sector) {}

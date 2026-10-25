@@ -94,9 +94,10 @@ public final class AbyssLayer2BiomeSource extends BiomeSource {
                 blockY = QuartPos.toBlock(y),
                 blockZ = QuartPos.toBlock(z);
         if (layout != null
-                && blockY >= layout.minWaterY()
+                // BiomeManager also samples the quart layer immediately below the wet band.
+                && blockY >= layout.minWaterY() - 4
                 && blockY < -32
-                && Math.hypot(blockX, blockZ) >= layout.openingRadius() + 64) {
+                && Math.hypot(blockX, blockZ) >= layout.openingRadius() + 48) {
             return surfaceBiome(blockX, blockZ);
         }
         return original.getNoiseBiome(x, y, z, sampler);

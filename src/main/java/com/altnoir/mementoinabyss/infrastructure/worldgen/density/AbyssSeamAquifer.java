@@ -24,12 +24,17 @@ public final class AbyssSeamAquifer implements Aquifer {
     @Override
     public @Nullable BlockState computeSubstance(
             DensityFunction.FunctionContext context, double density) {
+        int x = context.blockX(), y = context.blockY(), z = context.blockZ();
         dry =
-                (density <= 0
-                                && layer2 != null
-                                && layer2.dry(context.blockX(), context.blockY(), context.blockZ()))
-                        || AbyssSeamRuntime.isOpening(seam, context);
-        return dry ? Blocks.AIR.defaultBlockState() : original.computeSubstance(context, density);
+                AbyssSeamRuntime.isOpening(seam, context)
+                        || (density <= 0 && layer2 != null && y < 0 && layer2.opening(x, z));
+        if (dry) return Blocks.AIR.defaultBlockState();
+        BlockState substance = original.computeSubstance(context, density);
+        dry = density <= 0 && layer2 != null && layer2.dry(x, y, z);
+        // Keep aquifer pressure barriers instead of replacing them with air at the dry boundary.
+        if (dry && substance != null && !substance.getFluidState().isEmpty())
+            return y < layer2.layout().minWaterY() ? null : Blocks.AIR.defaultBlockState();
+        return substance;
     }
 
     @Override

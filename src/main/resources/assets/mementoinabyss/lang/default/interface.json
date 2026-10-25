@@ -68,5 +68,8 @@
   "mementoinabyss.rope.free_end_placed": "The free end of the rope was placed.",
   "mementoinabyss.rope.connected": "Rope connected.",
   "biome.mementoinabyss.the_abyss.primo_forest": "Primo Forest",
+  "biome.mementoinabyss.the_abyss.primo_plains": "Primo Plains",
+  "biome.mementoinabyss.the_abyss.temptation_forest": "Temptation Forest",
+  "biome.mementoinabyss.the_abyss.temptation_plains": "Temptation Plains",
   "biome.mementoinabyss.the_abyss.abyss_river": "Abyss River"
 }

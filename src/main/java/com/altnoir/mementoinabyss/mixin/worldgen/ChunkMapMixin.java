@@ -1,6 +1,8 @@
 package com.altnoir.mementoinabyss.mixin.worldgen;
 
+import com.altnoir.mementoinabyss.infrastructure.worldgen.AbyssSeamRuntime;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.OverworldAbyss;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.layer2.Layer2Runtime;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
@@ -29,9 +31,7 @@ public abstract class ChunkMapMixin {
             @Local(argsOnly = true) ServerLevel level,
             @Local(argsOnly = true) ChunkGenerator generator) {
         OverworldAbyss.install(level, generator, randomState);
-        com.altnoir.mementoinabyss.infrastructure.worldgen.AbyssSeamRuntime.configure(
-                level, randomState);
-        com.altnoir.mementoinabyss.infrastructure.worldgen.layer2.Layer2Runtime.install(
-                level, generator, randomState);
+        AbyssSeamRuntime.configure(level, randomState);
+        Layer2Runtime.install(level, generator, randomState);
     }
 }
