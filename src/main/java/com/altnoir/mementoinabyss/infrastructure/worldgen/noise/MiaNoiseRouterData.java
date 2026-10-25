@@ -127,10 +127,15 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                                                 DensityFunctions.add(
                                                         DensityFunctions.constant(1.025),
                                                         original)))));
-        return MiaDensityFunctions.lerpWithEndpoints(
-                Layer2DensityFunctions.get(functions, Layer2DensityFunctions.WEIGHT),
-                original,
-                Layer2DensityFunctions.get(functions, Layer2DensityFunctions.TERRAIN));
+        return DensityFunctions.rangeChoice(
+                y,
+                -176,
+                16,
+                MiaDensityFunctions.lerpWithEndpoints(
+                        Layer2DensityFunctions.get(functions, Layer2DensityFunctions.WEIGHT),
+                        original,
+                        Layer2DensityFunctions.get(functions, Layer2DensityFunctions.TERRAIN)),
+                original);
     }
 
     private static DensityFunction greatFaultDensity(
@@ -189,8 +194,13 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                                         main,
                                         MiaDensityFunctions.lerpDirect(
                                                 weight, inverse, DensityFunctions.constant(-1)))));
-        return DensityFunctions.min(
-                main, Layer2DensityFunctions.get(functions, Layer2DensityFunctions.CAVES));
+        return DensityFunctions.rangeChoice(
+                getFunction(functions, Y),
+                -176,
+                16,
+                DensityFunctions.min(
+                        main, Layer2DensityFunctions.get(functions, Layer2DensityFunctions.CAVES)),
+                DensityFunctions.max(ordinary, inverse));
     }
 
     private static NoiseRouter theAbyssRouter(
