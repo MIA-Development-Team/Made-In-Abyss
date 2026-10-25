@@ -7,7 +7,7 @@
     },
     "features": [
       {
-        "chance": 0.3,
+        "chance": 0.9,
         "feature": {
           "feature": "mementoinabyss:tree/glow_primo_fungus",
           "placement": []

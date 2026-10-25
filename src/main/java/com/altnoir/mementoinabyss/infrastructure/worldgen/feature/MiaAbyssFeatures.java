@@ -530,7 +530,7 @@ public final class MiaAbyssFeatures {
                                                 PlacementUtils.inlinePlaced(
                                                         configuredFeatures.getOrThrow(
                                                                 MiaTreeFeatures.GLOW_PRIMO_FUNGUS)),
-                                                0.3F)),
+                                                0.9F)),
                                 PlacementUtils.inlinePlaced(
                                         configuredFeatures.getOrThrow(
                                                 MiaTreeFeatures.PRIMO_FUNGUS)))));

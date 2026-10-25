@@ -1,6 +1,5 @@
 package com.altnoir.mementoinabyss.mixin.client;
 
-import com.altnoir.mementoinabyss.client.render.TheAbyssFogRenderer;
 import com.altnoir.mementoinabyss.client.render.sky.OverworldAbyssSky;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -32,9 +31,9 @@ public abstract class FogRendererMixin {
             return 0.0F;
         }
 
-        if (level.dimension().equals(MiaDimensions.THE_ABYSS_LEVEL)) {
-            return bottomDarkness
-                    * (1.0F - TheAbyssFogRenderer.strength(level, camera, fogType, partialTicks));
+        if (level.dimension().equals(MiaDimensions.THE_ABYSS_LEVEL)
+                && fogType == FogType.ATMOSPHERIC) {
+            return 0.0F;
         }
 
         if (!level.dimension().equals(MiaDimensions.GREAT_FAULT_LEVEL)) {

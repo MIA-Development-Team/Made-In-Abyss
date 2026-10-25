@@ -103,6 +103,13 @@ public abstract class NoiseChunkMixin implements AbyssOriginalSurface {
             aquifer =
                     new com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssSeamAquifer(
                             aquifer, seam);
+        var river =
+                com.altnoir.mementoinabyss.infrastructure.worldgen.river.AbyssRivers.profile(
+                        randomState);
+        if (river != null)
+            aquifer =
+                    new com.altnoir.mementoinabyss.infrastructure.worldgen.river.AbyssRiverAquifer(
+                            aquifer, river);
         OverworldAbyssHole hole = OverworldAbyss.holeOf(randomState);
         if (hole != null) {
             int span = cellCountXZ * noiseSettings.getCellWidth();

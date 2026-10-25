@@ -35,6 +35,7 @@ public final class MiaBiomes {
     public static final ResourceKey<Biome> TEMPTATION_FOREST = key("temptation_forest");
     public static final ResourceKey<Biome> PRIMO_FOREST = key("primo_forest");
     public static final ResourceKey<Biome> INVERTED_FOREST = key("inverted_forest");
+    public static final ResourceKey<Biome> ABYSS_RIVER = key("abyss_river");
     public static final ResourceKey<Biome> THE_GREAT_FAULT = greatFaultKey("the_great_fault");
     public static final ResourceKey<Biome> GREAT_FAULT = greatFaultKey("great_fault");
 
@@ -52,7 +53,8 @@ public final class MiaBiomes {
                     ABYSS_DRIPSTONE_CAVES,
                     TEMPTATION_FOREST,
                     PRIMO_FOREST,
-                    INVERTED_FOREST);
+                    INVERTED_FOREST,
+                    ABYSS_RIVER);
 
     public static void bootstrap(BootstrapContext<Biome> context) {
         for (ResourceKey<Biome> biome : FIRST_LAYERS) {
@@ -235,6 +237,7 @@ public final class MiaBiomes {
                 addCaveVines(generationBuilder);
                 addTree(generationBuilder, MiaAbyssPlacements.TREES_INVERTED);
             }
+            case ABYSS_RIVER -> {}
         }
         generationBuilder.addFeature(
                 GenerationStep.Decoration.UNDERGROUND_STRUCTURES, MiaAbyssPlacements.SUN_STONE);
@@ -383,7 +386,8 @@ public final class MiaBiomes {
         ABYSS_DRIPSTONE_CAVES(MiaBiomes.ABYSS_DRIPSTONE_CAVES),
         TEMPTATION_FOREST(MiaBiomes.TEMPTATION_FOREST),
         PRIMO_FOREST(MiaBiomes.PRIMO_FOREST),
-        INVERTED_FOREST(MiaBiomes.INVERTED_FOREST);
+        INVERTED_FOREST(MiaBiomes.INVERTED_FOREST),
+        ABYSS_RIVER(MiaBiomes.ABYSS_RIVER);
 
         private final ResourceKey<Biome> key;
 

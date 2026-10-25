@@ -3,7 +3,7 @@
   "placement": [
     {
       "type": "mementoinabyss:tree_on_every_layer",
-      "count": 8
+      "count": 2
     },
     {
       "type": "minecraft:biome"

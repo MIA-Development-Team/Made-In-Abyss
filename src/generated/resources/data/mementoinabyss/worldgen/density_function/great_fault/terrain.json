@@ -1,0 +1,6 @@
+{
+  "type": "mementoinabyss:great_fault_profile",
+  "max_y": 384,
+  "min_y": -384,
+  "noise": "mementoinabyss:base_3d_noise_the_abyss"
+}

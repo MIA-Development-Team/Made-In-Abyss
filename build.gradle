@@ -158,7 +158,7 @@ dependencies {
 
 	compileOnly "maven.modrinth:iris:${iris_version}"
 
-	localRuntime "maven.modrinth:c2me-neoforge:0.4.0-alpha.0.100+26.1.2"
+	localRuntime "maven.modrinth:c2me-neoforge:${c2me_version}"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

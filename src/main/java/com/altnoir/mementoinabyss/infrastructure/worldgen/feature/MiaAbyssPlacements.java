@@ -361,7 +361,7 @@ public final class MiaAbyssPlacements {
                 TREES_PRIMO_FUNGUS,
                 new PlacedFeature(
                         configured.getOrThrow(MiaAbyssFeatures.TREES_PRIMO_FUNGUS),
-                        List.of(TreeOnEveryLayerPlacement.of(8), BiomeFilter.biome())));
+                        List.of(TreeOnEveryLayerPlacement.of(2), BiomeFilter.biome())));
         context.register(
                 MYCELIUM_PATCH,
                 new PlacedFeature(

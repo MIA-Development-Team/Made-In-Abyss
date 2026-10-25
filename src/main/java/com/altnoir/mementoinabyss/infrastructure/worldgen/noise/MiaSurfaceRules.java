@@ -122,6 +122,17 @@ public final class MiaSurfaceRules {
 
         builder.add(
                 SurfaceRules.ifTrue(
+                        SurfaceRules.isBiome(MiaBiomes.ABYSS_RIVER),
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
+                                SurfaceRules.sequence(
+                                        SurfaceRules.ifTrue(
+                                                SurfaceRules.noiseCondition(
+                                                        MiaNoiseData.STRIPEY, -.12, .12),
+                                                MUD),
+                                        makeStateRule(Blocks.GRAVEL)))));
+        builder.add(
+                SurfaceRules.ifTrue(
                         SurfaceRules.not(
                                 SurfaceRules.verticalGradient(
                                         "deepslate_roof",

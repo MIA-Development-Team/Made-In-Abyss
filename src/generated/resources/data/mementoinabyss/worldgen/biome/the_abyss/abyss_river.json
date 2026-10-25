@@ -1,0 +1,61 @@
+{
+  "attributes": {
+    "minecraft:audio/background_music": {
+      "default": {
+        "max_delay": 24000,
+        "min_delay": 12000,
+        "sound": "mementoinabyss:music.the_first_layer"
+      }
+    }
+  },
+  "carvers": [],
+  "downfall": 0.8,
+  "effects": {
+    "foliage_color": "#acf750",
+    "grass_color": "#acf750",
+    "water_color": "#5db7ef"
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [
+      "mementoinabyss:the_abyss/sun_stone"
+    ],
+    [],
+    [],
+    [
+      "mementoinabyss:the_abyss/ore_dirt",
+      "mementoinabyss:the_abyss/ore_gravel",
+      "mementoinabyss:the_abyss/ore_iron",
+      "mementoinabyss:the_abyss/ore_copper",
+      "mementoinabyss:the_abyss/ore_gold",
+      "mementoinabyss:the_abyss/ore_lapis",
+      "mementoinabyss:the_abyss/ore_redstone",
+      "mementoinabyss:the_abyss/ore_diamond",
+      "mementoinabyss:the_abyss/ore_emerald",
+      "mementoinabyss:the_abyss/ore_quartz",
+      "mementoinabyss:the_abyss/ore_chlorophyte"
+    ],
+    [],
+    [],
+    [
+      "mementoinabyss:the_abyss/vines",
+      "mementoinabyss:the_abyss/glow_lichen",
+      "mementoinabyss:the_abyss/patch_waterlily"
+    ]
+  ],
+  "has_precipitation": false,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 2.0
+}

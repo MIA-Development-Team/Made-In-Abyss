@@ -24,6 +24,7 @@
   "block.mementoinabyss.primo_fungus": "太初菌",
   "block.mementoinabyss.glow_primo_fungus": "发光太初菌",
   "biome.mementoinabyss.the_abyss.primo_forest": "太初菌林",
+  "biome.mementoinabyss.the_abyss.abyss_river": "深渊河流",
   "config.jade.plugin_mementoinabyss.lamp_tube_heat": "灯管热量",
   "jade.mementoinabyss.lamp_tube.heat": "热量：%s / %s"
 }

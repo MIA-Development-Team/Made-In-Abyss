@@ -15,6 +15,11 @@ public final class MiaBiomeSources {
 
     static {
         SOURCES.register("the_abyss", () -> AbyssNoiseBiomeSource.CODEC);
+        SOURCES.register(
+                "abyss_rivers",
+                () ->
+                        com.altnoir.mementoinabyss.infrastructure.worldgen.biome
+                                .AbyssRiverBiomeSource.CODEC);
         SOURCES.register("overworld_abyss", () -> OverworldAbyssBiomeSource.CODEC);
     }
 

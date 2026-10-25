@@ -326,7 +326,8 @@ public final class MiaGuideDataProvider extends RecallContentProvider {
                     boolean rim = AbyssPortalFeature.isPortalRim(x, z);
                     if (!interior && !rim) continue;
                     List<Integer> position = List.of(PORTAL_CORE_X + x, y, PORTAL_CORE_Z + z);
-                    String actual = stateName(blocks.get(position));
+                    String state = blocks.get(position);
+                    String actual = state == null ? null : stateName(state);
                     String expected =
                             x == 0 && z == 0
                                     ? "mementoinabyss:fossilized_wood"

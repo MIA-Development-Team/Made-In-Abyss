@@ -1,0 +1,43 @@
+{
+  "type": "minecraft:range_choice",
+  "input": "minecraft:y",
+  "max_exclusive": -120.0,
+  "min_inclusive": -152.0,
+  "when_in_range": {
+    "type": "minecraft:range_choice",
+    "input": "mementoinabyss:the_abyss/layer2/cave_shape",
+    "max_exclusive": 0.0,
+    "min_inclusive": -1000000.0,
+    "when_in_range": {
+      "type": "minecraft:add",
+      "argument1": {
+        "type": "minecraft:mul",
+        "argument1": 1.0,
+        "argument2": {
+          "type": "minecraft:add",
+          "argument1": 1.0,
+          "argument2": {
+            "type": "minecraft:mul",
+            "argument1": -1.0,
+            "argument2": {
+              "type": "minecraft:mul",
+              "argument1": "mementoinabyss:the_abyss/layer2/noodle_guard",
+              "argument2": "mementoinabyss:the_abyss/layer2/cave_mask"
+            }
+          }
+        }
+      },
+      "argument2": {
+        "type": "minecraft:mul",
+        "argument1": {
+          "type": "minecraft:mul",
+          "argument1": "mementoinabyss:the_abyss/layer2/noodle_guard",
+          "argument2": "mementoinabyss:the_abyss/layer2/cave_mask"
+        },
+        "argument2": "mementoinabyss:the_abyss/layer2/cave_shape"
+      }
+    },
+    "when_out_of_range": 1.0
+  },
+  "when_out_of_range": 1.0
+}

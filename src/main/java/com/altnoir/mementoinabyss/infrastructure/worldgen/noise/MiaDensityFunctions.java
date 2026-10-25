@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.noise;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.MiaHeight;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssNoodleTaper;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.GreatFaultProfile;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.HopperAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.SharedAbyssWall;
 import com.altnoir.mementoinabyss.init.MiaDensityFunctionTypes;
@@ -54,6 +55,24 @@ public class MiaDensityFunctions {
             theAbyssKey("raw_terrain");
     public static final ResourceKey<DensityFunction> THE_ABYSS_TONGUE_SUPPORT =
             theAbyssKey("tongue_support");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_LAYER2_NOODLE_GUARD =
+            theAbyssKey("layer2/noodle_guard");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_LAYER2_CAVE_SHAPE =
+            theAbyssKey("layer2/cave_shape");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_LAYER2_CAVE_MASK =
+            theAbyssKey("layer2/cave_mask");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_LAYER2_CAVES =
+            theAbyssKey("layer2/caves");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_RIVER_BANK =
+            theAbyssKey("rivers/bank");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_RIVER_BED =
+            theAbyssKey("rivers/bed");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_RIVER_MASK =
+            theAbyssKey("rivers/mask");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_RIVER_SHAPE =
+            theAbyssKey("rivers/shape");
+    public static final ResourceKey<DensityFunction> THE_ABYSS_RIVER_BLEND =
+            theAbyssKey("rivers/blend");
     static final int LOWER_TRANSITION_MIN = -176;
     static final int LOWER_TRANSITION_MAX = -80;
     public static final ResourceKey<DensityFunction> THE_ABYSS_BASE_GREAT_CAVE_NOODLE =
@@ -68,10 +87,7 @@ public class MiaDensityFunctions {
     public static final ResourceKey<DensityFunction> THE_ABYSS_LOWER_NOODLE =
             theAbyssKey("caves/lower_noodle");
 
-    public static final ResourceKey<DensityFunction> GREAT_FAULT_HOLE_ABOVE =
-            greatFaultKey("great_fault_hole_above");
-    public static final ResourceKey<DensityFunction> GREAT_FAULT_HOLE_BELOW =
-            greatFaultKey("great_fault_hole_below");
+    public static final ResourceKey<DensityFunction> GREAT_FAULT_TERRAIN = greatFaultKey("terrain");
     public static final ResourceKey<DensityFunction> GREAT_FAULT_NOODLE =
             greatFaultKey("caves/noodle");
     public static final ResourceKey<DensityFunction> GREAT_FAULT_BIG_CAVE =
@@ -264,18 +280,142 @@ public class MiaDensityFunctions {
                 THE_ABYSS_RAW_TERRAIN, MiaNoiseRouterData.theAbyssRawDensity(holdergetter1, true));
         context.register(
                 THE_ABYSS_TONGUE_SUPPORT, MiaNoiseRouterData.theAbyssTongueSupport(holdergetter1));
+        DensityFunction layer2Radial =
+                DensityFunctions.mul(
+                                DensityFunctions.add(
+                                        MiaDensityFunctionTypes.general(32, .3F),
+                                        DensityFunctions.constant(-1)),
+                                DensityFunctions.constant(1 / 3.0))
+                        .clamp(0, 1);
+        context.register(
+                THE_ABYSS_LAYER2_NOODLE_GUARD,
+                DensityFunctions.rangeChoice(
+                        yFunction,
+                        -192,
+                        16,
+                        DensityFunctions.mul(
+                                DensityFunctions.cache2d(smoothstep(layer2Radial)),
+                                DensityFunctions.mul(
+                                        smoothstep(
+                                                DensityFunctions.yClampedGradient(
+                                                        -192, -176, 0, 1)),
+                                        smoothstep(
+                                                DensityFunctions.yClampedGradient(0, 16, 1, 0)))),
+                        DensityFunctions.zero()));
+        DensityFunction caveRidges =
+                DensityFunctions.max(
+                        yLimitedInterpolatable(
+                                        yFunction,
+                                        DensityFunctions.noise(
+                                                holdergetter.getOrThrow(MiaNoiseData.LAYER2_CAVE_A),
+                                                1,
+                                                1),
+                                        -152,
+                                        -120,
+                                        0)
+                                .abs(),
+                        yLimitedInterpolatable(
+                                        yFunction,
+                                        DensityFunctions.noise(
+                                                holdergetter.getOrThrow(MiaNoiseData.LAYER2_CAVE_B),
+                                                1,
+                                                1.5),
+                                        -152,
+                                        -120,
+                                        0)
+                                .abs());
+        DensityFunction caveThickness =
+                DensityFunctions.cache2d(
+                        DensityFunctions.mappedNoise(
+                                holdergetter.getOrThrow(MiaNoiseData.LAYER2_CAVE_THICKNESS),
+                                1,
+                                0,
+                                .065,
+                                .095));
+        context.register(
+                THE_ABYSS_LAYER2_CAVE_SHAPE,
+                DensityFunctions.max(
+                        DensityFunctions.add(
+                                caveRidges,
+                                DensityFunctions.mul(DensityFunctions.constant(-1), caveThickness)),
+                        DensityFunctions.max(
+                                DensityFunctions.yClampedGradient(-156, -140, 1, -1),
+                                DensityFunctions.yClampedGradient(-136, -116, -1, 1))));
+        context.register(
+                THE_ABYSS_LAYER2_CAVE_MASK,
+                new com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssLayer2CaveMask(
+                        8, 16, null));
+        DensityFunction caveShape = getFunction(holdergetter1, THE_ABYSS_LAYER2_CAVE_SHAPE);
+        DensityFunction caveWeight =
+                DensityFunctions.mul(
+                        getFunction(holdergetter1, THE_ABYSS_LAYER2_NOODLE_GUARD),
+                        getFunction(holdergetter1, THE_ABYSS_LAYER2_CAVE_MASK));
+        context.register(
+                THE_ABYSS_LAYER2_CAVES,
+                DensityFunctions.rangeChoice(
+                        yFunction,
+                        -152,
+                        -120,
+                        DensityFunctions.rangeChoice(
+                                caveShape,
+                                -1000000,
+                                0,
+                                lerpDirect(caveWeight, DensityFunctions.constant(1), caveShape),
+                                DensityFunctions.constant(1)),
+                        DensityFunctions.constant(1)));
+        context.register(THE_ABYSS_RIVER_BANK, DensityFunctions.yClampedGradient(-138, -74, 1, -1));
+        context.register(THE_ABYSS_RIVER_BED, DensityFunctions.yClampedGradient(-152, -88, 1, -1));
+        // Eligibility samples the uncut ground; including the new caves would make it recursive.
+        context.register(
+                THE_ABYSS_RIVER_MASK,
+                DensityFunctions.cache2d(
+                        new com.altnoir.mementoinabyss.infrastructure.worldgen.density
+                                .AbyssRiverMask(
+                                DensityFunctions.max(
+                                        MiaNoiseRouterData.theAbyssGround(
+                                                holdergetter1,
+                                                getFunction(holdergetter1, THE_ABYSS_RAW_TERRAIN)),
+                                        getFunction(holdergetter1, THE_ABYSS_GREAT_CAVE_NOODLE)),
+                                getFunction(holdergetter1, THE_ABYSS_RIVER_BANK),
+                                getFunction(holdergetter1, THE_ABYSS_RIVER_BED),
+                                -128,
+                                -80,
+                                null)));
+        context.register(
+                THE_ABYSS_RIVER_SHAPE,
+                lerpDirect(
+                        getFunction(holdergetter1, THE_ABYSS_RIVER_MASK),
+                        getFunction(holdergetter1, THE_ABYSS_RIVER_BANK),
+                        getFunction(holdergetter1, THE_ABYSS_RIVER_BED)));
+        DensityFunction riverRamp =
+                DensityFunctions.mul(
+                                getFunction(holdergetter1, THE_ABYSS_RIVER_MASK),
+                                DensityFunctions.constant(1 / .15))
+                        .clamp(0, 1);
+        context.register(
+                THE_ABYSS_RIVER_BLEND,
+                DensityFunctions.rangeChoice(
+                        yFunction,
+                        -152,
+                        -96,
+                        DensityFunctions.mul(
+                                smoothstep(riverRamp),
+                                DensityFunctions.mul(
+                                        smoothstep(
+                                                DensityFunctions.yClampedGradient(
+                                                        -152, -140, 0, 1)),
+                                        smoothstep(
+                                                DensityFunctions.yClampedGradient(
+                                                        -104, -96, 1, 0)))),
+                        DensityFunctions.zero()));
 
         // Layer 3
         context.register(
-                GREAT_FAULT_HOLE_ABOVE,
-                DensityFunctions.add(
-                        MiaDensityFunctionTypes.hopper(0.0F, 0.6F, 16.0F),
-                        getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
-        context.register(
-                GREAT_FAULT_HOLE_BELOW,
-                DensityFunctions.add(
-                        MiaDensityFunctionTypes.general(0.0F, 0.5F),
-                        getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS)));
+                GREAT_FAULT_TERRAIN,
+                new GreatFaultProfile(
+                        getFunction(holdergetter1, BASE_3D_NOISE_THE_ABYSS),
+                        MiaHeight.GREAT_FAULT.minY(),
+                        MiaHeight.GREAT_FAULT.maxY()));
         context.register(GREAT_FAULT_NOODLE, greatFaultNoodle(holdergetter1, holdergetter));
         context.register(GREAT_FAULT_BIG_CAVE, bigCaves(holdergetter));
     }
@@ -614,6 +754,27 @@ public class MiaDensityFunctions {
                         Math.nextUp(0.0),
                         DensityFunctions.add(lower, DensityFunctions.zero()),
                         mixed));
+    }
+
+    static DensityFunction lerpDirect(
+            DensityFunction weight, DensityFunction lower, DensityFunction upper) {
+        // Vanilla lerp inserts CacheOnce. Under a RangeChoice's per-point array fallback,
+        // that scalar cache can reuse one point's weight throughout the noise cell.
+        return DensityFunctions.add(
+                DensityFunctions.mul(
+                        DensityFunctions.add(
+                                DensityFunctions.constant(1),
+                                DensityFunctions.mul(DensityFunctions.constant(-1), weight)),
+                        lower),
+                DensityFunctions.mul(weight, upper));
+    }
+
+    private static DensityFunction smoothstep(DensityFunction value) {
+        return DensityFunctions.mul(
+                DensityFunctions.mul(value, value),
+                DensityFunctions.add(
+                        DensityFunctions.constant(3),
+                        DensityFunctions.mul(DensityFunctions.constant(-2), value)));
     }
 
     private static DensityFunction getFunction(

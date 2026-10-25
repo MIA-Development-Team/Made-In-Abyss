@@ -87,7 +87,7 @@ public class MiaBlocks {
                                             .strength(-1.0F, 3_600_000.0F)
                                             .noLootTable()
                                             .pushReaction(PushReaction.BLOCK))
-                    .blockstate(BlockStateGen::abyssPortal)
+                    .blockstate(() -> BlockStateGen.abyssPortal())
                     .simpleItem()
                     .register();
 
@@ -102,7 +102,7 @@ public class MiaBlocks {
                                             .sound(SoundType.NETHERITE_BLOCK)
                                             .noLootTable()
                                             .pushReaction(PushReaction.BLOCK))
-                    .blockstate(BlockStateGen::abyssPortalCore)
+                    .blockstate(() -> BlockStateGen.abyssPortalCore())
                     .simpleItem()
                     .register();
 
@@ -131,7 +131,7 @@ public class MiaBlocks {
                                             .sound(SoundType.DEEPSLATE)
                                             .noOcclusion())
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(BlockStateGen::pedestal)
+                    .blockstate(() -> BlockStateGen.pedestal())
                     .simpleItem()
                     .register();
 
@@ -148,7 +148,7 @@ public class MiaBlocks {
                                             .sound(SoundType.STONE)
                                             .noOcclusion())
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(BlockStateGen::endlessCup)
+                    .blockstate(() -> BlockStateGen.endlessCup())
                     .lang("Endless Cup")
                     .simpleItem()
                     .register();
@@ -166,7 +166,7 @@ public class MiaBlocks {
                                             .noOcclusion()
                                             .isRedstoneConductor((state, level, pos) -> false))
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(BlockStateGen::caveExplorerBeacon)
+                    .blockstate(() -> BlockStateGen.caveExplorerBeacon())
                     .lang("Cave Explorer Beacon")
                     .simpleItem()
                     .register();
@@ -182,7 +182,7 @@ public class MiaBlocks {
                                             .strength(3.0F, 6.0F)
                                             .sound(SoundType.NETHERITE_BLOCK))
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(BlockStateGen::artifactSmithingTable)
+                    .blockstate(() -> BlockStateGen.artifactSmithingTable())
                     .simpleItem()
                     .register();
 
@@ -197,7 +197,7 @@ public class MiaBlocks {
                                             .strength(3.0F, 6.0F)
                                             .sound(SoundType.WOOD))
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(BlockStateGen::whistleWorkbench)
+                    .blockstate(() -> BlockStateGen.whistleWorkbench())
                     .simpleItem()
                     .register();
 
@@ -213,7 +213,7 @@ public class MiaBlocks {
                                             .sound(SoundType.CHAIN)
                                             .noOcclusion())
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(BlockStateGen::ropeConnector)
+                    .blockstate(() -> BlockStateGen.ropeConnector())
                     .simpleItem()
                     .register();
 
@@ -317,7 +317,7 @@ public class MiaBlocks {
                                             .isSuffocating((state, level, pos) -> true))
                     .transform(TagGen.pickaxeOnly())
                     .tag(Tags.Blocks.VILLAGER_FARMLANDS)
-                    .blockstate(BlockStateGen::hopperFarmland)
+                    .blockstate(() -> BlockStateGen.hopperFarmland())
                     .loot(
                             (lt, b) ->
                                     lt.add(
@@ -462,7 +462,7 @@ public class MiaBlocks {
                     .block(p -> new CoverGrassBlock(ABYSS_ANDESITE.get(), p))
                     .initialProperties(ABYSS_ANDESITE)
                     .properties(p -> p.mapColor(MapColor.GRASS).randomTicks())
-                    .blockstate(BlockStateGen::coverGrass)
+                    .blockstate(() -> BlockStateGen.coverGrass())
                     .tag(MiaTags.BlockTags.COVERGRASS.tag, BlockTags.GRASS_BLOCKS)
                     .tag(MiaTags.BlockTags.BASE_STONE_ABYSS.tag)
                     .transform(TagGen.pickaxeOnly())
@@ -476,7 +476,7 @@ public class MiaBlocks {
                     .block(p -> new CoverGrassBlock(Blocks.TUFF, p))
                     .initialProperties(() -> Blocks.TUFF)
                     .properties(p -> p.randomTicks())
-                    .blockstate(BlockStateGen::coverGrass)
+                    .blockstate(() -> BlockStateGen.coverGrass())
                     .tag(MiaTags.BlockTags.COVERGRASS.tag, BlockTags.GRASS_BLOCKS)
                     .transform(TagGen.pickaxeOnly())
                     .loot(LootGen.silkTouchOr(() -> Blocks.TUFF))
@@ -501,7 +501,7 @@ public class MiaBlocks {
                                             .pushReaction(PushReaction.DESTROY)
                                             .noLootTable())
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(BlockStateGen::suspiciousAbyssAndesite)
+                    .blockstate(() -> BlockStateGen.suspiciousAbyssAndesite())
                     .item()
                     .model(() -> (ctx, prov) -> prov.generateBlockItem(ctx.get(), "_0"))
                     .build()
@@ -917,7 +917,7 @@ public class MiaBlocks {
                     .block(TallGrassBlock::new)
                     .properties(MiaBlocks::plantProperties)
                     .tag(BlockTags.REPLACEABLE_BY_TREES)
-                    .blockstate(BlockStateGen::crossPlant)
+                    .blockstate(() -> BlockStateGen.crossPlant())
                     .item()
                     .compostable(0.3F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
@@ -934,7 +934,7 @@ public class MiaBlocks {
                                             .mapColor(MapColor.NETHER)
                                             .sound(SoundType.ROOTS))
                     .tag(BlockTags.REPLACEABLE_BY_TREES)
-                    .blockstate(BlockStateGen::crossPlant)
+                    .blockstate(() -> BlockStateGen.crossPlant())
                     .item()
                     .compostable(0.3F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
@@ -951,7 +951,7 @@ public class MiaBlocks {
                                             .mapColor(MapColor.COLOR_CYAN)
                                             .sound(SoundType.NETHER_SPROUTS))
                     .tag(BlockTags.REPLACEABLE_BY_TREES)
-                    .blockstate(BlockStateGen::crossPlant)
+                    .blockstate(() -> BlockStateGen.crossPlant())
                     .item()
                     .compostable(0.5F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
@@ -973,7 +973,7 @@ public class MiaBlocks {
                             BlockTags.BEE_ATTRACTIVE,
                             BlockTags.INSIDE_STEP_SOUND_BLOCKS,
                             BlockTags.REPLACEABLE_BY_TREES)
-                    .blockstate(BlockStateGen::flowerBed)
+                    .blockstate(() -> BlockStateGen.flowerBed())
                     .item()
                     .tag(ItemTags.BEE_FOOD)
                     .compostable(0.65F)
@@ -986,7 +986,7 @@ public class MiaBlocks {
                     .block(WaterTallFlowerBlock::new)
                     .properties(MiaBlocks::plantProperties)
                     .tag(BlockTags.REPLACEABLE_BY_TREES)
-                    .blockstate(BlockStateGen::doublePlant)
+                    .blockstate(() -> BlockStateGen.doublePlant())
                     .loot(LootGen.lowerHalf())
                     .item()
                     .compostable(0.5F)
@@ -1003,7 +1003,7 @@ public class MiaBlocks {
                                     plantProperties(p)
                                             .randomTicks()
                                             .lightLevel(GloomBerryBlock::getLightLevel))
-                    .blockstate(BlockStateGen::doubleBerry)
+                    .blockstate(() -> BlockStateGen.doubleBerry())
                     .loot(LootGen.lowerHalf(() -> MiaItems.GLOOM_BERRY.get()))
                     .register();
 
@@ -1012,7 +1012,7 @@ public class MiaBlocks {
                     .object("dream_lichee_plant")
                     .block(DreamLicheeBlock::new)
                     .properties(p -> plantProperties(p).randomTicks())
-                    .blockstate(BlockStateGen::doubleBerry)
+                    .blockstate(() -> BlockStateGen.doubleBerry())
                     .loot(LootGen.lowerHalf(() -> MiaItems.DREAM_LICHEE.get()))
                     .register();
 
@@ -1058,7 +1058,7 @@ public class MiaBlocks {
                     .properties(
                             p -> plantProperties(p).randomTicks().sound(SoundType.CHERRY_SAPLING))
                     .tag(BlockTags.SAPLINGS)
-                    .blockstate(BlockStateGen::crossPlant)
+                    .blockstate(() -> BlockStateGen.crossPlant())
                     .item()
                     .compostable(0.3F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
@@ -1090,7 +1090,7 @@ public class MiaBlocks {
                                     plantProperties(p)
                                             .mapColor(MapColor.COLOR_CYAN)
                                             .sound(SoundType.CHERRY_SAPLING))
-                    .blockstate(BlockStateGen::crossPlant)
+                    .blockstate(() -> BlockStateGen.crossPlant())
                     .item()
                     .compostable(0.65F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
@@ -1113,7 +1113,7 @@ public class MiaBlocks {
                             BlockTags.REPLACEABLE_BY_TREES,
                             BlockTags.OVERRIDES_MUSHROOM_LIGHT_REQUIREMENT,
                             BlockTags.MINEABLE_WITH_HOE)
-                    .blockstate(BlockStateGen::rotationYCubeAll)
+                    .blockstate(() -> BlockStateGen.rotationYCubeAll())
                     .item()
                     .compostable(0.65F)
                     .build()
@@ -1138,7 +1138,7 @@ public class MiaBlocks {
                             BlockTags.REPLACEABLE_BY_TREES,
                             BlockTags.SWORD_EFFICIENT,
                             BlockTags.MINEABLE_WITH_AXE)
-                    .blockstate(BlockStateGen::multifaceMat)
+                    .blockstate(() -> BlockStateGen.multifaceMat())
                     .loot((lt, b) -> lt.add(b, lt.createMultifaceBlockDrops(b)))
                     .item()
                     .compostable(0.5F)
@@ -1158,7 +1158,7 @@ public class MiaBlocks {
                                             .pushReaction(PushReaction.DESTROY))
                     .tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS, BlockTags.MINEABLE_WITH_HOE)
                     .tag(BlockTags.REPLACEABLE_BY_TREES)
-                    .blockstate(BlockStateGen::flowerBed)
+                    .blockstate(() -> BlockStateGen.flowerBed())
                     .loot((lt, b) -> lt.add(b, lt.createSegmentedBlockDrops(b)))
                     .item()
                     .compostable(0.65F)
@@ -1192,7 +1192,7 @@ public class MiaBlocks {
                                             .noOcclusion()
                                             .lightLevel(state -> 12))
                     .tag(BlockTags.MINEABLE_WITH_HOE)
-                    .blockstate(BlockStateGen::translucentCubeAll)
+                    .blockstate(() -> BlockStateGen.translucentCubeAll())
                     .item()
                     .compostable(0.85F)
                     .build()
@@ -1208,7 +1208,7 @@ public class MiaBlocks {
                                             .instabreak()
                                             .sound(SoundType.FUNGUS)
                                             .pushReaction(PushReaction.DESTROY))
-                    .blockstate(BlockStateGen::mushroomFungus)
+                    .blockstate(() -> BlockStateGen.mushroomFungus())
                     .item()
                     .compostable(0.65F)
                     .model(
@@ -1231,7 +1231,7 @@ public class MiaBlocks {
                                             .lightLevel(state -> 7)
                                             .sound(SoundType.FUNGUS)
                                             .pushReaction(PushReaction.DESTROY))
-                    .blockstate(BlockStateGen::glowMushroomFungus)
+                    .blockstate(() -> BlockStateGen.glowMushroomFungus())
                     .item()
                     .compostable(0.65F)
                     .model(
@@ -1262,7 +1262,7 @@ public class MiaBlocks {
                     .properties(
                             p -> plantProperties(p).randomTicks().sound(SoundType.CHERRY_SAPLING))
                     .tag(BlockTags.SAPLINGS)
-                    .blockstate(BlockStateGen::crossPlant)
+                    .blockstate(() -> BlockStateGen.crossPlant())
                     .item()
                     .compostable(0.3F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
@@ -1522,7 +1522,7 @@ public class MiaBlocks {
                 .block(p -> new FlowerBlock(effect, duration, p))
                 .properties(p -> plantProperties(p).sound(sound).lightLevel(_ -> light))
                 .tag(BlockTags.SMALL_FLOWERS, BlockTags.BEE_ATTRACTIVE)
-                .blockstate(BlockStateGen::crossPlant)
+                .blockstate(() -> BlockStateGen.crossPlant())
                 .item()
                 .tag(ItemTags.BEE_FOOD)
                 .compostable(0.65F)

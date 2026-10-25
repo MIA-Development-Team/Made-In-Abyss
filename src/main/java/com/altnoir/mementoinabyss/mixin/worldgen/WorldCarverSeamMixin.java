@@ -1,6 +1,8 @@
 package com.altnoir.mementoinabyss.mixin.worldgen;
 
 import com.altnoir.mementoinabyss.infrastructure.worldgen.AbyssSeamRuntime;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.river.AbyssRiverProfile;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.river.AbyssRivers;
 import java.util.function.Function;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -28,6 +30,13 @@ public abstract class WorldCarverSeamMixin {
             Aquifer aquifer,
             MutableBoolean hasGrass,
             CallbackInfoReturnable<Boolean> ci) {
+        if (pos.getY() >= AbyssRiverProfile.MIN_Y && pos.getY() < AbyssRiverProfile.SEA_LEVEL) {
+            var river = AbyssRivers.profile(context.randomState());
+            if (river != null && river.protectsBed(pos.getX(), pos.getY(), pos.getZ())) {
+                ci.setReturnValue(false);
+                return;
+            }
+        }
         var seam = AbyssSeamRuntime.seamOf(context.randomState());
         if (seam != null
                 && AbyssSeamRuntime.protectedFromCarver(seam, pos.getX(), pos.getY(), pos.getZ()))

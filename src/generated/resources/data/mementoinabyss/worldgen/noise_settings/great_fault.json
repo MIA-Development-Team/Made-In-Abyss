@@ -33,50 +33,7 @@
             "type": "minecraft:interpolated",
             "argument": {
               "type": "minecraft:blend_density",
-              "argument": {
-                "type": "minecraft:add",
-                "argument1": -0.4,
-                "argument2": {
-                  "type": "minecraft:mul",
-                  "argument1": {
-                    "type": "minecraft:y_clamped_gradient",
-                    "from_value": 0.0,
-                    "from_y": -384,
-                    "to_value": 1.0,
-                    "to_y": -320
-                  },
-                  "argument2": {
-                    "type": "minecraft:add",
-                    "argument1": 0.4,
-                    "argument2": {
-                      "type": "minecraft:add",
-                      "argument1": -0.8975,
-                      "argument2": {
-                        "type": "minecraft:mul",
-                        "argument1": {
-                          "type": "minecraft:y_clamped_gradient",
-                          "from_value": 1.0,
-                          "from_y": 320,
-                          "to_value": 0.0,
-                          "to_y": 384
-                        },
-                        "argument2": {
-                          "type": "minecraft:add",
-                          "argument1": 1.025,
-                          "argument2": {
-                            "type": "minecraft:range_choice",
-                            "input": "minecraft:y",
-                            "max_exclusive": 320.0,
-                            "min_inclusive": -384.0,
-                            "when_in_range": "mementoinabyss:great_fault/great_fault_hole_below",
-                            "when_out_of_range": "mementoinabyss:great_fault/great_fault_hole_above"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
+              "argument": "mementoinabyss:great_fault/terrain"
             }
           }
         }

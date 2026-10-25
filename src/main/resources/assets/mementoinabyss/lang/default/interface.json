@@ -67,5 +67,6 @@
   "mementoinabyss.rope.length": "Rope length: %s / %s blocks",
   "mementoinabyss.rope.free_end_placed": "The free end of the rope was placed.",
   "mementoinabyss.rope.connected": "Rope connected.",
-  "biome.mementoinabyss.the_abyss.primo_forest": "Primo Forest"
+  "biome.mementoinabyss.the_abyss.primo_forest": "Primo Forest",
+  "biome.mementoinabyss.the_abyss.abyss_river": "Abyss River"
 }

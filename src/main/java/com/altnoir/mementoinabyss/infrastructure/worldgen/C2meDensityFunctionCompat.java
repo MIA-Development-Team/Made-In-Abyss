@@ -6,11 +6,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.world.level.levelgen.NoiseRouter;
 
 /** Bridges C2ME's compiled density graph to its source graph without linking against C2ME classes. */
-final class C2meDensityFunctionCompat {
+public final class C2meDensityFunctionCompat {
     private static final String ORIGINAL_ROUTER_METHOD = "c2me$getOriginalNoiseRouter";
     private static final AtomicBoolean LOOKUP_WARNING_LOGGED = new AtomicBoolean();
 
-    static NoiseRouter originalRouter(NoiseRouter activeRouter) {
+    public static NoiseRouter originalRouter(NoiseRouter activeRouter) {
         try {
             Object original =
                     activeRouter.getClass().getMethod(ORIGINAL_ROUTER_METHOD).invoke(activeRouter);
