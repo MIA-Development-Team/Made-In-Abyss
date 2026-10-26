@@ -41,6 +41,7 @@ public class MementoInAbyss {
         MiaRecipes.register(modEventBus);
         MiaMenus.register(modEventBus);
         MiaBiomeSources.register(modEventBus);
+        MiaChunkGenerators.register(modEventBus);
         MiaDensityFunctionTypes.register(modEventBus);
         MiaPlacementModifiers.register(modEventBus);
         MiaWorldgenFeatures.register(modEventBus);

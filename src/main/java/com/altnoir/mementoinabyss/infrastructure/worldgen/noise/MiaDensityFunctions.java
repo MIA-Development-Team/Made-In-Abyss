@@ -156,20 +156,37 @@ public class MiaDensityFunctions {
                         0.06,
                         DensityFunctions.constant(-1000000),
                         getFunction(holdergetter1, THE_ABYSS_BASE_PILLARS)));
+        DensityFunction layer1Depth =
+                DensityFunctions.yClampedGradient(MiaHeight.THE_ABYSS.middleY(), 832, 1.5, -2.5);
+        DensityFunction layer2Depth =
+                DensityFunctions.add(
+                        DensityFunctions.constant(2),
+                        DensityFunctions.mul(
+                                DensityFunctions.constant(.5),
+                                smoothstep(DensityFunctions.yClampedGradient(-128, 0, 1, 0))));
+        DensityFunction lowerDepth =
+                DensityFunctions.add(
+                        DensityFunctions.constant(2.5),
+                        DensityFunctions.mul(
+                                DensityFunctions.constant(.5),
+                                smoothstep(DensityFunctions.yClampedGradient(-160, -128, 1, 0))));
         context.register(
                 THE_ABYSS_DEPTH,
                 DensityFunctions.rangeChoice(
                         yFunction,
-                        MiaHeight.THE_ABYSS.minY(),
                         0,
+                        32,
+                        lerpDirect(
+                                smoothstep(DensityFunctions.yClampedGradient(0, 32, 0, 1)),
+                                DensityFunctions.constant(2),
+                                layer1Depth),
                         DensityFunctions.rangeChoice(
                                 yFunction,
-                                MiaHeight.THE_ABYSS.minY(),
-                                -112,
-                                DensityFunctions.constant(3.0),
-                                DensityFunctions.constant(2.0)),
-                        DensityFunctions.yClampedGradient(
-                                MiaHeight.THE_ABYSS.middleY(), 832, 1.5, -2.5)));
+                                32,
+                                1000000.0,
+                                layer1Depth,
+                                DensityFunctions.rangeChoice(
+                                        yFunction, -128, 0, layer2Depth, lowerDepth))));
 
         context.register(
                 THE_ABYSS_HOLE_ABOVE,

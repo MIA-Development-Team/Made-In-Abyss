@@ -243,13 +243,23 @@ public final class Layer2Layout implements DensityFunction {
         }
         double dx = x - sites.x[nearest], dz = z - sites.z[nearest];
         int sector = Math.abs(dx) > Math.abs(dz) ? (dx > 0 ? 1 : 3) : (dz > 0 ? 2 : 0);
+        double primaryDistance =
+                Math.min(
+                        cellSize * primaryRadius - Math.hypot(dx, dz),
+                        edge - Math.max(32, riverBankDistance * 2));
+        double blend = Math.clamp(primaryDistance / 64, 0, 1);
+        blend *= blend * (3 - 2 * blend);
         result =
                 new Region(
                         sites.ids[nearest],
                         edge,
                         dx * dx + dz * dz < Math.pow(cellSize * primaryRadius, 2)
                                 && edge > Math.max(32, riverBankDistance * 2),
-                        sector);
+                        sector,
+                        primaryDistance,
+                        blend,
+                        sites.x[nearest],
+                        sites.z[nearest]);
         if (values.size() >= 4096) values.removeFirst();
         values.putAndMoveToLast(key, result);
         return result;
@@ -375,5 +385,33 @@ public final class Layer2Layout implements DensityFunction {
         }
     }
 
-    public record Region(long id, double edgeDistance, boolean primary, int sector) {}
+    public enum TerrainKind {
+        WOODLAND,
+        WETLAND,
+        HIGHLAND,
+        PLATEAU
+    }
+
+    public static TerrainKind terrainKind(long regionId) {
+        return switch ((int) (mix(regionId ^ 0x624de903b718a5cfL) & 3)) {
+            case 0 -> TerrainKind.WOODLAND;
+            case 1 -> TerrainKind.WETLAND;
+            case 2 -> TerrainKind.HIGHLAND;
+            default -> TerrainKind.PLATEAU;
+        };
+    }
+
+    public static TerrainKind terrainKind(Region region) {
+        return terrainKind(region.id());
+    }
+
+    public record Region(
+            long id,
+            double edgeDistance,
+            boolean primary,
+            int sector,
+            double primaryDistance,
+            double primaryBlend,
+            double siteX,
+            double siteZ) {}
 }

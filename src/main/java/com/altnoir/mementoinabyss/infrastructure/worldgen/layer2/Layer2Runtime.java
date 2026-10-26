@@ -1,9 +1,9 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.layer2;
 
+import com.altnoir.mementoinabyss.api.worldgen.TheAbyssGeneratorSetupEvent;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.AbyssSeamRuntime;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.C2meDensityFunctionCompat;
-import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.AbyssLayer2BiomeSource;
-import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.AbyssNoiseBiomeSource;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.TheAbyssBiomeSource;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.Layer2Layout;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.noise.Layer2DensityFunctions;
@@ -16,13 +16,17 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.FeatureSorter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.DensityFunctions;
+import net.minecraft.world.level.levelgen.NoiseRouter;
 import net.minecraft.world.level.levelgen.RandomState;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.Lazy;
 import org.jspecify.annotations.Nullable;
 
@@ -55,17 +59,8 @@ public final class Layer2Runtime {
         }
         var layout = found[0];
         if (!layout.bound()) throw new IllegalStateException("Unbound layer 2 layout");
-        if (generator.getBiomeSource() instanceof AbyssLayer2BiomeSource configured) {
-            if (configured.original() instanceof AbyssNoiseBiomeSource abyss)
-                abyss.cacheClimateColumns(random.sampler(), router);
-            setBiomeSource(
-                    generator,
-                    new AbyssLayer2BiomeSource(
-                            configured.original(),
-                            layout,
-                            configured.groups(),
-                            configured.river()));
-        }
+        if (generator.getBiomeSource() instanceof TheAbyssBiomeSource configured)
+            setBiomeSource(generator, configured.bind(layout, random.sampler(), router));
         var functions = level.registryAccess().lookupOrThrow(Registries.DENSITY_FUNCTION);
         var binder =
                 new DensityFunction.Visitor() {
@@ -93,10 +88,11 @@ public final class Layer2Runtime {
                                 .getOrThrow(Layer2DensityFunctions.PILLAR)
                                 .value()
                                 .mapAll(binder)));
+        NeoForge.EVENT_BUS.post(
+                new TheAbyssGeneratorSetupEvent(level, generator, random, STATES.get(random)));
     }
 
-    public static void setBiomeSource(
-            ChunkGenerator generator, net.minecraft.world.level.biome.BiomeSource source) {
+    public static void setBiomeSource(ChunkGenerator generator, BiomeSource source) {
         var access = (ChunkGeneratorAccessor) (Object) generator;
         access.mia$setBiomeSource(source);
         var settings = access.mia$generationSettingsGetter();
@@ -114,6 +110,12 @@ public final class Layer2Runtime {
     }
 
     public static final class State {
+        private static final DensityFunction AQUIFER_Y =
+                DensityFunctions.yClampedGradient(
+                        DimensionType.MIN_Y * 2,
+                        DimensionType.MAX_Y * 2,
+                        DimensionType.MIN_Y * 2,
+                        DimensionType.MAX_Y * 2);
         private final Layer2Layout layout;
         private final DensityFunction surface, roof, pillar;
         private final Aquifer.FluidStatus water, empty;
@@ -179,6 +181,34 @@ public final class Layer2Runtime {
 
         public boolean opening(int x, int z) {
             return (double) x * x + (double) z * z <= openingSquared;
+        }
+
+        public NoiseRouter aquiferRouter(NoiseRouter router) {
+            // Layer 2 Depth describes biome layers, not vanilla's deep-dark water exclusion.
+            // Include neighbouring aquifer cell centres while leaving biome sampling unchanged.
+            var depth =
+                    DensityFunctions.rangeChoice(
+                            AQUIFER_Y,
+                            layout.minWaterY() - 48,
+                            0,
+                            DensityFunctions.zero(),
+                            router.depth());
+            return new NoiseRouter(
+                    router.barrierNoise(),
+                    router.fluidLevelFloodednessNoise(),
+                    router.fluidLevelSpreadNoise(),
+                    router.lavaNoise(),
+                    router.temperature(),
+                    router.vegetation(),
+                    router.continents(),
+                    router.erosion(),
+                    depth,
+                    router.ridges(),
+                    router.preliminarySurfaceLevel(),
+                    router.finalDensity(),
+                    router.veinToggle(),
+                    router.veinRidged(),
+                    router.veinGap());
         }
 
         public Aquifer.FluidPicker picker(Aquifer.FluidPicker original) {

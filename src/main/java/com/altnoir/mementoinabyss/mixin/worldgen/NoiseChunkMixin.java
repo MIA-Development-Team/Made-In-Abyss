@@ -82,8 +82,11 @@ public abstract class NoiseChunkMixin implements AbyssOriginalSurface {
                             target =
                                     "Lnet/minecraft/world/level/levelgen/Aquifer;create(Lnet/minecraft/world/level/levelgen/NoiseChunk;Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/world/level/levelgen/NoiseRouter;Lnet/minecraft/world/level/levelgen/PositionalRandomFactory;IILnet/minecraft/world/level/levelgen/Aquifer$FluidPicker;)Lnet/minecraft/world/level/levelgen/Aquifer;"),
             index = 2)
-    private NoiseRouter mia$useOriginalClimateForAquifer(NoiseRouter router) {
-        return OverworldAbyssAquiferRouter.forAquifer(router);
+    private NoiseRouter mia$useOriginalClimateForAquifer(
+            NoiseRouter router, @Local(argsOnly = true) RandomState state) {
+        router = OverworldAbyssAquiferRouter.forAquifer(router);
+        var layer2 = Layer2Runtime.state(state);
+        return layer2 == null ? router : layer2.aquiferRouter(router);
     }
 
     @ModifyArg(

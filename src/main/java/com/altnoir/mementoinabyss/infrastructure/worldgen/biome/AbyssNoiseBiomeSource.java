@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -17,8 +16,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.OverworldBiomeBuilder;
-import net.minecraft.world.level.levelgen.DensityFunction;
-import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.NoiseRouter;
 import net.minecraft.world.level.levelgen.NoiseRouterData;
 import org.jetbrains.annotations.NotNull;
@@ -78,92 +75,14 @@ public class AbyssNoiseBiomeSource extends BiomeSource {
     private final Climate.ParameterList<Holder<Biome>> parameters;
     private final Climate.ParameterList<Holder<Biome>> abyssParameters;
     private final Holder<Biome> abyss;
-    private volatile @Nullable ClimateColumns climateColumns;
+    private final AbyssClimateSampler climate = new AbyssClimateSampler();
 
     public void cacheClimateColumns(Climate.Sampler sampler, NoiseRouter router) {
-        boolean temperature = declared2D(router.temperature());
-        boolean humidity = declared2D(router.vegetation());
-        boolean weirdness = declared2D(router.ridges());
-        climateColumns =
-                temperature || humidity || weirdness
-                        ? new ClimateColumns(
-                                sampler,
-                                temperature,
-                                humidity,
-                                declared2D(router.continents()),
-                                declared2D(router.erosion()),
-                                weirdness)
-                        : null;
-    }
-
-    private static boolean declared2D(DensityFunction function) {
-        while (function instanceof DensityFunctions.HolderHolder holder)
-            function = holder.function().value();
-        if (function instanceof DensityFunctions.MarkerOrMarked marker) {
-            var codec = marker.codec().codec();
-            return codec == DensityFunctions.cache2d(DensityFunctions.zero()).codec().codec()
-                    || codec == DensityFunctions.flatCache(DensityFunctions.zero()).codec().codec();
-        }
-        return function.minValue() == function.maxValue();
+        climate.bind(sampler, router);
     }
 
     private Climate.TargetPoint sampleClimate(Climate.Sampler sampler, int x, int y, int z) {
-        var cache = climateColumns;
-        return cache == null || cache.sampler != sampler
-                ? sampler.sample(x, y, z)
-                : cache.sample(x, y, z);
-    }
-
-    private static final class ClimateColumns {
-        private final Climate.Sampler sampler;
-        private final boolean temperature, humidity, continentalness, erosion, weirdness;
-        private final ThreadLocal<Long2ObjectLinkedOpenHashMap<Climate.TargetPoint>> columns =
-                ThreadLocal.withInitial(Long2ObjectLinkedOpenHashMap::new);
-
-        ClimateColumns(
-                Climate.Sampler sampler,
-                boolean temperature,
-                boolean humidity,
-                boolean continentalness,
-                boolean erosion,
-                boolean weirdness) {
-            this.sampler = sampler;
-            this.temperature = temperature;
-            this.humidity = humidity;
-            this.continentalness = continentalness;
-            this.erosion = erosion;
-            this.weirdness = weirdness;
-        }
-
-        Climate.TargetPoint sample(int x, int y, int z) {
-            long key = ((long) x << 32) ^ (z & 0xffffffffL);
-            var values = columns.get();
-            var point = values.getAndMoveToLast(key);
-            if (point == null) {
-                point = sampler.sample(x, y, z);
-                if (values.size() >= 256) values.removeFirst();
-                values.putAndMoveToLast(key, point);
-                return point;
-            }
-            var context =
-                    new DensityFunction.SinglePointContext(
-                            QuartPos.toBlock(x), QuartPos.toBlock(y), QuartPos.toBlock(z));
-            // Unknown and Y-dependent fields retain the original float conversion and quantization.
-            return new Climate.TargetPoint(
-                    temperature ? point.temperature() : sample(sampler.temperature(), context),
-                    humidity ? point.humidity() : sample(sampler.humidity(), context),
-                    continentalness
-                            ? point.continentalness()
-                            : sample(sampler.continentalness(), context),
-                    erosion ? point.erosion() : sample(sampler.erosion(), context),
-                    sample(sampler.depth(), context),
-                    weirdness ? point.weirdness() : sample(sampler.weirdness(), context));
-        }
-
-        private static long sample(
-                DensityFunction function, DensityFunction.FunctionContext context) {
-            return Climate.quantizeCoord((float) function.compute(context));
-        }
+        return climate.sample(sampler, x, y, z, AbyssClimateSampler.depth(sampler, x, y, z));
     }
 
     private AbyssNoiseBiomeSource(

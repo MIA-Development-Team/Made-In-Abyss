@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.init;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.AbyssNoiseBiomeSource;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.OverworldAbyssBiomeSource;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.TheAbyssBiomeSource;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -14,12 +15,8 @@ public final class MiaBiomeSources {
             DeferredRegister.create(Registries.BIOME_SOURCE, MementoInAbyss.ID);
 
     static {
-        SOURCES.register(
-                "abyss_layer2",
-                () ->
-                        com.altnoir.mementoinabyss.infrastructure.worldgen.biome
-                                .AbyssLayer2BiomeSource.CODEC);
-        SOURCES.register("the_abyss", () -> AbyssNoiseBiomeSource.CODEC);
+        SOURCES.register("the_abyss", () -> TheAbyssBiomeSource.CODEC);
+        SOURCES.register("abyss_noise", () -> AbyssNoiseBiomeSource.CODEC);
         SOURCES.register("overworld_abyss", () -> OverworldAbyssBiomeSource.CODEC);
     }
 

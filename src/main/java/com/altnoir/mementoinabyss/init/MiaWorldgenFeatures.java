@@ -5,6 +5,8 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.BlockTrunkConf
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.BlockTrunkFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.ClusterConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.ClusterFeature;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.Layer2Feature;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.Layer2FeatureConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.LongVinesConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.LongVinesFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.PrimoHugeFungusConfiguration;
@@ -22,6 +24,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class MiaWorldgenFeatures {
     private static final DeferredRegister<Feature<?>> FEATURES =
             DeferredRegister.create(Registries.FEATURE, MementoInAbyss.ID);
+    public static final DeferredHolder<Feature<?>, Layer2Feature> LAYER2_FEATURE =
+            FEATURES.register(
+                    "layer2_feature", () -> new Layer2Feature(Layer2FeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, InvertedTreeFeature> INVERTED_TREE =
             FEATURES.register(
                     "inverted_tree", () -> new InvertedTreeFeature(TreeConfiguration.CODEC));

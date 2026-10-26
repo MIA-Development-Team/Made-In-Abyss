@@ -1,8 +1,9 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.dimension;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.AbyssLayer2BiomeSource;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.TheAbyssChunkGenerator;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.AbyssNoiseBiomeSource;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaAbyssBiomeDefinitions;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaBiomes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.noise.MiaNoiseGeneratorSettings;
 import com.mojang.datafixers.util.Pair;
@@ -40,138 +41,9 @@ public final class MiaDimensions {
         HolderGetter<NoiseGeneratorSettings> noiseSettings =
                 context.lookup(Registries.NOISE_SETTINGS);
 
-        Climate.ParameterList<Holder<Biome>> outside =
-                new Climate.ParameterList<>(
-                        List.of(
-                                biomePair(
-                                        -0.5F,
-                                        0.5F,
-                                        0.0F,
-                                        0.0F,
-                                        0.3F,
-                                        0.5F,
-                                        biomes.getOrThrow(MiaBiomes.SKYFOG_FOREST)),
-                                biomePair(
-                                        -0.5F,
-                                        0.5F,
-                                        0.0F,
-                                        0.0F,
-                                        0.5F,
-                                        0.8F,
-                                        biomes.getOrThrow(MiaBiomes.DENSE_SKYFOG_FOREST)),
-                                biomePair(
-                                        -1.0F,
-                                        0.0F,
-                                        0.0F,
-                                        0.0F,
-                                        -0.6F,
-                                        -0.4F,
-                                        biomes.getOrThrow(MiaBiomes.FOSSILIZED_FOREST)),
-                                biomePair(
-                                        -1.0F,
-                                        0.0F,
-                                        0.0F,
-                                        0.0F,
-                                        -0.9F,
-                                        -0.6F,
-                                        biomes.getOrThrow(MiaBiomes.RICH_FOSSILIZED_FOREST)),
-                                biomePair(
-                                        -0.5F,
-                                        0.5F,
-                                        0.2F,
-                                        1.5F,
-                                        -0.6F,
-                                        -0.4F,
-                                        biomes.getOrThrow(MiaBiomes.UNDER_FOSSILIZED_FOREST)),
-                                biomePair(
-                                        -0.5F,
-                                        0.5F,
-                                        0.1F,
-                                        0.7F,
-                                        0.15F,
-                                        0.2F,
-                                        biomes.getOrThrow(MiaBiomes.ABYSS_LUSH_CAVES)),
-                                biomePair(
-                                        -0.5F,
-                                        0.0F,
-                                        0.4F,
-                                        1.0F,
-                                        0.2F,
-                                        0.3F,
-                                        biomes.getOrThrow(MiaBiomes.ABYSS_DRIPSTONE_CAVES)),
-                                biomePair(
-                                        -0.3F,
-                                        0.5F,
-                                        0.7F,
-                                        1.5F,
-                                        0.3F,
-                                        0.45F,
-                                        biomes.getOrThrow(MiaBiomes.PRASIOLITE_CAVES)),
-                                biomePair(
-                                        -1.0F,
-                                        1.0F,
-                                        1.85F,
-                                        2.05F,
-                                        -0.5F,
-                                        0.0F,
-                                        biomes.getOrThrow(MiaBiomes.TEMPTATION_FOREST)),
-                                biomePair(
-                                        -1.0F,
-                                        1.0F,
-                                        1.85F,
-                                        2.05F,
-                                        0.0F,
-                                        0.5F,
-                                        biomes.getOrThrow(MiaBiomes.PRIMO_FOREST)),
-                                biomePair(
-                                        -1.0F,
-                                        1.0F,
-                                        2.5F,
-                                        3.0F,
-                                        -0.5F,
-                                        0.5F,
-                                        biomes.getOrThrow(MiaBiomes.INVERTED_FOREST)),
-                                biomePair(
-                                        -1.0F,
-                                        1.0F,
-                                        -1.0F,
-                                        1.5F,
-                                        -0.2F,
-                                        0.2F,
-                                        biomes.getOrThrow(MiaBiomes.ABYSS_PLAINS))));
-
-        Climate.ParameterList<Holder<Biome>> inside =
-                new Climate.ParameterList<>(
-                        List.of(
-                                biomePair(
-                                        -1.0F,
-                                        1.0F,
-                                        0.0F,
-                                        2.0F,
-                                        -1.0F,
-                                        1.0F,
-                                        biomes.getOrThrow(MiaBiomes.THE_ABYSS)),
-                                biomePair(
-                                        -1.0F,
-                                        1.0F,
-                                        2.5F,
-                                        3.0F,
-                                        -1.0F,
-                                        1.0F,
-                                        biomes.getOrThrow(MiaBiomes.INVERTED_FOREST))));
-
-        NoiseBasedChunkGenerator generator =
-                new NoiseBasedChunkGenerator(
-                        new AbyssLayer2BiomeSource(
-                                AbyssNoiseBiomeSource.createFromList(272, outside, inside),
-                                List.of(
-                                        new AbyssLayer2BiomeSource.Group(
-                                                biomes.getOrThrow(MiaBiomes.PRIMO_FOREST),
-                                                biomes.getOrThrow(MiaBiomes.PRIMO_PLAINS)),
-                                        new AbyssLayer2BiomeSource.Group(
-                                                biomes.getOrThrow(MiaBiomes.TEMPTATION_PLAINS),
-                                                biomes.getOrThrow(MiaBiomes.TEMPTATION_FOREST))),
-                                biomes.getOrThrow(MiaBiomes.ABYSS_RIVER)),
+        TheAbyssChunkGenerator generator =
+                new TheAbyssChunkGenerator(
+                        MiaAbyssBiomeDefinitions.create(biomes),
                         noiseSettings.getOrThrow(MiaNoiseGeneratorSettings.THE_ABYSS));
         context.register(
                 THE_ABYSS,

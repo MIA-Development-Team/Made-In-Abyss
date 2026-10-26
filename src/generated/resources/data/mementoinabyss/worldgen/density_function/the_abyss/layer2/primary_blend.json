@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:flat_cache",
+  "argument": {
+    "type": "minecraft:cache_2d",
+    "argument": {
+      "type": "mementoinabyss:layer2_terrain_parameters",
+      "layout": "mementoinabyss:the_abyss/layer2/layout",
+      "parameter": "PRIMARY_BLEND"
+    }
+  }
+}

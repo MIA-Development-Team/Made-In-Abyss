@@ -5,6 +5,7 @@ import java.util.Arrays;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -19,7 +20,9 @@ final class LayeredPlacementScan {
     enum Surface {
         TREE,
         FLOOR,
-        WATER;
+        WATER,
+        LAYER2,
+        LAYER2_FLOOR;
 
         boolean matches(BlockState current, BlockState adjacent) {
             return switch (this) {
@@ -34,7 +37,23 @@ final class LayeredPlacementScan {
                                 && emptyFloor(current)
                                 && !adjacent.is(Blocks.BEDROCK);
                 case WATER -> current.isAir() && adjacent.is(Blocks.WATER);
+                case LAYER2 ->
+                        current.getFluidState().isEmpty()
+                                && (current.isAir() || current.canBeReplaced())
+                                && (adjacent.is(Blocks.WATER)
+                                        || (!emptyFloor(adjacent) && !adjacent.is(Blocks.BEDROCK)));
+                case LAYER2_FLOOR ->
+                        waterOrReplaceable(current)
+                                && !emptyFloor(adjacent)
+                                && !adjacent.is(Blocks.BEDROCK);
             };
+        }
+
+        static boolean waterOrReplaceable(BlockState state) {
+            return state.is(Blocks.WATER)
+                    || ((state.isAir() || state.canBeReplaced())
+                            && (state.getFluidState().isEmpty()
+                                    || state.getFluidState().is(FluidTags.WATER)));
         }
 
         private static boolean emptyFloor(BlockState state) {
@@ -49,6 +68,7 @@ final class LayeredPlacementScan {
     private final PlacementContext context;
     private final Surface surface;
     private final int minY;
+    private final int maxY;
     private Column[] columns;
     private ChunkAccess[] chunks;
 
@@ -56,13 +76,25 @@ final class LayeredPlacementScan {
         this.context = context;
         this.surface = surface;
         minY = context.getMinY();
+        maxY = Integer.MAX_VALUE;
+    }
+
+    /** Bounds apply to returned placement positions, including both endpoints. */
+    LayeredPlacementScan(PlacementContext context, Surface surface, int minY, int maxY) {
+        this.context = context;
+        this.surface = surface;
+        this.minY = Math.max(context.getLevel().getLevel().getMinY(), minY - 1);
+        this.maxY = maxY;
     }
 
     int find(int x, int z, int layer) {
         int index = (x & 15) | ((z & 15) << 4);
         Column column = columns == null ? null : columns[index];
         if (column == null || column.x != x || column.z != z) {
-            int top = context.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+            int top =
+                    maxY == Integer.MAX_VALUE
+                            ? context.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z)
+                            : maxY;
             if (top <= minY) return Integer.MAX_VALUE;
             if (columns == null) {
                 columns = new Column[256];

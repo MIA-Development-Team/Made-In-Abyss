@@ -49,7 +49,7 @@ public record GreatFaultProfile(DensityFunction noise, int minY, int maxY)
             double transition = Math.clamp((y - junctionY) / 16.0, 0, 1);
             transition *= transition * (3 - 2 * transition);
             double scale = 16 + 48 * transition;
-            
+
             double atJunction = radial + 16 * (WALL_OFFSET - TOP_OFFSET);
             double geometry = ((1 - top) * atJunction - 64 * TOP_OFFSET * top) / scale;
             double detail = (1 - top) * (16 / scale) * sample;

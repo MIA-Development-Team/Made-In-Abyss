@@ -3,7 +3,7 @@
   "generator": {
     "type": "minecraft:noise",
     "biome_source": {
-      "type": "mementoinabyss:the_abyss",
+      "type": "mementoinabyss:abyss_noise",
       "abyss_biome": "mementoinabyss:great_fault/the_great_fault",
       "abyss_radius": 112,
       "biomes": [

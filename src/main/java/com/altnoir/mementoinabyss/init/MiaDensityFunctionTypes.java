@@ -7,6 +7,7 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssTongueDen
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.GeneralAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.GreatFaultProfile;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.HopperAbyssHole;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.Layer2TerrainParameters;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.NoodleAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssCaveGuard;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssCliff;
@@ -37,6 +38,7 @@ public final class MiaDensityFunctionTypes {
                 com.altnoir.mementoinabyss.infrastructure.worldgen.density.Layer2Layout.CODEC
                         ::codec);
         TYPES.register("great_fault_profile", GreatFaultProfile.CODEC::codec);
+        TYPES.register("layer2_terrain_parameters", Layer2TerrainParameters.CODEC::codec);
         TYPES.register("shared_abyss_wall", SharedAbyssWall.CODEC::codec);
         TYPES.register("abyss_seam", AbyssSeamDensity.CODEC::codec);
         TYPES.register("abyss_tongues", AbyssTongueDensity.CODEC::codec);
