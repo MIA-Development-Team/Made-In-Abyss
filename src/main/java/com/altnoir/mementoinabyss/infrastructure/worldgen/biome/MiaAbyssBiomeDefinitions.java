@@ -91,13 +91,6 @@ public final class MiaAbyssBiomeDefinitions {
                         272,
                         biomes.getOrThrow(MiaBiomes.THE_ABYSS),
                         layer1,
-                        List.of(
-                                new TheAbyssBiomeSource.Group(
-                                        biomes.getOrThrow(MiaBiomes.PRIMO_FOREST),
-                                        biomes.getOrThrow(MiaBiomes.PRIMO_PLAINS)),
-                                new TheAbyssBiomeSource.Group(
-                                        biomes.getOrThrow(MiaBiomes.TEMPTATION_PLAINS),
-                                        biomes.getOrThrow(MiaBiomes.TEMPTATION_FOREST))),
                         biomes.getOrThrow(MiaBiomes.ABYSS_RIVER),
                         biomes.getOrThrow(MiaBiomes.INVERTED_FOREST)));
     }

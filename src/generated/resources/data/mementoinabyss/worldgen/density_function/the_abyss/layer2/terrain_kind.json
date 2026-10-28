@@ -1,11 +1,14 @@
 {
-  "type": "minecraft:flat_cache",
+  "type": "mementoinabyss:density_graph_node",
   "argument": {
-    "type": "minecraft:cache_2d",
+    "type": "minecraft:flat_cache",
     "argument": {
-      "type": "mementoinabyss:layer2_terrain_parameters",
-      "layout": "mementoinabyss:the_abyss/layer2/layout",
-      "parameter": "TERRAIN_KIND"
+      "type": "minecraft:cache_2d",
+      "argument": {
+        "type": "mementoinabyss:layer2_terrain_parameters",
+        "layout": "mementoinabyss:the_abyss/layer2/layout",
+        "parameter": "TERRAIN_KIND"
+      }
     }
   }
 }

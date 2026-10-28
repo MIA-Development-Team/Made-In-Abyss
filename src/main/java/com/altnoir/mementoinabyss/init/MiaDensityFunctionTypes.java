@@ -4,6 +4,7 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssNoodleTaper;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssSeamDensity;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssTongueDensity;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.DensityGraphNode;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.GeneralAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.GreatFaultProfile;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.HopperAbyssHole;
@@ -33,6 +34,7 @@ public final class MiaDensityFunctionTypes {
             DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, MementoInAbyss.ID);
 
     static {
+        TYPES.register("density_graph_node", DensityGraphNode.CODEC::codec);
         TYPES.register(
                 "layer2_layout",
                 com.altnoir.mementoinabyss.infrastructure.worldgen.density.Layer2Layout.CODEC

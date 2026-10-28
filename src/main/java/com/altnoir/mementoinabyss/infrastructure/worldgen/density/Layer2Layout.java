@@ -1,8 +1,10 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.density;
 
+import com.altnoir.mementoinabyss.api.worldgen.Layer2TerrainKind;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
+import java.util.Arrays;
 import java.util.Objects;
 import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.world.level.levelgen.DensityFunction;
@@ -259,7 +261,13 @@ public final class Layer2Layout implements DensityFunction {
                         primaryDistance,
                         blend,
                         sites.x[nearest],
-                        sites.z[nearest]);
+                        sites.z[nearest],
+                        Math.max(
+                                0,
+                                Math.min(
+                                        cellSize * primaryRadius,
+                                        sites.centerClearance[nearest]
+                                                - Math.max(32, riverBankDistance * 2))));
         if (values.size() >= 4096) values.removeFirst();
         values.putAndMoveToLast(key, result);
         return result;
@@ -353,6 +361,7 @@ public final class Layer2Layout implements DensityFunction {
         final long[] ids = new long[25];
         final double[] x = new double[25], z = new double[25];
         final double[] denominators = new double[625];
+        final double[] centerClearance = new double[25];
 
         Cell(int cellX, int cellZ, long seed, long salt, int cellSize, double cellJitter) {
             int i = 0;
@@ -376,32 +385,28 @@ public final class Layer2Layout implements DensityFunction {
                 }
             // Keep the original division: reciprocal multiplication can shift density zero
             // crossings.
+            Arrays.fill(centerClearance, Double.POSITIVE_INFINITY);
             for (i = 0; i < 25; i++)
                 for (int j = i + 1; j < 25; j++) {
                     double distance = 2 * Math.hypot(x[i] - x[j], z[i] - z[j]);
                     denominators[i * 25 + j] = distance;
                     denominators[j * 25 + i] = distance;
+                    centerClearance[i] = Math.min(centerClearance[i], distance * .25);
+                    centerClearance[j] = Math.min(centerClearance[j], distance * .25);
                 }
         }
     }
 
-    public enum TerrainKind {
-        WOODLAND,
-        WETLAND,
-        HIGHLAND,
-        PLATEAU
-    }
-
-    public static TerrainKind terrainKind(long regionId) {
+    public static Layer2TerrainKind terrainKind(long regionId) {
         return switch ((int) (mix(regionId ^ 0x624de903b718a5cfL) & 3)) {
-            case 0 -> TerrainKind.WOODLAND;
-            case 1 -> TerrainKind.WETLAND;
-            case 2 -> TerrainKind.HIGHLAND;
-            default -> TerrainKind.PLATEAU;
+            case 0 -> Layer2TerrainKind.WOODLAND;
+            case 1 -> Layer2TerrainKind.WETLAND;
+            case 2 -> Layer2TerrainKind.HIGHLAND;
+            default -> Layer2TerrainKind.PLATEAU;
         };
     }
 
-    public static TerrainKind terrainKind(Region region) {
+    public static Layer2TerrainKind terrainKind(Region region) {
         return terrainKind(region.id());
     }
 
@@ -413,5 +418,6 @@ public final class Layer2Layout implements DensityFunction {
             double primaryDistance,
             double primaryBlend,
             double siteX,
-            double siteZ) {}
+            double siteZ,
+            double primaryExtent) {}
 }

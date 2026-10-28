@@ -7,12 +7,14 @@ import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaTags;
 import com.altnoir.mementoinabyss.init.MiaWorldgenFeatures;
 import java.util.List;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.features.CaveFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
@@ -26,6 +28,8 @@ import net.minecraft.util.valueproviders.WeightedListInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBedBlock;
+import net.minecraft.world.level.block.KelpBlock;
+import net.minecraft.world.level.block.SeaPickleBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -47,7 +51,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.SpringConfigura
 import net.minecraft.world.level.levelgen.feature.configurations.VegetationPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.DualNoiseProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.RandomizedIntStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
@@ -95,10 +101,21 @@ public final class MiaAbyssFeatures {
             key("ore_chlorophyte");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED =
             key("trees_fossilized");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GIANT_FOSSILIZED_STUMP =
+            key("giant_fossilized_stump");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED_UNDER =
             key("trees_fossilized_under");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED_UNDER_CEILING =
             key("trees_fossilized_under_ceiling");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED_CEILING =
+            key("trees_fossilized_ceiling");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LAYER2_SEAGRASS =
+            key("layer2_seagrass");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LAYER2_KELP = key("layer2_kelp");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LAYER2_SEA_PICKLE =
+            key("layer2_sea_pickle");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LAYER2_UNDERWATER_VEGETATION =
+            key("layer2_underwater_vegetation");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_PRIMO_FUNGUS =
             key("trees_primo_fungus");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIUM_VEGETATION =
@@ -466,9 +483,32 @@ public final class MiaAbyssFeatures {
                 MiaBlocks.ABYSS_CHLOROPHYTE_ORE.get().defaultBlockState(),
                 6,
                 0.0F);
+        context.register(
+                GIANT_FOSSILIZED_STUMP,
+                new ConfiguredFeature<>(
+                        MiaWorldgenFeatures.GIANT_FOSSILIZED_STUMP.get(),
+                        new GiantFossilizedStumpConfiguration(
+                                MiaBlocks.FOSSILIZED_WOOD.get().defaultBlockState(),
+                                MiaBlocks.MOSSY_FOSSILIZED_WOOD.get().defaultBlockState(),
+                                MiaBlocks.FOSSILIZED_LOG.get().defaultBlockState(),
+                                MiaBlocks.MOSSY_FOSSILIZED_LOG.get().defaultBlockState(),
+                                0.25F,
+                                UniformInt.of(16, 24),
+                                new WeightedListInt(
+                                        WeightedList.<IntProvider>builder()
+                                                .add(UniformInt.of(8, 14), 2)
+                                                .add(UniformInt.of(16, 24), 5)
+                                                .add(UniformInt.of(26, 32), 1)
+                                                .build()),
+                                UniformInt.of(2, 6),
+                                context.lookup(Registries.CONFIGURED_FEATURE)
+                                        .getOrThrow(CaveFeatures.MOSS_PATCH_BONEMEAL),
+                                8)));
         fossilTrunk(context, TREES_FOSSILIZED, 2, Direction.UP);
+        fossilTrunk(context, TREES_FOSSILIZED_CEILING, 2, Direction.DOWN);
         fossilTrunk(context, TREES_FOSSILIZED_UNDER, 8, Direction.UP);
         fossilTrunk(context, TREES_FOSSILIZED_UNDER_CEILING, 8, Direction.DOWN);
+        underwaterVegetation(context);
 
         WeightedList.Builder<BlockState> myceliumVegetation = WeightedList.builder();
         for (Direction direction : Direction.Plane.HORIZONTAL) {
@@ -534,6 +574,73 @@ public final class MiaAbyssFeatures {
                                 PlacementUtils.inlinePlaced(
                                         configuredFeatures.getOrThrow(
                                                 MiaTreeFeatures.PRIMO_FUNGUS)))));
+    }
+
+    private static void underwaterVegetation(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+        var seagrass =
+                context.register(
+                        LAYER2_SEAGRASS,
+                        new ConfiguredFeature<>(
+                                Feature.SIMPLE_BLOCK,
+                                new SimpleBlockConfiguration(
+                                        BlockStateProvider.simple(Blocks.SEAGRASS))));
+        var kelp =
+                context.register(
+                        LAYER2_KELP,
+                        new ConfiguredFeature<>(
+                                Feature.BLOCK_COLUMN,
+                                new BlockColumnConfiguration(
+                                        List.of(
+                                                BlockColumnConfiguration.layer(
+                                                        UniformInt.of(0, 2),
+                                                        BlockStateProvider.simple(
+                                                                Blocks.KELP_PLANT)),
+                                                BlockColumnConfiguration.layer(
+                                                        ConstantInt.of(1),
+                                                        new RandomizedIntStateProvider(
+                                                                BlockStateProvider.simple(
+                                                                        Blocks.KELP),
+                                                                KelpBlock.AGE,
+                                                                UniformInt.of(20, 23)))),
+                                        Direction.UP,
+                                        // BlockColumn checks ahead; shift back to test the block it
+                                        // writes.
+                                        BlockPredicate.matchesBlocks(
+                                                new BlockPos(0, -1, 0), Blocks.WATER),
+                                        true)));
+        var seaPickle =
+                context.register(
+                        LAYER2_SEA_PICKLE,
+                        new ConfiguredFeature<>(
+                                Feature.SIMPLE_BLOCK,
+                                new SimpleBlockConfiguration(
+                                        new RandomizedIntStateProvider(
+                                                BlockStateProvider.simple(
+                                                        Blocks.SEA_PICKLE
+                                                                .defaultBlockState()
+                                                                .setValue(
+                                                                        SeaPickleBlock.WATERLOGGED,
+                                                                        true)),
+                                                SeaPickleBlock.PICKLES,
+                                                UniformInt.of(1, 4)))));
+        context.register(
+                LAYER2_UNDERWATER_VEGETATION,
+                new ConfiguredFeature<>(
+                        Feature.RANDOM_SELECTOR,
+                        new RandomFeatureConfiguration(
+                                List.of(
+                                        new WeightedPlacedFeature(
+                                                PlacementUtils.inlinePlaced(seagrass), 0.5F),
+                                        new WeightedPlacedFeature(
+                                                PlacementUtils.inlinePlaced(
+                                                        kelp,
+                                                        BlockPredicateFilter.forPredicate(
+                                                                BlockPredicate.wouldSurvive(
+                                                                        Blocks.KELP
+                                                                                .defaultBlockState(),
+                                                                        BlockPos.ZERO))),
+                                                0.8F)),
+                                PlacementUtils.inlinePlaced(seaPickle))));
     }
 
     private static VegetationPatchConfiguration vegetationPatch(

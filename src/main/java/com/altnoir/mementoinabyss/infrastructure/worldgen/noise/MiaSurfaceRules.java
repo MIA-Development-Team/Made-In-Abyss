@@ -51,8 +51,12 @@ public final class MiaSurfaceRules {
                                                 MiaBiomes.THE_ABYSS,
                                                 MiaBiomes.SKYFOG_FOREST,
                                                 MiaBiomes.FOSSILIZED_FOREST,
+                                                MiaBiomes.GIANT_FOSSILIZED_FOREST,
+                                                MiaBiomes.SPARSE_GIANT_FOSSILIZED_FOREST,
                                                 MiaBiomes.RICH_FOSSILIZED_FOREST,
                                                 MiaBiomes.UNDER_FOSSILIZED_FOREST,
+                                                MiaBiomes.UNDER_RICH_FOSSILIZED_FOREST,
+                                                MiaBiomes.UNDER_WATER_FOSSILIZED_FOREST,
                                                 MiaBiomes.ABYSS_PLAINS,
                                                 MiaBiomes.PRASIOLITE_CAVES,
                                                 MiaBiomes.ABYSS_LUSH_CAVES),
@@ -106,6 +110,29 @@ public final class MiaSurfaceRules {
                                                         SurfaceRules.ON_FLOOR, coverGrass_andesite),
                                                 ABYSS_ANDESITE))),
                         SurfaceRules.ifTrue(
+                                SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.CEILING),
+                                SurfaceRules.ifTrue(
+                                        SurfaceRules.isBiome(
+                                                MiaBiomes.UNDER_RICH_FOSSILIZED_FOREST,
+                                                MiaBiomes.UNDER_WATER_FOSSILIZED_FOREST),
+                                        SurfaceRules.sequence(
+                                                SurfaceRules.ifTrue(
+                                                        SurfaceRules.noiseCondition(
+                                                                MiaNoiseData.STRIPEY, -.25, .25),
+                                                        makeStateRule(Blocks.MOSS_BLOCK)),
+                                                ROOTED_DIRT))),
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.isBiome(MiaBiomes.ABYSS_RIVER),
+                                SurfaceRules.ifTrue(
+                                        SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
+                                        SurfaceRules.sequence(
+                                                SurfaceRules.ifTrue(
+                                                        SurfaceRules.noiseCondition(
+                                                                MiaNoiseData.STRIPEY, -.12, .12),
+                                                        MUD),
+                                                makeStateRule(Blocks.GRAVEL)))),
+                        // other
+                        SurfaceRules.ifTrue(
                                 SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.isBiome(MiaBiomes.INVERTED_FOREST),
@@ -125,17 +152,6 @@ public final class MiaSurfaceRules {
 
         builder.add(
                 SurfaceRules.ifTrue(
-                        SurfaceRules.isBiome(MiaBiomes.ABYSS_RIVER),
-                        SurfaceRules.ifTrue(
-                                SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
-                                SurfaceRules.sequence(
-                                        SurfaceRules.ifTrue(
-                                                SurfaceRules.noiseCondition(
-                                                        MiaNoiseData.STRIPEY, -.12, .12),
-                                                MUD),
-                                        makeStateRule(Blocks.GRAVEL)))));
-        builder.add(
-                SurfaceRules.ifTrue(
                         SurfaceRules.not(
                                 SurfaceRules.verticalGradient(
                                         "deepslate_roof",
@@ -145,7 +161,7 @@ public final class MiaSurfaceRules {
         builder.add(
                 SurfaceRules.ifTrue(
                         SurfaceRules.verticalGradient(
-                                "bedrock_floor",
+                                "rooted_floor",
                                 VerticalAnchor.aboveBottom(128),
                                 VerticalAnchor.aboveBottom(133)),
                         ROOTED_DIRT));

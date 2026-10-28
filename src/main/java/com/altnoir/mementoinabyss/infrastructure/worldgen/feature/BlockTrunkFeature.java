@@ -44,8 +44,7 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
                     worldgenlevel.getBlockState(
                             context.origin()
                                     .relative(blockConfiguration.direction().getOpposite()));
-            if (!directionState.is(BlockTags.DIRT)
-                    && !directionState.is(BlockTags.GRASS_BLOCKS)
+            if (!directionState.is(BlockTags.SUPPORTS_VEGETATION)
                     && !directionState.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag)) {
                 return false;
             }

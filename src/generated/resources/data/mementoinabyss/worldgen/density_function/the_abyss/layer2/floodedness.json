@@ -1,19 +1,22 @@
 {
-  "type": "minecraft:range_choice",
-  "input": "minecraft:y",
-  "max_exclusive": -88.0,
-  "min_inclusive": -152.0,
-  "when_in_range": {
+  "type": "mementoinabyss:density_graph_node",
+  "argument": {
     "type": "minecraft:range_choice",
-    "input": {
-      "type": "mementoinabyss:general_abyss_hole",
-      "mul": 0.3,
-      "radius": 32.0
+    "input": "minecraft:y",
+    "max_exclusive": -88.0,
+    "min_inclusive": -152.0,
+    "when_in_range": {
+      "type": "minecraft:range_choice",
+      "input": {
+        "type": "mementoinabyss:general_abyss_hole",
+        "mul": 0.3,
+        "radius": 32.0
+      },
+      "max_exclusive": 0.0,
+      "min_inclusive": -1000000.0,
+      "when_in_range": -1.0,
+      "when_out_of_range": 1.0
     },
-    "max_exclusive": 0.0,
-    "min_inclusive": -1000000.0,
-    "when_in_range": -1.0,
-    "when_out_of_range": 1.0
-  },
-  "when_out_of_range": -1.0
+    "when_out_of_range": -1.0
+  }
 }

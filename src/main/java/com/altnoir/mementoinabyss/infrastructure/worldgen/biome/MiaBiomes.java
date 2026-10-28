@@ -26,8 +26,15 @@ public final class MiaBiomes {
     public static final ResourceKey<Biome> SKYFOG_FOREST = key("skyfog_forest");
     public static final ResourceKey<Biome> DENSE_SKYFOG_FOREST = key("dense_skyfog_forest");
     public static final ResourceKey<Biome> FOSSILIZED_FOREST = key("fossilized_forest");
+    public static final ResourceKey<Biome> GIANT_FOSSILIZED_FOREST = key("giant_fossilized_forest");
+    public static final ResourceKey<Biome> SPARSE_GIANT_FOSSILIZED_FOREST =
+            key("sparse_giant_fossilized_forest");
     public static final ResourceKey<Biome> RICH_FOSSILIZED_FOREST = key("rich_fossilized_forest");
     public static final ResourceKey<Biome> UNDER_FOSSILIZED_FOREST = key("under_fossilized_forest");
+    public static final ResourceKey<Biome> UNDER_RICH_FOSSILIZED_FOREST =
+            key("under_rich_fossilized_forest");
+    public static final ResourceKey<Biome> UNDER_WATER_FOSSILIZED_FOREST =
+            key("under_water_fossilized_forest");
     public static final ResourceKey<Biome> ABYSS_PLAINS = key("abyss_plains");
     public static final ResourceKey<Biome> PRASIOLITE_CAVES = key("prasiolite_caves");
     public static final ResourceKey<Biome> ABYSS_LUSH_CAVES = key("abyss_lush_caves");
@@ -47,8 +54,12 @@ public final class MiaBiomes {
                     SKYFOG_FOREST,
                     DENSE_SKYFOG_FOREST,
                     FOSSILIZED_FOREST,
+                    GIANT_FOSSILIZED_FOREST,
+                    SPARSE_GIANT_FOSSILIZED_FOREST,
                     RICH_FOSSILIZED_FOREST,
                     UNDER_FOSSILIZED_FOREST,
+                    UNDER_RICH_FOSSILIZED_FOREST,
+                    UNDER_WATER_FOSSILIZED_FOREST,
                     ABYSS_PLAINS,
                     PRASIOLITE_CAVES,
                     ABYSS_LUSH_CAVES,
@@ -145,26 +156,42 @@ public final class MiaBiomes {
                 addCaveVines(generationBuilder);
                 addTree(generationBuilder, MiaAbyssPlacements.DENSE_TREES_SKYFOG);
             }
-            case FOSSILIZED_FOREST -> {
+            case FOSSILIZED_FOREST, GIANT_FOSSILIZED_FOREST, SPARSE_GIANT_FOSSILIZED_FOREST -> {
                 addSlabRuins(generationBuilder);
                 addGeode(generationBuilder);
                 addLayerOneMeadow(generationBuilder);
                 addRawIron(generationBuilder);
                 addLargeFern(generationBuilder);
                 addCaveVines(generationBuilder);
-                addTree(generationBuilder, MiaAbyssPlacements.TREES_FOSSILIZED);
+                addTree(
+                        generationBuilder,
+                        switch (AbyssBiome.from(biome)) {
+                            case GIANT_FOSSILIZED_FOREST ->
+                                    MiaAbyssPlacements.GIANT_FOSSILIZED_STUMPS;
+                            case SPARSE_GIANT_FOSSILIZED_FOREST ->
+                                    MiaAbyssPlacements.SPARSE_GIANT_FOSSILIZED_STUMPS;
+                            default -> MiaAbyssPlacements.TREES_FOSSILIZED;
+                        });
+                if (biome.equals(GIANT_FOSSILIZED_FOREST)
+                        || biome.equals(SPARSE_GIANT_FOSSILIZED_FOREST)) {
+                    addTree(generationBuilder, MiaAbyssPlacements.GIANT_FOREST_TREES_SKYFOG);
+                    addTree(generationBuilder, MiaAbyssPlacements.GIANT_FOREST_TREES_FOSSILIZED);
+                }
             }
-            case RICH_FOSSILIZED_FOREST -> {
+            case RICH_FOSSILIZED_FOREST, UNDER_RICH_FOSSILIZED_FOREST -> {
                 addSlabRuins(generationBuilder);
                 addGeode(generationBuilder);
                 addPlainGrass(generationBuilder);
                 addCaveVines(generationBuilder);
-                addTree(generationBuilder, MiaAbyssPlacements.TREES_FOSSILIZED);
+                if (biome.equals(UNDER_RICH_FOSSILIZED_FOREST)) {
+                    addTree(generationBuilder, MiaAbyssPlacements.LAYER2_TREES_FOSSILIZED);
+                    addTree(generationBuilder, MiaAbyssPlacements.LAYER2_TREES_FOSSILIZED_CEILING);
+                } else addTree(generationBuilder, MiaAbyssPlacements.TREES_FOSSILIZED);
                 generationBuilder.addFeature(
                         GenerationStep.Decoration.VEGETAL_DECORATION,
                         MiaAbyssPlacements.POOL_WITH_REED);
             }
-            case UNDER_FOSSILIZED_FOREST -> {
+            case UNDER_FOSSILIZED_FOREST, UNDER_WATER_FOSSILIZED_FOREST -> {
                 addSlabRuins(generationBuilder);
                 addGeode(generationBuilder);
                 addLayerOneMeadow(generationBuilder);
@@ -180,10 +207,19 @@ public final class MiaBiomes {
                                 MiaAbyssPlacements.SPORE_BLOSSOM)
                         .addFeature(
                                 GenerationStep.Decoration.VEGETAL_DECORATION,
-                                MiaAbyssPlacements.TREES_FOSSILIZED_UNDER)
+                                biome.equals(UNDER_WATER_FOSSILIZED_FOREST)
+                                        ? MiaAbyssPlacements.LAYER2_TREES_FOSSILIZED_WATER
+                                        : MiaAbyssPlacements.TREES_FOSSILIZED_UNDER)
                         .addFeature(
                                 GenerationStep.Decoration.VEGETAL_DECORATION,
-                                MiaAbyssPlacements.TREES_FOSSILIZED_UNDER_CEILING);
+                                biome.equals(UNDER_WATER_FOSSILIZED_FOREST)
+                                        ? MiaAbyssPlacements.LAYER2_TREES_FOSSILIZED_WATER_CEILING
+                                        : MiaAbyssPlacements.TREES_FOSSILIZED_UNDER_CEILING);
+                if (biome.equals(UNDER_WATER_FOSSILIZED_FOREST)) {
+                    generationBuilder.addFeature(
+                            GenerationStep.Decoration.VEGETAL_DECORATION,
+                            MiaAbyssPlacements.LAYER2_UNDERWATER_VEGETATION);
+                }
             }
             case ABYSS_PLAINS -> {
                 addSlabRuins(generationBuilder);
@@ -384,8 +420,12 @@ public final class MiaBiomes {
         SKYFOG_FOREST(MiaBiomes.SKYFOG_FOREST),
         DENSE_SKYFOG_FOREST(MiaBiomes.DENSE_SKYFOG_FOREST),
         FOSSILIZED_FOREST(MiaBiomes.FOSSILIZED_FOREST),
+        GIANT_FOSSILIZED_FOREST(MiaBiomes.GIANT_FOSSILIZED_FOREST),
+        SPARSE_GIANT_FOSSILIZED_FOREST(MiaBiomes.SPARSE_GIANT_FOSSILIZED_FOREST),
         RICH_FOSSILIZED_FOREST(MiaBiomes.RICH_FOSSILIZED_FOREST),
         UNDER_FOSSILIZED_FOREST(MiaBiomes.UNDER_FOSSILIZED_FOREST),
+        UNDER_RICH_FOSSILIZED_FOREST(MiaBiomes.UNDER_RICH_FOSSILIZED_FOREST),
+        UNDER_WATER_FOSSILIZED_FOREST(MiaBiomes.UNDER_WATER_FOSSILIZED_FOREST),
         ABYSS_PLAINS(MiaBiomes.ABYSS_PLAINS),
         PRASIOLITE_CAVES(MiaBiomes.PRASIOLITE_CAVES),
         ABYSS_LUSH_CAVES(MiaBiomes.ABYSS_LUSH_CAVES),

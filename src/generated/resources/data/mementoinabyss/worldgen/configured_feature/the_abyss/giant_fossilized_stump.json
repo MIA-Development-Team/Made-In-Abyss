@@ -1,0 +1,71 @@
+{
+  "type": "mementoinabyss:giant_fossilized_stump",
+  "config": {
+    "diameter": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 24,
+      "min_inclusive": 16
+    },
+    "extra_height": {
+      "type": "minecraft:weighted_list",
+      "distribution": [
+        {
+          "data": {
+            "type": "minecraft:uniform",
+            "max_inclusive": 14,
+            "min_inclusive": 8
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "type": "minecraft:uniform",
+            "max_inclusive": 24,
+            "min_inclusive": 16
+          },
+          "weight": 5
+        },
+        {
+          "data": {
+            "type": "minecraft:uniform",
+            "max_inclusive": 32,
+            "min_inclusive": 26
+          },
+          "weight": 1
+        }
+      ]
+    },
+    "moss_patch": "minecraft:moss_patch_bonemeal",
+    "moss_patches": 8,
+    "mossy_chance": 0.25,
+    "mossy_top_wood": {
+      "Name": "mementoinabyss:mossy_fossilized_log",
+      "Properties": {
+        "axis": "y"
+      }
+    },
+    "mossy_wood": {
+      "Name": "mementoinabyss:mossy_fossilized_wood",
+      "Properties": {
+        "axis": "y"
+      }
+    },
+    "root_depth": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 6,
+      "min_inclusive": 2
+    },
+    "top_wood": {
+      "Name": "mementoinabyss:fossilized_log",
+      "Properties": {
+        "axis": "y"
+      }
+    },
+    "wood": {
+      "Name": "mementoinabyss:fossilized_wood",
+      "Properties": {
+        "axis": "y"
+      }
+    }
+  }
+}

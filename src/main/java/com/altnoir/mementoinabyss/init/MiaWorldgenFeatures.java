@@ -5,6 +5,8 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.BlockTrunkConf
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.BlockTrunkFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.ClusterConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.ClusterFeature;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.GiantFossilizedStumpConfiguration;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.GiantFossilizedStumpFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.Layer2Feature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.Layer2FeatureConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.LongVinesConfiguration;
@@ -14,6 +16,8 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.PrimoHugeFungu
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.SlabRuinsConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.SlabRuinsFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.InvertedTreeFeature;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.VerdantTreeConfiguration;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.VerdantTreeFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -30,6 +34,16 @@ public final class MiaWorldgenFeatures {
     public static final DeferredHolder<Feature<?>, InvertedTreeFeature> INVERTED_TREE =
             FEATURES.register(
                     "inverted_tree", () -> new InvertedTreeFeature(TreeConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, VerdantTreeFeature> VERDANT_TREE =
+            FEATURES.register(
+                    "verdant_tree", () -> new VerdantTreeFeature(VerdantTreeConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, GiantFossilizedStumpFeature>
+            GIANT_FOSSILIZED_STUMP =
+                    FEATURES.register(
+                            "giant_fossilized_stump",
+                            () ->
+                                    new GiantFossilizedStumpFeature(
+                                            GiantFossilizedStumpConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, BlockTrunkFeature> BLOCK_TRUNK =
             FEATURES.register(
                     "block_trunk", () -> new BlockTrunkFeature(BlockTrunkConfiguration.CODEC));

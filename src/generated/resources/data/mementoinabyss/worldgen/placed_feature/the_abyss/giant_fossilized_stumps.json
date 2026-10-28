@@ -1,0 +1,18 @@
+{
+  "feature": "mementoinabyss:the_abyss/giant_fossilized_stump",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 2
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "mementoinabyss:layer2_surface"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

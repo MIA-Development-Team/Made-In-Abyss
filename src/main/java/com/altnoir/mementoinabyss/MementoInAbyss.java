@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss;
 import com.altnoir.abysslib.reginth.Reginth;
 import com.altnoir.mementoinabyss.infrastructure.config.MiaConfigs;
 import com.altnoir.mementoinabyss.infrastructure.data.MiaDataGen;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaLayer2BiomeGroups;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaEnvironmentAttributes;
 import com.altnoir.mementoinabyss.init.*;
 import com.altnoir.mementoinabyss.network.MiaNetwork;
@@ -31,6 +32,7 @@ public class MementoInAbyss {
         REGISTRATE.registerEventListeners(modEventBus);
 
         MiaEnvironmentAttributes.register(modEventBus);
+        modEventBus.addListener(MiaLayer2BiomeGroups::registerRegistry);
         MiaHeatTypes.register();
         MiaCapabilities.register();
 

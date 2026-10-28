@@ -1,0 +1,28 @@
+{
+  "feature": "mementoinabyss:tree/skyfog_tree",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 8
+    },
+    {
+      "type": "mementoinabyss:fossil_tree_on_every_layer",
+      "count": 1
+    },
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:matching_block_tag",
+        "offset": [
+          0,
+          -1,
+          0
+        ],
+        "tag": "minecraft:supports_vegetation"
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

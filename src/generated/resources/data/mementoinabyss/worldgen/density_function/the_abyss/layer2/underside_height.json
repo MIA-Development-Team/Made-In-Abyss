@@ -1,12 +1,15 @@
 {
-  "type": "minecraft:cache_2d",
+  "type": "mementoinabyss:density_graph_node",
   "argument": {
-    "type": "minecraft:add",
-    "argument1": -152.0,
-    "argument2": {
-      "type": "minecraft:mul",
-      "argument1": 6.0,
-      "argument2": "mementoinabyss:the_abyss/layer2/relief"
+    "type": "minecraft:cache_2d",
+    "argument": {
+      "type": "minecraft:add",
+      "argument1": -152.0,
+      "argument2": {
+        "type": "minecraft:mul",
+        "argument1": 6.0,
+        "argument2": "mementoinabyss:the_abyss/layer2/relief"
+      }
     }
   }
 }

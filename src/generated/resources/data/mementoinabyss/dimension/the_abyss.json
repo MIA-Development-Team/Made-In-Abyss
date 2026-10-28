@@ -188,16 +188,6 @@
       ],
       "layer1_max_depth": 2.0,
       "layer1_radius_squared_sections": 272,
-      "layer2_groups": [
-        {
-          "companions": "mementoinabyss:the_abyss/primo_plains",
-          "primary": "mementoinabyss:the_abyss/primo_forest"
-        },
-        {
-          "companions": "mementoinabyss:the_abyss/temptation_forest",
-          "primary": "mementoinabyss:the_abyss/temptation_plains"
-        }
-      ],
       "layer2_river": "mementoinabyss:the_abyss/abyss_river"
     },
     "settings": "mementoinabyss:the_abyss"

@@ -36,7 +36,7 @@ public final class EnvironmentCubeSkyboxRenderer implements CustomSkyboxRenderer
     public static final EnvironmentCubeSkyboxRenderer INSTANCE =
             new EnvironmentCubeSkyboxRenderer();
     private static final float EXTENT = 100.0F;
-    private static final double ABYSS_DARK_SIDE_Y = -90.0;
+    private static final double ABYSS_DARK_SIDE_Y = -128.0;
     private static final int DARK_SIDE_COLOR = 0xFF1C231E;
     private static final RenderPipeline PIPELINE =
             RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)

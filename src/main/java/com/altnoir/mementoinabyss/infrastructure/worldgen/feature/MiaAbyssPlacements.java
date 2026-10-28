@@ -2,7 +2,9 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.feature;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.FastCountOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.FossilTreeOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.InvertedCountOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.Layer2SurfacePlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.TreeOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.WaterOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeFeatures;
@@ -18,9 +20,11 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ClampedInt;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
@@ -83,19 +87,39 @@ public final class MiaAbyssPlacements {
     public static final ResourceKey<PlacedFeature> ORE_QUARTZ = key("ore_quartz");
     public static final ResourceKey<PlacedFeature> ORE_CHLOROPHYTE = key("ore_chlorophyte");
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG = key("trees_skyfog");
+    public static final ResourceKey<PlacedFeature> GIANT_FOREST_TREES_SKYFOG =
+            key("giant_forest_trees_skyfog");
     public static final ResourceKey<PlacedFeature> OVERWORLD_TREES_SKYFOG =
             key("overworld/trees_skyfog");
     public static final ResourceKey<PlacedFeature> DENSE_TREES_SKYFOG = key("dense_trees_skyfog");
     public static final ResourceKey<PlacedFeature> TREES_VERDANT_FUNGUS =
             key("trees_verdant_fungus");
-    public static final ResourceKey<PlacedFeature> TREES_INVERTED = key("trees_inverted");
+
     public static final ResourceKey<PlacedFeature> TREES_PRIMO_FUNGUS = key("trees_primo_fungus");
     public static final ResourceKey<PlacedFeature> MYCELIUM_PATCH = key("mycelium_patch");
     public static final ResourceKey<PlacedFeature> TREES_FOSSILIZED = key("trees_fossilized");
+    public static final ResourceKey<PlacedFeature> GIANT_FOREST_TREES_FOSSILIZED =
+            key("giant_forest_trees_fossilized");
+    public static final ResourceKey<PlacedFeature> GIANT_FOSSILIZED_STUMPS =
+            key("giant_fossilized_stumps");
+    public static final ResourceKey<PlacedFeature> SPARSE_GIANT_FOSSILIZED_STUMPS =
+            key("sparse_giant_fossilized_stumps");
     public static final ResourceKey<PlacedFeature> TREES_FOSSILIZED_UNDER =
             key("trees_fossilized_under");
     public static final ResourceKey<PlacedFeature> TREES_FOSSILIZED_UNDER_CEILING =
             key("trees_fossilized_under_ceiling");
+    public static final ResourceKey<PlacedFeature> LAYER2_TREES_FOSSILIZED =
+            key("layer2_trees_fossilized");
+    public static final ResourceKey<PlacedFeature> LAYER2_TREES_FOSSILIZED_CEILING =
+            key("layer2_trees_fossilized_ceiling");
+    public static final ResourceKey<PlacedFeature> LAYER2_TREES_FOSSILIZED_WATER =
+            key("layer2_trees_fossilized_water");
+    public static final ResourceKey<PlacedFeature> LAYER2_TREES_FOSSILIZED_WATER_CEILING =
+            key("layer2_trees_fossilized_water_ceiling");
+    public static final ResourceKey<PlacedFeature> LAYER2_UNDERWATER_VEGETATION =
+            key("layer2_underwater_vegetation");
+
+    public static final ResourceKey<PlacedFeature> TREES_INVERTED = key("trees_inverted");
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configured =
@@ -337,21 +361,37 @@ public final class MiaAbyssPlacements {
         ore(context, ORE_EMERALD, configured.getOrThrow(MiaAbyssFeatures.ORE_EMERALD), 20);
         ore(context, ORE_QUARTZ, configured.getOrThrow(MiaAbyssFeatures.ORE_QUARTZ), 16);
         ore(context, ORE_CHLOROPHYTE, configured.getOrThrow(MiaAbyssFeatures.ORE_CHLOROPHYTE), 21);
+        PlacementModifier skyfogSoil =
+                BlockPredicateFilter.forPredicate(
+                        BlockPredicate.matchesTag(
+                                new BlockPos(0, -1, 0), BlockTags.SUPPORTS_VEGETATION));
         context.register(
                 TREES_SKYFOG,
                 new PlacedFeature(
                         configured.getOrThrow(MiaTreeFeatures.SKYFOG_TREE),
-                        List.of(TreeOnEveryLayerPlacement.of(8), BiomeFilter.biome())));
+                        List.of(TreeOnEveryLayerPlacement.of(8), skyfogSoil, BiomeFilter.biome())));
+        context.register(
+                GIANT_FOREST_TREES_SKYFOG,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaTreeFeatures.SKYFOG_TREE),
+                        List.of(
+                                RarityFilter.onAverageOnceEvery(8),
+                                FossilTreeOnEveryLayerPlacement.of(1, false),
+                                skyfogSoil,
+                                BiomeFilter.biome())));
         context.register(
                 DENSE_TREES_SKYFOG,
                 new PlacedFeature(
                         configured.getOrThrow(MiaTreeFeatures.SKYFOG_TREE),
-                        List.of(TreeOnEveryLayerPlacement.of(16), BiomeFilter.biome())));
+                        List.of(
+                                TreeOnEveryLayerPlacement.of(16),
+                                skyfogSoil,
+                                BiomeFilter.biome())));
         context.register(
                 OVERWORLD_TREES_SKYFOG,
                 new PlacedFeature(
                         configured.getOrThrow(MiaTreeFeatures.SKYFOG_TREE),
-                        List.of(TreeOnEveryLayerPlacement.of(8), BiomeFilter.biome())));
+                        List.of(TreeOnEveryLayerPlacement.of(8), skyfogSoil, BiomeFilter.biome())));
         context.register(
                 TREES_VERDANT_FUNGUS,
                 new PlacedFeature(
@@ -389,6 +429,28 @@ public final class MiaAbyssPlacements {
                         configured.getOrThrow(MiaAbyssFeatures.TREES_FOSSILIZED),
                         List.of(TreeOnEveryLayerPlacement.of(8), BiomeFilter.biome())));
         context.register(
+                GIANT_FOREST_TREES_FOSSILIZED,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.TREES_FOSSILIZED),
+                        List.of(
+                                RarityFilter.onAverageOnceEvery(8),
+                                FossilTreeOnEveryLayerPlacement.of(1, false),
+                                BiomeFilter.biome())));
+        context.register(
+                GIANT_FOSSILIZED_STUMPS,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.GIANT_FOSSILIZED_STUMP),
+                        List.of(
+                                RarityFilter.onAverageOnceEvery(2), InSquarePlacement.spread(),
+                                Layer2SurfacePlacement.of(), BiomeFilter.biome())));
+        context.register(
+                SPARSE_GIANT_FOSSILIZED_STUMPS,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.GIANT_FOSSILIZED_STUMP),
+                        List.of(
+                                RarityFilter.onAverageOnceEvery(5), InSquarePlacement.spread(),
+                                Layer2SurfacePlacement.of(), BiomeFilter.biome())));
+        context.register(
                 TREES_FOSSILIZED_UNDER,
                 new PlacedFeature(
                         configured.getOrThrow(MiaAbyssFeatures.TREES_FOSSILIZED_UNDER),
@@ -398,6 +460,41 @@ public final class MiaAbyssPlacements {
                 new PlacedFeature(
                         configured.getOrThrow(MiaAbyssFeatures.TREES_FOSSILIZED_UNDER_CEILING),
                         List.of(InvertedCountOnEveryLayerPlacement.of(6), BiomeFilter.biome())));
+        context.register(
+                LAYER2_TREES_FOSSILIZED,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.TREES_FOSSILIZED),
+                        List.of(
+                                FossilTreeOnEveryLayerPlacement.of(8, false),
+                                BiomeFilter.biome())));
+        context.register(
+                LAYER2_TREES_FOSSILIZED_CEILING,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.TREES_FOSSILIZED_CEILING),
+                        List.of(InvertedCountOnEveryLayerPlacement.of(6), BiomeFilter.biome())));
+        context.register(
+                LAYER2_TREES_FOSSILIZED_WATER,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.TREES_FOSSILIZED_UNDER),
+                        List.of(
+                                FossilTreeOnEveryLayerPlacement.of(12, true),
+                                BiomeFilter.biome())));
+        context.register(
+                LAYER2_TREES_FOSSILIZED_WATER_CEILING,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.TREES_FOSSILIZED_UNDER_CEILING),
+                        List.of(InvertedCountOnEveryLayerPlacement.of(6), BiomeFilter.biome())));
+        context.register(
+                LAYER2_UNDERWATER_VEGETATION,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.LAYER2_UNDERWATER_VEGETATION),
+                        List.of(
+                                CountPlacement.of(48),
+                                InSquarePlacement.spread(),
+                                Layer2SurfacePlacement.of(Heightmap.Types.OCEAN_FLOOR_WG),
+                                BlockPredicateFilter.forPredicate(
+                                        BlockPredicate.matchesBlocks(Blocks.WATER)),
+                                BiomeFilter.biome())));
     }
 
     /**

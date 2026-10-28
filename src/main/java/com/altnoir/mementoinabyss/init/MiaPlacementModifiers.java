@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.FastCountOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.FossilTreeOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.InvertedCountOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.Layer2SurfacePlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.TreeOnEveryLayerPlacement;
@@ -15,6 +16,14 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class MiaPlacementModifiers {
     private static final DeferredRegister<PlacementModifierType<?>> TYPES =
             DeferredRegister.create(Registries.PLACEMENT_MODIFIER_TYPE, MementoInAbyss.ID);
+
+    public static final DeferredHolder<
+                    PlacementModifierType<?>,
+                    PlacementModifierType<FossilTreeOnEveryLayerPlacement>>
+            FOSSIL_TREE_ON_EVERY_LAYER =
+                    TYPES.register(
+                            "fossil_tree_on_every_layer",
+                            () -> () -> FossilTreeOnEveryLayerPlacement.CODEC);
 
     public static final DeferredHolder<
                     PlacementModifierType<?>, PlacementModifierType<Layer2SurfacePlacement>>

@@ -18,6 +18,12 @@ public final class MiaRegistrateTags {
         registrate.addDataGenerator(
                 ProviderType.BLOCK_TAGS,
                 provider -> {
+                    provider.tag(BlockTags.MOSS_REPLACEABLE)
+                            .add(
+                                    MiaBlocks.FOSSILIZED_WOOD.get(),
+                                            MiaBlocks.MOSSY_FOSSILIZED_WOOD.get(),
+                                    MiaBlocks.FOSSILIZED_LOG.get(),
+                                            MiaBlocks.MOSSY_FOSSILIZED_LOG.get());
                     provider.tag(MiaTags.BlockTags.ABYSS_MUD_ORE_REPLACEABLE.tag).add(Blocks.MUD);
                     provider.tag(MiaTags.BlockTags.MYCELIUM_REPLACEABLE.tag)
                             .addTag(BlockTags.DIRT)

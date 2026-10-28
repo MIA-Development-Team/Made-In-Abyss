@@ -1,0 +1,12 @@
+{
+  "type": "mementoinabyss:density_graph_node",
+  "argument": {
+    "type": "minecraft:cache_2d",
+    "argument": {
+      "type": "minecraft:noise",
+      "noise": "mementoinabyss:the_abyss/layer2/pillar",
+      "xz_scale": 1.0,
+      "y_scale": 0.0
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "companions": "mementoinabyss:the_abyss/temptation_forest",
+  "primary": "mementoinabyss:the_abyss/temptation_plains",
+  "terrain_kinds": [
+    "woodland"
+  ]
+}

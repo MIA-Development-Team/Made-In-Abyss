@@ -1,0 +1,7 @@
+{
+  "companions": "mementoinabyss:the_abyss/primo_plains",
+  "primary": "mementoinabyss:the_abyss/primo_forest",
+  "terrain_kinds": [
+    "woodland"
+  ]
+}

@@ -1,59 +1,36 @@
 {
-  "type": "minecraft:range_choice",
-  "input": "minecraft:y",
-  "max_exclusive": 16.0,
-  "min_inclusive": -176.0,
-  "when_in_range": {
-    "type": "minecraft:mul",
-    "argument1": {
-      "type": "minecraft:cache_2d",
-      "argument": {
-        "type": "minecraft:mul",
-        "argument1": {
+  "type": "mementoinabyss:density_graph_node",
+  "argument": {
+    "type": "minecraft:range_choice",
+    "input": "minecraft:y",
+    "max_exclusive": 16.0,
+    "min_inclusive": -176.0,
+    "when_in_range": {
+      "type": "minecraft:mul",
+      "argument1": {
+        "type": "minecraft:cache_2d",
+        "argument": {
           "type": "minecraft:mul",
           "argument1": {
-            "type": "minecraft:clamp",
-            "input": {
-              "type": "minecraft:mul",
-              "argument1": 0.3333333333333333,
-              "argument2": {
-                "type": "minecraft:add",
-                "argument1": -1.0,
-                "argument2": {
-                  "type": "mementoinabyss:general_abyss_hole",
-                  "mul": 0.3,
-                  "radius": 32.0
-                }
-              }
-            },
-            "max": 1.0,
-            "min": 0.0
-          },
-          "argument2": {
-            "type": "minecraft:clamp",
-            "input": {
-              "type": "minecraft:mul",
-              "argument1": 0.3333333333333333,
-              "argument2": {
-                "type": "minecraft:add",
-                "argument1": -1.0,
-                "argument2": {
-                  "type": "mementoinabyss:general_abyss_hole",
-                  "mul": 0.3,
-                  "radius": 32.0
-                }
-              }
-            },
-            "max": 1.0,
-            "min": 0.0
-          }
-        },
-        "argument2": {
-          "type": "minecraft:add",
-          "argument1": 3.0,
-          "argument2": {
             "type": "minecraft:mul",
-            "argument1": -2.0,
+            "argument1": {
+              "type": "minecraft:clamp",
+              "input": {
+                "type": "minecraft:mul",
+                "argument1": 0.3333333333333333,
+                "argument2": {
+                  "type": "minecraft:add",
+                  "argument1": -1.0,
+                  "argument2": {
+                    "type": "mementoinabyss:general_abyss_hole",
+                    "mul": 0.3,
+                    "radius": 32.0
+                  }
+                }
+              },
+              "max": 1.0,
+              "min": 0.0
+            },
             "argument2": {
               "type": "minecraft:clamp",
               "input": {
@@ -72,43 +49,31 @@
               "max": 1.0,
               "min": 0.0
             }
-          }
-        }
-      }
-    },
-    "argument2": {
-      "type": "minecraft:mul",
-      "argument1": {
-        "type": "minecraft:mul",
-        "argument1": {
-          "type": "minecraft:mul",
-          "argument1": {
-            "type": "minecraft:y_clamped_gradient",
-            "from_value": 0.0,
-            "from_y": -176,
-            "to_value": 1.0,
-            "to_y": -152
           },
           "argument2": {
-            "type": "minecraft:y_clamped_gradient",
-            "from_value": 0.0,
-            "from_y": -176,
-            "to_value": 1.0,
-            "to_y": -152
-          }
-        },
-        "argument2": {
-          "type": "minecraft:add",
-          "argument1": 3.0,
-          "argument2": {
-            "type": "minecraft:mul",
-            "argument1": -2.0,
+            "type": "minecraft:add",
+            "argument1": 3.0,
             "argument2": {
-              "type": "minecraft:y_clamped_gradient",
-              "from_value": 0.0,
-              "from_y": -176,
-              "to_value": 1.0,
-              "to_y": -152
+              "type": "minecraft:mul",
+              "argument1": -2.0,
+              "argument2": {
+                "type": "minecraft:clamp",
+                "input": {
+                  "type": "minecraft:mul",
+                  "argument1": 0.3333333333333333,
+                  "argument2": {
+                    "type": "minecraft:add",
+                    "argument1": -1.0,
+                    "argument2": {
+                      "type": "mementoinabyss:general_abyss_hole",
+                      "mul": 0.3,
+                      "radius": 32.0
+                    }
+                  }
+                },
+                "max": 1.0,
+                "min": 0.0
+              }
             }
           }
         }
@@ -118,26 +83,49 @@
         "argument1": {
           "type": "minecraft:mul",
           "argument1": {
-            "type": "minecraft:y_clamped_gradient",
-            "from_value": 1.0,
-            "from_y": 0,
-            "to_value": 0.0,
-            "to_y": 16
+            "type": "minecraft:mul",
+            "argument1": {
+              "type": "minecraft:y_clamped_gradient",
+              "from_value": 0.0,
+              "from_y": -176,
+              "to_value": 1.0,
+              "to_y": -152
+            },
+            "argument2": {
+              "type": "minecraft:y_clamped_gradient",
+              "from_value": 0.0,
+              "from_y": -176,
+              "to_value": 1.0,
+              "to_y": -152
+            }
           },
           "argument2": {
-            "type": "minecraft:y_clamped_gradient",
-            "from_value": 1.0,
-            "from_y": 0,
-            "to_value": 0.0,
-            "to_y": 16
+            "type": "minecraft:add",
+            "argument1": 3.0,
+            "argument2": {
+              "type": "minecraft:mul",
+              "argument1": -2.0,
+              "argument2": {
+                "type": "minecraft:y_clamped_gradient",
+                "from_value": 0.0,
+                "from_y": -176,
+                "to_value": 1.0,
+                "to_y": -152
+              }
+            }
           }
         },
         "argument2": {
-          "type": "minecraft:add",
-          "argument1": 3.0,
-          "argument2": {
+          "type": "minecraft:mul",
+          "argument1": {
             "type": "minecraft:mul",
-            "argument1": -2.0,
+            "argument1": {
+              "type": "minecraft:y_clamped_gradient",
+              "from_value": 1.0,
+              "from_y": 0,
+              "to_value": 0.0,
+              "to_y": 16
+            },
             "argument2": {
               "type": "minecraft:y_clamped_gradient",
               "from_value": 1.0,
@@ -145,10 +133,25 @@
               "to_value": 0.0,
               "to_y": 16
             }
+          },
+          "argument2": {
+            "type": "minecraft:add",
+            "argument1": 3.0,
+            "argument2": {
+              "type": "minecraft:mul",
+              "argument1": -2.0,
+              "argument2": {
+                "type": "minecraft:y_clamped_gradient",
+                "from_value": 1.0,
+                "from_y": 0,
+                "to_value": 0.0,
+                "to_y": 16
+              }
+            }
           }
         }
       }
-    }
-  },
-  "when_out_of_range": 0.0
+    },
+    "when_out_of_range": 0.0
+  }
 }

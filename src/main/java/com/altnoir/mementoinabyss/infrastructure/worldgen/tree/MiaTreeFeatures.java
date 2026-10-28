@@ -13,12 +13,12 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
@@ -92,13 +92,14 @@ public final class MiaTreeFeatures {
         context.register(
                 VERDANT_FUNGUS,
                 new ConfiguredFeature<>(
-                        Feature.HUGE_BROWN_MUSHROOM,
-                        new HugeMushroomFeatureConfiguration(
-                                BlockStateProvider.simple(MiaBlocks.VERDANT_LEAVES.get()),
-                                BlockStateProvider.simple(MiaBlocks.VERDANT_STEM.get()),
-                                3,
+                        MiaWorldgenFeatures.VERDANT_TREE.get(),
+                        new VerdantTreeConfiguration(
+                                MiaBlocks.VERDANT_STEM.get().defaultBlockState(),
+                                MiaBlocks.VERDANT_LEAVES.get().defaultBlockState(),
                                 BlockPredicate.matchesTag(
-                                        BlockTags.HUGE_BROWN_MUSHROOM_CAN_PLACE_ON))));
+                                        BlockTags.HUGE_BROWN_MUSHROOM_CAN_PLACE_ON),
+                                UniformInt.of(10, 16),
+                                UniformInt.of(5, 7))));
         context.register(
                 INVERTED_TREE,
                 new ConfiguredFeature<>(

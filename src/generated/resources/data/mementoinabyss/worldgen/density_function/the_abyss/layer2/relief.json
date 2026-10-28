@@ -1,30 +1,33 @@
 {
-  "type": "minecraft:cache_2d",
+  "type": "mementoinabyss:density_graph_node",
   "argument": {
-    "type": "minecraft:clamp",
-    "input": {
-      "type": "minecraft:add",
-      "argument1": {
-        "type": "minecraft:mul",
-        "argument1": 0.8,
+    "type": "minecraft:cache_2d",
+    "argument": {
+      "type": "minecraft:clamp",
+      "input": {
+        "type": "minecraft:add",
+        "argument1": {
+          "type": "minecraft:mul",
+          "argument1": 0.8,
+          "argument2": {
+            "type": "minecraft:noise",
+            "noise": "mementoinabyss:the_abyss/layer2/relief",
+            "xz_scale": 1.0,
+            "y_scale": 0.0
+          }
+        },
         "argument2": {
-          "type": "minecraft:noise",
-          "noise": "mementoinabyss:the_abyss/layer2/relief",
-          "xz_scale": 1.0,
-          "y_scale": 0.0
+          "type": "minecraft:mul",
+          "argument1": 0.1,
+          "argument2": {
+            "type": "minecraft:add",
+            "argument1": "minecraft:overworld/continents",
+            "argument2": "minecraft:overworld/erosion"
+          }
         }
       },
-      "argument2": {
-        "type": "minecraft:mul",
-        "argument1": 0.1,
-        "argument2": {
-          "type": "minecraft:add",
-          "argument1": "minecraft:overworld/continents",
-          "argument2": "minecraft:overworld/erosion"
-        }
-      }
-    },
-    "max": 1.0,
-    "min": -1.0
+      "max": 1.0,
+      "min": -1.0
+    }
   }
 }

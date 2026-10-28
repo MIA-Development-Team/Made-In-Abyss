@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 final class LayeredPlacementScan {
     enum Surface {
         TREE,
+        WATER_TREE,
         FLOOR,
         WATER,
         LAYER2,
@@ -26,12 +27,11 @@ final class LayeredPlacementScan {
 
         boolean matches(BlockState current, BlockState adjacent) {
             return switch (this) {
-                case TREE ->
-                        (adjacent.is(BlockTags.DIRT)
-                                        || adjacent.is(BlockTags.GRASS_BLOCKS)
+                case TREE -> treeSupport(adjacent) && treeSpace(current, false);
+                case WATER_TREE ->
+                        (adjacent.is(BlockTags.SUPPORTS_VEGETATION)
                                         || adjacent.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag))
-                                && current.getFluidState().isEmpty()
-                                && (current.isAir() || current.is(BlockTags.REPLACEABLE_BY_TREES));
+                                && treeSpace(current, true);
                 case FLOOR ->
                         !emptyFloor(adjacent)
                                 && emptyFloor(current)
@@ -47,6 +47,17 @@ final class LayeredPlacementScan {
                                 && !emptyFloor(adjacent)
                                 && !adjacent.is(Blocks.BEDROCK);
             };
+        }
+
+        private static boolean treeSupport(BlockState state) {
+            return state.is(BlockTags.SUPPORTS_VEGETATION)
+                    || state.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag);
+        }
+
+        private static boolean treeSpace(BlockState state, boolean water) {
+            return water && state.is(Blocks.WATER)
+                    || state.getFluidState().isEmpty()
+                            && (state.isAir() || state.is(BlockTags.REPLACEABLE_BY_TREES));
         }
 
         static boolean waterOrReplaceable(BlockState state) {

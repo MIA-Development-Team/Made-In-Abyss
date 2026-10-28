@@ -1,0 +1,13 @@
+{
+  "feature": "mementoinabyss:the_abyss/trees_fossilized_under",
+  "placement": [
+    {
+      "type": "mementoinabyss:fossil_tree_on_every_layer",
+      "count": 12,
+      "water": true
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -1,8 +1,11 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.layer2;
 
+import com.altnoir.mementoinabyss.api.worldgen.Layer2BiomeSelection;
+import com.altnoir.mementoinabyss.api.worldgen.Layer2Biomes;
 import com.altnoir.mementoinabyss.api.worldgen.TheAbyssGeneratorSetupEvent;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.AbyssSeamRuntime;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.C2meDensityFunctionCompat;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.Layer2BiomeSampler;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.TheAbyssBiomeSource;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.Layer2Layout;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
@@ -60,7 +63,13 @@ public final class Layer2Runtime {
         var layout = found[0];
         if (!layout.bound()) throw new IllegalStateException("Unbound layer 2 layout");
         if (generator.getBiomeSource() instanceof TheAbyssBiomeSource configured)
-            setBiomeSource(generator, configured.bind(layout, random.sampler(), router));
+            setBiomeSource(
+                    generator,
+                    configured.bind(
+                            layout,
+                            random.sampler(),
+                            router,
+                            level.registryAccess().lookupOrThrow(Layer2Biomes.REGISTRY_KEY)));
         var functions = level.registryAccess().lookupOrThrow(Registries.DENSITY_FUNCTION);
         var binder =
                 new DensityFunction.Visitor() {
@@ -82,10 +91,19 @@ public final class Layer2Runtime {
                 random,
                 new State(
                         layout,
-                        functions.getOrThrow(Layer2DensityFunctions.SURFACE).value().mapAll(binder),
-                        functions.getOrThrow(Layer2DensityFunctions.ROOF).value().mapAll(binder),
+                        generator.getBiomeSource() instanceof TheAbyssBiomeSource source
+                                ? source.layer2Sampler()
+                                : null,
                         functions
-                                .getOrThrow(Layer2DensityFunctions.PILLAR)
+                                .getOrThrow(Layer2DensityFunctions.SURFACE_BASE)
+                                .value()
+                                .mapAll(binder),
+                        functions
+                                .getOrThrow(Layer2DensityFunctions.ROOF_BASE)
+                                .value()
+                                .mapAll(binder),
+                        functions
+                                .getOrThrow(Layer2DensityFunctions.SUPPORT)
                                 .value()
                                 .mapAll(binder)));
         NeoForge.EVENT_BUS.post(
@@ -117,7 +135,8 @@ public final class Layer2Runtime {
                         DimensionType.MIN_Y * 2,
                         DimensionType.MAX_Y * 2);
         private final Layer2Layout layout;
-        private final DensityFunction surface, roof, pillar;
+        private final @Nullable Layer2BiomeSampler biomes;
+        private final DensityFunction surfaceBase, roofBase, support;
         private final Aquifer.FluidStatus water, empty;
         private final double openingSquared, waterOpeningSquared;
         private final ThreadLocal<Long2ObjectLinkedOpenHashMap<Column>> columns =
@@ -125,13 +144,15 @@ public final class Layer2Runtime {
 
         private State(
                 Layer2Layout layout,
-                DensityFunction surface,
-                DensityFunction roof,
-                DensityFunction pillar) {
+                @Nullable Layer2BiomeSampler biomes,
+                DensityFunction surfaceBase,
+                DensityFunction roofBase,
+                DensityFunction support) {
             this.layout = layout;
-            this.surface = surface;
-            this.roof = roof;
-            this.pillar = pillar;
+            this.biomes = biomes;
+            this.surfaceBase = surfaceBase;
+            this.roofBase = roofBase;
+            this.support = support;
             this.water =
                     new Aquifer.FluidStatus(layout.waterLevel(), Blocks.WATER.defaultBlockState());
             // Aquifer pressure sums integer levels before converting to double.
@@ -147,15 +168,21 @@ public final class Layer2Runtime {
             return layout;
         }
 
+        public Layer2BiomeSelection biomeSelection(int x, int z) {
+            if (biomes == null)
+                throw new IllegalStateException("Layer2 biome sampler is not installed");
+            return biomes.query(x, z);
+        }
+
         public Column column(int x, int z) {
             var values = columns.get();
             long key = ((long) x << 32) ^ (z & 0xffffffffL);
             var cached = values.getAndMoveToLast(key);
             if (cached != null) return cached;
             var point = new DensityFunction.SinglePointContext(x, 0, z);
-            var result =
-                    new Column(
-                            surface.compute(point), roof.compute(point), pillar.compute(point) > 0);
+            double floor = surfaceBase.compute(point);
+            double ceiling = roofBase.compute(point);
+            var result = new Column(floor, ceiling, support.compute(point) > 1);
             if (values.size() >= 2048) values.removeFirst();
             values.putAndMoveToLast(key, result);
             return result;

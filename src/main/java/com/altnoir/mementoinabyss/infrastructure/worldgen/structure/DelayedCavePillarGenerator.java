@@ -1,6 +1,5 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.structure;
 
-import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.HopperAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
@@ -79,13 +78,6 @@ public final class DelayedCavePillarGenerator {
                         level.getDataStorage().computeIfAbsent(CavePillarSavedData.TYPE);
                 savedData.markProcessed(active.id);
                 ACTIVE.remove(level, active);
-                MementoInAbyss.LOGGER.debug(
-                        "Placed delayed cave pillar at {}, {}, mode {}, height {}, blocks {}",
-                        active.candidate.x(),
-                        active.candidate.z(),
-                        active.pillar.mode(),
-                        active.pillar.ceiling() - active.pillar.floor(),
-                        active.placed);
             }
             return;
         }
@@ -513,7 +505,7 @@ public final class DelayedCavePillarGenerator {
                 }
             }
         }
-        return new PlacementTask(id, candidate, pillar, positions);
+        return new PlacementTask(id, pillar, positions);
     }
 
     private static int[][] terrainDepths(ServerLevel level, Pillar pillar, boolean ceiling) {
@@ -549,11 +541,8 @@ public final class DelayedCavePillarGenerator {
                     (pillar.mode() != PillarMode.CEILING_SPIKE && y <= pillar.floor())
                             || (pillar.mode() != PillarMode.FLOOR_SPIKE && y >= pillar.ceiling());
             BlockState current = level.getBlockState(pos);
-            if (canReplace(current, embedded)
-                    && level.setBlock(
-                            pos, state, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE)) {
-                task.placed++;
-            }
+            if (canReplace(current, embedded))
+                level.setBlock(pos, state, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
         }
         return task.index >= task.positions.size();
     }
@@ -711,16 +700,12 @@ public final class DelayedCavePillarGenerator {
 
     private static final class PlacementTask {
         private final long id;
-        private final Candidate candidate;
         private final Pillar pillar;
         private final List<BlockPos> positions;
         private int index;
-        private int placed;
 
-        private PlacementTask(
-                long id, Candidate candidate, Pillar pillar, List<BlockPos> positions) {
+        private PlacementTask(long id, Pillar pillar, List<BlockPos> positions) {
             this.id = id;
-            this.candidate = candidate;
             this.pillar = pillar;
             this.positions = positions;
         }

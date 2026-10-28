@@ -3,6 +3,7 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.noise;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.MiaHeight;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.AbyssNoodleTaper;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.density.DensityGraphNode;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.GreatFaultProfile;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.HopperAbyssHole;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.SharedAbyssWall;
@@ -59,6 +60,14 @@ public class MiaDensityFunctions {
     public static final ResourceKey<DensityFunction> THE_ABYSS_NOODLE = theAbyssKey("caves/noodle");
     public static final ResourceKey<DensityFunction> THE_ABYSS_LOWER_NOODLE =
             theAbyssKey("caves/lower_noodle");
+    public static final ResourceKey<DensityFunction> SHARED_NOODLE_RIDGES =
+            theAbyssKey("caves/shared_noodle_ridges");
+    public static final ResourceKey<DensityFunction> SHARED_NOODLE_THICKNESS =
+            theAbyssKey("caves/shared_noodle_thickness");
+    public static final ResourceKey<DensityFunction> SHARED_NOODLE_CORE =
+            theAbyssKey("caves/shared_noodle_core");
+    public static final ResourceKey<DensityFunction> SHARED_NOODLE_NETWORK =
+            theAbyssKey("caves/shared_noodle_network");
 
     public static final ResourceKey<DensityFunction> GREAT_FAULT_TERRAIN = greatFaultKey("terrain");
     public static final ResourceKey<DensityFunction> GREAT_FAULT_NOODLE =
@@ -137,7 +146,8 @@ public class MiaDensityFunctions {
                                 .clamp(-14, 14)));
         DensityFunction lowerRamp =
                 DensityFunctions.cacheOnce(lowerLayerRamp(holdergetter1, -152, -104));
-        context.register(
+        registerGraph(
+                context,
                 THE_ABYSS_LOWER_LAYER_BLEND,
                 DensityFunctions.cacheOnce(
                         DensityFunctions.mul(
@@ -235,28 +245,16 @@ public class MiaDensityFunctions {
                         getFunction(holdergetter1, THE_ABYSS_BASE_GREAT_CAVE_NOODLE),
                         HopperAbyssHole.abyssRadius()));
         context.register(THE_ABYSS_NOODLE, abyssNoodle(holdergetter1, holdergetter));
-        context.register(
-                THE_ABYSS_LOWER_NOODLE,
-                abyssNoodleBase(
-                        MiaHeight.THE_ABYSS.minY() + 128,
-                        MiaHeight.THE_ABYSS.maxY(),
-                        holdergetter1,
-                        holdergetter,
-                        1.5,
-                        1.5,
-                        2.6666666666666665,
-                        -0.5,
-                        -0.3,
-                        40,
-                        true,
-                        false,
-                        false,
-                        true));
+        registerCaveNetwork(context, holdergetter1, holdergetter, yFunction);
         Layer2DensityFunctions.bootstrap(context);
-        context.register(
-                THE_ABYSS_RAW_TERRAIN, MiaNoiseRouterData.theAbyssRawDensity(holdergetter1));
-        context.register(
-                THE_ABYSS_TONGUE_SUPPORT, MiaNoiseRouterData.theAbyssTongueSupport(holdergetter1));
+        registerGraph(
+                context,
+                THE_ABYSS_RAW_TERRAIN,
+                MiaNoiseRouterData.theAbyssRawDensity(holdergetter1));
+        registerGraph(
+                context,
+                THE_ABYSS_TONGUE_SUPPORT,
+                MiaNoiseRouterData.theAbyssTongueSupport(holdergetter1));
 
         // Layer 3
         context.register(
@@ -267,6 +265,88 @@ public class MiaDensityFunctions {
                         MiaHeight.GREAT_FAULT.maxY()));
         context.register(GREAT_FAULT_NOODLE, greatFaultNoodle(holdergetter1, holdergetter));
         context.register(GREAT_FAULT_BIG_CAVE, bigCaves(holdergetter));
+    }
+
+    private static void registerCaveNetwork(
+            BootstrapContext<DensityFunction> context,
+            HolderGetter<DensityFunction> functions,
+            HolderGetter<NormalNoise.NoiseParameters> noises,
+            DensityFunction y) {
+        DensityFunction a =
+                sharedCaveNoise(y, noises, Noises.NOODLE_RIDGE_A, 2.6666666666666665).abs();
+        DensityFunction b =
+                sharedCaveNoise(y, noises, Noises.NOODLE_RIDGE_B, 2.6666666666666665).abs();
+        context.register(SHARED_NOODLE_RIDGES, DensityFunctions.max(a, b));
+        DensityFunction junctions =
+                sharedCaveNoise(y, noises, Noises.SPAGHETTI_3D_1, 2.6666666666666665).abs();
+        // The third field supplies junctions; the A/B pair remains the main backbone.
+        context.register(
+                SHARED_NOODLE_NETWORK, DensityFunctions.max(junctions, DensityFunctions.min(a, b)));
+        context.register(
+                SHARED_NOODLE_THICKNESS, sharedCaveNoise(y, noises, Noises.NOODLE_THICKNESS, 1));
+        DensityFunction ridge =
+                DensityFunctions.mul(
+                        DensityFunctions.constant(1.5),
+                        getFunction(functions, SHARED_NOODLE_RIDGES));
+        DensityFunction thickness = getFunction(functions, SHARED_NOODLE_THICKNESS);
+        DensityFunction thinWidth =
+                DensityFunctions.add(
+                        DensityFunctions.constant(.12),
+                        DensityFunctions.mul(DensityFunctions.constant(-.0225), thickness));
+        context.register(
+                SHARED_NOODLE_CORE,
+                DensityFunctions.add(
+                        DensityFunctions.mul(
+                                DensityFunctions.constant(1.5),
+                                getFunction(functions, SHARED_NOODLE_NETWORK)),
+                        DensityFunctions.mul(DensityFunctions.constant(-1), thinWidth)));
+        DensityFunction wide =
+                DensityFunctions.add(
+                        DensityFunctions.constant(.4),
+                        DensityFunctions.mul(DensityFunctions.constant(-.1), thickness));
+        DensityFunction depthBias =
+                DensityFunctions.add(
+                        DensityFunctions.yClampedGradient(-16, 16, -1.5, 0),
+                        DensityFunctions.yClampedGradient(0, 32, 1.5, 0));
+        DensityFunction width =
+                DensityFunctions.rangeChoice(
+                        sharedCaveNoise(y, noises, Noises.NOODLE, 1.5),
+                        -1000000,
+                        0,
+                        thinWidth,
+                        DensityFunctions.max(
+                                thinWidth,
+                                DensityFunctions.add(
+                                        wide,
+                                        DensityFunctions.mul(
+                                                DensityFunctions.constant(-1), depthBias))));
+        // Only wide branches taper with depth; the shared spine survives their switches.
+        context.register(
+                THE_ABYSS_LOWER_NOODLE,
+                DensityFunctions.rangeChoice(
+                        y,
+                        MiaHeight.THE_ABYSS.minY() + 128 - 40,
+                        MiaHeight.THE_ABYSS.maxY(),
+                        DensityFunctions.min(
+                                DensityFunctions.add(
+                                        ridge,
+                                        DensityFunctions.mul(DensityFunctions.constant(-1), width)),
+                                getFunction(functions, SHARED_NOODLE_CORE)),
+                        DensityFunctions.constant(64)));
+    }
+
+    private static DensityFunction sharedCaveNoise(
+            DensityFunction y,
+            HolderGetter<NormalNoise.NoiseParameters> noises,
+            ResourceKey<NormalNoise.NoiseParameters> noise,
+            double scale) {
+        // Keep a full interpolation cell beyond the active cave range on either side.
+        return yLimitedInterpolatable(
+                y,
+                DensityFunctions.noise(noises.getOrThrow(noise), scale, scale),
+                MiaHeight.THE_ABYSS.minY() + 128 - 48,
+                MiaHeight.THE_ABYSS.maxY() + 8,
+                1);
     }
 
     private static DensityFunction theAbyssGreatCaveNoodle(
@@ -629,6 +709,13 @@ public class MiaDensityFunctions {
     private static DensityFunction getFunction(
             HolderGetter<DensityFunction> densityFunctions, ResourceKey<DensityFunction> key) {
         return new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(key));
+    }
+
+    private static void registerGraph(
+            BootstrapContext<DensityFunction> context,
+            ResourceKey<DensityFunction> key,
+            DensityFunction value) {
+        context.register(key, new DensityGraphNode(value));
     }
 
     private static DensityFunction registerAndWrap(

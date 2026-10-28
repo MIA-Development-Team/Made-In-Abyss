@@ -65,7 +65,8 @@ public final class Layer2GeneratorView extends NoiseBasedChunkGenerator {
             int maxY) {
         if (structure && level != null && level.hasChunk(x >> 4, z >> 4)) {
             var point = new BlockPos.MutableBlockPos(x, maxY, z);
-            for (int y = Math.min(maxY, level.getMaxY() - 1);
+            int top = Math.min(maxY, (int) Math.floor(state.surfaceHeight(x, z)) + 32);
+            for (int y = Math.min(top, level.getMaxY() - 1);
                     y >= Math.max(minY, level.getMinY());
                     y--) {
                 point.setY(y);
@@ -80,7 +81,7 @@ public final class Layer2GeneratorView extends NoiseBasedChunkGenerator {
         if (!structure) {
             ChunkAccess chunk = availableChunk(level, x, z);
             if (chunk != null) {
-                int top = Math.min(maxY - 1, (int) Math.floor(state.roofHeight(x, z)) - 8);
+                int top = Math.min(maxY - 1, (int) Math.ceil(state.roofHeight(x, z)) + 24);
                 return featureHeight(chunk, type, x, z, minY, top);
             }
             if (type.isOpaque().test(Blocks.WATER.defaultBlockState())
@@ -145,7 +146,10 @@ public final class Layer2GeneratorView extends NoiseBasedChunkGenerator {
         if (structure && (physical == null || !physical.hasChunk(x >> 4, z >> 4))) {
             var column = original.getBaseColumn(x, z, heightAccessor, randomState);
             int bottom = Math.max(minY, heightAccessor.getMinY());
-            int top = Math.min(maxY, heightAccessor.getMaxY() - 1);
+            int top =
+                    Math.min(
+                            Math.min(maxY, heightAccessor.getMaxY() - 1),
+                            (int) Math.floor(state.surfaceHeight(x, z)) + 32);
             for (int y = top; y >= bottom; y--) {
                 var block = column.getBlock(y);
                 var above = column.getBlock(y + 1);

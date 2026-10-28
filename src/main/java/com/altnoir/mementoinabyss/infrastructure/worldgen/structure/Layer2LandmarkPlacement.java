@@ -1,5 +1,6 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.structure;
 
+import com.altnoir.mementoinabyss.api.worldgen.Layer2Biomes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.Layer2Layout;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.layer2.Layer2Runtime;
 import com.altnoir.mementoinabyss.init.MiaStructurePlacementTypes;
@@ -58,7 +59,9 @@ public final class Layer2LandmarkPlacement extends StructurePlacement {
         var state = Layer2Runtime.state(structureState.randomState());
         if (state == null) return false;
         var region = state.layout().sample((x << 4) + 8, (z << 4) + 8);
-        if (region.primary() != primary) return false;
+        if (!state.biomeSelection((x << 4) + 8, (z << 4) + 8)
+                .zone()
+                .equals(primary ? Layer2Biomes.PRIMARY : Layer2Biomes.COMPANIONS)) return false;
         Optional<ChunkPos> anchor = anchorFor(state, region);
         return anchor.isPresent() && anchor.get().x() == x && anchor.get().z() == z;
     }
@@ -74,7 +77,9 @@ public final class Layer2LandmarkPlacement extends StructurePlacement {
                     z <= (long) center.z() + chunkRadius;
                     z++) {
                 var region = state.layout().sample(((int) x << 4) + 8, ((int) z << 4) + 8);
-                if (region.primary() != primary) continue;
+                if (!state.biomeSelection(((int) x << 4) + 8, ((int) z << 4) + 8)
+                        .zone()
+                        .equals(primary ? Layer2Biomes.PRIMARY : Layer2Biomes.COMPANIONS)) continue;
                 var key = new AnchorKey(region.id(), primary ? -1 : region.sector(), salt());
                 if (!visited.add(key)) continue;
                 anchorFor(state, region)
@@ -142,10 +147,15 @@ public final class Layer2LandmarkPlacement extends StructurePlacement {
                     int x = (chunkX << 4) + 8, z = (chunkZ << 4) + 8;
                     var candidate = layout.sample(x, z);
                     if (candidate.id() != region.id()
-                            || candidate.primary() != (slot < 0)
                             || (slot >= 0 && candidate.sector() != slot)
                             || candidate.edgeDistance() <= layout.riverBankDistance() + 16
-                            || state.opening(x, z)) continue;
+                            || state.opening(x, z)
+                            || !state.biomeSelection(x, z)
+                                    .zone()
+                                    .equals(
+                                            slot < 0
+                                                    ? Layer2Biomes.PRIMARY
+                                                    : Layer2Biomes.COMPANIONS)) continue;
                     var column = state.column(x, z);
                     if (column.pillar()
                             || column.height() < -114

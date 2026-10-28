@@ -1,0 +1,7 @@
+{
+  "companions": "mementoinabyss:the_abyss/under_water_fossilized_forest",
+  "primary": "mementoinabyss:the_abyss/under_rich_fossilized_forest",
+  "terrain_kinds": [
+    "wetland"
+  ]
+}

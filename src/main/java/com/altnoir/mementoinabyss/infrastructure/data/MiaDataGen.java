@@ -3,9 +3,11 @@ package com.altnoir.mementoinabyss.infrastructure.data;
 import com.altnoir.abysslib.reginth.providers.ProviderType;
 import com.altnoir.abysslib.reginth.providers.ReginthLangProvider;
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.api.worldgen.Layer2Biomes;
 import com.altnoir.mementoinabyss.foundation.utility.FilesHelper;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.MiaPaintingVariants;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaBiomes;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaLayer2BiomeGroups;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensionTypes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaWorldClocks;
@@ -73,6 +75,7 @@ public class MiaDataGen {
                                     GreatFaultPlacements.bootstrap(context);
                                 })
                         .add(Registries.BIOME, MiaBiomes::bootstrap)
+                        .add(Layer2Biomes.REGISTRY_KEY, MiaLayer2BiomeGroups::bootstrap)
                         .add(Registries.PROCESSOR_LIST, MiaProcessorLists::bootstrap)
                         .add(Registries.TEMPLATE_POOL, MiaStructurePools::bootstrap)
                         .add(Registries.STRUCTURE, MiaStructures::bootstrap)

@@ -148,12 +148,6 @@ public class MiaNoiseRouterData extends NoiseRouterData {
         return postProcess(getFunction(densityFunctions, MiaDensityFunctions.GREAT_FAULT_TERRAIN));
     }
 
-    private static DensityFunction noodleWithDepth(DensityFunction noodle) {
-        return DensityFunctions.add(
-                DensityFunctions.yClampedGradient(-16, 16, -1.5, 0.0),
-                DensityFunctions.add(DensityFunctions.yClampedGradient(0, 32, 1.5, 0.0), noodle));
-    }
-
     static DensityFunction theAbyssTongueSupport(HolderGetter<DensityFunction> functions) {
         return theAbyssGround(
                 functions, getFunction(functions, MiaDensityFunctions.THE_ABYSS_RAW_TERRAIN));
@@ -166,10 +160,7 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                 Layer2DensityFunctions.get(functions, Layer2DensityFunctions.WEIGHT);
         DensityFunction ordinary =
                 DensityFunctions.min(
-                        rock,
-                        noodleWithDepth(
-                                getFunction(
-                                        functions, MiaDensityFunctions.THE_ABYSS_LOWER_NOODLE)));
+                        rock, getFunction(functions, MiaDensityFunctions.THE_ABYSS_LOWER_NOODLE));
         DensityFunction main =
                 DensityFunctions.rangeChoice(
                         weight,

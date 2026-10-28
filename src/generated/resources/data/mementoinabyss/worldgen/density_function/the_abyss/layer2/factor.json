@@ -1,35 +1,38 @@
 {
-  "type": "minecraft:flat_cache",
+  "type": "mementoinabyss:density_graph_node",
   "argument": {
-    "type": "minecraft:cache_2d",
+    "type": "minecraft:flat_cache",
     "argument": {
-      "type": "minecraft:add",
-      "argument1": 0.0625,
-      "argument2": {
-        "type": "minecraft:mul",
-        "argument1": "mementoinabyss:the_abyss/layer2/region_blend",
+      "type": "minecraft:cache_2d",
+      "argument": {
+        "type": "minecraft:add",
+        "argument1": 0.0625,
         "argument2": {
-          "type": "minecraft:add",
-          "argument1": -0.0625,
+          "type": "minecraft:mul",
+          "argument1": "mementoinabyss:the_abyss/layer2/region_blend",
           "argument2": {
-            "type": "minecraft:range_choice",
-            "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
-            "max_exclusive": 1.0,
-            "min_inclusive": 0.0,
-            "when_in_range": 0.0625,
-            "when_out_of_range": {
+            "type": "minecraft:add",
+            "argument1": -0.0625,
+            "argument2": {
               "type": "minecraft:range_choice",
               "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
-              "max_exclusive": 2.0,
-              "min_inclusive": 1.0,
-              "when_in_range": 0.05,
+              "max_exclusive": 1.0,
+              "min_inclusive": 0.0,
+              "when_in_range": 0.0625,
               "when_out_of_range": {
                 "type": "minecraft:range_choice",
                 "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
-                "max_exclusive": 3.0,
-                "min_inclusive": 2.0,
-                "when_in_range": 0.07142857142857142,
-                "when_out_of_range": 0.0625
+                "max_exclusive": 2.0,
+                "min_inclusive": 1.0,
+                "when_in_range": 0.05,
+                "when_out_of_range": {
+                  "type": "minecraft:range_choice",
+                  "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
+                  "max_exclusive": 3.0,
+                  "min_inclusive": 2.0,
+                  "when_in_range": 0.07142857142857142,
+                  "when_out_of_range": 0.0625
+                }
               }
             }
           }

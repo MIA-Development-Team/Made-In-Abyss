@@ -1,0 +1,23 @@
+{
+  "type": "mementoinabyss:density_graph_node",
+  "argument": {
+    "type": "minecraft:flat_cache",
+    "argument": {
+      "type": "minecraft:cache_2d",
+      "argument": {
+        "type": "minecraft:clamp",
+        "input": {
+          "type": "minecraft:mul",
+          "argument1": 0.041666666666666664,
+          "argument2": {
+            "type": "minecraft:add",
+            "argument1": -48.0,
+            "argument2": "mementoinabyss:the_abyss/layer2/clear_space"
+          }
+        },
+        "max": 1.0,
+        "min": 0.0
+      }
+    }
+  }
+}

@@ -6,7 +6,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CaveVines;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,7 +27,7 @@ public class InvertedTreeFeature extends Feature<TreeConfiguration> {
         BlockPos origin = context.origin();
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         if (!level.getBlockState(cursor.set(origin.getX(), origin.getY() + 1, origin.getZ()))
-                .is(Blocks.ROOTED_DIRT)) return false;
+                .is(BlockTags.SUPPORTS_VEGETATION)) return false;
         TreeConfiguration config = context.config();
         int height = config.trunkPlacer.getTreeHeight(random);
         if (origin.getY() - height - 1 < level.getMinY() || origin.getY() + 1 >= level.getMaxY())

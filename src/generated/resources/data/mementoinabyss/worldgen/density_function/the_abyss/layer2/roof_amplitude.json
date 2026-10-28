@@ -1,0 +1,47 @@
+{
+  "type": "mementoinabyss:density_graph_node",
+  "argument": {
+    "type": "minecraft:flat_cache",
+    "argument": {
+      "type": "minecraft:cache_2d",
+      "argument": {
+        "type": "minecraft:mul",
+        "argument1": "mementoinabyss:the_abyss/layer2/detail_budget",
+        "argument2": {
+          "type": "minecraft:add",
+          "argument1": 12.0,
+          "argument2": {
+            "type": "minecraft:mul",
+            "argument1": "mementoinabyss:the_abyss/layer2/region_blend",
+            "argument2": {
+              "type": "minecraft:add",
+              "argument1": -12.0,
+              "argument2": {
+                "type": "minecraft:range_choice",
+                "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
+                "max_exclusive": 1.0,
+                "min_inclusive": 0.0,
+                "when_in_range": 12.0,
+                "when_out_of_range": {
+                  "type": "minecraft:range_choice",
+                  "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
+                  "max_exclusive": 2.0,
+                  "min_inclusive": 1.0,
+                  "when_in_range": 12.0,
+                  "when_out_of_range": {
+                    "type": "minecraft:range_choice",
+                    "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
+                    "max_exclusive": 3.0,
+                    "min_inclusive": 2.0,
+                    "when_in_range": 16.0,
+                    "when_out_of_range": 12.0
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

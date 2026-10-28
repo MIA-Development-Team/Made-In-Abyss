@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": {
+      "feature": "mementoinabyss:the_abyss/layer2_sea_pickle",
+      "placement": []
+    },
+    "features": [
+      {
+        "chance": 0.5,
+        "feature": {
+          "feature": "mementoinabyss:the_abyss/layer2_seagrass",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.8,
+        "feature": {
+          "feature": "mementoinabyss:the_abyss/layer2_kelp",
+          "placement": [
+            {
+              "type": "minecraft:block_predicate_filter",
+              "predicate": {
+                "type": "minecraft:would_survive",
+                "state": {
+                  "Name": "minecraft:kelp",
+                  "Properties": {
+                    "age": "0"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -67,8 +68,8 @@ public class InvertedCountOnEveryLayerPlacement extends PlacementModifier {
 
     // The snapshot is confined to this eager placement call, before any feature writes.
     private static final class CeilingScan {
-        private static final Predicate<BlockState> ROOTED_DIRT =
-                state -> state.is(Blocks.ROOTED_DIRT);
+        private static final Predicate<BlockState> SOIL_SUPPORT =
+                state -> state.is(BlockTags.SUPPORTS_VEGETATION);
         private final PlacementContext context;
         private final PlacedFeature topFeature;
         private final boolean tree;
@@ -90,7 +91,9 @@ public class InvertedCountOnEveryLayerPlacement extends PlacementModifier {
             tree = config != null;
             minimumHeight = tree ? config.trunkPlacer.getBaseHeight() : 1;
             checkBiome =
-                    tree && topFeature.placement().stream().anyMatch(p -> p instanceof BiomeFilter);
+                    topFeature != null
+                            && topFeature.placement().stream()
+                                    .anyMatch(p -> p instanceof BiomeFilter);
         }
 
         private int find(int x, int z) {
@@ -116,13 +119,13 @@ public class InvertedCountOnEveryLayerPlacement extends PlacementModifier {
         private static final class ChunkScan {
             private final ChunkAccess chunk;
             private final LevelChunkSection[] sections;
-            private final byte[] rootedSections;
+            private final byte[] soilSections;
             private final boolean directSections;
 
             private ChunkScan(ChunkAccess chunk) {
                 this.chunk = chunk;
                 sections = chunk.getSections();
-                rootedSections = new byte[sections.length];
+                soilSections = new byte[sections.length];
                 directSections =
                         chunk.getClass() == ProtoChunk.class
                                 || chunk.getClass() == LevelChunk.class;
@@ -131,17 +134,17 @@ public class InvertedCountOnEveryLayerPlacement extends PlacementModifier {
             private boolean canContainRoot(int index) {
                 if (!directSections) return true;
                 if (index < 0 || index >= sections.length) return false;
-                if (rootedSections[index] == 0) {
+                if (soilSections[index] == 0) {
                     LevelChunkSection section = sections[index];
-                    rootedSections[index] =
+                    soilSections[index] =
                             (byte)
                                     (section != null
                                                     && !section.hasOnlyAir()
-                                                    && section.maybeHas(ROOTED_DIRT)
+                                                    && section.maybeHas(SOIL_SUPPORT)
                                             ? 2
                                             : 1);
                 }
-                return rootedSections[index] == 2;
+                return soilSections[index] == 2;
             }
         }
 
@@ -184,18 +187,18 @@ public class InvertedCountOnEveryLayerPlacement extends PlacementModifier {
                     BlockState root = stateAt(rootY);
                     BlockState previous = below;
                     below = root;
-                    if (!root.is(Blocks.ROOTED_DIRT)) continue;
+                    if (!root.is(BlockTags.SUPPORTS_VEGETATION)) continue;
                     if (previous == null) previous = stateAt(rootY - 1);
                     if (tree ? !InvertedTreeFeature.canReplace(previous) : !isEmpty(previous))
                         continue;
                     int y = rootY - 1;
+                    if (checkBiome
+                            && !context.generator()
+                                    .getBiomeGenerationSettings(
+                                            context.getLevel().getBiome(cursor.set(x, y, z)))
+                                    .hasFeature(topFeature)) continue;
                     if (tree) {
                         if (y - minimumHeight - 1 < context.getMinY()) continue;
-                        if (checkBiome
-                                && !context.generator()
-                                        .getBiomeGenerationSettings(
-                                                context.getLevel().getBiome(cursor.set(x, y, z)))
-                                        .hasFeature(topFeature)) continue;
                         boolean fits = true;
                         for (int offset = 1; offset < minimumHeight; offset++) {
                             if (!InvertedTreeFeature.canReplace(stateAt(y - offset))) {

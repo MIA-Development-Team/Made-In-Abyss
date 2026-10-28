@@ -1,0 +1,26 @@
+{
+  "feature": "mementoinabyss:the_abyss/layer2_underwater_vegetation",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 48
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "mementoinabyss:layer2_surface",
+      "heightmap": "OCEAN_FLOOR_WG"
+    },
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:matching_blocks",
+        "blocks": "minecraft:water"
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}
