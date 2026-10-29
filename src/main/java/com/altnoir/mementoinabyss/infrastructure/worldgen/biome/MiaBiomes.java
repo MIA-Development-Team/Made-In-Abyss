@@ -40,7 +40,7 @@ public final class MiaBiomes {
     public static final ResourceKey<Biome> ABYSS_PLAINS = key("abyss_plains");
     public static final ResourceKey<Biome> PRASIOLITE_CAVES = key("prasiolite_caves");
     public static final ResourceKey<Biome> ABYSS_LUSH_CAVES = key("abyss_lush_caves");
-    public static final ResourceKey<Biome> ABYSS_DRIPSTONE_CAVES = key("abyss_dripstone_caves");
+    public static final ResourceKey<Biome> ABYSS_TUFF_CAVES = key("abyss_tuff_caves");
     public static final ResourceKey<Biome> TEMPTATION_FOREST = key("temptation_forest");
     public static final ResourceKey<Biome> TEMPTATION_PLAINS = key("temptation_plains");
     public static final ResourceKey<Biome> PRIMO_FOREST = key("primo_forest");
@@ -70,7 +70,7 @@ public final class MiaBiomes {
                     ABYSS_PLAINS,
                     PRASIOLITE_CAVES,
                     ABYSS_LUSH_CAVES,
-                    ABYSS_DRIPSTONE_CAVES,
+                    ABYSS_TUFF_CAVES,
                     TEMPTATION_FOREST,
                     TEMPTATION_PLAINS,
                     PRIMO_FOREST,
@@ -266,7 +266,7 @@ public final class MiaBiomes {
                 addLayerOneMeadow(generationBuilder);
                 addTree(generationBuilder, MiaAbyssPlacements.TREES_SKYFOG);
             }
-            case ABYSS_DRIPSTONE_CAVES -> {
+            case ABYSS_TUFF_CAVES -> {
                 addSlabRuins(generationBuilder);
                 addGeode(generationBuilder);
                 addLayerOneMeadow(generationBuilder);
@@ -451,7 +451,7 @@ public final class MiaBiomes {
         ABYSS_PLAINS(MiaBiomes.ABYSS_PLAINS),
         PRASIOLITE_CAVES(MiaBiomes.PRASIOLITE_CAVES),
         ABYSS_LUSH_CAVES(MiaBiomes.ABYSS_LUSH_CAVES),
-        ABYSS_DRIPSTONE_CAVES(MiaBiomes.ABYSS_DRIPSTONE_CAVES),
+        ABYSS_TUFF_CAVES(MiaBiomes.ABYSS_TUFF_CAVES),
         TEMPTATION_FOREST(MiaBiomes.TEMPTATION_FOREST),
         TEMPTATION_PLAINS(MiaBiomes.TEMPTATION_PLAINS),
         PRIMO_FOREST(MiaBiomes.PRIMO_FOREST),

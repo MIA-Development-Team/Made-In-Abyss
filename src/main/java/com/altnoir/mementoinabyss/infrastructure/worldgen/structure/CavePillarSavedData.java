@@ -22,6 +22,12 @@ final class CavePillarSavedData extends SavedData {
                     CavePillarSavedData::new,
                     CODEC);
 
+    static final SavedDataType<CavePillarSavedData> TUFF_CAVES_TYPE =
+            new SavedDataType<>(
+                    MementoInAbyss.asResource("the_abyss/tuff_cave_pillars"),
+                    CavePillarSavedData::new,
+                    CODEC);
+
     private final Set<Long> processed = new HashSet<>();
 
     private CavePillarSavedData() {}

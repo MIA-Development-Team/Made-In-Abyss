@@ -1133,7 +1133,7 @@
             "if_true": {
               "type": "minecraft:biome",
               "biome_is": [
-                "mementoinabyss:the_abyss/abyss_dripstone_caves"
+                "mementoinabyss:the_abyss/abyss_tuff_caves"
               ]
             },
             "then_run": {

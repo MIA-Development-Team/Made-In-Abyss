@@ -77,7 +77,7 @@ public final class MiaSurfaceRules {
                                                         coarse_dirt),
                                                 makeStateRule(Blocks.DIRT)))),
                         SurfaceRules.ifTrue(
-                                SurfaceRules.isBiome(MiaBiomes.ABYSS_DRIPSTONE_CAVES),
+                                SurfaceRules.isBiome(MiaBiomes.ABYSS_TUFF_CAVES),
                                 SurfaceRules.sequence(
                                         SurfaceRules.ifTrue(
                                                 SurfaceRules.stoneDepthCheck(

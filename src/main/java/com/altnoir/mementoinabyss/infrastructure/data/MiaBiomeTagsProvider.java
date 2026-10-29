@@ -39,7 +39,7 @@ public final class MiaBiomeTagsProvider extends BiomeTagsProvider {
                 .add(MiaBiomes.ABYSS_PLAINS)
                 .add(MiaBiomes.PRASIOLITE_CAVES)
                 .add(MiaBiomes.ABYSS_LUSH_CAVES)
-                .add(MiaBiomes.ABYSS_DRIPSTONE_CAVES)
+                .add(MiaBiomes.ABYSS_TUFF_CAVES)
                 .add(MiaBiomes.TEMPTATION_FOREST)
                 .add(MiaBiomes.TEMPTATION_PLAINS)
                 .add(MiaBiomes.PRIMO_FOREST)

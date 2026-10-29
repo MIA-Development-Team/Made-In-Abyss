@@ -75,7 +75,7 @@ public final class MiaAbyssBiomeDefinitions {
                                         1.0F,
                                         0.2F,
                                         0.3F,
-                                        biomes.getOrThrow(MiaBiomes.ABYSS_DRIPSTONE_CAVES)),
+                                        biomes.getOrThrow(MiaBiomes.ABYSS_TUFF_CAVES)),
                                 biomePair(
                                         -0.3F,
                                         0.5F,

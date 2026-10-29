@@ -144,7 +144,7 @@
           }
         },
         {
-          "biome": "mementoinabyss:the_abyss/abyss_dripstone_caves",
+          "biome": "mementoinabyss:the_abyss/abyss_tuff_caves",
           "parameters": {
             "continentalness": 0.0,
             "depth": [
