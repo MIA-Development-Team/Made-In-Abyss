@@ -4,6 +4,7 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.FastCountOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.FossilTreeOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.InvertedCountOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.Layer2FlowerSurfacePlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.Layer2SurfacePlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.TreeOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.WaterOnEveryLayerPlacement;
@@ -16,6 +17,13 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class MiaPlacementModifiers {
     private static final DeferredRegister<PlacementModifierType<?>> TYPES =
             DeferredRegister.create(Registries.PLACEMENT_MODIFIER_TYPE, MementoInAbyss.ID);
+
+    public static final DeferredHolder<
+                    PlacementModifierType<?>, PlacementModifierType<Layer2FlowerSurfacePlacement>>
+            LAYER2_FLOWER_SURFACE =
+                    TYPES.register(
+                            "layer2_flower_surface",
+                            () -> () -> Layer2FlowerSurfacePlacement.CODEC);
 
     public static final DeferredHolder<
                     PlacementModifierType<?>,

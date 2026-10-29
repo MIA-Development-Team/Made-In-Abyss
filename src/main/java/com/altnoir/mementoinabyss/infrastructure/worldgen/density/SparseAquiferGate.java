@@ -7,11 +7,11 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 
 /** Disables the central Abyss region, then deterministically enables one out of every N aquifer cells. */
 public record SparseAquiferGate(int oneIn) implements DensityFunction.SimpleFunction {
-    private static final int CELL_WIDTH = 16;
-    private static final int CELL_HEIGHT = 12;
+    private static final int CELL_WIDTH = 32;
+    private static final int CELL_HEIGHT = 24;
 
     /** Prevents an enabled neighboring aquifer sample cell from bleeding back across the radius. */
-    private static final int CENTER_GUARD_WIDTH = CELL_WIDTH;
+    private static final int CENTER_GUARD_WIDTH = 16;
 
     public static final KeyDispatchDataCodec<SparseAquiferGate> CODEC =
             KeyDispatchDataCodec.of(

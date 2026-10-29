@@ -1,0 +1,6 @@
+{
+  "values": [
+    "minecraft:mushroom_fields",
+    "#minecraft:is_overworld"
+  ]
+}

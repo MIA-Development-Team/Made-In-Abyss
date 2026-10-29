@@ -1,6 +1,10 @@
 {
   "ambient_light": 0.025,
   "attributes": {
+    "mementoinabyss:sky_light_region": {
+      "fade_distance": 48.0,
+      "radius_multiplier": 1.0
+    },
     "mementoinabyss:vertical_above": {
       "dimension": "mementoinabyss:the_abyss",
       "entry_offset": 8.0

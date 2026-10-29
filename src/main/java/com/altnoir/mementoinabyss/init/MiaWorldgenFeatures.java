@@ -13,6 +13,7 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.LongVinesConfi
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.LongVinesFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.PrimoHugeFungusConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.PrimoHugeFungusFeature;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.ReedPoolFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.SlabRuinsConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.SlabRuinsFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.InvertedTreeFeature;
@@ -21,6 +22,7 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.VerdantTreeFeatur
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.VegetationPatchConfiguration;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -28,6 +30,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class MiaWorldgenFeatures {
     private static final DeferredRegister<Feature<?>> FEATURES =
             DeferredRegister.create(Registries.FEATURE, MementoInAbyss.ID);
+    public static final DeferredHolder<Feature<?>, ReedPoolFeature> REED_POOL =
+            FEATURES.register(
+                    "reed_pool", () -> new ReedPoolFeature(VegetationPatchConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, Layer2Feature> LAYER2_FEATURE =
             FEATURES.register(
                     "layer2_feature", () -> new Layer2Feature(Layer2FeatureConfiguration.CODEC));

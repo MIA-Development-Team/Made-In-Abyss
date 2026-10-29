@@ -7,59 +7,154 @@
       "argument": {
         "type": "minecraft:range_choice",
         "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
-        "max_exclusive": 2.0,
-        "min_inclusive": 1.0,
+        "max_exclusive": 9.0,
+        "min_inclusive": 6.0,
         "when_in_range": {
-          "type": "minecraft:add",
-          "argument1": -115.0,
-          "argument2": {
-            "type": "minecraft:mul",
-            "argument1": 15.0,
-            "argument2": "mementoinabyss:the_abyss/layer2/primary_blend"
+          "type": "minecraft:range_choice",
+          "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
+          "max_exclusive": 7.0,
+          "min_inclusive": 6.0,
+          "when_in_range": -121.0,
+          "when_out_of_range": {
+            "type": "minecraft:range_choice",
+            "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
+            "max_exclusive": 8.0,
+            "min_inclusive": 7.0,
+            "when_in_range": {
+              "type": "minecraft:add",
+              "argument1": {
+                "type": "minecraft:mul",
+                "argument1": -106.0,
+                "argument2": {
+                  "type": "minecraft:add",
+                  "argument1": 1.0,
+                  "argument2": {
+                    "type": "minecraft:mul",
+                    "argument1": -1.0,
+                    "argument2": "mementoinabyss:the_abyss/layer2/primary_blend"
+                  }
+                }
+              },
+              "argument2": {
+                "type": "minecraft:mul",
+                "argument1": -121.0,
+                "argument2": "mementoinabyss:the_abyss/layer2/primary_blend"
+              }
+            },
+            "when_out_of_range": {
+              "type": "minecraft:add",
+              "argument1": {
+                "type": "minecraft:mul",
+                "argument1": -121.0,
+                "argument2": {
+                  "type": "minecraft:add",
+                  "argument1": 1.0,
+                  "argument2": {
+                    "type": "minecraft:mul",
+                    "argument1": -1.0,
+                    "argument2": "mementoinabyss:the_abyss/layer2/primary_blend"
+                  }
+                }
+              },
+              "argument2": {
+                "type": "minecraft:mul",
+                "argument1": -106.0,
+                "argument2": "mementoinabyss:the_abyss/layer2/primary_blend"
+              }
+            }
           }
         },
         "when_out_of_range": {
-          "type": "minecraft:add",
-          "argument1": -100.0,
-          "argument2": {
-            "type": "minecraft:mul",
-            "argument1": "mementoinabyss:the_abyss/layer2/region_blend",
+          "type": "minecraft:range_choice",
+          "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
+          "max_exclusive": 2.0,
+          "min_inclusive": 1.0,
+          "when_in_range": {
+            "type": "minecraft:add",
+            "argument1": -115.0,
             "argument2": {
-              "type": "minecraft:add",
-              "argument1": 100.0,
+              "type": "minecraft:mul",
+              "argument1": 15.0,
+              "argument2": "mementoinabyss:the_abyss/layer2/primary_blend"
+            }
+          },
+          "when_out_of_range": {
+            "type": "minecraft:add",
+            "argument1": -100.0,
+            "argument2": {
+              "type": "minecraft:mul",
+              "argument1": "mementoinabyss:the_abyss/layer2/region_blend",
               "argument2": {
-                "type": "minecraft:range_choice",
-                "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
-                "max_exclusive": 1.0,
-                "min_inclusive": 0.0,
-                "when_in_range": -100.0,
-                "when_out_of_range": {
+                "type": "minecraft:add",
+                "argument1": 100.0,
+                "argument2": {
                   "type": "minecraft:range_choice",
                   "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
-                  "max_exclusive": 2.0,
-                  "min_inclusive": 1.0,
+                  "max_exclusive": 6.0,
+                  "min_inclusive": 4.0,
                   "when_in_range": {
                     "type": "minecraft:add",
-                    "argument1": -115.0,
+                    "argument1": {
+                      "type": "minecraft:mul",
+                      "argument1": {
+                        "type": "minecraft:add",
+                        "argument1": 1.0,
+                        "argument2": {
+                          "type": "minecraft:mul",
+                          "argument1": -1.0,
+                          "argument2": "mementoinabyss:the_abyss/layer2/primary_blend"
+                        }
+                      },
+                      "argument2": {
+                        "type": "minecraft:range_choice",
+                        "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
+                        "max_exclusive": 5.0,
+                        "min_inclusive": 4.0,
+                        "when_in_range": -106.0,
+                        "when_out_of_range": -88.0
+                      }
+                    },
                     "argument2": {
                       "type": "minecraft:mul",
-                      "argument1": 15.0,
+                      "argument1": -115.0,
                       "argument2": "mementoinabyss:the_abyss/layer2/primary_blend"
                     }
                   },
                   "when_out_of_range": {
                     "type": "minecraft:range_choice",
                     "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
-                    "max_exclusive": 3.0,
-                    "min_inclusive": 2.0,
-                    "when_in_range": -88.0,
+                    "max_exclusive": 1.0,
+                    "min_inclusive": 0.0,
+                    "when_in_range": -106.0,
                     "when_out_of_range": {
-                      "type": "minecraft:add",
-                      "argument1": -88.0,
-                      "argument2": {
-                        "type": "minecraft:mul",
-                        "argument1": 16.0,
-                        "argument2": "mementoinabyss:the_abyss/layer2/primary_blend"
+                      "type": "minecraft:range_choice",
+                      "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
+                      "max_exclusive": 2.0,
+                      "min_inclusive": 1.0,
+                      "when_in_range": {
+                        "type": "minecraft:add",
+                        "argument1": -115.0,
+                        "argument2": {
+                          "type": "minecraft:mul",
+                          "argument1": 15.0,
+                          "argument2": "mementoinabyss:the_abyss/layer2/primary_blend"
+                        }
+                      },
+                      "when_out_of_range": {
+                        "type": "minecraft:range_choice",
+                        "input": "mementoinabyss:the_abyss/layer2/terrain_kind",
+                        "max_exclusive": 3.0,
+                        "min_inclusive": 2.0,
+                        "when_in_range": -88.0,
+                        "when_out_of_range": {
+                          "type": "minecraft:add",
+                          "argument1": -88.0,
+                          "argument2": {
+                            "type": "minecraft:mul",
+                            "argument1": 16.0,
+                            "argument2": "mementoinabyss:the_abyss/layer2/primary_blend"
+                          }
+                        }
                       }
                     }
                   }

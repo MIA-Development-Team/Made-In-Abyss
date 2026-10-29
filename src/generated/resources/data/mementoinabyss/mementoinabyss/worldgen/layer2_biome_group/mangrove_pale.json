@@ -1,0 +1,8 @@
+{
+  "companions": "mementoinabyss:the_abyss/pale_garden",
+  "primary": "mementoinabyss:the_abyss/mangrove_swamp",
+  "terrain_kinds": [
+    "wetland_woodland",
+    "wetland_highland"
+  ]
+}

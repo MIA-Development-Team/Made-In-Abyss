@@ -1,0 +1,32 @@
+{
+  "feature": "minecraft:trees_water",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": {
+        "type": "minecraft:weighted_list",
+        "distribution": [
+          {
+            "data": 0,
+            "weight": 9
+          },
+          {
+            "data": 1,
+            "weight": 1
+          }
+        ]
+      }
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "mementoinabyss:layer2_surface",
+      "heightmap": "OCEAN_FLOOR",
+      "max_water_depth": 0
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

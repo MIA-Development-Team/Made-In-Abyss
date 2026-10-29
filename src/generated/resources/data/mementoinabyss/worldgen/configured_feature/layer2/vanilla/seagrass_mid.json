@@ -1,0 +1,7 @@
+{
+  "type": "mementoinabyss:layer2_feature",
+  "config": {
+    "feature": "minecraft:seagrass_mid",
+    "submerged": true
+  }
+}

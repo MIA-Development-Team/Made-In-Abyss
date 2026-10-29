@@ -24,12 +24,38 @@ public final class MiaLayer2BiomeGroups {
                 MiaBiomes.PRIMO_FOREST,
                 MiaBiomes.PRIMO_PLAINS,
                 List.of(Layer2TerrainKind.WOODLAND));
-        add(
+        standalone(
                 context,
-                "temptation",
-                MiaBiomes.TEMPTATION_PLAINS,
+                "temptation_forest",
                 MiaBiomes.TEMPTATION_FOREST,
-                List.of(Layer2TerrainKind.WOODLAND));
+                Layer2TerrainKind.WOODLAND,
+                false);
+        standalone(
+                context,
+                "temptation_plains",
+                MiaBiomes.TEMPTATION_PLAINS,
+                Layer2TerrainKind.WOODLAND,
+                false);
+        context.register(
+                ResourceKey.create(
+                        Layer2Biomes.REGISTRY_KEY, MementoInAbyss.asResource("warm_ocean")),
+                new Layer2BiomeGroup(
+                        Optional.of(
+                                context.lookup(Registries.BIOME).getOrThrow(MiaBiomes.WARM_OCEAN)),
+                        List.of(),
+                        List.of(Layer2TerrainKind.OCEAN),
+                        1,
+                        Optional.empty(),
+                        Optional.empty(),
+                        64,
+                        true,
+                        List.of(MementoInAbyss.asResource("temptation_ocean"))));
+        standalone(
+                context,
+                "temptation_ocean",
+                MiaBiomes.TEMPTATION_OCEAN,
+                Layer2TerrainKind.OCEAN,
+                false);
         add(
                 context,
                 "giant_fossilized",
@@ -42,6 +68,31 @@ public final class MiaLayer2BiomeGroups {
                 MiaBiomes.UNDER_RICH_FOSSILIZED_FOREST,
                 MiaBiomes.UNDER_WATER_FOSSILIZED_FOREST,
                 List.of(Layer2TerrainKind.WETLAND));
+        add(
+                context,
+                "mangrove_pale",
+                MiaBiomes.MANGROVE_SWAMP,
+                MiaBiomes.PALE_GARDEN,
+                List.of(Layer2TerrainKind.WETLAND_WOODLAND, Layer2TerrainKind.WETLAND_HIGHLAND));
+    }
+
+    private static void standalone(
+            BootstrapContext<Layer2BiomeGroup> context,
+            String name,
+            ResourceKey<Biome> biome,
+            Layer2TerrainKind terrain,
+            boolean primaryOnly) {
+        context.register(
+                ResourceKey.create(Layer2Biomes.REGISTRY_KEY, MementoInAbyss.asResource(name)),
+                new Layer2BiomeGroup(
+                        Optional.of(context.lookup(Registries.BIOME).getOrThrow(biome)),
+                        List.of(),
+                        List.of(terrain),
+                        1,
+                        Optional.empty(),
+                        Optional.empty(),
+                        64,
+                        primaryOnly));
     }
 
     private static void add(

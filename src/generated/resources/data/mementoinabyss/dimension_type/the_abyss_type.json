@@ -2,6 +2,13 @@
   "ambient_light": 0.12,
   "attributes": {
     "mementoinabyss:abyss_fog_density": 1.0,
+    "mementoinabyss:ambient_light_biome": {
+      "#mementoinabyss:ambient_light/dark": 0.0
+    },
+    "mementoinabyss:sky_light_region": {
+      "fade_distance": 96.0,
+      "radius_multiplier": 2.0
+    },
     "mementoinabyss:vertical_above": {
       "dimension": "minecraft:overworld",
       "entry_offset": 0.0

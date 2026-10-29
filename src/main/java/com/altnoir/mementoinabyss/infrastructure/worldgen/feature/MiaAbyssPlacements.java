@@ -4,6 +4,7 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.FastCountOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.FossilTreeOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.InvertedCountOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.Layer2FlowerSurfacePlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.Layer2SurfacePlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.TreeOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.WaterOnEveryLayerPlacement;
@@ -57,6 +58,8 @@ public final class MiaAbyssPlacements {
             key("flower_meadow_layer1");
     public static final ResourceKey<PlacedFeature> FLOWER_MEADOW_LAYER2 =
             key("flower_meadow_layer2");
+    public static final ResourceKey<PlacedFeature> TEMPTATION_PLAINS_FLOWERS =
+            key("temptation_plains_flowers");
     public static final ResourceKey<PlacedFeature> FOREST_FLOWERS = key("forest_flowers");
     public static final ResourceKey<PlacedFeature> LONG_VINES = key("vines");
     public static final ResourceKey<PlacedFeature> GLOW_LICHEN = key("glow_lichen");
@@ -124,6 +127,16 @@ public final class MiaAbyssPlacements {
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configured =
                 context.lookup(Registries.CONFIGURED_FEATURE);
+
+        context.register(
+                TEMPTATION_PLAINS_FLOWERS,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.TEMPTATION_PLAINS_FLOWERS),
+                        List.of(
+                                Layer2FlowerSurfacePlacement.of(),
+                                BlockPredicateFilter.forPredicate(
+                                        BlockPredicate.ONLY_IN_AIR_PREDICATE),
+                                BiomeFilter.biome())));
 
         context.register(
                 MARGINAL_WEED_BONEMEAL,

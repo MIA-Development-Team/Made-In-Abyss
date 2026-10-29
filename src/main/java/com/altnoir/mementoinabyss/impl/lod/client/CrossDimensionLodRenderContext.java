@@ -42,6 +42,7 @@ import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.Set;
@@ -172,6 +173,8 @@ final class CrossDimensionLodRenderContext {
     private int lodFogRadius = -1;
     private GpuBuffer lodLightBuffer;
     private ResourceKey<Level> lodLightSource;
+    private RegionalSkyLight.Region lodLightRegion;
+    private float lodLightAmbient;
     private CrossDimensionLodLink activeRenderLink;
     private Object materialModelSet;
     private ClientState clientState = ClientState.RUNNING;
@@ -530,6 +533,7 @@ final class CrossDimensionLodRenderContext {
         if (lodLightBuffer != null) lodLightBuffer.close();
         lodLightBuffer = null;
         lodLightSource = null;
+        lodLightRegion = null;
         materialModelSet = null;
     }
 
@@ -789,7 +793,7 @@ final class CrossDimensionLodRenderContext {
         }
         var atlas = minecraft.getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS);
         GpuBufferSlice lodFog = lodFog(viewRadius);
-        GpuBufferSlice lodLight = lodLight(activeLink.source());
+        GpuBufferSlice lodLight = lodLight(activeLink);
 
         try (RenderPass pass =
                 RenderSystem.getDevice()
@@ -1559,22 +1563,25 @@ final class CrossDimensionLodRenderContext {
         return lodFogBuffer.slice();
     }
 
-    private GpuBufferSlice lodLight(ResourceKey<Level> sourceDimension) {
-        if (lodLightBuffer == null || !sourceDimension.equals(lodLightSource)) {
+    private GpuBufferSlice lodLight(CrossDimensionLodLink link) {
+        RegionalSkyLight.Region region = RegionalSkyLight.resolve(link.sourceType());
+        float ambient =
+                region == null ? 1.0F : Mth.clamp(link.sourceType().ambientLight(), 0.0F, 1.0F);
+        if (lodLightBuffer == null
+                || !link.source().equals(lodLightSource)
+                || !Objects.equals(region, lodLightRegion)
+                || ambient != lodLightAmbient) {
             if (lodLightBuffer != null) lodLightBuffer.close();
-            RegionalSkyLight.Region region = RegionalSkyLight.resolve(sourceDimension);
+            RegionalSkyLight.RenderMask mask = region == null ? null : region.renderMask();
             float centerX = 0.0F;
             float centerZ = 0.0F;
             float radius = -1.0F;
             float fadeDistance = 0.0F;
-            float ambient = 1.0F;
-            if (region != null) {
-                RegionalSkyLight.RenderMask mask = region.renderMask();
+            if (mask != null) {
                 centerX = mask.centerX();
                 centerZ = mask.centerZ();
                 radius = mask.radius();
                 fadeDistance = mask.fadeDistance();
-                ambient = RegionalSkyLight.ambientBrightness(sourceDimension);
             }
             try (MemoryStack stack = MemoryStack.stackPush()) {
                 var data = stack.malloc(32);
@@ -1588,7 +1595,9 @@ final class CrossDimensionLodRenderContext {
                                         GpuBuffer.USAGE_UNIFORM,
                                         data.flip());
             }
-            lodLightSource = sourceDimension;
+            lodLightSource = link.source();
+            lodLightRegion = region;
+            lodLightAmbient = ambient;
         }
         return lodLightBuffer.slice();
     }
@@ -1675,7 +1684,7 @@ final class CrossDimensionLodRenderContext {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null) return null;
         var activeLink = currentLink(minecraft.level);
-        return activeLink == null ? null : RegionalSkyLight.resolve(activeLink.source());
+        return activeLink == null ? null : RegionalSkyLight.resolve(activeLink.sourceType());
     }
 
     private PackedBuffer packQuadBuffer(QuadBuffer quads, Set<TextureAtlasSprite> sprites) {

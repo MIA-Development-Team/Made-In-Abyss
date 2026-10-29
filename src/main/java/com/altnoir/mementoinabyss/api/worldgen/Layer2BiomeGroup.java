@@ -9,13 +9,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.biome.Biome;
 
 /**
- * A data-driven region family. Companions are mandatory; without a primary they also cover the
- * center. A single companion is expanded to all four sectors; lists use north, east, south, west
- * order. Transition biomes occupy the primary's inner border and require a primary. Their width
- * defaults to 64 blocks and is reduced in narrow regions. Weight zero disables this group.
+ * A primary alone is a standalone biome, usable in both regions unless primaryOnly is true.
+ * Companions turn it into a fixed family; lists use north, east, south, west order. Transition
+ * biomes require a fixed family. Standalone terrain kinds match the local primary or companion
+ * terrain; fixed families match the complete layout. A standalone primary can exclude companion
+ * group IDs with incompatibleCompanions. Weight zero disables this entry.
  */
 public record Layer2BiomeGroup(
         Optional<Holder<Biome>> primary,
@@ -24,7 +26,9 @@ public record Layer2BiomeGroup(
         int weight,
         Optional<Holder<Biome>> river,
         Optional<List<Holder<Biome>>> transition,
-        int transitionWidth) {
+        int transitionWidth,
+        boolean primaryOnly,
+        List<Identifier> incompatibleCompanions) {
     private static final Codec<List<Holder<Biome>>> SECTORS =
             Codec.either(
                             Biome.CODEC,
@@ -52,7 +56,7 @@ public record Layer2BiomeGroup(
                                                     Biome.CODEC
                                                             .optionalFieldOf("primary")
                                                             .forGetter(Layer2BiomeGroup::primary),
-                                                    SECTORS.fieldOf("companions")
+                                                    SECTORS.optionalFieldOf("companions", List.of())
                                                             .forGetter(
                                                                     Layer2BiomeGroup::companions),
                                                     Layer2TerrainKind.CODEC
@@ -86,16 +90,45 @@ public record Layer2BiomeGroup(
                                                             .optionalFieldOf("transition_width", 64)
                                                             .forGetter(
                                                                     Layer2BiomeGroup
-                                                                            ::transitionWidth))
+                                                                            ::transitionWidth),
+                                                    Codec.BOOL
+                                                            .optionalFieldOf("primary_only", false)
+                                                            .forGetter(
+                                                                    Layer2BiomeGroup::primaryOnly),
+                                                    Identifier.CODEC
+                                                            .listOf()
+                                                            .optionalFieldOf(
+                                                                    "incompatible_companions",
+                                                                    List.of())
+                                                            .forGetter(
+                                                                    Layer2BiomeGroup
+                                                                            ::incompatibleCompanions))
                                             .apply(i, Layer2BiomeGroup::new))
                     .validate(
-                            group ->
-                                    group.transition().isPresent() && group.primary().isEmpty()
-                                            ? DataResult.error(
-                                                    () ->
-                                                            "A transition biome requires a primary"
-                                                                    + " biome")
-                                            : DataResult.success(group));
+                            group -> {
+                                if (group.primary().isEmpty())
+                                    return DataResult.error(
+                                            () ->
+                                                    "A Layer2 biome group requires primary;"
+                                                        + " companions alone are not supported");
+                                if (group.primaryOnly() && !group.companions().isEmpty())
+                                    return DataResult.error(
+                                            () ->
+                                                    "primary_only requires a standalone primary"
+                                                            + " without companions");
+                                if (group.transition().isPresent() && group.companions().isEmpty())
+                                    return DataResult.error(
+                                            () ->
+                                                    "A transition biome requires both primary and"
+                                                            + " companions");
+                                if (!group.incompatibleCompanions().isEmpty()
+                                        && !group.standalone())
+                                    return DataResult.error(
+                                            () ->
+                                                    "incompatible_companions requires a standalone"
+                                                            + " primary");
+                                return DataResult.success(group);
+                            });
 
     public Layer2BiomeGroup {
         companions =
@@ -104,6 +137,7 @@ public record Layer2BiomeGroup(
                                 ? Collections.nCopies(4, companions.getFirst())
                                 : companions);
         terrainKinds = terrainKinds.stream().distinct().toList();
+        incompatibleCompanions = List.copyOf(incompatibleCompanions);
         transition =
                 transition.map(
                         values ->
@@ -111,7 +145,7 @@ public record Layer2BiomeGroup(
                                         values.size() == 1
                                                 ? Collections.nCopies(4, values.getFirst())
                                                 : values));
-        if (companions.size() != 4)
+        if (!companions.isEmpty() && companions.size() != 4)
             throw new IllegalArgumentException("Expected one or four companions");
         if (terrainKinds.isEmpty())
             throw new IllegalArgumentException("Expected at least one terrain kind");
@@ -128,7 +162,61 @@ public record Layer2BiomeGroup(
             List<Layer2TerrainKind> terrainKinds,
             int weight,
             Optional<Holder<Biome>> river) {
-        this(primary, companions, terrainKinds, weight, river, Optional.empty(), 64);
+        this(
+                primary,
+                companions,
+                terrainKinds,
+                weight,
+                river,
+                Optional.empty(),
+                64,
+                false,
+                List.of());
+    }
+
+    public Layer2BiomeGroup(
+            Optional<Holder<Biome>> primary,
+            List<Holder<Biome>> companions,
+            List<Layer2TerrainKind> terrainKinds,
+            int weight,
+            Optional<Holder<Biome>> river,
+            Optional<List<Holder<Biome>>> transition,
+            int transitionWidth) {
+        this(
+                primary,
+                companions,
+                terrainKinds,
+                weight,
+                river,
+                transition,
+                transitionWidth,
+                false,
+                List.of());
+    }
+
+    public Layer2BiomeGroup(
+            Optional<Holder<Biome>> primary,
+            List<Holder<Biome>> companions,
+            List<Layer2TerrainKind> terrainKinds,
+            int weight,
+            Optional<Holder<Biome>> river,
+            Optional<List<Holder<Biome>>> transition,
+            int transitionWidth,
+            boolean primaryOnly) {
+        this(
+                primary,
+                companions,
+                terrainKinds,
+                weight,
+                river,
+                transition,
+                transitionWidth,
+                primaryOnly,
+                List.of());
+    }
+
+    public boolean standalone() {
+        return companions.isEmpty();
     }
 
     public Stream<Holder<Biome>> possibleBiomes() {

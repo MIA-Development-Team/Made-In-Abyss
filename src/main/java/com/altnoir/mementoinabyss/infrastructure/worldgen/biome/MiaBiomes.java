@@ -6,6 +6,7 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.GreatFaultPlac
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.MiaAbyssPlacements;
 import com.altnoir.mementoinabyss.init.MiaSoundEvents;
 import java.util.List;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Carvers;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import org.jspecify.annotations.Nullable;
 
 public final class MiaBiomes {
     public static final ResourceKey<Biome> THE_ABYSS = key("the_abyss");
@@ -45,6 +47,11 @@ public final class MiaBiomes {
     public static final ResourceKey<Biome> PRIMO_PLAINS = key("primo_plains");
     public static final ResourceKey<Biome> INVERTED_FOREST = key("inverted_forest");
     public static final ResourceKey<Biome> ABYSS_RIVER = key("abyss_river");
+    static final int ABYSS_WATER_COLOR = 6141935;
+    public static final ResourceKey<Biome> MANGROVE_SWAMP = key("mangrove_swamp");
+    public static final ResourceKey<Biome> PALE_GARDEN = key("pale_garden");
+    public static final ResourceKey<Biome> WARM_OCEAN = key("warm_ocean");
+    public static final ResourceKey<Biome> TEMPTATION_OCEAN = key("temptation_ocean");
     public static final ResourceKey<Biome> THE_GREAT_FAULT = greatFaultKey("the_great_fault");
     public static final ResourceKey<Biome> GREAT_FAULT = greatFaultKey("great_fault");
 
@@ -69,23 +76,31 @@ public final class MiaBiomes {
                     PRIMO_FOREST,
                     PRIMO_PLAINS,
                     INVERTED_FOREST,
-                    ABYSS_RIVER);
+                    ABYSS_RIVER,
+                    MANGROVE_SWAMP,
+                    PALE_GARDEN,
+                    WARM_OCEAN,
+                    TEMPTATION_OCEAN);
 
-    public static void bootstrap(BootstrapContext<Biome> context) {
+    public static void bootstrap(BootstrapContext<Biome> context, HolderLookup.Provider originals) {
         for (ResourceKey<Biome> biome : FIRST_LAYERS) {
-            context.register(biome, create(context, biome));
+            ResourceKey<Biome> vanilla = MiaLayer2VanillaBiomes.template(biome);
+            Biome template =
+                    vanilla == null
+                            ? null
+                            : originals.lookupOrThrow(Registries.BIOME).getOrThrow(vanilla).value();
+            context.register(biome, create(context, biome, false, template));
         }
-        context.register(OVERWORLD_ABYSS, create(context, THE_ABYSS, true));
+        context.register(OVERWORLD_ABYSS, create(context, THE_ABYSS, true, null));
         context.register(THE_GREAT_FAULT, createGreatFault(context, true));
         context.register(GREAT_FAULT, createGreatFault(context, false));
     }
 
-    private static Biome create(BootstrapContext<Biome> context, ResourceKey<Biome> biome) {
-        return create(context, biome, false);
-    }
-
     private static Biome create(
-            BootstrapContext<Biome> context, ResourceKey<Biome> biome, boolean overworld) {
+            BootstrapContext<Biome> context,
+            ResourceKey<Biome> biome,
+            boolean overworld,
+            @Nullable Biome template) {
         BiomeGenerationSettings.Builder generationBuilder =
                 new BiomeGenerationSettings.Builder(
                         context.lookup(Registries.PLACED_FEATURE),
@@ -116,7 +131,10 @@ public final class MiaBiomes {
                         GenerationStep.Decoration.UNDERGROUND_ORES, MiaAbyssPlacements.ORE_QUARTZ)
                 .addFeature(
                         GenerationStep.Decoration.UNDERGROUND_ORES,
-                        MiaAbyssPlacements.ORE_CHLOROPHYTE)
+                        MiaAbyssPlacements.ORE_CHLOROPHYTE);
+        if (template != null)
+            return MiaLayer2VanillaBiomes.create(biome, generationBuilder, template);
+        generationBuilder
                 .addFeature(
                         GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.LONG_VINES)
                 .addFeature(
@@ -256,9 +274,13 @@ public final class MiaBiomes {
             case TEMPTATION_FOREST, TEMPTATION_PLAINS -> {
                 addSlabRuins(generationBuilder);
                 addGeode(generationBuilder);
-                addLayerTwoMeadow(generationBuilder);
+                if (biome.equals(TEMPTATION_FOREST)) addLayerTwoMeadow(generationBuilder);
+                else
+                    generationBuilder.addFeature(
+                            GenerationStep.Decoration.VEGETAL_DECORATION,
+                            MiaAbyssPlacements.TEMPTATION_PLAINS_FLOWERS);
                 addRawIron(generationBuilder);
-                addLargeFern(generationBuilder);
+                if (biome.equals(TEMPTATION_FOREST)) addLargeFern(generationBuilder);
                 addCaveVines(generationBuilder);
                 if (biome.equals(TEMPTATION_FOREST))
                     addTree(generationBuilder, MiaAbyssPlacements.TREES_VERDANT_FUNGUS);
@@ -295,7 +317,7 @@ public final class MiaBiomes {
                                 new BackgroundMusic(MiaSoundEvents.MUSIC_THE_FIRST_LAYER))
                         .specialEffects(
                                 new BiomeSpecialEffects.Builder()
-                                        .waterColor(6141935)
+                                        .waterColor(ABYSS_WATER_COLOR)
                                         .foliageColorOverride(11335504)
                                         .grassColorOverride(11335504)
                                         .build());

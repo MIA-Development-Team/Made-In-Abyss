@@ -75,5 +75,9 @@
   "biome.mementoinabyss.the_abyss.primo_plains": "Primo Plains",
   "biome.mementoinabyss.the_abyss.temptation_forest": "Temptation Forest",
   "biome.mementoinabyss.the_abyss.temptation_plains": "Temptation Plains",
-  "biome.mementoinabyss.the_abyss.abyss_river": "Abyss River"
+  "biome.mementoinabyss.the_abyss.abyss_river": "Abyss River",
+  "biome.mementoinabyss.the_abyss.mangrove_swamp": "Abyss Mangrove Swamp",
+  "biome.mementoinabyss.the_abyss.pale_garden": "Abyss Pale Garden",
+  "biome.mementoinabyss.the_abyss.warm_ocean": "Warm Ocean",
+  "biome.mementoinabyss.the_abyss.temptation_ocean": "Temptation Ocean"
 }

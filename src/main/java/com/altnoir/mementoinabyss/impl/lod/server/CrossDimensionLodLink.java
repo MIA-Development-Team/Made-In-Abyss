@@ -4,6 +4,7 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.MiaHeight;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.dimension.DimensionType;
 
 /** Declarative mapping from one dimension's stored chunks into another dimension's render space. */
 public record CrossDimensionLodLink(
@@ -11,4 +12,5 @@ public record CrossDimensionLodLink(
         ResourceKey<Level> source,
         ResourceKey<Level> target,
         MiaHeight sourceHeight,
+        DimensionType sourceType,
         int displayYOffset) {}

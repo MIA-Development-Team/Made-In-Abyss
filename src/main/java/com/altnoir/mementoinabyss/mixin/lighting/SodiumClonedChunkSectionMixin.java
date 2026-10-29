@@ -17,7 +17,7 @@ public abstract class SodiumClonedChunkSectionMixin {
     private static DataLayer mia$maskCopiedSkyLight(
             DataLayer original, Level level, LightLayer layer, SectionPos pos) {
         if (layer != LightLayer.SKY) return original;
-        RegionalSkyLight.Region region = RegionalSkyLight.resolve(level.dimension());
+        RegionalSkyLight.Region region = RegionalSkyLight.resolve(level);
         return region == null ? original : RegionalSkyLight.maskDataLayer(region, pos, original);
     }
 }

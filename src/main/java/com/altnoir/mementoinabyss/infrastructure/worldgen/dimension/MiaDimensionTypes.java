@@ -2,6 +2,8 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.dimension;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.MiaHeight;
+import com.altnoir.mementoinabyss.init.MiaTags;
+import java.util.Map;
 import java.util.Optional;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -35,6 +37,13 @@ public final class MiaDimensionTypes {
 
         var attributes =
                 EnvironmentAttributeMap.builder()
+                        .set(
+                                MiaEnvironmentAttributes.SKY_LIGHT_REGION,
+                                new SkyLightRegionSettings(0, 0, 2.0, 96.0))
+                        .set(
+                                MiaEnvironmentAttributes.AMBIENT_LIGHT_BIOME,
+                                new BiomeAmbientLightSettings(
+                                        Map.of(MiaTags.BiomeTags.AMBIENT_LIGHT_DARK.tag, 0.0F)))
                         .set(EnvironmentAttributes.FOG_COLOR, 0xFF708C79)
                         .set(MiaEnvironmentAttributes.ABYSS_FOG_DENSITY, 1.0F)
                         .set(
@@ -95,6 +104,9 @@ public final class MiaDimensionTypes {
 
         var greatFaultAttributes =
                 EnvironmentAttributeMap.builder()
+                        .set(
+                                MiaEnvironmentAttributes.SKY_LIGHT_REGION,
+                                new SkyLightRegionSettings(0, 0, 1.0, 48.0))
                         .set(EnvironmentAttributes.FOG_COLOR, 0xFF8795AA)
                         .set(EnvironmentAttributes.SKY_COLOR, 0xFF8795AA)
                         .set(

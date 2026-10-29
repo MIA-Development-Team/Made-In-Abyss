@@ -20,6 +20,34 @@ public final class MiaEnvironmentAttributes {
     public static final EnvironmentAttribute<VerticalBoundary> VERTICAL_ABOVE =
             boundary("vertical_above");
     public static final EnvironmentAttribute<Float> ABYSS_FOG_DENSITY = fogDensity();
+    public static final EnvironmentAttribute<SkyLightRegionSettings> SKY_LIGHT_REGION =
+            skyLightRegion();
+    public static final EnvironmentAttribute<BiomeAmbientLightSettings> AMBIENT_LIGHT_BIOME =
+            biomeAmbientLight();
+
+    private static EnvironmentAttribute<BiomeAmbientLightSettings> biomeAmbientLight() {
+        EnvironmentAttribute<BiomeAmbientLightSettings> attribute =
+                EnvironmentAttribute.builder(
+                                AttributeType.ofNotInterpolated(BiomeAmbientLightSettings.CODEC))
+                        .defaultValue(BiomeAmbientLightSettings.EMPTY)
+                        .syncable()
+                        .notPositional()
+                        .build();
+        ENVIRONMENT_ATTRIBUTES.register("ambient_light_biome", () -> attribute);
+        return attribute;
+    }
+
+    private static EnvironmentAttribute<SkyLightRegionSettings> skyLightRegion() {
+        EnvironmentAttribute<SkyLightRegionSettings> attribute =
+                EnvironmentAttribute.builder(
+                                AttributeType.ofNotInterpolated(SkyLightRegionSettings.CODEC))
+                        .defaultValue(new SkyLightRegionSettings(0, 0, 0, 0))
+                        .syncable()
+                        .notPositional()
+                        .build();
+        ENVIRONMENT_ATTRIBUTES.register("sky_light_region", () -> attribute);
+        return attribute;
+    }
 
     private static EnvironmentAttribute<Float> fogDensity() {
         EnvironmentAttribute<Float> attribute =

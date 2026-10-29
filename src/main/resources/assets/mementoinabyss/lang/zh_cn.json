@@ -30,8 +30,14 @@
   "biome.mementoinabyss.the_abyss.temptation_forest": "诱惑森林",
   "biome.mementoinabyss.the_abyss.temptation_plains": "诱惑平原",
   "biome.mementoinabyss.the_abyss.abyss_river": "深渊河流",
+  "biome.mementoinabyss.the_abyss.mangrove_swamp": "深渊红树林",
+  "biome.mementoinabyss.the_abyss.pale_garden": "深渊苍白森林",
+  "biome.mementoinabyss.the_abyss.warm_ocean": "暖水海洋",
+  "biome.mementoinabyss.the_abyss.temptation_ocean": "诱惑之海",
   "config.jade.plugin_mementoinabyss.lamp_tube_heat": "灯管热量",
   "jade.mementoinabyss.lamp_tube.heat": "热量：%s / %s",
   "biome.mementoinabyss.the_abyss.giant_fossilized_forest": "大化石林",
-  "biome.mementoinabyss.the_abyss.sparse_giant_fossilized_forest": "稀疏大化石林"
+  "biome.mementoinabyss.the_abyss.sparse_giant_fossilized_forest": "稀疏大化石林",
+  "biome.mementoinabyss.the_abyss.warm_ocean": "暖水海洋",
+  "biome.mementoinabyss.the_abyss.temptation_ocean": "诱惑之海"
 }

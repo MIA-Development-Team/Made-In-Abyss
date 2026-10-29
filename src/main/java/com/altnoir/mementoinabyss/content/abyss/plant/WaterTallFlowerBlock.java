@@ -1,9 +1,11 @@
 package com.altnoir.mementoinabyss.content.abyss.plant;
 
+import com.altnoir.mementoinabyss.init.MiaBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BonemealableBlock;
@@ -13,6 +15,12 @@ public final class WaterTallFlowerBlock extends WaterDoublePlantBlock implements
     public WaterTallFlowerBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultPlantState(defaultBlockState()));
+    }
+
+    @Override
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+        return state.is(MiaBlocks.ABYSS_CHLOROPHYTE_ORE.get())
+                || super.mayPlaceOn(state, level, pos);
     }
 
     @Override

@@ -201,10 +201,12 @@ public class MiaNoiseRouterData extends NoiseRouterData {
                         yFunction);
         DensityFunction sparseFloodedness =
                 DensityFunctions.rangeChoice(
-                        MiaDensityFunctionTypes.sparseAquifer(10),
+                        MiaDensityFunctionTypes.sparseAquifer(3),
                         0.0,
                         2.0,
-                        normalFloodedness,
+                        // Avoid selecting the global sea level (-112) for ordinary upper aquifers.
+                        DensityFunctions.add(normalFloodedness, DensityFunctions.constant(0.4))
+                                .clamp(-1.0, 0.75),
                         DensityFunctions.constant(-1.0));
         DensityFunction fluidLevelFloodedness =
                 DensityFunctions.rangeChoice(

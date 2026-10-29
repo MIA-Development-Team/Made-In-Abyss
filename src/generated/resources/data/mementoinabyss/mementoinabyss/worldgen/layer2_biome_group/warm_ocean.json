@@ -1,0 +1,10 @@
+{
+  "incompatible_companions": [
+    "mementoinabyss:temptation_ocean"
+  ],
+  "primary": "mementoinabyss:the_abyss/warm_ocean",
+  "primary_only": true,
+  "terrain_kinds": [
+    "ocean"
+  ]
+}

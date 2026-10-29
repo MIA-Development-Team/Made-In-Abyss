@@ -51,6 +51,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.SpringConfigura
 import net.minecraft.world.level.levelgen.feature.configurations.VegetationPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.DualNoiseProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.RandomizedIntStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
@@ -68,6 +69,8 @@ public final class MiaAbyssFeatures {
             key("flower_meadow_layer1");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_MEADOW_LAYER2 =
             key("flower_meadow_layer2");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TEMPTATION_PLAINS_FLOWERS =
+            key("temptation_plains_flowers");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_FLOWERS = key("forest_flowers");
     public static final ResourceKey<ConfiguredFeature<?, ?>> LONG_VINES = key("vines");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_WATERLILY =
@@ -125,6 +128,22 @@ public final class MiaAbyssFeatures {
             key("mycelium_patch_bonemeal");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+        context.register(
+                TEMPTATION_PLAINS_FLOWERS,
+                new ConfiguredFeature<>(
+                        Feature.SIMPLE_BLOCK,
+                        new SimpleBlockConfiguration(
+                                new NoiseProvider(
+                                        2345L,
+                                        new NormalNoise.NoiseParameters(0, 1.0),
+                                        1.0F / 48.0F,
+                                        List.of(
+                                                MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
+                                                MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
+                                                MiaBlocks.GREEN_PERILLA.get().defaultBlockState(),
+                                                MiaBlocks.KONJAC_ROOT
+                                                        .get()
+                                                        .defaultBlockState())))));
         context.register(
                 SINGLE_PIECE_OF_MARGINAL_WEED,
                 new ConfiguredFeature<>(
@@ -281,7 +300,7 @@ public final class MiaAbyssFeatures {
         context.register(
                 POOL_WITH_REED,
                 new ConfiguredFeature<>(
-                        Feature.WATERLOGGED_VEGETATION_PATCH,
+                        MiaWorldgenFeatures.REED_POOL.get(),
                         new VegetationPatchConfiguration(
                                 MiaTags.BlockTags.BASE_STONE_ABYSS.tag,
                                 BlockStateProvider.simple(Blocks.MUD),

@@ -1,0 +1,19 @@
+{
+  "feature": "mementoinabyss:layer2/vanilla/seagrass_mid",
+  "placement": [
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "mementoinabyss:layer2_surface",
+      "heightmap": "OCEAN_FLOOR_WG"
+    },
+    {
+      "type": "minecraft:count",
+      "count": 64
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

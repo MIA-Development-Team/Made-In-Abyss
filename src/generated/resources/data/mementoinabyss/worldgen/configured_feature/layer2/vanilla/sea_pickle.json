@@ -1,0 +1,7 @@
+{
+  "type": "mementoinabyss:layer2_feature",
+  "config": {
+    "feature": "minecraft:sea_pickle",
+    "submerged": true
+  }
+}

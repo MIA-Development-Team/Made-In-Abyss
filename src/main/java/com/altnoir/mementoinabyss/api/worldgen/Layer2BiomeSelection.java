@@ -6,7 +6,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 
-/** The opening has no group and sector -1. Rivers retain their surrounding group's key and sector. */
+/**
+ * The opening has no group and sector -1. Standalone combinations return the entry chosen for this
+ * region; rivers retain the primary entry's key and sector.
+ */
 public record Layer2BiomeSelection(
         Optional<ResourceKey<Layer2BiomeGroup>> group,
         Identifier zone,

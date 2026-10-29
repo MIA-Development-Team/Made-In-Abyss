@@ -110,6 +110,51 @@ public final class MiaSurfaceRules {
                                                         SurfaceRules.ON_FLOOR, coverGrass_andesite),
                                                 ABYSS_ANDESITE))),
                         SurfaceRules.ifTrue(
+                                SurfaceRules.isBiome(
+                                        MiaBiomes.WARM_OCEAN, MiaBiomes.TEMPTATION_OCEAN),
+                                SurfaceRules.ifTrue(
+                                        SurfaceRules.stoneDepthCheck(0, true, 2, CaveSurface.FLOOR),
+                                        SurfaceRules.sequence(
+                                                SurfaceRules.ifTrue(
+                                                        SurfaceRules.isBiome(
+                                                                MiaBiomes.TEMPTATION_OCEAN),
+                                                        makeStateRule(Blocks.GRAVEL)),
+                                                makeStateRule(Blocks.SAND)))),
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.isBiome(MiaBiomes.MANGROVE_SWAMP),
+                                SurfaceRules.ifTrue(
+                                        SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
+                                        SurfaceRules.sequence(
+                                                SurfaceRules.ifTrue(
+                                                        SurfaceRules.ON_FLOOR,
+                                                        SurfaceRules.ifTrue(
+                                                                waterBlockCheck,
+                                                                SurfaceRules.ifTrue(
+                                                                        SurfaceRules.noiseCondition(
+                                                                                MiaNoiseData
+                                                                                        .STRIPEY,
+                                                                                .35,
+                                                                                1),
+                                                                        makeStateRule(
+                                                                                Blocks
+                                                                                        .GRASS_BLOCK)))),
+                                                SurfaceRules.ifTrue(
+                                                        SurfaceRules.noiseCondition(
+                                                                MiaNoiseData.STRIPEY, -.1, .1),
+                                                        makeStateRule(Blocks.CLAY)),
+                                                MUD))),
+                        SurfaceRules.ifTrue(
+                                SurfaceRules.isBiome(MiaBiomes.PALE_GARDEN),
+                                SurfaceRules.ifTrue(
+                                        SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
+                                        SurfaceRules.sequence(
+                                                SurfaceRules.ifTrue(
+                                                        SurfaceRules.ON_FLOOR,
+                                                        SurfaceRules.ifTrue(
+                                                                waterBlockCheck,
+                                                                makeStateRule(Blocks.GRASS_BLOCK))),
+                                                makeStateRule(Blocks.DIRT)))),
+                        SurfaceRules.ifTrue(
                                 SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.CEILING),
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.isBiome(

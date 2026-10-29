@@ -398,12 +398,26 @@ public final class Layer2Layout implements DensityFunction {
     }
 
     public static Layer2TerrainKind terrainKind(long regionId) {
-        return switch ((int) (mix(regionId ^ 0x624de903b718a5cfL) & 3)) {
-            case 0 -> Layer2TerrainKind.WOODLAND;
-            case 1 -> Layer2TerrainKind.WETLAND;
-            case 2 -> Layer2TerrainKind.HIGHLAND;
-            default -> Layer2TerrainKind.PLATEAU;
-        };
+        long ocean = mix(regionId ^ 0x6f6365616e5f6c32L);
+        if ((ocean & 7) == 0) {
+            return switch ((int) Long.remainderUnsigned(ocean >>> 3, 3)) {
+                case 0 -> Layer2TerrainKind.OCEAN;
+                case 1 -> Layer2TerrainKind.OCEAN_WOODLAND;
+                default -> Layer2TerrainKind.WOODLAND_OCEAN;
+            };
+        }
+        var original =
+                switch ((int) (mix(regionId ^ 0x624de903b718a5cfL) & 3)) {
+                    case 0 -> Layer2TerrainKind.WOODLAND;
+                    case 1 -> Layer2TerrainKind.WETLAND;
+                    case 2 -> Layer2TerrainKind.HIGHLAND;
+                    default -> Layer2TerrainKind.PLATEAU;
+                };
+        if ((mix(regionId ^ 0x6d616e67726f7665L) & 3) == 0) {
+            if (original == Layer2TerrainKind.WOODLAND) return Layer2TerrainKind.WETLAND_WOODLAND;
+            if (original == Layer2TerrainKind.HIGHLAND) return Layer2TerrainKind.WETLAND_HIGHLAND;
+        }
+        return original;
     }
 
     public static Layer2TerrainKind terrainKind(Region region) {

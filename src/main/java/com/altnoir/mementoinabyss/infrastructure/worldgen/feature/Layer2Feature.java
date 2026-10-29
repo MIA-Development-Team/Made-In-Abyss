@@ -23,15 +23,20 @@ public final class Layer2Feature extends Feature<Layer2FeatureConfiguration> {
         var state = Layer2Runtime.state(realLevel.getChunkSource().randomState());
         if (context.config().allowFluids() && level instanceof Layer2WorldGenLevel view)
             level = view.withFluidWrites();
-        if (state != null && !(level instanceof Layer2WorldGenLevel)) {
+        if (state != null
+                && (!(level instanceof Layer2WorldGenLevel) || context.config().submerged())) {
+            if (context.config().submerged() && level instanceof Layer2WorldGenLevel view)
+                level = view.original();
             ChunkGenerator source = generator;
             if (!(source instanceof NoiseBasedChunkGenerator))
                 source = realLevel.getChunkSource().getGenerator();
             if (source instanceof NoiseBasedChunkGenerator original) {
+                // Aquatic vanilla features re-query heightmaps; exclude dry ledges and the roof.
+                int maxY = context.config().submerged() ? state.layout().waterLevel() : 0;
                 level =
                         new Layer2WorldGenLevel(
-                                level, state, false, -128, 0, context.config().allowFluids());
-                generator = new Layer2GeneratorView(original, state, level, false, -128, 0);
+                                level, state, false, -128, maxY, context.config().allowFluids());
+                generator = new Layer2GeneratorView(original, state, level, false, -128, maxY);
             }
         }
         return context.config()

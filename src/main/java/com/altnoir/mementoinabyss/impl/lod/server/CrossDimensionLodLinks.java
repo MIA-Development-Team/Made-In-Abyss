@@ -180,6 +180,7 @@ public final class CrossDimensionLodLinks {
                         boundary.dimension(),
                         target,
                         new MiaHeight(sourceType.minY(), sourceType.height(), sourceMaxY),
+                        sourceType,
                         displayYOffset));
     }
 

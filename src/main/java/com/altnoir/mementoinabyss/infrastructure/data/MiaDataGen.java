@@ -4,10 +4,12 @@ import com.altnoir.abysslib.reginth.providers.ProviderType;
 import com.altnoir.abysslib.reginth.providers.ReginthLangProvider;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.api.worldgen.Layer2Biomes;
+import com.altnoir.mementoinabyss.content.abyss.plant.DreamLicheeBlock;
 import com.altnoir.mementoinabyss.foundation.utility.FilesHelper;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.MiaPaintingVariants;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaBiomes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaLayer2BiomeGroups;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaLayer2VanillaBiomes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensionTypes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaWorldClocks;
@@ -33,6 +35,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.world.damagesource.DamageScaling;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -54,10 +58,20 @@ public class MiaDataGen {
         event.createProvider(MiaArtifactEnhancementRecipeProvider.Runner::new);
         event.createProvider(MiaLampTubeRecipeProvider.Runner::new);
         event.createProvider(MiaLootTableProvider::create);
+        event.createProvider(MiaChestLootProvider::new);
+        // Bootstrap getters expose unbound patch holders; copy vanilla values from the base lookup.
+        var originalRegistries = event.getLookupProvider();
         event.createDatapackRegistryObjects(
                 new RegistrySetBuilder()
                         .add(Registries.WORLD_CLOCK, MiaWorldClocks::bootstrap)
                         .add(Registries.DIMENSION_TYPE, MiaDimensionTypes::bootstrap)
+                        .add(
+                                Registries.DAMAGE_TYPE,
+                                context ->
+                                        context.register(
+                                                DreamLicheeBlock.DAMAGE_TYPE,
+                                                new DamageType(
+                                                        "dreamLichee", DamageScaling.NEVER, 0.1F)))
                         .add(Registries.NOISE, MiaNoiseData::bootstrap)
                         .add(Registries.DENSITY_FUNCTION, MiaDensityFunctions::bootstrap)
                         .add(Registries.NOISE_SETTINGS, MiaNoiseGeneratorSettings::bootstrap)
@@ -67,14 +81,20 @@ public class MiaDataGen {
                                     MiaAbyssFeatures.bootstrap(context);
                                     MiaTreeFeatures.bootstrap(context);
                                     GreatFaultFeatures.bootstrap(context);
+                                    MiaLayer2VanillaBiomes.bootstrapFeatures(
+                                            context, originalRegistries.join());
                                 })
                         .add(
                                 Registries.PLACED_FEATURE,
                                 context -> {
                                     MiaAbyssPlacements.bootstrap(context);
                                     GreatFaultPlacements.bootstrap(context);
+                                    MiaLayer2VanillaBiomes.bootstrapPlacements(
+                                            context, originalRegistries.join());
                                 })
-                        .add(Registries.BIOME, MiaBiomes::bootstrap)
+                        .add(
+                                Registries.BIOME,
+                                context -> MiaBiomes.bootstrap(context, originalRegistries.join()))
                         .add(Layer2Biomes.REGISTRY_KEY, MiaLayer2BiomeGroups::bootstrap)
                         .add(Registries.PROCESSOR_LIST, MiaProcessorLists::bootstrap)
                         .add(Registries.TEMPLATE_POOL, MiaStructurePools::bootstrap)
@@ -82,6 +102,7 @@ public class MiaDataGen {
                         .add(Registries.STRUCTURE_SET, MiaStructureSets::bootstrap)
                         .add(Registries.PAINTING_VARIANT, MiaPaintingVariants::bootstrap)
                         .add(Registries.LEVEL_STEM, MiaDimensions::bootstrap));
+        event.createProvider(MiaBiomeTagsProvider::new);
     }
 
     private static void addExtraRegistrateData() {

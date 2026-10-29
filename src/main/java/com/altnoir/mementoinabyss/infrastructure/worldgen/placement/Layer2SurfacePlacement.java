@@ -1,13 +1,17 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.placement;
 
 import com.altnoir.mementoinabyss.init.MiaPlacementModifiers;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.stream.Stream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
@@ -15,16 +19,27 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
 public final class Layer2SurfacePlacement extends PlacementModifier {
     private static final Layer2SurfacePlacement INSTANCE =
-            new Layer2SurfacePlacement(Heightmap.Types.WORLD_SURFACE_WG);
+            new Layer2SurfacePlacement(Heightmap.Types.WORLD_SURFACE_WG, -1);
     public static final MapCodec<Layer2SurfacePlacement> CODEC =
-            Heightmap.Types.CODEC
-                    .optionalFieldOf("heightmap", Heightmap.Types.WORLD_SURFACE_WG)
-                    .xmap(Layer2SurfacePlacement::of, Layer2SurfacePlacement::heightmap);
+            RecordCodecBuilder.mapCodec(
+                    instance ->
+                            instance.group(
+                                            Heightmap.Types.CODEC
+                                                    .optionalFieldOf(
+                                                            "heightmap",
+                                                            Heightmap.Types.WORLD_SURFACE_WG)
+                                                    .forGetter(Layer2SurfacePlacement::heightmap),
+                                            Codec.intRange(-1, DimensionType.Y_SIZE)
+                                                    .optionalFieldOf("max_water_depth", -1)
+                                                    .forGetter(value -> value.maxWaterDepth))
+                                    .apply(instance, Layer2SurfacePlacement::of));
 
     private final Heightmap.Types heightmap;
+    private final int maxWaterDepth;
 
-    private Layer2SurfacePlacement(Heightmap.Types heightmap) {
+    private Layer2SurfacePlacement(Heightmap.Types heightmap, int maxWaterDepth) {
         this.heightmap = heightmap;
+        this.maxWaterDepth = maxWaterDepth;
     }
 
     public static Layer2SurfacePlacement of() {
@@ -32,9 +47,13 @@ public final class Layer2SurfacePlacement extends PlacementModifier {
     }
 
     public static Layer2SurfacePlacement of(Heightmap.Types heightmap) {
-        return heightmap == Heightmap.Types.WORLD_SURFACE_WG
+        return of(heightmap, -1);
+    }
+
+    public static Layer2SurfacePlacement of(Heightmap.Types heightmap, int maxWaterDepth) {
+        return heightmap == Heightmap.Types.WORLD_SURFACE_WG && maxWaterDepth == -1
                 ? INSTANCE
-                : new Layer2SurfacePlacement(heightmap);
+                : new Layer2SurfacePlacement(heightmap, maxWaterDepth);
     }
 
     public Heightmap.Types heightmap() {
@@ -65,6 +84,15 @@ public final class Layer2SurfacePlacement extends PlacementModifier {
                     (!oceanFloor && floor.is(Blocks.WATER))
                             || floor.isFaceSturdy(level, support, Direction.UP);
             if (!supported) continue;
+            if (maxWaterDepth >= 0) {
+                var cursor = position.mutable();
+                int depth = 0;
+                while (depth <= maxWaterDepth && level.getFluidState(cursor).is(FluidTags.WATER)) {
+                    depth++;
+                    cursor.move(Direction.UP);
+                }
+                if (depth > maxWaterDepth) continue;
+            }
             BlockState above = level.getBlockState(position.above());
             if (oceanFloor
                     ? LayeredPlacementScan.Surface.waterOrReplaceable(above)

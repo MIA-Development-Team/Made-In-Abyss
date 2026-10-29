@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.impl.event;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.client.render.BiomeAmbientLightRenderer;
 import com.altnoir.mementoinabyss.client.render.TheAbyssFogRenderer;
 import com.altnoir.mementoinabyss.client.render.sky.EnvironmentCubeSkyboxRenderer;
 import com.altnoir.mementoinabyss.client.screen.SeamlessLevelLoadingScreen;
@@ -41,6 +42,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.ExtractLevelRenderStateEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RecipesReceivedEvent;
 import net.neoforged.neoforge.client.event.RegisterCustomEnvironmentEffectRendererEvent;
@@ -55,10 +57,21 @@ import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
+import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 @EventBusSubscriber(Dist.CLIENT)
 public final class ClientEvent {
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void extractBiomeAmbientLight(ExtractLevelRenderStateEvent event) {
+        BiomeAmbientLightRenderer.extract(event);
+    }
+
+    @SubscribeEvent
+    public static void onClientTagsUpdated(TagsUpdatedEvent.ClientPacketReceived event) {
+        BiomeAmbientLightRenderer.invalidateBiomes();
+    }
+
     @SubscribeEvent
     public static void renderFog(ViewportEvent.RenderFog event) {
         TheAbyssFogRenderer.renderFog(event);
@@ -164,6 +177,7 @@ public final class ClientEvent {
 
     @SubscribeEvent
     public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        BiomeAmbientLightRenderer.clear();
         ArtifactEnhancementMaterialTooltip.clear();
         LampTubeClientRecipes.clear();
         CrossDimensionLodRenderer.disconnect();

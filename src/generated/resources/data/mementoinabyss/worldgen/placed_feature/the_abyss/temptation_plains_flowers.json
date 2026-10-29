@@ -1,0 +1,18 @@
+{
+  "feature": "mementoinabyss:the_abyss/temptation_plains_flowers",
+  "placement": [
+    {
+      "type": "mementoinabyss:layer2_flower_surface"
+    },
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:matching_block_tag",
+        "tag": "minecraft:air"
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

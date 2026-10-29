@@ -1,5 +1,6 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.density;
 
+import com.altnoir.mementoinabyss.api.worldgen.Layer2TerrainKind;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.KeyDispatchDataCodec;
@@ -8,6 +9,8 @@ import org.jspecify.annotations.Nullable;
 
 /** Region selectors supply scalar inputs; the serialized vanilla graph shapes the terrain. */
 public final class Layer2TerrainParameters implements DensityFunction {
+    private static final int MAX_TERRAIN_KIND = Layer2TerrainKind.values().length - 1;
+
     public enum Parameter {
         TERRAIN_KIND,
         PRIMARY_BLEND
@@ -122,7 +125,7 @@ public final class Layer2TerrainParameters implements DensityFunction {
     @Override
     public double maxValue() {
         return switch (parameter) {
-            case TERRAIN_KIND -> 3;
+            case TERRAIN_KIND -> MAX_TERRAIN_KIND;
             case PRIMARY_BLEND -> 1;
         };
     }

@@ -8,7 +8,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 public record Layer2FeatureConfiguration(
-        Holder<ConfiguredFeature<?, ?>> feature, boolean allowFluids)
+        Holder<ConfiguredFeature<?, ?>> feature, boolean allowFluids, boolean submerged)
         implements FeatureConfiguration {
     public static final Codec<Layer2FeatureConfiguration> CODEC =
             RecordCodecBuilder.create(
@@ -21,8 +21,17 @@ public record Layer2FeatureConfiguration(
                                                     .optionalFieldOf("allow_fluids", false)
                                                     .forGetter(
                                                             Layer2FeatureConfiguration
-                                                                    ::allowFluids))
+                                                                    ::allowFluids),
+                                            Codec.BOOL
+                                                    .optionalFieldOf("submerged", false)
+                                                    .forGetter(
+                                                            Layer2FeatureConfiguration::submerged))
                                     .apply(instance, Layer2FeatureConfiguration::new));
+
+    public Layer2FeatureConfiguration(
+            Holder<ConfiguredFeature<?, ?>> feature, boolean allowFluids) {
+        this(feature, allowFluids, false);
+    }
 
     @Override
     public Stream<Holder<ConfiguredFeature<?, ?>>> getSubFeatures() {

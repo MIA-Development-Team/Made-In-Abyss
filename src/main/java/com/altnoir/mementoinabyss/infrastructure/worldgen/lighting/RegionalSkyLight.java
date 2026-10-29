@@ -1,68 +1,32 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.lighting;
 
-import com.altnoir.mementoinabyss.infrastructure.worldgen.density.HopperAbyssHole;
-import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensionTypes;
-import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
+import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaEnvironmentAttributes;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.minecraft.core.SectionPos;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.DataLayer;
 import net.minecraft.world.level.chunk.LightChunkGetter;
+import net.minecraft.world.level.dimension.DimensionType;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Defines dimensions whose sky light is restricted to a horizontal region.
- * Definitions are resolved once for each light engine/storage instance so the
+ * Resolves dimension attributes into horizontal sky-light regions.
+ * Regions are captured once for each light engine/storage instance so the
  * block-level light propagation hot path only performs arithmetic.
  */
 public final class RegionalSkyLight {
     /** Six chunks give vanilla's 16 sky-light levels enough room to blend without a hard rim. */
     public static final double DEFAULT_FADE_DISTANCE = 96.0;
 
-    private static final Map<ResourceKey<Level>, Supplier<? extends Region>> DEFINITIONS =
-            new ConcurrentHashMap<>();
-    private static final Map<ResourceKey<Level>, Region> RESOLVED = new ConcurrentHashMap<>();
-    private static final Map<ResourceKey<Level>, Float> AMBIENT_BRIGHTNESS =
-            new ConcurrentHashMap<>();
+    // Weak keys use identity: equal dimension IDs or settings in another world must not share
+    // state.
+    private static final Cache<DimensionType, ResolvedRegion> RESOLVED =
+            CacheBuilder.newBuilder().weakKeys().maximumSize(64).build();
 
-    static {
-        Supplier<Region> abyssCenter =
-                () -> circle(0, 0, HopperAbyssHole.abyssRadius(), DEFAULT_FADE_DISTANCE);
-        register(MiaDimensions.THE_ABYSS_LEVEL, abyssCenter, MiaDimensionTypes.ABYSS_AMBIENT_LIGHT);
-        register(
-                MiaDimensions.GREAT_FAULT_LEVEL,
-                abyssCenter,
-                MiaDimensionTypes.GREAT_FAULT_AMBIENT_LIGHT);
-    }
-
-    public static void register(
-            ResourceKey<Level> dimension, Supplier<? extends Region> definition) {
-        register(dimension, definition, 0.0F);
-    }
-
-    /** Registers both the sky-light mask and the visual brightness used where sky light is absent. */
-    public static void register(
-            ResourceKey<Level> dimension,
-            Supplier<? extends Region> definition,
-            float ambientBrightness) {
-        DEFINITIONS.put(dimension, definition);
-        AMBIENT_BRIGHTNESS.put(dimension, Mth.clamp(ambientBrightness, 0.0F, 1.0F));
-        RESOLVED.remove(dimension);
-    }
-
-    public static void unregister(ResourceKey<Level> dimension) {
-        DEFINITIONS.remove(dimension);
-        AMBIENT_BRIGHTNESS.remove(dimension);
-        RESOLVED.remove(dimension);
-    }
-
-    public static float ambientBrightness(ResourceKey<Level> dimension) {
-        return AMBIENT_BRIGHTNESS.getOrDefault(dimension, 0.0F);
-    }
+    private record ResolvedRegion(double baseRadius, Region region) {}
 
     public static Region circle(int centerX, int centerZ, double radius) {
         return circle(centerX, centerZ, radius, DEFAULT_FADE_DISTANCE);
@@ -84,17 +48,44 @@ public final class RegionalSkyLight {
         if (!(chunkSource.getLevel() instanceof Level level)) {
             return null;
         }
-        return resolve(level.dimension());
+        return resolve(level);
     }
 
-    public static @Nullable Region resolve(ResourceKey<Level> dimension) {
-        Region resolved = RESOLVED.get(dimension);
-        if (resolved != null) return resolved;
-        Supplier<? extends Region> definition = DEFINITIONS.get(dimension);
-        if (definition == null) return null;
-        Region created = definition.get();
-        Region raced = RESOLVED.putIfAbsent(dimension, created);
-        return raced == null ? created : raced;
+    public static @Nullable Region resolve(Level level) {
+        return resolve(level.dimensionType());
+    }
+
+    public static @Nullable Region resolve(DimensionType dimensionType) {
+        return resolve(dimensionType, MementoInAbyss.CONFIGS.worldGenSection.abyssRadius.get());
+    }
+
+    static @Nullable Region resolve(DimensionType dimensionType, double baseRadius) {
+        var attribute = MiaEnvironmentAttributes.SKY_LIGHT_REGION;
+        if (!dimensionType.attributes().contains(attribute)) return null;
+        if (!Double.isFinite(baseRadius) || baseRadius < 0)
+            throw new IllegalArgumentException("Invalid base sky light radius");
+        return RESOLVED.asMap()
+                .compute(
+                        dimensionType,
+                        (ignored, cached) -> {
+                            if (cached != null && cached.baseRadius() == baseRadius) return cached;
+                            var settings =
+                                    dimensionType
+                                            .attributes()
+                                            .applyModifier(attribute, attribute.defaultValue());
+                            double radius = settings.radiusMultiplier() * baseRadius;
+                            if (!Double.isFinite(radius))
+                                throw new IllegalArgumentException(
+                                        "Sky light radius exceeds the supported range");
+                            return new ResolvedRegion(
+                                    baseRadius,
+                                    circle(
+                                            settings.centerX(),
+                                            settings.centerZ(),
+                                            radius,
+                                            settings.fadeDistance()));
+                        })
+                .region();
     }
 
     public static DataLayer maskDataLayer(Region region, SectionPos pos, DataLayer source) {
@@ -196,7 +187,10 @@ public final class RegionalSkyLight {
             int nearestZ = Mth.clamp(centerZ, minZ, minZ + 15);
             long dx = (long) nearestX - centerX;
             long dz = (long) nearestZ - centerZ;
-            return (double) dx * dx + (double) dz * dz < outerRadiusSquared;
+            double nearestDistanceSquared = (double) dx * dx + (double) dz * dz;
+            return fadeDistance <= 0.0
+                    ? nearestDistanceSquared <= radiusSquared
+                    : nearestDistanceSquared < outerRadiusSquared;
         }
 
         @Override

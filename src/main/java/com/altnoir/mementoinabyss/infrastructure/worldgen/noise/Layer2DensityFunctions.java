@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.noise;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.api.worldgen.Layer2TerrainKind;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.DensityGraphNode;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.Layer2Layout;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.Layer2TerrainParameters;
@@ -82,21 +83,60 @@ public final class Layer2DensityFunctions {
 
     private static DensityFunction kinds(
             DensityFunction kind,
+            DensityFunction primary,
             DensityFunction woodland,
             DensityFunction wetland,
             DensityFunction highland,
-            DensityFunction plateau) {
-        return DensityFunctions.rangeChoice(
-                kind,
-                0,
-                1,
-                woodland,
+            DensityFunction plateau,
+            DensityFunction wetlandCore) {
+        DensityFunction original =
                 DensityFunctions.rangeChoice(
                         kind,
+                        0,
                         1,
-                        2,
-                        wetland,
-                        DensityFunctions.rangeChoice(kind, 2, 3, highland, plateau)));
+                        woodland,
+                        DensityFunctions.rangeChoice(
+                                kind,
+                                1,
+                                2,
+                                wetland,
+                                DensityFunctions.rangeChoice(kind, 2, 3, highland, plateau)));
+        DensityFunction companion = DensityFunctions.rangeChoice(kind, 4, 5, woodland, highland);
+        return DensityFunctions.rangeChoice(
+                kind,
+                4,
+                6,
+                MiaDensityFunctions.lerpDirect(primary, companion, wetlandCore),
+                original);
+    }
+
+    private static DensityFunction oceanKinds(
+            DensityFunction kind,
+            DensityFunction primary,
+            double woodland,
+            double ocean,
+            DensityFunction original) {
+        DensityFunction sea = DensityFunctions.constant(ocean);
+        DensityFunction land = DensityFunctions.constant(woodland);
+        int oceanKind = Layer2TerrainKind.OCEAN.ordinal();
+        int oceanWoodland = Layer2TerrainKind.OCEAN_WOODLAND.ordinal();
+        int woodlandOcean = Layer2TerrainKind.WOODLAND_OCEAN.ordinal();
+        return DensityFunctions.rangeChoice(
+                kind,
+                oceanKind,
+                woodlandOcean + 1,
+                DensityFunctions.rangeChoice(
+                        kind,
+                        oceanKind,
+                        oceanWoodland,
+                        sea,
+                        DensityFunctions.rangeChoice(
+                                kind,
+                                oceanWoodland,
+                                woodlandOcean,
+                                MiaDensityFunctions.lerpDirect(primary, land, sea),
+                                MiaDensityFunctions.lerpDirect(primary, sea, land))),
+                original);
     }
 
     private static DensityFunction parameter(DensityFunction function) {
@@ -184,82 +224,118 @@ public final class Layer2DensityFunctions {
         DensityFunction primary = get(functions, PRIMARY_BLEND);
         DensityFunction region = get(functions, REGION_BLEND);
         DensityFunction wetlandOffset = add(scale(primary, 15), -115);
+        DensityFunction wetlandCoreOffset = DensityFunctions.constant(-115);
         register(
                 context,
                 OFFSET,
                 parameter(
-                        DensityFunctions.rangeChoice(
+                        oceanKinds(
                                 kind,
-                                1,
-                                2,
-                                wetlandOffset,
-                                regional(
-                                        region,
-                                        -100,
-                                        kinds(
-                                                kind,
-                                                DensityFunctions.constant(-100),
-                                                wetlandOffset,
-                                                DensityFunctions.constant(-88),
-                                                add(scale(primary, 16), -88))))));
+                                primary,
+                                -106,
+                                -121,
+                                DensityFunctions.rangeChoice(
+                                        kind,
+                                        1,
+                                        2,
+                                        wetlandOffset,
+                                        regional(
+                                                region,
+                                                -100,
+                                                kinds(
+                                                        kind,
+                                                        primary,
+                                                        DensityFunctions.constant(-106),
+                                                        wetlandOffset,
+                                                        DensityFunctions.constant(-88),
+                                                        add(scale(primary, 16), -88),
+                                                        wetlandCoreOffset))))));
         DensityFunction wetlandRelief = add(scale(primary, 2.2), .8);
         register(
                 context,
                 RELIEF_AMPLITUDE,
                 parameter(
-                        DensityFunctions.rangeChoice(
+                        oceanKinds(
                                 kind,
-                                1,
-                                2,
-                                wetlandRelief,
-                                regional(
-                                        region,
-                                        6,
-                                        kinds(
-                                                kind,
-                                                DensityFunctions.constant(6),
-                                                wetlandRelief,
-                                                DensityFunctions.constant(6),
-                                                add(scale(primary, -2), 6))))));
+                                primary,
+                                6,
+                                .25,
+                                DensityFunctions.rangeChoice(
+                                        kind,
+                                        1,
+                                        2,
+                                        wetlandRelief,
+                                        regional(
+                                                region,
+                                                6,
+                                                kinds(
+                                                        kind,
+                                                        primary,
+                                                        DensityFunctions.constant(6),
+                                                        wetlandRelief,
+                                                        DensityFunctions.constant(6),
+                                                        add(scale(primary, -2), 6),
+                                                        DensityFunctions.constant(.8)))))));
         register(
                 context,
                 FACTOR,
                 parameter(
-                        regional(
-                                region,
-                                1 / 16.0,
-                                kinds(
-                                        kind,
-                                        DensityFunctions.constant(1 / 16.0),
-                                        DensityFunctions.constant(.05),
-                                        DensityFunctions.constant(1 / 14.0),
-                                        DensityFunctions.constant(1 / 16.0)))));
+                        oceanKinds(
+                                kind,
+                                primary,
+                                0.0625,
+                                0.0625,
+                                regional(
+                                        region,
+                                        1 / 16.0,
+                                        kinds(
+                                                kind,
+                                                primary,
+                                                DensityFunctions.constant(1 / 16.0),
+                                                DensityFunctions.constant(.05),
+                                                DensityFunctions.constant(1 / 14.0),
+                                                DensityFunctions.constant(1 / 16.0),
+                                                DensityFunctions.constant(.05))))));
         register(
                 context,
                 JAGGEDNESS,
                 parameter(
-                        regional(
-                                region,
-                                .025,
-                                kinds(
-                                        kind,
-                                        DensityFunctions.constant(.025),
-                                        DensityFunctions.constant(.01),
-                                        DensityFunctions.constant(.04),
-                                        add(scale(primary, -.025), .04)))));
+                        oceanKinds(
+                                kind,
+                                primary,
+                                0.025,
+                                0.005,
+                                regional(
+                                        region,
+                                        .025,
+                                        kinds(
+                                                kind,
+                                                primary,
+                                                DensityFunctions.constant(.025),
+                                                DensityFunctions.constant(.01),
+                                                DensityFunctions.constant(.04),
+                                                add(scale(primary, -.025), .04),
+                                                DensityFunctions.constant(.01))))));
         register(
                 context,
                 CLEARANCE,
                 parameter(
-                        regional(
-                                region,
+                        oceanKinds(
+                                kind,
+                                primary,
                                 72,
-                                kinds(
-                                        kind,
-                                        DensityFunctions.constant(72),
-                                        DensityFunctions.constant(64),
-                                        DensityFunctions.constant(64),
-                                        add(scale(primary, -8), 64)))));
+                                72,
+                                regional(
+                                        region,
+                                        72,
+                                        kinds(
+                                                kind,
+                                                primary,
+                                                DensityFunctions.constant(72),
+                                                DensityFunctions.constant(64),
+                                                DensityFunctions.constant(64),
+                                                add(scale(primary, -8), 64),
+                                                DensityFunctions.constant(64))))));
         register(
                 context,
                 RELIEF,
@@ -288,7 +364,7 @@ public final class Layer2DensityFunctions {
                         DensityFunctions.noise(
                                 noises.getOrThrow(MiaNoiseData.LAYER2_PILLAR), 1, 0)));
         DensityFunction pillarNoise = get(functions, PILLAR_NOISE);
-        DensityFunction islands =
+        DensityFunction wetlandIslands =
                 DensityFunctions.rangeChoice(
                         kind,
                         1,
@@ -297,6 +373,15 @@ public final class Layer2DensityFunctions {
                                 add(scale(primary, -1), 1),
                                 scale(smooth(scale(pillarNoise, 4).clamp(0, 1)), 3.5)),
                         DensityFunctions.zero());
+        DensityFunction islands =
+                DensityFunctions.rangeChoice(
+                        kind,
+                        4,
+                        6,
+                        DensityFunctions.mul(
+                                primary,
+                                scale(smooth(scale(add(pillarNoise, -.3), 4).clamp(0, 1)), 3.5)),
+                        wetlandIslands);
         register(
                 context,
                 SURFACE_BASE,
@@ -372,10 +457,13 @@ public final class Layer2DensityFunctions {
                                 6,
                                 kinds(
                                         kind,
+                                        primary,
                                         DensityFunctions.constant(6),
                                         wetlandAmplitude,
                                         DensityFunctions.constant(8),
-                                        DensityFunctions.constant(4))));
+                                        DensityFunctions.constant(4),
+                                        DensityFunctions.constant(.5))));
+        floorAmplitude = oceanKinds(kind, primary, 6, .5, floorAmplitude);
         register(
                 context,
                 FLOOR_AMPLITUDE,
@@ -390,17 +478,24 @@ public final class Layer2DensityFunctions {
                 context,
                 ROOF_AMPLITUDE,
                 parameter(
-                        DensityFunctions.mul(
-                                get(functions, DETAIL_BUDGET),
-                                regional(
-                                        region,
-                                        12,
-                                        kinds(
-                                                kind,
-                                                DensityFunctions.constant(12),
-                                                DensityFunctions.constant(12),
-                                                DensityFunctions.constant(16),
-                                                DensityFunctions.constant(12))))));
+                        oceanKinds(
+                                kind,
+                                primary,
+                                12,
+                                12,
+                                DensityFunctions.mul(
+                                        get(functions, DETAIL_BUDGET),
+                                        regional(
+                                                region,
+                                                12,
+                                                kinds(
+                                                        kind,
+                                                        primary,
+                                                        DensityFunctions.constant(12),
+                                                        DensityFunctions.constant(12),
+                                                        DensityFunctions.constant(16),
+                                                        DensityFunctions.constant(12),
+                                                        DensityFunctions.constant(12)))))));
         var noiseCoordinate =
                 new DensityFunctions.Spline.Coordinate(
                         functions.getOrThrow(MiaDensityFunctions.BASE_3D_NOISE_THE_ABYSS));

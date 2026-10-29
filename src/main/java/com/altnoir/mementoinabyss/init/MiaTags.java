@@ -79,6 +79,7 @@ public class MiaTags {
     }
 
     public enum BiomeTags {
+        AMBIENT_LIGHT_DARK(NameSpaces.MOD, "ambient_light/dark"),
         HAS_ISLAND,
         THE_ABYSS_CLEAR,
         HAS_STAR_COMPASS_TEMPLE,

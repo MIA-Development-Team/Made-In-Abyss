@@ -1,0 +1,163 @@
+{
+  "attributes": {
+    "minecraft:audio/background_music": {
+      "default": {
+        "max_delay": 24000,
+        "min_delay": 12000,
+        "sound": "mementoinabyss:music.the_first_layer"
+      }
+    },
+    "minecraft:audio/music_volume": 1.0,
+    "minecraft:visual/sky_color": "#7ba4ff"
+  },
+  "carvers": [],
+  "downfall": 0.5,
+  "effects": {
+    "water_color": "#5db7ef"
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [
+      "mementoinabyss:the_abyss/sun_stone"
+    ],
+    [],
+    [],
+    [
+      "mementoinabyss:the_abyss/ore_dirt",
+      "mementoinabyss:the_abyss/ore_gravel",
+      "mementoinabyss:the_abyss/ore_iron",
+      "mementoinabyss:the_abyss/ore_copper",
+      "mementoinabyss:the_abyss/ore_gold",
+      "mementoinabyss:the_abyss/ore_lapis",
+      "mementoinabyss:the_abyss/ore_redstone",
+      "mementoinabyss:the_abyss/ore_diamond",
+      "mementoinabyss:the_abyss/ore_emerald",
+      "mementoinabyss:the_abyss/ore_quartz",
+      "mementoinabyss:the_abyss/ore_chlorophyte"
+    ],
+    [],
+    [],
+    [
+      "mementoinabyss:layer2/vanilla/trees_water",
+      "mementoinabyss:layer2/vanilla/flower_default",
+      "mementoinabyss:layer2/vanilla/patch_grass_badlands",
+      "mementoinabyss:layer2/vanilla/brown_mushroom_normal",
+      "mementoinabyss:layer2/vanilla/red_mushroom_normal",
+      "mementoinabyss:layer2/vanilla/patch_pumpkin",
+      "mementoinabyss:layer2/vanilla/patch_sugar_cane",
+      "mementoinabyss:layer2/vanilla/patch_firefly_bush_near_water",
+      "mementoinabyss:layer2/vanilla/seagrass_normal",
+      "mementoinabyss:layer2/vanilla/kelp_cold"
+    ]
+  ],
+  "has_precipitation": false,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [
+      {
+        "type": "minecraft:bat",
+        "maxCount": 8,
+        "minCount": 8,
+        "weight": 10
+      }
+    ],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [
+      {
+        "type": "minecraft:spider",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:zombie",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 95
+      },
+      {
+        "type": "minecraft:zombie_villager",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      },
+      {
+        "type": "minecraft:skeleton",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:creeper",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:slime",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:witch",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      },
+      {
+        "type": "minecraft:drowned",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      }
+    ],
+    "underground_water_creature": [
+      {
+        "type": "minecraft:glow_squid",
+        "maxCount": 6,
+        "minCount": 4,
+        "weight": 10
+      }
+    ],
+    "water_ambient": [
+      {
+        "type": "minecraft:cod",
+        "maxCount": 6,
+        "minCount": 3,
+        "weight": 10
+      }
+    ],
+    "water_creature": [
+      {
+        "type": "minecraft:squid",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 1
+      },
+      {
+        "type": "minecraft:dolphin",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 1
+      },
+      {
+        "type": "minecraft:nautilus",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      }
+    ]
+  },
+  "temperature": 0.5
+}
