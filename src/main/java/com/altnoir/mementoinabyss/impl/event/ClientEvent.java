@@ -26,6 +26,13 @@ import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodBatchPayload
 import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodCacheOfferPayload;
 import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodDebugPayload;
 import com.altnoir.mementoinabyss.impl.rope.minecraft.RopeClimbing;
+import com.altnoir.mementoinabyss.impl.vertical.VerticalBlockCollisions;
+import com.altnoir.mementoinabyss.impl.vertical.client.VerticalNearTerrain;
+import com.altnoir.mementoinabyss.impl.vertical.client.VerticalResidentWorlds;
+import com.altnoir.mementoinabyss.impl.vertical.client.VerticalTransferClient;
+import com.altnoir.mementoinabyss.impl.vertical.network.VerticalSectionPayload;
+import com.altnoir.mementoinabyss.impl.vertical.network.VerticalTransferPayload;
+import com.altnoir.mementoinabyss.impl.vertical.network.VerticalWorldPayload;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
 import com.altnoir.mementoinabyss.init.MiaDataComponents;
 import com.altnoir.mementoinabyss.init.MiaMenus;
@@ -54,6 +61,7 @@ import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
@@ -92,6 +100,7 @@ public final class ClientEvent {
     @SubscribeEvent
     public static void registerRenderPipelines(RegisterRenderPipelinesEvent event) {
         CrossDimensionLodRenderTypes.registerPipelines(event);
+        VerticalNearTerrain.register(event);
         EnvironmentCubeSkyboxRenderer.registerPipeline(event);
         CaveExplorerBeaconRenderTypes.registerPipelines(event);
     }
@@ -106,6 +115,24 @@ public final class ClientEvent {
     @SubscribeEvent
     public static void renderCrossDimensionLod(RenderLevelStageEvent.AfterOpaqueBlocks event) {
         CrossDimensionLodRenderer.renderPersistent(event);
+        VerticalNearTerrain.render(event);
+    }
+
+    @SubscribeEvent
+    public static void onClientPlayerClone(ClientPlayerNetworkEvent.Clone event) {
+        VerticalTransferClient.clonePlayer(event.getOldPlayer(), event.getNewPlayer());
+        var level = Minecraft.getInstance().level;
+        if (level != null) {
+            if (!VerticalResidentWorlds.owns(level)) VerticalNearTerrain.hydrate(level);
+            VerticalNearTerrain.bridge();
+        }
+    }
+
+    @SubscribeEvent
+    public static void onVerticalLoadingScreen(ScreenEvent.Opening event) {
+        if (event.getNewScreen() instanceof SeamlessLevelLoadingScreen
+                && event.getCurrentScreen() == null
+                && VerticalTransferClient.skipLoadingScreen()) event.setCanceled(true);
     }
 
     @SubscribeEvent
@@ -129,6 +156,8 @@ public final class ClientEvent {
 
     @SubscribeEvent
     public static void clientTick(ClientTickEvent.Pre event) {
+        VerticalNearTerrain.tick();
+        VerticalResidentWorlds.tick();
         var player = Minecraft.getInstance().player;
         if (player != null) {
             var input = player.input.keyPresses;
@@ -142,6 +171,16 @@ public final class ClientEvent {
 
     @SubscribeEvent
     public static void registerPayloadHandlers(RegisterClientPayloadHandlersEvent event) {
+        VerticalBlockCollisions.setClientView(VerticalNearTerrain::collisionView);
+        event.register(
+                VerticalTransferPayload.TYPE,
+                (payload, context) -> VerticalTransferClient.prepare(payload));
+        event.register(
+                VerticalWorldPayload.TYPE,
+                (payload, context) -> VerticalResidentWorlds.accept(payload));
+        event.register(
+                VerticalSectionPayload.TYPE,
+                (payload, context) -> VerticalNearTerrain.accept(payload));
         event.register(
                 CrossDimensionLodCacheOfferPayload.TYPE,
                 (payload, context) -> CrossDimensionLodRenderer.accept(payload));
@@ -181,6 +220,9 @@ public final class ClientEvent {
         ArtifactEnhancementMaterialTooltip.clear();
         LampTubeClientRecipes.clear();
         CrossDimensionLodRenderer.disconnect();
+        VerticalNearTerrain.clear();
+        VerticalTransferClient.clear();
+        VerticalResidentWorlds.clear();
         CrossDimensionLodDebugEntry.clear();
         StarCompassOverlay.clear();
         WhistleComboHandler.reset();

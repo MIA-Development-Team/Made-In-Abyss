@@ -7,7 +7,7 @@
     },
     "mementoinabyss:vertical_above": {
       "dimension": "mementoinabyss:the_abyss",
-      "entry_offset": 8.0
+      "entry_offset": 0.0
     },
     "minecraft:audio/ambient_sounds": {
       "mood": {

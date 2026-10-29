@@ -22,6 +22,7 @@ import com.altnoir.mementoinabyss.impl.lod.server.CrossDimensionLodLink;
 import com.altnoir.mementoinabyss.impl.lod.server.CrossDimensionLodLinks;
 import com.altnoir.mementoinabyss.impl.lod.server.MiaLodStateNames;
 import com.altnoir.mementoinabyss.impl.lod.server.MiaLodView;
+import com.altnoir.mementoinabyss.impl.vertical.client.VerticalNearTerrain;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.lighting.RegionalSkyLight;
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
@@ -794,6 +795,8 @@ final class CrossDimensionLodRenderContext {
         var atlas = minecraft.getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS);
         GpuBufferSlice lodFog = lodFog(viewRadius);
         GpuBufferSlice lodLight = lodLight(activeLink);
+        GpuBufferSlice nearMask =
+                irisShaders ? null : VerticalNearTerrain.lodMask(activeLink.source());
 
         try (RenderPass pass =
                 RenderSystem.getDevice()
@@ -810,6 +813,7 @@ final class CrossDimensionLodRenderContext {
             if (!irisShaders) {
                 pass.setUniform("LodFog", lodFog);
                 pass.setUniform("LodLight", lodLight);
+                pass.setUniform("VerticalNearMask", nearMask);
             }
             pass.bindTexture("Sampler0", atlas.getTextureView(), atlas.getSampler());
             pass.setIndexBuffer(indices, indexStorage.type());

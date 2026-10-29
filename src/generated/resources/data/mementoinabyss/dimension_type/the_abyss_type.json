@@ -15,7 +15,7 @@
     },
     "mementoinabyss:vertical_below": {
       "dimension": "mementoinabyss:great_fault",
-      "entry_offset": 8.0
+      "entry_offset": 0.0
     },
     "minecraft:audio/ambient_sounds": {
       "mood": {

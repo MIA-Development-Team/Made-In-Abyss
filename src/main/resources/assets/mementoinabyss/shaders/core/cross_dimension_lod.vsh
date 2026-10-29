@@ -15,6 +15,7 @@ out float cylindricalVertexDistance;
 out vec4 vertexColor;
 out vec2 tileCoord;
 out vec2 worldHorizontalPosition;
+out vec3 worldPosition;
 flat out vec2 spriteMin;
 flat out vec2 spriteMax;
 
@@ -26,6 +27,7 @@ void main() {
     float shade = Normal.y < -0.5 ? 0.5 : (Normal.y > 0.5 ? 1.0 : (abs(Normal.x) > 0.5 ? 0.6 : 0.8));
     vertexColor = vec4(Color.rgb * shade, Color.a);
     worldHorizontalPosition = Position.xz;
+    worldPosition = Position;
     if (abs(Normal.x) > 0.5) {
         tileCoord = vec2(Position.z, -Position.y);
     } else if (abs(Normal.y) > 0.5) {

@@ -5,6 +5,11 @@
 
 uniform sampler2D Sampler0;
 
+layout(std140) uniform VerticalNearMask {
+    ivec4 ReplacementCount;
+    vec4 ReplacementBounds[192];
+};
+
 layout(std140) uniform LodFog {
     // x/y are the LOD-specific render-distance fog start/end in blocks.
     vec4 LodFogDistances;
@@ -23,6 +28,7 @@ in float cylindricalVertexDistance;
 in vec4 vertexColor;
 in vec2 tileCoord;
 in vec2 worldHorizontalPosition;
+in vec3 worldPosition;
 flat in vec2 spriteMin;
 flat in vec2 spriteMax;
 
@@ -34,6 +40,10 @@ float smootherstep(float edge0, float edge1, float value) {
 }
 
 void main() {
+    for (int i = 0; i < ReplacementCount.x; i++) {
+        if (all(greaterThanEqual(worldPosition, ReplacementBounds[i * 2].xyz - vec3(0.001)))
+                && all(lessThanEqual(worldPosition, ReplacementBounds[i * 2 + 1].xyz + vec3(0.001)))) discard;
+    }
     vec2 spriteSize = spriteMax - spriteMin;
     vec2 halfTexel = 0.5 / vec2(textureSize(Sampler0, 0));
     vec2 atlasCoord = spriteMin + fract(tileCoord) * spriteSize;

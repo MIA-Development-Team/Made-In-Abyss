@@ -7,8 +7,13 @@ import com.altnoir.mementoinabyss.impl.lod.server.MiaLodServer;
 import com.altnoir.mementoinabyss.impl.rope.minecraft.RopeClimbing;
 import com.altnoir.mementoinabyss.impl.strippable.StripEvent;
 import com.altnoir.mementoinabyss.impl.tillable.TillEvent;
+import com.altnoir.mementoinabyss.impl.vertical.server.VerticalBlockInteractions;
+import com.altnoir.mementoinabyss.impl.vertical.server.VerticalNearReadiness;
+import com.altnoir.mementoinabyss.impl.vertical.server.VerticalSeamlessTransfer;
+import com.altnoir.mementoinabyss.impl.vertical.server.VerticalSectionStreamer;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaWorldClocks;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.VerticalBoundaryChunks;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.VerticalDimensionTeleporter;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.structure.DelayedCavePillarGenerator;
 import com.altnoir.mementoinabyss.init.MiaAttributes;
@@ -155,6 +160,9 @@ public final class CommonEvents {
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
+        VerticalBoundaryChunks.tick(event.getServer());
+        VerticalSectionStreamer.tick(event.getServer());
+        VerticalBlockInteractions.tick(event.getServer());
         VerticalDimensionTeleporter.tick(event.getServer());
         DelayedCavePillarGenerator.onServerTick(event);
         MiaLodServer.tick(event.getServer());
@@ -165,6 +173,10 @@ public final class CommonEvents {
         DelayedCavePillarGenerator.clearPending();
         MiaLodServer.stop();
         VerticalDimensionTeleporter.clear();
+        VerticalBoundaryChunks.clear();
+        VerticalSectionStreamer.clear();
+        VerticalNearReadiness.clear();
+        VerticalBlockInteractions.clear();
     }
 
     @SubscribeEvent
@@ -175,7 +187,11 @@ public final class CommonEvents {
     @SubscribeEvent
     public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            if (event.getTo().equals(MiaDimensions.THE_ABYSS_LEVEL)) {
+            VerticalNearReadiness.remove(player.getUUID());
+            VerticalSectionStreamer.remove(player.getUUID());
+            if (event.getTo().equals(MiaDimensions.THE_ABYSS_LEVEL)
+                    && !VerticalSeamlessTransfer.isCrossing(
+                            player, event.getFrom(), event.getTo())) {
                 player.connection.send(
                         new ClientboundSoundPacket(
                                 MiaSoundEvents.ABYSS_PORTAL_TRAVEL,

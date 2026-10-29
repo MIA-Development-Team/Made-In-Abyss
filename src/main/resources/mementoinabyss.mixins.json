@@ -20,6 +20,8 @@
     "worldgen.SurfaceRulesContextMixin",
     "worldgen.SurfaceSystemMixin",
     "worldgen.MinecraftServerMixin",
+    "worldgen.VerticalCollisionGetterMixin",
+    "worldgen.VerticalTransferConnectionMixin",
     "lighting.LayerLightSectionStorageMixin",
     "lighting.ScalableLuxStarLightInterfaceMixin",
     "lighting.SodiumClonedChunkSectionMixin",
@@ -36,7 +38,9 @@
   },
   "client": [
     "accessor.PauseScreenAccessor",
+    "accessor.VerticalMinecraftAccessor",
     "client.FogRendererMixin",
-    "client.SkyRendererMixin"
+    "client.SkyRendererMixin",
+    "client.VerticalTransferPacketMixin"
   ]
 }

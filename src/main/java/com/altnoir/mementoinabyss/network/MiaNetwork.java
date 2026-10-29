@@ -6,14 +6,30 @@ import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodControlPaylo
 import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodDebugPayload;
 import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodReceiptPayload;
 import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodViewPayload;
+import com.altnoir.mementoinabyss.impl.vertical.network.VerticalBlockActionPayload;
+import com.altnoir.mementoinabyss.impl.vertical.network.VerticalSectionPayload;
+import com.altnoir.mementoinabyss.impl.vertical.network.VerticalSectionReceiptPayload;
+import com.altnoir.mementoinabyss.impl.vertical.network.VerticalTransferPayload;
+import com.altnoir.mementoinabyss.impl.vertical.network.VerticalWorldPayload;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 /** Registers all common network payload codecs in one place. */
 public final class MiaNetwork {
-    private static final String PROTOCOL_VERSION = "14";
+    private static final String PROTOCOL_VERSION = "17";
 
     public static void register(RegisterPayloadHandlersEvent event) {
         var registrar = event.registrar(PROTOCOL_VERSION);
+        registrar.playToServer(
+                VerticalBlockActionPayload.TYPE,
+                VerticalBlockActionPayload.STREAM_CODEC,
+                VerticalBlockActionPayload::handle);
+        registrar.playToClient(VerticalSectionPayload.TYPE, VerticalSectionPayload.STREAM_CODEC);
+        registrar.playToClient(VerticalTransferPayload.TYPE, VerticalTransferPayload.STREAM_CODEC);
+        registrar.playToClient(VerticalWorldPayload.TYPE, VerticalWorldPayload.STREAM_CODEC);
+        registrar.playToServer(
+                VerticalSectionReceiptPayload.TYPE,
+                VerticalSectionReceiptPayload.STREAM_CODEC,
+                VerticalSectionReceiptPayload::handle);
         registrar.playToClient(CompassTargetPayload.TYPE, CompassTargetPayload.STREAM_CODEC);
         registrar.playToClient(
                 CrossDimensionLodCacheOfferPayload.TYPE,
