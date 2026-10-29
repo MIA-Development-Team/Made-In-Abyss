@@ -13,7 +13,13 @@
       "seed": 2345,
       "states": [
         {
+          "Name": "mementoinabyss:crimson_veilgrass"
+        },
+        {
           "Name": "mementoinabyss:balloon_plant"
+        },
+        {
+          "Name": "minecraft:firefly_bush"
         },
         {
           "Name": "mementoinabyss:lantern_plant"
@@ -22,7 +28,13 @@
           "Name": "mementoinabyss:green_perilla"
         },
         {
-          "Name": "mementoinabyss:konjac_root"
+          "Name": "minecraft:torchflower"
+        },
+        {
+          "Name": "mementoinabyss:lantern_plant"
+        },
+        {
+          "Name": "mementoinabyss:marginal_weed"
         }
       ]
     }

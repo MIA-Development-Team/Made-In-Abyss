@@ -138,12 +138,15 @@ public final class MiaAbyssFeatures {
                                         new NormalNoise.NoiseParameters(0, 1.0),
                                         1.0F / 48.0F,
                                         List.of(
+                                                MiaBlocks.CRIMSON_VEILGRASS.get().defaultBlockState(),
                                                 MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
+                                                Blocks.FIREFLY_BUSH.defaultBlockState(),
                                                 MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
                                                 MiaBlocks.GREEN_PERILLA.get().defaultBlockState(),
-                                                MiaBlocks.KONJAC_ROOT
-                                                        .get()
-                                                        .defaultBlockState())))));
+                                                Blocks.TORCHFLOWER.defaultBlockState(),
+                                                MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
+                                                MiaBlocks.MARGINAL_WEED.get().defaultBlockState()
+                                        )))));
         context.register(
                 SINGLE_PIECE_OF_MARGINAL_WEED,
                 new ConfiguredFeature<>(
