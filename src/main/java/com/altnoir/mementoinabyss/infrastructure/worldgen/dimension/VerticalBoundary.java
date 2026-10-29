@@ -6,7 +6,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
-/** The dimension on the other side of a vertical world boundary. */
 public record VerticalBoundary(ResourceKey<Level> dimension, double entryOffset) {
     public static final Codec<VerticalBoundary> CODEC =
             RecordCodecBuilder.create(

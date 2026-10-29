@@ -19,6 +19,7 @@ public final class MiaEnvironmentAttributes {
             boundary("vertical_below");
     public static final EnvironmentAttribute<VerticalBoundary> VERTICAL_ABOVE =
             boundary("vertical_above");
+
     public static final EnvironmentAttribute<Float> ABYSS_FOG_DENSITY = fogDensity();
     public static final EnvironmentAttribute<SkyLightRegionSettings> SKY_LIGHT_REGION =
             skyLightRegion();
