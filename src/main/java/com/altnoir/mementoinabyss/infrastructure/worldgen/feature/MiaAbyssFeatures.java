@@ -128,6 +128,17 @@ public final class MiaAbyssFeatures {
             key("mycelium_patch_bonemeal");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+        // LANTERN_PLANT appears twice on purpose: it is weighted double in the flower mix.
+        var temptationPlainsFlowers =
+                List.of(
+                        MiaBlocks.CRIMSON_VEILGRASS.get().defaultBlockState(),
+                        MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
+                        Blocks.FIREFLY_BUSH.defaultBlockState(),
+                        MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
+                        MiaBlocks.GREEN_PERILLA.get().defaultBlockState(),
+                        Blocks.TORCHFLOWER.defaultBlockState(),
+                        MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
+                        MiaBlocks.MARGINAL_WEED.get().defaultBlockState());
         context.register(
                 TEMPTATION_PLAINS_FLOWERS,
                 new ConfiguredFeature<>(
@@ -137,16 +148,7 @@ public final class MiaAbyssFeatures {
                                         2345L,
                                         new NormalNoise.NoiseParameters(0, 1.0),
                                         1.0F / 48.0F,
-                                        List.of(
-                                                MiaBlocks.CRIMSON_VEILGRASS.get().defaultBlockState(),
-                                                MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
-                                                Blocks.FIREFLY_BUSH.defaultBlockState(),
-                                                MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
-                                                MiaBlocks.GREEN_PERILLA.get().defaultBlockState(),
-                                                Blocks.TORCHFLOWER.defaultBlockState(),
-                                                MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
-                                                MiaBlocks.MARGINAL_WEED.get().defaultBlockState()
-                                        )))));
+                                        temptationPlainsFlowers))));
         context.register(
                 SINGLE_PIECE_OF_MARGINAL_WEED,
                 new ConfiguredFeature<>(
@@ -156,6 +158,16 @@ public final class MiaAbyssFeatures {
 
         // 26.1 dropped Feature.FLOWER / RANDOM_PATCH; DualNoise + placement patch spread matches
         // main.
+
+        var layer1Flowers =
+                List.of(
+                        Blocks.BIG_DRIPLEAF.defaultBlockState(),
+                        MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
+                        MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
+                        MiaBlocks.GREEN_PERILLA.get().defaultBlockState(),
+                        MiaBlocks.SCORCHLEAF.get().defaultBlockState(),
+                        Blocks.TORCHFLOWER.defaultBlockState(),
+                        MiaBlocks.MARGINAL_WEED.get().defaultBlockState());
         context.register(
                 FLOWER_MEADOW_LAYER1,
                 new ConfiguredFeature<>(
@@ -168,16 +180,16 @@ public final class MiaAbyssFeatures {
                                         2345L,
                                         new NormalNoise.NoiseParameters(-3, 1.0),
                                         1.0F,
-                                        List.of(
-                                                Blocks.BIG_DRIPLEAF.defaultBlockState(),
-                                                MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
-                                                MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
-                                                MiaBlocks.GREEN_PERILLA.get().defaultBlockState(),
-                                                MiaBlocks.SCORCHLEAF.get().defaultBlockState(),
-                                                Blocks.TORCHFLOWER.defaultBlockState(),
-                                                MiaBlocks.MARGINAL_WEED
-                                                        .get()
-                                                        .defaultBlockState())))));
+                                        layer1Flowers))));
+
+        var layer2Flowers =
+                List.of(
+                        Blocks.BIG_DRIPLEAF.defaultBlockState(),
+                        MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
+                        MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
+                        MiaBlocks.SILVEAF_FUNGUS.get().defaultBlockState(),
+                        MiaBlocks.KONJAC_ROOT.get().defaultBlockState(),
+                        MiaBlocks.CRIMSON_VEILGRASS.get().defaultBlockState());
         context.register(
                 FLOWER_MEADOW_LAYER2,
                 new ConfiguredFeature<>(
@@ -190,15 +202,7 @@ public final class MiaAbyssFeatures {
                                         2345L,
                                         new NormalNoise.NoiseParameters(-3, 1.0),
                                         1.0F,
-                                        List.of(
-                                                Blocks.BIG_DRIPLEAF.defaultBlockState(),
-                                                MiaBlocks.BALLOON_PLANT.get().defaultBlockState(),
-                                                MiaBlocks.LANTERN_PLANT.get().defaultBlockState(),
-                                                MiaBlocks.SILVEAF_FUNGUS.get().defaultBlockState(),
-                                                MiaBlocks.KONJAC_ROOT.get().defaultBlockState(),
-                                                MiaBlocks.CRIMSON_VEILGRASS
-                                                        .get()
-                                                        .defaultBlockState())))));
+                                        layer2Flowers))));
 
         WeightedList.Builder<BlockState> fortitude = WeightedList.builder();
         for (Direction direction : Direction.Plane.HORIZONTAL) {
@@ -229,68 +233,69 @@ public final class MiaAbyssFeatures {
                 new ConfiguredFeature<>(
                         Feature.SIMPLE_BLOCK,
                         new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.LILY_PAD))));
+
+        var gloomBerryLayers =
+                List.of(
+                        BlockColumnConfiguration.layer(
+                                ConstantInt.of(1),
+                                BlockStateProvider.simple(
+                                        MiaBlocks.GLOOM_BERRY_PLANT
+                                                .get()
+                                                .defaultBlockState()
+                                                .setValue(
+                                                        BlockStateProperties.DOUBLE_BLOCK_HALF,
+                                                        DoubleBlockHalf.LOWER)
+                                                .setValue(
+                                                        DoubleBerryBlock.AGE,
+                                                        DoubleBerryBlock.MAX_AGE))),
+                        BlockColumnConfiguration.layer(
+                                ConstantInt.of(1),
+                                BlockStateProvider.simple(
+                                        MiaBlocks.GLOOM_BERRY_PLANT
+                                                .get()
+                                                .defaultBlockState()
+                                                .setValue(
+                                                        BlockStateProperties.DOUBLE_BLOCK_HALF,
+                                                        DoubleBlockHalf.UPPER)
+                                                .setValue(
+                                                        DoubleBerryBlock.AGE,
+                                                        DoubleBerryBlock.MAX_AGE))));
         context.register(
                 PATCH_GLOOM_BERRY,
                 new ConfiguredFeature<>(
                         Feature.BLOCK_COLUMN,
                         new BlockColumnConfiguration(
-                                List.of(
-                                        BlockColumnConfiguration.layer(
-                                                ConstantInt.of(1),
-                                                BlockStateProvider.simple(
-                                                        MiaBlocks.GLOOM_BERRY_PLANT
-                                                                .get()
-                                                                .defaultBlockState()
-                                                                .setValue(
-                                                                        BlockStateProperties
-                                                                                .DOUBLE_BLOCK_HALF,
-                                                                        DoubleBlockHalf.LOWER)
-                                                                .setValue(
-                                                                        DoubleBerryBlock.AGE,
-                                                                        DoubleBerryBlock.MAX_AGE))),
-                                        BlockColumnConfiguration.layer(
-                                                ConstantInt.of(1),
-                                                BlockStateProvider.simple(
-                                                        MiaBlocks.GLOOM_BERRY_PLANT
-                                                                .get()
-                                                                .defaultBlockState()
-                                                                .setValue(
-                                                                        BlockStateProperties
-                                                                                .DOUBLE_BLOCK_HALF,
-                                                                        DoubleBlockHalf.UPPER)
-                                                                .setValue(
-                                                                        DoubleBerryBlock.AGE,
-                                                                        DoubleBerryBlock
-                                                                                .MAX_AGE)))),
+                                gloomBerryLayers,
                                 Direction.UP,
                                 BlockPredicate.ONLY_IN_AIR_PREDICATE,
                                 true)));
+
+        var reedLayers =
+                List.of(
+                        BlockColumnConfiguration.layer(
+                                ConstantInt.of(1),
+                                BlockStateProvider.simple(
+                                        MiaBlocks.REED
+                                                .get()
+                                                .defaultBlockState()
+                                                .setValue(
+                                                        BlockStateProperties.DOUBLE_BLOCK_HALF,
+                                                        DoubleBlockHalf.LOWER))),
+                        BlockColumnConfiguration.layer(
+                                ConstantInt.of(1),
+                                BlockStateProvider.simple(
+                                        MiaBlocks.REED
+                                                .get()
+                                                .defaultBlockState()
+                                                .setValue(
+                                                        BlockStateProperties.DOUBLE_BLOCK_HALF,
+                                                        DoubleBlockHalf.UPPER))));
         context.register(
                 PATCH_REED,
                 new ConfiguredFeature<>(
                         Feature.BLOCK_COLUMN,
                         new BlockColumnConfiguration(
-                                List.of(
-                                        BlockColumnConfiguration.layer(
-                                                ConstantInt.of(1),
-                                                BlockStateProvider.simple(
-                                                        MiaBlocks.REED
-                                                                .get()
-                                                                .defaultBlockState()
-                                                                .setValue(
-                                                                        BlockStateProperties
-                                                                                .DOUBLE_BLOCK_HALF,
-                                                                        DoubleBlockHalf.LOWER))),
-                                        BlockColumnConfiguration.layer(
-                                                ConstantInt.of(1),
-                                                BlockStateProvider.simple(
-                                                        MiaBlocks.REED
-                                                                .get()
-                                                                .defaultBlockState()
-                                                                .setValue(
-                                                                        BlockStateProperties
-                                                                                .DOUBLE_BLOCK_HALF,
-                                                                        DoubleBlockHalf.UPPER)))),
+                                reedLayers,
                                 Direction.UP,
                                 BlockPredicate.ONLY_IN_AIR_OR_WATER_PREDICATE,
                                 true)));
@@ -386,6 +391,12 @@ public final class MiaAbyssFeatures {
                         Feature.SIMPLE_BLOCK,
                         new SimpleBlockConfiguration(
                                 BlockStateProvider.simple(MiaBlocks.SUN_STONE.get()))));
+        var prasioliteBuds =
+                List.of(
+                        MiaBlocks.SMALL_PRASIOLITE_BUD.get().defaultBlockState(),
+                        MiaBlocks.MEDIUM_PRASIOLITE_BUD.get().defaultBlockState(),
+                        MiaBlocks.LARGE_PRASIOLITE_BUD.get().defaultBlockState(),
+                        MiaBlocks.PRASIOLITE_CLUSTER.get().defaultBlockState());
         context.register(
                 PRASIOLITE_GEODE,
                 new ConfiguredFeature<>(
@@ -398,19 +409,7 @@ public final class MiaAbyssFeatures {
                                                 MiaBlocks.BUDDING_PRASIOLITE.get()),
                                         BlockStateProvider.simple(Blocks.CALCITE),
                                         BlockStateProvider.simple(Blocks.SMOOTH_BASALT),
-                                        List.of(
-                                                MiaBlocks.SMALL_PRASIOLITE_BUD
-                                                        .get()
-                                                        .defaultBlockState(),
-                                                MiaBlocks.MEDIUM_PRASIOLITE_BUD
-                                                        .get()
-                                                        .defaultBlockState(),
-                                                MiaBlocks.LARGE_PRASIOLITE_BUD
-                                                        .get()
-                                                        .defaultBlockState(),
-                                                MiaBlocks.PRASIOLITE_CLUSTER
-                                                        .get()
-                                                        .defaultBlockState()),
+                                        prasioliteBuds,
                                         BlockTags.FEATURES_CANNOT_REPLACE,
                                         BlockTags.GEODE_INVALID_BLOCKS),
                                 new GeodeLayerSettings(1.7, 2.2, 3.2, 4.2),
@@ -582,17 +581,19 @@ public final class MiaAbyssFeatures {
                                 configuredFeatures.getOrThrow(MYCELIUM_VEGETATION),
                                 0.6F,
                                 0.75F)));
+        var primoFungusWeighted =
+                List.of(
+                        new WeightedPlacedFeature(
+                                PlacementUtils.inlinePlaced(
+                                        configuredFeatures.getOrThrow(
+                                                MiaTreeFeatures.GLOW_PRIMO_FUNGUS)),
+                                0.9F));
         context.register(
                 TREES_PRIMO_FUNGUS,
                 new ConfiguredFeature<>(
                         Feature.RANDOM_SELECTOR,
                         new RandomFeatureConfiguration(
-                                List.of(
-                                        new WeightedPlacedFeature(
-                                                PlacementUtils.inlinePlaced(
-                                                        configuredFeatures.getOrThrow(
-                                                                MiaTreeFeatures.GLOW_PRIMO_FUNGUS)),
-                                                0.9F)),
+                                primoFungusWeighted,
                                 PlacementUtils.inlinePlaced(
                                         configuredFeatures.getOrThrow(
                                                 MiaTreeFeatures.PRIMO_FUNGUS)))));
@@ -606,24 +607,23 @@ public final class MiaAbyssFeatures {
                                 Feature.SIMPLE_BLOCK,
                                 new SimpleBlockConfiguration(
                                         BlockStateProvider.simple(Blocks.SEAGRASS))));
+        var kelpLayers =
+                List.of(
+                        BlockColumnConfiguration.layer(
+                                UniformInt.of(0, 2), BlockStateProvider.simple(Blocks.KELP_PLANT)),
+                        BlockColumnConfiguration.layer(
+                                ConstantInt.of(1),
+                                new RandomizedIntStateProvider(
+                                        BlockStateProvider.simple(Blocks.KELP),
+                                        KelpBlock.AGE,
+                                        UniformInt.of(20, 23))));
         var kelp =
                 context.register(
                         LAYER2_KELP,
                         new ConfiguredFeature<>(
                                 Feature.BLOCK_COLUMN,
                                 new BlockColumnConfiguration(
-                                        List.of(
-                                                BlockColumnConfiguration.layer(
-                                                        UniformInt.of(0, 2),
-                                                        BlockStateProvider.simple(
-                                                                Blocks.KELP_PLANT)),
-                                                BlockColumnConfiguration.layer(
-                                                        ConstantInt.of(1),
-                                                        new RandomizedIntStateProvider(
-                                                                BlockStateProvider.simple(
-                                                                        Blocks.KELP),
-                                                                KelpBlock.AGE,
-                                                                UniformInt.of(20, 23)))),
+                                        kelpLayers,
                                         Direction.UP,
                                         // BlockColumn checks ahead; shift back to test the block it
                                         // writes.
@@ -645,24 +645,23 @@ public final class MiaAbyssFeatures {
                                                                         true)),
                                                 SeaPickleBlock.PICKLES,
                                                 UniformInt.of(1, 4)))));
+        var underwaterWeighted =
+                List.of(
+                        new WeightedPlacedFeature(PlacementUtils.inlinePlaced(seagrass), 0.5F),
+                        new WeightedPlacedFeature(
+                                PlacementUtils.inlinePlaced(
+                                        kelp,
+                                        BlockPredicateFilter.forPredicate(
+                                                BlockPredicate.wouldSurvive(
+                                                        Blocks.KELP.defaultBlockState(),
+                                                        BlockPos.ZERO))),
+                                0.8F));
         context.register(
                 LAYER2_UNDERWATER_VEGETATION,
                 new ConfiguredFeature<>(
                         Feature.RANDOM_SELECTOR,
                         new RandomFeatureConfiguration(
-                                List.of(
-                                        new WeightedPlacedFeature(
-                                                PlacementUtils.inlinePlaced(seagrass), 0.5F),
-                                        new WeightedPlacedFeature(
-                                                PlacementUtils.inlinePlaced(
-                                                        kelp,
-                                                        BlockPredicateFilter.forPredicate(
-                                                                BlockPredicate.wouldSurvive(
-                                                                        Blocks.KELP
-                                                                                .defaultBlockState(),
-                                                                        BlockPos.ZERO))),
-                                                0.8F)),
-                                PlacementUtils.inlinePlaced(seaPickle))));
+                                underwaterWeighted, PlacementUtils.inlinePlaced(seaPickle))));
     }
 
     private static VegetationPatchConfiguration vegetationPatch(
