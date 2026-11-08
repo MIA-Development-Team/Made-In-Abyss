@@ -37,6 +37,22 @@
         },
         {
           "type": "minecraft:item",
+          "name": "mementoinabyss:artifact_shard_luna"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "mementoinabyss:artifact_shard_ter"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "mementoinabyss:artifact_shard_core"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "mementoinabyss:artifact_shard_mountain"
+        },
+        {
+          "type": "minecraft:item",
           "functions": [
             {
               "effects": [

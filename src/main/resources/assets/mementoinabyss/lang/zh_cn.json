@@ -1,4 +1,8 @@
 {
+  "item.mementoinabyss.artifact_shard_luna": "遗物碎片",
+  "item.mementoinabyss.artifact_shard_ter": "遗物碎片",
+  "item.mementoinabyss.artifact_shard_core": "遗物碎片",
+  "item.mementoinabyss.artifact_shard_mountain": "遗物碎片",
   "biome.mementoinabyss.the_abyss.under_rich_fossilized_forest": "地下茂密化石林",
   "biome.mementoinabyss.the_abyss.under_water_fossilized_forest": "地下水生化石林",
   "biome.mementoinabyss.overworld.the_abyss": "主世界深渊",

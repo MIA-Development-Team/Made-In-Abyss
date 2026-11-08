@@ -11,6 +11,8 @@ import com.altnoir.mementoinabyss.impl.artifact.ArtifactProfile;
 import com.altnoir.mementoinabyss.impl.artifact.component.ArtifactAttributeComponent;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 
 public final class MiaArtifactItems {
     private static final Reginth REGISTRATE = MementoInAbyss.registrate();
@@ -21,6 +23,40 @@ public final class MiaArtifactItems {
 
     public static final ItemEntry<StarCompassItem> STAR_COMPASS =
             REGISTRATE.item("star_compass", StarCompassItem::new).register();
+
+    public static final ItemEntry<Item> ARTIFACT_SHARD_LUNA = shard("artifact_shard_luna");
+    public static final ItemEntry<Item> ARTIFACT_SHARD_TER = shard("artifact_shard_ter");
+    public static final ItemEntry<Item> ARTIFACT_SHARD_CORE = shard("artifact_shard_core");
+    public static final ItemEntry<Item> ARTIFACT_SHARD_MOUNTAIN = shard("artifact_shard_mountain");
+
+    public static final ItemEntry<ArtifactItem> HEALTH_JUNKIE =
+            REGISTRATE
+                    .item(
+                            "health_junkie",
+                            properties ->
+                                    ArtifactItem.builder(
+                                                    properties,
+                                                    ArtifactProfile.of(ArtifactGrade.C, 1))
+                                            .enhanceable()
+                                            .component(
+                                                    new ArtifactAttributeComponent(
+                                                            new ArtifactAttribute(
+                                                                    Attributes.KNOCKBACK_RESISTANCE,
+                                                                    MementoInAbyss.asResource(
+                                                                            "artifact/health_junkie/knockback_resistance"),
+                                                                    0.2,
+                                                                    AttributeModifier.Operation
+                                                                            .ADD_MULTIPLIED_BASE),
+                                                            new ArtifactAttribute(
+                                                                    Attributes.MAX_HEALTH,
+                                                                    MementoInAbyss.asResource(
+                                                                            "artifact/health_junkie/max_health"),
+                                                                    2.0,
+                                                                    AttributeModifier.Operation
+                                                                            .ADD_VALUE)))
+                                            .build())
+                    .lang("Health Junkie")
+                    .register();
 
     public static final ItemEntry<ArtifactItem> TEST_ARTIFACT_1 =
             REGISTRATE
@@ -60,34 +96,13 @@ public final class MiaArtifactItems {
                     .lang("Test Artifact III")
                     .register();
 
-    public static final ItemEntry<ArtifactItem> HEALTH_JUNKIE =
-            REGISTRATE
-                    .item(
-                            "health_junkie",
-                            properties ->
-                                    ArtifactItem.builder(
-                                                    properties,
-                                                    ArtifactProfile.of(ArtifactGrade.C, 1))
-                                            .enhanceable()
-                                            .component(
-                                                    new ArtifactAttributeComponent(
-                                                            new ArtifactAttribute(
-                                                                    Attributes.KNOCKBACK_RESISTANCE,
-                                                                    MementoInAbyss.asResource(
-                                                                            "artifact/health_junkie/knockback_resistance"),
-                                                                    0.2,
-                                                                    AttributeModifier.Operation
-                                                                            .ADD_MULTIPLIED_BASE),
-                                                            new ArtifactAttribute(
-                                                                    Attributes.MAX_HEALTH,
-                                                                    MementoInAbyss.asResource(
-                                                                            "artifact/health_junkie/max_health"),
-                                                                    2.0,
-                                                                    AttributeModifier.Operation
-                                                                            .ADD_VALUE)))
-                                            .build())
-                    .lang("Health Junkie")
-                    .register();
+    private static ItemEntry<Item> shard(String name) {
+        return REGISTRATE
+                .item(name, Item::new)
+                .properties(properties -> properties.rarity(Rarity.RARE))
+                .lang("Artifact Shard")
+                .register();
+    }
 
     public static void register() {}
 }

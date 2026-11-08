@@ -52,6 +52,19 @@ public record MiaArchaeologyLoot(HolderLookup.Provider registries) implements Lo
                                                 LootItem.lootTableItem(
                                                         MiaArtifactItems.TEST_ARTIFACT_3.get()))
                                         .add(
+                                                LootItem.lootTableItem(
+                                                        MiaArtifactItems.ARTIFACT_SHARD_LUNA.get()))
+                                        .add(
+                                                LootItem.lootTableItem(
+                                                        MiaArtifactItems.ARTIFACT_SHARD_TER.get()))
+                                        .add(
+                                                LootItem.lootTableItem(
+                                                        MiaArtifactItems.ARTIFACT_SHARD_CORE.get()))
+                                        .add(
+                                                LootItem.lootTableItem(
+                                                        MiaArtifactItems.ARTIFACT_SHARD_MOUNTAIN
+                                                                .get()))
+                                        .add(
                                                 LootItem.lootTableItem(Items.SUSPICIOUS_STEW)
                                                         .apply(
                                                                 SetStewEffectFunction.stewEffect()
