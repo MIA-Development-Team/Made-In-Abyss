@@ -178,20 +178,14 @@ public class BlockStateGen {
             NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     artifactSmithingTable() {
         return (ctx, prov) -> {
-            var bottom = prov.modBlockTexture("chiseled_abyss_andesite");
-            var northSouth = prov.modBlockTexture("artifact_smithing_table_1");
-            var eastWest = prov.modBlockTexture("artifact_smithing_table_2");
-            var top = prov.modBlockTexture("artifact_smithing_table_top");
-            var textures =
-                    new TextureMapping()
-                            .put(TextureSlot.PARTICLE, bottom)
-                            .put(TextureSlot.DOWN, bottom)
-                            .put(TextureSlot.UP, top)
-                            .put(TextureSlot.NORTH, northSouth)
-                            .put(TextureSlot.SOUTH, northSouth)
-                            .put(TextureSlot.EAST, eastWest)
-                            .put(TextureSlot.WEST, eastWest);
-            var model = ModelTemplates.CUBE.create(ctx.get(), textures, prov.modelOutput);
+            var texture = prov.modBlockTexture("model/" + ctx.getName());
+            var particle = prov.modBlockTexture("model/" + ctx.getName() + "_particle");
+            var model =
+                    prov.getBuilder()
+                            .parent(prov.modLoc("block/template/artifact_smithing_table"))
+                            .texture(TextureSlot.ALL, texture)
+                            .texture(TextureSlot.PARTICLE, particle)
+                            .build(ctx.get());
             prov.create(ctx.get(), model);
         };
     }
