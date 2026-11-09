@@ -1,16 +1,20 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.feature;
 
 import com.altnoir.mementoinabyss.infrastructure.data.MiaArchaeologyLoot;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.TheAbyssBiomeSource;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaTags;
 import com.mojang.serialization.Codec;
 import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.QuartPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
@@ -71,7 +75,28 @@ public final class SlabRuinsFeature extends Feature<SlabRuinsConfiguration> {
                 canReplace);
         var brushable = BlockEntityType.BRUSHABLE_BLOCK.getBlockEntity(level, suspiciousPos);
         if (brushable == null) return false;
-        brushable.setLootTable(MiaArchaeologyLoot.ABYSS_RUINS, suspiciousPos.asLong());
+        var serverLevel = level.getLevel();
+        var generator = serverLevel.getChunkSource().getGenerator();
+        var loot = MiaArchaeologyLoot.ABYSS_RUINS;
+        if (generator.getBiomeSource() instanceof TheAbyssBiomeSource source) {
+            var depth = serverLevel.getChunkSource().randomState().sampler().depth();
+            float value =
+                    (float)
+                            depth.compute(
+                                    new DensityFunction.SinglePointContext(
+                                            QuartPos.toBlock(
+                                                    QuartPos.fromBlock(suspiciousPos.getX())),
+                                            QuartPos.toBlock(
+                                                    QuartPos.fromBlock(suspiciousPos.getY())),
+                                            QuartPos.toBlock(
+                                                    QuartPos.fromBlock(suspiciousPos.getZ()))));
+            long quantized = Climate.quantizeCoord(value);
+            if (quantized >= Climate.quantizeCoord(source.definition().layer1MaxDepth())
+                    && quantized < Climate.quantizeCoord(source.definition().invertedMinDepth())) {
+                loot = MiaArchaeologyLoot.LAYER2_RUINS;
+            }
+        }
+        brushable.setLootTable(loot, suspiciousPos.asLong());
         return true;
     }
 
@@ -83,7 +108,7 @@ public final class SlabRuinsFeature extends Feature<SlabRuinsConfiguration> {
                 BlockState floor = level.getBlockState(cursor.below());
                 if (floor.is(BlockTags.DIRT)
                         || floor.is(BlockTags.GRASS_BLOCKS)
-                        || floor.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag)) {
+                        || floor.is(MiaTags.Blocks.BASE_STONE_ABYSS.tag)) {
                     return cursor.immutable();
                 }
             }

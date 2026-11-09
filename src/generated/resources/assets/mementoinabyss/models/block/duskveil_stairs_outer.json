@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "mementoinabyss:block/duskveil_planks",
+    "side": "mementoinabyss:block/duskveil_planks",
+    "top": "mementoinabyss:block/duskveil_planks"
+  }
+}

@@ -1,8 +1,9 @@
 {
   "values": [
     "mementoinabyss:skyfog_log",
+    "mementoinabyss:duskveil_log",
     "mementoinabyss:verdant_stem",
-    "mementoinabyss:inverted_log",
-    "mementoinabyss:primo_stem"
+    "mementoinabyss:primo_stem",
+    "mementoinabyss:inverted_log"
   ]
 }

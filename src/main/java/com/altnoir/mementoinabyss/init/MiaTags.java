@@ -30,7 +30,7 @@ public class MiaTags {
         }
     }
 
-    public enum BlockTags {
+    public enum Blocks {
         BASE_STONE_ABYSS,
         ABYSS_ANDESITE_ORE_REPLACEABLE,
         ABYSS_MUD_ORE_REPLACEABLE,
@@ -44,42 +44,47 @@ public class MiaTags {
 
         public final TagKey<Block> tag;
 
-        BlockTags() {
+        Blocks() {
             this(NameSpaces.MOD);
         }
 
-        BlockTags(NameSpaces namespace) {
+        Blocks(NameSpaces namespace) {
             this(namespace, null);
         }
 
-        BlockTags(NameSpaces namespace, @Nullable String pathOverride) {
+        Blocks(NameSpaces namespace, @Nullable String pathOverride) {
             this.tag = TagKey.create(Registries.BLOCK, namespace.id(this, pathOverride));
         }
     }
 
-    public enum ItemTags {
+    public enum Items {
+        ARTIFACT_SHARDS_TIER_1(NameSpaces.MOD, "artifact_shards/tier_1"),
+        ARTIFACT_SHARDS_TIER_2(NameSpaces.MOD, "artifact_shards/tier_2"),
         SKYFOG_LOGS,
+        DUSKVEIL_LOGS,
         VERDANT_STEMS,
         INVERTED_LOGS,
         PRIMO_STEMS;
 
         public final TagKey<Item> tag;
 
-        ItemTags() {
+        Items() {
             this(NameSpaces.MOD);
         }
 
-        ItemTags(NameSpaces namespace) {
+        Items(NameSpaces namespace) {
             this(namespace, null);
         }
 
-        ItemTags(NameSpaces namespace, @Nullable String pathOverride) {
+        Items(NameSpaces namespace, @Nullable String pathOverride) {
             this.tag = TagKey.create(Registries.ITEM, namespace.id(this, pathOverride));
         }
     }
 
-    public enum BiomeTags {
+    public enum Biomes {
         AMBIENT_LIGHT_DARK(NameSpaces.MOD, "ambient_light/dark"),
+        ABYSS_FOG_CLEAR(NameSpaces.MOD, "abyss_fog/clear"),
+        ABYSS_FOG_DENSE(NameSpaces.MOD, "abyss_fog/dense"),
         HAS_ISLAND,
         THE_ABYSS_CLEAR,
         HAS_STAR_COMPASS_TEMPLE,
@@ -97,15 +102,15 @@ public class MiaTags {
 
         public final TagKey<Biome> tag;
 
-        BiomeTags() {
+        Biomes() {
             this(NameSpaces.MOD);
         }
 
-        BiomeTags(NameSpaces namespace) {
+        Biomes(NameSpaces namespace) {
             this(namespace, null);
         }
 
-        BiomeTags(NameSpaces namespace, @Nullable String pathOverride) {
+        Biomes(NameSpaces namespace, @Nullable String pathOverride) {
             this.tag = TagKey.create(Registries.BIOME, namespace.id(this, pathOverride));
         }
     }

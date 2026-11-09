@@ -47,11 +47,13 @@ public final class MiaLayer2VanillaBiomes {
     }
 
     private static ResourceKey<PlacedFeature> key(Holder<PlacedFeature> original) {
+        return key(original.unwrapKey().orElseThrow());
+    }
+
+    static ResourceKey<PlacedFeature> key(ResourceKey<PlacedFeature> original) {
         return ResourceKey.create(
                 Registries.PLACED_FEATURE,
-                MementoInAbyss.asResource(
-                        "layer2/vanilla/"
-                                + original.unwrapKey().orElseThrow().identifier().getPath()));
+                MementoInAbyss.asResource("layer2/vanilla/" + original.identifier().getPath()));
     }
 
     public static void bootstrapPlacements(
@@ -107,8 +109,12 @@ public final class MiaLayer2VanillaBiomes {
         var biomes = originals.lookupOrThrow(Registries.BIOME);
         var features = new ArrayList<Holder<PlacedFeature>>();
         for (var biome :
-                List.of(Biomes.MANGROVE_SWAMP, Biomes.PALE_GARDEN, Biomes.WARM_OCEAN, Biomes.OCEAN))
+                List.of(Biomes.MANGROVE_SWAMP, Biomes.WARM_OCEAN, Biomes.OCEAN))
             features.addAll(vegetation(biomes.getOrThrow(biome).value()));
+        var placed = originals.lookupOrThrow(Registries.PLACED_FEATURE);
+        for (var feature : MiaBiomes.DUSKVEIL_GROUND_VEGETATION) {
+            features.add(placed.getOrThrow(feature));
+        }
         features.add(
                 originals
                         .lookupOrThrow(Registries.PLACED_FEATURE)
@@ -153,8 +159,9 @@ public final class MiaLayer2VanillaBiomes {
 
     public static Biome create(
             ResourceKey<Biome> biome, BiomeGenerationSettings.Builder generation, Biome original) {
-        for (var feature : vegetation(original))
+        for (var feature : vegetation(original)) {
             generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, key(feature));
+        }
         if (biome.equals(MiaBiomes.WARM_OCEAN))
             generation.addFeature(
                     GenerationStep.Decoration.VEGETAL_DECORATION,
@@ -180,7 +187,7 @@ public final class MiaLayer2VanillaBiomes {
                         .downfall(
                                 biome.equals(MiaBiomes.MANGROVE_SWAMP)
                                         ? .9F
-                                        : biome.equals(MiaBiomes.PALE_GARDEN) ? .8F : .5F)
+                                        : .5F)
                         .specialEffects(effects)
                         .mobSpawnSettings(original.getMobSettings())
                         .generationSettings(generation.build())
@@ -189,14 +196,11 @@ public final class MiaLayer2VanillaBiomes {
                                 EnvironmentAttributes.BACKGROUND_MUSIC,
                                 new BackgroundMusic(MiaSoundEvents.MUSIC_THE_FIRST_LAYER))
                         .setAttribute(EnvironmentAttributes.MUSIC_VOLUME, 1.0F);
-        if (biome.equals(MiaBiomes.PALE_GARDEN))
-            builder.setAttribute(EnvironmentAttributes.CREAKING_ACTIVE, true);
         return builder.build();
     }
 
     static @Nullable ResourceKey<Biome> template(ResourceKey<Biome> biome) {
         if (biome.equals(MiaBiomes.MANGROVE_SWAMP)) return Biomes.MANGROVE_SWAMP;
-        if (biome.equals(MiaBiomes.PALE_GARDEN)) return Biomes.PALE_GARDEN;
         if (biome.equals(MiaBiomes.WARM_OCEAN)) return Biomes.WARM_OCEAN;
         if (biome.equals(MiaBiomes.TEMPTATION_OCEAN)) return Biomes.OCEAN;
         return null;

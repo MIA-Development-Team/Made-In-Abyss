@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "#mementoinabyss:artifact_shards/tier_2"
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "result": {
+    "id": "mementoinabyss:artifact_ingot_tier_2"
+  }
+}

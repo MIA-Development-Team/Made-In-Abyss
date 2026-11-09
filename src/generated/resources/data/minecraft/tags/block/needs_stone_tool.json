@@ -2,6 +2,9 @@
   "values": [
     "mementoinabyss:abyss_iron_ore",
     "mementoinabyss:abyss_copper_ore",
+    "mementoinabyss:abyss_lapis_ore",
+    "mementoinabyss:abyss_iron_ore",
+    "mementoinabyss:abyss_copper_ore",
     "mementoinabyss:abyss_lapis_ore"
   ]
 }

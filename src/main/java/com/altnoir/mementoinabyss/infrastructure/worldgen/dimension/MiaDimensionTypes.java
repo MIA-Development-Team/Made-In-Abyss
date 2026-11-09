@@ -43,9 +43,15 @@ public final class MiaDimensionTypes {
                         .set(
                                 MiaEnvironmentAttributes.AMBIENT_LIGHT_BIOME,
                                 new BiomeAmbientLightSettings(
-                                        Map.of(MiaTags.BiomeTags.AMBIENT_LIGHT_DARK.tag, 0.0F)))
+                                        Map.of(MiaTags.Biomes.AMBIENT_LIGHT_DARK.tag, 0.0F)))
                         .set(EnvironmentAttributes.FOG_COLOR, 0xFF708C79)
                         .set(MiaEnvironmentAttributes.ABYSS_FOG_DENSITY, 1.0F)
+                        .set(
+                                MiaEnvironmentAttributes.ABYSS_FOG_BIOMES,
+                                new BiomeFogSettings(
+                                        Map.of(
+                                                MiaTags.Biomes.ABYSS_FOG_CLEAR.tag, 0.0F,
+                                                MiaTags.Biomes.ABYSS_FOG_DENSE.tag, 2.0F)))
                         .set(
                                 EnvironmentAttributes.SKY_COLOR,
                                 OverworldBiomes.calculateSkyColor(0.8F))

@@ -8,6 +8,7 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.Tags;
@@ -60,6 +61,31 @@ public class MiaItems {
                                                     .saturationModifier(0.4F)
                                                     .build()))
                     .register();
+    public static final ItemEntry<BlockItem> DUSKVEIL_BERRIES =
+            REGISTRATE
+                    .item("duskveil_berries", p -> new BlockItem(MiaBlocks.DUSKVEIL_VINES.get(), p))
+                    .tag(Tags.Items.FOODS_BERRY)
+                    .compostable(0.3F)
+                    .properties(p -> p.food(Foods.GLOW_BERRIES))
+                    .register();
+    public static final ItemEntry<Item> DUSKVEIL_ICHOR_BOTTLE =
+            REGISTRATE
+                    .item("duskveil_ichor_bottle", Item::new)
+                    .properties(p -> p.stacksTo(16))
+                    .model(
+                            () ->
+                                    (ctx, prov) -> {
+                                        var model =
+                                                ModelTemplates.FLAT_ITEM.create(
+                                                        ctx.get(),
+                                                        TextureMapping.layer0(
+                                                                new Material(
+                                                                        prov.modLoc(
+                                                                                "item/ichor_bottle"))),
+                                                        prov.modelOutput);
+                                        prov.createWithExistingModel(ctx.getEntry(), model);
+                                    })
+                    .register();
 
     public static final ItemEntry<Item> RAW_CHLOROPHYTE =
             REGISTRATE.item("raw_chlorophyte", Item::new).tag(Tags.Items.RAW_MATERIALS).register();
@@ -67,6 +93,7 @@ public class MiaItems {
             REGISTRATE.item("prasiolite_shard", Item::new).tag(Tags.Items.GEMS).register();
     public static final ItemEntry<Item> CAERULITE_SHARD =
             REGISTRATE.item("caerulite_shard", Item::new).tag(Tags.Items.GEMS).register();
+
     public static final ItemEntry<RopeItem> ROPE =
             REGISTRATE
                     .item("rope", RopeItem::new)

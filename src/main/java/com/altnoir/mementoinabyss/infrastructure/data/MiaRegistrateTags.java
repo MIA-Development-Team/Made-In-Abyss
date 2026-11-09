@@ -6,7 +6,6 @@ import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 
 /** Cross-entry tags and explicit block-to-item copies; per-entry tags live at registration. */
@@ -24,11 +23,11 @@ public final class MiaRegistrateTags {
                                             MiaBlocks.MOSSY_FOSSILIZED_WOOD.get(),
                                     MiaBlocks.FOSSILIZED_LOG.get(),
                                             MiaBlocks.MOSSY_FOSSILIZED_LOG.get());
-                    provider.tag(MiaTags.BlockTags.ABYSS_MUD_ORE_REPLACEABLE.tag).add(Blocks.MUD);
-                    provider.tag(MiaTags.BlockTags.MYCELIUM_REPLACEABLE.tag)
+                    provider.tag(MiaTags.Blocks.ABYSS_MUD_ORE_REPLACEABLE.tag).add(net.minecraft.world.level.block.Blocks.MUD);
+                    provider.tag(MiaTags.Blocks.MYCELIUM_REPLACEABLE.tag)
                             .addTag(BlockTags.DIRT)
                             .addTag(BlockTags.GRASS_BLOCKS);
-                    provider.tag(MiaTags.BlockTags.PRIMO_STEMS.tag)
+                    provider.tag(MiaTags.Blocks.PRIMO_STEMS.tag)
                             .add(
                                     MiaBlocks.PRIMO_STEM.get(),
                                     MiaBlocks.STRIPPED_PRIMO_STEM.get(),
@@ -72,7 +71,7 @@ public final class MiaRegistrateTags {
                     provider.tag(ItemTags.STONE_CRAFTING_MATERIALS)
                             .add(MiaBlocks.ABYSS_COBBLED_ANDESITE.get().asItem());
                     provider.copy(
-                            MiaTags.BlockTags.PRIMO_STEMS.tag, MiaTags.ItemTags.PRIMO_STEMS.tag);
+                            MiaTags.Blocks.PRIMO_STEMS.tag, MiaTags.Items.PRIMO_STEMS.tag);
                 });
     }
 }

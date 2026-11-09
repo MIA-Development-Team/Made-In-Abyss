@@ -1,6 +1,8 @@
 package com.altnoir.mementoinabyss.mixin.client;
 
+import com.altnoir.mementoinabyss.client.render.TheAbyssFogRenderer;
 import com.altnoir.mementoinabyss.client.render.sky.OverworldAbyssSky;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.SkyRenderer;
@@ -20,6 +22,13 @@ public abstract class SkyRendererMixin {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null) return;
         if (OverworldAbyssSky.visible(level, minecraft.player.getX(), minecraft.player.getZ())) {
+            cir.setReturnValue(false);
+            return;
+        }
+
+        Camera camera = minecraft.gameRenderer.getMainCamera();
+        if (TheAbyssFogRenderer.strength(level, camera, camera.getFluidInCamera(), deltaPartialTick)
+                > 0.0F) {
             cir.setReturnValue(false);
         }
     }

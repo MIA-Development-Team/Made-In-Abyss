@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "axis=x,lit=false": {
+      "model": "mementoinabyss:block/duskveil_ichor",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,lit=true": {
+      "model": "mementoinabyss:block/duskveil_ichor_awake",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,lit=false": {
+      "model": "mementoinabyss:block/duskveil_ichor"
+    },
+    "axis=y,lit=true": {
+      "model": "mementoinabyss:block/duskveil_ichor_awake"
+    },
+    "axis=z,lit=false": {
+      "model": "mementoinabyss:block/duskveil_ichor",
+      "x": 90
+    },
+    "axis=z,lit=true": {
+      "model": "mementoinabyss:block/duskveil_ichor_awake",
+      "x": 90
+    }
+  }
+}

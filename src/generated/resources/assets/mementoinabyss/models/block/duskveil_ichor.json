@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "mementoinabyss:block/duskveil_ichor_top",
+    "side": "mementoinabyss:block/duskveil_ichor"
+  }
+}

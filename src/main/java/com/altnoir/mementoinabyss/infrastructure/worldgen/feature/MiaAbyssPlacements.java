@@ -90,11 +90,13 @@ public final class MiaAbyssPlacements {
     public static final ResourceKey<PlacedFeature> ORE_QUARTZ = key("ore_quartz");
     public static final ResourceKey<PlacedFeature> ORE_CHLOROPHYTE = key("ore_chlorophyte");
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG = key("trees_skyfog");
+    public static final ResourceKey<PlacedFeature> ABYSS_TREES_SKYFOG = key("abyss_trees_skyfog");
     public static final ResourceKey<PlacedFeature> GIANT_FOREST_TREES_SKYFOG =
             key("giant_forest_trees_skyfog");
     public static final ResourceKey<PlacedFeature> OVERWORLD_TREES_SKYFOG =
             key("overworld/trees_skyfog");
     public static final ResourceKey<PlacedFeature> DENSE_TREES_SKYFOG = key("dense_trees_skyfog");
+    public static final ResourceKey<PlacedFeature> TREES_DUSKVEIL = key("trees_duskveil");
     public static final ResourceKey<PlacedFeature> TREES_VERDANT_FUNGUS =
             key("trees_verdant_fungus");
 
@@ -384,6 +386,14 @@ public final class MiaAbyssPlacements {
                         configured.getOrThrow(MiaTreeFeatures.SKYFOG_TREE),
                         List.of(TreeOnEveryLayerPlacement.of(8), skyfogSoil, BiomeFilter.biome())));
         context.register(
+                ABYSS_TREES_SKYFOG,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaTreeFeatures.SKYFOG_TREE),
+                        List.of(
+                                TreeOnEveryLayerPlacement.below(8, 300),
+                                skyfogSoil,
+                                BiomeFilter.biome())));
+        context.register(
                 GIANT_FOREST_TREES_SKYFOG,
                 new PlacedFeature(
                         configured.getOrThrow(MiaTreeFeatures.SKYFOG_TREE),
@@ -405,6 +415,14 @@ public final class MiaAbyssPlacements {
                 new PlacedFeature(
                         configured.getOrThrow(MiaTreeFeatures.SKYFOG_TREE),
                         List.of(TreeOnEveryLayerPlacement.of(8), skyfogSoil, BiomeFilter.biome())));
+        context.register(
+                TREES_DUSKVEIL,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaTreeFeatures.DUSKVEIL_TREE),
+                        List.of(
+                                TreeOnEveryLayerPlacement.of(16),
+                                skyfogSoil,
+                                BiomeFilter.biome())));
         context.register(
                 TREES_VERDANT_FUNGUS,
                 new PlacedFeature(

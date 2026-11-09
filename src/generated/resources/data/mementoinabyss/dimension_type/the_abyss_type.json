@@ -1,6 +1,10 @@
 {
   "ambient_light": 0.12,
   "attributes": {
+    "mementoinabyss:abyss_fog_biomes": {
+      "#mementoinabyss:abyss_fog/clear": 0.0,
+      "#mementoinabyss:abyss_fog/dense": 2.0
+    },
     "mementoinabyss:abyss_fog_density": 1.0,
     "mementoinabyss:ambient_light_biome": {
       "#mementoinabyss:ambient_light/dark": 0.0

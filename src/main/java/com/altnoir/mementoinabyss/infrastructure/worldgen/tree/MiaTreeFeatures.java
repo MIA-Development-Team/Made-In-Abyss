@@ -5,8 +5,6 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.PrimoHugeFungu
 import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaTags;
 import com.altnoir.mementoinabyss.init.MiaWorldgenFeatures;
-import java.util.List;
-import java.util.Optional;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -20,6 +18,7 @@ import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.featuresize.ThreeLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.CherryFoliagePlacer;
@@ -27,9 +26,15 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePla
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.BeehiveDecorator;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.DarkOakTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.ForkingTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.MegaJungleTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 public final class MiaTreeFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> SKYFOG_TREE = key("skyfog_tree");
@@ -37,6 +42,9 @@ public final class MiaTreeFeatures {
             key("skyfog_tree_bees");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_SKYFOG_TREE =
             key("mega_skyfog_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> DUSKVEIL_TREE = key("duskveil_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PLANTED_DUSKVEIL_TREE =
+            key("planted_duskveil_tree");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PRIMO_FUNGUS = key("primo_fungus");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLOW_PRIMO_FUNGUS =
             key("glow_primo_fungus");
@@ -46,45 +54,69 @@ public final class MiaTreeFeatures {
             key("mega_inverted_tree");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        BlockPredicate replaceablePlants =
-                BlockPredicate.matchesTag(BlockTags.REPLACEABLE_BY_MUSHROOMS);
+        var leafLitter = BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.LEAF_LITTER);
+        var placeBlock = BlockPredicate.matchesTag(BlockTags.SUPPORTS_VEGETATION);
+        var sparseLeafLitter = GroundPatchTreeDecorator.of(42, 4, leafLitter, placeBlock);
 
-        context.register(SKYFOG_TREE, new ConfiguredFeature<>(Feature.TREE, skyfog().build()));
+        context.register(
+                SKYFOG_TREE,
+                new ConfiguredFeature<>(
+                        Feature.TREE,
+                        skyfog().decorators(Collections.singletonList(sparseLeafLitter)).build()));
         context.register(
                 SKYFOG_TREE_BEES,
                 new ConfiguredFeature<>(
                         Feature.TREE,
-                        skyfog().decorators(List.of(new BeehiveDecorator(0.002F))).build()));
+                        skyfog().decorators(List.of(sparseLeafLitter, new BeehiveDecorator(0.002F)))
+                                .build()));
         context.register(
                 MEGA_SKYFOG_TREE,
                 new ConfiguredFeature<>(
                         Feature.TREE,
                         new TreeConfiguration.TreeConfigurationBuilder(
-                                        BlockStateProvider.simple(MiaBlocks.SKYFOG_LOG.get()),
-                                        new MegaJungleTrunkPlacer(10, 2, 19),
-                                        skyfogLeaves(4, 1),
-                                        new FancyFoliagePlacer(
-                                                ConstantInt.of(3), ConstantInt.of(1), 4),
-                                        new TwoLayersFeatureSize(1, 1, 2))
-                                .belowTrunkProvider(BlockStateProvider.simple(Blocks.ROOTED_DIRT))
+                                BlockStateProvider.simple(MiaBlocks.SKYFOG_LOG.get()),
+                                new MegaJungleTrunkPlacer(10, 2, 19),
+                                skyfogLeaves(4, 1),
+                                new FancyFoliagePlacer(
+                                        ConstantInt.of(3), ConstantInt.of(1), 4),
+                                new TwoLayersFeatureSize(1, 1, 2))
+                                .belowTrunkProvider(BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.ROOTED_DIRT))
+                                .decorators(Collections.singletonList(sparseLeafLitter))
                                 .ignoreVines()
                                 .build()));
+
+        context.register(
+                DUSKVEIL_TREE,
+                new ConfiguredFeature<>(
+                        Feature.TREE,
+                        duskveil()
+                                .decorators(
+                                        List.of(
+                                                new DuskveilIchorDecorator(0.15F),
+                                                DuskveilVinesDecorator.INSTANCE))
+                                .build()));
+        context.register(
+                PLANTED_DUSKVEIL_TREE, new ConfiguredFeature<>(Feature.TREE, duskveil().build()));
+
+        BlockPredicate replaceablePlants =
+                BlockPredicate.matchesTag(BlockTags.REPLACEABLE_BY_MUSHROOMS);
+
         context.register(
                 PRIMO_FUNGUS,
                 new ConfiguredFeature<>(
                         MiaWorldgenFeatures.HUGE_PRIMO_FUNGUS.get(),
                         new PrimoHugeFungusConfiguration(
-                                MiaTags.BlockTags.MYCELIUM_REPLACEABLE.tag,
+                                MiaTags.Blocks.MYCELIUM_REPLACEABLE.tag,
                                 MiaBlocks.PRIMO_STEM.get().defaultBlockState(),
                                 MiaBlocks.PRIMO_CAP.get().defaultBlockState(),
-                                Optional.of(Blocks.BUDDING_AMETHYST.defaultBlockState()),
+                                Optional.of(net.minecraft.world.level.block.Blocks.BUDDING_AMETHYST.defaultBlockState()),
                                 replaceablePlants)));
         context.register(
                 GLOW_PRIMO_FUNGUS,
                 new ConfiguredFeature<>(
                         MiaWorldgenFeatures.HUGE_PRIMO_FUNGUS.get(),
                         new PrimoHugeFungusConfiguration(
-                                MiaTags.BlockTags.MYCELIUM_REPLACEABLE.tag,
+                                MiaTags.Blocks.MYCELIUM_REPLACEABLE.tag,
                                 MiaBlocks.PRIMO_STEM.get().defaultBlockState(),
                                 MiaBlocks.GLOW_PRIMO_CAP.get().defaultBlockState(),
                                 Optional.empty(),
@@ -110,20 +142,30 @@ public final class MiaTreeFeatures {
                         MiaWorldgenFeatures.INVERTED_TREE.get(), inverted(16, 8, 8, 5)));
     }
 
+    private static TreeConfiguration.TreeConfigurationBuilder duskveil() {
+        return new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(MiaBlocks.DUSKVEIL_LOG.get()),
+                new DarkOakTrunkPlacer(8, 6, 4),
+                BlockStateProvider.simple(MiaBlocks.DUSKVEIL_LEAVES.get()),
+                new DuskveilFoliagePlacer(),
+                new ThreeLayersFeatureSize(1, 1, 0, 1, 2, OptionalInt.empty()))
+                .belowTrunkProvider(BlockStateProvider.simple(Blocks.ROOTED_DIRT)).ignoreVines();
+    }
+
     private static TreeConfiguration.TreeConfigurationBuilder skyfog() {
         return new TreeConfiguration.TreeConfigurationBuilder(
-                        BlockStateProvider.simple(MiaBlocks.SKYFOG_LOG.get()),
-                        new ForkingTrunkPlacer(6, 2, 2),
-                        skyfogLeaves(9, 1),
-                        new CherryFoliagePlacer(
-                                ConstantInt.of(3),
-                                ConstantInt.of(0),
-                                ConstantInt.of(4),
-                                0.25F,
-                                0.5F,
-                                0.16666667F,
-                                0.33333334F),
-                        new TwoLayersFeatureSize(1, 0, 1))
+                BlockStateProvider.simple(MiaBlocks.SKYFOG_LOG.get()),
+                new ForkingTrunkPlacer(6, 2, 2),
+                skyfogLeaves(9, 1),
+                new CherryFoliagePlacer(
+                        ConstantInt.of(3),
+                        ConstantInt.of(0),
+                        ConstantInt.of(4),
+                        0.25F,
+                        0.5F,
+                        0.16666667F,
+                        0.33333334F),
+                new TwoLayersFeatureSize(1, 0, 1))
                 .belowTrunkProvider(BlockStateProvider.simple(Blocks.ROOTED_DIRT));
     }
 
@@ -139,11 +181,11 @@ public final class MiaTreeFeatures {
     private static TreeConfiguration inverted(
             int baseHeight, int randomA, int randomB, int radius) {
         return new TreeConfiguration.TreeConfigurationBuilder(
-                        BlockStateProvider.simple(MiaBlocks.INVERTED_LOG.get()),
-                        new StraightTrunkPlacer(baseHeight, randomA, randomB),
-                        BlockStateProvider.simple(MiaBlocks.INVERTED_LEAVES.get()),
-                        new BlobFoliagePlacer(ConstantInt.of(radius), ConstantInt.of(1), 3),
-                        new TwoLayersFeatureSize(1, 0, 1))
+                BlockStateProvider.simple(MiaBlocks.INVERTED_LOG.get()),
+                new StraightTrunkPlacer(baseHeight, randomA, randomB),
+                BlockStateProvider.simple(MiaBlocks.INVERTED_LEAVES.get()),
+                new BlobFoliagePlacer(ConstantInt.of(radius), ConstantInt.of(1), 3),
+                new TwoLayersFeatureSize(1, 0, 1))
                 .ignoreVines()
                 .build();
     }
@@ -153,5 +195,6 @@ public final class MiaTreeFeatures {
                 Registries.CONFIGURED_FEATURE, MementoInAbyss.asResource("tree/" + name));
     }
 
-    private MiaTreeFeatures() {}
+    private MiaTreeFeatures() {
+    }
 }

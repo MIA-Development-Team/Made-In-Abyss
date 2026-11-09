@@ -140,7 +140,7 @@ configurations {
 }
 
 dependencies {
-	implementation "com.altnoir:abysslib-reginth-${minecraft_version}:${abysslib_version}"
+	implementation "com.altnoir:abysslib-${minecraft_version}:${abysslib_version}"
 	implementation "im.ringlo.recall:Recall-${minecraft_version}-NeoForge:${recall_version}"
 
 	implementation "me.fzzyhmstrs:fzzy_config:${fzzyconfig_version}"

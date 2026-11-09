@@ -1,6 +1,8 @@
 {
   "values": [
     "mementoinabyss:raw_chlorophyte_block",
+    "mementoinabyss:chlorophyte_block",
+    "mementoinabyss:raw_chlorophyte_block",
     "mementoinabyss:chlorophyte_block"
   ]
 }

@@ -1,40 +1,41 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.lighting;
 
-import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.BiomeAmbientLightSettings;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.function.ToDoubleFunction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.phys.Vec3;
 
-public final class BiomeAmbientLightSampler {
+public final class BiomeFloatSampler {
     private static final int GRID_SIZE = 8;
-    private final Map<Biome, Float> brightness = new IdentityHashMap<>();
+    private final Map<Biome, Float> values = new IdentityHashMap<>();
     private final BiomeManager biomeManager;
     private final float[] corners = new float[8];
     private int cellX = Integer.MIN_VALUE;
     private int cellY;
     private int cellZ;
     private float weight;
-    private float weightedBrightness;
+    private float weightedValue;
 
-    public BiomeAmbientLightSampler(
-            BiomeAmbientLightSettings settings,
+    public BiomeFloatSampler(
+            ToDoubleFunction<Holder<Biome>> valueFunction,
             HolderLookup<Biome> biomes,
             BiomeManager biomeManager) {
         this.biomeManager = biomeManager;
         biomes.listElements()
                 .forEach(
                         holder -> {
-                            float value = settings.brightness(holder);
-                            if (value >= 0.0F) brightness.put(holder.value(), value);
+                            float value = (float) valueFunction.applyAsDouble(holder);
+                            if (value >= 0.0F) values.put(holder.value(), value);
                         });
     }
 
     public boolean isEmpty() {
-        return brightness.isEmpty();
+        return values.isEmpty();
     }
 
     public void invalidate() {
@@ -56,14 +57,14 @@ public final class BiomeAmbientLightSampler {
                                 (ix + (corner & 1)) * 2,
                                 (iy + ((corner >> 1) & 1)) * 2,
                                 (iz + ((corner >> 2) & 1)) * 2);
-                corners[corner] = brightness.getOrDefault(biome.value(), -1.0F);
+                corners[corner] = values.getOrDefault(biome.value(), -1.0F);
             }
         }
         float tx = (float) Mth.smoothstep(x - ix);
         float ty = (float) Mth.smoothstep(y - iy);
         float tz = (float) Mth.smoothstep(z - iz);
         weight = 0;
-        weightedBrightness = 0;
+        weightedValue = 0;
         for (int corner = 0; corner < 8; corner++) {
             if (corners[corner] < 0) continue;
             float w =
@@ -71,7 +72,7 @@ public final class BiomeAmbientLightSampler {
                             * ((corner & 2) == 0 ? 1 - ty : ty)
                             * ((corner & 4) == 0 ? 1 - tz : tz);
             weight += w;
-            weightedBrightness += w * corners[corner];
+            weightedValue += w * corners[corner];
         }
         weight = Mth.clamp(weight, 0.0F, 1.0F);
     }
@@ -80,7 +81,7 @@ public final class BiomeAmbientLightSampler {
         return weight;
     }
 
-    public float weightedBrightness() {
-        return weightedBrightness;
+    public float weightedValue() {
+        return weightedValue;
     }
 }

@@ -9,6 +9,8 @@ import com.altnoir.mementoinabyss.impl.artifact.ArtifactAttribute;
 import com.altnoir.mementoinabyss.impl.artifact.ArtifactGrade;
 import com.altnoir.mementoinabyss.impl.artifact.ArtifactProfile;
 import com.altnoir.mementoinabyss.impl.artifact.component.ArtifactAttributeComponent;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
@@ -24,10 +26,33 @@ public final class MiaArtifactItems {
     public static final ItemEntry<StarCompassItem> STAR_COMPASS =
             REGISTRATE.item("star_compass", StarCompassItem::new).register();
 
-    public static final ItemEntry<Item> ARTIFACT_SHARD_LUNA = shard("artifact_shard_luna");
-    public static final ItemEntry<Item> ARTIFACT_SHARD_TER = shard("artifact_shard_ter");
-    public static final ItemEntry<Item> ARTIFACT_SHARD_CORE = shard("artifact_shard_core");
-    public static final ItemEntry<Item> ARTIFACT_SHARD_MOUNTAIN = shard("artifact_shard_mountain");
+    public static final ItemEntry<Item> ARTIFACT_SHARD_LUNA =
+            shard("artifact_shard_luna", MiaTags.Items.ARTIFACT_SHARDS_TIER_1.tag);
+    public static final ItemEntry<Item> ARTIFACT_SHARD_TER =
+            shard("artifact_shard_ter", MiaTags.Items.ARTIFACT_SHARDS_TIER_1.tag);
+    public static final ItemEntry<Item> ARTIFACT_SHARD_CORE =
+            shard("artifact_shard_core", MiaTags.Items.ARTIFACT_SHARDS_TIER_1.tag);
+    public static final ItemEntry<Item> ARTIFACT_SHARD_MOUNTAIN =
+            shard("artifact_shard_mountain", MiaTags.Items.ARTIFACT_SHARDS_TIER_1.tag);
+    public static final ItemEntry<Item> ARTIFACT_SHARD_MOTH =
+            shard("artifact_shard_moth", MiaTags.Items.ARTIFACT_SHARDS_TIER_2.tag);
+    public static final ItemEntry<Item> ARTIFACT_SHARD_HALBERD =
+            shard("artifact_shard_halberd", MiaTags.Items.ARTIFACT_SHARDS_TIER_2.tag);
+    public static final ItemEntry<Item> ARTIFACT_SHARD_ELE =
+            shard("artifact_shard_ele", MiaTags.Items.ARTIFACT_SHARDS_TIER_2.tag);
+    public static final ItemEntry<Item> ARTIFACT_SHARD_CUB =
+            shard("artifact_shard_cub", MiaTags.Items.ARTIFACT_SHARDS_TIER_2.tag);
+
+    public static final ItemEntry<Item> ARTIFACT_INGOT_TIER_1 =
+            ingot(
+                    "artifact_ingot_tier_1",
+                    "Tier 1 Artifact Ingot",
+                    MiaTags.Items.ARTIFACT_SHARDS_TIER_1.tag);
+    public static final ItemEntry<Item> ARTIFACT_INGOT_TIER_2 =
+            ingot(
+                    "artifact_ingot_tier_2",
+                    "Tier 2 Artifact Ingot",
+                    MiaTags.Items.ARTIFACT_SHARDS_TIER_2.tag);
 
     public static final ItemEntry<ArtifactItem> HEALTH_JUNKIE =
             REGISTRATE
@@ -96,11 +121,27 @@ public final class MiaArtifactItems {
                     .lang("Test Artifact III")
                     .register();
 
-    private static ItemEntry<Item> shard(String name) {
+    private static ItemEntry<Item> shard(String name, TagKey<Item> tier) {
         return REGISTRATE
                 .item(name, Item::new)
+                .tag(tier)
                 .properties(properties -> properties.rarity(Rarity.RARE))
                 .lang("Artifact Shard")
+                .register();
+    }
+
+    private static ItemEntry<Item> ingot(String name, String displayName, TagKey<Item> shards) {
+        return REGISTRATE
+                .item(name, Item::new)
+                .lang(displayName)
+                .recipe(
+                        (ctx, provider) ->
+                                provider.shaped(RecipeCategory.MISC, ctx.get())
+                                        .define('#', shards)
+                                        .pattern("##")
+                                        .pattern("##")
+                                        .unlockedBy("has_shard", provider.has(shards))
+                                        .save(provider))
                 .register();
     }
 

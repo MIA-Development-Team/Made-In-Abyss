@@ -68,35 +68,35 @@ public final class MiaStructures {
                 biomes,
                 pools,
                 ANCIENT_BABYLON_COMPASS_RUINS,
-                MiaTags.BiomeTags.HAS_ANCIENT_BABYLON_COMPASS_RUINS.tag,
+                MiaTags.Biomes.HAS_ANCIENT_BABYLON_COMPASS_RUINS.tag,
                 CompassRuinsPools.ANCIENT_BABYLON);
         registerSurfaceCompassRuins(
                 context,
                 biomes,
                 pools,
                 ANCIENT_MAYA_COMPASS_RUINS,
-                MiaTags.BiomeTags.HAS_ANCIENT_MAYA_COMPASS_RUINS.tag,
+                MiaTags.Biomes.HAS_ANCIENT_MAYA_COMPASS_RUINS.tag,
                 CompassRuinsPools.ANCIENT_MAYA);
         registerSurfaceCompassRuins(
                 context,
                 biomes,
                 pools,
                 ANCIENT_ROMAN_COMPASS_RUINS,
-                MiaTags.BiomeTags.HAS_ANCIENT_ROMAN_COMPASS_RUINS.tag,
+                MiaTags.Biomes.HAS_ANCIENT_ROMAN_COMPASS_RUINS.tag,
                 CompassRuinsPools.ANCIENT_ROMAN);
         registerSurfaceCompassRuins(
                 context,
                 biomes,
                 pools,
                 ANCIENT_ANGKOR_COMPASS_RUINS,
-                MiaTags.BiomeTags.HAS_ANCIENT_ANGKOR_COMPASS_RUINS.tag,
+                MiaTags.Biomes.HAS_ANCIENT_ANGKOR_COMPASS_RUINS.tag,
                 CompassRuinsPools.ANCIENT_ANGKOR);
         context.register(
                 ANCIENT_TRIAL_COMPASS_RUINS,
                 new JigsawStructure(
                         new Structure.StructureSettings.Builder(
                                         biomes.getOrThrow(
-                                                MiaTags.BiomeTags.HAS_ANCIENT_TRIAL_COMPASS_RUINS
+                                                MiaTags.Biomes.HAS_ANCIENT_TRIAL_COMPASS_RUINS
                                                         .tag))
                                 .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
                                 .terrainAdapation(TerrainAdjustment.ENCAPSULATE)
@@ -117,7 +117,7 @@ public final class MiaStructures {
                 PETRIFIED_SHIP,
                 new MiaJigsawStructure(
                         new Structure.StructureSettings.Builder(
-                                        biomes.getOrThrow(MiaTags.BiomeTags.HAS_PETRIFIED_SHIP.tag))
+                                        biomes.getOrThrow(MiaTags.Biomes.HAS_PETRIFIED_SHIP.tag))
                                 .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
                                 .terrainAdapation(TerrainAdjustment.BEARD_THIN)
                                 .build(),
@@ -136,7 +136,7 @@ public final class MiaStructures {
                 ABYSS_WINDMILL,
                 new AbyssWindmillStructure(
                         new Structure.StructureSettings.Builder(
-                                        biomes.getOrThrow(MiaTags.BiomeTags.HAS_ABYSS_WINDMILL.tag))
+                                        biomes.getOrThrow(MiaTags.Biomes.HAS_ABYSS_WINDMILL.tag))
                                 .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
                                 .terrainAdapation(TerrainAdjustment.NONE)
                                 .build(),
@@ -152,14 +152,14 @@ public final class MiaStructures {
                 biomes,
                 pools,
                 STAR_COMPASS_RUINS,
-                MiaTags.BiomeTags.HAS_STAR_COMPASS_TEMPLE.tag,
+                MiaTags.Biomes.HAS_STAR_COMPASS_TEMPLE.tag,
                 MiaStructurePools.STAR_COMPASS_RUINS);
 
         context.register(
                 ABYSS_STRONGHOLD,
                 new MiaJigsawStructure(
                         new Structure.StructureSettings.Builder(
-                                        biomes.getOrThrow(MiaTags.BiomeTags.HAS_ISLAND.tag))
+                                        biomes.getOrThrow(MiaTags.Biomes.HAS_ISLAND.tag))
                                 .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
                                 .terrainAdapation(TerrainAdjustment.ENCAPSULATE)
                                 .spawnOverrides(
@@ -191,7 +191,7 @@ public final class MiaStructures {
                 biomes,
                 pools,
                 ABYSSAL_RUINS_01,
-                MiaTags.BiomeTags.HAS_ABYSSAL_RUINS.tag,
+                MiaTags.Biomes.HAS_ABYSSAL_RUINS.tag,
                 MiaStructurePools.ABYSSAL_RUINS_01,
                 9);
         registerCaveFloorStructure(
@@ -199,7 +199,7 @@ public final class MiaStructures {
                 biomes,
                 pools,
                 ABYSSAL_RUINS_02,
-                MiaTags.BiomeTags.HAS_ABYSSAL_RUINS.tag,
+                MiaTags.Biomes.HAS_ABYSSAL_RUINS.tag,
                 MiaStructurePools.ABYSSAL_RUINS_02,
                 7);
         registerCaveFloorStructure(
@@ -207,7 +207,7 @@ public final class MiaStructures {
                 biomes,
                 pools,
                 ABYSSAL_RUINS_03,
-                MiaTags.BiomeTags.HAS_ABYSSAL_RUINS.tag,
+                MiaTags.Biomes.HAS_ABYSSAL_RUINS.tag,
                 MiaStructurePools.ABYSSAL_RUINS_03,
                 9);
         registerCaveFloorStructure(
@@ -215,7 +215,7 @@ public final class MiaStructures {
                 biomes,
                 pools,
                 ABYSSAL_RUINS_04,
-                MiaTags.BiomeTags.HAS_ABYSSAL_RUINS.tag,
+                MiaTags.Biomes.HAS_ABYSSAL_RUINS.tag,
                 MiaStructurePools.ABYSSAL_RUINS_04,
                 8);
         registerCaveFloorStructure(
@@ -223,7 +223,7 @@ public final class MiaStructures {
                 biomes,
                 pools,
                 ABYSSAL_RUINS_05,
-                MiaTags.BiomeTags.HAS_ABYSSAL_RUINS.tag,
+                MiaTags.Biomes.HAS_ABYSSAL_RUINS.tag,
                 MiaStructurePools.ABYSSAL_RUINS_05,
                 9);
         registerCaveFloorStructure(
@@ -231,7 +231,7 @@ public final class MiaStructures {
                 biomes,
                 pools,
                 ABYSSAL_RUINS_06,
-                MiaTags.BiomeTags.HAS_ABYSSAL_RUINS.tag,
+                MiaTags.Biomes.HAS_ABYSSAL_RUINS.tag,
                 MiaStructurePools.ABYSSAL_RUINS_06,
                 10);
         registerCaveFloorStructure(
@@ -239,7 +239,7 @@ public final class MiaStructures {
                 biomes,
                 pools,
                 CAVE_RAIDER_HUT,
-                MiaTags.BiomeTags.HAS_CAVE_RAIDER_HUT.tag,
+                MiaTags.Biomes.HAS_CAVE_RAIDER_HUT.tag,
                 MiaStructurePools.CAVE_RAIDER_HUT_START,
                 10);
         registerHeightCappedSurfaceStructure(
@@ -247,14 +247,14 @@ public final class MiaStructures {
                 biomes,
                 pools,
                 RUINED_CAVE_RAIDER_HUT,
-                MiaTags.BiomeTags.HAS_RUINED_CAVE_RAIDER_HUT.tag,
+                MiaTags.Biomes.HAS_RUINED_CAVE_RAIDER_HUT.tag,
                 MiaStructurePools.RUINED_CAVE_RAIDER_HUT);
         registerHeightCappedSurfaceStructure(
                 context,
                 biomes,
                 pools,
                 FISHERMAN_HUT,
-                MiaTags.BiomeTags.HAS_FISHERMAN_HUT.tag,
+                MiaTags.Biomes.HAS_FISHERMAN_HUT.tag,
                 MiaStructurePools.FISHERMAN_HUT);
     }
 

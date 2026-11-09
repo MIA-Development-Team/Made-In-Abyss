@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -30,38 +29,38 @@ final class LayeredPlacementScan {
                 case TREE -> treeSupport(adjacent) && treeSpace(current, false);
                 case WATER_TREE ->
                         (adjacent.is(BlockTags.SUPPORTS_VEGETATION)
-                                        || adjacent.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag))
+                                        || adjacent.is(MiaTags.Blocks.BASE_STONE_ABYSS.tag))
                                 && treeSpace(current, true);
                 case FLOOR ->
                         !emptyFloor(adjacent)
                                 && emptyFloor(current)
-                                && !adjacent.is(Blocks.BEDROCK);
-                case WATER -> current.isAir() && adjacent.is(Blocks.WATER);
+                                && !adjacent.is(net.minecraft.world.level.block.Blocks.BEDROCK);
+                case WATER -> current.isAir() && adjacent.is(net.minecraft.world.level.block.Blocks.WATER);
                 case LAYER2 ->
                         current.getFluidState().isEmpty()
                                 && (current.isAir() || current.canBeReplaced())
-                                && (adjacent.is(Blocks.WATER)
-                                        || (!emptyFloor(adjacent) && !adjacent.is(Blocks.BEDROCK)));
+                                && (adjacent.is(net.minecraft.world.level.block.Blocks.WATER)
+                                        || (!emptyFloor(adjacent) && !adjacent.is(net.minecraft.world.level.block.Blocks.BEDROCK)));
                 case LAYER2_FLOOR ->
                         waterOrReplaceable(current)
                                 && !emptyFloor(adjacent)
-                                && !adjacent.is(Blocks.BEDROCK);
+                                && !adjacent.is(net.minecraft.world.level.block.Blocks.BEDROCK);
             };
         }
 
         private static boolean treeSupport(BlockState state) {
             return state.is(BlockTags.SUPPORTS_VEGETATION)
-                    || state.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag);
+                    || state.is(MiaTags.Blocks.BASE_STONE_ABYSS.tag);
         }
 
         private static boolean treeSpace(BlockState state, boolean water) {
-            return water && state.is(Blocks.WATER)
+            return water && state.is(net.minecraft.world.level.block.Blocks.WATER)
                     || state.getFluidState().isEmpty()
                             && (state.isAir() || state.is(BlockTags.REPLACEABLE_BY_TREES));
         }
 
         static boolean waterOrReplaceable(BlockState state) {
-            return state.is(Blocks.WATER)
+            return state.is(net.minecraft.world.level.block.Blocks.WATER)
                     || ((state.isAir() || state.canBeReplaced())
                             && (state.getFluidState().isEmpty()
                                     || state.getFluidState().is(FluidTags.WATER)));
@@ -69,8 +68,8 @@ final class LayeredPlacementScan {
 
         private static boolean emptyFloor(BlockState state) {
             return state.isAir()
-                    || state.is(Blocks.WATER)
-                    || state.is(Blocks.LAVA)
+                    || state.is(net.minecraft.world.level.block.Blocks.WATER)
+                    || state.is(net.minecraft.world.level.block.Blocks.LAVA)
                     || state.canBeReplaced();
         }
     }
@@ -159,7 +158,7 @@ final class LayeredPlacementScan {
                 int bottom = (nextY >> 4) << 4;
                 if (directSections && (section == null || section.hasOnlyAir())) {
                     // Keep the air state at the section boundary so the next rock face is tested.
-                    current = Blocks.AIR.defaultBlockState();
+                    current = net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
                     nextY = bottom - 1;
                     continue;
                 }

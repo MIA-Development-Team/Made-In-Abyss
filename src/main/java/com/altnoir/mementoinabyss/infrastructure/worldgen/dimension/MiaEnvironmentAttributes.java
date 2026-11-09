@@ -21,10 +21,23 @@ public final class MiaEnvironmentAttributes {
             boundary("vertical_above");
 
     public static final EnvironmentAttribute<Float> ABYSS_FOG_DENSITY = fogDensity();
+    public static final EnvironmentAttribute<BiomeFogSettings> ABYSS_FOG_BIOMES = biomeFog();
     public static final EnvironmentAttribute<SkyLightRegionSettings> SKY_LIGHT_REGION =
             skyLightRegion();
     public static final EnvironmentAttribute<BiomeAmbientLightSettings> AMBIENT_LIGHT_BIOME =
             biomeAmbientLight();
+
+    private static EnvironmentAttribute<BiomeFogSettings> biomeFog() {
+        EnvironmentAttribute<BiomeFogSettings> attribute =
+                EnvironmentAttribute.builder(
+                                AttributeType.ofNotInterpolated(BiomeFogSettings.CODEC))
+                        .defaultValue(BiomeFogSettings.EMPTY)
+                        .syncable()
+                        .notPositional()
+                        .build();
+        ENVIRONMENT_ATTRIBUTES.register("abyss_fog_biomes", () -> attribute);
+        return attribute;
+    }
 
     private static EnvironmentAttribute<BiomeAmbientLightSettings> biomeAmbientLight() {
         EnvironmentAttribute<BiomeAmbientLightSettings> attribute =

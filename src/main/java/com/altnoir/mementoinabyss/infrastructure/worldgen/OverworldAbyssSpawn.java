@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.density.OverworldAbyssShape;
+import java.util.SplittableRandom;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -24,6 +25,9 @@ public final class OverworldAbyssSpawn {
     private static final double RING_STEP = 0.5;
     private static final int RINGS = 6;
     private static final int ANGLES = 24;
+    private static final double MIN_SPAWN_RADIUS = 1000.0;
+    private static final double VANILLA_SEARCH_CLEARANCE = 160.0;
+    private static final long SPAWN_ANGLE_SALT = 0x4D49415F53504157L;
 
     /** Block step of the in-chunk walk, so one chunk covers its 16x16 area with an 8x8 grid. */
     private static final int STEP = 2;
@@ -35,9 +39,10 @@ public final class OverworldAbyssSpawn {
     public static ChunkPos suggest(ServerLevel level, ChunkPos original) {
         OverworldAbyssShape shape = OverworldAbyss.shapeOf(level.getChunkSource().randomState());
         if (shape == null) return original;
-        // Only a suggestion that landed on the modified terrain is moved.
+        // Leave room for vanilla's search around the suggested chunk.
         if (shape.distance(original.getMiddleBlockX(), original.getMiddleBlockZ())
-                >= shape.outerLimit() + 32.0) {
+                >= Math.max(
+                        shape.outerLimit() + 32.0, MIN_SPAWN_RADIUS + VANILLA_SEARCH_CLEARANCE)) {
             return original;
         }
         return suggested(shape);
@@ -50,12 +55,21 @@ public final class OverworldAbyssSpawn {
      * is widened.
      */
     private static double firstRing(OverworldAbyssShape shape) {
-        return shape.outerLimit() + RING_CLEARANCE * shape.radius();
+        return Math.max(
+                shape.outerLimit() + RING_CLEARANCE * shape.radius(),
+                MIN_SPAWN_RADIUS + VANILLA_SEARCH_CLEARANCE);
     }
 
     /** The chunk this mod proposes when the climate suggestion lands on the modified terrain. */
     public static ChunkPos suggested(OverworldAbyssShape shape) {
-        return ChunkPos.containing(BlockPos.containing(firstRing(shape), 0, 0));
+        double angle = spawnAngle(shape);
+        double radius = firstRing(shape);
+        return ChunkPos.containing(
+                BlockPos.containing(radius * Math.cos(angle), 0, radius * Math.sin(angle)));
+    }
+
+    private static double spawnAngle(OverworldAbyssShape shape) {
+        return new SplittableRandom(shape.seed() ^ SPAWN_ANGLE_SALT).nextDouble() * Math.PI * 2.0;
     }
 
     @SubscribeEvent
@@ -90,10 +104,11 @@ public final class OverworldAbyssSpawn {
     /** The bounded ring search, starting past the carved slope so every step is dry land. */
     private static BlockPos search(ServerLevel level, OverworldAbyssShape shape) {
         double start = firstRing(shape);
+        double startAngle = spawnAngle(shape);
         for (int ring = 0; ring < RINGS; ring++) {
             double radius = start + ring * RING_STEP * shape.radius();
             for (int angle = 0; angle < ANGLES; angle++) {
-                double radians = angle * (Math.PI * 2.0 / ANGLES);
+                double radians = startAngle + angle * (Math.PI * 2.0 / ANGLES);
                 ChunkPos chunk =
                         ChunkPos.containing(
                                 BlockPos.containing(
@@ -120,9 +135,13 @@ public final class OverworldAbyssSpawn {
      * is at least dry ground in that case because the outer slope there is above the sea.
      */
     private static BlockPos fallback(ServerLevel level, OverworldAbyssShape shape) {
-        int distance = (int) Math.ceil(4.0 * shape.radius()) + FALLBACK_CLEARANCE;
-        for (int[] direction : new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}) {
-            BlockPos candidate = heightPos(level, distance * direction[0], distance * direction[1]);
+        double distance = Math.max(firstRing(shape), 4.0 * shape.radius() + FALLBACK_CLEARANCE);
+        double startAngle = spawnAngle(shape);
+        for (int i = 0; i < 4; i++) {
+            double angle = startAngle + i * Math.PI / 2.0;
+            int x = (int) Math.floor(distance * Math.cos(angle));
+            int z = (int) Math.floor(distance * Math.sin(angle));
+            BlockPos candidate = heightPos(level, x, z);
             if (safe(level, candidate)) return candidate;
         }
         return null;

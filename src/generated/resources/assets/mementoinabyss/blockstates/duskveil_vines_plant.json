@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "berries=false": {
+      "model": "mementoinabyss:block/duskveil_vines_plant"
+    },
+    "berries=true": {
+      "model": "mementoinabyss:block/duskveil_vines_plant_berries"
+    }
+  }
+}

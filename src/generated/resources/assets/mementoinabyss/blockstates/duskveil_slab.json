@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "mementoinabyss:block/duskveil_slab"
+    },
+    "type=double": {
+      "model": "mementoinabyss:block/duskveil_planks"
+    },
+    "type=top": {
+      "model": "mementoinabyss:block/duskveil_slab_top"
+    }
+  }
+}

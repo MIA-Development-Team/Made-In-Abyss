@@ -25,6 +25,29 @@ public final class LootGen {
         return (loot, block) -> lowerHalf(loot, block, block);
     }
 
+    public static <B extends Block> NonNullBiConsumer<ReginthBlockLootTables, B> vineBerries(
+            Supplier<? extends ItemLike> drop) {
+        return (loot, block) ->
+                loot.add(
+                        block,
+                        LootTable.lootTable()
+                                .withPool(
+                                        LootPool.lootPool()
+                                                .setRolls(ConstantValue.exactly(1.0F))
+                                                .when(
+                                                        LootItemBlockStatePropertyCondition
+                                                                .hasBlockStateProperties(block)
+                                                                .setProperties(
+                                                                        StatePropertiesPredicate
+                                                                                .Builder
+                                                                                .properties()
+                                                                                .hasProperty(
+                                                                                        BlockStateProperties
+                                                                                                .BERRIES,
+                                                                                        true)))
+                                                .add(LootItem.lootTableItem(drop.get()))));
+    }
+
     public static <B extends Block> NonNullBiConsumer<ReginthBlockLootTables, B> lowerHalf(
             Supplier<? extends ItemLike> drop) {
         return (loot, block) -> lowerHalf(loot, block, drop.get());

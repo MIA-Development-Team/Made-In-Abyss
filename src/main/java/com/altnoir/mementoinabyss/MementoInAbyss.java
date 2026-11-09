@@ -47,6 +47,7 @@ public class MementoInAbyss {
         MiaDensityFunctionTypes.register(modEventBus);
         MiaPlacementModifiers.register(modEventBus);
         MiaWorldgenFeatures.register(modEventBus);
+        MiaTreeDecorators.register(modEventBus);
         MiaStructureTypes.register(modEventBus);
         MiaStructurePlacementTypes.register(modEventBus);
         MiaBlockEntityTypes.register(modEventBus);

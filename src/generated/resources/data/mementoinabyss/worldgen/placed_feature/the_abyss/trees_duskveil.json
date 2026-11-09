@@ -1,0 +1,24 @@
+{
+  "feature": "mementoinabyss:tree/duskveil_tree",
+  "placement": [
+    {
+      "type": "mementoinabyss:tree_on_every_layer",
+      "count": 16
+    },
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:matching_block_tag",
+        "offset": [
+          0,
+          -1,
+          0
+        ],
+        "tag": "minecraft:supports_vegetation"
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

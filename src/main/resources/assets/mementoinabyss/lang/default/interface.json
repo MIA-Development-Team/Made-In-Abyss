@@ -52,9 +52,9 @@
   "container.mementoinabyss.artifact_enhancement.max_level": "Maximum enhancement reached",
   "container.mementoinabyss.whistle_workbench": "Whistle Workbench",
   "itemGroup.mementoinabyss.mia_artifact.section.artifacts": "Artifacts",
-  "itemGroup.mementoinabyss.mia_artifact.section.functional_blocks": "Functional Blocks",
-  "itemGroup.mementoinabyss.mia.section.building_blocks": "Building Blocks",
-  "itemGroup.mementoinabyss.mia.section.nature_blocks": "Nature Blocks",
+  "itemGroup.mementoinabyss.mia_artifact.section.functional_blocks": "Functional",
+  "itemGroup.mementoinabyss.mia.section.building_blocks": "Building",
+  "itemGroup.mementoinabyss.mia.section.nature_blocks": "Nature",
   "itemGroup.mementoinabyss.mia.section.items": "Items",
   "attribute.name.mementoinabyss.critical_hit": "Critical Hit Chance",
   "attribute.name.mementoinabyss.critical_hit_damage": "Critical Hit Damage",
@@ -78,7 +78,7 @@
   "biome.mementoinabyss.the_abyss.abyss_river": "Abyss River",
   "biome.mementoinabyss.the_abyss.abyss_tuff_caves": "Abyss Tuff Caves",
   "biome.mementoinabyss.the_abyss.mangrove_swamp": "Abyss Mangrove Swamp",
-  "biome.mementoinabyss.the_abyss.pale_garden": "Abyss Pale Garden",
+  "biome.mementoinabyss.the_abyss.duskveil_garden": "Abyss Pale Garden",
   "biome.mementoinabyss.the_abyss.warm_ocean": "Warm Ocean",
   "biome.mementoinabyss.the_abyss.temptation_ocean": "Temptation Ocean"
 }

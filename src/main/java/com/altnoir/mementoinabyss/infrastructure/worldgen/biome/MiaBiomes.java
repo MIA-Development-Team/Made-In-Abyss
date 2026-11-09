@@ -1,15 +1,16 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.biome;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
-import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaEnvironmentAttributes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.GreatFaultPlacements;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.MiaAbyssPlacements;
 import com.altnoir.mementoinabyss.init.MiaSoundEvents;
 import java.util.List;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Carvers;
+import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.attribute.BackgroundMusic;
 import net.minecraft.world.attribute.EnvironmentAttributes;
@@ -22,12 +23,19 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import org.jspecify.annotations.Nullable;
 
 public final class MiaBiomes {
-    public static final ResourceKey<Biome> THE_ABYSS = key("the_abyss");
     public static final ResourceKey<Biome> OVERWORLD_ABYSS =
             ResourceKey.create(Registries.BIOME, MementoInAbyss.asResource("overworld/the_abyss"));
+
+    public static final ResourceKey<Biome> THE_ABYSS = key("the_abyss");
+    public static final ResourceKey<Biome> ABYSS_PLAINS = key("abyss_plains");
+    public static final ResourceKey<Biome> PRASIOLITE_CAVES = key("prasiolite_caves");
+    public static final ResourceKey<Biome> ABYSS_LUSH_CAVES = key("abyss_lush_caves");
+    public static final ResourceKey<Biome> ABYSS_TUFF_CAVES = key("abyss_tuff_caves");
     public static final ResourceKey<Biome> SKYFOG_FOREST = key("skyfog_forest");
     public static final ResourceKey<Biome> DENSE_SKYFOG_FOREST = key("dense_skyfog_forest");
     public static final ResourceKey<Biome> FOSSILIZED_FOREST = key("fossilized_forest");
+
+    public static final ResourceKey<Biome> ABYSS_RIVER = key("abyss_river");
     public static final ResourceKey<Biome> GIANT_FOSSILIZED_FOREST = key("giant_fossilized_forest");
     public static final ResourceKey<Biome> SPARSE_GIANT_FOSSILIZED_FOREST =
             key("sparse_giant_fossilized_forest");
@@ -37,21 +45,29 @@ public final class MiaBiomes {
             key("under_rich_fossilized_forest");
     public static final ResourceKey<Biome> UNDER_WATER_FOSSILIZED_FOREST =
             key("under_water_fossilized_forest");
-    public static final ResourceKey<Biome> ABYSS_PLAINS = key("abyss_plains");
-    public static final ResourceKey<Biome> PRASIOLITE_CAVES = key("prasiolite_caves");
-    public static final ResourceKey<Biome> ABYSS_LUSH_CAVES = key("abyss_lush_caves");
-    public static final ResourceKey<Biome> ABYSS_TUFF_CAVES = key("abyss_tuff_caves");
     public static final ResourceKey<Biome> TEMPTATION_FOREST = key("temptation_forest");
     public static final ResourceKey<Biome> TEMPTATION_PLAINS = key("temptation_plains");
+    public static final ResourceKey<Biome> DUSKVEIL_GARDEN = key("duskveil_garden");
     public static final ResourceKey<Biome> PRIMO_FOREST = key("primo_forest");
     public static final ResourceKey<Biome> PRIMO_PLAINS = key("primo_plains");
-    public static final ResourceKey<Biome> INVERTED_FOREST = key("inverted_forest");
-    public static final ResourceKey<Biome> ABYSS_RIVER = key("abyss_river");
-    static final int ABYSS_WATER_COLOR = 6141935;
+
     public static final ResourceKey<Biome> MANGROVE_SWAMP = key("mangrove_swamp");
-    public static final ResourceKey<Biome> PALE_GARDEN = key("pale_garden");
     public static final ResourceKey<Biome> WARM_OCEAN = key("warm_ocean");
     public static final ResourceKey<Biome> TEMPTATION_OCEAN = key("temptation_ocean");
+
+    public static final ResourceKey<Biome> INVERTED_FOREST = key("inverted_forest");
+
+    static final int ABYSS_WATER_COLOR = 6141935;
+    static final List<ResourceKey<PlacedFeature>> DUSKVEIL_GROUND_VEGETATION =
+            List.of(
+                    VegetationPlacements.PALE_MOSS_PATCH,
+                    VegetationPlacements.PALE_GARDEN_FLOWERS,
+                    VegetationPlacements.FLOWER_PALE_GARDEN,
+                    VegetationPlacements.PATCH_GRASS_FOREST,
+                    VegetationPlacements.PATCH_PUMPKIN,
+                    VegetationPlacements.PATCH_SUGAR_CANE,
+                    VegetationPlacements.PATCH_FIREFLY_BUSH_NEAR_WATER);
+
     public static final ResourceKey<Biome> THE_GREAT_FAULT = greatFaultKey("the_great_fault");
     public static final ResourceKey<Biome> GREAT_FAULT = greatFaultKey("great_fault");
 
@@ -78,7 +94,7 @@ public final class MiaBiomes {
                     INVERTED_FOREST,
                     ABYSS_RIVER,
                     MANGROVE_SWAMP,
-                    PALE_GARDEN,
+                    DUSKVEIL_GARDEN,
                     WARM_OCEAN,
                     TEMPTATION_OCEAN);
 
@@ -134,6 +150,7 @@ public final class MiaBiomes {
                         MiaAbyssPlacements.ORE_CHLOROPHYTE);
         if (template != null)
             return MiaLayer2VanillaBiomes.create(biome, generationBuilder, template);
+        if (biome.equals(DUSKVEIL_GARDEN)) return createDuskveilGarden(generationBuilder);
         generationBuilder
                 .addFeature(
                         GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.LONG_VINES)
@@ -156,7 +173,7 @@ public final class MiaBiomes {
                         .addFeature(
                                 GenerationStep.Decoration.VEGETAL_DECORATION,
                                 MiaAbyssPlacements.PATCH_SUNFLOWER);
-                if (!overworld) addTree(generationBuilder, MiaAbyssPlacements.TREES_SKYFOG);
+                if (!overworld) addTree(generationBuilder, MiaAbyssPlacements.ABYSS_TREES_SKYFOG);
             }
             case SKYFOG_FOREST -> {
                 addSlabRuins(generationBuilder);
@@ -321,10 +338,43 @@ public final class MiaBiomes {
                                         .foliageColorOverride(11335504)
                                         .grassColorOverride(11335504)
                                         .build());
-        if (biome.equals(TEMPTATION_FOREST) || biome.equals(TEMPTATION_PLAINS)) {
-            biomeBuilder.setAttribute(MiaEnvironmentAttributes.ABYSS_FOG_DENSITY, 0.0F);
-        }
         return biomeBuilder.build();
+    }
+
+    private static Biome createDuskveilGarden(BiomeGenerationSettings.Builder generation) {
+        generation.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_STRUCTURES, MiaAbyssPlacements.SUN_STONE);
+        generation.addFeature(
+                GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.TREES_DUSKVEIL);
+        for (var feature : DUSKVEIL_GROUND_VEGETATION) {
+            generation.addFeature(
+                    GenerationStep.Decoration.VEGETAL_DECORATION,
+                    MiaLayer2VanillaBiomes.key(feature));
+        }
+        var mobs = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.commonSpawns(mobs);
+        return new Biome.BiomeBuilder()
+                .hasPrecipitation(false)
+                .temperature(0.7F)
+                .downfall(0.8F)
+                .mobSpawnSettings(mobs.build())
+                .generationSettings(generation.build())
+                .specialEffects(
+                        new BiomeSpecialEffects.Builder()
+                                .waterColor(0x76889D)
+                                .foliageColorOverride(0x878D76)
+                                .dryFoliageColorOverride(0xA0A69C)
+                                .grassColorOverride(0x778272)
+                                .build())
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 0xFF364C67)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 0xFFB9B9B9)
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 0xFF556980)
+                .setAttribute(EnvironmentAttributes.CREAKING_ACTIVE, true)
+                .setAttribute(
+                        EnvironmentAttributes.BACKGROUND_MUSIC,
+                        new BackgroundMusic(MiaSoundEvents.MUSIC_THE_FIRST_LAYER))
+                .setAttribute(EnvironmentAttributes.MUSIC_VOLUME, 1.0F)
+                .build();
     }
 
     private static ResourceKey<Biome> key(String path) {

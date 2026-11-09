@@ -22,7 +22,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.DensityFunction;
@@ -598,7 +597,7 @@ public final class DelayedCavePillarGenerator {
 
     private static boolean placeBatch(ServerLevel level, PlacementTask task, int operationBudget) {
         BlockState andesite = MiaBlocks.ABYSS_ANDESITE.get().defaultBlockState();
-        BlockState tuff = Blocks.TUFF.defaultBlockState();
+        BlockState tuff = net.minecraft.world.level.block.Blocks.TUFF.defaultBlockState();
         int end = Math.min(task.positions.size(), task.index + operationBudget);
         while (task.index < end) {
             BlockPos pos = task.positions.get(task.index++);
@@ -713,15 +712,15 @@ public final class DelayedCavePillarGenerator {
     }
 
     private static boolean isTerrainSupport(BlockState state) {
-        return state.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag)
+        return state.is(MiaTags.Blocks.BASE_STONE_ABYSS.tag)
                 || state.is(BlockTags.BASE_STONE_OVERWORLD)
                 || state.is(BlockTags.DIRT)
                 || state.is(BlockTags.GRASS_BLOCKS)
-                || state.is(Blocks.TUFF)
-                || state.is(Blocks.MUD)
-                || state.is(Blocks.CALCITE)
-                || state.is(Blocks.DEEPSLATE)
-                || state.is(Blocks.BEDROCK);
+                || state.is(net.minecraft.world.level.block.Blocks.TUFF)
+                || state.is(net.minecraft.world.level.block.Blocks.MUD)
+                || state.is(net.minecraft.world.level.block.Blocks.CALCITE)
+                || state.is(net.minecraft.world.level.block.Blocks.DEEPSLATE)
+                || state.is(net.minecraft.world.level.block.Blocks.BEDROCK);
     }
 
     private static long mix64(long value) {

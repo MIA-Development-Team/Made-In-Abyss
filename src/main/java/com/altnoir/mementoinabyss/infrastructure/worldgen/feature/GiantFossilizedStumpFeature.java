@@ -12,7 +12,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -135,7 +134,7 @@ public final class GiantFossilizedStumpFeature extends Feature<GiantFossilizedSt
             BlockPos top = tops.remove(random.nextInt(tops.size()));
             level.setBlock(
                     top,
-                    Blocks.MOSS_BLOCK.defaultBlockState(),
+                    net.minecraft.world.level.block.Blocks.MOSS_BLOCK.defaultBlockState(),
                     Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
             config.mossPatch().value().place(level, context.chunkGenerator(), random, top.above());
         }
@@ -169,7 +168,7 @@ public final class GiantFossilizedStumpFeature extends Feature<GiantFossilizedSt
                 || state.is(BlockTags.GRASS_BLOCKS)
                 || state.is(BlockTags.MOSS_BLOCKS)
                 || state.is(BlockTags.BASE_STONE_OVERWORLD)
-                || state.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag);
+                || state.is(MiaTags.Blocks.BASE_STONE_ABYSS.tag);
     }
 
     private static boolean replaceable(BlockState state) {

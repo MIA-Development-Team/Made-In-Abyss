@@ -1,7 +1,7 @@
 package com.altnoir.mementoinabyss.client.render;
 
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaEnvironmentAttributes;
-import com.altnoir.mementoinabyss.infrastructure.worldgen.lighting.BiomeAmbientLightSampler;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.lighting.BiomeFloatSampler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.state.LightmapRenderState;
@@ -13,7 +13,7 @@ import org.jspecify.annotations.Nullable;
 
 public final class BiomeAmbientLightRenderer {
     private static @Nullable ClientLevel cachedLevel;
-    private static @Nullable BiomeAmbientLightSampler sampler;
+    private static @Nullable BiomeFloatSampler sampler;
     private static @Nullable Vector3fc nativeAmbient;
     private static boolean applied;
 
@@ -38,8 +38,8 @@ public final class BiomeAmbientLightRenderer {
             sampler =
                     settings.values().isEmpty()
                             ? null
-                            : new BiomeAmbientLightSampler(
-                                    settings,
+                            : new BiomeFloatSampler(
+                                    settings::brightness,
                                     cachedLevel.registryAccess().lookupOrThrow(Registries.BIOME),
                                     cachedLevel.getBiomeManager());
         }
@@ -52,7 +52,7 @@ public final class BiomeAmbientLightRenderer {
             restore(state);
             return;
         }
-        float brightness = sampler.weightedBrightness();
+        float brightness = sampler.weightedValue();
         float remaining = 1.0F - sampler.weight();
         float red = nativeAmbient.x() * remaining + brightness;
         float green = nativeAmbient.y() * remaining + brightness;

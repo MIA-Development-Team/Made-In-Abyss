@@ -50,6 +50,8 @@ public final class MiaSurfaceRules {
                                         SurfaceRules.isBiome(
                                                 MiaBiomes.THE_ABYSS,
                                                 MiaBiomes.SKYFOG_FOREST,
+                                                MiaBiomes.PRASIOLITE_CAVES,
+                                                MiaBiomes.ABYSS_LUSH_CAVES,
                                                 MiaBiomes.FOSSILIZED_FOREST,
                                                 MiaBiomes.GIANT_FOSSILIZED_FOREST,
                                                 MiaBiomes.SPARSE_GIANT_FOSSILIZED_FOREST,
@@ -57,9 +59,8 @@ public final class MiaSurfaceRules {
                                                 MiaBiomes.UNDER_FOSSILIZED_FOREST,
                                                 MiaBiomes.UNDER_RICH_FOSSILIZED_FOREST,
                                                 MiaBiomes.UNDER_WATER_FOSSILIZED_FOREST,
-                                                MiaBiomes.ABYSS_PLAINS,
-                                                MiaBiomes.PRASIOLITE_CAVES,
-                                                MiaBiomes.ABYSS_LUSH_CAVES),
+                                                MiaBiomes.DUSKVEIL_GARDEN,
+                                                MiaBiomes.ABYSS_PLAINS),
                                         SurfaceRules.sequence(
                                                 SurfaceRules.ifTrue(
                                                         SurfaceRules.stoneDepthCheck(
@@ -131,29 +132,15 @@ public final class MiaSurfaceRules {
                                                                 waterBlockCheck,
                                                                 SurfaceRules.ifTrue(
                                                                         SurfaceRules.noiseCondition(
-                                                                                MiaNoiseData
-                                                                                        .STRIPEY,
+                                                                                MiaNoiseData.STRIPEY,
                                                                                 .35,
                                                                                 1),
-                                                                        makeStateRule(
-                                                                                Blocks
-                                                                                        .GRASS_BLOCK)))),
+                                                                        coverGrass_andesite))),
                                                 SurfaceRules.ifTrue(
                                                         SurfaceRules.noiseCondition(
                                                                 MiaNoiseData.STRIPEY, -.1, .1),
                                                         makeStateRule(Blocks.CLAY)),
                                                 MUD))),
-                        SurfaceRules.ifTrue(
-                                SurfaceRules.isBiome(MiaBiomes.PALE_GARDEN),
-                                SurfaceRules.ifTrue(
-                                        SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
-                                        SurfaceRules.sequence(
-                                                SurfaceRules.ifTrue(
-                                                        SurfaceRules.ON_FLOOR,
-                                                        SurfaceRules.ifTrue(
-                                                                waterBlockCheck,
-                                                                makeStateRule(Blocks.GRASS_BLOCK))),
-                                                makeStateRule(Blocks.DIRT)))),
                         SurfaceRules.ifTrue(
                                 SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.CEILING),
                                 SurfaceRules.ifTrue(

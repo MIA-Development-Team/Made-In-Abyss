@@ -14,8 +14,10 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.LongVinesFeatu
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.PrimoHugeFungusConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.PrimoHugeFungusFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.ReedPoolFeature;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.SegmentedVegetationProvider;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.SlabRuinsConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.SlabRuinsFeature;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.DuskveilFoliagePlacer;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.InvertedTreeFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.VerdantTreeConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.VerdantTreeFeature;
@@ -23,6 +25,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.VegetationPatchConfiguration;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProviderType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -30,6 +34,21 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class MiaWorldgenFeatures {
     private static final DeferredRegister<Feature<?>> FEATURES =
             DeferredRegister.create(Registries.FEATURE, MementoInAbyss.ID);
+    private static final DeferredRegister<BlockStateProviderType<?>> STATE_PROVIDERS =
+            DeferredRegister.create(Registries.BLOCK_STATE_PROVIDER_TYPE, MementoInAbyss.ID);
+    private static final DeferredRegister<FoliagePlacerType<?>> FOLIAGE_PLACERS =
+            DeferredRegister.create(Registries.FOLIAGE_PLACER_TYPE, MementoInAbyss.ID);
+    public static final DeferredHolder<
+                    FoliagePlacerType<?>, FoliagePlacerType<DuskveilFoliagePlacer>>
+            DUSKVEIL_FOLIAGE =
+                    FOLIAGE_PLACERS.register(
+                            "duskveil", () -> new FoliagePlacerType<>(DuskveilFoliagePlacer.CODEC));
+    public static final DeferredHolder<
+                    BlockStateProviderType<?>, BlockStateProviderType<SegmentedVegetationProvider>>
+            SEGMENTED_VEGETATION =
+                    STATE_PROVIDERS.register(
+                            "segmented_vegetation",
+                            () -> new BlockStateProviderType<>(SegmentedVegetationProvider.CODEC));
     public static final DeferredHolder<Feature<?>, ReedPoolFeature> REED_POOL =
             FEATURES.register(
                     "reed_pool", () -> new ReedPoolFeature(VegetationPatchConfiguration.CODEC));
@@ -71,6 +90,8 @@ public final class MiaWorldgenFeatures {
 
     public static void register(IEventBus bus) {
         FEATURES.register(bus);
+        STATE_PROVIDERS.register(bus);
+        FOLIAGE_PLACERS.register(bus);
     }
 
     private MiaWorldgenFeatures() {}

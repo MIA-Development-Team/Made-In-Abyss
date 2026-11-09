@@ -72,7 +72,7 @@ public final class MiaLayer2BiomeGroups {
                 context,
                 "mangrove_pale",
                 MiaBiomes.MANGROVE_SWAMP,
-                MiaBiomes.PALE_GARDEN,
+                MiaBiomes.DUSKVEIL_GARDEN,
                 List.of(Layer2TerrainKind.WETLAND_WOODLAND, Layer2TerrainKind.WETLAND_HIGHLAND));
     }
 

@@ -70,6 +70,7 @@ public final class ClientEvent {
     @SubscribeEvent
     public static void onClientTagsUpdated(TagsUpdatedEvent.ClientPacketReceived event) {
         BiomeAmbientLightRenderer.invalidateBiomes();
+        TheAbyssFogRenderer.invalidateBiomes();
     }
 
     @SubscribeEvent
@@ -178,6 +179,7 @@ public final class ClientEvent {
     @SubscribeEvent
     public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
         BiomeAmbientLightRenderer.clear();
+        TheAbyssFogRenderer.invalidateBiomes();
         ArtifactEnhancementMaterialTooltip.clear();
         LampTubeClientRecipes.clear();
         CrossDimensionLodRenderer.disconnect();
@@ -221,6 +223,7 @@ public final class ClientEvent {
 
     @SubscribeEvent
     public static void clientTick(ClientTickEvent.Post event) {
+        TheAbyssFogRenderer.clientTick();
         CrossDimensionLodRenderer.clientTick();
         WhistleComboHandler.tick();
         RopeFreeEndGrabHandler.tick();

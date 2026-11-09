@@ -1,5 +1,6 @@
 {
   "values": [
+    "mementoinabyss:duskveil_ichor",
     "mementoinabyss:skyfog_planks",
     "mementoinabyss:skyfog_stairs",
     "mementoinabyss:skyfog_slab",
@@ -9,6 +10,15 @@
     "mementoinabyss:skyfog_trapdoor",
     "mementoinabyss:skyfog_pressure_plate",
     "mementoinabyss:skyfog_button",
+    "mementoinabyss:duskveil_planks",
+    "mementoinabyss:duskveil_stairs",
+    "mementoinabyss:duskveil_slab",
+    "mementoinabyss:duskveil_fence",
+    "mementoinabyss:duskveil_fence_gate",
+    "mementoinabyss:duskveil_door",
+    "mementoinabyss:duskveil_trapdoor",
+    "mementoinabyss:duskveil_pressure_plate",
+    "mementoinabyss:duskveil_button",
     "mementoinabyss:verdant_planks",
     "mementoinabyss:verdant_stairs",
     "mementoinabyss:verdant_slab",

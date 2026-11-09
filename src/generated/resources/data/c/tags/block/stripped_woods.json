@@ -1,8 +1,14 @@
 {
   "values": [
     "mementoinabyss:stripped_skyfog_wood",
+    "mementoinabyss:stripped_duskveil_wood",
     "mementoinabyss:stripped_verdant_hyphae",
+    "mementoinabyss:stripped_primo_hyphae",
     "mementoinabyss:stripped_inverted_wood",
-    "mementoinabyss:stripped_primo_hyphae"
+    "mementoinabyss:stripped_skyfog_wood",
+    "mementoinabyss:stripped_duskveil_wood",
+    "mementoinabyss:stripped_verdant_hyphae",
+    "mementoinabyss:stripped_primo_hyphae",
+    "mementoinabyss:stripped_inverted_wood"
   ]
 }

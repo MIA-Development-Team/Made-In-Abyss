@@ -8,6 +8,7 @@ import com.altnoir.mementoinabyss.content.abyss.column.ColumnBlock;
 import com.altnoir.mementoinabyss.content.abyss.column.ColumnSide;
 import com.altnoir.mementoinabyss.content.abyss.cover_grass.CoverGrassBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.DoubleBerryBlock;
+import com.altnoir.mementoinabyss.content.abyss.plant.DuskveilIchorBlock;
 import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlock;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
@@ -29,6 +30,35 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockStateGen {
+    public static <B extends DuskveilIchorBlock>
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
+                    duskveilIchor() {
+        return (ctx, prov) -> {
+            var idle =
+                    ModelTemplates.CUBE_COLUMN.create(
+                            prov.modLoc("block/duskveil_ichor"),
+                            TextureMapping.column(
+                                    prov.modBlockTexture("duskveil_ichor"),
+                                    prov.modBlockTexture("duskveil_ichor_top")),
+                            prov.modelOutput);
+            var awake =
+                    ModelTemplates.CUBE_COLUMN.create(
+                            prov.modLoc("block/duskveil_ichor_awake"),
+                            TextureMapping.column(
+                                    prov.modBlockTexture("duskveil_ichor_awake"),
+                                    prov.modBlockTexture("duskveil_ichor_top_awake")),
+                            prov.modelOutput);
+            prov.blockStateOutput.accept(
+                    MultiVariantGenerator.dispatch(ctx.get())
+                            .with(
+                                    PropertyDispatch.initial(DuskveilIchorBlock.READY)
+                                            .select(false, BlockModelGenerators.plainVariant(idle))
+                                            .select(true, BlockModelGenerators.plainVariant(awake)))
+                            .with(BlockModelGenerators.createRotatedPillar()));
+            prov.registerSimpleItemModel(ctx.get(), awake);
+        };
+    }
+
     public static <B extends Block>
             NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> abyssPortal() {
         return (ctx, prov) -> {
@@ -411,6 +441,36 @@ public class BlockStateGen {
             NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> crossPlant() {
         return (ctx, prov) ->
                 prov.createCrossBlock(ctx.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+    }
+
+    public static <B extends Block>
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
+                    duskveilVines() {
+        return (ctx, prov) -> {
+            var empty =
+                    BlockModelGenerators.PlantType.NOT_TINTED
+                            .getCross()
+                            .create(
+                                    prov.modLoc("block/" + ctx.getName()),
+                                    TextureMapping.cross(prov.modBlockTexture(ctx.getName())),
+                                    prov.modelOutput);
+            var berries =
+                    BlockModelGenerators.PlantType.NOT_TINTED
+                            .getCross()
+                            .create(
+                                    prov.modLoc("block/" + ctx.getName() + "_berries"),
+                                    TextureMapping.cross(
+                                            prov.modBlockTexture(ctx.getName() + "_berries")),
+                                    prov.modelOutput);
+            prov.blockStateOutput.accept(
+                    MultiVariantGenerator.dispatch(ctx.get())
+                            .with(
+                                    PropertyDispatch.initial(BlockStateProperties.BERRIES)
+                                            .select(false, BlockModelGenerators.plainVariant(empty))
+                                            .select(
+                                                    true,
+                                                    BlockModelGenerators.plainVariant(berries))));
+        };
     }
 
     public static <B extends Block>

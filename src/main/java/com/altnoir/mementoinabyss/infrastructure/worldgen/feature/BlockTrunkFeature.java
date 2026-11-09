@@ -7,7 +7,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CarpetBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -45,7 +44,7 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
                             context.origin()
                                     .relative(blockConfiguration.direction().getOpposite()));
             if (!directionState.is(BlockTags.SUPPORTS_VEGETATION)
-                    && !directionState.is(MiaTags.BlockTags.BASE_STONE_ABYSS.tag)) {
+                    && !directionState.is(MiaTags.Blocks.BASE_STONE_ABYSS.tag)) {
                 return false;
             }
             for (int l = 0; l < j; l++) {
@@ -71,7 +70,7 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
                                                 randomsource,
                                                 blockpos$mutableblockpos1);
 
-                        if (!worldgenlevel.getBlockState(blockpos$mutableblockpos1).is(Blocks.WATER)
+                        if (!worldgenlevel.getBlockState(blockpos$mutableblockpos1).is(net.minecraft.world.level.block.Blocks.WATER)
                                 || !(targetState.getBlock() instanceof CarpetBlock)) {
                             worldgenlevel.setBlock(blockpos$mutableblockpos1, targetState, 2);
                             if (posHeight < j - 2
@@ -110,7 +109,7 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
 
         for (int i = 0; i < length; i++) {
             if (worldGenLevel.getBlockState(newPos).isEmpty()
-                    || worldGenLevel.getBlockState(newPos).is(Blocks.WATER)) {
+                    || worldGenLevel.getBlockState(newPos).is(net.minecraft.world.level.block.Blocks.WATER)) {
                 BlockState state = dec.getState(worldGenLevel, random, newPos);
 
                 if (state.hasProperty(BlockStateProperties.FACING)) {

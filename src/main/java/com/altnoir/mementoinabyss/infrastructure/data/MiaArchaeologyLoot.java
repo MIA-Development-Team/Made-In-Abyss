@@ -10,6 +10,7 @@ import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -21,92 +22,76 @@ public record MiaArchaeologyLoot(HolderLookup.Provider registries) implements Lo
     public static final ResourceKey<LootTable> ABYSS_RUINS =
             ResourceKey.create(
                     Registries.LOOT_TABLE, MementoInAbyss.asResource("archaeology/abyss_ruins"));
+    public static final ResourceKey<LootTable> LAYER2_RUINS =
+            ResourceKey.create(
+                    Registries.LOOT_TABLE, MementoInAbyss.asResource("archaeology/layer2_ruins"));
 
     @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
         output.accept(
                 ABYSS_RUINS,
-                LootTable.lootTable()
-                        .withPool(
-                                LootPool.lootPool()
-                                        .setRolls(ConstantValue.exactly(1.0F))
-                                        .add(
-                                                LootItem.lootTableItem(Items.ARMS_UP_POTTERY_SHERD)
-                                                        .setWeight(2))
-                                        .add(
-                                                LootItem.lootTableItem(Items.BREWER_POTTERY_SHERD)
-                                                        .setWeight(2))
-                                        .add(
-                                                LootItem.lootTableItem(Items.SKELETON_SKULL)
-                                                        .setWeight(3))
-                                        .add(
-                                                LootItem.lootTableItem(
-                                                        MiaItems.PRASIOLITE_SHARD.get()))
-                                        .add(
-                                                LootItem.lootTableItem(
-                                                        MiaArtifactItems.TEST_ARTIFACT_1.get()))
-                                        .add(
-                                                LootItem.lootTableItem(
-                                                        MiaArtifactItems.TEST_ARTIFACT_2.get()))
-                                        .add(
-                                                LootItem.lootTableItem(
-                                                        MiaArtifactItems.TEST_ARTIFACT_3.get()))
-                                        .add(
-                                                LootItem.lootTableItem(
-                                                        MiaArtifactItems.ARTIFACT_SHARD_LUNA.get()))
-                                        .add(
-                                                LootItem.lootTableItem(
-                                                        MiaArtifactItems.ARTIFACT_SHARD_TER.get()))
-                                        .add(
-                                                LootItem.lootTableItem(
-                                                        MiaArtifactItems.ARTIFACT_SHARD_CORE.get()))
-                                        .add(
-                                                LootItem.lootTableItem(
-                                                        MiaArtifactItems.ARTIFACT_SHARD_MOUNTAIN
-                                                                .get()))
-                                        .add(
-                                                LootItem.lootTableItem(Items.SUSPICIOUS_STEW)
-                                                        .apply(
-                                                                SetStewEffectFunction.stewEffect()
-                                                                        .withEffect(
-                                                                                MobEffects
-                                                                                        .NIGHT_VISION,
-                                                                                UniformGenerator
-                                                                                        .between(
-                                                                                                7.0F,
-                                                                                                10.0F))
-                                                                        .withEffect(
-                                                                                MobEffects
-                                                                                        .JUMP_BOOST,
-                                                                                UniformGenerator
-                                                                                        .between(
-                                                                                                7.0F,
-                                                                                                10.0F))
-                                                                        .withEffect(
-                                                                                MobEffects.WEAKNESS,
-                                                                                UniformGenerator
-                                                                                        .between(
-                                                                                                6.0F,
-                                                                                                8.0F))
-                                                                        .withEffect(
-                                                                                MobEffects
-                                                                                        .BLINDNESS,
-                                                                                UniformGenerator
-                                                                                        .between(
-                                                                                                5.0F,
-                                                                                                7.0F))
-                                                                        .withEffect(
-                                                                                MobEffects.POISON,
-                                                                                UniformGenerator
-                                                                                        .between(
-                                                                                                10.0F,
-                                                                                                20.0F))
-                                                                        .withEffect(
-                                                                                MobEffects
-                                                                                        .SATURATION,
-                                                                                UniformGenerator
-                                                                                        .between(
-                                                                                                7.0F,
-                                                                                                10.0F))))));
+                ruins(
+                        MiaArtifactItems.ARTIFACT_SHARD_LUNA.get(),
+                        MiaArtifactItems.ARTIFACT_SHARD_TER.get(),
+                        MiaArtifactItems.ARTIFACT_SHARD_CORE.get(),
+                        MiaArtifactItems.ARTIFACT_SHARD_MOUNTAIN.get()));
+        output.accept(
+                LAYER2_RUINS,
+                ruins(
+                        MiaArtifactItems.ARTIFACT_SHARD_MOTH.get(),
+                        MiaArtifactItems.ARTIFACT_SHARD_HALBERD.get(),
+                        MiaArtifactItems.ARTIFACT_SHARD_ELE.get(),
+                        MiaArtifactItems.ARTIFACT_SHARD_CUB.get()));
+    }
+
+    private static LootTable.Builder ruins(
+            ItemLike shard1, ItemLike shard2, ItemLike shard3, ItemLike shard4) {
+        return LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1.0F))
+                                .add(
+                                        LootItem.lootTableItem(Items.ARMS_UP_POTTERY_SHERD)
+                                                .setWeight(2))
+                                .add(
+                                        LootItem.lootTableItem(Items.BREWER_POTTERY_SHERD)
+                                                .setWeight(2))
+                                .add(LootItem.lootTableItem(Items.SKELETON_SKULL).setWeight(3))
+                                .add(LootItem.lootTableItem(MiaItems.PRASIOLITE_SHARD.get()))
+                                .add(LootItem.lootTableItem(MiaArtifactItems.TEST_ARTIFACT_1.get()))
+                                .add(LootItem.lootTableItem(MiaArtifactItems.TEST_ARTIFACT_2.get()))
+                                .add(LootItem.lootTableItem(MiaArtifactItems.TEST_ARTIFACT_3.get()))
+                                .add(LootItem.lootTableItem(shard1))
+                                .add(LootItem.lootTableItem(shard2))
+                                .add(LootItem.lootTableItem(shard3))
+                                .add(LootItem.lootTableItem(shard4))
+                                .add(
+                                        LootItem.lootTableItem(Items.SUSPICIOUS_STEW)
+                                                .apply(
+                                                        SetStewEffectFunction.stewEffect()
+                                                                .withEffect(
+                                                                        MobEffects.NIGHT_VISION,
+                                                                        UniformGenerator.between(
+                                                                                7.0F, 10.0F))
+                                                                .withEffect(
+                                                                        MobEffects.JUMP_BOOST,
+                                                                        UniformGenerator.between(
+                                                                                7.0F, 10.0F))
+                                                                .withEffect(
+                                                                        MobEffects.WEAKNESS,
+                                                                        UniformGenerator.between(
+                                                                                6.0F, 8.0F))
+                                                                .withEffect(
+                                                                        MobEffects.BLINDNESS,
+                                                                        UniformGenerator.between(
+                                                                                5.0F, 7.0F))
+                                                                .withEffect(
+                                                                        MobEffects.POISON,
+                                                                        UniformGenerator.between(
+                                                                                10.0F, 20.0F))
+                                                                .withEffect(
+                                                                        MobEffects.SATURATION,
+                                                                        UniformGenerator.between(
+                                                                                7.0F, 10.0F)))));
     }
 }

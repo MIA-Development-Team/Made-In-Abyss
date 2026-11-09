@@ -35,7 +35,7 @@ public class AbyssAndesiteBlock extends Block implements TillableBlock, Bonemeal
         if (levelReader.getBlockState(blockPos.above()).propagatesSkylightDown()) {
             for (var blockpos :
                     BlockPos.betweenClosed(blockPos.offset(-1, -1, -1), blockPos.offset(1, 1, 1))) {
-                if (levelReader.getBlockState(blockpos).is(MiaTags.BlockTags.COVERGRASS.tag)) {
+                if (levelReader.getBlockState(blockpos).is(MiaTags.Blocks.COVERGRASS.tag)) {
                     return true;
                 }
             }
@@ -60,7 +60,7 @@ public class AbyssAndesiteBlock extends Block implements TillableBlock, Bonemeal
         for (var blockpos :
                 BlockPos.betweenClosed(blockPos.offset(-1, -1, -1), blockPos.offset(1, 1, 1))) {
             var blockstate = serverLevel.getBlockState(blockpos);
-            if (blockstate.is(MiaTags.BlockTags.COVERGRASS.tag)) {
+            if (blockstate.is(MiaTags.Blocks.COVERGRASS.tag)) {
                 flag = true;
             }
             if (flag) {

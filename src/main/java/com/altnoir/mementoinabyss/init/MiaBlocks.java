@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.abysslib.reginth.Reginth;
+import com.altnoir.abysslib.reginth.providers.loot.ReginthBlockLootTables;
 import com.altnoir.abysslib.reginth.util.entry.BlockEntry;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.content.abyss.andesite.AbyssAndesiteBlock;
@@ -12,6 +13,9 @@ import com.altnoir.mementoinabyss.content.abyss.ore.BuddingPrasioliteBlock;
 import com.altnoir.mementoinabyss.content.abyss.ore.ChlorophyteOreBlock;
 import com.altnoir.mementoinabyss.content.abyss.pillar.StrippedRotatedPillarBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.DreamLicheeBlock;
+import com.altnoir.mementoinabyss.content.abyss.plant.DuskveilIchorBlock;
+import com.altnoir.mementoinabyss.content.abyss.plant.DuskveilVinesBlock;
+import com.altnoir.mementoinabyss.content.abyss.plant.DuskveilVinesPlantBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.FruitingSkyfogLeavesBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.GloomBerryBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.GlowPrimoCapBlock;
@@ -57,7 +61,6 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -87,7 +90,7 @@ public class MiaBlocks {
                                             .strength(-1.0F, 3_600_000.0F)
                                             .noLootTable()
                                             .pushReaction(PushReaction.BLOCK))
-                    .blockstate(() -> BlockStateGen.abyssPortal())
+                    .blockstate(BlockStateGen::abyssPortal)
                     .simpleItem()
                     .register();
 
@@ -102,7 +105,7 @@ public class MiaBlocks {
                                             .sound(SoundType.NETHERITE_BLOCK)
                                             .noLootTable()
                                             .pushReaction(PushReaction.BLOCK))
-                    .blockstate(() -> BlockStateGen.abyssPortalCore())
+                    .blockstate(BlockStateGen::abyssPortalCore)
                     .simpleItem()
                     .register();
 
@@ -131,7 +134,7 @@ public class MiaBlocks {
                                             .sound(SoundType.DEEPSLATE)
                                             .noOcclusion())
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(() -> BlockStateGen.pedestal())
+                    .blockstate(BlockStateGen::pedestal)
                     .simpleItem()
                     .register();
 
@@ -148,7 +151,7 @@ public class MiaBlocks {
                                             .sound(SoundType.STONE)
                                             .noOcclusion())
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(() -> BlockStateGen.endlessCup())
+                    .blockstate(BlockStateGen::endlessCup)
                     .lang("Endless Cup")
                     .simpleItem()
                     .register();
@@ -166,7 +169,7 @@ public class MiaBlocks {
                                             .noOcclusion()
                                             .isRedstoneConductor((state, level, pos) -> false))
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(() -> BlockStateGen.caveExplorerBeacon())
+                    .blockstate(BlockStateGen::caveExplorerBeacon)
                     .lang("Cave Explorer Beacon")
                     .simpleItem()
                     .register();
@@ -183,7 +186,7 @@ public class MiaBlocks {
                                             .sound(SoundType.NETHERITE_BLOCK)
                                             .noOcclusion())
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(() -> BlockStateGen.artifactSmithingTable())
+                    .blockstate(BlockStateGen::artifactSmithingTable)
                     .simpleItem()
                     .register();
 
@@ -198,7 +201,7 @@ public class MiaBlocks {
                                             .strength(3.0F, 6.0F)
                                             .sound(SoundType.WOOD))
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(() -> BlockStateGen.whistleWorkbench())
+                    .blockstate(BlockStateGen::whistleWorkbench)
                     .simpleItem()
                     .register();
 
@@ -214,7 +217,7 @@ public class MiaBlocks {
                                             .sound(SoundType.CHAIN)
                                             .noOcclusion())
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(() -> BlockStateGen.ropeConnector())
+                    .blockstate(BlockStateGen::ropeConnector)
                     .simpleItem()
                     .register();
 
@@ -274,8 +277,8 @@ public class MiaBlocks {
                                             .sound(SoundType.DEEPSLATE))
                     .transform(TagGen.pickaxeOnly())
                     .tag(
-                            MiaTags.BlockTags.BASE_STONE_ABYSS.tag,
-                            MiaTags.BlockTags.ABYSS_ANDESITE_ORE_REPLACEABLE.tag)
+                            MiaTags.Blocks.BASE_STONE_ABYSS.tag,
+                            MiaTags.Blocks.ABYSS_ANDESITE_ORE_REPLACEABLE.tag)
                     .tag(Tags.Blocks.STONES)
                     .simpleItem()
                     .register();
@@ -318,7 +321,7 @@ public class MiaBlocks {
                                             .isSuffocating((state, level, pos) -> true))
                     .transform(TagGen.pickaxeOnly())
                     .tag(Tags.Blocks.VILLAGER_FARMLANDS)
-                    .blockstate(() -> BlockStateGen.hopperFarmland())
+                    .blockstate(BlockStateGen::hopperFarmland)
                     .loot(
                             (lt, b) ->
                                     lt.add(
@@ -463,9 +466,9 @@ public class MiaBlocks {
                     .block(p -> new CoverGrassBlock(ABYSS_ANDESITE.get(), p))
                     .initialProperties(ABYSS_ANDESITE)
                     .properties(p -> p.mapColor(MapColor.GRASS).randomTicks())
-                    .blockstate(() -> BlockStateGen.coverGrass())
-                    .tag(MiaTags.BlockTags.COVERGRASS.tag, BlockTags.GRASS_BLOCKS)
-                    .tag(MiaTags.BlockTags.BASE_STONE_ABYSS.tag)
+                    .blockstate(BlockStateGen::coverGrass)
+                    .tag(MiaTags.Blocks.COVERGRASS.tag, BlockTags.GRASS_BLOCKS)
+                    .tag(MiaTags.Blocks.BASE_STONE_ABYSS.tag)
                     .transform(TagGen.pickaxeOnly())
                     .loot(LootGen.silkTouchOr(ABYSS_ANDESITE))
                     .simpleItem()
@@ -474,13 +477,13 @@ public class MiaBlocks {
     public static final BlockEntry<CoverGrassBlock> COVERGRASS_TUFF =
             REGISTRATE
                     .object("covergrass_tuff")
-                    .block(p -> new CoverGrassBlock(Blocks.TUFF, p))
-                    .initialProperties(() -> Blocks.TUFF)
-                    .properties(p -> p.randomTicks())
-                    .blockstate(() -> BlockStateGen.coverGrass())
-                    .tag(MiaTags.BlockTags.COVERGRASS.tag, BlockTags.GRASS_BLOCKS)
+                    .block(p -> new CoverGrassBlock(net.minecraft.world.level.block.Blocks.TUFF, p))
+                    .initialProperties(() -> net.minecraft.world.level.block.Blocks.TUFF)
+                    .properties(BlockBehaviour.Properties::randomTicks)
+                    .blockstate(BlockStateGen::coverGrass)
+                    .tag(MiaTags.Blocks.COVERGRASS.tag, BlockTags.GRASS_BLOCKS)
                     .transform(TagGen.pickaxeOnly())
-                    .loot(LootGen.silkTouchOr(() -> Blocks.TUFF))
+                    .loot(LootGen.silkTouchOr(() -> net.minecraft.world.level.block.Blocks.TUFF))
                     .simpleItem()
                     .register();
 
@@ -502,7 +505,7 @@ public class MiaBlocks {
                                             .pushReaction(PushReaction.DESTROY)
                                             .noLootTable())
                     .transform(TagGen.pickaxeOnly())
-                    .blockstate(() -> BlockStateGen.suspiciousAbyssAndesite())
+                    .blockstate(BlockStateGen::suspiciousAbyssAndesite)
                     .item()
                     .model(() -> (ctx, prov) -> prov.generateBlockItem(ctx.get(), "_0"))
                     .build()
@@ -748,7 +751,7 @@ public class MiaBlocks {
                     MapColor.COLOR_GREEN,
                     WoodType.BAMBOO,
                     true,
-                    MiaTags.ItemTags.SKYFOG_LOGS.tag);
+                    MiaTags.Items.SKYFOG_LOGS.tag);
     private static final WoodBlockFamily.Logs SKYFOG_LOG_FAMILY =
             SKYFOG_FAMILY.registerLogs(REGISTRATE);
     public static final BlockEntry<RotatedPillarBlock> STRIPPED_SKYFOG_LOG =
@@ -758,6 +761,37 @@ public class MiaBlocks {
     public static final BlockEntry<StrippedRotatedPillarBlock> SKYFOG_LOG = SKYFOG_LOG_FAMILY.log();
     public static final BlockEntry<StrippedRotatedPillarBlock> SKYFOG_WOOD =
             SKYFOG_LOG_FAMILY.wood();
+
+    private static final WoodBlockFamily DUSKVEIL_FAMILY =
+            new WoodBlockFamily(
+                    "duskveil",
+                    "log",
+                    "wood",
+                    new PillarProperties(MapColor.WOOD, MapColor.COLOR_GRAY, SoundType.WOOD),
+                    new PillarProperties(MapColor.WOOD, MapColor.COLOR_GRAY, SoundType.WOOD),
+                    MapColor.COLOR_GRAY,
+                    WoodType.PALE_OAK,
+                    true,
+                    MiaTags.Items.DUSKVEIL_LOGS.tag);
+    private static final WoodBlockFamily.Logs DUSKVEIL_LOG_FAMILY =
+            DUSKVEIL_FAMILY.registerLogs(REGISTRATE);
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_DUSKVEIL_LOG =
+            DUSKVEIL_LOG_FAMILY.strippedLog();
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_DUSKVEIL_WOOD =
+            DUSKVEIL_LOG_FAMILY.strippedWood();
+    public static final BlockEntry<StrippedRotatedPillarBlock> DUSKVEIL_LOG =
+            DUSKVEIL_LOG_FAMILY.log();
+    public static final BlockEntry<StrippedRotatedPillarBlock> DUSKVEIL_WOOD =
+            DUSKVEIL_LOG_FAMILY.wood();
+    public static final BlockEntry<DuskveilIchorBlock> DUSKVEIL_ICHOR =
+            REGISTRATE
+                    .object("duskveil_ichor")
+                    .block(DuskveilIchorBlock::new)
+                    .initialProperties(() -> net.minecraft.world.level.block.Blocks.PALE_OAK_LOG)
+                    .transform(TagGen.axeOnly())
+                    .blockstate(BlockStateGen::duskveilIchor)
+                    .simpleItem()
+                    .register();
 
     private static final WoodBlockFamily VERDANT_FAMILY =
             new WoodBlockFamily(
@@ -769,7 +803,7 @@ public class MiaBlocks {
                     MapColor.TERRACOTTA_YELLOW,
                     WoodType.BAMBOO,
                     false,
-                    MiaTags.ItemTags.VERDANT_STEMS.tag);
+                    MiaTags.Items.VERDANT_STEMS.tag);
     private static final WoodBlockFamily.Logs VERDANT_LOG_FAMILY =
             VERDANT_FAMILY.registerLogs(REGISTRATE);
     public static final BlockEntry<RotatedPillarBlock> STRIPPED_VERDANT_STEM =
@@ -781,6 +815,29 @@ public class MiaBlocks {
     public static final BlockEntry<StrippedRotatedPillarBlock> VERDANT_HYPHAE =
             VERDANT_LOG_FAMILY.wood();
 
+    private static final WoodBlockFamily PRIMO_FAMILY =
+            new WoodBlockFamily(
+                    "primo",
+                    "stem",
+                    "hyphae",
+                    new PillarProperties(
+                            MapColor.COLOR_ORANGE, MapColor.COLOR_ORANGE, SoundType.STEM),
+                    new PillarProperties(
+                            MapColor.COLOR_ORANGE, MapColor.COLOR_ORANGE, SoundType.STEM),
+                    MapColor.COLOR_ORANGE,
+                    WoodType.CRIMSON,
+                    false,
+                    MiaTags.Items.PRIMO_STEMS.tag);
+    private static final WoodBlockFamily.Logs PRIMO_LOG_FAMILY =
+            PRIMO_FAMILY.registerLogs(REGISTRATE);
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_PRIMO_STEM =
+            PRIMO_LOG_FAMILY.strippedLog();
+    public static final BlockEntry<RotatedPillarBlock> STRIPPED_PRIMO_HYPHAE =
+            PRIMO_LOG_FAMILY.strippedWood();
+    public static final BlockEntry<StrippedRotatedPillarBlock> PRIMO_STEM = PRIMO_LOG_FAMILY.log();
+    public static final BlockEntry<StrippedRotatedPillarBlock> PRIMO_HYPHAE =
+            PRIMO_LOG_FAMILY.wood();
+
     private static final WoodBlockFamily INVERTED_FAMILY =
             new WoodBlockFamily(
                     "inverted",
@@ -791,7 +848,7 @@ public class MiaBlocks {
                     MapColor.COLOR_GREEN,
                     WoodType.CHERRY,
                     true,
-                    MiaTags.ItemTags.INVERTED_LOGS.tag);
+                    MiaTags.Items.INVERTED_LOGS.tag);
     private static final WoodBlockFamily.Logs INVERTED_LOG_FAMILY =
             INVERTED_FAMILY.registerLogs(REGISTRATE);
     public static final BlockEntry<RotatedPillarBlock> STRIPPED_INVERTED_LOG =
@@ -822,6 +879,15 @@ public class MiaBlocks {
             SKYFOG_BUILDING_FAMILY.get(BuildingBlockVariant.PRESSURE_PLATE);
     public static final BlockEntry<ButtonBlock> SKYFOG_BUTTON =
             SKYFOG_BUILDING_FAMILY.get(BuildingBlockVariant.BUTTON);
+
+    public static final BlockEntry<Block> DUSKVEIL_PLANKS =
+            DUSKVEIL_FAMILY.registerPlanks(REGISTRATE);
+    private static final BuildingBlockFamily DUSKVEIL_BUILDING_FAMILY =
+            DUSKVEIL_FAMILY.buildingBlocks(REGISTRATE, DUSKVEIL_PLANKS).register();
+    public static final BlockEntry<DoorBlock> DUSKVEIL_DOOR =
+            DUSKVEIL_BUILDING_FAMILY.get(BuildingBlockVariant.DOOR);
+    public static final BlockEntry<TrapDoorBlock> DUSKVEIL_TRAPDOOR =
+            DUSKVEIL_BUILDING_FAMILY.get(BuildingBlockVariant.TRAPDOOR);
 
     public static final BlockEntry<Block> VERDANT_PLANKS =
             VERDANT_FAMILY.registerPlanks(REGISTRATE);
@@ -865,29 +931,6 @@ public class MiaBlocks {
     public static final BlockEntry<ButtonBlock> INVERTED_BUTTON =
             INVERTED_BUILDING_FAMILY.get(BuildingBlockVariant.BUTTON);
 
-    private static final WoodBlockFamily PRIMO_FAMILY =
-            new WoodBlockFamily(
-                    "primo",
-                    "stem",
-                    "hyphae",
-                    new PillarProperties(
-                            MapColor.COLOR_ORANGE, MapColor.COLOR_ORANGE, SoundType.STEM),
-                    new PillarProperties(
-                            MapColor.COLOR_ORANGE, MapColor.COLOR_ORANGE, SoundType.STEM),
-                    MapColor.COLOR_ORANGE,
-                    WoodType.CRIMSON,
-                    false,
-                    MiaTags.ItemTags.PRIMO_STEMS.tag);
-    private static final WoodBlockFamily.Logs PRIMO_LOG_FAMILY =
-            PRIMO_FAMILY.registerLogs(REGISTRATE);
-    public static final BlockEntry<RotatedPillarBlock> STRIPPED_PRIMO_STEM =
-            PRIMO_LOG_FAMILY.strippedLog();
-    public static final BlockEntry<RotatedPillarBlock> STRIPPED_PRIMO_HYPHAE =
-            PRIMO_LOG_FAMILY.strippedWood();
-    public static final BlockEntry<StrippedRotatedPillarBlock> PRIMO_STEM = PRIMO_LOG_FAMILY.log();
-    public static final BlockEntry<StrippedRotatedPillarBlock> PRIMO_HYPHAE =
-            PRIMO_LOG_FAMILY.wood();
-
     public static final BlockEntry<Block> PRIMO_PLANKS = PRIMO_FAMILY.registerPlanks(REGISTRATE);
     private static final BuildingBlockFamily PRIMO_BUILDING_FAMILY =
             PRIMO_FAMILY.buildingBlocks(REGISTRATE, PRIMO_PLANKS).register();
@@ -918,7 +961,7 @@ public class MiaBlocks {
                     .block(TallGrassBlock::new)
                     .properties(MiaBlocks::plantProperties)
                     .tag(BlockTags.REPLACEABLE_BY_TREES)
-                    .blockstate(() -> BlockStateGen.crossPlant())
+                    .blockstate(BlockStateGen::crossPlant)
                     .item()
                     .compostable(0.3F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
@@ -935,7 +978,7 @@ public class MiaBlocks {
                                             .mapColor(MapColor.NETHER)
                                             .sound(SoundType.ROOTS))
                     .tag(BlockTags.REPLACEABLE_BY_TREES)
-                    .blockstate(() -> BlockStateGen.crossPlant())
+                    .blockstate(BlockStateGen::crossPlant)
                     .item()
                     .compostable(0.3F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
@@ -952,7 +995,7 @@ public class MiaBlocks {
                                             .mapColor(MapColor.COLOR_CYAN)
                                             .sound(SoundType.NETHER_SPROUTS))
                     .tag(BlockTags.REPLACEABLE_BY_TREES)
-                    .blockstate(() -> BlockStateGen.crossPlant())
+                    .blockstate(BlockStateGen::crossPlant)
                     .item()
                     .compostable(0.5F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
@@ -974,7 +1017,7 @@ public class MiaBlocks {
                             BlockTags.BEE_ATTRACTIVE,
                             BlockTags.INSIDE_STEP_SOUND_BLOCKS,
                             BlockTags.REPLACEABLE_BY_TREES)
-                    .blockstate(() -> BlockStateGen.flowerBed())
+                    .blockstate(BlockStateGen::flowerBed)
                     .item()
                     .tag(ItemTags.BEE_FOOD)
                     .compostable(0.65F)
@@ -987,7 +1030,7 @@ public class MiaBlocks {
                     .block(WaterTallFlowerBlock::new)
                     .properties(MiaBlocks::plantProperties)
                     .tag(BlockTags.REPLACEABLE_BY_TREES)
-                    .blockstate(() -> BlockStateGen.doublePlant())
+                    .blockstate(BlockStateGen::doublePlant)
                     .loot(LootGen.lowerHalf())
                     .item()
                     .compostable(0.5F)
@@ -1004,7 +1047,7 @@ public class MiaBlocks {
                                     plantProperties(p)
                                             .randomTicks()
                                             .lightLevel(GloomBerryBlock::getLightLevel))
-                    .blockstate(() -> BlockStateGen.doubleBerry())
+                    .blockstate(BlockStateGen::doubleBerry)
                     .loot(LootGen.lowerHalf(() -> MiaItems.GLOOM_BERRY.get()))
                     .register();
 
@@ -1013,7 +1056,7 @@ public class MiaBlocks {
                     .object("dream_lichee_plant")
                     .block(DreamLicheeBlock::new)
                     .properties(p -> plantProperties(p).randomTicks())
-                    .blockstate(() -> BlockStateGen.doubleBerry())
+                    .blockstate(BlockStateGen::doubleBerry)
                     .loot(LootGen.lowerHalf(() -> MiaItems.DREAM_LICHEE.get()))
                     .register();
 
@@ -1032,7 +1075,7 @@ public class MiaBlocks {
             REGISTRATE
                     .object("skyfog_leaves")
                     .block(p -> new GreenParticleLeavesBlock(0.01F, p))
-                    .initialProperties(() -> Blocks.AZALEA_LEAVES)
+                    .initialProperties(() -> net.minecraft.world.level.block.Blocks.AZALEA_LEAVES)
                     .tag(BlockTags.LEAVES)
                     .loot(LootGen.leaves(() -> MiaBlocks.SKYFOG_SAPLING.get()))
                     .item()
@@ -1059,11 +1102,64 @@ public class MiaBlocks {
                     .properties(
                             p -> plantProperties(p).randomTicks().sound(SoundType.CHERRY_SAPLING))
                     .tag(BlockTags.SAPLINGS)
-                    .blockstate(() -> BlockStateGen.crossPlant())
+                    .blockstate(BlockStateGen::crossPlant)
                     .item()
                     .compostable(0.3F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
                     .build()
+                    .register();
+
+    public static final BlockEntry<GreenParticleLeavesBlock> DUSKVEIL_LEAVES =
+            REGISTRATE
+                    .object("duskveil_leaves")
+                    .block(p -> new GreenParticleLeavesBlock(0.0F, p))
+                    .initialProperties(() -> net.minecraft.world.level.block.Blocks.PALE_OAK_LEAVES)
+                    .tag(BlockTags.LEAVES)
+                    .loot(LootGen.leaves(() -> MiaBlocks.DUSKVEIL_SAPLING.get()))
+                    .item()
+                    .compostable(0.3F)
+                    .build()
+                    .register();
+    public static final BlockEntry<SaplingBlock> DUSKVEIL_SAPLING =
+            REGISTRATE
+                    .object("duskveil_sapling")
+                    .block(p -> new SaplingBlock(MiaTreeGrowers.DUSKVEIL, p))
+                    .properties(p -> plantProperties(p).randomTicks().sound(SoundType.GRASS))
+                    .tag(BlockTags.SAPLINGS)
+                    .blockstate(BlockStateGen::crossPlant)
+                    .item()
+                    .compostable(0.3F)
+                    .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
+                    .build()
+                    .register();
+
+    public static final BlockEntry<DuskveilVinesBlock> DUSKVEIL_VINES =
+            REGISTRATE
+                    .object("duskveil_vines")
+                    .block(DuskveilVinesBlock::new)
+                    .properties(
+                            p ->
+                                    plantProperties(p)
+                                            .noOcclusion()
+                                            .randomTicks()
+                                            .lightLevel(CaveVines.emission(14))
+                                            .sound(SoundType.CAVE_VINES))
+                    .blockstate(BlockStateGen::duskveilVines)
+                    // A bound method reference would initialize MiaItems and switch the active section.
+                    .loot(LootGen.vineBerries(() -> MiaItems.DUSKVEIL_BERRIES.get()))
+                    .register();
+    public static final BlockEntry<DuskveilVinesPlantBlock> DUSKVEIL_VINES_PLANT =
+            REGISTRATE
+                    .object("duskveil_vines_plant")
+                    .block(DuskveilVinesPlantBlock::new)
+                    .properties(
+                            p ->
+                                    plantProperties(p)
+                                            .noOcclusion()
+                                            .lightLevel(CaveVines.emission(14))
+                                            .sound(SoundType.CAVE_VINES))
+                    .blockstate(BlockStateGen::duskveilVines)
+                    .loot(LootGen.vineBerries(() -> MiaItems.DUSKVEIL_BERRIES.get()))
                     .register();
 
     public static final BlockEntry<SlimeBlock> VERDANT_LEAVES =
@@ -1091,7 +1187,7 @@ public class MiaBlocks {
                                     plantProperties(p)
                                             .mapColor(MapColor.COLOR_CYAN)
                                             .sound(SoundType.CHERRY_SAPLING))
-                    .blockstate(() -> BlockStateGen.crossPlant())
+                    .blockstate(BlockStateGen::crossPlant)
                     .item()
                     .compostable(0.65F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
@@ -1114,7 +1210,7 @@ public class MiaBlocks {
                             BlockTags.REPLACEABLE_BY_TREES,
                             BlockTags.OVERRIDES_MUSHROOM_LIGHT_REQUIREMENT,
                             BlockTags.MINEABLE_WITH_HOE)
-                    .blockstate(() -> BlockStateGen.rotationYCubeAll())
+                    .blockstate(BlockStateGen::rotationYCubeAll)
                     .item()
                     .compostable(0.65F)
                     .build()
@@ -1139,7 +1235,7 @@ public class MiaBlocks {
                             BlockTags.REPLACEABLE_BY_TREES,
                             BlockTags.SWORD_EFFICIENT,
                             BlockTags.MINEABLE_WITH_AXE)
-                    .blockstate(() -> BlockStateGen.multifaceMat())
+                    .blockstate(BlockStateGen::multifaceMat)
                     .loot((lt, b) -> lt.add(b, lt.createMultifaceBlockDrops(b)))
                     .item()
                     .compostable(0.5F)
@@ -1159,7 +1255,7 @@ public class MiaBlocks {
                                             .pushReaction(PushReaction.DESTROY))
                     .tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS, BlockTags.MINEABLE_WITH_HOE)
                     .tag(BlockTags.REPLACEABLE_BY_TREES)
-                    .blockstate(() -> BlockStateGen.flowerBed())
+                    .blockstate(BlockStateGen::flowerBed)
                     .loot((lt, b) -> lt.add(b, lt.createSegmentedBlockDrops(b)))
                     .item()
                     .compostable(0.65F)
@@ -1193,7 +1289,7 @@ public class MiaBlocks {
                                             .noOcclusion()
                                             .lightLevel(state -> 12))
                     .tag(BlockTags.MINEABLE_WITH_HOE)
-                    .blockstate(() -> BlockStateGen.translucentCubeAll())
+                    .blockstate(BlockStateGen::translucentCubeAll)
                     .item()
                     .compostable(0.85F)
                     .build()
@@ -1209,7 +1305,7 @@ public class MiaBlocks {
                                             .instabreak()
                                             .sound(SoundType.FUNGUS)
                                             .pushReaction(PushReaction.DESTROY))
-                    .blockstate(() -> BlockStateGen.mushroomFungus())
+                    .blockstate(BlockStateGen::mushroomFungus)
                     .item()
                     .compostable(0.65F)
                     .model(
@@ -1232,7 +1328,7 @@ public class MiaBlocks {
                                             .lightLevel(state -> 7)
                                             .sound(SoundType.FUNGUS)
                                             .pushReaction(PushReaction.DESTROY))
-                    .blockstate(() -> BlockStateGen.glowMushroomFungus())
+                    .blockstate(BlockStateGen::glowMushroomFungus)
                     .item()
                     .compostable(0.65F)
                     .model(
@@ -1248,7 +1344,7 @@ public class MiaBlocks {
             REGISTRATE
                     .object("inverted_leaves")
                     .block(p -> new GreenParticleLeavesBlock(0.01F, p))
-                    .initialProperties(() -> Blocks.CHERRY_LEAVES)
+                    .initialProperties(() -> net.minecraft.world.level.block.Blocks.CHERRY_LEAVES)
                     .tag(BlockTags.LEAVES)
                     .loot(LootGen.leaves(() -> MiaBlocks.INVERTED_SAPLING.get()))
                     .item()
@@ -1263,7 +1359,7 @@ public class MiaBlocks {
                     .properties(
                             p -> plantProperties(p).randomTicks().sound(SoundType.CHERRY_SAPLING))
                     .tag(BlockTags.SAPLINGS)
-                    .blockstate(() -> BlockStateGen.crossPlant())
+                    .blockstate(BlockStateGen::crossPlant)
                     .item()
                     .compostable(0.3F)
                     .model(() -> (ctx, prov) -> prov.generateFlatBlockItem(ctx.get()))
@@ -1274,32 +1370,32 @@ public class MiaBlocks {
             ore(
                     "abyss_iron_ore",
                     ConstantInt.of(0),
-                    Items.RAW_IRON,
+                    net.minecraft.world.item.Items.RAW_IRON,
                     BlockTags.IRON_ORES,
                     BlockTags.NEEDS_STONE_TOOL);
     public static final BlockEntry<DropExperienceBlock> ABYSS_GOLD_ORE =
             ore(
                     "abyss_gold_ore",
                     ConstantInt.of(0),
-                    Items.RAW_GOLD,
+                    net.minecraft.world.item.Items.RAW_GOLD,
                     BlockTags.GOLD_ORES,
                     BlockTags.NEEDS_IRON_TOOL);
     public static final BlockEntry<DropExperienceBlock> ABYSS_DIAMOND_ORE =
             ore(
                     "abyss_diamond_ore",
                     UniformInt.of(3, 7),
-                    Items.DIAMOND,
+                    net.minecraft.world.item.Items.DIAMOND,
                     BlockTags.DIAMOND_ORES,
                     BlockTags.NEEDS_IRON_TOOL);
     public static final BlockEntry<DropExperienceBlock> ABYSS_EMERALD_ORE =
             ore(
                     "abyss_emerald_ore",
                     UniformInt.of(3, 7),
-                    Items.EMERALD,
+                    net.minecraft.world.item.Items.EMERALD,
                     BlockTags.EMERALD_ORES,
                     BlockTags.NEEDS_IRON_TOOL);
     public static final BlockEntry<DropExperienceBlock> ABYSS_QUARTZ_ORE =
-            ore("abyss_quartz_ore", UniformInt.of(2, 5), Items.QUARTZ, Tags.Blocks.ORES_QUARTZ);
+            ore("abyss_quartz_ore", UniformInt.of(2, 5), net.minecraft.world.item.Items.QUARTZ, Tags.Blocks.ORES_QUARTZ);
 
     public static final BlockEntry<DropExperienceBlock> ABYSS_COPPER_ORE =
             REGISTRATE
@@ -1342,7 +1438,7 @@ public class MiaBlocks {
     public static final BlockEntry<ChlorophyteOreBlock> ABYSS_CHLOROPHYTE_ORE =
             REGISTRATE
                     .object("abyss_chlorophyte_ore")
-                    .block(p -> new ChlorophyteOreBlock(UniformInt.of(2, 5), Blocks.MUD, p))
+                    .block(p -> new ChlorophyteOreBlock(UniformInt.of(2, 5), net.minecraft.world.level.block.Blocks.MUD, p))
                     .properties(
                             p ->
                                     p.mapColor(MapColor.TERRACOTTA_GREEN)
@@ -1376,7 +1472,7 @@ public class MiaBlocks {
                     .initialProperties(PRASIOLITE_BLOCK)
                     .properties(p -> p.randomTicks().pushReaction(PushReaction.DESTROY))
                     .transform(TagGen.pickaxeOnly())
-                    .loot((lt, b) -> lt.dropWhenSilkTouch(b))
+                    .loot(ReginthBlockLootTables::dropWhenSilkTouch)
                     .tag(Tags.Blocks.BUDDING_BLOCKS)
                     .simpleItem()
                     .register();
@@ -1408,7 +1504,7 @@ public class MiaBlocks {
                     .initialProperties(CAERULITE_BLOCK)
                     .properties(p -> p.randomTicks().pushReaction(PushReaction.DESTROY))
                     .transform(TagGen.pickaxeOnly())
-                    .loot((lt, b) -> lt.dropWhenSilkTouch(b))
+                    .loot(ReginthBlockLootTables::dropWhenSilkTouch)
                     .tag(Tags.Blocks.BUDDING_BLOCKS)
                     .simpleItem()
                     .register();
@@ -1499,7 +1595,7 @@ public class MiaBlocks {
                 .transform(TagGen.pickaxeOnly())
                 .tag(Tags.Blocks.BUDS)
                 .blockstate(() -> (ctx, prov) -> prov.createAmethystCluster(ctx.get()))
-                .loot((lt, b) -> lt.dropWhenSilkTouch(b))
+                .loot(ReginthBlockLootTables::dropWhenSilkTouch)
                 .simpleItem()
                 .register();
     }
@@ -1523,7 +1619,7 @@ public class MiaBlocks {
                 .block(p -> new FlowerBlock(effect, duration, p))
                 .properties(p -> plantProperties(p).sound(sound).lightLevel(_ -> light))
                 .tag(BlockTags.SMALL_FLOWERS, BlockTags.BEE_ATTRACTIVE)
-                .blockstate(() -> BlockStateGen.crossPlant())
+                .blockstate(BlockStateGen::crossPlant)
                 .item()
                 .tag(ItemTags.BEE_FOOD)
                 .compostable(0.65F)

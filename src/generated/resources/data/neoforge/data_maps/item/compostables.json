@@ -9,6 +9,15 @@
     "mementoinabyss:dream_lichee": {
       "chance": 0.65
     },
+    "mementoinabyss:duskveil_berries": {
+      "chance": 0.3
+    },
+    "mementoinabyss:duskveil_leaves": {
+      "chance": 0.3
+    },
+    "mementoinabyss:duskveil_sapling": {
+      "chance": 0.3
+    },
     "mementoinabyss:fortitude_flower": {
       "chance": 0.65
     },

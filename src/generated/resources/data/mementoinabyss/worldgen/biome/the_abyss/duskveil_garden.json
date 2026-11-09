@@ -9,7 +9,7 @@
     },
     "minecraft:audio/music_volume": 1.0,
     "minecraft:gameplay/creaking_active": true,
-    "minecraft:visual/fog_color": "#817770",
+    "minecraft:visual/fog_color": "#364c67",
     "minecraft:visual/sky_color": "#b9b9b9",
     "minecraft:visual/water_fog_color": "#556980"
   },
@@ -46,7 +46,7 @@
     [],
     [],
     [
-      "mementoinabyss:layer2/vanilla/pale_garden_vegetation",
+      "mementoinabyss:the_abyss/trees_duskveil",
       "mementoinabyss:layer2/vanilla/pale_moss_patch",
       "mementoinabyss:layer2/vanilla/pale_garden_flowers",
       "mementoinabyss:layer2/vanilla/flower_pale_garden",

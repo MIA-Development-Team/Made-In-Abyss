@@ -2,54 +2,64 @@
   "type": "minecraft:simple_block",
   "config": {
     "to_place": {
-      "type": "minecraft:dual_noise_provider",
-      "noise": {
-        "amplitudes": [
-          1.0
-        ],
-        "firstOctave": -3
-      },
-      "scale": 1.0,
-      "seed": 2345,
-      "slow_noise": {
-        "amplitudes": [
-          1.0
-        ],
-        "firstOctave": -5
-      },
-      "slow_scale": 1.0,
-      "states": [
-        {
-          "Name": "minecraft:big_dripleaf",
-          "Properties": {
-            "facing": "north",
-            "tilt": "none",
-            "waterlogged": "false"
+      "type": "mementoinabyss:segmented_vegetation",
+      "source": {
+        "type": "minecraft:dual_noise_provider",
+        "noise": {
+          "amplitudes": [
+            1.0
+          ],
+          "firstOctave": -3
+        },
+        "scale": 1.0,
+        "seed": 2345,
+        "slow_noise": {
+          "amplitudes": [
+            1.0
+          ],
+          "firstOctave": -5
+        },
+        "slow_scale": 1.0,
+        "states": [
+          {
+            "Name": "minecraft:big_dripleaf",
+            "Properties": {
+              "facing": "north",
+              "tilt": "none",
+              "waterlogged": "false"
+            }
+          },
+          {
+            "Name": "mementoinabyss:balloon_plant"
+          },
+          {
+            "Name": "mementoinabyss:lantern_plant"
+          },
+          {
+            "Name": "mementoinabyss:green_perilla"
+          },
+          {
+            "Name": "mementoinabyss:scorchleaf"
+          },
+          {
+            "Name": "minecraft:wildflowers",
+            "Properties": {
+              "facing": "north",
+              "flower_amount": "1"
+            }
+          },
+          {
+            "Name": "minecraft:torchflower"
+          },
+          {
+            "Name": "mementoinabyss:marginal_weed"
           }
-        },
-        {
-          "Name": "mementoinabyss:balloon_plant"
-        },
-        {
-          "Name": "mementoinabyss:lantern_plant"
-        },
-        {
-          "Name": "mementoinabyss:green_perilla"
-        },
-        {
-          "Name": "mementoinabyss:scorchleaf"
-        },
-        {
-          "Name": "minecraft:torchflower"
-        },
-        {
-          "Name": "mementoinabyss:marginal_weed"
-        }
-      ],
-      "variety": [
-        1,
-        3
-      ]
+        ],
+        "variety": [
+          1,
+          3
+        ]
+      }
     }
   }
 }
