@@ -79,5 +79,6 @@ public class MiaBlockEntityTypes {
 
     private static void addValidBlocks(BlockEntityTypeAddBlocksEvent event) {
         event.modify(BlockEntityType.BRUSHABLE_BLOCK, MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE.get());
+        event.modify(BlockEntityType.ENDER_CHEST, MiaBlocks.RETURN_CHEST.get());
     }
 }

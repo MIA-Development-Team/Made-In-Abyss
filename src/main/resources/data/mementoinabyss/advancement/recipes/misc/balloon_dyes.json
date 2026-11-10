@@ -1,0 +1,40 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ingredient": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mementoinabyss:balloon"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_ingredient"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mementoinabyss:balloon_dye/black",
+      "mementoinabyss:balloon_dye/blue",
+      "mementoinabyss:balloon_dye/brown",
+      "mementoinabyss:balloon_dye/cyan",
+      "mementoinabyss:balloon_dye/gray",
+      "mementoinabyss:balloon_dye/green",
+      "mementoinabyss:balloon_dye/light_blue",
+      "mementoinabyss:balloon_dye/light_gray",
+      "mementoinabyss:balloon_dye/lime",
+      "mementoinabyss:balloon_dye/magenta",
+      "mementoinabyss:balloon_dye/orange",
+      "mementoinabyss:balloon_dye/pink",
+      "mementoinabyss:balloon_dye/purple",
+      "mementoinabyss:balloon_dye/red",
+      "mementoinabyss:balloon_dye/white",
+      "mementoinabyss:balloon_dye/yellow"
+    ]
+  }
+}

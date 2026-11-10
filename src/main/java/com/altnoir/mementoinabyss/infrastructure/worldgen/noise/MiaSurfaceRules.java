@@ -17,10 +17,10 @@ public final class MiaSurfaceRules {
     // Layer 1
     private static final SurfaceRules.RuleSource ABYSS_ANDESITE =
             makeStateRule(MiaBlocks.ABYSS_ANDESITE.get());
-    private static final SurfaceRules.RuleSource COVERGRASS_ABYSS_ANDESITE =
-            makeStateRule(MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get());
-    private static final SurfaceRules.RuleSource COVERGRASS_TUFF =
-            makeStateRule(MiaBlocks.COVERGRASS_TUFF.get());
+    private static final SurfaceRules.RuleSource GRASSY_ABYSS_ANDESITE =
+            makeStateRule(MiaBlocks.GRASSY_ABYSS_ANDESITE.get());
+    private static final SurfaceRules.RuleSource GRASSY_TUFF =
+            makeStateRule(MiaBlocks.GRASSY_TUFF.get());
     // Layer 2
     private static final SurfaceRules.RuleSource MUD = makeStateRule(Blocks.MUD);
     private static final SurfaceRules.RuleSource MYCELIUM =
@@ -34,11 +34,11 @@ public final class MiaSurfaceRules {
     public static SurfaceRules.RuleSource theAbyss() {
         SurfaceRules.ConditionSource waterBlockCheck = SurfaceRules.waterBlockCheck(0, 0);
         // Layer 1
-        SurfaceRules.RuleSource coverGrass_andesite =
-                SurfaceRules.ifTrue(waterBlockCheck, COVERGRASS_ABYSS_ANDESITE);
+        SurfaceRules.RuleSource grassyAndesite =
+                SurfaceRules.ifTrue(waterBlockCheck, GRASSY_ABYSS_ANDESITE);
         SurfaceRules.RuleSource coarse_dirt = SurfaceRules.ifTrue(waterBlockCheck, COARSE_DIRT);
-        SurfaceRules.RuleSource coverGrass_tuff =
-                SurfaceRules.ifTrue(waterBlockCheck, COVERGRASS_TUFF);
+        SurfaceRules.RuleSource grassyTuff =
+                SurfaceRules.ifTrue(waterBlockCheck, GRASSY_TUFF);
         // Layer 2
 
         SurfaceRules.RuleSource sequence =
@@ -65,7 +65,7 @@ public final class MiaSurfaceRules {
                                                 SurfaceRules.ifTrue(
                                                         SurfaceRules.stoneDepthCheck(
                                                                 0, false, 0, CaveSurface.FLOOR),
-                                                        coverGrass_andesite),
+                                                        grassyAndesite),
                                                 ABYSS_ANDESITE))),
                         SurfaceRules.ifTrue(
                                 SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR),
@@ -83,7 +83,7 @@ public final class MiaSurfaceRules {
                                         SurfaceRules.ifTrue(
                                                 SurfaceRules.stoneDepthCheck(
                                                         0, false, 0, CaveSurface.FLOOR),
-                                                coverGrass_tuff),
+                                                grassyTuff),
                                         makeStateRule(Blocks.TUFF))),
                         // Layer 2
                         SurfaceRules.ifTrue(
@@ -108,7 +108,7 @@ public final class MiaSurfaceRules {
                                                                 MiaNoiseData.STRIPEY, -0.24, 0.24),
                                                         COARSE_DIRT),
                                                 SurfaceRules.ifTrue(
-                                                        SurfaceRules.ON_FLOOR, coverGrass_andesite),
+                                                        SurfaceRules.ON_FLOOR, grassyAndesite),
                                                 ABYSS_ANDESITE))),
                         SurfaceRules.ifTrue(
                                 SurfaceRules.isBiome(
@@ -135,7 +135,7 @@ public final class MiaSurfaceRules {
                                                                                 MiaNoiseData.STRIPEY,
                                                                                 .35,
                                                                                 1),
-                                                                        coverGrass_andesite))),
+                                                                        grassyAndesite))),
                                                 SurfaceRules.ifTrue(
                                                         SurfaceRules.noiseCondition(
                                                                 MiaNoiseData.STRIPEY, -.1, .1),

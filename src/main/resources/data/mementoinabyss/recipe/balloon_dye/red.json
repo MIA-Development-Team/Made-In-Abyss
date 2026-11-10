@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "balloon_dye",
+  "ingredients": [
+    "mementoinabyss:balloon",
+    "minecraft:red_dye"
+  ],
+  "result": {
+    "id": "mementoinabyss:balloon",
+    "components": {
+      "minecraft:dyed_color": 11546150
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/grass_block",
+  "textures": {
+    "bottom": "mementoinabyss:block/abyss_andesite",
+    "overlay": "mementoinabyss:block/grassy_abyss_side_overlay",
+    "particle": "mementoinabyss:block/abyss_andesite",
+    "side": "mementoinabyss:block/grassy_abyss_andesite_side",
+    "top": "mementoinabyss:block/abyss_grass_block_top"
+  }
+}

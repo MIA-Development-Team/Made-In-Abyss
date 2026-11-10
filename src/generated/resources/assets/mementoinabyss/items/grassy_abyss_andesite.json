@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "mementoinabyss:block/grassy_abyss_andesite",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -5441712
+      }
+    ]
+  }
+}

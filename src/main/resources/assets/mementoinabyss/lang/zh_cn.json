@@ -1,4 +1,6 @@
 {
+  "block.mementoinabyss.grassy_abyss_andesite": "覆草深层安山岩",
+  "block.mementoinabyss.grassy_tuff": "覆草凝灰岩",
   "block.mementoinabyss.duskveil_log": "暮帷原木",
   "block.mementoinabyss.stripped_duskveil_log": "去皮暮帷原木",
   "block.mementoinabyss.duskveil_wood": "暮帷木",
@@ -70,5 +72,20 @@
   "biome.mementoinabyss.the_abyss.giant_fossilized_forest": "大化石林",
   "biome.mementoinabyss.the_abyss.sparse_giant_fossilized_forest": "稀疏大化石林",
   "biome.mementoinabyss.the_abyss.warm_ocean": "暖水海洋",
-  "biome.mementoinabyss.the_abyss.temptation_ocean": "诱惑之海"
+  "biome.mementoinabyss.the_abyss.temptation_ocean": "诱惑之海",
+  "block.mementoinabyss.return_chest": "回归箱",
+  "item.mementoinabyss.balloon": "气球",
+  "entity.mementoinabyss.balloon_cargo": "气球货运",
+  "container.mementoinabyss.return_chest": "回归箱（%s）",
+  "tooltip.mementoinabyss.balloon.channel": "频道：%s",
+  "message.mementoinabyss.return_chest.chest_dimension": "此维度无法使用回归箱。",
+  "message.mementoinabyss.return_chest.launch_dimension": "只能在深渊和大断层用气球运送箱子。",
+  "message.mementoinabyss.return_chest.disconnected": "请用气球连接此回归箱。",
+  "message.mementoinabyss.return_chest.connected": "已连接至%s频道。",
+  "message.mementoinabyss.return_chest.single_chest": "气球只能运送普通单箱。",
+  "message.mementoinabyss.return_chest.blocked": "气球上方没有足够的飞行空间。",
+  "message.mementoinabyss.return_chest.busy": "%s频道已有货物在途。",
+  "message.mementoinabyss.return_chest.empty": "箱子里没有可运送的货物。",
+  "message.mementoinabyss.return_chest.full": "%s频道的空间不足以接收整箱货物。",
+  "message.mementoinabyss.return_chest.launched": "货物已发往%s频道。"
 }

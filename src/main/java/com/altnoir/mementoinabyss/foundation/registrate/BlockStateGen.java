@@ -10,12 +10,16 @@ import com.altnoir.mementoinabyss.content.abyss.cover_grass.CoverGrassBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.DoubleBerryBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.DuskveilIchorBlock;
 import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlock;
+import java.util.Optional;
+import net.minecraft.client.color.item.Constant;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
@@ -280,23 +284,35 @@ public class BlockStateGen {
     }
 
     public static <B extends CoverGrassBlock>
-            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> coverGrass() {
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
+                    grassyAbyssBlock() {
         return (ctx, prov) -> {
+            var overlay = TextureSlot.create("overlay");
+            var template =
+                    new ModelTemplate(
+                            Optional.of(Identifier.withDefaultNamespace("block/grass_block")),
+                            Optional.empty(),
+                            TextureSlot.PARTICLE,
+                            TextureSlot.SIDE,
+                            TextureSlot.BOTTOM,
+                            TextureSlot.TOP,
+                            overlay);
             var block = ctx.getEntry();
-            var model =
-                    ModelTemplates.CUBE_BOTTOM_TOP.create(
-                            block,
-                            sideBottomTop(
+            var textures =
+                    sideBottomTop(
                                     prov.modBlockTexture(ctx.getName() + "_side"),
                                     prov.blockTexture(block.defaultBlock),
-                                    prov.modBlockTexture("abyss_grass_block_top")),
-                            prov.modelOutput);
-
-            var variants =
-                    BlockModelGenerators.createRotatedVariants(
-                            BlockModelGenerators.plainModel(model));
-            prov.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, variants));
-            prov.registerSimpleItemModel(block, model);
+                                    prov.modBlockTexture("abyss_grass_block_top"))
+                            .put(TextureSlot.PARTICLE, prov.blockTexture(block.defaultBlock))
+                            .put(overlay, prov.modBlockTexture("grassy_abyss_side_overlay"));
+            var model = template.create(block, textures, prov.modelOutput);
+            prov.blockStateOutput.accept(
+                    MultiVariantGenerator.dispatch(
+                            block,
+                            BlockModelGenerators.createRotatedVariants(
+                                    BlockModelGenerators.plainModel(model))));
+            prov.itemModelOutput.accept(
+                    block.asItem(), ItemModelUtils.tintedModel(model, new Constant(11335504)));
         };
     }
 

@@ -26,7 +26,7 @@
                   }
                 }
               ],
-              "name": "mementoinabyss:covergrass_abyss_andesite"
+              "name": "mementoinabyss:grassy_abyss_andesite"
             },
             {
               "type": "minecraft:item",
@@ -38,5 +38,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "mementoinabyss:blocks/covergrass_abyss_andesite"
+  "random_sequence": "mementoinabyss:blocks/grassy_abyss_andesite"
 }

@@ -56,7 +56,7 @@ public class MiaItemGroups {
                     .creativeTab(
                             tab ->
                                     SectionedCreativeModeTab.configure(
-                                            tab.icon(MiaBlocks.COVERGRASS_ABYSS_ANDESITE::asStack),
+                                            tab.icon(MiaBlocks.GRASSY_ABYSS_ANDESITE::asStack),
                                             BASE_BUILDING_BLOCKS,
                                             BASE_NATURE_BLOCKS,
                                             BASE_ITEMS))

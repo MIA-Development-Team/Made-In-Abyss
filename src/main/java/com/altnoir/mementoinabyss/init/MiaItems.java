@@ -3,14 +3,19 @@ package com.altnoir.mementoinabyss.init;
 import com.altnoir.abysslib.reginth.Reginth;
 import com.altnoir.abysslib.reginth.util.entry.ItemEntry;
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.content.returnchest.BalloonItem;
+import com.altnoir.mementoinabyss.content.returnchest.client.ReturnStorageModels;
 import com.altnoir.mementoinabyss.content.rope.RopeItem;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.neoforged.neoforge.common.Tags;
 
 public class MiaItems {
@@ -93,6 +98,18 @@ public class MiaItems {
             REGISTRATE.item("prasiolite_shard", Item::new).tag(Tags.Items.GEMS).register();
     public static final ItemEntry<Item> CAERULITE_SHARD =
             REGISTRATE.item("caerulite_shard", Item::new).tag(Tags.Items.GEMS).register();
+
+    public static final ItemEntry<BalloonItem> BALLOON =
+            REGISTRATE
+                    .item("balloon", BalloonItem::new)
+                    .lang("Balloon")
+                    .properties(
+                            p ->
+                                    p.component(
+                                            DataComponents.DYED_COLOR,
+                                            new DyedItemColor(BalloonItem.rgb(DyeColor.WHITE))))
+                    .model(() -> ReturnStorageModels.balloon())
+                    .register();
 
     public static final ItemEntry<RopeItem> ROPE =
             REGISTRATE

@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss;
 
 import com.altnoir.abysslib.reginth.Reginth;
+import com.altnoir.mementoinabyss.content.returnchest.BalloonCargo;
 import com.altnoir.mementoinabyss.infrastructure.config.MiaConfigs;
 import com.altnoir.mementoinabyss.infrastructure.data.MiaDataGen;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaLayer2BiomeGroups;
@@ -51,6 +52,7 @@ public class MementoInAbyss {
         MiaStructureTypes.register(modEventBus);
         MiaStructurePlacementTypes.register(modEventBus);
         MiaBlockEntityTypes.register(modEventBus);
+        BalloonCargo.register(modEventBus);
 
         MiaItemGroups.register();
         MiaSoundEvents.register();

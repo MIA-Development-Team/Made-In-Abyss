@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "mementoinabyss:block/grassy_tuff"
+      },
+      {
+        "model": "mementoinabyss:block/grassy_tuff",
+        "y": 90
+      },
+      {
+        "model": "mementoinabyss:block/grassy_tuff",
+        "y": 180
+      },
+      {
+        "model": "mementoinabyss:block/grassy_tuff",
+        "y": 270
+      }
+    ]
+  }
+}

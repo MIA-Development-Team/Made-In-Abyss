@@ -80,5 +80,18 @@
   "biome.mementoinabyss.the_abyss.mangrove_swamp": "Abyss Mangrove Swamp",
   "biome.mementoinabyss.the_abyss.duskveil_garden": "Abyss Pale Garden",
   "biome.mementoinabyss.the_abyss.warm_ocean": "Warm Ocean",
-  "biome.mementoinabyss.the_abyss.temptation_ocean": "Temptation Ocean"
+  "biome.mementoinabyss.the_abyss.temptation_ocean": "Temptation Ocean",
+  "entity.mementoinabyss.balloon_cargo": "Balloon Cargo",
+  "container.mementoinabyss.return_chest": "Return Chest (%s)",
+  "tooltip.mementoinabyss.balloon.channel": "Channel: %s",
+  "message.mementoinabyss.return_chest.chest_dimension": "Return Chests cannot be used in this dimension.",
+  "message.mementoinabyss.return_chest.launch_dimension": "Balloons can only ship chests in the Abyss and Great Fault.",
+  "message.mementoinabyss.return_chest.disconnected": "Use a balloon to connect this Return Chest.",
+  "message.mementoinabyss.return_chest.connected": "Connected to the %s channel.",
+  "message.mementoinabyss.return_chest.single_chest": "Balloons can only carry single chests.",
+  "message.mementoinabyss.return_chest.blocked": "The balloon needs a clear path upward.",
+  "message.mementoinabyss.return_chest.busy": "The %s channel already has cargo in transit.",
+  "message.mementoinabyss.return_chest.empty": "There is no cargo in this chest.",
+  "message.mementoinabyss.return_chest.full": "The %s channel cannot fit the entire shipment.",
+  "message.mementoinabyss.return_chest.launched": "Cargo launched for the %s channel."
 }

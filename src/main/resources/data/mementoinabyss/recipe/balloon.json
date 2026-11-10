@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:leather",
+    "minecraft:string"
+  ],
+  "result": {
+    "id": "mementoinabyss:balloon"
+  }
+}

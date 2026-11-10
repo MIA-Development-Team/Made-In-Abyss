@@ -1059,7 +1059,7 @@
                       "then_run": {
                         "type": "minecraft:block",
                         "result_state": {
-                          "Name": "mementoinabyss:covergrass_abyss_andesite"
+                          "Name": "mementoinabyss:grassy_abyss_andesite"
                         }
                       }
                     }
@@ -1160,7 +1160,7 @@
                     "then_run": {
                       "type": "minecraft:block",
                       "result_state": {
-                        "Name": "mementoinabyss:covergrass_tuff"
+                        "Name": "mementoinabyss:grassy_tuff"
                       }
                     }
                   }
@@ -1271,7 +1271,7 @@
                       "then_run": {
                         "type": "minecraft:block",
                         "result_state": {
-                          "Name": "mementoinabyss:covergrass_abyss_andesite"
+                          "Name": "mementoinabyss:grassy_abyss_andesite"
                         }
                       }
                     }
@@ -1388,7 +1388,7 @@
                           "then_run": {
                             "type": "minecraft:block",
                             "result_state": {
-                              "Name": "mementoinabyss:covergrass_abyss_andesite"
+                              "Name": "mementoinabyss:grassy_abyss_andesite"
                             }
                           }
                         }

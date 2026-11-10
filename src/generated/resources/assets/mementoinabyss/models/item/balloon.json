@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "mementoinabyss:item/balloon",
+    "layer1": "mementoinabyss:item/balloon_sheen",
+    "layer2": "mementoinabyss:item/balloon_string"
+  }
+}

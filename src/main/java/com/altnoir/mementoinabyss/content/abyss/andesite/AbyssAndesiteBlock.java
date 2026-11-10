@@ -70,7 +70,7 @@ public class AbyssAndesiteBlock extends Block implements TillableBlock, Bonemeal
 
         if (flag) {
             serverLevel.setBlock(
-                    blockPos, MiaBlocks.COVERGRASS_ABYSS_ANDESITE.get().defaultBlockState(), 3);
+                    blockPos, MiaBlocks.GRASSY_ABYSS_ANDESITE.get().defaultBlockState(), 3);
         }
     }
 }
