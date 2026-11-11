@@ -27,16 +27,23 @@ public final class BalloonCargo extends Entity {
     static final int FLIGHT_TICKS = 80;
     private static final DeferredRegister<EntityType<?>> ENTITIES =
             DeferredRegister.create(Registries.ENTITY_TYPE, MementoInAbyss.ID);
-    public static final DeferredHolder<EntityType<?>, EntityType<BalloonCargo>> TYPE =
-            ENTITIES.register(
-                    "balloon_cargo",
-                    id ->
-                            EntityType.Builder.of(BalloonCargo::new, MobCategory.MISC)
-                                    .sized(0.95F, 2.0F)
-                                    .updateInterval(1)
-                                    .noSummon()
-                                    .noLootTable()
-                                    .build(ResourceKey.create(Registries.ENTITY_TYPE, id)));
+    public static final DeferredHolder<EntityType<?>, EntityType<BalloonCargo>> CHEST_BALLOON =
+            registerType("chest_balloon", 0.95F, 2.0F);
+    public static final DeferredHolder<EntityType<?>, EntityType<BalloonCargo>> PARCEL_BALLOON =
+            registerType("parcel_balloon", 2.0F, 4.0F);
+
+    private static DeferredHolder<EntityType<?>, EntityType<BalloonCargo>> registerType(
+            String name, float width, float height) {
+        return ENTITIES.register(
+                name,
+                id ->
+                        EntityType.Builder.of(BalloonCargo::new, MobCategory.MISC)
+                                .sized(width, height)
+                                .updateInterval(1)
+                                .noSummon()
+                                .noLootTable()
+                                .build(ResourceKey.create(Registries.ENTITY_TYPE, id)));
+    }
 
     private static final EntityDataAccessor<Integer> COLOR =
             SynchedEntityData.defineId(BalloonCargo.class, EntityDataSerializers.INT);
@@ -51,6 +58,8 @@ public final class BalloonCargo extends Entity {
     }
 
     public static void register(IEventBus bus) {
+        ENTITIES.addAlias(
+                MementoInAbyss.asResource("balloon_cargo"), CHEST_BALLOON.getId());
         ENTITIES.register(bus);
     }
 

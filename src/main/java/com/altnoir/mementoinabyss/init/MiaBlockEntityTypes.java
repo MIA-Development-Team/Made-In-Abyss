@@ -8,6 +8,7 @@ import com.altnoir.mementoinabyss.content.beacon.client.CaveExplorerBeaconRender
 import com.altnoir.mementoinabyss.content.cup.EndlessCupBlockEntity;
 import com.altnoir.mementoinabyss.content.cup.client.EndlessCupRenderer;
 import com.altnoir.mementoinabyss.content.lamptube.AmethystTubeBlockEntity;
+import com.altnoir.mementoinabyss.content.parcel.ParcelBlockEntity;
 import com.altnoir.mementoinabyss.content.pedestal.PedestalBlockEntity;
 import com.altnoir.mementoinabyss.content.pedestal.client.PedestalRenderer;
 import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlockEntity;
@@ -71,6 +72,11 @@ public class MiaBlockEntityTypes {
                     .blockEntity("cave_explorer_beacon_entity", CaveExplorerBeaconBlockEntity::new)
                     .validBlock(MiaBlocks.CAVE_EXPLORER_BEACON)
                     .renderer(() -> CaveExplorerBeaconRenderer::new)
+                    .register();
+
+    public static final BlockEntityEntry<ParcelBlockEntity> PARCEL =
+            REGISTRATE.blockEntity("parcel", ParcelBlockEntity::new)
+                    .validBlock(MiaBlocks.PARCEL)
                     .register();
 
     public static void register(IEventBus bus) {

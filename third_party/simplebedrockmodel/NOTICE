@@ -1,0 +1,8 @@
+SimpleBedrockModel 2.5.0-neoforge-mc26.1, licensed under LGPL-3.0.
+Upstream source: https://github.com/MIA-Development-Team/SimpleBedrockModel/tree/4f4b95f31a389b17937c361030a6521b0ba43202
+Complete source snapshot: https://codeload.github.com/MIA-Development-Team/SimpleBedrockModel/zip/4f4b95f31a389b17937c361030a6521b0ba43202
+
+The bundled jar uses the upstream Java and resources. The build used ModDevGradle
+2.0.147, NeoForge 26.1.2.122 and Sodium API 0.9.2+mc26.1.2. The Modrinth publishing
+and JMH plugins and their configuration were omitted from the local build.
+The bundled jar can be replaced with an ABI-compatible build of the library.

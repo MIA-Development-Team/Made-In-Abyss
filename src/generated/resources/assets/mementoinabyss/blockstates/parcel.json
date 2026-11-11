@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "mementoinabyss:block/parcel",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "mementoinabyss:block/parcel"
+    },
+    "facing=south": {
+      "model": "mementoinabyss:block/parcel",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "mementoinabyss:block/parcel",
+      "y": 270
+    }
+  }
+}

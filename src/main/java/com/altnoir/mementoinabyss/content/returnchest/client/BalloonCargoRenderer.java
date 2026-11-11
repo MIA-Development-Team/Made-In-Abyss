@@ -35,7 +35,7 @@ public final class BalloonCargoRenderer
 
     @SubscribeEvent
     public static void register(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(BalloonCargo.TYPE.get(), BalloonCargoRenderer::new);
+        event.registerEntityRenderer(BalloonCargo.CHEST_BALLOON.get(), BalloonCargoRenderer::new);
     }
 
     @Override

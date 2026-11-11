@@ -1,5 +1,7 @@
 package com.altnoir.mementoinabyss.content.returnchest;
 
+import com.altnoir.mementoinabyss.content.parcel.ParcelBlockEntity;
+import com.altnoir.mementoinabyss.init.MiaBlocks;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -18,11 +20,8 @@ import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 
@@ -71,7 +70,7 @@ public final class BalloonItem extends Item {
         Player player = context.getPlayer();
         BlockPos pos = context.getClickedPos();
         BlockState state = context.getLevel().getBlockState(pos);
-        if (player == null || !player.isSecondaryUseActive() || !state.is(Blocks.CHEST)) {
+        if (player == null || !player.isSecondaryUseActive() || !state.is(MiaBlocks.PARCEL.get())) {
             return InteractionResult.PASS;
         }
         if (!(context.getLevel() instanceof ServerLevel level)) return InteractionResult.SUCCESS;
@@ -80,11 +79,7 @@ public final class BalloonItem extends Item {
             return InteractionResult.FAIL;
         }
         if (!player.mayBuild() || !level.mayInteract(player, pos)) return InteractionResult.FAIL;
-        if (state.getValue(ChestBlock.TYPE) != ChestType.SINGLE) {
-            message(player, "single_chest");
-            return InteractionResult.FAIL;
-        }
-        for (int dy = 1; dy <= BalloonCargo.FLIGHT_HEIGHT + 2; dy++) {
+        for (int dy = 1; dy <= BalloonCargo.FLIGHT_HEIGHT + 5; dy++) {
             BlockPos above = pos.above(dy);
             if (!level.isInWorldBounds(above) || !level.getBlockState(above).isAir()) {
                 message(player, "blocked");
@@ -93,7 +88,7 @@ public final class BalloonItem extends Item {
         }
         if (NeoForge.EVENT_BUS.post(new BreakBlockEvent(level, pos, state, player)).isCanceled()
                 || level.getBlockState(pos) != state
-                || !(level.getBlockEntity(pos) instanceof ChestBlockEntity chest)) {
+                || !(level.getBlockEntity(pos) instanceof ParcelBlockEntity parcel)) {
             return InteractionResult.FAIL;
         }
 
@@ -105,10 +100,9 @@ public final class BalloonItem extends Item {
             return InteractionResult.FAIL;
         }
 
-        chest.unpackLootTable(player);
         List<ItemStack> items = new ArrayList<>();
-        for (int slot = 0; slot < chest.getContainerSize(); slot++) {
-            ItemStack item = chest.getItem(slot);
+        for (int slot = 0; slot < parcel.getContainerSize(); slot++) {
+            ItemStack item = parcel.getItem(slot);
             if (!item.isEmpty()) items.add(item.copy());
         }
         if (items.isEmpty()) {
@@ -120,18 +114,18 @@ public final class BalloonItem extends Item {
             return InteractionResult.FAIL;
         }
 
-        BalloonCargo visual = BalloonCargo.TYPE.get().create(level, EntitySpawnReason.TRIGGERED);
+        BalloonCargo visual = BalloonCargo.PARCEL_BALLOON.get().create(level, EntitySpawnReason.TRIGGERED);
         if (visual == null) return InteractionResult.FAIL;
-        visual.prepare(pos, state.getValue(ChestBlock.FACING), color);
+        visual.prepare(pos, state.getValue(BlockStateProperties.HORIZONTAL_FACING), color);
 
-        // Transfer the inventory ourselves, bypassing the chest's ordinary removal drops.
+        // Transfer the inventory ourselves, bypassing the parcel's ordinary removal drops.
         if (!level.setBlock(
                 pos,
                 state.getFluidState().createLegacyBlock(),
                 Block.UPDATE_ALL | Block.UPDATE_SKIP_BLOCK_ENTITY_SIDEEFFECTS)) {
             return InteractionResult.FAIL;
         }
-        level.updateNeighbourForOutputSignal(pos, Blocks.CHEST);
+        level.updateNeighbourForOutputSignal(pos, state.getBlock());
 
         long arrival = level.getServer().overworld().getGameTime() + BalloonCargo.FLIGHT_TICKS;
         storage.depart(

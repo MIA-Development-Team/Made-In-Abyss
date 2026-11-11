@@ -56,3 +56,10 @@ config="${mod_id}.mixins.json"
 
 #[features.${mod_id}]
 #openGLVersion="[3.2,)"
+
+[[dependencies.${mod_id}]]
+    modId="simplebedrockmodel"
+    type="required"
+    versionRange="[2.5.0-neoforge-mc26.1]"
+    ordering="AFTER"
+    side="BOTH"

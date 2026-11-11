@@ -38,6 +38,12 @@ sourceSets.main {
 }
 
 repositories {
+	exclusiveContent {
+		forRepository {
+			maven { url = uri('third_party/simplebedrockmodel/maven') }
+		}
+		filter { includeModule('com.github.mcmodderanchor', 'simplebedrockmodel') }
+	}
 	mavenCentral()
 	maven { url = "https://maven.createmod.net" } // Flywheel
 	maven { url = "https://maven.ringlo.im/releases" } // AbyssLib, Recall
@@ -107,6 +113,10 @@ neoForge {
 }
 
 jar {
+	from('third_party/simplebedrockmodel') {
+		include 'LICENSE', 'NOTICE'
+		into 'META-INF/licenses/simplebedrockmodel'
+	}
 	manifest {
 		attributes([
 				'Specification-Title'     : mod_name,
@@ -140,6 +150,12 @@ configurations {
 }
 
 dependencies {
+	def simpleBedrockModel = 'com.github.mcmodderanchor:simplebedrockmodel:2.5.0-neoforge-mc26.1'
+	compileOnly simpleBedrockModel
+	localRuntime simpleBedrockModel
+	jarJar(simpleBedrockModel) {
+		version { strictly '[2.5.0-neoforge-mc26.1]' }
+	}
 	implementation "com.altnoir:abysslib-${minecraft_version}:${abysslib_version}"
 	implementation "im.ringlo.recall:Recall-${minecraft_version}-NeoForge:${recall_version}"
 

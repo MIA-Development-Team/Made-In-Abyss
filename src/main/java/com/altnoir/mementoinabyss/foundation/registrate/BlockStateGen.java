@@ -34,6 +34,17 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockStateGen {
+    public static <B extends Block>
+            NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> parcel() {
+        return (context, generator) -> {
+            var block = context.get();
+            var model = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block));
+            generator.blockStateOutput.accept(
+                    MultiVariantGenerator.dispatch(block, model)
+                            .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        };
+    }
+
     public static <B extends DuskveilIchorBlock>
             NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     duskveilIchor() {

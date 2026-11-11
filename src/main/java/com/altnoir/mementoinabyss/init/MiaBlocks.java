@@ -33,6 +33,7 @@ import com.altnoir.mementoinabyss.content.beacon.CaveExplorerBeaconBlock;
 import com.altnoir.mementoinabyss.content.cup.EndlessCupBlock;
 import com.altnoir.mementoinabyss.content.lamptube.AmethystTubeBlock;
 import com.altnoir.mementoinabyss.content.lamptube.PrasioliteTubeBlock;
+import com.altnoir.mementoinabyss.content.parcel.ParcelBlock;
 import com.altnoir.mementoinabyss.content.pedestal.PedestalBlock;
 import com.altnoir.mementoinabyss.content.portal.AbyssPortalBlock;
 import com.altnoir.mementoinabyss.content.portal.AbyssPortalCoreBlock;
@@ -99,6 +100,16 @@ public class MiaBlocks {
                     .item()
                     .model(() -> ReturnStorageModels.chestItem())
                     .build()
+                    .register();
+
+    public static final BlockEntry<ParcelBlock> PARCEL =
+            REGISTRATE
+                    .object("parcel")
+                    .block(ParcelBlock::new)
+                    .properties(p -> p.strength(0.0F, 3.0F).sound(SoundType.WOOL).noOcclusion())
+                    .blockstate(() -> BlockStateGen.parcel())
+                    .lang("Parcel")
+                    .simpleItem()
                     .register();
 
     public static final BlockEntry<AbyssPortalBlock> ABYSS_PORTAL =
