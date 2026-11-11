@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.DuskveilIchorDecorator;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.DuskveilLeafDistanceDecorator;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.DuskveilVinesDecorator;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.GroundPatchTreeDecorator;
 import net.minecraft.core.registries.Registries;
@@ -13,6 +14,12 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class MiaTreeDecorators {
     private static final DeferredRegister<TreeDecoratorType<?>> TYPES =
             DeferredRegister.create(Registries.TREE_DECORATOR_TYPE, MementoInAbyss.ID);
+    public static final DeferredHolder<
+                    TreeDecoratorType<?>, TreeDecoratorType<DuskveilLeafDistanceDecorator>>
+            DUSKVEIL_LEAF_DISTANCE =
+                    TYPES.register(
+                            "duskveil_leaf_distance",
+                            () -> new TreeDecoratorType<>(DuskveilLeafDistanceDecorator.CODEC));
     public static final DeferredHolder<
                     TreeDecoratorType<?>, TreeDecoratorType<DuskveilIchorDecorator>>
             DUSKVEIL_ICHOR =

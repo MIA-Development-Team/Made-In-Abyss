@@ -96,8 +96,7 @@ public final class MiaStructures {
                 new JigsawStructure(
                         new Structure.StructureSettings.Builder(
                                         biomes.getOrThrow(
-                                                MiaTags.Biomes.HAS_ANCIENT_TRIAL_COMPASS_RUINS
-                                                        .tag))
+                                                MiaTags.Biomes.HAS_ANCIENT_TRIAL_COMPASS_RUINS.tag))
                                 .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
                                 .terrainAdapation(TerrainAdjustment.ENCAPSULATE)
                                 .spawnOverrides(emptySpawnOverrides())

@@ -37,8 +37,7 @@ public final class MiaSurfaceRules {
         SurfaceRules.RuleSource grassyAndesite =
                 SurfaceRules.ifTrue(waterBlockCheck, GRASSY_ABYSS_ANDESITE);
         SurfaceRules.RuleSource coarse_dirt = SurfaceRules.ifTrue(waterBlockCheck, COARSE_DIRT);
-        SurfaceRules.RuleSource grassyTuff =
-                SurfaceRules.ifTrue(waterBlockCheck, GRASSY_TUFF);
+        SurfaceRules.RuleSource grassyTuff = SurfaceRules.ifTrue(waterBlockCheck, GRASSY_TUFF);
         // Layer 2
 
         SurfaceRules.RuleSource sequence =
@@ -112,7 +111,8 @@ public final class MiaSurfaceRules {
                                                 ABYSS_ANDESITE))),
                         SurfaceRules.ifTrue(
                                 SurfaceRules.isBiome(
-                                        MiaBiomes.WARM_OCEAN, MiaBiomes.TEMPTATION_OCEAN),
+                                        MiaBiomes.TEMPTATION_WARM_OCEAN,
+                                        MiaBiomes.TEMPTATION_OCEAN),
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(0, true, 2, CaveSurface.FLOOR),
                                         SurfaceRules.sequence(
@@ -122,7 +122,7 @@ public final class MiaSurfaceRules {
                                                         makeStateRule(Blocks.GRAVEL)),
                                                 makeStateRule(Blocks.SAND)))),
                         SurfaceRules.ifTrue(
-                                SurfaceRules.isBiome(MiaBiomes.MANGROVE_SWAMP),
+                                SurfaceRules.isBiome(MiaBiomes.ABYSS_MANGROVE_SWAMP),
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(0, true, 1, CaveSurface.FLOOR),
                                         SurfaceRules.sequence(
@@ -132,7 +132,8 @@ public final class MiaSurfaceRules {
                                                                 waterBlockCheck,
                                                                 SurfaceRules.ifTrue(
                                                                         SurfaceRules.noiseCondition(
-                                                                                MiaNoiseData.STRIPEY,
+                                                                                MiaNoiseData
+                                                                                        .STRIPEY,
                                                                                 .35,
                                                                                 1),
                                                                         grassyAndesite))),

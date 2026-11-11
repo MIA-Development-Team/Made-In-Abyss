@@ -6,15 +6,14 @@
         "min_delay": 12000,
         "sound": "mementoinabyss:music.the_first_layer"
       }
-    },
-    "minecraft:audio/music_volume": 1.0,
-    "minecraft:visual/sky_color": "#7ba4ff",
-    "minecraft:visual/water_fog_color": "#041f33"
+    }
   },
   "carvers": [],
-  "downfall": 0.5,
+  "downfall": 0.8,
   "effects": {
-    "water_color": "#43d5ee"
+    "foliage_color": "#acf750",
+    "grass_color": "#acf750",
+    "water_color": "#5db7ef"
   },
   "features": [
     [],
@@ -44,9 +43,6 @@
       "mementoinabyss:layer2/vanilla/trees_water",
       "mementoinabyss:layer2/vanilla/flower_default",
       "mementoinabyss:layer2/vanilla/patch_grass_badlands",
-      "mementoinabyss:layer2/vanilla/brown_mushroom_normal",
-      "mementoinabyss:layer2/vanilla/red_mushroom_normal",
-      "mementoinabyss:layer2/vanilla/patch_pumpkin",
       "mementoinabyss:layer2/vanilla/patch_sugar_cane",
       "mementoinabyss:layer2/vanilla/patch_firefly_bush_near_water",
       "mementoinabyss:layer2/vanilla/warm_ocean_vegetation",
@@ -135,12 +131,6 @@
     ],
     "water_ambient": [
       {
-        "type": "minecraft:pufferfish",
-        "maxCount": 3,
-        "minCount": 1,
-        "weight": 15
-      },
-      {
         "type": "minecraft:tropical_fish",
         "maxCount": 8,
         "minCount": 8,
@@ -148,12 +138,6 @@
       }
     ],
     "water_creature": [
-      {
-        "type": "minecraft:nautilus",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 5
-      },
       {
         "type": "minecraft:squid",
         "maxCount": 4,
@@ -165,8 +149,14 @@
         "maxCount": 2,
         "minCount": 1,
         "weight": 2
+      },
+      {
+        "type": "minecraft:nautilus",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
       }
     ]
   },
-  "temperature": 0.5
+  "temperature": 2.0
 }

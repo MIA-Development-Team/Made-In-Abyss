@@ -7,6 +7,7 @@ import com.altnoir.mementoinabyss.init.MiaTags;
 import com.mojang.serialization.Codec;
 import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.QuartPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -31,6 +32,7 @@ public final class SlabRuinsFeature extends Feature<SlabRuinsConfiguration> {
         if (origin == null) return false;
 
         Predicate<BlockState> canReplace = Feature.isReplaceable(BlockTags.FEATURES_CANNOT_REPLACE);
+        if (!hasSupportedFoundation(level, origin, canReplace)) return false;
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         SlabRuinsConfiguration config = context.config();
         for (int x = 0; x < 2; x++) {
@@ -58,7 +60,11 @@ public final class SlabRuinsFeature extends Feature<SlabRuinsConfiguration> {
             int offsetZ = random.nextInt(4) - 1;
             if (offsetX >= 0 && offsetX <= 1 && offsetZ >= 0 && offsetZ <= 1) continue;
             cursor.set(origin.getX() + offsetX, origin.getY(), origin.getZ() + offsetZ);
-            if (level.isEmptyBlock(cursor) && !level.isEmptyBlock(cursor.below())) {
+            BlockPos below = cursor.below();
+            if (level.isInsideBuildHeight(cursor)
+                    && level.ensureCanWrite(cursor)
+                    && level.isEmptyBlock(cursor)
+                    && level.getBlockState(below).isFaceSturdy(level, below, Direction.UP)) {
                 safeSetBlock(
                         level,
                         cursor,
@@ -97,6 +103,31 @@ public final class SlabRuinsFeature extends Feature<SlabRuinsConfiguration> {
             }
         }
         brushable.setLootTable(loot, suspiciousPos.asLong());
+        return true;
+    }
+
+    private static boolean hasSupportedFoundation(
+            WorldGenLevel level, BlockPos origin, Predicate<BlockState> canReplace) {
+        for (int x = 0; x < 2; x++) {
+            for (int z = 0; z < 2; z++) {
+                BlockPos top = origin.offset(x, 0, z);
+                BlockPos foundation = top.below();
+                BlockPos support = foundation.below();
+                if (!level.isInsideBuildHeight(support)
+                        || !level.ensureCanWrite(top)
+                        || !level.ensureCanWrite(foundation)
+                        || !level.isEmptyBlock(top)) return false;
+                BlockState state = level.getBlockState(foundation);
+                if (!canReplace.test(state)
+                        || state.hasBlockEntity()
+                        || !state.getFluidState().isEmpty()
+                        || !state.isFaceSturdy(level, foundation, Direction.UP)
+                        || !level.getBlockState(support)
+                                .isFaceSturdy(level, support, Direction.UP)) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 

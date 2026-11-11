@@ -35,12 +35,17 @@ final class LayeredPlacementScan {
                         !emptyFloor(adjacent)
                                 && emptyFloor(current)
                                 && !adjacent.is(net.minecraft.world.level.block.Blocks.BEDROCK);
-                case WATER -> current.isAir() && adjacent.is(net.minecraft.world.level.block.Blocks.WATER);
+                case WATER ->
+                        current.isAir()
+                                && adjacent.is(net.minecraft.world.level.block.Blocks.WATER);
                 case LAYER2 ->
                         current.getFluidState().isEmpty()
                                 && (current.isAir() || current.canBeReplaced())
                                 && (adjacent.is(net.minecraft.world.level.block.Blocks.WATER)
-                                        || (!emptyFloor(adjacent) && !adjacent.is(net.minecraft.world.level.block.Blocks.BEDROCK)));
+                                        || (!emptyFloor(adjacent)
+                                                && !adjacent.is(
+                                                        net.minecraft.world.level.block.Blocks
+                                                                .BEDROCK)));
                 case LAYER2_FLOOR ->
                         waterOrReplaceable(current)
                                 && !emptyFloor(adjacent)

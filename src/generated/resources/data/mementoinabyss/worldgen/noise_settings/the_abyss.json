@@ -1291,7 +1291,7 @@
             "if_true": {
               "type": "minecraft:biome",
               "biome_is": [
-                "mementoinabyss:the_abyss/warm_ocean",
+                "mementoinabyss:the_abyss/temptation_warm_ocean",
                 "mementoinabyss:the_abyss/temptation_ocean"
               ]
             },
@@ -1337,7 +1337,7 @@
             "if_true": {
               "type": "minecraft:biome",
               "biome_is": [
-                "mementoinabyss:the_abyss/mangrove_swamp"
+                "mementoinabyss:the_abyss/abyss_mangrove_swamp"
               ]
             },
             "then_run": {

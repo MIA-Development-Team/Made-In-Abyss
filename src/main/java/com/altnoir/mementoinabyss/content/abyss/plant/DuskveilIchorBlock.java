@@ -1,5 +1,6 @@
 package com.altnoir.mementoinabyss.content.abyss.plant;
 
+import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaItems;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -26,7 +28,6 @@ import net.minecraft.world.phys.BlockHitResult;
 public final class DuskveilIchorBlock extends RotatedPillarBlock {
     public static final MapCodec<DuskveilIchorBlock> CODEC = simpleCodec(DuskveilIchorBlock::new);
     public static final BooleanProperty READY = BlockStateProperties.LIT;
-    private static final int REGROWTH_TICKS = 1200;
 
     public DuskveilIchorBlock(Properties properties) {
         super(properties);
@@ -61,15 +62,26 @@ public final class DuskveilIchorBlock extends RotatedPillarBlock {
                     ItemUtils.createFilledResult(
                             stack, player, new ItemStack(MiaItems.DUSKVEIL_ICHOR_BOTTLE.get())));
             server.setBlock(pos, state.setValue(READY, false), Block.UPDATE_ALL);
-            server.scheduleTick(pos, this, REGROWTH_TICKS);
             server.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (!state.getValue(READY))
+    protected boolean isRandomlyTicking(BlockState state) {
+        return !state.getValue(READY);
+    }
+
+    @Override
+    protected void randomTick(
+            BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!state.getValue(READY) && hasSupportingLogs(level, pos)) {
             level.setBlock(pos, state.setValue(READY, true), Block.UPDATE_ALL);
+        }
+    }
+
+    public static boolean hasSupportingLogs(BlockGetter level, BlockPos pos) {
+        Block log = MiaBlocks.DUSKVEIL_LOG.get();
+        return level.getBlockState(pos.above()).is(log) && level.getBlockState(pos.below()).is(log);
     }
 }

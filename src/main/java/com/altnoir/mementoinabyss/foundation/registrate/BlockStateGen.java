@@ -228,19 +228,14 @@ public class BlockStateGen {
             NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     whistleWorkbench() {
         return (ctx, prov) -> {
-            var bottom = prov.modBlockTexture("chiseled_abyss_andesite");
-            var side = prov.modBlockTexture("artifact_smithing_table_2");
-            var top = prov.modBlockTexture("artifact_smithing_table_top");
-            var textures =
-                    new TextureMapping()
-                            .put(TextureSlot.PARTICLE, bottom)
-                            .put(TextureSlot.DOWN, bottom)
-                            .put(TextureSlot.UP, top)
-                            .put(TextureSlot.NORTH, side)
-                            .put(TextureSlot.SOUTH, side)
-                            .put(TextureSlot.EAST, side)
-                            .put(TextureSlot.WEST, side);
-            var model = ModelTemplates.CUBE.create(ctx.get(), textures, prov.modelOutput);
+            var texture = prov.modBlockTexture("model/" + ctx.getName());
+            var particle = prov.modBlockTexture("chiseled_abyss_andesite");
+            var model =
+                    prov.getBuilder()
+                            .parent(prov.modLoc("block/template/whistle_workbench"))
+                            .texture(TextureSlot.ALL, texture)
+                            .texture(TextureSlot.PARTICLE, particle)
+                            .build(ctx.get());
             prov.create(ctx.get(), model);
         };
     }

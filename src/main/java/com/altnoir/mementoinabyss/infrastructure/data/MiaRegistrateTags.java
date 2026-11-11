@@ -23,7 +23,8 @@ public final class MiaRegistrateTags {
                                             MiaBlocks.MOSSY_FOSSILIZED_WOOD.get(),
                                     MiaBlocks.FOSSILIZED_LOG.get(),
                                             MiaBlocks.MOSSY_FOSSILIZED_LOG.get());
-                    provider.tag(MiaTags.Blocks.ABYSS_MUD_ORE_REPLACEABLE.tag).add(net.minecraft.world.level.block.Blocks.MUD);
+                    provider.tag(MiaTags.Blocks.ABYSS_MUD_ORE_REPLACEABLE.tag)
+                            .add(net.minecraft.world.level.block.Blocks.MUD);
                     provider.tag(MiaTags.Blocks.MYCELIUM_REPLACEABLE.tag)
                             .addTag(BlockTags.DIRT)
                             .addTag(BlockTags.GRASS_BLOCKS);
@@ -70,8 +71,7 @@ public final class MiaRegistrateTags {
                             .add(MiaBlocks.ABYSS_COBBLED_ANDESITE.get().asItem());
                     provider.tag(ItemTags.STONE_CRAFTING_MATERIALS)
                             .add(MiaBlocks.ABYSS_COBBLED_ANDESITE.get().asItem());
-                    provider.copy(
-                            MiaTags.Blocks.PRIMO_STEMS.tag, MiaTags.Items.PRIMO_STEMS.tag);
+                    provider.copy(MiaTags.Blocks.PRIMO_STEMS.tag, MiaTags.Items.PRIMO_STEMS.tag);
                 });
     }
 }

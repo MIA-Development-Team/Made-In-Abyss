@@ -85,6 +85,7 @@ public class MiaTags {
         AMBIENT_LIGHT_DARK(NameSpaces.MOD, "ambient_light/dark"),
         ABYSS_FOG_CLEAR(NameSpaces.MOD, "abyss_fog/clear"),
         ABYSS_FOG_DENSE(NameSpaces.MOD, "abyss_fog/dense"),
+        SPAWNS_ABYSS_NAUTILUS,
         HAS_ISLAND,
         THE_ABYSS_CLEAR,
         HAS_STAR_COMPASS_TEMPLE,

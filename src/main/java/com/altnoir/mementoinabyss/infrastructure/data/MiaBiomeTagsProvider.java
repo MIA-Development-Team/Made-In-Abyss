@@ -3,13 +3,12 @@ package com.altnoir.mementoinabyss.infrastructure.data;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaBiomes;
 import com.altnoir.mementoinabyss.init.MiaTags;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
 import net.neoforged.neoforge.common.Tags;
-
-import java.util.concurrent.CompletableFuture;
 
 public final class MiaBiomeTagsProvider extends BiomeTagsProvider {
     public MiaBiomeTagsProvider(
@@ -19,15 +18,20 @@ public final class MiaBiomeTagsProvider extends BiomeTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider registries) {
-        tag(BiomeTags.IS_OCEAN).add(MiaBiomes.WARM_OCEAN).add(MiaBiomes.TEMPTATION_OCEAN);
+        tag(BiomeTags.IS_OCEAN)
+                .add(MiaBiomes.TEMPTATION_WARM_OCEAN)
+                .add(MiaBiomes.TEMPTATION_OCEAN);
         tag(BiomeTags.WATER_ON_MAP_OUTLINES)
-                .add(MiaBiomes.WARM_OCEAN)
+                .add(MiaBiomes.TEMPTATION_WARM_OCEAN)
                 .add(MiaBiomes.TEMPTATION_OCEAN);
         tag(MiaTags.Biomes.AMBIENT_LIGHT_DARK.tag).add(MiaBiomes.DUSKVEIL_GARDEN);
         tag(MiaTags.Biomes.ABYSS_FOG_CLEAR.tag)
                 .add(MiaBiomes.GIANT_FOSSILIZED_FOREST)
                 .add(MiaBiomes.SPARSE_GIANT_FOSSILIZED_FOREST);
         tag(MiaTags.Biomes.ABYSS_FOG_DENSE.tag).add(MiaBiomes.DUSKVEIL_GARDEN);
+        tag(MiaTags.Biomes.SPAWNS_ABYSS_NAUTILUS.tag)
+                .add(MiaBiomes.TEMPTATION_OCEAN)
+                .add(MiaBiomes.TEMPTATION_WARM_OCEAN);
         tag(MiaTags.Biomes.HAS_ABYSS_WINDMILL.tag)
                 .add(MiaBiomes.THE_ABYSS)
                 .add(MiaBiomes.INVERTED_FOREST);
@@ -84,7 +88,7 @@ public final class MiaBiomeTagsProvider extends BiomeTagsProvider {
                 .add(net.minecraft.world.level.biome.Biomes.BAMBOO_JUNGLE)
                 .add(net.minecraft.world.level.biome.Biomes.MANGROVE_SWAMP);
         tag(BiomeTags.IS_RIVER).add(MiaBiomes.ABYSS_RIVER);
-        tag(BiomeTags.SPAWNS_WARM_VARIANT_FROGS).add(MiaBiomes.MANGROVE_SWAMP);
-        tag(BiomeTags.WATER_ON_MAP_OUTLINES).add(MiaBiomes.MANGROVE_SWAMP);
+        tag(BiomeTags.SPAWNS_WARM_VARIANT_FROGS).add(MiaBiomes.ABYSS_MANGROVE_SWAMP);
+        tag(BiomeTags.WATER_ON_MAP_OUTLINES).add(MiaBiomes.ABYSS_MANGROVE_SWAMP);
     }
 }

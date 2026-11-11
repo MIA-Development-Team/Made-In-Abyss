@@ -10,6 +10,7 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.TreeOnEveryL
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.WaterOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeFeatures;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
+import com.mojang.serialization.JsonOps;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -42,6 +43,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.RandomOffsetPlacement;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
+import net.minecraft.world.level.levelgen.placement.SurfaceWaterDepthFilter;
 
 public final class MiaAbyssPlacements {
     public static final ResourceKey<PlacedFeature> MARGINAL_WEED_BONEMEAL =
@@ -89,6 +91,13 @@ public final class MiaAbyssPlacements {
     public static final ResourceKey<PlacedFeature> ORE_EMERALD = key("ore_emerald");
     public static final ResourceKey<PlacedFeature> ORE_QUARTZ = key("ore_quartz");
     public static final ResourceKey<PlacedFeature> ORE_CHLOROPHYTE = key("ore_chlorophyte");
+    public static final ResourceKey<PlacedFeature> FALLEN_SKYFOG_LOG = key("fallen_skyfog_log");
+    public static final ResourceKey<PlacedFeature> ABYSS_FALLEN_SKYFOG_LOG =
+            key("abyss_fallen_skyfog_log");
+    public static final ResourceKey<PlacedFeature> FALLEN_DUSKVEIL_LOG = key("fallen_duskveil_log");
+    public static final ResourceKey<PlacedFeature> FALLEN_FOSSILIZED_LOG =
+            key("fallen_fossilized_log");
+    public static final ResourceKey<PlacedFeature> FALLEN_VERDANT_STEM = key("fallen_verdant_stem");
     public static final ResourceKey<PlacedFeature> TREES_SKYFOG = key("trees_skyfog");
     public static final ResourceKey<PlacedFeature> ABYSS_TREES_SKYFOG = key("abyss_trees_skyfog");
     public static final ResourceKey<PlacedFeature> GIANT_FOREST_TREES_SKYFOG =
@@ -381,6 +390,49 @@ public final class MiaAbyssPlacements {
                         BlockPredicate.matchesTag(
                                 new BlockPos(0, -1, 0), BlockTags.SUPPORTS_VEGETATION));
         context.register(
+                FALLEN_SKYFOG_LOG,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.FALLEN_SKYFOG_LOG),
+                        List.of(
+                                RarityFilter.onAverageOnceEvery(2),
+                                TreeOnEveryLayerPlacement.of(1),
+                                skyfogSoil,
+                                BiomeFilter.biome())));
+        context.register(
+                ABYSS_FALLEN_SKYFOG_LOG,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.FALLEN_SKYFOG_LOG),
+                        List.of(
+                                TreeOnEveryLayerPlacement.below(1, 300),
+                                skyfogSoil,
+                                BiomeFilter.biome())));
+        context.register(
+                FALLEN_DUSKVEIL_LOG,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.FALLEN_DUSKVEIL_LOG),
+                        List.of(
+                                RarityFilter.onAverageOnceEvery(2),
+                                TreeOnEveryLayerPlacement.of(1),
+                                skyfogSoil,
+                                BiomeFilter.biome())));
+        context.register(
+                FALLEN_FOSSILIZED_LOG,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.FALLEN_FOSSILIZED_LOG),
+                        List.of(
+                                RarityFilter.onAverageOnceEvery(2),
+                                TreeOnEveryLayerPlacement.of(1),
+                                skyfogSoil,
+                                BiomeFilter.biome())));
+        context.register(
+                FALLEN_VERDANT_STEM,
+                new PlacedFeature(
+                        configured.getOrThrow(MiaAbyssFeatures.FALLEN_VERDANT_STEM),
+                        List.of(
+                                TreeOnEveryLayerPlacement.of(1),
+                                skyfogSoil,
+                                BiomeFilter.biome())));
+        context.register(
                 TREES_SKYFOG,
                 new PlacedFeature(
                         configured.getOrThrow(MiaTreeFeatures.SKYFOG_TREE),
@@ -586,6 +638,63 @@ public final class MiaAbyssPlacements {
                                         VerticalAnchor.aboveBottom(128),
                                         VerticalAnchor.belowTop(8)),
                                 BiomeFilter.biome())));
+    }
+
+    public static void bootstrapLayer2Vegetation(
+            BootstrapContext<PlacedFeature> context,
+            HolderGetter<PlacedFeature> originals,
+            List<ResourceKey<PlacedFeature>> vegetation) {
+        var configured = context.lookup(Registries.CONFIGURED_FEATURE);
+        for (var original : vegetation) {
+            var source = originals.getOrThrow(original).value();
+            int maxWaterDepth = -1;
+            for (var modifier : source.placement()) {
+                if (modifier instanceof SurfaceWaterDepthFilter depth) {
+                    maxWaterDepth =
+                            SurfaceWaterDepthFilter.CODEC
+                                    .codec()
+                                    .encodeStart(JsonOps.INSTANCE, depth)
+                                    .getOrThrow()
+                                    .getAsJsonObject()
+                                    .get("max_water_depth")
+                                    .getAsInt();
+                }
+            }
+
+            var placement = new ArrayList<PlacementModifier>();
+            for (var modifier : source.placement()) {
+                if (modifier instanceof SurfaceWaterDepthFilter) continue;
+                if (modifier instanceof HeightmapPlacement heightmap) {
+                    var json =
+                            HeightmapPlacement.CODEC
+                                    .codec()
+                                    .encodeStart(JsonOps.INSTANCE, heightmap)
+                                    .getOrThrow();
+                    var type =
+                            Heightmap.Types.CODEC
+                                    .parse(
+                                            JsonOps.INSTANCE,
+                                            json.getAsJsonObject().get("heightmap"))
+                                    .getOrThrow();
+                    placement.add(Layer2SurfacePlacement.of(type, maxWaterDepth));
+                } else {
+                    placement.add(modifier);
+                }
+            }
+            var feature =
+                    MiaAbyssFeatures.layer2VegetationKey(
+                            source.feature().unwrapKey().orElseThrow());
+            context.register(
+                    layer2VegetationKey(original),
+                    new PlacedFeature(configured.getOrThrow(feature), List.copyOf(placement)));
+        }
+    }
+
+    public static ResourceKey<PlacedFeature> layer2VegetationKey(
+            ResourceKey<PlacedFeature> original) {
+        return ResourceKey.create(
+                Registries.PLACED_FEATURE,
+                MementoInAbyss.asResource("layer2/vanilla/" + original.identifier().getPath()));
     }
 
     private static ResourceKey<PlacedFeature> key(String name) {

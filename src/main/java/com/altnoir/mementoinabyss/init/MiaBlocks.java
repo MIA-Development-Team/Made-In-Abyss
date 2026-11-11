@@ -14,6 +14,7 @@ import com.altnoir.mementoinabyss.content.abyss.ore.ChlorophyteOreBlock;
 import com.altnoir.mementoinabyss.content.abyss.pillar.StrippedRotatedPillarBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.DreamLicheeBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.DuskveilIchorBlock;
+import com.altnoir.mementoinabyss.content.abyss.plant.DuskveilLeavesBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.DuskveilVinesBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.DuskveilVinesPlantBlock;
 import com.altnoir.mementoinabyss.content.abyss.plant.FruitingSkyfogLeavesBlock;
@@ -223,7 +224,8 @@ public class MiaBlocks {
                                     p.mapColor(MapColor.STONE)
                                             .requiresCorrectToolForDrops()
                                             .strength(3.0F, 6.0F)
-                                            .sound(SoundType.WOOD))
+                                            .sound(SoundType.WOOD)
+                                            .noOcclusion())
                     .transform(TagGen.pickaxeOnly())
                     .blockstate(() -> BlockStateGen.whistleWorkbench())
                     .simpleItem()
@@ -816,6 +818,7 @@ public class MiaBlocks {
                     .object("duskveil_ichor")
                     .block(DuskveilIchorBlock::new)
                     .initialProperties(() -> net.minecraft.world.level.block.Blocks.PALE_OAK_LOG)
+                    .properties(BlockBehaviour.Properties::randomTicks)
                     .transform(TagGen.axeOnly())
                     .blockstate(() -> BlockStateGen.duskveilIchor())
                     .simpleItem()
@@ -1137,10 +1140,10 @@ public class MiaBlocks {
                     .build()
                     .register();
 
-    public static final BlockEntry<GreenParticleLeavesBlock> DUSKVEIL_LEAVES =
+    public static final BlockEntry<DuskveilLeavesBlock> DUSKVEIL_LEAVES =
             REGISTRATE
                     .object("duskveil_leaves")
-                    .block(p -> new GreenParticleLeavesBlock(0.0F, p))
+                    .block(DuskveilLeavesBlock::new)
                     .initialProperties(() -> net.minecraft.world.level.block.Blocks.PALE_OAK_LEAVES)
                     .tag(BlockTags.LEAVES)
                     .loot(LootGen.leaves(() -> MiaBlocks.DUSKVEIL_SAPLING.get()))
@@ -1173,7 +1176,8 @@ public class MiaBlocks {
                                             .lightLevel(CaveVines.emission(14))
                                             .sound(SoundType.CAVE_VINES))
                     .blockstate(() -> BlockStateGen.duskveilVines())
-                    // A bound method reference would initialize MiaItems and switch the active section.
+                    // A bound method reference would initialize MiaItems and switch the active
+                    // section.
                     .loot(LootGen.vineBerries(() -> MiaItems.DUSKVEIL_BERRIES.get()))
                     .register();
     public static final BlockEntry<DuskveilVinesPlantBlock> DUSKVEIL_VINES_PLANT =
@@ -1423,7 +1427,11 @@ public class MiaBlocks {
                     BlockTags.EMERALD_ORES,
                     BlockTags.NEEDS_IRON_TOOL);
     public static final BlockEntry<DropExperienceBlock> ABYSS_QUARTZ_ORE =
-            ore("abyss_quartz_ore", UniformInt.of(2, 5), net.minecraft.world.item.Items.QUARTZ, Tags.Blocks.ORES_QUARTZ);
+            ore(
+                    "abyss_quartz_ore",
+                    UniformInt.of(2, 5),
+                    net.minecraft.world.item.Items.QUARTZ,
+                    Tags.Blocks.ORES_QUARTZ);
 
     public static final BlockEntry<DropExperienceBlock> ABYSS_COPPER_ORE =
             REGISTRATE
@@ -1466,7 +1474,12 @@ public class MiaBlocks {
     public static final BlockEntry<ChlorophyteOreBlock> ABYSS_CHLOROPHYTE_ORE =
             REGISTRATE
                     .object("abyss_chlorophyte_ore")
-                    .block(p -> new ChlorophyteOreBlock(UniformInt.of(2, 5), net.minecraft.world.level.block.Blocks.MUD, p))
+                    .block(
+                            p ->
+                                    new ChlorophyteOreBlock(
+                                            UniformInt.of(2, 5),
+                                            net.minecraft.world.level.block.Blocks.MUD,
+                                            p))
                     .properties(
                             p ->
                                     p.mapColor(MapColor.TERRACOTTA_GREEN)

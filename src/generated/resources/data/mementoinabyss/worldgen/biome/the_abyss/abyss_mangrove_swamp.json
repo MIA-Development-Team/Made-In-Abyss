@@ -7,23 +7,18 @@
         "sound": "mementoinabyss:music.the_first_layer"
       }
     },
-    "minecraft:audio/music_volume": 1.0,
     "minecraft:gameplay/increased_fire_burnout": true,
-    "minecraft:visual/fog_color": "#c0d8ff",
-    "minecraft:visual/sky_color": "#78a7ff",
-    "minecraft:visual/water_fog_color": "#4d7a60",
     "minecraft:visual/water_fog_end_distance": {
       "argument": 0.85,
       "modifier": "multiply"
     }
   },
   "carvers": [],
-  "downfall": 0.9,
+  "downfall": 0.8,
   "effects": {
-    "dry_foliage_color": "#7b5334",
-    "foliage_color": "#8db127",
-    "grass_color_modifier": "swamp",
-    "water_color": "#3a7a6a"
+    "foliage_color": "#acf750",
+    "grass_color": "#acf750",
+    "water_color": "#5db7ef"
   },
   "features": [
     [],
@@ -159,5 +154,5 @@
     ],
     "water_creature": []
   },
-  "temperature": 0.8
+  "temperature": 2.0
 }

@@ -5,22 +5,25 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.GreatFaultPlac
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.MiaAbyssPlacements;
 import com.altnoir.mementoinabyss.init.MiaSoundEvents;
 import java.util.List;
-import net.minecraft.core.HolderLookup;
+import java.util.stream.Stream;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Carvers;
+import net.minecraft.data.worldgen.placement.AquaticPlacements;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.attribute.BackgroundMusic;
 import net.minecraft.world.attribute.EnvironmentAttributes;
+import net.minecraft.world.attribute.modifier.FloatModifier;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import org.jspecify.annotations.Nullable;
 
 public final class MiaBiomes {
     public static final ResourceKey<Biome> OVERWORLD_ABYSS =
@@ -47,26 +50,61 @@ public final class MiaBiomes {
             key("under_water_fossilized_forest");
     public static final ResourceKey<Biome> TEMPTATION_FOREST = key("temptation_forest");
     public static final ResourceKey<Biome> TEMPTATION_PLAINS = key("temptation_plains");
+    public static final ResourceKey<Biome> TEMPTATION_OCEAN = key("temptation_ocean");
+    public static final ResourceKey<Biome> TEMPTATION_WARM_OCEAN = key("temptation_warm_ocean");
     public static final ResourceKey<Biome> DUSKVEIL_GARDEN = key("duskveil_garden");
+    public static final ResourceKey<Biome> ABYSS_MANGROVE_SWAMP = key("abyss_mangrove_swamp");
     public static final ResourceKey<Biome> PRIMO_FOREST = key("primo_forest");
     public static final ResourceKey<Biome> PRIMO_PLAINS = key("primo_plains");
 
-    public static final ResourceKey<Biome> MANGROVE_SWAMP = key("mangrove_swamp");
-    public static final ResourceKey<Biome> WARM_OCEAN = key("warm_ocean");
-    public static final ResourceKey<Biome> TEMPTATION_OCEAN = key("temptation_ocean");
-
     public static final ResourceKey<Biome> INVERTED_FOREST = key("inverted_forest");
 
-    static final int ABYSS_WATER_COLOR = 6141935;
-    static final List<ResourceKey<PlacedFeature>> DUSKVEIL_GROUND_VEGETATION =
+    private static final BiomeSpecialEffects ABYSS_EFFECTS =
+            new BiomeSpecialEffects.Builder()
+                    .waterColor(6141935)
+                    .foliageColorOverride(11335504)
+                    .grassColorOverride(11335504)
+                    .build();
+    private static final List<ResourceKey<PlacedFeature>> DUSKVEIL_GROUND_VEGETATION =
             List.of(
                     VegetationPlacements.PALE_MOSS_PATCH,
-                    VegetationPlacements.PALE_GARDEN_FLOWERS,
-                    VegetationPlacements.FLOWER_PALE_GARDEN,
                     VegetationPlacements.PATCH_GRASS_FOREST,
                     VegetationPlacements.PATCH_PUMPKIN,
+                    VegetationPlacements.PATCH_FIREFLY_BUSH_NEAR_WATER);
+    private static final List<ResourceKey<PlacedFeature>> MANGROVE_SWAMP_VEGETATION =
+            List.of(
+                    VegetationPlacements.TREES_MANGROVE,
+                    VegetationPlacements.PATCH_GRASS_NORMAL,
+                    VegetationPlacements.PATCH_DEAD_BUSH,
+                    VegetationPlacements.PATCH_WATERLILY,
+                    AquaticPlacements.SEAGRASS_SWAMP,
+                    VegetationPlacements.PATCH_FIREFLY_BUSH_NEAR_WATER);
+    private static final List<ResourceKey<PlacedFeature>> OCEAN_SHORE_VEGETATION =
+            List.of(
+                    VegetationPlacements.TREES_WATER,
+                    VegetationPlacements.FLOWER_DEFAULT,
+                    VegetationPlacements.PATCH_GRASS_BADLANDS,
                     VegetationPlacements.PATCH_SUGAR_CANE,
                     VegetationPlacements.PATCH_FIREFLY_BUSH_NEAR_WATER);
+    private static final List<ResourceKey<PlacedFeature>> WARM_OCEAN_VEGETATION =
+            List.of(
+                    AquaticPlacements.WARM_OCEAN_VEGETATION,
+                    AquaticPlacements.SEAGRASS_WARM,
+                    AquaticPlacements.SEA_PICKLE,
+                    AquaticPlacements.KELP_WARM);
+    private static final List<ResourceKey<PlacedFeature>> TEMPTATION_OCEAN_VEGETATION =
+            List.of(AquaticPlacements.SEAGRASS_NORMAL, AquaticPlacements.KELP_COLD);
+
+    public static final List<ResourceKey<PlacedFeature>> LAYER2_VANILLA_VEGETATION =
+            Stream.of(
+                            DUSKVEIL_GROUND_VEGETATION,
+                            MANGROVE_SWAMP_VEGETATION,
+                            OCEAN_SHORE_VEGETATION,
+                            WARM_OCEAN_VEGETATION,
+                            TEMPTATION_OCEAN_VEGETATION)
+                    .flatMap(List::stream)
+                    .distinct()
+                    .toList();
 
     public static final ResourceKey<Biome> THE_GREAT_FAULT = greatFaultKey("the_great_fault");
     public static final ResourceKey<Biome> GREAT_FAULT = greatFaultKey("great_fault");
@@ -93,30 +131,22 @@ public final class MiaBiomes {
                     PRIMO_PLAINS,
                     INVERTED_FOREST,
                     ABYSS_RIVER,
-                    MANGROVE_SWAMP,
+                    ABYSS_MANGROVE_SWAMP,
                     DUSKVEIL_GARDEN,
-                    WARM_OCEAN,
+                    TEMPTATION_WARM_OCEAN,
                     TEMPTATION_OCEAN);
 
-    public static void bootstrap(BootstrapContext<Biome> context, HolderLookup.Provider originals) {
+    public static void bootstrap(BootstrapContext<Biome> context) {
         for (ResourceKey<Biome> biome : FIRST_LAYERS) {
-            ResourceKey<Biome> vanilla = MiaLayer2VanillaBiomes.template(biome);
-            Biome template =
-                    vanilla == null
-                            ? null
-                            : originals.lookupOrThrow(Registries.BIOME).getOrThrow(vanilla).value();
-            context.register(biome, create(context, biome, false, template));
+            context.register(biome, create(context, biome, false));
         }
-        context.register(OVERWORLD_ABYSS, create(context, THE_ABYSS, true, null));
+        context.register(OVERWORLD_ABYSS, create(context, THE_ABYSS, true));
         context.register(THE_GREAT_FAULT, createGreatFault(context, true));
         context.register(GREAT_FAULT, createGreatFault(context, false));
     }
 
     private static Biome create(
-            BootstrapContext<Biome> context,
-            ResourceKey<Biome> biome,
-            boolean overworld,
-            @Nullable Biome template) {
+            BootstrapContext<Biome> context, ResourceKey<Biome> biome, boolean overworld) {
         BiomeGenerationSettings.Builder generationBuilder =
                 new BiomeGenerationSettings.Builder(
                         context.lookup(Registries.PLACED_FEATURE),
@@ -148,19 +178,22 @@ public final class MiaBiomes {
                 .addFeature(
                         GenerationStep.Decoration.UNDERGROUND_ORES,
                         MiaAbyssPlacements.ORE_CHLOROPHYTE);
-        if (template != null)
-            return MiaLayer2VanillaBiomes.create(biome, generationBuilder, template);
         if (biome.equals(DUSKVEIL_GARDEN)) return createDuskveilGarden(generationBuilder);
-        generationBuilder
-                .addFeature(
-                        GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.LONG_VINES)
-                .addFeature(
-                        GenerationStep.Decoration.VEGETAL_DECORATION,
-                        MiaAbyssPlacements.GLOW_LICHEN)
-                .addFeature(
-                        GenerationStep.Decoration.VEGETAL_DECORATION,
-                        MiaAbyssPlacements.PATCH_WATERLILY);
-        switch (AbyssBiome.from(biome)) {
+        AbyssBiome kind = AbyssBiome.from(biome);
+        if (kind.defaultVegetation) {
+            generationBuilder
+                    .addFeature(
+                            GenerationStep.Decoration.VEGETAL_DECORATION,
+                            MiaAbyssPlacements.LONG_VINES)
+                    .addFeature(
+                            GenerationStep.Decoration.VEGETAL_DECORATION,
+                            MiaAbyssPlacements.GLOW_LICHEN)
+                    .addFeature(
+                            GenerationStep.Decoration.VEGETAL_DECORATION,
+                            MiaAbyssPlacements.PATCH_WATERLILY);
+        }
+        var mobs = new MobSpawnSettings.Builder();
+        switch (kind) {
             case THE_ABYSS -> {
                 addSlabRuins(generationBuilder);
                 addGeode(generationBuilder);
@@ -173,7 +206,10 @@ public final class MiaBiomes {
                         .addFeature(
                                 GenerationStep.Decoration.VEGETAL_DECORATION,
                                 MiaAbyssPlacements.PATCH_SUNFLOWER);
-                if (!overworld) addTree(generationBuilder, MiaAbyssPlacements.ABYSS_TREES_SKYFOG);
+                if (!overworld) {
+                    addTree(generationBuilder, MiaAbyssPlacements.ABYSS_TREES_SKYFOG);
+                    addTree(generationBuilder, MiaAbyssPlacements.ABYSS_FALLEN_SKYFOG_LOG);
+                }
             }
             case SKYFOG_FOREST -> {
                 addSlabRuins(generationBuilder);
@@ -183,6 +219,7 @@ public final class MiaBiomes {
                 addLargeFern(generationBuilder);
                 addCaveVines(generationBuilder);
                 addTree(generationBuilder, MiaAbyssPlacements.TREES_SKYFOG);
+                addTree(generationBuilder, MiaAbyssPlacements.FALLEN_SKYFOG_LOG);
             }
             case DENSE_SKYFOG_FOREST -> {
                 addSlabRuins(generationBuilder);
@@ -190,6 +227,7 @@ public final class MiaBiomes {
                 addDenseMeadow(generationBuilder);
                 addCaveVines(generationBuilder);
                 addTree(generationBuilder, MiaAbyssPlacements.DENSE_TREES_SKYFOG);
+                addTree(generationBuilder, MiaAbyssPlacements.FALLEN_SKYFOG_LOG);
             }
             case FOSSILIZED_FOREST, GIANT_FOSSILIZED_FOREST, SPARSE_GIANT_FOSSILIZED_FOREST -> {
                 addSlabRuins(generationBuilder);
@@ -200,7 +238,7 @@ public final class MiaBiomes {
                 addCaveVines(generationBuilder);
                 addTree(
                         generationBuilder,
-                        switch (AbyssBiome.from(biome)) {
+                        switch (kind) {
                             case GIANT_FOSSILIZED_FOREST ->
                                     MiaAbyssPlacements.GIANT_FOSSILIZED_STUMPS;
                             case SPARSE_GIANT_FOSSILIZED_FOREST ->
@@ -211,6 +249,7 @@ public final class MiaBiomes {
                         || biome.equals(SPARSE_GIANT_FOSSILIZED_FOREST)) {
                     addTree(generationBuilder, MiaAbyssPlacements.GIANT_FOREST_TREES_SKYFOG);
                     addTree(generationBuilder, MiaAbyssPlacements.GIANT_FOREST_TREES_FOSSILIZED);
+                    addTree(generationBuilder, MiaAbyssPlacements.FALLEN_FOSSILIZED_LOG);
                 }
             }
             case RICH_FOSSILIZED_FOREST, UNDER_RICH_FOSSILIZED_FOREST -> {
@@ -263,6 +302,7 @@ public final class MiaBiomes {
                 addRawIron(generationBuilder);
                 addLargeFern(generationBuilder);
                 addCaveVines(generationBuilder);
+                addTree(generationBuilder, MiaAbyssPlacements.FALLEN_FOSSILIZED_LOG);
             }
             case PRASIOLITE_CAVES -> {
                 addSlabRuins(generationBuilder);
@@ -299,8 +339,24 @@ public final class MiaBiomes {
                 addRawIron(generationBuilder);
                 if (biome.equals(TEMPTATION_FOREST)) addLargeFern(generationBuilder);
                 addCaveVines(generationBuilder);
-                if (biome.equals(TEMPTATION_FOREST))
+                if (biome.equals(TEMPTATION_FOREST)) {
                     addTree(generationBuilder, MiaAbyssPlacements.TREES_VERDANT_FUNGUS);
+                    addTree(generationBuilder, MiaAbyssPlacements.FALLEN_VERDANT_STEM);
+                }
+            }
+            case TEMPTATION_WARM_OCEAN, TEMPTATION_OCEAN -> {
+                addLayer2Vegetation(generationBuilder, OCEAN_SHORE_VEGETATION);
+                if (biome.equals(TEMPTATION_WARM_OCEAN)) {
+                    addLayer2Vegetation(generationBuilder, WARM_OCEAN_VEGETATION);
+                    BiomeDefaultFeatures.warmOceanSpawns(mobs, 10, 4);
+                } else {
+                    addLayer2Vegetation(generationBuilder, TEMPTATION_OCEAN_VEGETATION);
+                    BiomeDefaultFeatures.oceanSpawns(mobs, 1, 4, 10);
+                }
+                mobs.addSpawn(
+                        MobCategory.WATER_CREATURE,
+                        5,
+                        new MobSpawnSettings.SpawnerData(EntityType.NAUTILUS, 1, 1));
             }
             case PRIMO_FOREST, PRIMO_PLAINS -> {
                 addSlabRuins(generationBuilder);
@@ -312,6 +368,21 @@ public final class MiaBiomes {
                         GenerationStep.Decoration.VEGETAL_DECORATION,
                         MiaAbyssPlacements.MYCELIUM_PATCH);
             }
+            case ABYSS_MANGROVE_SWAMP -> {
+                addLayer2Vegetation(generationBuilder, MANGROVE_SWAMP_VEGETATION);
+                BiomeDefaultFeatures.swampSpawns(mobs, 70);
+                mobs.addSpawn(
+                        MobCategory.WATER_AMBIENT,
+                        25,
+                        new MobSpawnSettings.SpawnerData(EntityType.TROPICAL_FISH, 8, 8));
+                return abyssBiome(generationBuilder, mobs)
+                        .modifyAttribute(
+                                EnvironmentAttributes.WATER_FOG_END_DISTANCE,
+                                FloatModifier.MULTIPLY,
+                                0.85F)
+                        .setAttribute(EnvironmentAttributes.INCREASED_FIRE_BURNOUT, true)
+                        .build();
+            }
             case INVERTED_FOREST -> {
                 addGeode(generationBuilder);
                 addLayerTwoMeadow(generationBuilder);
@@ -320,61 +391,57 @@ public final class MiaBiomes {
             }
             case ABYSS_RIVER -> {}
         }
-        generationBuilder.addFeature(
-                GenerationStep.Decoration.UNDERGROUND_STRUCTURES, MiaAbyssPlacements.SUN_STONE);
-        Biome.BiomeBuilder biomeBuilder =
-                new Biome.BiomeBuilder()
-                        .hasPrecipitation(false)
-                        .temperature(2.0F)
-                        .downfall(0.8F)
-                        .mobSpawnSettings(new MobSpawnSettings.Builder().build())
-                        .generationSettings(generationBuilder.build())
-                        .setAttribute(
-                                EnvironmentAttributes.BACKGROUND_MUSIC,
-                                new BackgroundMusic(MiaSoundEvents.MUSIC_THE_FIRST_LAYER))
-                        .specialEffects(
-                                new BiomeSpecialEffects.Builder()
-                                        .waterColor(ABYSS_WATER_COLOR)
-                                        .foliageColorOverride(11335504)
-                                        .grassColorOverride(11335504)
-                                        .build());
-        return biomeBuilder.build();
+        return abyssBiome(generationBuilder, mobs).build();
     }
 
     private static Biome createDuskveilGarden(BiomeGenerationSettings.Builder generation) {
         generation.addFeature(
-                GenerationStep.Decoration.UNDERGROUND_STRUCTURES, MiaAbyssPlacements.SUN_STONE);
-        generation.addFeature(
                 GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.TREES_DUSKVEIL);
-        for (var feature : DUSKVEIL_GROUND_VEGETATION) {
-            generation.addFeature(
-                    GenerationStep.Decoration.VEGETAL_DECORATION,
-                    MiaLayer2VanillaBiomes.key(feature));
-        }
+        addTree(generation, MiaAbyssPlacements.FALLEN_DUSKVEIL_LOG);
+        addLayer2Vegetation(generation, DUSKVEIL_GROUND_VEGETATION);
         var mobs = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.commonSpawns(mobs);
-        return new Biome.BiomeBuilder()
-                .hasPrecipitation(false)
+        return abyssBiome(generation, mobs)
                 .temperature(0.7F)
                 .downfall(0.8F)
-                .mobSpawnSettings(mobs.build())
-                .generationSettings(generation.build())
                 .specialEffects(
                         new BiomeSpecialEffects.Builder()
-                                .waterColor(0x76889D)
-                                .foliageColorOverride(0x878D76)
-                                .dryFoliageColorOverride(0xA0A69C)
-                                .grassColorOverride(0x778272)
+                                .waterColor(0x5946B9)
+                                .foliageColorOverride(0x619BD1)
+                                .dryFoliageColorOverride(0x6E8FA8)
+                                .grassColorOverride(0x6B97C7)
                                 .build())
                 .setAttribute(EnvironmentAttributes.FOG_COLOR, 0xFF364C67)
                 .setAttribute(EnvironmentAttributes.SKY_COLOR, 0xFFB9B9B9)
-                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 0xFF556980)
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 0xFF473894)
                 .setAttribute(EnvironmentAttributes.CREAKING_ACTIVE, true)
-                .setAttribute(
-                        EnvironmentAttributes.BACKGROUND_MUSIC,
-                        new BackgroundMusic(MiaSoundEvents.MUSIC_THE_FIRST_LAYER))
                 .setAttribute(EnvironmentAttributes.MUSIC_VOLUME, 1.0F)
                 .build();
+    }
+
+    private static Biome.BiomeBuilder abyssBiome(
+            BiomeGenerationSettings.Builder generation, MobSpawnSettings.Builder mobs) {
+        generation.addFeature(
+                GenerationStep.Decoration.UNDERGROUND_STRUCTURES, MiaAbyssPlacements.SUN_STONE);
+        return new Biome.BiomeBuilder()
+                .hasPrecipitation(false)
+                .temperature(2.0F)
+                .downfall(0.8F)
+                .mobSpawnSettings(mobs.build())
+                .generationSettings(generation.build())
+                .specialEffects(ABYSS_EFFECTS)
+                .setAttribute(
+                        EnvironmentAttributes.BACKGROUND_MUSIC,
+                        new BackgroundMusic(MiaSoundEvents.MUSIC_THE_FIRST_LAYER));
+    }
+
+    private static void addLayer2Vegetation(
+            BiomeGenerationSettings.Builder generation, List<ResourceKey<PlacedFeature>> features) {
+        for (var feature : features) {
+            generation.addFeature(
+                    GenerationStep.Decoration.VEGETAL_DECORATION,
+                    MiaAbyssPlacements.layer2VegetationKey(feature));
+        }
     }
 
     private static ResourceKey<Biome> key(String path) {
@@ -507,12 +574,21 @@ public final class MiaBiomes {
         PRIMO_FOREST(MiaBiomes.PRIMO_FOREST),
         PRIMO_PLAINS(MiaBiomes.PRIMO_PLAINS),
         INVERTED_FOREST(MiaBiomes.INVERTED_FOREST),
-        ABYSS_RIVER(MiaBiomes.ABYSS_RIVER);
+        ABYSS_RIVER(MiaBiomes.ABYSS_RIVER),
+        ABYSS_MANGROVE_SWAMP(MiaBiomes.ABYSS_MANGROVE_SWAMP, false),
+        TEMPTATION_WARM_OCEAN(MiaBiomes.TEMPTATION_WARM_OCEAN, false),
+        TEMPTATION_OCEAN(MiaBiomes.TEMPTATION_OCEAN, false);
 
         private final ResourceKey<Biome> key;
+        private final boolean defaultVegetation;
 
         AbyssBiome(ResourceKey<Biome> key) {
+            this(key, true);
+        }
+
+        AbyssBiome(ResourceKey<Biome> key, boolean defaultVegetation) {
             this.key = key;
+            this.defaultVegetation = defaultVegetation;
         }
 
         private static AbyssBiome from(ResourceKey<Biome> key) {

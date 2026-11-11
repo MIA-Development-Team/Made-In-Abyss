@@ -6,13 +6,13 @@
         "min_delay": 12000,
         "sound": "mementoinabyss:music.the_first_layer"
       }
-    },
-    "minecraft:audio/music_volume": 1.0,
-    "minecraft:visual/sky_color": "#7ba4ff"
+    }
   },
   "carvers": [],
-  "downfall": 0.5,
+  "downfall": 0.8,
   "effects": {
+    "foliage_color": "#acf750",
+    "grass_color": "#acf750",
     "water_color": "#5db7ef"
   },
   "features": [
@@ -43,9 +43,6 @@
       "mementoinabyss:layer2/vanilla/trees_water",
       "mementoinabyss:layer2/vanilla/flower_default",
       "mementoinabyss:layer2/vanilla/patch_grass_badlands",
-      "mementoinabyss:layer2/vanilla/brown_mushroom_normal",
-      "mementoinabyss:layer2/vanilla/red_mushroom_normal",
-      "mementoinabyss:layer2/vanilla/patch_pumpkin",
       "mementoinabyss:layer2/vanilla/patch_sugar_cane",
       "mementoinabyss:layer2/vanilla/patch_firefly_bush_near_water",
       "mementoinabyss:layer2/vanilla/seagrass_normal",
@@ -146,12 +143,6 @@
         "weight": 1
       },
       {
-        "type": "minecraft:dolphin",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 1
-      },
-      {
         "type": "minecraft:nautilus",
         "maxCount": 1,
         "minCount": 1,
@@ -159,5 +150,5 @@
       }
     ]
   },
-  "temperature": 0.5
+  "temperature": 2.0
 }

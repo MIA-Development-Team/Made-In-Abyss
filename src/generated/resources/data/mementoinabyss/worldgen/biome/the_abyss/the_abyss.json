@@ -54,7 +54,8 @@
       "mementoinabyss:the_abyss/forest_flowers",
       "mementoinabyss:the_abyss/patch_large_fern",
       "mementoinabyss:the_abyss/patch_sunflower",
-      "mementoinabyss:the_abyss/abyss_trees_skyfog"
+      "mementoinabyss:the_abyss/abyss_trees_skyfog",
+      "mementoinabyss:the_abyss/abyss_fallen_skyfog_log"
     ]
   ],
   "has_precipitation": false,

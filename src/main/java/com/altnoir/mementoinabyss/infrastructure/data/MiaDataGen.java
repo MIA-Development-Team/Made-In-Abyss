@@ -9,7 +9,6 @@ import com.altnoir.mementoinabyss.foundation.utility.FilesHelper;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.MiaPaintingVariants;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaBiomes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaLayer2BiomeGroups;
-import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaLayer2VanillaBiomes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensionTypes;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaWorldClocks;
@@ -59,7 +58,7 @@ public class MiaDataGen {
         event.createProvider(MiaLampTubeRecipeProvider.Runner::new);
         event.createProvider(MiaLootTableProvider::create);
         event.createProvider(MiaChestLootProvider::new);
-        // Bootstrap getters expose unbound patch holders; copy vanilla values from the base lookup.
+        // Read the vanilla placements from the base lookup because patch holders are unbound.
         var originalRegistries = event.getLookupProvider();
         event.createDatapackRegistryObjects(
                 new RegistrySetBuilder()
@@ -81,20 +80,20 @@ public class MiaDataGen {
                                     MiaAbyssFeatures.bootstrap(context);
                                     MiaTreeFeatures.bootstrap(context);
                                     GreatFaultFeatures.bootstrap(context);
-                                    MiaLayer2VanillaBiomes.bootstrapFeatures(
-                                            context, originalRegistries.join());
                                 })
                         .add(
                                 Registries.PLACED_FEATURE,
                                 context -> {
                                     MiaAbyssPlacements.bootstrap(context);
                                     GreatFaultPlacements.bootstrap(context);
-                                    MiaLayer2VanillaBiomes.bootstrapPlacements(
-                                            context, originalRegistries.join());
+                                    MiaAbyssPlacements.bootstrapLayer2Vegetation(
+                                            context,
+                                            originalRegistries
+                                                    .join()
+                                                    .lookupOrThrow(Registries.PLACED_FEATURE),
+                                            MiaBiomes.LAYER2_VANILLA_VEGETATION);
                                 })
-                        .add(
-                                Registries.BIOME,
-                                context -> MiaBiomes.bootstrap(context, originalRegistries.join()))
+                        .add(Registries.BIOME, MiaBiomes::bootstrap)
                         .add(Layer2Biomes.REGISTRY_KEY, MiaLayer2BiomeGroups::bootstrap)
                         .add(Registries.PROCESSOR_LIST, MiaProcessorLists::bootstrap)
                         .add(Registries.TEMPLATE_POOL, MiaStructurePools::bootstrap)

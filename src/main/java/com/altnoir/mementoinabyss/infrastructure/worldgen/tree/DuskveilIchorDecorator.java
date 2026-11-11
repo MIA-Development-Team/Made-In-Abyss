@@ -1,5 +1,6 @@
 package com.altnoir.mementoinabyss.infrastructure.worldgen.tree;
 
+import com.altnoir.mementoinabyss.content.abyss.plant.DuskveilIchorBlock;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaTreeDecorators;
 import com.mojang.serialization.Codec;
@@ -41,7 +42,9 @@ public final class DuskveilIchorDecorator extends TreeDecorator {
             if (pos.getY() > baseY
                     && pos.getY() <= baseY + 4
                     && logs.contains(pos.below())
-                    && logs.contains(pos.above())) {
+                    && logs.contains(pos.above())
+                    && context.level().getBlockState(pos).is(MiaBlocks.DUSKVEIL_LOG.get())
+                    && DuskveilIchorBlock.hasSupportingLogs(context.level(), pos)) {
                 candidates.add(pos);
             }
         }

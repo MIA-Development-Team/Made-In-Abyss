@@ -2,6 +2,7 @@ package com.altnoir.mementoinabyss.infrastructure.worldgen.feature;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.content.abyss.plant.DoubleBerryBlock;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.GroundPatchTreeDecorator;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeFeatures;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaTags;
@@ -14,6 +15,7 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.features.AquaticFeatures;
 import net.minecraft.data.worldgen.features.CaveFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
@@ -26,6 +28,7 @@ import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.util.valueproviders.WeightedListInt;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBedBlock;
 import net.minecraft.world.level.block.KelpBlock;
 import net.minecraft.world.level.block.SeaPickleBlock;
@@ -53,6 +56,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.DualNoiseProvid
 import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.RandomizedIntStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.AttachedToLogsDecorator;
 import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -101,6 +105,14 @@ public final class MiaAbyssFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_QUARTZ = key("ore_quartz");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_CHLOROPHYTE =
             key("ore_chlorophyte");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FALLEN_SKYFOG_LOG =
+            key("fallen_skyfog_log");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FALLEN_DUSKVEIL_LOG =
+            key("fallen_duskveil_log");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FALLEN_FOSSILIZED_LOG =
+            key("fallen_fossilized_log");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FALLEN_VERDANT_STEM =
+            key("fallen_verdant_stem");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TREES_FOSSILIZED =
             key("trees_fossilized");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GIANT_FOSSILIZED_STUMP =
@@ -126,7 +138,69 @@ public final class MiaAbyssFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MYCELIUM_PATCH_BONEMEAL =
             key("mycelium_patch_bonemeal");
 
+    private static final List<ResourceKey<ConfiguredFeature<?, ?>>> LAYER2_OCEAN_FLOOR_FEATURES =
+            List.of(
+                    AquaticFeatures.SEAGRASS_SHORT,
+                    AquaticFeatures.SEAGRASS_MID,
+                    AquaticFeatures.KELP,
+                    AquaticFeatures.SEA_PICKLE);
+
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+        var configured = context.lookup(Registries.CONFIGURED_FEATURE);
+        for (var feature : LAYER2_OCEAN_FLOOR_FEATURES) {
+            context.register(
+                    layer2VegetationKey(feature),
+                    new ConfiguredFeature<>(
+                            MiaWorldgenFeatures.LAYER2_FEATURE.get(),
+                            new Layer2FeatureConfiguration(
+                                    configured.getOrThrow(feature), false, true)));
+        }
+
+        var logDecorators =
+                List.of(
+                        new AttachedToLogsDecorator(
+                                0.4F,
+                                BlockStateProvider.simple(Blocks.MOSS_CARPET),
+                                List.of(Direction.UP)),
+                        GroundPatchTreeDecorator.of(
+                                24,
+                                2,
+                                BlockStateProvider.simple(MiaBlocks.SILVEAF_FUNGUS.get()),
+                                BlockPredicate.matchesTag(BlockTags.SUPPORTS_VEGETATION)));
+        context.register(
+                FALLEN_SKYFOG_LOG,
+                new ConfiguredFeature<>(
+                        MiaWorldgenFeatures.FALLEN_LOG.get(),
+                        new FallenLogConfiguration(
+                                BlockStateProvider.simple(MiaBlocks.SKYFOG_LOG.get()),
+                                UniformInt.of(5, 7),
+                                logDecorators)));
+        context.register(
+                FALLEN_DUSKVEIL_LOG,
+                new ConfiguredFeature<>(
+                        MiaWorldgenFeatures.FALLEN_LOG.get(),
+                        new FallenLogConfiguration(
+                                BlockStateProvider.simple(MiaBlocks.DUSKVEIL_LOG.get()),
+                                UniformInt.of(5, 7),
+                                logDecorators)));
+
+        context.register(
+                FALLEN_FOSSILIZED_LOG,
+                new ConfiguredFeature<>(
+                        MiaWorldgenFeatures.FALLEN_LOG.get(),
+                        new FallenLogConfiguration(
+                                BlockStateProvider.simple(MiaBlocks.FOSSILIZED_LOG.get()),
+                                UniformInt.of(5, 7),
+                                logDecorators)));
+        context.register(
+                FALLEN_VERDANT_STEM,
+                new ConfiguredFeature<>(
+                        MiaWorldgenFeatures.FALLEN_LOG.get(),
+                        new FallenLogConfiguration(
+                                BlockStateProvider.simple(MiaBlocks.VERDANT_STEM.get()),
+                                UniformInt.of(5, 7),
+                                logDecorators)));
+
         // LANTERN_PLANT appears twice on purpose: it is weighted double in the flower mix.
         var temptationPlainsFlowers =
                 List.of(
@@ -233,7 +307,9 @@ public final class MiaAbyssFeatures {
                 PATCH_WATERLILY,
                 new ConfiguredFeature<>(
                         Feature.SIMPLE_BLOCK,
-                        new SimpleBlockConfiguration(BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.LILY_PAD))));
+                        new SimpleBlockConfiguration(
+                                BlockStateProvider.simple(
+                                        net.minecraft.world.level.block.Blocks.LILY_PAD))));
 
         var gloomBerryLayers =
                 List.of(
@@ -312,7 +388,8 @@ public final class MiaAbyssFeatures {
                         MiaWorldgenFeatures.REED_POOL.get(),
                         new VegetationPatchConfiguration(
                                 MiaTags.Blocks.BASE_STONE_ABYSS.tag,
-                                BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.MUD),
+                                BlockStateProvider.simple(
+                                        net.minecraft.world.level.block.Blocks.MUD),
                                 reed,
                                 CaveSurface.FLOOR,
                                 ConstantInt.of(3),
@@ -374,7 +451,11 @@ public final class MiaAbyssFeatures {
                         new BlockPileConfiguration(
                                 new WeightedStateProvider(
                                         WeightedList.<BlockState>builder()
-                                                .add(net.minecraft.world.level.block.Blocks.RAW_IRON_BLOCK.defaultBlockState(), 2)
+                                                .add(
+                                                        net.minecraft.world.level.block.Blocks
+                                                                .RAW_IRON_BLOCK
+                                                                .defaultBlockState(),
+                                                        2)
                                                 .add(
                                                         MiaBlocks.ABYSS_COBBLED_ANDESITE
                                                                 .get()
@@ -404,12 +485,16 @@ public final class MiaAbyssFeatures {
                         Feature.GEODE,
                         new GeodeConfiguration(
                                 new GeodeBlockSettings(
-                                        BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.AIR),
+                                        BlockStateProvider.simple(
+                                                net.minecraft.world.level.block.Blocks.AIR),
                                         BlockStateProvider.simple(MiaBlocks.PRASIOLITE_BLOCK.get()),
                                         BlockStateProvider.simple(
                                                 MiaBlocks.BUDDING_PRASIOLITE.get()),
-                                        BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.CALCITE),
-                                        BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.SMOOTH_BASALT),
+                                        BlockStateProvider.simple(
+                                                net.minecraft.world.level.block.Blocks.CALCITE),
+                                        BlockStateProvider.simple(
+                                                net.minecraft.world.level.block.Blocks
+                                                        .SMOOTH_BASALT),
                                         prasioliteBuds,
                                         BlockTags.FEATURES_CANNOT_REPLACE,
                                         BlockTags.GEODE_INVALID_BLOCKS),
@@ -452,8 +537,20 @@ public final class MiaAbyssFeatures {
 
         TagMatchTest stone = new TagMatchTest(MiaTags.Blocks.ABYSS_ANDESITE_ORE_REPLACEABLE.tag);
         TagMatchTest mud = new TagMatchTest(MiaTags.Blocks.ABYSS_MUD_ORE_REPLACEABLE.tag);
-        ore(context, ORE_DIRT, stone, net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState(), 33, 1.0F);
-        ore(context, ORE_GRAVEL, stone, net.minecraft.world.level.block.Blocks.GRAVEL.defaultBlockState(), 33, 0.0F);
+        ore(
+                context,
+                ORE_DIRT,
+                stone,
+                net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState(),
+                33,
+                1.0F);
+        ore(
+                context,
+                ORE_GRAVEL,
+                stone,
+                net.minecraft.world.level.block.Blocks.GRAVEL.defaultBlockState(),
+                33,
+                0.0F);
         ore(context, ORE_IRON, stone, MiaBlocks.ABYSS_IRON_ORE.get().defaultBlockState(), 4, 0.0F);
         ore(
                 context,
@@ -607,15 +704,19 @@ public final class MiaAbyssFeatures {
                         new ConfiguredFeature<>(
                                 Feature.SIMPLE_BLOCK,
                                 new SimpleBlockConfiguration(
-                                        BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.SEAGRASS))));
+                                        BlockStateProvider.simple(
+                                                net.minecraft.world.level.block.Blocks.SEAGRASS))));
         var kelpLayers =
                 List.of(
                         BlockColumnConfiguration.layer(
-                                UniformInt.of(0, 2), BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.KELP_PLANT)),
+                                UniformInt.of(0, 2),
+                                BlockStateProvider.simple(
+                                        net.minecraft.world.level.block.Blocks.KELP_PLANT)),
                         BlockColumnConfiguration.layer(
                                 ConstantInt.of(1),
                                 new RandomizedIntStateProvider(
-                                        BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.KELP),
+                                        BlockStateProvider.simple(
+                                                net.minecraft.world.level.block.Blocks.KELP),
                                         KelpBlock.AGE,
                                         UniformInt.of(20, 23))));
         var kelp =
@@ -629,7 +730,8 @@ public final class MiaAbyssFeatures {
                                         // BlockColumn checks ahead; shift back to test the block it
                                         // writes.
                                         BlockPredicate.matchesBlocks(
-                                                new BlockPos(0, -1, 0), net.minecraft.world.level.block.Blocks.WATER),
+                                                new BlockPos(0, -1, 0),
+                                                net.minecraft.world.level.block.Blocks.WATER),
                                         true)));
         var seaPickle =
                 context.register(
@@ -639,7 +741,8 @@ public final class MiaAbyssFeatures {
                                 new SimpleBlockConfiguration(
                                         new RandomizedIntStateProvider(
                                                 BlockStateProvider.simple(
-                                                        net.minecraft.world.level.block.Blocks.SEA_PICKLE
+                                                        net.minecraft.world.level.block.Blocks
+                                                                .SEA_PICKLE
                                                                 .defaultBlockState()
                                                                 .setValue(
                                                                         SeaPickleBlock.WATERLOGGED,
@@ -654,7 +757,8 @@ public final class MiaAbyssFeatures {
                                         kelp,
                                         BlockPredicateFilter.forPredicate(
                                                 BlockPredicate.wouldSurvive(
-                                                        net.minecraft.world.level.block.Blocks.KELP.defaultBlockState(),
+                                                        net.minecraft.world.level.block.Blocks.KELP
+                                                                .defaultBlockState(),
                                                         BlockPos.ZERO))),
                                 0.8F));
         context.register(
@@ -755,7 +859,9 @@ public final class MiaAbyssFeatures {
                         ? List.of(
                                 BlockTrunkConfiguration.layer(trunkHeight, logs),
                                 BlockTrunkConfiguration.layer(
-                                        BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.MOSS_CARPET)))
+                                        BlockStateProvider.simple(
+                                                net.minecraft.world.level.block.Blocks
+                                                        .MOSS_CARPET)))
                         : List.of(BlockTrunkConfiguration.layer(trunkHeight, logs));
         BlockTrunkConfiguration.Layer branch =
                 BlockTrunkConfiguration.layer(
@@ -766,7 +872,9 @@ public final class MiaAbyssFeatures {
                                         .build()),
                         logs);
         BlockTrunkConfiguration.Layer branchTop =
-                BlockTrunkConfiguration.layer(BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.MOSS_CARPET));
+                BlockTrunkConfiguration.layer(
+                        BlockStateProvider.simple(
+                                net.minecraft.world.level.block.Blocks.MOSS_CARPET));
         context.register(
                 key,
                 new ConfiguredFeature<>(
@@ -784,7 +892,16 @@ public final class MiaAbyssFeatures {
     @SuppressWarnings("deprecation") // Vanilla still registers lakes only through LakeFeature.
     private static LakeFeature.Configuration waterLake() {
         return new LakeFeature.Configuration(
-                BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.WATER), BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.SAND));
+                BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.WATER),
+                BlockStateProvider.simple(net.minecraft.world.level.block.Blocks.SAND));
+    }
+
+    static ResourceKey<ConfiguredFeature<?, ?>> layer2VegetationKey(
+            ResourceKey<ConfiguredFeature<?, ?>> original) {
+        if (!LAYER2_OCEAN_FLOOR_FEATURES.contains(original)) return original;
+        return ResourceKey.create(
+                Registries.CONFIGURED_FEATURE,
+                MementoInAbyss.asResource("layer2/vanilla/" + original.identifier().getPath()));
     }
 
     private static ResourceKey<ConfiguredFeature<?, ?>> key(String name) {

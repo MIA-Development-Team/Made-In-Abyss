@@ -70,7 +70,9 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
                                                 randomsource,
                                                 blockpos$mutableblockpos1);
 
-                        if (!worldgenlevel.getBlockState(blockpos$mutableblockpos1).is(net.minecraft.world.level.block.Blocks.WATER)
+                        if (!worldgenlevel
+                                        .getBlockState(blockpos$mutableblockpos1)
+                                        .is(net.minecraft.world.level.block.Blocks.WATER)
                                 || !(targetState.getBlock() instanceof CarpetBlock)) {
                             worldgenlevel.setBlock(blockpos$mutableblockpos1, targetState, 2);
                             if (posHeight < j - 2
@@ -109,7 +111,9 @@ public class BlockTrunkFeature extends Feature<BlockTrunkConfiguration> {
 
         for (int i = 0; i < length; i++) {
             if (worldGenLevel.getBlockState(newPos).isEmpty()
-                    || worldGenLevel.getBlockState(newPos).is(net.minecraft.world.level.block.Blocks.WATER)) {
+                    || worldGenLevel
+                            .getBlockState(newPos)
+                            .is(net.minecraft.world.level.block.Blocks.WATER)) {
                 BlockState state = dec.getState(worldGenLevel, random, newPos);
 
                 if (state.hasProperty(BlockStateProperties.FACING)) {

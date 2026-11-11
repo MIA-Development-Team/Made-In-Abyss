@@ -11,15 +11,15 @@
     "minecraft:gameplay/creaking_active": true,
     "minecraft:visual/fog_color": "#364c67",
     "minecraft:visual/sky_color": "#b9b9b9",
-    "minecraft:visual/water_fog_color": "#556980"
+    "minecraft:visual/water_fog_color": "#473894"
   },
   "carvers": [],
   "downfall": 0.8,
   "effects": {
-    "dry_foliage_color": "#a0a69c",
-    "foliage_color": "#878d76",
-    "grass_color": "#778272",
-    "water_color": "#76889d"
+    "dry_foliage_color": "#6e8fa8",
+    "foliage_color": "#619bd1",
+    "grass_color": "#6b97c7",
+    "water_color": "#5946b9"
   },
   "features": [
     [],
@@ -47,12 +47,10 @@
     [],
     [
       "mementoinabyss:the_abyss/trees_duskveil",
+      "mementoinabyss:the_abyss/fallen_duskveil_log",
       "mementoinabyss:layer2/vanilla/pale_moss_patch",
-      "mementoinabyss:layer2/vanilla/pale_garden_flowers",
-      "mementoinabyss:layer2/vanilla/flower_pale_garden",
       "mementoinabyss:layer2/vanilla/patch_grass_forest",
       "mementoinabyss:layer2/vanilla/patch_pumpkin",
-      "mementoinabyss:layer2/vanilla/patch_sugar_cane",
       "mementoinabyss:layer2/vanilla/patch_firefly_bush_near_water"
     ]
   ],

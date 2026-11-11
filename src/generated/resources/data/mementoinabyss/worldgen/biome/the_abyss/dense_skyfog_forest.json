@@ -51,7 +51,8 @@
       "mementoinabyss:the_abyss/patch_gloom_berry_plant",
       "mementoinabyss:the_abyss/forest_flowers",
       "mementoinabyss:the_abyss/cave_vines",
-      "mementoinabyss:the_abyss/dense_trees_skyfog"
+      "mementoinabyss:the_abyss/dense_trees_skyfog",
+      "mementoinabyss:the_abyss/fallen_skyfog_log"
     ]
   ],
   "has_precipitation": false,

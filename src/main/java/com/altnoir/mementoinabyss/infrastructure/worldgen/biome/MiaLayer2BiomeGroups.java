@@ -41,7 +41,8 @@ public final class MiaLayer2BiomeGroups {
                         Layer2Biomes.REGISTRY_KEY, MementoInAbyss.asResource("warm_ocean")),
                 new Layer2BiomeGroup(
                         Optional.of(
-                                context.lookup(Registries.BIOME).getOrThrow(MiaBiomes.WARM_OCEAN)),
+                                context.lookup(Registries.BIOME)
+                                        .getOrThrow(MiaBiomes.TEMPTATION_WARM_OCEAN)),
                         List.of(),
                         List.of(Layer2TerrainKind.OCEAN),
                         1,
@@ -71,7 +72,7 @@ public final class MiaLayer2BiomeGroups {
         add(
                 context,
                 "mangrove_pale",
-                MiaBiomes.MANGROVE_SWAMP,
+                MiaBiomes.ABYSS_MANGROVE_SWAMP,
                 MiaBiomes.DUSKVEIL_GARDEN,
                 List.of(Layer2TerrainKind.WETLAND_WOODLAND, Layer2TerrainKind.WETLAND_HIGHLAND));
     }

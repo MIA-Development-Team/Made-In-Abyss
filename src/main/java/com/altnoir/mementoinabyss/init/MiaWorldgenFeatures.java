@@ -5,6 +5,8 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.BlockTrunkConf
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.BlockTrunkFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.ClusterConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.ClusterFeature;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.FallenLogConfiguration;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.FallenLogFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.GiantFossilizedStumpConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.GiantFossilizedStumpFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.Layer2Feature;
@@ -18,6 +20,7 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.SegmentedVeget
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.SlabRuinsConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.feature.SlabRuinsFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.DuskveilFoliagePlacer;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.DuskveilTrunkPlacer;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.InvertedTreeFeature;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.VerdantTreeConfiguration;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.VerdantTreeFeature;
@@ -27,6 +30,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.configurations.VegetationPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProviderType;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -38,6 +42,12 @@ public final class MiaWorldgenFeatures {
             DeferredRegister.create(Registries.BLOCK_STATE_PROVIDER_TYPE, MementoInAbyss.ID);
     private static final DeferredRegister<FoliagePlacerType<?>> FOLIAGE_PLACERS =
             DeferredRegister.create(Registries.FOLIAGE_PLACER_TYPE, MementoInAbyss.ID);
+    private static final DeferredRegister<TrunkPlacerType<?>> TRUNK_PLACERS =
+            DeferredRegister.create(Registries.TRUNK_PLACER_TYPE, MementoInAbyss.ID);
+    public static final DeferredHolder<TrunkPlacerType<?>, TrunkPlacerType<DuskveilTrunkPlacer>>
+            DUSKVEIL_TRUNK =
+                    TRUNK_PLACERS.register(
+                            "duskveil", () -> new TrunkPlacerType<>(DuskveilTrunkPlacer.CODEC));
     public static final DeferredHolder<
                     FoliagePlacerType<?>, FoliagePlacerType<DuskveilFoliagePlacer>>
             DUSKVEIL_FOLIAGE =
@@ -49,6 +59,9 @@ public final class MiaWorldgenFeatures {
                     STATE_PROVIDERS.register(
                             "segmented_vegetation",
                             () -> new BlockStateProviderType<>(SegmentedVegetationProvider.CODEC));
+    public static final DeferredHolder<Feature<?>, FallenLogFeature> FALLEN_LOG =
+            FEATURES.register(
+                    "fallen_log", () -> new FallenLogFeature(FallenLogConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ReedPoolFeature> REED_POOL =
             FEATURES.register(
                     "reed_pool", () -> new ReedPoolFeature(VegetationPatchConfiguration.CODEC));
@@ -92,6 +105,7 @@ public final class MiaWorldgenFeatures {
         FEATURES.register(bus);
         STATE_PROVIDERS.register(bus);
         FOLIAGE_PLACERS.register(bus);
+        TRUNK_PLACERS.register(bus);
     }
 
     private MiaWorldgenFeatures() {}

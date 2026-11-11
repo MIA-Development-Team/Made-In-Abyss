@@ -4,6 +4,7 @@ import com.altnoir.abysslib.reginth.Reginth;
 import com.altnoir.mementoinabyss.content.returnchest.BalloonCargo;
 import com.altnoir.mementoinabyss.infrastructure.config.MiaConfigs;
 import com.altnoir.mementoinabyss.infrastructure.data.MiaDataGen;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.MiaSpawnPlacements;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.biome.MiaLayer2BiomeGroups;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaEnvironmentAttributes;
 import com.altnoir.mementoinabyss.init.*;
@@ -64,6 +65,7 @@ public class MementoInAbyss {
         modEventBus.addListener(EventPriority.HIGHEST, MiaDataGen::gatherDataHighPriority);
         modEventBus.addListener(EventPriority.LOWEST, MiaDataGen::gatherData);
         modEventBus.addListener(MiaAttributes::addEntityAttributes);
+        modEventBus.addListener(MiaSpawnPlacements::register);
         modEventBus.addListener(MiaNetwork::register);
     }
 
