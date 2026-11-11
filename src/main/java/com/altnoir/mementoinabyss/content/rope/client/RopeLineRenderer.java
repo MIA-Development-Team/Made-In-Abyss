@@ -12,7 +12,7 @@ import net.minecraft.resources.Identifier;
  * separate joint faces bridge the differently rotated rings at a node.
  */
 public final class RopeLineRenderer {
-    public static final Identifier TEXTURE = MementoInAbyss.asResource("textures/block/rope.png");
+    public static final Identifier TEXTURE = MementoInAbyss.asResource("textures/block/model/rope.png");
     private static final float CORE_HALF_WIDTH = 2.0F / 16.0F;
     private static final float OVERLAY_HALF_WIDTH = 2.25F / 16.0F;
     private static final float JOINT_TEXTURE_LENGTH = 1.0F / 16.0F;

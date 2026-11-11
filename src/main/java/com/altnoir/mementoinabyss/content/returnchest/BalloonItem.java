@@ -70,7 +70,7 @@ public final class BalloonItem extends Item {
         Player player = context.getPlayer();
         BlockPos pos = context.getClickedPos();
         BlockState state = context.getLevel().getBlockState(pos);
-        if (player == null || !player.isSecondaryUseActive() || !state.is(MiaBlocks.PARCEL.get())) {
+        if (player == null || !state.is(MiaBlocks.PARCEL.get())) {
             return InteractionResult.PASS;
         }
         if (!(context.getLevel() instanceof ServerLevel level)) return InteractionResult.SUCCESS;

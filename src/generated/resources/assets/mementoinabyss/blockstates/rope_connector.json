@@ -1,10 +1,10 @@
 {
   "variants": {
     "connected=false": {
-      "model": "mementoinabyss:block/rope_connector"
+      "model": "mementoinabyss:block/template/rope_connector"
     },
     "connected=true": {
-      "model": "mementoinabyss:block/rope_connector_connected"
+      "model": "mementoinabyss:block/template/rope_connector_connected"
     }
   }
 }

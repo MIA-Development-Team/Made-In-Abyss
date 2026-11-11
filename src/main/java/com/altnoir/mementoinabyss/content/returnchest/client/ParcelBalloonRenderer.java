@@ -60,8 +60,6 @@ public final class ParcelBalloonRenderer
             var instance = model.createInstance();
             int light = state.lightCoords;
             pose.pushPose();
-            // The package cube starts nine model units above the Bedrock origin.
-            pose.translate(0.0, -9.0 / 16.0, 0.0);
             pose.mulPose(Axis.YP.rotationDegrees(-state.yaw - 180.0F));
             nodes.submitCustomGeometry(
                     pose,

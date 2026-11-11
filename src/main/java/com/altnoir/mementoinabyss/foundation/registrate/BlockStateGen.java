@@ -38,9 +38,12 @@ public class BlockStateGen {
             NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator> parcel() {
         return (context, generator) -> {
             var block = context.get();
-            var model = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block));
+            var model =
+                    generator.getBuilder()
+                            .parent(generator.modLoc("block/template/" + context.getName()))
+                            .build(block);
             generator.blockStateOutput.accept(
-                    MultiVariantGenerator.dispatch(block, model)
+                    MultiVariantGenerator.dispatch(block, BlockModelGenerators.plainVariant(model))
                             .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
         };
     }
@@ -146,7 +149,7 @@ public class BlockStateGen {
                                     prov.modBlockTexture("model/cave_explorer_beacon"))
                             .texture(
                                     TextureSlot.PARTICLE,
-                                    prov.modBlockTexture("cave_explorer_beacon_particle"))
+                                    prov.modBlockTexture("model/cave_explorer_beacon_particle"))
                             .build(ctx.get());
             prov.create(ctx.get(), model);
         };
@@ -176,7 +179,7 @@ public class BlockStateGen {
                             .texture(all, prov.modBlockTexture("model/endless_cup"))
                             .texture(
                                     TextureSlot.PARTICLE,
-                                    prov.modBlockTexture("endless_cup_particle"))
+                                    prov.modBlockTexture("model/endless_cup_particle"))
                             .build(ctx.get());
             prov.create(ctx.get(), model);
         };
@@ -190,11 +193,11 @@ public class BlockStateGen {
             var side = TextureSlot.create("side");
             var bottom = TextureSlot.create("bottom");
             var sideTex = prov.modBlockTexture("abyss_andesite");
-            var bottomTex = prov.modBlockTexture(ctx.getName() + "_bottom");
+            var bottomTex = prov.modBlockTexture("model/" + ctx.getName() + "_bottom");
             var dry =
                     prov.getBuilder()
                             .parent(prov.modLoc("block/template/hopper_farmland"))
-                            .texture(top, prov.modBlockTexture(ctx.getName()))
+                            .texture(top, prov.modBlockTexture("model/" + ctx.getName()))
                             .texture(side, sideTex)
                             .texture(bottom, bottomTex)
                             .texture(TextureSlot.PARTICLE, bottomTex)
@@ -202,7 +205,7 @@ public class BlockStateGen {
             var moist =
                     prov.getBuilder()
                             .parent(prov.modLoc("block/template/hopper_farmland"))
-                            .texture(top, prov.modBlockTexture(ctx.getName() + "_moist"))
+                            .texture(top, prov.modBlockTexture("model/" + ctx.getName() + "_moist"))
                             .texture(side, sideTex)
                             .texture(bottom, bottomTex)
                             .texture(TextureSlot.PARTICLE, bottomTex)
@@ -255,17 +258,17 @@ public class BlockStateGen {
             NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     ropeConnector() {
         return (ctx, prov) -> {
-            var idle = BlockModelGenerators.plainVariant(prov.modLoc("block/rope_connector"));
+            var idle = BlockModelGenerators.plainVariant(prov.modLoc("block/template/rope_connector"));
             var connected =
                     BlockModelGenerators.plainVariant(
-                            prov.modLoc("block/rope_connector_connected"));
+                            prov.modLoc("block/template/rope_connector_connected"));
             prov.blockStateOutput.accept(
                     MultiVariantGenerator.dispatch(ctx.get())
                             .with(
                                     PropertyDispatch.initial(RopeConnectorBlock.CONNECTED)
                                             .select(false, idle)
                                             .select(true, connected)));
-            prov.registerSimpleItemModel(ctx.get(), prov.modLoc("block/rope_connector"));
+            prov.registerSimpleItemModel(ctx.get(), prov.modLoc("block/template/rope_connector"));
         };
     }
 
@@ -676,10 +679,10 @@ public class BlockStateGen {
         return (ctx, prov) -> {
             var model =
                     prov.getBuilder()
-                            .parent(prov.modLoc("block/mushroom"))
+                            .parent(prov.modLoc("block/template/mushroom"))
                             .texture(
                                     TextureSlot.ALL,
-                                    prov.modBlockTexture("mushroom/" + ctx.getName()))
+                                    prov.modBlockTexture("model/" + ctx.getName()))
                             .texture(TextureSlot.PARTICLE, prov.modBlockTexture("primo_planks"))
                             .build(ctx.get());
             prov.create(ctx.get(), model);
@@ -694,8 +697,8 @@ public class BlockStateGen {
             NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     glowMushroomFungus() {
         return (ctx, prov) -> {
-            Identifier bottom = prov.modLoc("block/glow_primo_fungus_bottom");
-            Identifier top = prov.modLoc("block/glow_primo_fungus_top");
+            Identifier bottom = prov.modLoc("block/template/glow_primo_fungus_bottom");
+            Identifier top = prov.modLoc("block/template/glow_primo_fungus_top");
             prov.blockStateOutput.accept(
                     MultiPartGenerator.multiPart(ctx.get())
                             .with(BlockModelGenerators.plainVariant(bottom))
@@ -710,7 +713,10 @@ public class BlockStateGen {
             NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     translucentCubeAll() {
         return (ctx, prov) -> {
-            Identifier model = ModelLocationUtils.getModelLocation(ctx.get());
+            Identifier model =
+                    prov.getBuilder()
+                            .parent(prov.modLoc("block/template/" + ctx.getName()))
+                            .build(ctx.get());
             prov.create(ctx.get(), model);
         };
     }
