@@ -2,10 +2,6 @@
   "feature": "mementoinabyss:the_abyss/fallen_skyfog_log",
   "placement": [
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 2
-    },
-    {
       "type": "mementoinabyss:tree_on_every_layer",
       "count": 1,
       "max_y_exclusive": 300

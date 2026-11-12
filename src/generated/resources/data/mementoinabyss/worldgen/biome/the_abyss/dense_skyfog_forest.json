@@ -25,7 +25,9 @@
       "mementoinabyss:the_abyss/slab_ruins",
       "mementoinabyss:the_abyss/sun_stone"
     ],
-    [],
+    [
+      "mementoinabyss:the_abyss/fallen_skyfog_log"
+    ],
     [],
     [
       "mementoinabyss:the_abyss/ore_dirt",
@@ -51,8 +53,7 @@
       "mementoinabyss:the_abyss/patch_gloom_berry_plant",
       "mementoinabyss:the_abyss/forest_flowers",
       "mementoinabyss:the_abyss/cave_vines",
-      "mementoinabyss:the_abyss/dense_trees_skyfog",
-      "mementoinabyss:the_abyss/fallen_skyfog_log"
+      "mementoinabyss:the_abyss/dense_trees_skyfog"
     ]
   ],
   "has_precipitation": false,

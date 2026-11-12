@@ -2,10 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "minecraft:leather",
+    "mementoinabyss:crimson_veilgrass",
+    "minecraft:paper",
     "minecraft:string"
   ],
   "result": {
-    "id": "mementoinabyss:balloon"
+    "id": "mementoinabyss:balloon_red"
   }
 }

@@ -1,0 +1,125 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_white"
+        },
+        "when": 16383998
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_orange"
+        },
+        "when": 16351261
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_magenta"
+        },
+        "when": 13061821
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_light_blue"
+        },
+        "when": 3847130
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_yellow"
+        },
+        "when": 16701501
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_lime"
+        },
+        "when": 8439583
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_pink"
+        },
+        "when": 15961002
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_gray"
+        },
+        "when": 4673362
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_light_gray"
+        },
+        "when": 10329495
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_cyan"
+        },
+        "when": 1481884
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_purple"
+        },
+        "when": 8991416
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_blue"
+        },
+        "when": 3949738
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_brown"
+        },
+        "when": 8606770
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_green"
+        },
+        "when": 6192150
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_red"
+        },
+        "when": 11546150
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "mementoinabyss:item/balloon_black"
+        },
+        "when": 1908001
+      }
+    ],
+    "component": "minecraft:dyed_color",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "mementoinabyss:item/balloon_white"
+    },
+    "property": "minecraft:component"
+  }
+}

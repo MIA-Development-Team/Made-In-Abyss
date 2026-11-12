@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.DyeColor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -56,6 +57,8 @@ public final class ParcelBalloonRenderer
         super.extractRenderState(cargo, state, partialTick);
         state.yaw = cargo.getYRot(partialTick);
         state.color = cargo.color();
+        float remaining = cargo.flightDuration() - cargo.elapsedFlightTicks(partialTick);
+        state.alpha = Mth.clamp(remaining / BalloonCargo.FADE_TICKS, 0.0F, 1.0F);
     }
 
     @Override
@@ -63,18 +66,23 @@ public final class ParcelBalloonRenderer
             State state, PoseStack pose, SubmitNodeCollector nodes, CameraRenderState camera) {
         var resources = BedrockModelResources.getInstance();
         var model = resources == null ? null : resources.getTreeModel(MODEL);
-        if (model != null) {
+        if (model != null && state.alpha > 0.0F) {
             var instance = model.createInstance();
             int light = state.lightCoords;
+            float alpha = state.alpha;
             pose.pushPose();
             pose.mulPose(Axis.YP.rotationDegrees(-state.yaw - 180.0F));
             nodes.submitCustomGeometry(
-                    pose, RenderTypes.entityCutout(TEXTURE), geometry(model, instance, light, 0xFFFFFF));
+                    pose,
+                    alpha < 1.0F ? RenderTypes.entityTranslucent(TEXTURE) : RenderTypes.entityCutout(TEXTURE),
+                    geometry(model, instance, light, 0xFFFFFF, alpha));
             if (state.color != DyeColor.RED) {
                 nodes.order(1).submitCustomGeometry(
                         pose,
-                        RenderTypes.entityCutoutZOffset(TINT_TEXTURE, false),
-                        geometry(model, instance, light, BalloonItem.rgb(state.color)));
+                        alpha < 1.0F
+                                ? RenderTypes.entityTranslucent(TINT_TEXTURE, false)
+                                : RenderTypes.entityCutoutZOffset(TINT_TEXTURE, false),
+                        geometry(model, instance, light, BalloonItem.rgb(state.color), alpha));
             }
             pose.popPose();
         }
@@ -82,7 +90,7 @@ public final class ParcelBalloonRenderer
     }
 
     private static SubmitNodeCollector.CustomGeometryRenderer geometry(
-            TreeBedrockModel model, TreeModelInstance instance, int light, int rgb) {
+            TreeBedrockModel model, TreeModelInstance instance, int light, int rgb, float alpha) {
         float red = ((rgb >> 16) & 255) / 255.0F;
         float green = ((rgb >> 8) & 255) / 255.0F;
         float blue = (rgb & 255) / 255.0F;
@@ -90,12 +98,13 @@ public final class ParcelBalloonRenderer
             PoseStack stack = new PoseStack();
             stack.last().set(renderPose);
             model.renderToBuffer(
-                    instance, stack, buffer, light, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+                    instance, stack, buffer, light, OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
         };
     }
 
     static final class State extends EntityRenderState {
         private DyeColor color;
         private float yaw;
+        private float alpha;
     }
 }

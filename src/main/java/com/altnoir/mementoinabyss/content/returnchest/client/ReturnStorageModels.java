@@ -4,16 +4,21 @@ import com.altnoir.abysslib.reginth.providers.DataGenContext;
 import com.altnoir.abysslib.reginth.providers.generators.ReginthBlockModelGenerator;
 import com.altnoir.abysslib.reginth.providers.generators.ReginthItemModelGenerator;
 import com.altnoir.abysslib.reginth.util.nullness.NonNullBiConsumer;
+import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.content.returnchest.BalloonItem;
 import com.altnoir.mementoinabyss.content.returnchest.ReturnChestBlock;
-import net.minecraft.client.color.item.Dye;
+import java.util.ArrayList;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.renderer.item.SelectItemModel;
+import net.minecraft.client.renderer.item.properties.select.ComponentContents;
 import net.minecraft.client.renderer.special.ChestSpecialRenderer;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -43,19 +48,25 @@ public final class ReturnStorageModels {
     public static NonNullBiConsumer<DataGenContext<Item, BalloonItem>, ReginthItemModelGenerator>
             balloon() {
         return (context, generator) -> {
-            Item item = context.get();
-            var model =
-                    ModelTemplates.THREE_LAYERED_ITEM.create(
-                            item,
-                            TextureMapping.layered(
-                                    TextureMapping.getItemTexture(item),
-                                    TextureMapping.getItemTexture(item, "_sheen"),
-                                    TextureMapping.getItemTexture(item, "_string")),
+            var item = context.get();
+            var cases = new ArrayList<SelectItemModel.SwitchCase<DyedItemColor>>();
+            for (DyeColor color : DyeColor.VALUES) {
+                var model = MementoInAbyss.asResource("item/balloon_" + color.getName());
+                if (color == DyeColor.WHITE) {
+                    ModelTemplates.FLAT_ITEM.create(
+                            model,
+                            TextureMapping.layer0(TextureMapping.getItemTexture(item)),
                             generator.modelOutput);
+                }
+                cases.add(ItemModelUtils.when(
+                        new DyedItemColor(BalloonItem.rgb(color)), ItemModelUtils.plainModel(model)));
+            }
             generator.itemModelOutput.accept(
                     item,
-                    ItemModelUtils.tintedModel(
-                            model, new Dye(DyeColor.WHITE.getTextureDiffuseColor())));
+                    ItemModelUtils.select(
+                            new ComponentContents<>(DataComponents.DYED_COLOR),
+                            ItemModelUtils.plainModel(MementoInAbyss.asResource("item/balloon_white")),
+                            cases));
         };
     }
 

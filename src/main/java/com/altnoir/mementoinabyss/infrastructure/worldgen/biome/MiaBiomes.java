@@ -208,7 +208,7 @@ public final class MiaBiomes {
                                 MiaAbyssPlacements.PATCH_SUNFLOWER);
                 if (!overworld) {
                     addTree(generationBuilder, MiaAbyssPlacements.ABYSS_TREES_SKYFOG);
-                    addTree(generationBuilder, MiaAbyssPlacements.ABYSS_FALLEN_SKYFOG_LOG);
+                    addFallenLog(generationBuilder, MiaAbyssPlacements.ABYSS_FALLEN_SKYFOG_LOG);
                 }
             }
             case SKYFOG_FOREST -> {
@@ -219,7 +219,7 @@ public final class MiaBiomes {
                 addLargeFern(generationBuilder);
                 addCaveVines(generationBuilder);
                 addTree(generationBuilder, MiaAbyssPlacements.TREES_SKYFOG);
-                addTree(generationBuilder, MiaAbyssPlacements.FALLEN_SKYFOG_LOG);
+                addFallenLog(generationBuilder, MiaAbyssPlacements.FALLEN_SKYFOG_LOG);
             }
             case DENSE_SKYFOG_FOREST -> {
                 addSlabRuins(generationBuilder);
@@ -227,7 +227,7 @@ public final class MiaBiomes {
                 addDenseMeadow(generationBuilder);
                 addCaveVines(generationBuilder);
                 addTree(generationBuilder, MiaAbyssPlacements.DENSE_TREES_SKYFOG);
-                addTree(generationBuilder, MiaAbyssPlacements.FALLEN_SKYFOG_LOG);
+                addFallenLog(generationBuilder, MiaAbyssPlacements.FALLEN_SKYFOG_LOG);
             }
             case FOSSILIZED_FOREST, GIANT_FOSSILIZED_FOREST, SPARSE_GIANT_FOSSILIZED_FOREST -> {
                 addSlabRuins(generationBuilder);
@@ -249,7 +249,7 @@ public final class MiaBiomes {
                         || biome.equals(SPARSE_GIANT_FOSSILIZED_FOREST)) {
                     addTree(generationBuilder, MiaAbyssPlacements.GIANT_FOREST_TREES_SKYFOG);
                     addTree(generationBuilder, MiaAbyssPlacements.GIANT_FOREST_TREES_FOSSILIZED);
-                    addTree(generationBuilder, MiaAbyssPlacements.FALLEN_FOSSILIZED_LOG);
+                    addFallenLog(generationBuilder, MiaAbyssPlacements.FALLEN_FOSSILIZED_LOG);
                 }
             }
             case RICH_FOSSILIZED_FOREST, UNDER_RICH_FOSSILIZED_FOREST -> {
@@ -302,7 +302,7 @@ public final class MiaBiomes {
                 addRawIron(generationBuilder);
                 addLargeFern(generationBuilder);
                 addCaveVines(generationBuilder);
-                addTree(generationBuilder, MiaAbyssPlacements.FALLEN_FOSSILIZED_LOG);
+                addFallenLog(generationBuilder, MiaAbyssPlacements.FALLEN_FOSSILIZED_LOG);
             }
             case PRASIOLITE_CAVES -> {
                 addSlabRuins(generationBuilder);
@@ -397,7 +397,7 @@ public final class MiaBiomes {
     private static Biome createDuskveilGarden(BiomeGenerationSettings.Builder generation) {
         generation.addFeature(
                 GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.TREES_DUSKVEIL);
-        addTree(generation, MiaAbyssPlacements.FALLEN_DUSKVEIL_LOG);
+        addFallenLog(generation, MiaAbyssPlacements.FALLEN_DUSKVEIL_LOG);
         addLayer2Vegetation(generation, DUSKVEIL_GROUND_VEGETATION);
         var mobs = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.commonSpawns(mobs);
@@ -547,6 +547,11 @@ public final class MiaBiomes {
     private static void addCaveVines(BiomeGenerationSettings.Builder builder) {
         builder.addFeature(
                 GenerationStep.Decoration.VEGETAL_DECORATION, MiaAbyssPlacements.CAVE_VINES);
+    }
+
+    private static void addFallenLog(
+            BiomeGenerationSettings.Builder builder, ResourceKey<PlacedFeature> log) {
+        builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, log);
     }
 
     private static void addTree(

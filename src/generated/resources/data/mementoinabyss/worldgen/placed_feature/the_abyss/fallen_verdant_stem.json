@@ -2,10 +2,6 @@
   "feature": "mementoinabyss:the_abyss/fallen_verdant_stem",
   "placement": [
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 3
-    },
-    {
       "type": "mementoinabyss:tree_on_every_layer",
       "count": 1
     },

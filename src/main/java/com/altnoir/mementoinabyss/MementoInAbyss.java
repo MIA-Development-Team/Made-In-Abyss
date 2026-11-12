@@ -58,7 +58,7 @@ public class MementoInAbyss {
         MiaItemGroups.register();
         MiaSoundEvents.register();
         MiaBlocks.register();
-        MiaItems.register();
+        MiaItems.register(modEventBus);
         MiaArtifactItems.register();
         MiaWhistleItems.register();
 

@@ -1,7 +1,6 @@
 package com.altnoir.mementoinabyss.content.returnchest.client;
 
 import com.altnoir.mementoinabyss.content.returnchest.BalloonCargo;
-import com.altnoir.mementoinabyss.content.returnchest.BalloonItem;
 import com.altnoir.mementoinabyss.init.MiaItems;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -13,11 +12,9 @@ import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.DyedItemColor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -46,8 +43,7 @@ public final class BalloonCargoRenderer
     @Override
     public void extractRenderState(BalloonCargo cargo, State state, float partialTick) {
         super.extractRenderState(cargo, state, partialTick);
-        ItemStack balloon = new ItemStack(MiaItems.BALLOON.get());
-        balloon.set(DataComponents.DYED_COLOR, new DyedItemColor(BalloonItem.rgb(cargo.color())));
+        ItemStack balloon = MiaItems.balloon(cargo.color()).asStack();
         models.updateForNonLiving(state.balloon, balloon, ItemDisplayContext.NONE, cargo);
         models.updateForNonLiving(
                 state.chest, new ItemStack(Items.CHEST), ItemDisplayContext.NONE, cargo);

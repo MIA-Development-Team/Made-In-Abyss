@@ -28,7 +28,9 @@
     [
       "mementoinabyss:the_abyss/sun_stone"
     ],
-    [],
+    [
+      "mementoinabyss:the_abyss/fallen_duskveil_log"
+    ],
     [],
     [
       "mementoinabyss:the_abyss/ore_dirt",
@@ -47,7 +49,6 @@
     [],
     [
       "mementoinabyss:the_abyss/trees_duskveil",
-      "mementoinabyss:the_abyss/fallen_duskveil_log",
       "mementoinabyss:layer2/vanilla/pale_moss_patch",
       "mementoinabyss:layer2/vanilla/patch_grass_forest",
       "mementoinabyss:layer2/vanilla/patch_pumpkin",

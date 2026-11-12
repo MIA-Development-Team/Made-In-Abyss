@@ -26,7 +26,9 @@
       "mementoinabyss:the_abyss/slab_ruins",
       "mementoinabyss:the_abyss/sun_stone"
     ],
-    [],
+    [
+      "mementoinabyss:the_abyss/fallen_fossilized_log"
+    ],
     [],
     [
       "mementoinabyss:the_abyss/ore_dirt",
@@ -55,8 +57,7 @@
       "mementoinabyss:the_abyss/cave_vines",
       "mementoinabyss:the_abyss/giant_fossilized_stumps",
       "mementoinabyss:the_abyss/giant_forest_trees_skyfog",
-      "mementoinabyss:the_abyss/giant_forest_trees_fossilized",
-      "mementoinabyss:the_abyss/fallen_fossilized_log"
+      "mementoinabyss:the_abyss/giant_forest_trees_fossilized"
     ]
   ],
   "has_precipitation": false,

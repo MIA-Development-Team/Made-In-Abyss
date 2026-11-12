@@ -3,13 +3,10 @@
   "category": "misc",
   "group": "balloon_dye",
   "ingredients": [
-    "mementoinabyss:balloon",
+    "#mementoinabyss:balloons",
     "minecraft:green_dye"
   ],
   "result": {
-    "id": "mementoinabyss:balloon",
-    "components": {
-      "minecraft:dyed_color": 6192150
-    }
+    "id": "mementoinabyss:balloon_green"
   }
 }

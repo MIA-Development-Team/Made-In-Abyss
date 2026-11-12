@@ -23,8 +23,12 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public final class BalloonCargo extends Entity {
-    static final int FLIGHT_HEIGHT = 16;
-    static final int FLIGHT_TICKS = 80;
+    public static final int PARCEL_FLIGHT_HEIGHT = 20;
+    private static final int CHEST_FLIGHT_HEIGHT = 16;
+    private static final int CONSTANT_SPEED_TICKS = 80;
+    private static final int ACCELERATION_TICKS = 20;
+    private static final int PARCEL_FLIGHT_TICKS = CONSTANT_SPEED_TICKS + ACCELERATION_TICKS / 2;
+    public static final int FADE_TICKS = 20;
     private static final DeferredRegister<EntityType<?>> ENTITIES =
             DeferredRegister.create(Registries.ENTITY_TYPE, MementoInAbyss.ID);
     public static final DeferredHolder<EntityType<?>, EntityType<BalloonCargo>> CHEST_BALLOON =
@@ -48,9 +52,12 @@ public final class BalloonCargo extends Entity {
     private static final EntityDataAccessor<Integer> COLOR =
             SynchedEntityData.defineId(BalloonCargo.class, EntityDataSerializers.INT);
 
-    private final InterpolationHandler interpolation = new InterpolationHandler(this);
+    private static final EntityDataAccessor<Integer> FLIGHT_TICKS =
+            SynchedEntityData.defineId(BalloonCargo.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> ACCELERATES =
+            SynchedEntityData.defineId(BalloonCargo.class, EntityDataSerializers.BOOLEAN);
 
-    private int flightTicks;
+    private final InterpolationHandler interpolation = new InterpolationHandler(this);
 
     public BalloonCargo(EntityType<? extends BalloonCargo> type, Level level) {
         super(type, level);
@@ -65,9 +72,27 @@ public final class BalloonCargo extends Entity {
 
     void prepare(BlockPos pos, Direction facing, DyeColor color) {
         snapTo(pos, facing.toYRot(), 0.0F);
+        entityData.set(ACCELERATES, getType() == PARCEL_BALLOON.get());
         entityData.set(COLOR, color.getId());
     }
 
+    public float elapsedFlightTicks(float partialTick) {
+        return entityData.get(FLIGHT_TICKS) + partialTick;
+    }
+
+    public int flightDuration() {
+        return entityData.get(ACCELERATES) ? PARCEL_FLIGHT_TICKS : CONSTANT_SPEED_TICKS;
+    }
+
+    private double ascentPerTick(int elapsedTicks) {
+        int height = getType() == PARCEL_BALLOON.get() ? PARCEL_FLIGHT_HEIGHT : CHEST_FLIGHT_HEIGHT;
+        double cruiseSpeed = (double) height / CONSTANT_SPEED_TICKS;
+        if (entityData.get(ACCELERATES) && elapsedTicks < ACCELERATION_TICKS) {
+            // The midpoint gives the distance traveled during this tick under linear acceleration.
+            return cruiseSpeed * (elapsedTicks + 0.5) / ACCELERATION_TICKS;
+        }
+        return cruiseSpeed;
+    }
     public DyeColor color() {
         return DyeColor.byId(entityData.get(COLOR));
     }
@@ -75,6 +100,8 @@ public final class BalloonCargo extends Entity {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder data) {
         data.define(COLOR, DyeColor.WHITE.getId());
+        data.define(FLIGHT_TICKS, 0);
+        data.define(ACCELERATES, false);
     }
 
     @Override
@@ -88,9 +115,12 @@ public final class BalloonCargo extends Entity {
         if (level() instanceof ServerLevel server) {
             if (!ReturnStorage.get(server).isFlying(color(), getUUID())) {
                 discard();
-            } else if (flightTicks < FLIGHT_TICKS) {
-                setPos(getX(), getY() + (double) FLIGHT_HEIGHT / FLIGHT_TICKS, getZ());
-                flightTicks++;
+            } else {
+                int elapsed = entityData.get(FLIGHT_TICKS);
+                if (elapsed < flightDuration()) {
+                    setPos(getX(), getY() + ascentPerTick(elapsed), getZ());
+                    entityData.set(FLIGHT_TICKS, elapsed + 1);
+                }
             }
         } else {
             interpolation.interpolate();
@@ -105,12 +135,14 @@ public final class BalloonCargo extends Entity {
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         entityData.set(COLOR, input.getIntOr("color", DyeColor.WHITE.getId()));
-        flightTicks = input.getIntOr("flight_ticks", 0);
+        entityData.set(FLIGHT_TICKS, input.getIntOr("flight_ticks", 0));
+        entityData.set(ACCELERATES, input.getBooleanOr("accelerates", false));
     }
 
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
         output.putInt("color", color().getId());
-        output.putInt("flight_ticks", flightTicks);
+        output.putInt("flight_ticks", entityData.get(FLIGHT_TICKS));
+        output.putBoolean("accelerates", entityData.get(ACCELERATES));
     }
 }

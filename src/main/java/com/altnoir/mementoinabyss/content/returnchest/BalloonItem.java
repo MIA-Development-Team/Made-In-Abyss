@@ -4,7 +4,6 @@ import com.altnoir.mementoinabyss.content.parcel.ParcelBlockEntity;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -15,22 +14,32 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.DyedItemColor;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
+import org.jspecify.annotations.Nullable;
 
 public final class BalloonItem extends Item {
+    private final @Nullable DyeColor fixedColor;
+
     public BalloonItem(Properties properties) {
+        this(properties, null);
+    }
+
+    public BalloonItem(Properties properties, @Nullable DyeColor fixedColor) {
         super(properties);
+        this.fixedColor = fixedColor;
     }
 
     public static DyeColor color(ItemStack stack) {
+        if (stack.getItem() instanceof BalloonItem balloon && balloon.fixedColor != null) {
+            return balloon.fixedColor;
+        }
+        // Existing balloon stacks can still carry a resonance in the old dye component.
         DyedItemColor dyed = stack.get(DataComponents.DYED_COLOR);
         if (dyed != null) {
             for (DyeColor color : DyeColor.VALUES) {
@@ -44,25 +53,13 @@ public final class BalloonItem extends Item {
         return color.getTextureDiffuseColor() & 0xFFFFFF;
     }
 
-    static Component colorName(DyeColor color) {
+    public static Component colorName(DyeColor color) {
         return Component.translatable("color.minecraft." + color.getName());
     }
 
     static void message(Player player, String key, Object... arguments) {
         player.sendOverlayMessage(
                 Component.translatable("message.mementoinabyss.return_chest." + key, arguments));
-    }
-
-    @Override
-    public void appendHoverText(
-            ItemStack stack,
-            TooltipContext context,
-            TooltipDisplay display,
-            Consumer<Component> tooltip,
-            TooltipFlag flag) {
-        tooltip.accept(
-                Component.translatable(
-                        "tooltip.mementoinabyss.balloon.channel", colorName(color(stack))));
     }
 
     @Override
@@ -79,7 +76,7 @@ public final class BalloonItem extends Item {
             return InteractionResult.FAIL;
         }
         if (!player.mayBuild() || !level.mayInteract(player, pos)) return InteractionResult.FAIL;
-        for (int dy = 1; dy <= BalloonCargo.FLIGHT_HEIGHT + 5; dy++) {
+        for (int dy = 1; dy <= BalloonCargo.PARCEL_FLIGHT_HEIGHT; dy++) {
             BlockPos above = pos.above(dy);
             if (!level.isInWorldBounds(above) || !level.getBlockState(above).isAir()) {
                 message(player, "blocked");
@@ -127,7 +124,7 @@ public final class BalloonItem extends Item {
         }
         level.updateNeighbourForOutputSignal(pos, state.getBlock());
 
-        long arrival = level.getServer().overworld().getGameTime() + BalloonCargo.FLIGHT_TICKS;
+        long arrival = level.getServer().overworld().getGameTime() + visual.flightDuration();
         storage.depart(
                 channel, new ReturnStorage.Flight(visual.getUUID(), arrival, List.copyOf(items)));
         level.addFreshEntity(visual);

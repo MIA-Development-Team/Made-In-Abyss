@@ -6,17 +6,21 @@ import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.content.returnchest.BalloonItem;
 import com.altnoir.mementoinabyss.content.returnchest.client.ReturnStorageModels;
 import com.altnoir.mementoinabyss.content.rope.RopeItem;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.resources.model.sprite.Material;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.component.DyedItemColor;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.registries.RegisterEvent;
 
 public class MiaItems {
     private static final Reginth REGISTRATE = MementoInAbyss.registrate();
@@ -99,17 +103,47 @@ public class MiaItems {
     public static final ItemEntry<Item> CAERULITE_SHARD =
             REGISTRATE.item("caerulite_shard", Item::new).tag(Tags.Items.GEMS).register();
 
-    public static final ItemEntry<BalloonItem> BALLOON =
+    private static final Map<DyeColor, ItemEntry<BalloonItem>> BALLOONS =
+            new EnumMap<>(DyeColor.class);
+
+    public static final ItemEntry<BalloonItem> WHITE_BALLOON =
             REGISTRATE
-                    .item("balloon", BalloonItem::new)
-                    .lang("Balloon")
-                    .properties(
-                            p ->
-                                    p.component(
-                                            DataComponents.DYED_COLOR,
-                                            new DyedItemColor(BalloonItem.rgb(DyeColor.WHITE))))
+                    .item("balloon_white", BalloonItem::new)
+                    .lang("White Balloon")
+                    .tag(MiaTags.Items.BALLOONS.tag)
                     .model(() -> ReturnStorageModels.balloon())
                     .register();
+
+    static {
+        BALLOONS.put(DyeColor.WHITE, WHITE_BALLOON);
+        // Match the dye order in the vanilla Ingredients tab, after the white balloon above.
+        for (DyeColor color :
+                List.of(
+                        DyeColor.LIGHT_GRAY,
+                        DyeColor.GRAY,
+                        DyeColor.BLACK,
+                        DyeColor.BROWN,
+                        DyeColor.RED,
+                        DyeColor.ORANGE,
+                        DyeColor.YELLOW,
+                        DyeColor.LIME,
+                        DyeColor.GREEN,
+                        DyeColor.CYAN,
+                        DyeColor.LIGHT_BLUE,
+                        DyeColor.BLUE,
+                        DyeColor.PURPLE,
+                        DyeColor.MAGENTA,
+                        DyeColor.PINK)) {
+            BALLOONS.put(
+                    color,
+                    REGISTRATE
+                            .item(
+                                    "balloon_" + color.getName(),
+                                    properties -> new BalloonItem(properties, color))
+                            .tag(MiaTags.Items.BALLOONS.tag)
+                            .register());
+        }
+    }
 
     public static final ItemEntry<RopeItem> ROPE =
             REGISTRATE
@@ -129,5 +163,18 @@ public class MiaItems {
                                     })
                     .register();
 
-    public static void register() {}
+    public static ItemEntry<BalloonItem> balloon(DyeColor color) {
+        return BALLOONS.get(color);
+    }
+
+    public static void register(IEventBus bus) {
+        bus.addListener(MiaItems::registerAliases);
+    }
+
+    private static void registerAliases(RegisterEvent event) {
+        var items = event.getRegistry(Registries.ITEM);
+        if (items != null) {
+            items.addAlias(MementoInAbyss.asResource("balloon"), WHITE_BALLOON.getId());
+        }
+    }
 }

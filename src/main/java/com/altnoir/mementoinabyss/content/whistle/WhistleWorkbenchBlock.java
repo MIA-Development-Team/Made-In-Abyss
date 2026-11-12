@@ -25,9 +25,9 @@ public final class WhistleWorkbenchBlock extends CraftingTableBlock {
             Shapes.or(
                     box(0, 0, 0, 16, 4, 16),
                     box(3, 4, 3, 8, 8, 8),
-                    box(5, 4, 5, 11, 10, 11),
-                    box(8, 8, 8, 13, 10, 13),
-                    box(0, 10, 0, 16, 16, 16));
+                    box(5, 4, 5, 11, 12, 11),
+                    box(8, 8, 8, 13, 12, 13),
+                    box(0, 12, 0, 16, 16, 16));
     private static final Component TITLE =
             Component.translatable("container.mementoinabyss.whistle_workbench");
 

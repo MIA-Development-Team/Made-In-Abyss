@@ -58,6 +58,7 @@ public class MiaTags {
     }
 
     public enum Items {
+        BALLOONS,
         ARTIFACT_SHARDS_TIER_1(NameSpaces.MOD, "artifact_shards/tier_1"),
         ARTIFACT_SHARDS_TIER_2(NameSpaces.MOD, "artifact_shards/tier_2"),
         SKYFOG_LOGS,

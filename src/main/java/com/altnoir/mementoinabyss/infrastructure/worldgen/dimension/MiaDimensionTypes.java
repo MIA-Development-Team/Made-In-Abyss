@@ -39,7 +39,7 @@ public final class MiaDimensionTypes {
                 EnvironmentAttributeMap.builder()
                         .set(
                                 MiaEnvironmentAttributes.SKY_LIGHT_REGION,
-                                new SkyLightRegionSettings(0, 0, 2.0, 96.0))
+                                new SkyLightRegionSettings(0, 0, 1.0, 128.0))
                         .set(
                                 MiaEnvironmentAttributes.AMBIENT_LIGHT_BIOME,
                                 new BiomeAmbientLightSettings(

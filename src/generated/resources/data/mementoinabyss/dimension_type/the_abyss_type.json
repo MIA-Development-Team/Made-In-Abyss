@@ -10,8 +10,8 @@
       "#mementoinabyss:ambient_light/dark": 0.0
     },
     "mementoinabyss:sky_light_region": {
-      "fade_distance": 96.0,
-      "radius_multiplier": 2.0
+      "fade_distance": 128.0,
+      "radius_multiplier": 1.0
     },
     "mementoinabyss:vertical_above": {
       "dimension": "minecraft:overworld",
