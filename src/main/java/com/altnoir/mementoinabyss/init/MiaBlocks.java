@@ -38,6 +38,8 @@ import com.altnoir.mementoinabyss.content.pedestal.PedestalBlock;
 import com.altnoir.mementoinabyss.content.portal.AbyssPortalBlock;
 import com.altnoir.mementoinabyss.content.portal.AbyssPortalCoreBlock;
 import com.altnoir.mementoinabyss.content.returnchest.ReturnChestBlock;
+import com.altnoir.mementoinabyss.content.returnchest.ReturnChestItem;
+import com.altnoir.mementoinabyss.content.returnchest.ReturnChests;
 import com.altnoir.mementoinabyss.content.returnchest.client.ReturnStorageModels;
 import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlock;
 import com.altnoir.mementoinabyss.content.whistle.WhistleWorkbenchBlock;
@@ -81,36 +83,6 @@ public class MiaBlocks {
     static {
         REGISTRATE.defaultCreativeSection(MiaItemGroups.FUNCTIONAL_BLOCKS);
     }
-
-    // Keep model suppliers lazy so dedicated servers do not load client data generators.
-    public static final BlockEntry<ReturnChestBlock> RETURN_CHEST =
-            REGISTRATE
-                    .object("return_chest")
-                    .block(ReturnChestBlock::new)
-                    .properties(
-                            p ->
-                                    p.mapColor(MapColor.COLOR_BLACK)
-                                            .strength(22.5F, 600.0F)
-                                            .requiresCorrectToolForDrops()
-                                            .noOcclusion()
-                                            .pushReaction(PushReaction.BLOCK))
-                    .transform(TagGen.pickaxeOnly())
-                    .blockstate(() -> ReturnStorageModels.chest())
-                    .lang("Return Chest")
-                    .item()
-                    .model(() -> ReturnStorageModels.chestItem())
-                    .build()
-                    .register();
-
-    public static final BlockEntry<ParcelBlock> PARCEL =
-            REGISTRATE
-                    .object("parcel")
-                    .block(ParcelBlock::new)
-                    .properties(p -> p.strength(0.0F, 3.0F).sound(SoundType.WOOL).noOcclusion())
-                    .blockstate(() -> BlockStateGen.parcel())
-                    .lang("Parcel")
-                    .simpleItem()
-                    .register();
 
     public static final BlockEntry<AbyssPortalBlock> ABYSS_PORTAL =
             REGISTRATE
@@ -156,6 +128,37 @@ public class MiaBlocks {
                                             .strength(100.0F, 1200.0F)
                                             .sound(SoundType.NETHERITE_BLOCK))
                     .transform(TagGen.pickaxeOnly())
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<ReturnChestBlock> RETURN_CHEST =
+            REGISTRATE
+                    .object("return_chest")
+                    .block(ReturnChestBlock::new)
+                    .properties(
+                            p ->
+                                    p.mapColor(MapColor.COLOR_GREEN)
+                                            .strength(22.5F, 600.0F)
+                                            .sound(SoundType.NETHERITE_BLOCK)
+                                            .lightLevel(
+                                                    state -> ReturnChests.isCore(state) ? 15 : 0)
+                                            .requiresCorrectToolForDrops()
+                                            .noOcclusion()
+                                            .pushReaction(PushReaction.BLOCK))
+                    .transform(TagGen.pickaxeOnly())
+                    .blockstate(() -> ReturnStorageModels.chest())
+                    .lang("Return Chest")
+                    .item(ReturnChestItem::new)
+                    .model(() -> ReturnStorageModels.chestItem())
+                    .build()
+                    .register();
+    public static final BlockEntry<ParcelBlock> PARCEL =
+            REGISTRATE
+                    .object("parcel")
+                    .block(ParcelBlock::new)
+                    .properties(p -> p.strength(0.0F, 3.0F).sound(SoundType.WOOL).noOcclusion())
+                    .blockstate(() -> BlockStateGen.parcel())
+                    .lang("Parcel")
                     .simpleItem()
                     .register();
 

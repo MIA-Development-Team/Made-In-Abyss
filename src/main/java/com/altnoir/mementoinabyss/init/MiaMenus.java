@@ -1,6 +1,7 @@
 package com.altnoir.mementoinabyss.init;
 
 import com.altnoir.mementoinabyss.MementoInAbyss;
+import com.altnoir.mementoinabyss.content.returnchest.ReturnChestMenu;
 import com.altnoir.mementoinabyss.impl.artifact.enhancement.ArtifactEnhancementMenu;
 import com.altnoir.mementoinabyss.impl.whistle.workbench.WhistleWorkbenchMenu;
 import net.minecraft.core.registries.Registries;
@@ -30,6 +31,11 @@ public final class MiaMenus {
                             () ->
                                     new MenuType<>(
                                             WhistleWorkbenchMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<ReturnChestMenu>> RETURN_CHEST =
+            MENUS.register(
+                    "return_chest",
+                    () -> new MenuType<>(ReturnChestMenu::new, FeatureFlags.DEFAULT_FLAGS));
 
     public static void register(IEventBus bus) {
         MENUS.register(bus);

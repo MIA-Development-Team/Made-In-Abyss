@@ -7,42 +7,67 @@ import com.altnoir.abysslib.reginth.util.nullness.NonNullBiConsumer;
 import com.altnoir.mementoinabyss.MementoInAbyss;
 import com.altnoir.mementoinabyss.content.returnchest.BalloonItem;
 import com.altnoir.mementoinabyss.content.returnchest.ReturnChestBlock;
+import com.altnoir.mementoinabyss.content.returnchest.ReturnChestItem;
+import com.altnoir.mementoinabyss.content.returnchest.ReturnChests;
 import java.util.ArrayList;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.renderer.item.properties.select.ComponentContents;
-import net.minecraft.client.renderer.special.ChestSpecialRenderer;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 public final class ReturnStorageModels {
+    private static final Identifier RETURN_CHEST_MODEL =
+            MementoInAbyss.asResource("block/return_chest");
+    private static final Identifier RETURN_CHEST_TINTED_MODEL =
+            MementoInAbyss.asResource("block/return_chest_tinted");
+
     public static NonNullBiConsumer<
                     DataGenContext<Block, ReturnChestBlock>, ReginthBlockModelGenerator>
             chest() {
-        return (context, generator) ->
-                generator.createParticleOnlyBlock(context.get(), Blocks.OBSIDIAN);
+        return (context, generator) -> {
+            var block = context.get();
+            var shell =
+                    ModelTemplates.PARTICLE_ONLY.createWithSuffix(
+                            block,
+                            "_shell",
+                            TextureMapping.particle(
+                                    new Material(
+                                            MementoInAbyss.asResource(
+                                                    "block/model/return_chest_particle"))),
+                            generator.modelOutput);
+            var variants =
+                    PropertyDispatch.initial(ReturnChestBlock.PART, ReturnChestBlock.TINT)
+                            .generate(
+                                    (part, tint) -> {
+                                        if (!part.isCore()) {
+                                            return BlockModelGenerators.plainVariant(shell);
+                                        }
+                                        return BlockModelGenerators.plainVariant(
+                                                ReturnChests.hasTintOverlay(tint)
+                                                        ? RETURN_CHEST_TINTED_MODEL
+                                                        : RETURN_CHEST_MODEL);
+                                    });
+            generator.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(variants));
+        };
     }
 
-    public static NonNullBiConsumer<DataGenContext<Item, BlockItem>, ReginthItemModelGenerator>
+    public static NonNullBiConsumer<
+                    DataGenContext<Item, ReturnChestItem>, ReginthItemModelGenerator>
             chestItem() {
-        return (context, generator) -> {
-            var item = context.get();
-            var model =
-                    ModelTemplates.CHEST_INVENTORY.create(
-                            item, TextureMapping.particle(Blocks.OBSIDIAN), generator.modelOutput);
-            generator.itemModelOutput.accept(
-                    item,
-                    ItemModelUtils.specialModel(
-                            model,
-                            new ChestSpecialRenderer.Unbaked(ChestSpecialRenderer.ENDER_CHEST)));
-        };
+        return (context, generator) ->
+                generator.itemModelOutput.accept(
+                        context.get(), ItemModelUtils.plainModel(RETURN_CHEST_MODEL));
     }
 
     public static NonNullBiConsumer<DataGenContext<Item, BalloonItem>, ReginthItemModelGenerator>
@@ -58,14 +83,17 @@ public final class ReturnStorageModels {
                             TextureMapping.layer0(TextureMapping.getItemTexture(item)),
                             generator.modelOutput);
                 }
-                cases.add(ItemModelUtils.when(
-                        new DyedItemColor(BalloonItem.rgb(color)), ItemModelUtils.plainModel(model)));
+                cases.add(
+                        ItemModelUtils.when(
+                                new DyedItemColor(BalloonItem.rgb(color)),
+                                ItemModelUtils.plainModel(model)));
             }
             generator.itemModelOutput.accept(
                     item,
                     ItemModelUtils.select(
                             new ComponentContents<>(DataComponents.DYED_COLOR),
-                            ItemModelUtils.plainModel(MementoInAbyss.asResource("item/balloon_white")),
+                            ItemModelUtils.plainModel(
+                                    MementoInAbyss.asResource("item/balloon_white")),
                             cases));
         };
     }

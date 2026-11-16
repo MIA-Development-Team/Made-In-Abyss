@@ -28,6 +28,8 @@ public final class MiaRegistrateTags {
                     provider.tag(MiaTags.Blocks.MYCELIUM_REPLACEABLE.tag)
                             .addTag(BlockTags.DIRT)
                             .addTag(BlockTags.GRASS_BLOCKS);
+                    provider.tag(MiaTags.Blocks.UNSUPPORTABLE.tag)
+                            .add(MiaBlocks.VERDANT_LEAVES.get());
                     provider.tag(MiaTags.Blocks.PRIMO_STEMS.tag)
                             .add(
                                     MiaBlocks.PRIMO_STEM.get(),

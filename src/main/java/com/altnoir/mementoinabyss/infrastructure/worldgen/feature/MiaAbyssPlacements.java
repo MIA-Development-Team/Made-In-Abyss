@@ -7,6 +7,7 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.InvertedCoun
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.Layer2FlowerSurfacePlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.Layer2SurfacePlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.TreeOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.UnsupportableFilterPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.WaterOnEveryLayerPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.tree.MiaTreeFeatures;
 import com.altnoir.mementoinabyss.init.MiaBlocks;
@@ -340,6 +341,7 @@ public final class MiaAbyssPlacements {
                         List.of(
                                 RarityFilter.onAverageOnceEvery(5),
                                 FastCountOnEveryLayerPlacement.of(1),
+                                UnsupportableFilterPlacement.of(),
                                 BiomeFilter.biome())));
         ceilingPlant(context, SUN_STONE, configured.getOrThrow(MiaAbyssFeatures.SUN_STONE), 2, 12);
         context.register(
@@ -428,10 +430,7 @@ public final class MiaAbyssPlacements {
                 FALLEN_VERDANT_STEM,
                 new PlacedFeature(
                         configured.getOrThrow(MiaAbyssFeatures.FALLEN_VERDANT_STEM),
-                        List.of(
-                                TreeOnEveryLayerPlacement.of(1),
-                                skyfogSoil,
-                                BiomeFilter.biome())));
+                        List.of(TreeOnEveryLayerPlacement.of(1), skyfogSoil, BiomeFilter.biome())));
         context.register(
                 TREES_SKYFOG,
                 new PlacedFeature(

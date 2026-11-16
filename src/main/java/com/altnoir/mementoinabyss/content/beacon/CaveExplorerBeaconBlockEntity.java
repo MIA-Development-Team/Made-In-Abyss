@@ -78,7 +78,6 @@ public final class CaveExplorerBeaconBlockEntity extends BlockEntity implements 
                 }
             } else if (lastSection == null
                     || checked.getLightDampening() >= 15 && !checked.is(Blocks.BEDROCK)) {
-                beacon.checkingBeamSections.clear();
                 beacon.lastCheckY = surface;
                 break;
             } else {
@@ -90,7 +89,7 @@ public final class CaveExplorerBeaconBlockEntity extends BlockEntity implements 
         }
 
         int previousLevels = beacon.levels;
-        if (level.getGameTime() % 80L == 0L && !beacon.beamSections.isEmpty()) {
+        if (level.getGameTime() % 80L == 0L) {
             beacon.levels = updateBase(level, x, y, z);
             if (beacon.levels > 0) {
                 applyEffects(level, pos, beacon.levels);
@@ -103,7 +102,7 @@ public final class CaveExplorerBeaconBlockEntity extends BlockEntity implements 
             boolean wasActive = previousLevels > 0;
             beacon.beamSections = beacon.checkingBeamSections;
             if (!level.isClientSide()) {
-                boolean active = beacon.levels > 0 && !beacon.beamSections.isEmpty();
+                boolean active = beacon.levels > 0;
                 if (!wasActive && active) {
                     playSound(level, pos, SoundEvents.BEACON_ACTIVATE);
                 } else if (wasActive && !active) {

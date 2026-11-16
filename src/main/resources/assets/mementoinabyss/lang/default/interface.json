@@ -83,17 +83,16 @@
   "biome.mementoinabyss.the_abyss.temptation_ocean": "Temptation Ocean",
   "entity.mementoinabyss.chest_balloon": "Chest Balloon",
   "entity.mementoinabyss.parcel_balloon": "Parcel Balloon",
-  "container.mementoinabyss.return_chest": "Return Chest (%s Resonance)",
+  "container.mementoinabyss.return_chest": "Return Chest",
   "tooltip.mementoinabyss.balloon.summary": "Right-click a parcel with the balloon in the Abyss or Great Fault to recover its cargo.",
   "tooltip.mementoinabyss.balloon.resonance": "%s Resonance",
   "tooltip.mementoinabyss.balloon.delivery": "After delivery, retrieve the cargo from a Return Chest bound to the same resonance.",
   "message.mementoinabyss.return_chest.chest_dimension": "Return Chests cannot be used in this dimension.",
+  "message.mementoinabyss.return_chest.incomplete": "The Return Chest structure is incomplete or unloaded.",
   "message.mementoinabyss.return_chest.launch_dimension": "Balloons can only ship parcels in the Abyss and Great Fault.",
-  "message.mementoinabyss.return_chest.disconnected": "Use a balloon to bind a resonance to this Return Chest.",
-  "message.mementoinabyss.return_chest.connected": "Bound to the %s resonance.",
+  "message.mementoinabyss.return_chest.disconnected": "Use a dye to bind a colour to this Return Chest.",
+  "message.mementoinabyss.return_chest.connected": "Bound to the %s Return Chest.",
   "message.mementoinabyss.return_chest.blocked": "The balloon needs a clear path upward.",
-  "message.mementoinabyss.return_chest.busy": "The %s resonance already has cargo in transit.",
   "message.mementoinabyss.return_chest.empty": "There is no cargo in this parcel.",
-  "message.mementoinabyss.return_chest.full": "The %s resonance cannot fit the entire shipment.",
-  "message.mementoinabyss.return_chest.launched": "Cargo launched for the %s resonance."
+  "message.mementoinabyss.return_chest.launched": "Cargo launched for the %s Return Chest."
 }

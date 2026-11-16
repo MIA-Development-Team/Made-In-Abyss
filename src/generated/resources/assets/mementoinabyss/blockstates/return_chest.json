@@ -1,7 +1,1192 @@
 {
   "variants": {
-    "": {
+    "part=c_down,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_down,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=c_middle,tint=0": {
       "model": "mementoinabyss:block/return_chest"
+    },
+    "part=c_middle,tint=1": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=10": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=11": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=12": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=13": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=14": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=15": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=16": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=17": {
+      "model": "mementoinabyss:block/return_chest"
+    },
+    "part=c_middle,tint=2": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=3": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=4": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=5": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=6": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=7": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=8": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=c_middle,tint=9": {
+      "model": "mementoinabyss:block/return_chest_tinted"
+    },
+    "part=e_down,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_down,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=e_up,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_down,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_middle,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=en_up,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_down,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_middle,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=es_up,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_down,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=n_up,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_down,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=s_up,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_down,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=w_up,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_down,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_middle,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=wn_up,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_down,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_middle,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=0": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=1": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=10": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=11": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=12": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=13": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=14": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=15": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=16": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=17": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=2": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=3": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=4": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=5": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=6": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=7": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=8": {
+      "model": "mementoinabyss:block/return_chest_shell"
+    },
+    "part=ws_up,tint=9": {
+      "model": "mementoinabyss:block/return_chest_shell"
     }
   }
 }

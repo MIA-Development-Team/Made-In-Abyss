@@ -10,6 +10,9 @@
       "count": 1
     },
     {
+      "type": "mementoinabyss:unsupportable_filter"
+    },
+    {
       "type": "minecraft:biome"
     }
   ]

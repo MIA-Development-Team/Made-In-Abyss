@@ -12,6 +12,8 @@ import com.altnoir.mementoinabyss.content.artifact.client.ArtifactEnhancementScr
 import com.altnoir.mementoinabyss.content.beacon.client.CaveExplorerBeaconRenderTypes;
 import com.altnoir.mementoinabyss.content.equipment.client.StarCompassOverlay;
 import com.altnoir.mementoinabyss.content.lamptube.client.LampTubeClientRecipes;
+import com.altnoir.mementoinabyss.content.returnchest.client.ReturnChestScreen;
+import com.altnoir.mementoinabyss.content.returnchest.client.ReturnChestTintSource;
 import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlockEntity;
 import com.altnoir.mementoinabyss.content.rope.RopeItem;
 import com.altnoir.mementoinabyss.content.rope.client.RopeFreeEndGrabHandler;
@@ -27,12 +29,14 @@ import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodCacheOfferPa
 import com.altnoir.mementoinabyss.impl.lod.network.CrossDimensionLodDebugPayload;
 import com.altnoir.mementoinabyss.impl.rope.minecraft.RopeClimbing;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.dimension.MiaDimensions;
+import com.altnoir.mementoinabyss.init.MiaBlocks;
 import com.altnoir.mementoinabyss.init.MiaDataComponents;
 import com.altnoir.mementoinabyss.init.MiaMenus;
 import com.altnoir.mementoinabyss.init.MiaRecipes;
 import com.altnoir.mementoinabyss.network.AdjustRopeLengthPayload;
 import com.altnoir.mementoinabyss.network.CompassTargetPayload;
 import com.altnoir.mementoinabyss.network.RopeSnapshotPayload;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.debug.DebugScreenEntryStatus;
 import net.minecraft.client.gui.components.debug.DebugScreenProfile;
@@ -45,6 +49,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.ExtractLevelRenderStateEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RecipesReceivedEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterCustomEnvironmentEffectRendererEvent;
 import net.neoforged.neoforge.client.event.RegisterDebugEntriesEvent;
 import net.neoforged.neoforge.client.event.RegisterDimensionTransitionScreenEvent;
@@ -79,9 +84,15 @@ public final class ClientEvent {
     }
 
     @SubscribeEvent
+    public static void registerBlockTintSources(RegisterColorHandlersEvent.BlockTintSources event) {
+        event.register(List.of(ReturnChestTintSource.INSTANCE), MiaBlocks.RETURN_CHEST.get());
+    }
+
+    @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(MiaMenus.ARTIFACT_ENHANCEMENT.get(), ArtifactEnhancementScreen::new);
         event.register(MiaMenus.WHISTLE_WORKBENCH.get(), WhistleWorkbenchScreen::new);
+        event.register(MiaMenus.RETURN_CHEST.get(), ReturnChestScreen::new);
     }
 
     @SubscribeEvent

@@ -40,7 +40,8 @@ public class MiaTags {
         INCORRECT_FOR_PRASIOLITE_TOOL,
         MINEABLE_WITH_COMPOSITE,
         MYCELIUM_REPLACEABLE,
-        PRIMO_STEMS;
+        PRIMO_STEMS,
+        UNSUPPORTABLE;
 
         public final TagKey<Block> tag;
 

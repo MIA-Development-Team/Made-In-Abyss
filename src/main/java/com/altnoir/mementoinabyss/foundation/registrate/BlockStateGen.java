@@ -39,7 +39,8 @@ public class BlockStateGen {
         return (context, generator) -> {
             var block = context.get();
             var model =
-                    generator.getBuilder()
+                    generator
+                            .getBuilder()
                             .parent(generator.modLoc("block/template/" + context.getName()))
                             .build(block);
             generator.blockStateOutput.accept(
@@ -258,7 +259,8 @@ public class BlockStateGen {
             NonNullBiConsumer<DataGenContext<Block, B>, ReginthBlockModelGenerator>
                     ropeConnector() {
         return (ctx, prov) -> {
-            var idle = BlockModelGenerators.plainVariant(prov.modLoc("block/template/rope_connector"));
+            var idle =
+                    BlockModelGenerators.plainVariant(prov.modLoc("block/template/rope_connector"));
             var connected =
                     BlockModelGenerators.plainVariant(
                             prov.modLoc("block/template/rope_connector_connected"));
@@ -681,8 +683,7 @@ public class BlockStateGen {
                     prov.getBuilder()
                             .parent(prov.modLoc("block/template/mushroom"))
                             .texture(
-                                    TextureSlot.ALL,
-                                    prov.modBlockTexture("model/" + ctx.getName()))
+                                    TextureSlot.ALL, prov.modBlockTexture("model/" + ctx.getName()))
                             .texture(TextureSlot.PARTICLE, prov.modBlockTexture("primo_planks"))
                             .build(ctx.get());
             prov.create(ctx.get(), model);

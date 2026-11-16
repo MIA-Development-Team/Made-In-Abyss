@@ -74,15 +74,23 @@ public final class ParcelBalloonRenderer
             pose.mulPose(Axis.YP.rotationDegrees(-state.yaw - 180.0F));
             nodes.submitCustomGeometry(
                     pose,
-                    alpha < 1.0F ? RenderTypes.entityTranslucent(TEXTURE) : RenderTypes.entityCutout(TEXTURE),
+                    alpha < 1.0F
+                            ? RenderTypes.entityTranslucent(TEXTURE)
+                            : RenderTypes.entityCutout(TEXTURE),
                     geometry(model, instance, light, 0xFFFFFF, alpha));
             if (state.color != DyeColor.RED) {
-                nodes.order(1).submitCustomGeometry(
-                        pose,
-                        alpha < 1.0F
-                                ? RenderTypes.entityTranslucent(TINT_TEXTURE, false)
-                                : RenderTypes.entityCutoutZOffset(TINT_TEXTURE, false),
-                        geometry(model, instance, light, BalloonItem.rgb(state.color), alpha));
+                nodes.order(1)
+                        .submitCustomGeometry(
+                                pose,
+                                alpha < 1.0F
+                                        ? RenderTypes.entityTranslucent(TINT_TEXTURE, false)
+                                        : RenderTypes.entityCutoutZOffset(TINT_TEXTURE, false),
+                                geometry(
+                                        model,
+                                        instance,
+                                        light,
+                                        BalloonItem.rgb(state.color),
+                                        alpha));
             }
             pose.popPose();
         }
@@ -98,7 +106,15 @@ public final class ParcelBalloonRenderer
             PoseStack stack = new PoseStack();
             stack.last().set(renderPose);
             model.renderToBuffer(
-                    instance, stack, buffer, light, OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
+                    instance,
+                    stack,
+                    buffer,
+                    light,
+                    OverlayTexture.NO_OVERLAY,
+                    red,
+                    green,
+                    blue,
+                    alpha);
         };
     }
 

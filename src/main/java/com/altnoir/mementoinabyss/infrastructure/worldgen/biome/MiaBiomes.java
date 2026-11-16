@@ -408,7 +408,7 @@ public final class MiaBiomes {
                         new BiomeSpecialEffects.Builder()
                                 .waterColor(0x5946B9)
                                 .foliageColorOverride(0x619BD1)
-                                .dryFoliageColorOverride(0x6E8FA8)
+                                .dryFoliageColorOverride(0x5664A0)
                                 .grassColorOverride(0x6B97C7)
                                 .build())
                 .setAttribute(EnvironmentAttributes.FOG_COLOR, 0xFF364C67)

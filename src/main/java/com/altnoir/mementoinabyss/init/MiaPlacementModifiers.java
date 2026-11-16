@@ -7,6 +7,7 @@ import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.InvertedCoun
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.Layer2FlowerSurfacePlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.Layer2SurfacePlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.TreeOnEveryLayerPlacement;
+import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.UnsupportableFilterPlacement;
 import com.altnoir.mementoinabyss.infrastructure.worldgen.placement.WaterOnEveryLayerPlacement;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
@@ -61,6 +62,12 @@ public final class MiaPlacementModifiers {
                     TYPES.register(
                             "fast_count_on_every_layer",
                             () -> () -> FastCountOnEveryLayerPlacement.CODEC);
+
+    public static final DeferredHolder<
+                    PlacementModifierType<?>, PlacementModifierType<UnsupportableFilterPlacement>>
+            UNSUPPORTABLE_FILTER =
+                    TYPES.register(
+                            "unsupportable_filter", () -> () -> UnsupportableFilterPlacement.CODEC);
 
     public static void register(IEventBus bus) {
         TYPES.register(bus);

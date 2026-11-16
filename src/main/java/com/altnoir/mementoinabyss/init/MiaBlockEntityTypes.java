@@ -11,6 +11,7 @@ import com.altnoir.mementoinabyss.content.lamptube.AmethystTubeBlockEntity;
 import com.altnoir.mementoinabyss.content.parcel.ParcelBlockEntity;
 import com.altnoir.mementoinabyss.content.pedestal.PedestalBlockEntity;
 import com.altnoir.mementoinabyss.content.pedestal.client.PedestalRenderer;
+import com.altnoir.mementoinabyss.content.returnchest.ReturnChestBlockEntity;
 import com.altnoir.mementoinabyss.content.rope.RopeConnectorBlockEntity;
 import com.altnoir.mementoinabyss.content.rope.client.RopeConnectorRenderer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -75,8 +76,23 @@ public class MiaBlockEntityTypes {
                     .register();
 
     public static final BlockEntityEntry<ParcelBlockEntity> PARCEL =
-            REGISTRATE.blockEntity("parcel", ParcelBlockEntity::new)
+            REGISTRATE
+                    .blockEntity("parcel", ParcelBlockEntity::new)
                     .validBlock(MiaBlocks.PARCEL)
+                    .register();
+
+    public static final BlockEntityEntry<ReturnChestBlockEntity> RETURN_CHEST =
+            REGISTRATE
+                    .blockEntity("return_chest", ReturnChestBlockEntity::new)
+                    .validBlock(MiaBlocks.RETURN_CHEST)
+                    .registerCapability(
+                            event ->
+                                    event.registerBlockEntity(
+                                            Capabilities.Item.BLOCK,
+                                            MiaBlockEntityTypes.RETURN_CHEST.get(),
+                                            (blockEntity, side) ->
+                                                    new WorldlyContainerWrapper(
+                                                            blockEntity.itemAccess(), side)))
                     .register();
 
     public static void register(IEventBus bus) {
@@ -85,6 +101,5 @@ public class MiaBlockEntityTypes {
 
     private static void addValidBlocks(BlockEntityTypeAddBlocksEvent event) {
         event.modify(BlockEntityType.BRUSHABLE_BLOCK, MiaBlocks.SUSPICIOUS_ABYSS_ANDESITE.get());
-        event.modify(BlockEntityType.ENDER_CHEST, MiaBlocks.RETURN_CHEST.get());
     }
 }

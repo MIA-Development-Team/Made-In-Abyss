@@ -39,7 +39,6 @@ public final class BalloonItem extends Item {
         if (stack.getItem() instanceof BalloonItem balloon && balloon.fixedColor != null) {
             return balloon.fixedColor;
         }
-        // Existing balloon stacks can still carry a resonance in the old dye component.
         DyedItemColor dyed = stack.get(DataComponents.DYED_COLOR);
         if (dyed != null) {
             for (DyeColor color : DyeColor.VALUES) {
@@ -57,11 +56,6 @@ public final class BalloonItem extends Item {
         return Component.translatable("color.minecraft." + color.getName());
     }
 
-    static void message(Player player, String key, Object... arguments) {
-        player.sendOverlayMessage(
-                Component.translatable("message.mementoinabyss.return_chest." + key, arguments));
-    }
-
     @Override
     public InteractionResult onItemUseFirst(ItemStack balloon, UseOnContext context) {
         Player player = context.getPlayer();
@@ -72,14 +66,14 @@ public final class BalloonItem extends Item {
         }
         if (!(context.getLevel() instanceof ServerLevel level)) return InteractionResult.SUCCESS;
         if (!ReturnDimensions.canLaunch(level)) {
-            message(player, "launch_dimension");
+            ReturnChests.message(player, "launch_dimension");
             return InteractionResult.FAIL;
         }
         if (!player.mayBuild() || !level.mayInteract(player, pos)) return InteractionResult.FAIL;
         for (int dy = 1; dy <= BalloonCargo.PARCEL_FLIGHT_HEIGHT; dy++) {
             BlockPos above = pos.above(dy);
             if (!level.isInWorldBounds(above) || !level.getBlockState(above).isAir()) {
-                message(player, "blocked");
+                ReturnChests.message(player, "blocked");
                 return InteractionResult.FAIL;
             }
         }
@@ -92,30 +86,20 @@ public final class BalloonItem extends Item {
         DyeColor color = color(balloon);
         ReturnStorage storage = ReturnStorage.get(level);
         ReturnStorage.Channel channel = storage.channel(color);
-        if (channel.inTransit()) {
-            message(player, "busy", colorName(color));
-            return InteractionResult.FAIL;
-        }
-
         List<ItemStack> items = new ArrayList<>();
         for (int slot = 0; slot < parcel.getContainerSize(); slot++) {
             ItemStack item = parcel.getItem(slot);
             if (!item.isEmpty()) items.add(item.copy());
         }
         if (items.isEmpty()) {
-            message(player, "empty");
+            ReturnChests.message(player, "empty");
             return InteractionResult.FAIL;
         }
-        if (channel.pack(items) == null) {
-            message(player, "full", colorName(color));
-            return InteractionResult.FAIL;
-        }
-
-        BalloonCargo visual = BalloonCargo.PARCEL_BALLOON.get().create(level, EntitySpawnReason.TRIGGERED);
+        BalloonCargo visual =
+                BalloonCargo.PARCEL_BALLOON.get().create(level, EntitySpawnReason.TRIGGERED);
         if (visual == null) return InteractionResult.FAIL;
         visual.prepare(pos, state.getValue(BlockStateProperties.HORIZONTAL_FACING), color);
 
-        // Transfer the inventory ourselves, bypassing the parcel's ordinary removal drops.
         if (!level.setBlock(
                 pos,
                 state.getFluidState().createLegacyBlock(),
@@ -129,7 +113,7 @@ public final class BalloonItem extends Item {
                 channel, new ReturnStorage.Flight(visual.getUUID(), arrival, List.copyOf(items)));
         level.addFreshEntity(visual);
         balloon.consume(1, player);
-        message(player, "launched", colorName(color));
+        ReturnChests.message(player, "launched", colorName(color));
         return InteractionResult.SUCCESS;
     }
 }

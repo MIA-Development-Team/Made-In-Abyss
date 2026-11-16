@@ -1,10 +1,6 @@
 {
   "model": {
-    "type": "minecraft:special",
-    "base": "mementoinabyss:item/return_chest",
-    "model": {
-      "type": "minecraft:chest",
-      "texture": "minecraft:ender"
-    }
+    "type": "minecraft:model",
+    "model": "mementoinabyss:block/return_chest"
   }
 }

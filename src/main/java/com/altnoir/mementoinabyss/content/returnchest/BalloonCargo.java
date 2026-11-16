@@ -65,8 +65,7 @@ public final class BalloonCargo extends Entity {
     }
 
     public static void register(IEventBus bus) {
-        ENTITIES.addAlias(
-                MementoInAbyss.asResource("balloon_cargo"), CHEST_BALLOON.getId());
+        ENTITIES.addAlias(MementoInAbyss.asResource("balloon_cargo"), CHEST_BALLOON.getId());
         ENTITIES.register(bus);
     }
 
@@ -88,11 +87,11 @@ public final class BalloonCargo extends Entity {
         int height = getType() == PARCEL_BALLOON.get() ? PARCEL_FLIGHT_HEIGHT : CHEST_FLIGHT_HEIGHT;
         double cruiseSpeed = (double) height / CONSTANT_SPEED_TICKS;
         if (entityData.get(ACCELERATES) && elapsedTicks < ACCELERATION_TICKS) {
-            // The midpoint gives the distance traveled during this tick under linear acceleration.
             return cruiseSpeed * (elapsedTicks + 0.5) / ACCELERATION_TICKS;
         }
         return cruiseSpeed;
     }
+
     public DyeColor color() {
         return DyeColor.byId(entityData.get(COLOR));
     }
